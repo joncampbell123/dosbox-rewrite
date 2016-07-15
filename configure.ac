@@ -2,6 +2,12 @@ AC_INIT([DOSBox-X-rewrite], 0.01)
 AM_INIT_AUTOMAKE
 AC_PROG_CC
 AC_PROG_CXX
+AC_CONFIG_HEADER([config.h])
+AC_PREFIX_DEFAULT(/usr/local)
+
+# largefile support.
+# NTS: creation of config.h means you must include config.h to get _FILE_OFFSET_BITS=64 or whatever your platform needs.
+AC_SYS_LARGEFILE
 
 AC_SUBST(CFLAGS)
 AC_SUBST(CXXFLAGS)
