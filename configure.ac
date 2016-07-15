@@ -335,6 +335,125 @@ if test "$with_ffmpeg_swscale" = "yes"; then
     AC_DEFINE_UNQUOTED([HAVE_FFMPEG_SWSCALE],[$HAVE_FFMPEG_SWSCALE],[Has FFMPEG_SWSCALE])
 fi
 
+# Simple Directmedia Layer 1.x
+AC_ARG_WITH(sdl1,AS_HELP_STRING([--with-sdl1],[Enable SDL 1.x]),[],[with_sdl1=yes])
+AC_SUBST(HAVE_SDL1)
+AC_SUBST(SDL1_CFLAGS)
+AC_SUBST(SDL1_LDFLAGS)
+if test "$with_sdl1" = "yes"; then
+    AC_MSG_CHECKING([for SDL 1.x])
+    if pkg-config --atleast-version=1.2.15 sdl; then
+        AC_MSG_RESULT([yes])
+        HAVE_SDL1=1
+        SDL1_CFLAGS=`pkg-config --cflags sdl`
+        SDL1_LDFLAGS=`pkg-config --libs sdl`
+    else
+        AC_MSG_RESULT([no])
+        HAVE_SDL1=0
+    fi
+    AC_DEFINE_UNQUOTED([HAVE_SDL1],[$HAVE_SDL1],[Has SDL1])
+fi
+
+# Simple Directmedia Layer 2.x
+AC_ARG_WITH(sdl2,AS_HELP_STRING([--with-sdl2],[Enable SDL 2.x]),[],[with_sdl2=yes])
+AC_SUBST(HAVE_SDL2)
+AC_SUBST(SDL2_CFLAGS)
+AC_SUBST(SDL2_LDFLAGS)
+if test "$with_sdl2" = "yes"; then
+    AC_MSG_CHECKING([for SDL 2.x])
+    if pkg-config --atleast-version=2.0.3 sdl2; then
+        AC_MSG_RESULT([yes])
+        HAVE_SDL2=1
+        SDL2_CFLAGS=`pkg-config --cflags sdl2`
+        SDL2_LDFLAGS=`pkg-config --libs sdl2`
+    else
+        AC_MSG_RESULT([no])
+        HAVE_SDL2=0
+    fi
+    AC_DEFINE_UNQUOTED([HAVE_SDL2],[$HAVE_SDL2],[Has SDL2])
+fi
+
+# libpng
+AC_ARG_WITH(libpng,AS_HELP_STRING([--with-libpng],[Enable libpng]),[],[with_libpng=yes])
+AC_SUBST(HAVE_LIBPNG)
+AC_SUBST(LIBPNG_CFLAGS)
+AC_SUBST(LIBPNG_LDFLAGS)
+if test "$with_libpng" = "yes"; then
+    AC_MSG_CHECKING([for libpng])
+    if pkg-config --atleast-version=1.2.46 libpng; then
+        AC_MSG_RESULT([yes])
+        HAVE_LIBPNG=1
+        LIBPNG_CFLAGS=`pkg-config --cflags libpng`
+        LIBPNG_LDFLAGS=`pkg-config --libs libpng`
+    else
+        AC_MSG_RESULT([no])
+        HAVE_LIBPNG=0
+    fi
+    AC_DEFINE_UNQUOTED([HAVE_LIBPNG],[$HAVE_LIBPNG],[Has LIBPNG])
+fi
+
+# libjpeg
+AC_ARG_WITH(libjpeg,AS_HELP_STRING([--with-libjpeg],[Enable libjpeg]),[],[with_libjpeg=yes])
+AC_SUBST(HAVE_LIBJPEG)
+AC_SUBST(LIBJPEG_CFLAGS)
+AC_SUBST(LIBJPEG_LDFLAGS)
+if test "$with_libjpeg" = "yes"; then
+    AC_MSG_CHECKING([for libjpeg])
+    if pkg-config --atleast-version=1.0.0 jpeg; then
+        AC_MSG_RESULT([yes])
+        HAVE_LIBJPEG=1
+        LIBJPEG_CFLAGS=`pkg-config --cflags jpeg`
+        LIBJPEG_LDFLAGS=`pkg-config --libs jpeg`
+    elif [[[ -f /usr/lib/libjpeg.a || -f /usr/lib64/libjpeg.a ]]] ; then
+        AC_MSG_RESULT([yes])
+        HAVE_LIBJPEG=1
+        LIBJPEG_CFLAGS=""
+        LIBJPEG_LDFLAGS="-ljpeg";
+    else
+        AC_MSG_RESULT([no])
+        HAVE_LIBJPEG=0
+    fi
+    AC_DEFINE_UNQUOTED([HAVE_LIBJPEG],[$HAVE_LIBJPEG],[Has LIBJPEG])
+fi
+
+# freetype2
+AC_ARG_WITH(freetype2,AS_HELP_STRING([--with-freetype2],[Enable freetype 2]),[],[with_freetype2=yes])
+AC_SUBST(HAVE_FREETYPE2)
+AC_SUBST(FREETYPE2_CFLAGS)
+AC_SUBST(FREETYPE2_LDFLAGS)
+if test "$with_freetype2" = "yes"; then
+    AC_MSG_CHECKING([for freetype2])
+    if pkg-config --atleast-version=9.20.3 freetype2; then
+        AC_MSG_RESULT([yes])
+        HAVE_FREETYPE2=1
+        FREETYPE2_CFLAGS=`pkg-config --cflags freetype2`
+        FREETYPE2_LDFLAGS=`pkg-config --libs freetype2`
+    else
+        AC_MSG_RESULT([no])
+        HAVE_FREETYPE2=0
+    fi
+    AC_DEFINE_UNQUOTED([HAVE_FREETYPE2],[$HAVE_FREETYPE2],[Has FREETYPE2])
+fi
+
+# fontconfig
+AC_ARG_WITH(fontconfig,AS_HELP_STRING([--with-fontconfig],[Enable fontconfig]),[],[with_fontconfig=yes])
+AC_SUBST(HAVE_FONTCONFIG)
+AC_SUBST(FONTCONFIG_CFLAGS)
+AC_SUBST(FONTCONFIG_LDFLAGS)
+if test "$with_fontconfig" = "yes"; then
+    AC_MSG_CHECKING([for fontconfig])
+    if pkg-config --atleast-version=2.7.3 fontconfig; then
+        AC_MSG_RESULT([yes])
+        HAVE_FONTCONFIG=1
+        FONTCONFIG_CFLAGS=`pkg-config --cflags fontconfig`
+        FONTCONFIG_LDFLAGS=`pkg-config --libs fontconfig`
+    else
+        AC_MSG_RESULT([no])
+        HAVE_FONTCONFIG=0
+    fi
+    AC_DEFINE_UNQUOTED([HAVE_FONTCONFIG],[$HAVE_FONTCONFIG],[Has FONTCONFIG])
+fi
+
 AC_CONFIG_FILES(Makefile)
 AC_OUTPUT
 
