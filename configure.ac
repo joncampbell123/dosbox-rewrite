@@ -31,10 +31,10 @@ AC_TRY_COMPILE([],
         CFLAGS=$old_CFLAGS
     ])
 
-# maybe gnu++1x?
+# maybe gnu++0x?
 if test $c11 = 0; then
-    AC_MSG_CHECKING([to make sure your C++ compiler supports C++11 (gnu++1x)])
-    CXXFLAGS+=" -std=gnu++1x"
+    AC_MSG_CHECKING([to make sure your C++ compiler supports C++11 (gnu++0x)])
+    CXXFLAGS+=" -std=gnu++0x"
     CFLAGS+=" -std=gnu1x"
     AC_TRY_COMPILE([],
         [
