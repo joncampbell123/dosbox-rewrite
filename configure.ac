@@ -71,6 +71,25 @@ if test "$with_xcb" = "yes"; then
     AC_DEFINE_UNQUOTED([HAVE_XCB],[$HAVE_XCB],[Has XCB])
 fi
 
+# XCB-XV
+AC_ARG_WITH(xcb-xv,AS_HELP_STRING([--with-xcb-xv],[Enable XCB-XV support]),[],[with_xcb_xv=yes])
+AC_SUBST(HAVE_XCB_XV)
+AC_SUBST(XCB_XV_CFLAGS)
+AC_SUBST(XCB_XV_LDFLAGS)
+if test "$with_xcb_xv" = "yes"; then
+    AC_MSG_CHECKING([for XCB xv])
+    if pkg-config --atleast-version=1.12 xcb-xv; then
+        AC_MSG_RESULT([yes])
+        HAVE_XCB_XV=1
+        XCB_CFLAGS=`pkg-config --cflags xcb-xv`
+        XCB_LDFLAGS=`pkg-config --libs xcb-xv`
+    else
+        AC_MSG_RESULT([no])
+        HAVE_XCB_XV=0
+    fi
+    AC_DEFINE_UNQUOTED([HAVE_XCB_XV],[$HAVE_XCB_XV],[Has XCB xv])
+fi
+
 # XCB_SHM
 AC_ARG_WITH(xcb-shm,AS_HELP_STRING([--with-xcb-shm],[Enable XCB SHM support]),[],[with_xcb_shm=yes])
 AC_SUBST(HAVE_XCB_SHM)
