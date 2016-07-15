@@ -139,6 +139,30 @@ else
     HAVE_OPENGL_EGL=0
 fi
 
+# ZLIB
+AC_SUBST(HAVE_ZLIB)
+AC_SUBST(ZLIB_CFLAGS)
+AC_SUBST(ZLIB_LDFLAGS)
+if pkg-config --atleast-version=1.2.6 zlib; then
+    HAVE_ZLIB=1
+    ZLIB_CFLAGS=`pkg-config --cflags zlib`
+    ZLIB_LDFLAGS=`pkg-config --libs zlib`
+else
+    HAVE_ZLIB=0
+fi
+
+# LZMA
+AC_SUBST(HAVE_LZMA)
+AC_SUBST(LZMA_CFLAGS)
+AC_SUBST(LZMA_LDFLAGS)
+if pkg-config --atleast-version=5.0.3 liblzma; then
+    HAVE_LZMA=1
+    LZMA_CFLAGS=`pkg-config --cflags liblzma`
+    LZMA_LDFLAGS=`pkg-config --libs liblzma`
+else
+    HAVE_LZMA=0
+fi
+
 AC_CONFIG_FILES(Makefile)
 AC_OUTPUT
 
