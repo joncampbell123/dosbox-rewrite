@@ -10,6 +10,105 @@ AC_PREFIX_DEFAULT(/usr/local)
 #      Failure to do so will prevent that code from accessing files larger than 2GB on 32-bit systems (where off_t is 32-bit wide)
 AC_SYS_LARGEFILE
 
+# this code uses C++11 features (TODO: gnu++11 if GCC, else c++11)
+c11=0
+AC_MSG_CHECKING([to make sure your C++ compiler supports C++11])
+old_CXXFLAGS=$CXXFLAGS
+old_CFLAGS=$CFLAGS
+CXXFLAGS+=" -std=gnu++11"
+CFLAGS+=" -std=gnu11"
+AC_TRY_COMPILE([],
+    [
+        void empty() { }
+    ],
+    [
+        AC_MSG_RESULT([yes])
+        c11=1
+    ],
+    [
+        AC_MSG_RESULT([no])
+        CXXFLAGS=$old_CXXFLAGS
+        CFLAGS=$old_CFLAGS
+    ])
+
+# maybe gnu++1x?
+if test $c11 = 0; then
+    AC_MSG_CHECKING([to make sure your C++ compiler supports C++11 (gnu++1x)])
+    CXXFLAGS+=" -std=gnu++1x"
+    CFLAGS+=" -std=gnu1x"
+    AC_TRY_COMPILE([],
+        [
+            void empty() { }
+        ],
+        [
+            AC_MSG_RESULT([yes])
+            c11=1
+        ],
+        [
+            AC_MSG_RESULT([no])
+            CXXFLAGS=$old_CXXFLAGS
+            CFLAGS=$old_CFLAGS
+        ])
+fi
+
+# sorry
+if test $c11 = 0; then
+    AC_MSG_ERROR([This code base requires a C++11 capable compiler])
+fi
+
+# use MMX, SSE, SSE2, AVX if available (TODO: Only if target is i686 or x86_64)
+# not for ALL code, just the optimized rendering code.
+old_CXXFLAGS=$CXXFLAGS
+old_CFLAGS=$CFLAGS
+for ext in mmx sse sse2 sse3 avx avx2; do
+    AC_MSG_CHECKING([to make sure your C++ compiler supports the $ext instruction set])
+    EXT=`echo $ext | tr [[:lower:]] [[:upper:]]`
+    CXXFLAGS+=" -m$ext"
+    CFLAGS+=" -m$ext"
+    AC_TRY_COMPILE([ ],[ void empty() { } ],
+        [
+            AC_MSG_RESULT([yes])
+            _nm=HAVE_CPU_$EXT
+            eval $_nm=1
+        ],
+        [
+            AC_MSG_RESULT([no])
+            _nm=HAVE_CPU_$EXT
+            eval $_nm=0
+        ])
+    CXXFLAGS=$old_CXXFLAGS
+    CFLAGS=$old_CFLAGS
+done
+AC_SUBST(HAVE_CPU_MMX)
+AC_SUBST(CPU_MMX_CFLAGS)
+AC_DEFINE_UNQUOTED([HAVE_CPU_MMX],[$HAVE_CPU_MMX],[Has MMX CPU extension])
+if test $HAVE_CPU_MMX = 1; then CPU_MMX_CFLAGS+=-mmmx; fi
+
+AC_SUBST(HAVE_CPU_SSE)
+AC_SUBST(CPU_SSE_CFLAGS)
+AC_DEFINE_UNQUOTED([HAVE_CPU_SSE],[$HAVE_CPU_SSE],[Has SSE CPU extension])
+if test $HAVE_CPU_SSE = 1; then CPU_SSE_CFLAGS+=-msse; fi
+
+AC_SUBST(HAVE_CPU_SSE2)
+AC_SUBST(CPU_SSE2_CFLAGS)
+AC_DEFINE_UNQUOTED([HAVE_CPU_SSE2],[$HAVE_CPU_SSE2],[Has SSE2 CPU extension])
+if test $HAVE_CPU_SSE2 = 1; then CPU_SSE2_CFLAGS+=-msse2; fi
+
+AC_SUBST(HAVE_CPU_SSE3)
+AC_SUBST(CPU_SSE3_CFLAGS)
+AC_DEFINE_UNQUOTED([HAVE_CPU_SSE3],[$HAVE_CPU_SSE3],[Has SSE3 CPU extension])
+if test $HAVE_CPU_SSE3 = 1; then CPU_SSE3_CFLAGS+=-msse3; fi
+
+AC_SUBST(HAVE_CPU_AVX)
+AC_SUBST(CPU_AVX_CFLAGS)
+AC_DEFINE_UNQUOTED([HAVE_CPU_AVX],[$HAVE_CPU_AVX],[Has AVX CPU extension])
+if test $HAVE_CPU_AVX = 1; then CPU_AVX_CFLAGS+=-mavx; fi
+
+AC_SUBST(HAVE_CPU_AVX2)
+AC_SUBST(CPU_AVX2_CFLAGS)
+AC_DEFINE_UNQUOTED([HAVE_CPU_AVX2],[$HAVE_CPU_AVX2],[Has AVX2 CPU extension])
+if test $HAVE_CPU_AVX2 = 1; then CPU_AVX2_CFLAGS+=-mavx2; fi
+
 AC_SUBST(CFLAGS)
 AC_SUBST(CXXFLAGS)
 AC_SUBST(LDFLAGS)
