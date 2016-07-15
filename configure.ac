@@ -30,6 +30,7 @@ if test "$with_x11" = "yes"; then
         AC_MSG_RESULT([no])
         HAVE_X11=0
     fi
+    AC_DEFINE_UNQUOTED([HAVE_X11],[$HAVE_X11],[Has X11])
 fi
 
 # X11-XCB
@@ -48,6 +49,7 @@ if test "$with_x11_xcb" = "yes"; then
         AC_MSG_RESULT([no])
         HAVE_X11_XCB=0
     fi
+    AC_DEFINE_UNQUOTED([HAVE_X11_XCB],[$HAVE_X11_XCB],[Has X11 XCB])
 fi
 
 # XCB
@@ -66,6 +68,7 @@ if test "$with_xcb" = "yes"; then
         AC_MSG_RESULT([no])
         HAVE_XCB=0
     fi
+    AC_DEFINE_UNQUOTED([HAVE_XCB],[$HAVE_XCB],[Has XCB])
 fi
 
 # XCB_SHM
@@ -84,6 +87,7 @@ if test "$with_xcb_shm" = "yes"; then
         AC_MSG_RESULT([no])
         HAVE_XCB_SHM=0
     fi
+    AC_DEFINE_UNQUOTED([HAVE_XCB_SHM],[$HAVE_XCB_SHM],[Has XCB SHM])
 fi
 
 # XCB_XKB
@@ -102,6 +106,7 @@ if test "$with_xcb_xkb" = "yes"; then
         AC_MSG_RESULT([no])
         HAVE_XCB_XKB=0
     fi
+    AC_DEFINE_UNQUOTED([HAVE_XCB_XKB],[$HAVE_XCB_XKB],[Has XCB XKB])
 fi
 
 # ALSA
@@ -120,6 +125,7 @@ if test "$with_alsa" = "yes"; then
         AC_MSG_RESULT([no])
         HAVE_ALSA=0
     fi
+    AC_DEFINE_UNQUOTED([HAVE_ALSA],[$HAVE_ALSA],[Has ALSA])
 fi
 
 # LIBDRM
@@ -138,6 +144,7 @@ if test "$with_libdrm" = "yes"; then
         AC_MSG_RESULT([no])
         HAVE_LIBDRM=0
     fi
+    AC_DEFINE_UNQUOTED([HAVE_LIBDRM],[$HAVE_LIBDRM],[Has libdrm])
 fi
 
 # OpenGL
@@ -156,6 +163,7 @@ if test "$with_gl" = "yes"; then
         AC_MSG_RESULT([no])
         HAVE_OPENGL=0
     fi
+    AC_DEFINE_UNQUOTED([HAVE_OPENGL],[$HAVE_OPENGL],[Has OpenGL])
 fi
 
 # OpenGL GLU
@@ -174,6 +182,7 @@ if test "$with_glu" = "yes"; then
         AC_MSG_RESULT([no])
         HAVE_OPENGL_GLU=0
     fi
+    AC_DEFINE_UNQUOTED([HAVE_OPENGL_GLU],[$HAVE_OPENGL_GLU],[Has OpenGL GLU])
 fi
 
 # OpenGL GLEW
@@ -192,6 +201,7 @@ if test "$with_glew" = "yes"; then
         AC_MSG_RESULT([no])
         HAVE_OPENGL_GLEW=0
     fi
+    AC_DEFINE_UNQUOTED([HAVE_OPENGL_GLEW],[$HAVE_OPENGL_GLEW],[Has OpenGL GLEW])
 fi
 
 # OpenGL EGL
@@ -210,6 +220,7 @@ if test "$with_egl" = "yes"; then
         AC_MSG_RESULT([no])
         HAVE_OPENGL_EGL=0
     fi
+    AC_DEFINE_UNQUOTED([HAVE_OPENGL_EGL],[$HAVE_OPENGL_EGL],[Has OpenGL EGL])
 fi
 
 # ZLIB
@@ -228,6 +239,7 @@ if test "$with_zlib" = "yes"; then
         AC_MSG_RESULT([no])
         HAVE_ZLIB=0
     fi
+    AC_DEFINE_UNQUOTED([HAVE_ZLIB],[$HAVE_ZLIB],[Has ZLIB])
 fi
 
 # LZMA
@@ -246,6 +258,7 @@ if test "$with_lzma" = "yes"; then
         AC_MSG_RESULT([no])
         HAVE_LZMA=0
     fi
+    AC_DEFINE_UNQUOTED([HAVE_LZMA],[$HAVE_LZMA],[Has LZMA])
 fi
 
 # FFMPEG avcodec
@@ -264,6 +277,7 @@ if test "$with_ffmpeg" = "yes"; then
         AC_MSG_RESULT([no])
         HAVE_FFMPEG_AVCODEC=0
     fi
+    AC_DEFINE_UNQUOTED([HAVE_FFMPEG_AVCODEC],[$HAVE_FFMPEG_AVCODEC],[Has FFMPEG_AVCODEC])
 fi
 
 # FFMPEG avformat
@@ -281,9 +295,10 @@ if test "$with_ffmpeg" = "yes"; then
         AC_MSG_RESULT([no])
         HAVE_FFMPEG_AVFORMAT=0
     fi
+    AC_DEFINE_UNQUOTED([HAVE_FFMPEG_AVFORMAT],[$HAVE_FFMPEG_AVFORMAT],[Has FFMPEG_AVFORMAT])
 fi
 
-# FFMPEG avformat
+# FFMPEG avutil
 AC_SUBST(HAVE_FFMPEG_AVUTIL)
 AC_SUBST(FFMPEG_AVUTIL_CFLAGS)
 AC_SUBST(FFMPEG_AVUTIL_LDFLAGS)
@@ -298,6 +313,7 @@ if test "$with_ffmpeg" = "yes"; then
         AC_MSG_RESULT([no])
         HAVE_FFMPEG_AVUTIL=0
     fi
+    AC_DEFINE_UNQUOTED([HAVE_FFMPEG_AVUTIL],[$HAVE_FFMPEG_AVUTIL],[Has FFMPEG_AVUTIL])
 fi
 
 # FFMPEG swscale
@@ -316,6 +332,7 @@ if test "$with_ffmpeg_swscale" = "yes"; then
         AC_MSG_RESULT([no])
         HAVE_FFMPEG_SWSCALE=0
     fi
+    AC_DEFINE_UNQUOTED([HAVE_FFMPEG_SWSCALE],[$HAVE_FFMPEG_SWSCALE],[Has FFMPEG_SWSCALE])
 fi
 
 AC_CONFIG_FILES(Makefile)
