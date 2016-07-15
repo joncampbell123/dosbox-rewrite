@@ -67,6 +67,78 @@ else
     HAVE_XCB_XKB=0
 fi
 
+# ALSA
+AC_SUBST(HAVE_ALSA)
+AC_SUBST(ALSA_CFLAGS)
+AC_SUBST(ALSA_LDFLAGS)
+if pkg-config --atleast-version=1.0.27.2 alsa; then
+    HAVE_ALSA=1
+    ALSA_CFLAGS=`pkg-config --cflags alsa`
+    ALSA_LDFLAGS=`pkg-config --libs alsa`
+else
+    HAVE_ALSA=0
+fi
+
+# LIBDRM
+AC_SUBST(HAVE_LIBDRM)
+AC_SUBST(LIBDRM_CFLAGS)
+AC_SUBST(LIBDRM_LDFLAGS)
+if pkg-config --atleast-version=2.4.53 libdrm; then
+    HAVE_LIBDRM=1
+    LIBDRM_CFLAGS=`pkg-config --cflags libdrm`
+    LIBDRM_LDFLAGS=`pkg-config --libs libdrm`
+else
+    HAVE_LIBDRM=0
+fi
+
+# OpenGL (Mesa)
+AC_SUBST(HAVE_OPENGL)
+AC_SUBST(OPENGL_CFLAGS)
+AC_SUBST(OPENGL_LDFLAGS)
+if pkg-config --atleast-version=10.0.4 gl; then
+    HAVE_OPENGL=1
+    OPENGL_CFLAGS=`pkg-config --cflags gl`
+    OPENGL_LDFLAGS=`pkg-config --libs gl`
+else
+    HAVE_OPENGL=0
+fi
+
+# OpenGL (Mesa) GLU
+AC_SUBST(HAVE_OPENGL_GLU)
+AC_SUBST(OPENGL_GLU_CFLAGS)
+AC_SUBST(OPENGL_GLU_LDFLAGS)
+if pkg-config --atleast-version=9.0.0 glu; then
+    HAVE_OPENGL_GLU=1
+    OPENGL_GLU_CFLAGS=`pkg-config --cflags glu`
+    OPENGL_GLU_LDFLAGS=`pkg-config --libs glu`
+else
+    HAVE_OPENGL_GLU=0
+fi
+
+# OpenGL (Mesa) GLEW
+AC_SUBST(HAVE_OPENGL_GLEW)
+AC_SUBST(OPENGL_GLEW_CFLAGS)
+AC_SUBST(OPENGL_GLEW_LDFLAGS)
+if pkg-config --atleast-version=1.6.0 glew; then
+    HAVE_OPENGL_GLEW=1
+    OPENGL_GLEW_CFLAGS=`pkg-config --cflags glew`
+    OPENGL_GLEW_LDFLAGS=`pkg-config --libs glew`
+else
+    HAVE_OPENGL_GLEW=0
+fi
+
+# OpenGL (Mesa) EGL
+AC_SUBST(HAVE_OPENGL_EGL)
+AC_SUBST(OPENGL_EGL_CFLAGS)
+AC_SUBST(OPENGL_EGL_LDFLAGS)
+if pkg-config --atleast-version=10.0.4 egl; then
+    HAVE_OPENGL_EGL=1
+    OPENGL_EGL_CFLAGS=`pkg-config --cflags egl`
+    OPENGL_EGL_LDFLAGS=`pkg-config --libs egl`
+else
+    HAVE_OPENGL_EGL=0
+fi
+
 AC_CONFIG_FILES(Makefile)
 AC_OUTPUT
 
