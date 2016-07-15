@@ -15,51 +15,63 @@ AC_SUBST(CXXFLAGS)
 AC_SUBST(LDFLAGS)
 
 # X11
+AC_ARG_WITH(x11,AS_HELP_STRING([--with-x11],[Enable X11 support]),[],[with_x11=yes])
 AC_SUBST(HAVE_X11)
 AC_SUBST(X11_CFLAGS)
 AC_SUBST(X11_LDFLAGS)
-if pkg-config --atleast-version=1.5.0 x11; then
-    HAVE_X11=1
-    X11_CFLAGS=`pkg-config --cflags x11`
-    X11_LDFLAGS=`pkg-config --libs x11`
-else
-    HAVE_X11=0
+if test "$with_x11" = "yes"; then
+    if pkg-config --atleast-version=1.5.0 x11; then
+        HAVE_X11=1
+        X11_CFLAGS=`pkg-config --cflags x11`
+        X11_LDFLAGS=`pkg-config --libs x11`
+    else
+        HAVE_X11=0
+    fi
 fi
 
 # X11-XCB
+AC_ARG_WITH(x11-xcb,AS_HELP_STRING([--with-x11-xcb],[Enable X11-XCB support]),[],[with_x11_xcb=yes])
 AC_SUBST(HAVE_X11_XCB)
 AC_SUBST(X11_XCB_CFLAGS)
 AC_SUBST(X11_XCB_LDFLAGS)
-if pkg-config --atleast-version=1.5.0 x11-xcb; then
-    HAVE_X11_XCB=1
-    X11_XCB_CFLAGS=`pkg-config --cflags x11-xcb`
-    X11_XCB_LDFLAGS=`pkg-config --libs x11-xcb`
-else
-    HAVE_X11_XCB=0
+if test "$with_x11_xcb" = "yes"; then
+    if pkg-config --atleast-version=1.5.0 x11-xcb; then
+        HAVE_X11_XCB=1
+        X11_XCB_CFLAGS=`pkg-config --cflags x11-xcb`
+        X11_XCB_LDFLAGS=`pkg-config --libs x11-xcb`
+    else
+        HAVE_X11_XCB=0
+    fi
 fi
 
 # XCB
+AC_ARG_WITH(xcb,AS_HELP_STRING([--with-xcb],[Enable XCB support]),[],[with_xcb=yes])
 AC_SUBST(HAVE_XCB)
 AC_SUBST(XCB_CFLAGS)
 AC_SUBST(XCB_LDFLAGS)
-if pkg-config --atleast-version=1.12 xcb; then
-    HAVE_XCB=1
-    XCB_CFLAGS=`pkg-config --cflags xcb`
-    XCB_LDFLAGS=`pkg-config --libs xcb`
-else
-    HAVE_XCB=0
+if test "$with_xcb" = "yes"; then
+    if pkg-config --atleast-version=1.12 xcb; then
+        HAVE_XCB=1
+        XCB_CFLAGS=`pkg-config --cflags xcb`
+        XCB_LDFLAGS=`pkg-config --libs xcb`
+    else
+        HAVE_XCB=0
+    fi
 fi
 
 # XCB_SHM
+AC_ARG_WITH(xcb-shm,AS_HELP_STRING([--with-xcb-shm],[Enable XCB SHM support]),[],[with_xcb_shm=yes])
 AC_SUBST(HAVE_XCB_SHM)
 AC_SUBST(XCB_SHM_CFLAGS)
 AC_SUBST(XCB_SHM_LDFLAGS)
-if pkg-config --atleast-version=1.12 xcb-shm; then
-    HAVE_XCB_SHM=1
-    XCB_SHM_CFLAGS=`pkg-config --cflags xcb-shm`
-    XCB_SHM_LDFLAGS=`pkg-config --libs xcb-shm`
-else
-    HAVE_XCB_SHM=0
+if test "$with_xcb_shm" = "yes"; then
+    if pkg-config --atleast-version=1.12 xcb-shm; then
+        HAVE_XCB_SHM=1
+        XCB_SHM_CFLAGS=`pkg-config --cflags xcb-shm`
+        XCB_SHM_LDFLAGS=`pkg-config --libs xcb-shm`
+    else
+        HAVE_XCB_SHM=0
+    fi
 fi
 
 # XCB_XKB
