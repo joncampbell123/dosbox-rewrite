@@ -454,6 +454,25 @@ if test "$with_fontconfig" = "yes"; then
     AC_DEFINE_UNQUOTED([HAVE_FONTCONFIG],[$HAVE_FONTCONFIG],[Has FONTCONFIG])
 fi
 
+# cairo
+AC_ARG_WITH(cairo,AS_HELP_STRING([--with-cairo],[Enable cairo]),[],[with_cairo=yes])
+AC_SUBST(HAVE_CAIRO)
+AC_SUBST(CAIRO_CFLAGS)
+AC_SUBST(CAIRO_LDFLAGS)
+if test "$with_cairo" = "yes"; then
+    AC_MSG_CHECKING([for cairo])
+    if pkg-config --atleast-version=1.11.2 cairo; then
+        AC_MSG_RESULT([yes])
+        HAVE_CAIRO=1
+        CAIRO_CFLAGS=`pkg-config --cflags cairo`
+        CAIRO_LDFLAGS=`pkg-config --libs cairo`
+    else
+        AC_MSG_RESULT([no])
+        HAVE_CAIRO=0
+    fi
+    AC_DEFINE_UNQUOTED([HAVE_CAIRO],[$HAVE_CAIRO],[Has CAIRO])
+fi
+
 AC_CONFIG_FILES(Makefile)
 AC_OUTPUT
 
