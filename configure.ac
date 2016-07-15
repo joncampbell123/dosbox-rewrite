@@ -170,6 +170,54 @@ else
     HAVE_LZMA=0
 fi
 
+# FFMPEG avcodec
+AC_SUBST(HAVE_FFMPEG_AVCODEC)
+AC_SUBST(FFMPEG_AVCODEC_CFLAGS)
+AC_SUBST(FFMPEG_AVCODEC_LDFLAGS)
+if pkg-config --atleast-version=57.24.102 libavcodec; then
+    HAVE_FFMPEG_AVCODEC=1
+    FFMPEG_AVCODEC_CFLAGS=`pkg-config --cflags libavcodec`
+    FFMPEG_AVCODEC_LDFLAGS=`pkg-config --libs libavcodec`
+else
+    HAVE_FFMPEG_AVCODEC=0
+fi
+
+# FFMPEG avformat
+AC_SUBST(HAVE_FFMPEG_AVFORMAT)
+AC_SUBST(FFMPEG_AVFORMAT_CFLAGS)
+AC_SUBST(FFMPEG_AVFORMAT_LDFLAGS)
+if pkg-config --atleast-version=57.25.100 libavformat; then
+    HAVE_FFMPEG_AVFORMAT=1
+    FFMPEG_AVFORMAT_CFLAGS=`pkg-config --cflags libavformat`
+    FFMPEG_AVFORMAT_LDFLAGS=`pkg-config --libs libavformat`
+else
+    HAVE_FFMPEG_AVFORMAT=0
+fi
+
+# FFMPEG avformat
+AC_SUBST(HAVE_FFMPEG_AVUTIL)
+AC_SUBST(FFMPEG_AVUTIL_CFLAGS)
+AC_SUBST(FFMPEG_AVUTIL_LDFLAGS)
+if pkg-config --atleast-version=55.17.103 libavutil; then
+    HAVE_FFMPEG_AVUTIL=1
+    FFMPEG_AVUTIL_CFLAGS=`pkg-config --cflags libavutil`
+    FFMPEG_AVUTIL_LDFLAGS=`pkg-config --libs libavutil`
+else
+    HAVE_FFMPEG_AVUTIL=0
+fi
+
+# FFMPEG swscale
+AC_SUBST(HAVE_FFMPEG_SWSCALE)
+AC_SUBST(FFMPEG_SWSCALE_CFLAGS)
+AC_SUBST(FFMPEG_SWSCALE_LDFLAGS)
+if pkg-config --atleast-version=4.0.100 libswscale; then
+    HAVE_FFMPEG_SWSCALE=1
+    FFMPEG_SWSCALE_CFLAGS=`pkg-config --cflags libswscale`
+    FFMPEG_SWSCALE_LDFLAGS=`pkg-config --libs libswscale`
+else
+    HAVE_FFMPEG_SWSCALE=0
+fi
+
 AC_CONFIG_FILES(Makefile)
 AC_OUTPUT
 
