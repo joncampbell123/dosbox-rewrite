@@ -75,159 +75,196 @@ if test "$with_xcb_shm" = "yes"; then
 fi
 
 # XCB_XKB
+AC_ARG_WITH(xcb-xkb,AS_HELP_STRING([--with-xcb-xkb],[Enable XCB XKB support]),[],[with_xcb_xkb=yes])
 AC_SUBST(HAVE_XCB_XKB)
 AC_SUBST(XCB_XKB_CFLAGS)
 AC_SUBST(XCB_XKB_LDFLAGS)
-if pkg-config --atleast-version=1.12 xcb-xkb; then
-    HAVE_XCB_XKB=1
-    XCB_XKB_CFLAGS=`pkg-config --cflags xcb-xkb`
-    XCB_XKB_LDFLAGS=`pkg-config --libs xcb-xkb`
-else
-    HAVE_XCB_XKB=0
+if test "$with_xcb_xkb" = "yes"; then
+    if pkg-config --atleast-version=1.12 xcb-xkb; then
+        HAVE_XCB_XKB=1
+        XCB_XKB_CFLAGS=`pkg-config --cflags xcb-xkb`
+        XCB_XKB_LDFLAGS=`pkg-config --libs xcb-xkb`
+    else
+        HAVE_XCB_XKB=0
+    fi
 fi
 
 # ALSA
+AC_ARG_WITH(alsa,AS_HELP_STRING([--with-alsa],[Enable ALSA support]),[],[with_alsa=yes])
 AC_SUBST(HAVE_ALSA)
 AC_SUBST(ALSA_CFLAGS)
 AC_SUBST(ALSA_LDFLAGS)
-if pkg-config --atleast-version=1.0.27.2 alsa; then
-    HAVE_ALSA=1
-    ALSA_CFLAGS=`pkg-config --cflags alsa`
-    ALSA_LDFLAGS=`pkg-config --libs alsa`
-else
-    HAVE_ALSA=0
+if test "$with_alsa" = "yes"; then
+    if pkg-config --atleast-version=1.0.27.2 alsa; then
+        HAVE_ALSA=1
+        ALSA_CFLAGS=`pkg-config --cflags alsa`
+        ALSA_LDFLAGS=`pkg-config --libs alsa`
+    else
+        HAVE_ALSA=0
+    fi
 fi
 
 # LIBDRM
+AC_ARG_WITH(libdrm,AS_HELP_STRING([--with-libdrm],[Enable DRM (Direct Rendering Manager) support]),[],[with_libdrm=yes])
 AC_SUBST(HAVE_LIBDRM)
 AC_SUBST(LIBDRM_CFLAGS)
 AC_SUBST(LIBDRM_LDFLAGS)
-if pkg-config --atleast-version=2.4.53 libdrm; then
-    HAVE_LIBDRM=1
-    LIBDRM_CFLAGS=`pkg-config --cflags libdrm`
-    LIBDRM_LDFLAGS=`pkg-config --libs libdrm`
-else
-    HAVE_LIBDRM=0
+if test "$with_libdrm" = "yes"; then
+    if pkg-config --atleast-version=2.4.53 libdrm; then
+        HAVE_LIBDRM=1
+        LIBDRM_CFLAGS=`pkg-config --cflags libdrm`
+        LIBDRM_LDFLAGS=`pkg-config --libs libdrm`
+    else
+        HAVE_LIBDRM=0
+    fi
 fi
 
-# OpenGL (Mesa)
+# OpenGL
+AC_ARG_WITH(gl,AS_HELP_STRING([--with-gl],[Enable OpenGL support]),[],[with_gl=yes])
 AC_SUBST(HAVE_OPENGL)
 AC_SUBST(OPENGL_CFLAGS)
 AC_SUBST(OPENGL_LDFLAGS)
-if pkg-config --atleast-version=10.0.4 gl; then
-    HAVE_OPENGL=1
-    OPENGL_CFLAGS=`pkg-config --cflags gl`
-    OPENGL_LDFLAGS=`pkg-config --libs gl`
-else
-    HAVE_OPENGL=0
+if test "$with_gl" = "yes"; then
+    if pkg-config --atleast-version=10.0.4 gl; then
+        HAVE_OPENGL=1
+        OPENGL_CFLAGS=`pkg-config --cflags gl`
+        OPENGL_LDFLAGS=`pkg-config --libs gl`
+    else
+        HAVE_OPENGL=0
+    fi
 fi
 
-# OpenGL (Mesa) GLU
+# OpenGL GLU
+AC_ARG_WITH(glu,AS_HELP_STRING([--with-glu],[Enable OpenGL GLU support]),[],[with_glu=yes])
 AC_SUBST(HAVE_OPENGL_GLU)
 AC_SUBST(OPENGL_GLU_CFLAGS)
 AC_SUBST(OPENGL_GLU_LDFLAGS)
-if pkg-config --atleast-version=9.0.0 glu; then
-    HAVE_OPENGL_GLU=1
-    OPENGL_GLU_CFLAGS=`pkg-config --cflags glu`
-    OPENGL_GLU_LDFLAGS=`pkg-config --libs glu`
-else
-    HAVE_OPENGL_GLU=0
+if test "$with_glu" = "yes"; then
+    if pkg-config --atleast-version=9.0.0 glu; then
+        HAVE_OPENGL_GLU=1
+        OPENGL_GLU_CFLAGS=`pkg-config --cflags glu`
+        OPENGL_GLU_LDFLAGS=`pkg-config --libs glu`
+    else
+        HAVE_OPENGL_GLU=0
+    fi
 fi
 
-# OpenGL (Mesa) GLEW
+# OpenGL GLEW
+AC_ARG_WITH(glew,AS_HELP_STRING([--with-glew],[Enable OpenGL GLEW support]),[],[with_glew=yes])
 AC_SUBST(HAVE_OPENGL_GLEW)
 AC_SUBST(OPENGL_GLEW_CFLAGS)
 AC_SUBST(OPENGL_GLEW_LDFLAGS)
-if pkg-config --atleast-version=1.6.0 glew; then
-    HAVE_OPENGL_GLEW=1
-    OPENGL_GLEW_CFLAGS=`pkg-config --cflags glew`
-    OPENGL_GLEW_LDFLAGS=`pkg-config --libs glew`
-else
-    HAVE_OPENGL_GLEW=0
+if test "$with_glew" = "yes"; then
+    if pkg-config --atleast-version=1.6.0 glew; then
+        HAVE_OPENGL_GLEW=1
+        OPENGL_GLEW_CFLAGS=`pkg-config --cflags glew`
+        OPENGL_GLEW_LDFLAGS=`pkg-config --libs glew`
+    else
+        HAVE_OPENGL_GLEW=0
+    fi
 fi
 
-# OpenGL (Mesa) EGL
+# OpenGL EGL
+AC_ARG_WITH(egl,AS_HELP_STRING([--with-egl],[Enable OpenGL EGL support]),[],[with_egl=yes])
 AC_SUBST(HAVE_OPENGL_EGL)
 AC_SUBST(OPENGL_EGL_CFLAGS)
 AC_SUBST(OPENGL_EGL_LDFLAGS)
-if pkg-config --atleast-version=10.0.4 egl; then
-    HAVE_OPENGL_EGL=1
-    OPENGL_EGL_CFLAGS=`pkg-config --cflags egl`
-    OPENGL_EGL_LDFLAGS=`pkg-config --libs egl`
-else
-    HAVE_OPENGL_EGL=0
+if test "$with_egl" = "yes"; then
+    if pkg-config --atleast-version=10.0.4 egl; then
+        HAVE_OPENGL_EGL=1
+        OPENGL_EGL_CFLAGS=`pkg-config --cflags egl`
+        OPENGL_EGL_LDFLAGS=`pkg-config --libs egl`
+    else
+        HAVE_OPENGL_EGL=0
+    fi
 fi
 
 # ZLIB
+AC_ARG_WITH(zlib,AS_HELP_STRING([--with-zlib],[Enable ZLIB support]),[],[with_zlib=yes])
 AC_SUBST(HAVE_ZLIB)
 AC_SUBST(ZLIB_CFLAGS)
 AC_SUBST(ZLIB_LDFLAGS)
-if pkg-config --atleast-version=1.2.6 zlib; then
-    HAVE_ZLIB=1
-    ZLIB_CFLAGS=`pkg-config --cflags zlib`
-    ZLIB_LDFLAGS=`pkg-config --libs zlib`
-else
-    HAVE_ZLIB=0
+if test "$with_zlib" = "yes"; then
+    if pkg-config --atleast-version=1.2.6 zlib; then
+        HAVE_ZLIB=1
+        ZLIB_CFLAGS=`pkg-config --cflags zlib`
+        ZLIB_LDFLAGS=`pkg-config --libs zlib`
+    else
+        HAVE_ZLIB=0
+    fi
 fi
 
 # LZMA
+AC_ARG_WITH(lzma,AS_HELP_STRING([--with-lzma],[Enable LZMA support]),[],[with_lzma=yes])
 AC_SUBST(HAVE_LZMA)
 AC_SUBST(LZMA_CFLAGS)
 AC_SUBST(LZMA_LDFLAGS)
-if pkg-config --atleast-version=5.0.3 liblzma; then
-    HAVE_LZMA=1
-    LZMA_CFLAGS=`pkg-config --cflags liblzma`
-    LZMA_LDFLAGS=`pkg-config --libs liblzma`
-else
-    HAVE_LZMA=0
+if test "$with_lzma" = "yes"; then
+    if pkg-config --atleast-version=5.0.3 liblzma; then
+        HAVE_LZMA=1
+        LZMA_CFLAGS=`pkg-config --cflags liblzma`
+        LZMA_LDFLAGS=`pkg-config --libs liblzma`
+    else
+        HAVE_LZMA=0
+    fi
 fi
 
 # FFMPEG avcodec
+AC_ARG_WITH(ffmpeg,AS_HELP_STRING([--with-ffmpeg],[Enable FFMPEG support]),[],[with_ffmpeg=yes])
 AC_SUBST(HAVE_FFMPEG_AVCODEC)
 AC_SUBST(FFMPEG_AVCODEC_CFLAGS)
 AC_SUBST(FFMPEG_AVCODEC_LDFLAGS)
-if pkg-config --atleast-version=57.24.102 libavcodec; then
-    HAVE_FFMPEG_AVCODEC=1
-    FFMPEG_AVCODEC_CFLAGS=`pkg-config --cflags libavcodec`
-    FFMPEG_AVCODEC_LDFLAGS=`pkg-config --libs libavcodec`
-else
-    HAVE_FFMPEG_AVCODEC=0
+if test "$with_ffmpeg" = "yes"; then
+    if pkg-config --atleast-version=57.24.102 libavcodec; then
+        HAVE_FFMPEG_AVCODEC=1
+        FFMPEG_AVCODEC_CFLAGS=`pkg-config --cflags libavcodec`
+        FFMPEG_AVCODEC_LDFLAGS=`pkg-config --libs libavcodec`
+    else
+        HAVE_FFMPEG_AVCODEC=0
+    fi
 fi
 
 # FFMPEG avformat
 AC_SUBST(HAVE_FFMPEG_AVFORMAT)
 AC_SUBST(FFMPEG_AVFORMAT_CFLAGS)
 AC_SUBST(FFMPEG_AVFORMAT_LDFLAGS)
-if pkg-config --atleast-version=57.25.100 libavformat; then
-    HAVE_FFMPEG_AVFORMAT=1
-    FFMPEG_AVFORMAT_CFLAGS=`pkg-config --cflags libavformat`
-    FFMPEG_AVFORMAT_LDFLAGS=`pkg-config --libs libavformat`
-else
-    HAVE_FFMPEG_AVFORMAT=0
+if test "$with_ffmpeg" = "yes"; then
+    if pkg-config --atleast-version=57.25.100 libavformat; then
+        HAVE_FFMPEG_AVFORMAT=1
+        FFMPEG_AVFORMAT_CFLAGS=`pkg-config --cflags libavformat`
+        FFMPEG_AVFORMAT_LDFLAGS=`pkg-config --libs libavformat`
+    else
+        HAVE_FFMPEG_AVFORMAT=0
+    fi
 fi
 
 # FFMPEG avformat
 AC_SUBST(HAVE_FFMPEG_AVUTIL)
 AC_SUBST(FFMPEG_AVUTIL_CFLAGS)
 AC_SUBST(FFMPEG_AVUTIL_LDFLAGS)
-if pkg-config --atleast-version=55.17.103 libavutil; then
-    HAVE_FFMPEG_AVUTIL=1
-    FFMPEG_AVUTIL_CFLAGS=`pkg-config --cflags libavutil`
-    FFMPEG_AVUTIL_LDFLAGS=`pkg-config --libs libavutil`
-else
-    HAVE_FFMPEG_AVUTIL=0
+if test "$with_ffmpeg" = "yes"; then
+    if pkg-config --atleast-version=55.17.103 libavutil; then
+        HAVE_FFMPEG_AVUTIL=1
+        FFMPEG_AVUTIL_CFLAGS=`pkg-config --cflags libavutil`
+        FFMPEG_AVUTIL_LDFLAGS=`pkg-config --libs libavutil`
+    else
+        HAVE_FFMPEG_AVUTIL=0
+    fi
 fi
 
 # FFMPEG swscale
+AC_ARG_WITH(ffmpeg-swscale,AS_HELP_STRING([--with-ffmpeg-swscale],[Enable FFMPEG swscale support]),[],[with_ffmpeg_swscale=yes])
 AC_SUBST(HAVE_FFMPEG_SWSCALE)
 AC_SUBST(FFMPEG_SWSCALE_CFLAGS)
 AC_SUBST(FFMPEG_SWSCALE_LDFLAGS)
-if pkg-config --atleast-version=4.0.100 libswscale; then
-    HAVE_FFMPEG_SWSCALE=1
-    FFMPEG_SWSCALE_CFLAGS=`pkg-config --cflags libswscale`
-    FFMPEG_SWSCALE_LDFLAGS=`pkg-config --libs libswscale`
-else
-    HAVE_FFMPEG_SWSCALE=0
+if test "$with_ffmpeg_swscale" = "yes"; then
+    if pkg-config --atleast-version=4.0.100 libswscale; then
+        HAVE_FFMPEG_SWSCALE=1
+        FFMPEG_SWSCALE_CFLAGS=`pkg-config --cflags libswscale`
+        FFMPEG_SWSCALE_LDFLAGS=`pkg-config --libs libswscale`
+    else
+        HAVE_FFMPEG_SWSCALE=0
+    fi
 fi
 
 AC_CONFIG_FILES(Makefile)
