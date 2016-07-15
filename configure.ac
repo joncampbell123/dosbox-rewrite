@@ -2,6 +2,23 @@ AC_INIT([DOSBox-X-rewrite], 0.01)
 AM_INIT_AUTOMAKE
 AC_PROG_CC
 AC_PROG_CXX
+
+AC_SUBST(CFLAGS)
+AC_SUBST(CXXFLAGS)
+AC_SUBST(LDFLAGS)
+
+# X11
+AC_SUBST(HAVE_X11)
+AC_SUBST(X11_CFLAGS)
+AC_SUBST(X11_LDFLAGS)
+if pkg-config --atleast-version=1.5.0 x11; then
+    HAVE_X11=1
+    X11_CFLAGS=`pkg-config --cflags x11`
+    X11_LDFLAGS=`pkg-config --libs x11`
+else
+    HAVE_X11=0
+fi
+
 AC_CONFIG_FILES(Makefile)
 AC_OUTPUT
 
