@@ -27,3 +27,7 @@
 *.exe
 *.out
 *.app
+
+# VIM backup files
+*~
+
