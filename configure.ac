@@ -120,7 +120,7 @@ AC_SUBST(CXXFLAGS)
 AC_SUBST(LDFLAGS)
 
 # important functions
-AC_CHECK_FUNCS([nanosleep usleep lseek64 lseeki64])
+AC_CHECK_FUNCS([nanosleep usleep lseek64 lseeki64 truncate ftruncate openat renameat symlink link stat fstat fstatat statfs fstatfs realpath sysconf mmap munmap getpagesize mincore mlock munlock mprotect mremap msync getrlimit setrlimit shmat shm_open remap_file_pages fallocate])
 AC_CHECK_DECLS([isinf isnan],[],[],[[#include <math.h>]])
 
 # GCC __builtin_cpu_init and other functions
@@ -167,6 +167,34 @@ AC_TRY_LINK([#include <time.h>],
     ])
 AM_CONDITIONAL([HAVE_CLOCK_GETTIME],[test x$HAVE_CLOCK_GETTIME = 1])
 AC_DEFINE_UNQUOTED([HAVE_CLOCK_GETTIME],[$HAVE_CLOCK_GETTIME],[Has clock_gettime])
+
+# Does Linux have sys/vm86.h for virtual 8086 mode?
+HAVE_SYS_VM86_H=0
+AC_SUBST(HAVE_SYS_VM86_H)
+AC_CHECK_HEADER([sys/vm86.h],[HAVE_SYS_VM86_H=1],[HAVE_SYS_VM86_H=0])
+AM_CONDITIONAL([HAVE_SYS_VM86_H],[test x$HAVE_SYS_VM86_H = 1])
+AC_DEFINE_UNQUOTED([HAVE_SYS_VM86_H],[$HAVE_SYS_VM86_H],[Has sys/vm86.h])
+
+# Does Linux have sys/ptrace.h?
+HAVE_SYS_PTRACE_H=0
+AC_SUBST(HAVE_SYS_PTRACE_H)
+AC_CHECK_HEADER([sys/ptrace.h],[HAVE_SYS_PTRACE_H=1],[HAVE_SYS_PTRACE_H=0])
+AM_CONDITIONAL([HAVE_SYS_PTRACE_H],[test x$HAVE_SYS_PTRACE_H = 1])
+AC_DEFINE_UNQUOTED([HAVE_SYS_PTRACE_H],[$HAVE_SYS_PTRACE_H],[Has sys/ptrace.h])
+
+# Does Linux have asm/ldt.h for the modify_ldt syscall?
+HAVE_ASM_LDT_H=0
+AC_SUBST(HAVE_ASM_LDT_H)
+AC_CHECK_HEADER([asm/ldt.h],[HAVE_ASM_LDT_H=1],[HAVE_ASM_LDT_H=0])
+AM_CONDITIONAL([HAVE_ASM_LDT_H],[test x$HAVE_ASM_LDT_H = 1])
+AC_DEFINE_UNQUOTED([HAVE_ASM_LDT_H],[$HAVE_ASM_LDT_H],[Has asm/ldt.h])
+
+# Does Linux have linux/kvm.h for KVM support?
+HAVE_LINUX_KVM_H=0
+AC_SUBST(HAVE_LINUX_KVM_H)
+AC_CHECK_HEADER([linux/kvm.h],[HAVE_LINUX_KVM_H=1],[HAVE_LINUX_KVM_H=0])
+AM_CONDITIONAL([HAVE_LINUX_KVM_H],[test x$HAVE_LINUX_KVM_H = 1])
+AC_DEFINE_UNQUOTED([HAVE_LINUX_KVM_H],[$HAVE_LINUX_KVM_H],[Has linux/kvm.h])
 
 # X11
 HAVE_X11=0
