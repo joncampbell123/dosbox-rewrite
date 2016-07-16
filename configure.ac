@@ -10,6 +10,12 @@ AC_PREFIX_DEFAULT(/usr/local)
 #      Failure to do so will prevent that code from accessing files larger than 2GB on 32-bit systems (where off_t is 32-bit wide)
 AC_SYS_LARGEFILE
 
+# this code uses POSIX functions
+POSIX_DEF=" -D_POSIX_C_SOURCE=200809L"
+CFLAGS+="$POSIX_DEF"
+CPPFLAGS+="$POSIX_DEF"
+CXXFLAGS+="$POSIX_DEF"
+
 # this code uses C++11 features (TODO: gnu++11 if GCC, else c++11)
 c11=0
 AC_MSG_CHECKING([to make sure your C++ compiler supports C++11])
@@ -17,10 +23,7 @@ old_CXXFLAGS=$CXXFLAGS
 old_CFLAGS=$CFLAGS
 CXXFLAGS+=" -std=gnu++11"
 CFLAGS+=" -std=gnu11"
-AC_TRY_COMPILE([],
-    [
-        void empty() { }
-    ],
+AC_TRY_COMPILE([ ], [ ],
     [
         AC_MSG_RESULT([yes])
         c11=1
@@ -36,10 +39,7 @@ if test $c11 = 0; then
     AC_MSG_CHECKING([to make sure your C++ compiler supports C++11 (gnu++0x)])
     CXXFLAGS+=" -std=gnu++0x"
     CFLAGS+=" -std=gnu1x"
-    AC_TRY_COMPILE([],
-        [
-            void empty() { }
-        ],
+    AC_TRY_COMPILE([ ], [ ],
         [
             AC_MSG_RESULT([yes])
             c11=1
@@ -65,7 +65,7 @@ for ext in mmx sse sse2 sse3 avx avx2; do
     EXT=`echo $ext | tr [[:lower:]] [[:upper:]]`
     CXXFLAGS+=" -m$ext"
     CFLAGS+=" -m$ext"
-    AC_TRY_COMPILE([ ],[ void empty() { } ],
+    AC_TRY_COMPILE([ ],[ ],
         [
             AC_MSG_RESULT([yes])
             _nm=HAVE_CPU_$EXT
@@ -112,6 +112,35 @@ if test $HAVE_CPU_AVX2 = 1; then CPU_AVX2_CFLAGS+=-mavx2; fi
 AC_SUBST(CFLAGS)
 AC_SUBST(CXXFLAGS)
 AC_SUBST(LDFLAGS)
+
+# important functions
+AC_CHECK_FUNCS([nanosleep usleep lseek64 lseeki64])
+AC_CHECK_DECLS([isinf isnan],[],[],[[#include <math.h>]])
+
+# we have to work at checking for clock_gettime
+# note that on Linux this requires librt.
+old_CXXFLAGS=$CXXFLAGS
+old_CFLAGS=$CFLAGS
+CFLAGS+=" -lrt"
+CXXFLAGS+=" -lrt"
+HAVE_CLOCK_GETTIME=0
+AC_SUBST(HAVE_CLOCK_GETTIME)
+AC_MSG_CHECKING([for clock_gettime])
+AC_TRY_LINK([#include <time.h>],
+    [
+            struct timespec tv;
+            clock_gettime(CLOCK_MONOTONIC,&tv);
+    ],
+    [
+        AC_MSG_RESULT([yes])
+        HAVE_CLOCK_GETTIME=1
+    ],
+    [
+        AC_MSG_RESULT([no])
+        old_CXXFLAGS=$CXXFLAGS
+        old_CFLAGS=$CFLAGS
+    ])
+AC_DEFINE_UNQUOTED([HAVE_CLOCK_GETTIME],[$HAVE_CLOCK_GETTIME],[Has clock_gettime])
 
 # X11
 AC_ARG_WITH(x11,AS_HELP_STRING([--with-x11],[Enable X11 support]),[],[with_x11=yes])
