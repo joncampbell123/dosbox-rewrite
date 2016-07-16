@@ -209,6 +209,7 @@ AC_DEFINE_UNQUOTED([HAVE_X11_XCB],[$HAVE_X11_XCB],[Has X11 XCB])
 AM_CONDITIONAL([HAVE_X11_XCB],[test x$HAVE_X11_XCB = 1])
 
 # XCB
+HAVE_XCB=0
 AC_ARG_WITH(xcb,AS_HELP_STRING([--with-xcb],[Enable XCB support]),[],[with_xcb=yes])
 AC_SUBST(HAVE_XCB)
 AC_SUBST(XCB_CFLAGS)
@@ -222,12 +223,13 @@ if test "$with_xcb" = "yes"; then
         XCB_LDFLAGS=`pkg-config --libs xcb`
     else
         AC_MSG_RESULT([no])
-        HAVE_XCB=0
     fi
-    AC_DEFINE_UNQUOTED([HAVE_XCB],[$HAVE_XCB],[Has XCB])
 fi
+AC_DEFINE_UNQUOTED([HAVE_XCB],[$HAVE_XCB],[Has XCB])
+AM_CONDITIONAL([HAVE_XCB],[test x$HAVE_XCB = 1])
 
 # XCB-XV
+HAVE_XCB_XV=0
 AC_ARG_WITH(xcb-xv,AS_HELP_STRING([--with-xcb-xv],[Enable XCB-XV support]),[],[with_xcb_xv=yes])
 AC_SUBST(HAVE_XCB_XV)
 AC_SUBST(XCB_XV_CFLAGS)
@@ -241,12 +243,13 @@ if test "$with_xcb_xv" = "yes"; then
         XCB_LDFLAGS=`pkg-config --libs xcb-xv`
     else
         AC_MSG_RESULT([no])
-        HAVE_XCB_XV=0
     fi
-    AC_DEFINE_UNQUOTED([HAVE_XCB_XV],[$HAVE_XCB_XV],[Has XCB xv])
 fi
+AC_DEFINE_UNQUOTED([HAVE_XCB_XV],[$HAVE_XCB_XV],[Has XCB xv])
+AM_CONDITIONAL([HAVE_XCB_XV],[test x$HAVE_XCB_XV = 1])
 
 # XCB_SHM
+HAVE_XCB_SHM=0
 AC_ARG_WITH(xcb-shm,AS_HELP_STRING([--with-xcb-shm],[Enable XCB SHM support]),[],[with_xcb_shm=yes])
 AC_SUBST(HAVE_XCB_SHM)
 AC_SUBST(XCB_SHM_CFLAGS)
@@ -260,12 +263,13 @@ if test "$with_xcb_shm" = "yes"; then
         XCB_SHM_LDFLAGS=`pkg-config --libs xcb-shm`
     else
         AC_MSG_RESULT([no])
-        HAVE_XCB_SHM=0
     fi
-    AC_DEFINE_UNQUOTED([HAVE_XCB_SHM],[$HAVE_XCB_SHM],[Has XCB SHM])
 fi
+AC_DEFINE_UNQUOTED([HAVE_XCB_SHM],[$HAVE_XCB_SHM],[Has XCB SHM])
+AM_CONDITIONAL([HAVE_XCB_SHM],[test x$HAVE_XCB_SHM = 1])
 
 # XCB_XKB
+HAVE_XCB_XKB=0
 AC_ARG_WITH(xcb-xkb,AS_HELP_STRING([--with-xcb-xkb],[Enable XCB XKB support]),[],[with_xcb_xkb=yes])
 AC_SUBST(HAVE_XCB_XKB)
 AC_SUBST(XCB_XKB_CFLAGS)
@@ -279,12 +283,13 @@ if test "$with_xcb_xkb" = "yes"; then
         XCB_XKB_LDFLAGS=`pkg-config --libs xcb-xkb`
     else
         AC_MSG_RESULT([no])
-        HAVE_XCB_XKB=0
     fi
-    AC_DEFINE_UNQUOTED([HAVE_XCB_XKB],[$HAVE_XCB_XKB],[Has XCB XKB])
 fi
+AC_DEFINE_UNQUOTED([HAVE_XCB_XKB],[$HAVE_XCB_XKB],[Has XCB XKB])
+AM_CONDITIONAL([HAVE_XCB_XKB],[test x$HAVE_XCB_XKB = 1])
 
 # ALSA
+HAVE_ALSA=0
 AC_ARG_WITH(alsa,AS_HELP_STRING([--with-alsa],[Enable ALSA support]),[],[with_alsa=yes])
 AC_SUBST(HAVE_ALSA)
 AC_SUBST(ALSA_CFLAGS)
@@ -298,12 +303,13 @@ if test "$with_alsa" = "yes"; then
         ALSA_LDFLAGS=`pkg-config --libs alsa`
     else
         AC_MSG_RESULT([no])
-        HAVE_ALSA=0
     fi
-    AC_DEFINE_UNQUOTED([HAVE_ALSA],[$HAVE_ALSA],[Has ALSA])
 fi
+AC_DEFINE_UNQUOTED([HAVE_ALSA],[$HAVE_ALSA],[Has ALSA])
+AM_CONDITIONAL([HAVE_ALSA],[test x$HAVE_ALSA = 1])
 
 # LIBDRM
+HAVE_LIBDRM=0
 AC_ARG_WITH(libdrm,AS_HELP_STRING([--with-libdrm],[Enable DRM (Direct Rendering Manager) support]),[],[with_libdrm=yes])
 AC_SUBST(HAVE_LIBDRM)
 AC_SUBST(LIBDRM_CFLAGS)
@@ -317,12 +323,13 @@ if test "$with_libdrm" = "yes"; then
         LIBDRM_LDFLAGS=`pkg-config --libs libdrm`
     else
         AC_MSG_RESULT([no])
-        HAVE_LIBDRM=0
     fi
-    AC_DEFINE_UNQUOTED([HAVE_LIBDRM],[$HAVE_LIBDRM],[Has libdrm])
 fi
+AC_DEFINE_UNQUOTED([HAVE_LIBDRM],[$HAVE_LIBDRM],[Has libdrm])
+AM_CONDITIONAL([HAVE_LIBDRM],[test x$HAVE_LIBDRM = 1])
 
 # OpenGL
+HAVE_OPENGL=0
 AC_ARG_WITH(gl,AS_HELP_STRING([--with-gl],[Enable OpenGL support]),[],[with_gl=yes])
 AC_SUBST(HAVE_OPENGL)
 AC_SUBST(OPENGL_CFLAGS)
@@ -336,12 +343,13 @@ if test "$with_gl" = "yes"; then
         OPENGL_LDFLAGS=`pkg-config --libs gl`
     else
         AC_MSG_RESULT([no])
-        HAVE_OPENGL=0
     fi
-    AC_DEFINE_UNQUOTED([HAVE_OPENGL],[$HAVE_OPENGL],[Has OpenGL])
 fi
+AC_DEFINE_UNQUOTED([HAVE_OPENGL],[$HAVE_OPENGL],[Has OpenGL])
+AM_CONDITIONAL([HAVE_OPENGL],[test x$HAVE_OPENGL = 1])
 
 # OpenGL GLU
+HAVE_OPENGL_GLU=0
 AC_ARG_WITH(glu,AS_HELP_STRING([--with-glu],[Enable OpenGL GLU support]),[],[with_glu=yes])
 AC_SUBST(HAVE_OPENGL_GLU)
 AC_SUBST(OPENGL_GLU_CFLAGS)
@@ -355,12 +363,13 @@ if test "$with_glu" = "yes"; then
         OPENGL_GLU_LDFLAGS=`pkg-config --libs glu`
     else
         AC_MSG_RESULT([no])
-        HAVE_OPENGL_GLU=0
     fi
-    AC_DEFINE_UNQUOTED([HAVE_OPENGL_GLU],[$HAVE_OPENGL_GLU],[Has OpenGL GLU])
 fi
+AC_DEFINE_UNQUOTED([HAVE_OPENGL_GLU],[$HAVE_OPENGL_GLU],[Has OpenGL GLU])
+AM_CONDITIONAL([HAVE_OPENGL_GLU],[test x$HAVE_OPENGL_GLU = 1])
 
 # OpenGL GLEW
+HAVE_OPENGL_GLEW=0
 AC_ARG_WITH(glew,AS_HELP_STRING([--with-glew],[Enable OpenGL GLEW support]),[],[with_glew=yes])
 AC_SUBST(HAVE_OPENGL_GLEW)
 AC_SUBST(OPENGL_GLEW_CFLAGS)
@@ -374,12 +383,13 @@ if test "$with_glew" = "yes"; then
         OPENGL_GLEW_LDFLAGS=`pkg-config --libs glew`
     else
         AC_MSG_RESULT([no])
-        HAVE_OPENGL_GLEW=0
     fi
-    AC_DEFINE_UNQUOTED([HAVE_OPENGL_GLEW],[$HAVE_OPENGL_GLEW],[Has OpenGL GLEW])
 fi
+AC_DEFINE_UNQUOTED([HAVE_OPENGL_GLEW],[$HAVE_OPENGL_GLEW],[Has OpenGL GLEW])
+AM_CONDITIONAL([HAVE_OPENGL_GLEW],[test x$HAVE_OPENGL_GLEW = 1])
 
 # OpenGL EGL
+HAVE_OPENGL_EGL=0
 AC_ARG_WITH(egl,AS_HELP_STRING([--with-egl],[Enable OpenGL EGL support]),[],[with_egl=yes])
 AC_SUBST(HAVE_OPENGL_EGL)
 AC_SUBST(OPENGL_EGL_CFLAGS)
@@ -393,12 +403,13 @@ if test "$with_egl" = "yes"; then
         OPENGL_EGL_LDFLAGS=`pkg-config --libs egl`
     else
         AC_MSG_RESULT([no])
-        HAVE_OPENGL_EGL=0
     fi
-    AC_DEFINE_UNQUOTED([HAVE_OPENGL_EGL],[$HAVE_OPENGL_EGL],[Has OpenGL EGL])
 fi
+AC_DEFINE_UNQUOTED([HAVE_OPENGL_EGL],[$HAVE_OPENGL_EGL],[Has OpenGL EGL])
+AM_CONDITIONAL([HAVE_OPENGL_EGL],[test x$HAVE_OPENGL_EGL = 1])
 
 # ZLIB
+HAVE_ZLIB=0
 AC_ARG_WITH(zlib,AS_HELP_STRING([--with-zlib],[Enable ZLIB support]),[],[with_zlib=yes])
 AC_SUBST(HAVE_ZLIB)
 AC_SUBST(ZLIB_CFLAGS)
@@ -412,12 +423,13 @@ if test "$with_zlib" = "yes"; then
         ZLIB_LDFLAGS=`pkg-config --libs zlib`
     else
         AC_MSG_RESULT([no])
-        HAVE_ZLIB=0
     fi
-    AC_DEFINE_UNQUOTED([HAVE_ZLIB],[$HAVE_ZLIB],[Has ZLIB])
 fi
+AC_DEFINE_UNQUOTED([HAVE_ZLIB],[$HAVE_ZLIB],[Has ZLIB])
+AM_CONDITIONAL([HAVE_ZLIB],[test x$HAVE_ZLIB = 1])
 
 # LZMA
+HAVE_LZMA=0
 AC_ARG_WITH(lzma,AS_HELP_STRING([--with-lzma],[Enable LZMA support]),[],[with_lzma=yes])
 AC_SUBST(HAVE_LZMA)
 AC_SUBST(LZMA_CFLAGS)
@@ -431,12 +443,13 @@ if test "$with_lzma" = "yes"; then
         LZMA_LDFLAGS=`pkg-config --libs liblzma`
     else
         AC_MSG_RESULT([no])
-        HAVE_LZMA=0
     fi
-    AC_DEFINE_UNQUOTED([HAVE_LZMA],[$HAVE_LZMA],[Has LZMA])
 fi
+AC_DEFINE_UNQUOTED([HAVE_LZMA],[$HAVE_LZMA],[Has LZMA])
+AM_CONDITIONAL([HAVE_LZMA],[test x$HAVE_LZMA = 1])
 
 # FFMPEG avcodec
+HAVE_FFMPEG_AVCODEC=0
 AC_ARG_WITH(ffmpeg,AS_HELP_STRING([--with-ffmpeg],[Enable FFMPEG support]),[],[with_ffmpeg=yes])
 AC_SUBST(HAVE_FFMPEG_AVCODEC)
 AC_SUBST(FFMPEG_AVCODEC_CFLAGS)
@@ -450,12 +463,13 @@ if test "$with_ffmpeg" = "yes"; then
         FFMPEG_AVCODEC_LDFLAGS=`pkg-config --libs libavcodec`
     else
         AC_MSG_RESULT([no])
-        HAVE_FFMPEG_AVCODEC=0
     fi
-    AC_DEFINE_UNQUOTED([HAVE_FFMPEG_AVCODEC],[$HAVE_FFMPEG_AVCODEC],[Has FFMPEG_AVCODEC])
 fi
+AC_DEFINE_UNQUOTED([HAVE_FFMPEG_AVCODEC],[$HAVE_FFMPEG_AVCODEC],[Has FFMPEG_AVCODEC])
+AM_CONDITIONAL([HAVE_FFMPEG_AVCODEC],[test x$HAVE_FFMPEG_AVCODEC = 1])
 
 # FFMPEG avformat
+HAVE_FFMPEG_AVFORMAT=0
 AC_SUBST(HAVE_FFMPEG_AVFORMAT)
 AC_SUBST(FFMPEG_AVFORMAT_CFLAGS)
 AC_SUBST(FFMPEG_AVFORMAT_LDFLAGS)
@@ -468,12 +482,13 @@ if test "$with_ffmpeg" = "yes"; then
         FFMPEG_AVFORMAT_LDFLAGS=`pkg-config --libs libavformat`
     else
         AC_MSG_RESULT([no])
-        HAVE_FFMPEG_AVFORMAT=0
     fi
-    AC_DEFINE_UNQUOTED([HAVE_FFMPEG_AVFORMAT],[$HAVE_FFMPEG_AVFORMAT],[Has FFMPEG_AVFORMAT])
 fi
+AC_DEFINE_UNQUOTED([HAVE_FFMPEG_AVFORMAT],[$HAVE_FFMPEG_AVFORMAT],[Has FFMPEG_AVFORMAT])
+AM_CONDITIONAL([HAVE_FFMPEG_AVFORMAT],[test x$HAVE_FFMPEG_AVFORMAT = 1])
 
 # FFMPEG avutil
+HAVE_FFMPEG_AVUTIL=0
 AC_SUBST(HAVE_FFMPEG_AVUTIL)
 AC_SUBST(FFMPEG_AVUTIL_CFLAGS)
 AC_SUBST(FFMPEG_AVUTIL_LDFLAGS)
@@ -486,12 +501,13 @@ if test "$with_ffmpeg" = "yes"; then
         FFMPEG_AVUTIL_LDFLAGS=`pkg-config --libs libavutil`
     else
         AC_MSG_RESULT([no])
-        HAVE_FFMPEG_AVUTIL=0
     fi
-    AC_DEFINE_UNQUOTED([HAVE_FFMPEG_AVUTIL],[$HAVE_FFMPEG_AVUTIL],[Has FFMPEG_AVUTIL])
 fi
+AC_DEFINE_UNQUOTED([HAVE_FFMPEG_AVUTIL],[$HAVE_FFMPEG_AVUTIL],[Has FFMPEG_AVUTIL])
+AM_CONDITIONAL([HAVE_FFMPEG_AVUTIL],[test x$HAVE_FFMPEG_AVUTIL = 1])
 
 # FFMPEG swscale
+HAVE_FFMPEG_SWSCALE=0
 AC_ARG_WITH(ffmpeg-swscale,AS_HELP_STRING([--with-ffmpeg-swscale],[Enable FFMPEG swscale support]),[],[with_ffmpeg_swscale=yes])
 AC_SUBST(HAVE_FFMPEG_SWSCALE)
 AC_SUBST(FFMPEG_SWSCALE_CFLAGS)
@@ -505,12 +521,13 @@ if test "$with_ffmpeg_swscale" = "yes"; then
         FFMPEG_SWSCALE_LDFLAGS=`pkg-config --libs libswscale`
     else
         AC_MSG_RESULT([no])
-        HAVE_FFMPEG_SWSCALE=0
     fi
-    AC_DEFINE_UNQUOTED([HAVE_FFMPEG_SWSCALE],[$HAVE_FFMPEG_SWSCALE],[Has FFMPEG_SWSCALE])
 fi
+AC_DEFINE_UNQUOTED([HAVE_FFMPEG_SWSCALE],[$HAVE_FFMPEG_SWSCALE],[Has FFMPEG_SWSCALE])
+AM_CONDITIONAL([HAVE_FFMPEG_SWSCALE],[test x$HAVE_FFMPEG_SWSCALE = 1])
 
 # Simple Directmedia Layer 1.x
+HAVE_SDL1=0
 AC_ARG_WITH(sdl1,AS_HELP_STRING([--with-sdl1],[Enable SDL 1.x]),[],[with_sdl1=yes])
 AC_SUBST(HAVE_SDL1)
 AC_SUBST(SDL1_CFLAGS)
@@ -524,12 +541,13 @@ if test "$with_sdl1" = "yes"; then
         SDL1_LDFLAGS=`pkg-config --libs sdl`
     else
         AC_MSG_RESULT([no])
-        HAVE_SDL1=0
     fi
-    AC_DEFINE_UNQUOTED([HAVE_SDL1],[$HAVE_SDL1],[Has SDL1])
 fi
+AC_DEFINE_UNQUOTED([HAVE_SDL1],[$HAVE_SDL1],[Has SDL1])
+AM_CONDITIONAL([HAVE_SDL1],[test x$HAVE_SDL1 = 1])
 
 # Simple Directmedia Layer 2.x
+HAVE_SDL2=0
 AC_ARG_WITH(sdl2,AS_HELP_STRING([--with-sdl2],[Enable SDL 2.x]),[],[with_sdl2=yes])
 AC_SUBST(HAVE_SDL2)
 AC_SUBST(SDL2_CFLAGS)
@@ -543,12 +561,13 @@ if test "$with_sdl2" = "yes"; then
         SDL2_LDFLAGS=`pkg-config --libs sdl2`
     else
         AC_MSG_RESULT([no])
-        HAVE_SDL2=0
     fi
-    AC_DEFINE_UNQUOTED([HAVE_SDL2],[$HAVE_SDL2],[Has SDL2])
 fi
+AC_DEFINE_UNQUOTED([HAVE_SDL2],[$HAVE_SDL2],[Has SDL2])
+AM_CONDITIONAL([HAVE_SDL2],[test x$HAVE_SDL2 = 1])
 
 # libpng
+HAVE_LIBPNG=0
 AC_ARG_WITH(libpng,AS_HELP_STRING([--with-libpng],[Enable libpng]),[],[with_libpng=yes])
 AC_SUBST(HAVE_LIBPNG)
 AC_SUBST(LIBPNG_CFLAGS)
@@ -562,12 +581,13 @@ if test "$with_libpng" = "yes"; then
         LIBPNG_LDFLAGS=`pkg-config --libs libpng`
     else
         AC_MSG_RESULT([no])
-        HAVE_LIBPNG=0
     fi
-    AC_DEFINE_UNQUOTED([HAVE_LIBPNG],[$HAVE_LIBPNG],[Has LIBPNG])
 fi
+AC_DEFINE_UNQUOTED([HAVE_LIBPNG],[$HAVE_LIBPNG],[Has LIBPNG])
+AM_CONDITIONAL([HAVE_LIBPNG],[test x$HAVE_LIBPNG = 1])
 
 # libjpeg
+HAVE_LIBJPEG=0
 AC_ARG_WITH(libjpeg,AS_HELP_STRING([--with-libjpeg],[Enable libjpeg]),[],[with_libjpeg=yes])
 AC_SUBST(HAVE_LIBJPEG)
 AC_SUBST(LIBJPEG_CFLAGS)
@@ -586,12 +606,13 @@ if test "$with_libjpeg" = "yes"; then
         LIBJPEG_LDFLAGS="-ljpeg";
     else
         AC_MSG_RESULT([no])
-        HAVE_LIBJPEG=0
     fi
-    AC_DEFINE_UNQUOTED([HAVE_LIBJPEG],[$HAVE_LIBJPEG],[Has LIBJPEG])
 fi
+AC_DEFINE_UNQUOTED([HAVE_LIBJPEG],[$HAVE_LIBJPEG],[Has LIBJPEG])
+AM_CONDITIONAL([HAVE_LIBJPEG],[test x$HAVE_LIBJPEG = 1])
 
 # freetype2
+HAVE_FREETYPE2=0
 AC_ARG_WITH(freetype2,AS_HELP_STRING([--with-freetype2],[Enable freetype 2]),[],[with_freetype2=yes])
 AC_SUBST(HAVE_FREETYPE2)
 AC_SUBST(FREETYPE2_CFLAGS)
@@ -605,12 +626,13 @@ if test "$with_freetype2" = "yes"; then
         FREETYPE2_LDFLAGS=`pkg-config --libs freetype2`
     else
         AC_MSG_RESULT([no])
-        HAVE_FREETYPE2=0
     fi
-    AC_DEFINE_UNQUOTED([HAVE_FREETYPE2],[$HAVE_FREETYPE2],[Has FREETYPE2])
 fi
+AC_DEFINE_UNQUOTED([HAVE_FREETYPE2],[$HAVE_FREETYPE2],[Has FREETYPE2])
+AM_CONDITIONAL([HAVE_FREETYPE2],[test x$HAVE_FREETYPE2 = 1])
 
 # fontconfig
+HAVE_FONTCONFIG=0
 AC_ARG_WITH(fontconfig,AS_HELP_STRING([--with-fontconfig],[Enable fontconfig]),[],[with_fontconfig=yes])
 AC_SUBST(HAVE_FONTCONFIG)
 AC_SUBST(FONTCONFIG_CFLAGS)
@@ -624,12 +646,13 @@ if test "$with_fontconfig" = "yes"; then
         FONTCONFIG_LDFLAGS=`pkg-config --libs fontconfig`
     else
         AC_MSG_RESULT([no])
-        HAVE_FONTCONFIG=0
     fi
-    AC_DEFINE_UNQUOTED([HAVE_FONTCONFIG],[$HAVE_FONTCONFIG],[Has FONTCONFIG])
 fi
+AC_DEFINE_UNQUOTED([HAVE_FONTCONFIG],[$HAVE_FONTCONFIG],[Has FONTCONFIG])
+AM_CONDITIONAL([HAVE_FONTCONFIG],[test x$HAVE_FONTCONFIG = 1])
 
 # cairo
+HAVE_CAIRO=0
 AC_ARG_WITH(cairo,AS_HELP_STRING([--with-cairo],[Enable cairo]),[],[with_cairo=yes])
 AC_SUBST(HAVE_CAIRO)
 AC_SUBST(CAIRO_CFLAGS)
@@ -643,10 +666,10 @@ if test "$with_cairo" = "yes"; then
         CAIRO_LDFLAGS=`pkg-config --libs cairo`
     else
         AC_MSG_RESULT([no])
-        HAVE_CAIRO=0
     fi
-    AC_DEFINE_UNQUOTED([HAVE_CAIRO],[$HAVE_CAIRO],[Has CAIRO])
 fi
+AC_DEFINE_UNQUOTED([HAVE_CAIRO],[$HAVE_CAIRO],[Has CAIRO])
+AM_CONDITIONAL([HAVE_CAIRO],[test x$HAVE_CAIRO = 1])
 
 AC_CONFIG_FILES(Makefile)
 AC_OUTPUT
