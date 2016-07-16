@@ -117,6 +117,24 @@ AC_SUBST(LDFLAGS)
 AC_CHECK_FUNCS([nanosleep usleep lseek64 lseeki64])
 AC_CHECK_DECLS([isinf isnan],[],[],[[#include <math.h>]])
 
+# GCC __builtin_cpu_init and other functions
+HAVE_GCC_BUILTIN_CPU=0
+AC_SUBST(HAVE_GCC_BUILTIN_CPU)
+AC_MSG_CHECKING([for GCC builtin_cpu functions])
+AC_TRY_LINK([#include <cpuid.h>],
+    [
+        __builtin_cpu_init();
+        __builtin_cpu_supports("sse2");
+    ],
+    [
+        AC_MSG_RESULT([yes])
+        HAVE_GCC_BUILTIN_CPU=1
+    ],
+    [
+        AC_MSG_RESULT([no])
+    ])
+AC_DEFINE_UNQUOTED([HAVE_GCC_BUILTIN_CPU],[$HAVE_GCC_BUILTIN_CPU],[Has GCC builtin_cpu functions])
+
 # we have to work at checking for clock_gettime
 # note that on Linux this requires librt.
 old_CXXFLAGS=$CXXFLAGS
