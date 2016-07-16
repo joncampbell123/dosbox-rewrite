@@ -120,7 +120,7 @@ AC_SUBST(CXXFLAGS)
 AC_SUBST(LDFLAGS)
 
 # important functions
-AC_CHECK_FUNCS([nanosleep usleep lseek64 lseeki64 truncate ftruncate openat renameat symlink link stat fstat fstatat statfs fstatfs realpath sysconf mmap munmap getpagesize mincore mlock munlock mprotect mremap msync getrlimit setrlimit shmat shm_open remap_file_pages fallocate])
+AC_CHECK_FUNCS([nanosleep usleep lseek64 lseeki64 truncate ftruncate openat renameat symlink link stat fstat fstatat statfs fstatfs realpath sysconf mmap munmap getpagesize mincore mlock munlock mprotect mremap msync getrlimit setrlimit shmat shm_open remap_file_pages fallocate readlink readlinkat])
 AC_CHECK_DECLS([isinf isnan],[],[],[[#include <math.h>]])
 
 # GCC __builtin_cpu_init and other functions
