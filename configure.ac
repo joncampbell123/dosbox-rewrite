@@ -81,31 +81,37 @@ for ext in mmx sse sse2 sse3 avx avx2; do
 done
 AC_SUBST(HAVE_CPU_MMX)
 AC_SUBST(CPU_MMX_CFLAGS)
+AM_CONDITIONAL([HAVE_CPU_MMX],[test x$HAVE_CPU_MMX = 1])
 AC_DEFINE_UNQUOTED([HAVE_CPU_MMX],[$HAVE_CPU_MMX],[Has MMX CPU extension])
 if test $HAVE_CPU_MMX = 1; then CPU_MMX_CFLAGS+=-mmmx; fi
 
 AC_SUBST(HAVE_CPU_SSE)
 AC_SUBST(CPU_SSE_CFLAGS)
+AM_CONDITIONAL([HAVE_CPU_SSE],[test x$HAVE_CPU_SSE = 1])
 AC_DEFINE_UNQUOTED([HAVE_CPU_SSE],[$HAVE_CPU_SSE],[Has SSE CPU extension])
 if test $HAVE_CPU_SSE = 1; then CPU_SSE_CFLAGS+=-msse; fi
 
 AC_SUBST(HAVE_CPU_SSE2)
 AC_SUBST(CPU_SSE2_CFLAGS)
+AM_CONDITIONAL([HAVE_CPU_SSE2],[test x$HAVE_CPU_SSE2 = 1])
 AC_DEFINE_UNQUOTED([HAVE_CPU_SSE2],[$HAVE_CPU_SSE2],[Has SSE2 CPU extension])
 if test $HAVE_CPU_SSE2 = 1; then CPU_SSE2_CFLAGS+=-msse2; fi
 
 AC_SUBST(HAVE_CPU_SSE3)
 AC_SUBST(CPU_SSE3_CFLAGS)
+AM_CONDITIONAL([HAVE_CPU_SSE3],[test x$HAVE_CPU_SSE3 = 1])
 AC_DEFINE_UNQUOTED([HAVE_CPU_SSE3],[$HAVE_CPU_SSE3],[Has SSE3 CPU extension])
 if test $HAVE_CPU_SSE3 = 1; then CPU_SSE3_CFLAGS+=-msse3; fi
 
 AC_SUBST(HAVE_CPU_AVX)
 AC_SUBST(CPU_AVX_CFLAGS)
+AM_CONDITIONAL([HAVE_CPU_AVX],[test x$HAVE_CPU_AVX = 1])
 AC_DEFINE_UNQUOTED([HAVE_CPU_AVX],[$HAVE_CPU_AVX],[Has AVX CPU extension])
 if test $HAVE_CPU_AVX = 1; then CPU_AVX_CFLAGS+=-mavx; fi
 
 AC_SUBST(HAVE_CPU_AVX2)
 AC_SUBST(CPU_AVX2_CFLAGS)
+AM_CONDITIONAL([HAVE_CPU_AVX2],[test x$HAVE_CPU_AVX2 = 1])
 AC_DEFINE_UNQUOTED([HAVE_CPU_AVX2],[$HAVE_CPU_AVX2],[Has AVX2 CPU extension])
 if test $HAVE_CPU_AVX2 = 1; then CPU_AVX2_CFLAGS+=-mavx2; fi
 
@@ -133,6 +139,7 @@ AC_TRY_LINK([#include <cpuid.h>],
     [
         AC_MSG_RESULT([no])
     ])
+AM_CONDITIONAL([HAVE_GCC_BUILTIN_CPU],[test x$HAVE_GCC_BUILTIN_CPU = 1])
 AC_DEFINE_UNQUOTED([HAVE_GCC_BUILTIN_CPU],[$HAVE_GCC_BUILTIN_CPU],[Has GCC builtin_cpu functions])
 
 # we have to work at checking for clock_gettime
@@ -158,9 +165,11 @@ AC_TRY_LINK([#include <time.h>],
         old_CXXFLAGS=$CXXFLAGS
         old_CFLAGS=$CFLAGS
     ])
+AM_CONDITIONAL([HAVE_CLOCK_GETTIME],[test x$HAVE_CLOCK_GETTIME = 1])
 AC_DEFINE_UNQUOTED([HAVE_CLOCK_GETTIME],[$HAVE_CLOCK_GETTIME],[Has clock_gettime])
 
 # X11
+HAVE_X11=0
 AC_ARG_WITH(x11,AS_HELP_STRING([--with-x11],[Enable X11 support]),[],[with_x11=yes])
 AC_SUBST(HAVE_X11)
 AC_SUBST(X11_CFLAGS)
@@ -174,12 +183,13 @@ if test "$with_x11" = "yes"; then
         X11_LDFLAGS=`pkg-config --libs x11`
     else
         AC_MSG_RESULT([no])
-        HAVE_X11=0
     fi
-    AC_DEFINE_UNQUOTED([HAVE_X11],[$HAVE_X11],[Has X11])
 fi
+AC_DEFINE_UNQUOTED([HAVE_X11],[$HAVE_X11],[Has X11])
+AM_CONDITIONAL([HAVE_X11],[test x$HAVE_X11 = 1])
 
 # X11-XCB
+HAVE_X11_XCB=0
 AC_ARG_WITH(x11-xcb,AS_HELP_STRING([--with-x11-xcb],[Enable X11-XCB support]),[],[with_x11_xcb=yes])
 AC_SUBST(HAVE_X11_XCB)
 AC_SUBST(X11_XCB_CFLAGS)
@@ -193,10 +203,10 @@ if test "$with_x11_xcb" = "yes"; then
         X11_XCB_LDFLAGS=`pkg-config --libs x11-xcb`
     else
         AC_MSG_RESULT([no])
-        HAVE_X11_XCB=0
     fi
-    AC_DEFINE_UNQUOTED([HAVE_X11_XCB],[$HAVE_X11_XCB],[Has X11 XCB])
 fi
+AC_DEFINE_UNQUOTED([HAVE_X11_XCB],[$HAVE_X11_XCB],[Has X11 XCB])
+AM_CONDITIONAL([HAVE_X11_XCB],[test x$HAVE_X11_XCB = 1])
 
 # XCB
 AC_ARG_WITH(xcb,AS_HELP_STRING([--with-xcb],[Enable XCB support]),[],[with_xcb=yes])
