@@ -175,11 +175,11 @@ AC_TRY_LINK([#include <time.h>],
 AM_CONDITIONAL([HAVE_CLOCK_GETTIME],[test x$HAVE_CLOCK_GETTIME = 1])
 AC_DEFINE_UNQUOTED([HAVE_CLOCK_GETTIME],[$HAVE_CLOCK_GETTIME],[Has clock_gettime])
 
-# make sure the host CPU uses signed 2's complement integers.
+# make sure the target CPU uses signed 2's complement integers.
 # x86 processors are 2's complement. additional work has to be done to emulate 2's complement if the host is not.
-HAVE_HOST_2S_COMPLEMENT=0
-AC_SUBST(HAVE_HOST_2S_COMPLEMENT)
-AC_MSG_CHECKING([that your host processor uses 2s complement format for signed integers])
+HAVE_TARGET_2S_COMPLEMENT=0
+AC_SUBST(HAVE_TARGET_2S_COMPLEMENT)
+AC_MSG_CHECKING([that your target processor uses 2s complement format for signed integers])
 AC_TRY_LINK([ ],
     [
         /* 0xFF = -1  0x00 = 0  0x01 = 1   2's complement */
@@ -190,16 +190,41 @@ AC_TRY_LINK([ ],
     ],
     [
         AC_MSG_RESULT([yes])
-        HAVE_HOST_2S_COMPLEMENT=1
+        HAVE_TARGET_2S_COMPLEMENT=1
     ],
     [
         AC_MSG_RESULT([no])
         old_CXXFLAGS=$CXXFLAGS
         old_CFLAGS=$CFLAGS
     ])
-AM_CONDITIONAL([HAVE_HOST_2S_COMPLEMENT],[test x$HAVE_HOST_2S_COMPLEMENT = 1])
-AC_DEFINE_UNQUOTED([HAVE_HOST_2S_COMPLEMENT],[$HAVE_HOST_2S_COMPLEMENT],[Has 2s complement host integer format])
+AM_CONDITIONAL([HAVE_TARGET_2S_COMPLEMENT],[test x$HAVE_TARGET_2S_COMPLEMENT = 1])
+AC_DEFINE_UNQUOTED([HAVE_TARGET_2S_COMPLEMENT],[$HAVE_TARGET_2S_COMPLEMENT],[Has 2s complement host integer format])
 
+# test whether the target CPU repeats the sign bit when shifting signed values to the right.
+# if not, some extra work is needed to emulate x86 processors that do.
+HAVE_TARGET_SIGNED_RIGHT_SHIFT=0
+AC_SUBST(HAVE_TARGET_SIGNED_RIGHT_SHIFT)
+AC_MSG_CHECKING([that your target processor repeats the sign bit with signed right shift])
+AC_TRY_LINK([ ],
+    [
+        /* -3 (0xFD) >> (signed)1 == -2 (0xFE) */
+        /* -2 (0xFE) >> (signed)1 == -1 (0xFF) */
+        /* -128 (0x80) >> (signed)1 == -64 (0xC0) */
+        char arr0[(((signed char)-3) >> ((signed char)1)) == -2 ? 1 : -1];
+        char arr1[(((signed char)-2) >> ((signed char)1)) == -1 ? 1 : -1];
+        char arr2[((unsigned char)(((signed char)0x80U) >> ((signed char)1))) == 0xC0U ? 1 : -1];
+    ],
+    [
+        AC_MSG_RESULT([yes])
+        HAVE_TARGET_SIGNED_RIGHT_SHIFT=1
+    ],
+    [
+        AC_MSG_RESULT([no])
+        old_CXXFLAGS=$CXXFLAGS
+        old_CFLAGS=$CFLAGS
+    ])
+AM_CONDITIONAL([HAVE_TARGET_SIGNED_RIGHT_SHIFT],[test x$HAVE_TARGET_SIGNED_RIGHT_SHIFT = 1])
+AC_DEFINE_UNQUOTED([HAVE_TARGET_SIGNED_RIGHT_SHIFT],[$HAVE_TARGET_SIGNED_RIGHT_SHIFT],[Has 2s complement host integer format])
 
 # Does Linux have sys/vm86.h for virtual 8086 mode?
 HAVE_SYS_VM86_H=0
