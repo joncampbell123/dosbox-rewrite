@@ -10,7 +10,8 @@ dosboxxr_lib_text_libtext_a_SOURCES = dosboxxr/lib/text/chomp.c
 noinst_PROGRAMS = \
 	empty \
 	cpudetect \
-	cpumodregrm
+	cpumodregrm \
+	cpumemreftypes
 
 empty_SOURCES = empty.cpp
 
@@ -27,4 +28,9 @@ cpumodregrm_SOURCES = cpumodregrm.cpp
 cpumodregrm_CXXFLAGS = $(AM_CXXFLAGS)
 cpumodregrm_DEPENDENCIES =
 cpumodregrm_LDADD =
+
+cpumemreftypes_SOURCES = cpumemreftypes.cpp
+cpumemreftypes_CXXFLAGS = $(AM_CXXFLAGS)
+cpumemreftypes_DEPENDENCIES =
+cpumemreftypes_LDADD =
 
