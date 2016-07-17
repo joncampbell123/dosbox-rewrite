@@ -15,16 +15,11 @@
 # include <cpuid.h>
 #endif
 
+#include "dosboxxr/lib/text/chomp.h"
 #include "dosboxxr/lib/hostcpudetect/caps.h"
 
 // this is where this is defined
 struct HostCPUCaps hostCPUcaps;
-
-// C/C++ implementation of Perl's chomp function
-void chomp(char *s) {
-    char *t = s + strlen(s) - 1;
-    while (t >= s && (*t == '\n' || *t == '\r')) *t-- = 0;
-}
 
 void HostCPUCaps::detect() {
 #if defined(__i386__) || defined(__x86_64__)
