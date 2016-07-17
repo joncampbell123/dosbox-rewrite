@@ -30,6 +30,8 @@ void HostCPUCaps::detect() {
 #if defined(__i386__) || defined(__x86_64__)
 # if HAVE_GCC_BUILTIN_CPU
 /*------------------ x86/x86_64 we can use GCC builtins --------------*/
+    detect_method = "GCC __builtin_cpu_init";
+
     __builtin_cpu_init();
     mmx = __builtin_cpu_supports("mmx");
     sse = __builtin_cpu_supports("sse");
@@ -43,6 +45,8 @@ void HostCPUCaps::detect() {
     char line[1024],*name,*value;
     int cpuno=0;
     FILE *fp;
+
+    detect_method = "Linux /proc/cpuinfo";
 
     if ((fp=fopen("/proc/cpuinfo","r")) != NULL) {
         memset(line,0,sizeof(line));

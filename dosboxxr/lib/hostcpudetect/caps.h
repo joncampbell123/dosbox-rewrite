@@ -1,5 +1,6 @@
 
 struct HostCPUCaps {
+    const char*                 detect_method;
 /*---------------- x86/x86_64 ---------------------*/
 #if defined(__i386__) || defined(__x86_64__)
     bool                        mmx;
@@ -10,12 +11,12 @@ struct HostCPUCaps {
     bool                        avx;
     bool                        avx2;
 
-    HostCPUCaps() : mmx(0), sse(0), sse2(0), sse3(0), ssse3(0), avx(0), avx2(0) { }
+    HostCPUCaps() : detect_method(NULL), mmx(0), sse(0), sse2(0), sse3(0), ssse3(0), avx(0), avx2(0) { }
 #else
 /*---------------- unknown ------------------------*/
     bool                        _dummy;
 
-    HostCPUCaps() : _dummy(0) { }
+    HostCPUCaps() : detect_method(NULL), _dummy(0) { }
 #endif
 /*-------------------------------------------------*/
     void                        detect(void);
