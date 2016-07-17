@@ -130,6 +130,12 @@ AC_SUBST(LDFLAGS)
 AC_CHECK_FUNCS([nanosleep usleep lseek64 lseeki64 truncate ftruncate openat renameat symlink link stat fstat fstatat statfs fstatfs realpath sysconf mmap munmap getpagesize mincore mlock munlock mprotect mremap msync getrlimit setrlimit shmat shm_open remap_file_pages fallocate readlink readlinkat signal sigaction alarm pause sigprocmask sigaddset sigemptyset sigismember])
 AC_CHECK_DECLS([isinf isnan],[],[],[[#include <math.h>]])
 
+# we use yasm
+AC_SUBST(HAVE_YASM)
+AC_CHECK_PROG([HAVE_YASM],[yasm],[1],[0])
+AM_CONDITIONAL([HAVE_YASM],[test x$HAVE_YASM = 1])
+AC_DEFINE_UNQUOTED([HAVE_YASM],[$HAVE_YASM],[Has YASM])
+
 # GCC __builtin_cpu_init and other functions
 HAVE_GCC_BUILTIN_CPU=0
 AC_SUBST(HAVE_GCC_BUILTIN_CPU)
