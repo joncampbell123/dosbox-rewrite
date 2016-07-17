@@ -25,15 +25,13 @@ struct HostCPUCaps {
     bool                        ssse3;
     bool                        avx;
     bool                        avx2;
-# ifdef __cplusplus
+
     HostCPUCaps() : mmx(0), sse(0), sse2(0), sse3(0), ssse3(0), avx(0), avx2(0) { }
-# endif
 #else
 /*---------------- unknown ------------------------*/
     bool                        _dummy;
-# ifdef __cplusplus
+
     HostCPUCaps() : _dummy(0) { }
-# endif
 #endif
 /*-------------------------------------------------*/
     void                        detect(void);
