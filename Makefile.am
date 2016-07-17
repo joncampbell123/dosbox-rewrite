@@ -7,7 +7,10 @@ dosboxxr_lib_hostcpudetect_libhostcpudetect_a_SOURCES = dosboxxr/lib/hostcpudete
 
 dosboxxr_lib_text_libtext_a_SOURCES = dosboxxr/lib/text/chomp.c
 
-noinst_PROGRAMS = empty cpudetect
+noinst_PROGRAMS = \
+	empty \
+	cpudetect \
+	cpumodregrm
 
 empty_SOURCES = empty.cpp
 
@@ -19,4 +22,9 @@ cpudetect_DEPENDENCIES = \
 cpudetect_LDADD = \
 	dosboxxr/lib/hostcpudetect/libhostcpudetect.a \
 	dosboxxr/lib/text/libtext.a
+
+cpumodregrm_SOURCES = cpumodregrm.cpp
+cpumodregrm_CXXFLAGS = $(AM_CXXFLAGS)
+cpumodregrm_DEPENDENCIES =
+cpumodregrm_LDADD =
 
