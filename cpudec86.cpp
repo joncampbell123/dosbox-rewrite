@@ -139,6 +139,58 @@ void IPDec(x86_offset_t ip) {
 #endif
                     break;
 
+                case 0xE4:
+                    v8 = IPFB(); // immediate port number
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"IN AL,%02xh",v8);
+#endif
+                    break;
+
+                case 0xE5:
+                    v8 = IPFB(); // immediate port number
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"IN AX,%02xh",v8);
+#endif
+                    break;
+
+                case 0xE6:
+                    v8 = IPFB(); // immediate port number
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"OUT %02xh,AL",v8);
+#endif
+                    break;
+
+                case 0xE7:
+                    v8 = IPFB(); // immediate port number
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"OUT %02xh,AX",v8);
+#endif
+                    break;
+
+                case 0xEC:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"IN AL,DX");
+#endif
+                    break;
+
+                case 0xED:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"IN AX,DX");
+#endif
+                    break;
+
+                case 0xEE:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"OUT DX,AL");
+#endif
+                    break;
+
+                case 0xEF:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"OUT DX,AX");
+#endif
+                    break;
+
                 case 0xFA:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"CLI");
