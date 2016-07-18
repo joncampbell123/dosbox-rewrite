@@ -174,3 +174,22 @@
     push    ds
     pop     ds
 
+jmp1:
+    jo      short jmp1
+    jno     short jmp1
+    jb      short jmp1
+    jnb     short jmp1
+    jz      short jmp1
+    jnz     short jmp1
+    jbe     short jmp1
+    ja      short jmp1
+    js      short jmp1
+    jns     short jmp1
+    jpe     short jmp1
+    jpo     short jmp1
+    jl      short jmp1
+    jge     short jmp1
+    jle     short jmp1
+    jg      short jmp1
+    jmp     short jmp1
+

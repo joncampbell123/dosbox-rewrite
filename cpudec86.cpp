@@ -32,6 +32,17 @@ static const char *CPUsregs[4] = {
     "ES","CS","SS","DS"
 };
 
+static const char *CPUjcc7x[16] = {
+    "JO","JNO",
+    "JB","JNB",
+    "JZ","JNZ",
+    "JBE","JA",
+    "JS","JNS",
+    "JPE","JPO",
+    "JL","JGE",
+    "JLE","JG"
+};
+
 //// CPU CORE
 #define DECOMPILEMODE
 
@@ -40,6 +51,10 @@ static char IPDecStr[256];
 
 static inline bool IPcontinue(void) {
     return (exe_ip_ptr < exe_image_fence);
+}
+
+static inline x86_offset_t IPval(void) {
+    return exe_ip;
 }
 
 static inline uint8_t IPFB(void) {
@@ -207,6 +222,17 @@ after_prefix:
 #endif
                     break;
 
+                case 0x70: case 0x71: case 0x72: case 0x73:
+                case 0x74: case 0x75: case 0x76: case 0x77:
+                case 0x78: case 0x79: case 0x7A: case 0x7B:
+                case 0x7C: case 0x7D: case 0x7E: case 0x7F:
+                    v8 = IPFB();
+                    v16 = (IPval() + ((int8_t)v8)) & 0xFFFFU; /* need to sign-extend the byte. offset relative to first byte after Jcc instruction */
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"%s %04xh",CPUjcc7x[op1&15],v16);
+#endif
+                    break;
+
                 case 0x90:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"NOP");
@@ -318,6 +344,14 @@ after_prefix:
                 case 0xAF:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"SCASW");
+#endif
+                    break;
+
+                case 0xEB:
+                    v8 = IPFB();
+                    v16 = (IPval() + ((int8_t)v8)) & 0xFFFFU; /* need to sign-extend the byte. offset relative to first byte after Jcc instruction */
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"JMP %04xh",v16);
 #endif
                     break;
 
