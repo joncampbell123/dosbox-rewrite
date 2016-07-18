@@ -84,20 +84,52 @@ void IPDec(x86_offset_t ip) {
 after_prefix:
             switch (op1=IPFB()) {
                 case 0x26:
+#ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"ES: ");
+#endif
                     goto after_prefix;
+
+                case 0x27:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"DAA");
+#endif
+                    break;
 
                 case 0x2E:
+#ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"CS: ");
+#endif
                     goto after_prefix;
+
+                case 0x2F:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"DAS");
+#endif
+                    break;
 
                 case 0x36:
+#ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"SS: ");
+#endif
                     goto after_prefix;
 
+                case 0x37:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"AAA");
+#endif
+                    break;
+
                 case 0x3E:
+#ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"DS: ");
+#endif
                     goto after_prefix;
+
+                case 0x3F:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"AAS");
+#endif
+                    break;
 
                 case 0x40: case 0x41: case 0x42: case 0x43:
                 case 0x44: case 0x45: case 0x46: case 0x47:
