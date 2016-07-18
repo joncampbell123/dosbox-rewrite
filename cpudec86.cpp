@@ -319,8 +319,20 @@ int main(int argc,char **argv) {
     exe_ip = 0x100;
     exe_ip_ptr = exe_image;
     while (exe_ip_ptr < exe_image_fence) {
+        unsigned char *i_ptr = exe_ip_ptr;
+        unsigned int bip;
+
         IPDec(exe_ip);
-        printf("%04x: %s\n",IPDecIP,IPDecStr);
+        printf("%04x: ",IPDecIP);
+
+        for (bip=0;bip < (exe_ip-IPDecIP);bip++)
+            printf("%02x ",i_ptr[bip]);
+        while (bip < 8) {
+            printf("   ");
+            bip++;
+        }
+
+        printf("%s\n",IPDecStr);
     }
 
     free(exe_image);
