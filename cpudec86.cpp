@@ -28,6 +28,10 @@ static const char *CPUregs8[8] = {
     "AL","CL","DL","BL", "AH","CH","DH","BH"
 };
 
+static const char *CPUsregs[4] = {
+    "ES","CS","SS","DS"
+};
+
 //// CPU CORE
 #define DECOMPILEMODE
 
@@ -77,7 +81,24 @@ void IPDec(x86_offset_t ip) {
         while (IPcontinue())
 #endif
         {
+after_prefix:
             switch (op1=IPFB()) {
+                case 0x26:
+                    w += snprintf(w,(size_t)(wf-w),"ES: ");
+                    goto after_prefix;
+
+                case 0x2E:
+                    w += snprintf(w,(size_t)(wf-w),"CS: ");
+                    goto after_prefix;
+
+                case 0x36:
+                    w += snprintf(w,(size_t)(wf-w),"SS: ");
+                    goto after_prefix;
+
+                case 0x3E:
+                    w += snprintf(w,(size_t)(wf-w),"DS: ");
+                    goto after_prefix;
+
                 case 0x40: case 0x41: case 0x42: case 0x43:
                 case 0x44: case 0x45: case 0x46: case 0x47:
 #ifdef DECOMPILEMODE
@@ -136,6 +157,66 @@ void IPDec(x86_offset_t ip) {
 #endif
                     break;
 
+                case 0xA4:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"MOVSB");
+#endif
+                    break;
+
+                case 0xA5:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"MOVSW");
+#endif
+                    break;
+
+                case 0xA6:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"CMPSB");
+#endif
+                    break;
+
+                case 0xA7:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"CMPSW");
+#endif
+                    break;
+
+                case 0xAA:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"STOSB");
+#endif
+                    break;
+
+                case 0xAB:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"STOSW");
+#endif
+                    break;
+
+                case 0xAC:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"LODSB");
+#endif
+                    break;
+
+                case 0xAD:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"LODSW");
+#endif
+                    break;
+
+                case 0xAE:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"SCASB");
+#endif
+                    break;
+
+                case 0xAF:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"SCASW");
+#endif
+                    break;
+
                 case 0xC2:
                     v16 = IPFW();
 #ifdef DECOMPILEMODE
@@ -178,6 +259,12 @@ void IPDec(x86_offset_t ip) {
                 case 0xCF:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"IRET");
+#endif
+                    break;
+
+                case 0xD7:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"XLAT");
 #endif
                     break;
 
@@ -233,6 +320,30 @@ void IPDec(x86_offset_t ip) {
 #endif
                     break;
 
+                case 0xF4:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"HLT");
+#endif
+                    break;
+
+                case 0xF5:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"CMC");
+#endif
+                    break;
+
+                case 0xF8:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"CLC");
+#endif
+                    break;
+
+                case 0xF9:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"STC");
+#endif
+                    break;
+
                 case 0xFA:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"CLI");
@@ -242,6 +353,18 @@ void IPDec(x86_offset_t ip) {
                 case 0xFB:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"STI");
+#endif
+                    break;
+
+                case 0xFC:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"CLD");
+#endif
+                    break;
+
+                case 0xFD:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"STD");
 #endif
                     break;
 

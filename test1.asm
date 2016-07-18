@@ -65,3 +65,35 @@
     pop     si
     pop     di
 
+    cs
+    nop
+    ds
+    nop
+    es
+    nop
+    ss
+    nop
+
+    xlatb
+
+    movsb
+    movsw
+    cmpsb
+    cmpsw
+    stosb
+    stosw
+    lodsb
+    lodsw
+    scasb
+    scasw
+
+    hlt
+    cmc
+    nop
+    clc
+    stc
+    cli
+    sti
+    cld
+    std
+
