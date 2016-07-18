@@ -294,6 +294,26 @@ after_prefix:
 #endif
                     break;
 
+                case 0xD4:
+                    v8 = IPFB();
+#ifdef DECOMPILEMODE
+                    if (v8 == 0x0A)
+                        w += snprintf(w,(size_t)(wf-w),"AAM");
+                    else
+                        w += snprintf(w,(size_t)(wf-w),"AAM %02xh",v8);
+#endif
+                    break;
+
+                case 0xD5:
+                    v8 = IPFB();
+#ifdef DECOMPILEMODE
+                    if (v8 == 0x0A)
+                        w += snprintf(w,(size_t)(wf-w),"AAD");
+                    else
+                        w += snprintf(w,(size_t)(wf-w),"AAD %02xh",v8);
+#endif
+                    break;
+
                 case 0xD7:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"XLAT");

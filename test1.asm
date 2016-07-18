@@ -102,3 +102,8 @@
     das
     aas
 
+    aam
+    aad
+    aam     0x17
+    aad     0x17
+
