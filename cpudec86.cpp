@@ -83,6 +83,54 @@ void IPDec(x86_offset_t ip) {
         {
 after_prefix:
             switch (op1=IPFB()) {
+                case 0x06:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"PUSH ES");
+#endif
+                    break;
+
+                case 0x07:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"POP ES");
+#endif
+                    break;
+
+                case 0x0E:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"PUSH CS");
+#endif
+                    break;
+
+                case 0x0F: // 8086 only!
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"POP CS");
+#endif
+                    break;
+
+                case 0x16:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"PUSH SS");
+#endif
+                    break;
+
+                case 0x17:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"POP SS");
+#endif
+                    break;
+
+                case 0x1E:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"PUSH DS");
+#endif
+                    break;
+
+                case 0x1F:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"POP DS");
+#endif
+                    break;
+
                 case 0x26:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"ES: ");
