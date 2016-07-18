@@ -82,6 +82,12 @@ void IPDec(x86_offset_t ip) {
 #endif
                     break;
 
+                case 0x99:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"CWD");
+#endif
+                    break;
+
                 case 0x9C:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"PUSHF");

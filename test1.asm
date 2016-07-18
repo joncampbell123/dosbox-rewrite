@@ -4,6 +4,7 @@
 
     nop
     cbw
+    cwd
     cli
     sti
     pushf
