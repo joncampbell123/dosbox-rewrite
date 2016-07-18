@@ -151,3 +151,15 @@
 
     lock    xchg    ax,ax
 
+    xchg    cx,ax
+    xchg    dx,ax
+    xchg    bx,ax
+    xchg    sp,ax
+    xchg    bp,ax
+    xchg    si,ax
+    xchg    di,ax
+
+    wait
+    sahf
+    lahf
+

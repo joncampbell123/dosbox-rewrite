@@ -165,6 +165,12 @@ after_prefix:
 #endif
                     break;
 
+                case 0x91: case 0x92: case 0x93: case 0x94: case 0x95: case 0x96: case 0x97:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"XCHG %s,AX",CPUregs16[op1&7]);
+#endif
+                    break;
+
                 case 0x98:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"CBW");
@@ -177,6 +183,12 @@ after_prefix:
 #endif
                     break;
 
+                case 0x9B:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"WAIT");
+#endif
+                    break;
+
                 case 0x9C:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"PUSHF");
@@ -186,6 +198,18 @@ after_prefix:
                 case 0x9D:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"POPF");
+#endif
+                    break;
+
+                case 0x9E:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"SAHF");
+#endif
+                    break;
+
+                case 0x9F:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"LAHF");
 #endif
                     break;
 
