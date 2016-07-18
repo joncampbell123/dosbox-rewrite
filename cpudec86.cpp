@@ -20,6 +20,14 @@ unsigned char*          exe_image_fence = NULL;
 
 #include <endian.h>
 
+static const char *CPUregs16[8] = {
+    "AX","CX","DX","BX", "SP","BP","SI","DI"
+};
+
+static const char *CPUregs8[8] = {
+    "AL","CL","DL","BL", "AH","CH","DH","BH"
+};
+
 //// CPU CORE
 #define DECOMPILEMODE
 
@@ -27,7 +35,7 @@ static x86_offset_t IPDecIP;
 static char IPDecStr[256];
 
 static inline bool IPcontinue(void) {
-
+    return (exe_ip_ptr < exe_image_fence);
 }
 
 static inline uint8_t IPFB(void) {
@@ -70,6 +78,34 @@ void IPDec(x86_offset_t ip) {
 #endif
         {
             switch (op1=IPFB()) {
+                case 0x40: case 0x41: case 0x42: case 0x43:
+                case 0x44: case 0x45: case 0x46: case 0x47:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"INC %s",CPUregs16[op1&7]);
+#endif
+                    break;
+
+                case 0x48: case 0x49: case 0x4A: case 0x4B:
+                case 0x4C: case 0x4D: case 0x4E: case 0x4F:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"DEC %s",CPUregs16[op1&7]);
+#endif
+                    break;
+
+                case 0x50: case 0x51: case 0x52: case 0x53:
+                case 0x54: case 0x55: case 0x56: case 0x57:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"PUSH %s",CPUregs16[op1&7]);
+#endif
+                    break;
+
+                case 0x58: case 0x59: case 0x5A: case 0x5B:
+                case 0x5C: case 0x5D: case 0x5E: case 0x5F:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"POP %s",CPUregs16[op1&7]);
+#endif
+                    break;
+
                 case 0x90:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"NOP");

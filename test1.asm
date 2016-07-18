@@ -29,3 +29,39 @@
     out     0x44,ax
     out     dx,ax
 
+    inc     ax
+    inc     cx
+    inc     dx
+    inc     bx
+    inc     sp
+    inc     bp
+    inc     si
+    inc     di
+
+    dec     ax
+    dec     cx
+    dec     dx
+    dec     bx
+    dec     sp
+    dec     bp
+    dec     si
+    dec     di
+
+    push    ax
+    push    cx
+    push    dx
+    push    bx
+    push    sp
+    push    bp
+    push    si
+    push    di
+
+    pop     ax
+    pop     cx
+    pop     dx
+    pop     bx
+    pop     sp
+    pop     bp
+    pop     si
+    pop     di
+
