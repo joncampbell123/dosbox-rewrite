@@ -372,6 +372,24 @@ after_prefix:
 #endif
                     break;
 
+                case 0xF0:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"LOCK ");
+#endif
+                    goto after_prefix;
+
+                case 0xF2:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"REPNZ ");
+#endif
+                    goto after_prefix;
+
+                case 0xF3:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"REPZ ");
+#endif
+                    goto after_prefix;
+
                 case 0xF4:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"HLT");

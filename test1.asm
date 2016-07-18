@@ -107,3 +107,47 @@
     aam     0x17
     aad     0x17
 
+    repz
+    movsb
+    repz
+    movsw
+    repz
+    cmpsb
+    repz
+    cmpsw
+    repz
+    stosb
+    repz
+    stosw
+    repz
+    lodsb
+    repz
+    lodsw
+    repz
+    scasb
+    repz
+    scasw
+
+    repnz
+    movsb
+    repnz
+    movsw
+    repnz
+    cmpsb
+    repnz
+    cmpsw
+    repnz
+    stosb
+    repnz
+    stosw
+    repnz
+    lodsb
+    repnz
+    lodsw
+    repnz
+    scasb
+    repnz
+    scasw
+
+    lock    xchg    ax,ax
+
