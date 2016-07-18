@@ -1,4 +1,5 @@
 
+    bits    16
     org     100h
 
     nop
@@ -8,5 +9,7 @@
     pushf
     popf
     ret
+    ret     4
     retf
+    retf    4
 
