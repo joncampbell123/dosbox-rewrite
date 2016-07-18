@@ -57,8 +57,8 @@ static inline uint32_t IPFDW(void) {
 
 void IPDec(x86_offset_t ip) {
     char *w = IPDecStr,*wf = IPDecStr+sizeof(IPDecStr)-1;
+    uint8_t op1,v8;
     uint16_t v16;
-    uint8_t op1;
 
     {
 #ifdef DECOMPILEMODE
@@ -117,6 +117,25 @@ void IPDec(x86_offset_t ip) {
                 case 0xCB:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"RETF");
+#endif
+                    break;
+
+                case 0xCC:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"INT3");
+#endif
+                    break;
+
+                case 0xCD:
+                    v8 = IPFB();
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"INT %02xh",v8);
+#endif
+                    break;
+
+                case 0xCF:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"IRET");
 #endif
                     break;
 
