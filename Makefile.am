@@ -11,9 +11,15 @@ noinst_PROGRAMS = \
 	empty \
 	cpudetect \
 	cpumodregrm \
-	cpumemreftypes
+	cpumemreftypes \
+	cpudec86
 
 empty_SOURCES = empty.cpp
+
+cpudec86_SOURCES = cpudec86.cpp
+cpudec86_CXXFLAGS = $(AM_CXXFLAGS)
+cpudec86_DEPENDENCIES =
+cpudec86_LDADD =
 
 cpudetect_SOURCES = cpudetect.cpp
 cpudetect_CXXFLAGS = $(AM_CXXFLAGS)
