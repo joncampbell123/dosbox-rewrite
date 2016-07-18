@@ -34,3 +34,8 @@ cpumemreftypes_CXXFLAGS = $(AM_CXXFLAGS)
 cpumemreftypes_DEPENDENCIES =
 cpumemreftypes_LDADD =
 
+test1.bin: test1.asm
+	yasm -o $@ -f bin $<
+
+test-bins: test1.bin
+
