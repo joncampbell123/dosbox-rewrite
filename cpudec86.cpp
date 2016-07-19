@@ -28,6 +28,18 @@ static const char *CPUregs8[8] = {
     "AL","CL","DL","BL", "AH","CH","DH","BH"
 };
 
+static const char *CPUregsZ[8] = {
+    "","","","", "","","",""
+};
+
+static const char **CPUregsN[5] = {
+    CPUregsZ,                       // sz=0
+    CPUregs8,                       // sz=1
+    CPUregs16,                      // sz=2
+    CPUregsZ,                       // sz=3
+    CPUregsZ                        // sz=4
+};
+
 static const char *CPUsregs[4] = {
     "ES","CS","SS","DS"
 };
@@ -41,6 +53,11 @@ static const char *CPUjcc7x[16] = {
     "JPE","JPO",
     "JL","JGE",
     "JLE","JG"
+};
+
+static const char *CPUmod0displacement16[8] = {
+    "BX+SI","BX+DI","BP+SI","BP+DI",
+    "SI",   "DI",   "BP",   "BX"
 };
 
 //// CPU CORE
@@ -64,6 +81,10 @@ static inline uint8_t IPFB(void) {
     return r;
 }
 
+static inline int32_t IPFBsigned(void) {
+    return (int32_t)((int8_t)IPFB());
+}
+
 static inline void IPFModRegRm(x86ModRegRm &m) {
     m.byte = IPFB();
 }
@@ -82,8 +103,56 @@ static inline uint32_t IPFDW(void) {
     return r;
 }
 
+// given mod/reg/rm fetch displacement (16-bit code)
+x86_offset_t IPFmrmdisplace16(x86ModRegRm &mrm) {
+    switch (mrm.mod()) {
+        case 0:
+            if (mrm.rm() == 6) return IPFW();
+            return 0;
+        case 1:
+            return IPFBsigned();
+        case 2:
+            return IPFW();
+        case 3:
+            return 0;
+    };
+}
+
+static inline uint8_t IPDec8abs(uint8_t v) {
+    if (v & 0x80) return 0x100 - v;
+    return v;
+}
+
+// print 16-bit code form of mod/reg/rm with displacement
+const char *IPDecPrint16(const x86ModRegRm &mrm,const x86_offset_t ofs,const unsigned int sz) {
+    static char tmp[64];
+    char *w=tmp,*wf=tmp+sizeof(tmp)-1;
+
+    switch (mrm.mod()) {
+        case 0: // [indirect] or [displacement]
+            if (mrm.rm() == 6)
+                w += snprintf(w,(size_t)(wf-w),"[%04lxh]",(unsigned long)ofs);
+            else
+                w += snprintf(w,(size_t)(wf-w),"[%s]",CPUmod0displacement16[mrm.rm()]);
+            break;
+        case 1: // [indirect+disp8]
+            w += snprintf(w,(size_t)(wf-w),"[%s%c%02xh]",CPUmod0displacement16[mrm.rm()],ofs&0x80?'-':'+',IPDec8abs((uint8_t)ofs));
+            break;
+        case 2: // [indirect+disp16]
+            w += snprintf(w,(size_t)(wf-w),"[%s+%04xh]",CPUmod0displacement16[mrm.rm()],(uint16_t)ofs);
+            break;
+        case 3: // register
+            w += snprintf(w,(size_t)(wf-w),"%s",CPUregsN[sz][mrm.rm()]);
+            break;
+    }
+
+    return tmp;
+}
+
 void IPDec(x86_offset_t ip) {
     char *w = IPDecStr,*wf = IPDecStr+sizeof(IPDecStr)-1;
+    x86_offset_t disp;
+    x86ModRegRm mrm;
     uint8_t op1,v8;
     uint16_t v16;
 
@@ -98,6 +167,35 @@ void IPDec(x86_offset_t ip) {
         {
 after_prefix:
             switch (op1=IPFB()) {
+                case 0x00: // ADD r/m,reg byte size
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"ADDb %s,%s",IPDecPrint16(mrm,disp,1),CPUregs8[mrm.reg()]);
+#endif
+                    break;
+                case 0x01: // ADD r/m,reg word size
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"ADDw %s,%s",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()]);
+#endif
+                    break;
+                case 0x02: // ADD reg,r/m byte size
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"ADDb %s,%s",CPUregs8[mrm.reg()],IPDecPrint16(mrm,disp,1));
+#endif
+                    break;
+                case 0x03: // ADD reg,r/m word size
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"ADDw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+#endif
+                    break;
+
                 case 0x06:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"PUSH ES");
@@ -226,8 +324,8 @@ after_prefix:
                 case 0x74: case 0x75: case 0x76: case 0x77:
                 case 0x78: case 0x79: case 0x7A: case 0x7B:
                 case 0x7C: case 0x7D: case 0x7E: case 0x7F:
-                    v8 = IPFB();
-                    v16 = (IPval() + ((int8_t)v8)) & 0xFFFFU; /* need to sign-extend the byte. offset relative to first byte after Jcc instruction */
+                    v16 = (uint16_t)IPFBsigned();
+                    v16 = (v16 + IPval()) & 0xFFFFU;
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"%s %04xh",CPUjcc7x[op1&15],v16);
 #endif
