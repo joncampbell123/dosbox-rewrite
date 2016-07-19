@@ -195,7 +195,18 @@ after_prefix:
                     w += snprintf(w,(size_t)(wf-w),"ADDw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
 #endif
                     break;
-
+                case 0x04: // ADD AL,imm8
+                    v8 = IPFB();
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"ADDb AL,%02xh",v8);
+#endif
+                    break;
+                case 0x05: // ADD AX,imm16
+                    v16 = IPFW();
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"ADDw AX,%04xh",v16);
+#endif
+                    break;
                 case 0x06:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"PUSH ES");

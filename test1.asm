@@ -353,3 +353,9 @@ jmp1:
     add     bx,word [bp+0x1234]
     add     bx,word [bx+0x1234]
 
+;---------------add imm
+    add     al,0x12
+    add     al,0xEF
+    add     ax,0x1234
+    add     ax,0xFEDC
+
