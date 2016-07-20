@@ -1189,3 +1189,169 @@ jmp1:
     sub     ax,0x1234
     sub     ax,0xFEDC
 
+;--------------byte
+    xor     byte [bx+si],bl ; 00 m/r/m mod=0
+    xor     byte [bx+di],bl ; 00 m/r/m mod=0
+    xor     byte [bp+si],bl ; 00 m/r/m mod=0
+    xor     byte [bp+di],bl ; 00 m/r/m mod=0
+    xor     byte [si],bl    ; 00 m/r/m mod=0
+    xor     byte [di],bl    ; 00 m/r/m mod=0
+    xor     byte [0x1234],bl; 00 m/r/m mod=0
+    xor     byte [bx],bl    ; 00 m/r/m mod=0
+
+    xor     byte [bx+si+0x5F],bl ; 40 m/r/m mod=1
+    xor     byte [bx+si-0x5F],bl
+    xor     byte [bx+di+0x5F],bl ; 40 m/r/m mod=1
+    xor     byte [bx+di-0x5F],bl
+    xor     byte [bp+si+0x5F],bl ; 40 m/r/m mod=1
+    xor     byte [bp+si-0x5F],bl
+    xor     byte [bp+di+0x5F],bl ; 40 m/r/m mod=1
+    xor     byte [bp+di-0x5F],bl
+    xor     byte [si+0x5F],bl ; 40 m/r/m mod=1
+    xor     byte [si-0x5F],bl
+    xor     byte [di+0x5F],bl ; 40 m/r/m mod=1
+    xor     byte [di-0x5F],bl
+    xor     byte [bp+0x5F],bl ; 40 m/r/m mod=1
+    xor     byte [bp-0x5F],bl
+    xor     byte [bx+0x5F],bl ; 40 m/r/m mod=1
+    xor     byte [bx-0x5F],bl
+
+    xor     byte [bx+si+0x1234],bl
+    xor     byte [bx+di+0x1234],bl
+    xor     byte [bp+si+0x1234],bl
+    xor     byte [bp+di+0x1234],bl
+    xor     byte [si+0x1234],bl
+    xor     byte [di+0x1234],bl
+    xor     byte [bp+0x1234],bl
+    xor     byte [bx+0x1234],bl
+    xor     bl,al           ; 00 m/r/m mod=3
+    xor     bl,cl           ; 00 m/r/m mod=3
+    xor     bl,dl           ; 00 m/r/m mod=3
+    xor     bl,bl           ; 00 m/r/m mod=3
+    xor     bl,ah
+    xor     bl,ch
+    xor     bl,dh
+    xor     bl,bh
+
+;--------------word
+    xor     word [bx+si],bx ; 00 m/r/m mod=0
+    xor     word [bx+di],bx ; 00 m/r/m mod=0
+    xor     word [bp+si],bx ; 00 m/r/m mod=0
+    xor     word [bp+di],bx ; 00 m/r/m mod=0
+    xor     word [si],bx    ; 00 m/r/m mod=0
+    xor     word [di],bx    ; 00 m/r/m mod=0
+    xor     word [0x1234],bx; 00 m/r/m mod=0
+    xor     word [bx],bx    ; 00 m/r/m mod=0
+
+    xor     word [bx+si+0x5F],bx ; 40 m/r/m mod=1
+    xor     word [bx+si-0x5F],bx
+    xor     word [bx+di+0x5F],bx ; 40 m/r/m mod=1
+    xor     word [bx+di-0x5F],bx
+    xor     word [bp+si+0x5F],bx ; 40 m/r/m mod=1
+    xor     word [bp+si-0x5F],bx
+    xor     word [bp+di+0x5F],bx ; 40 m/r/m mod=1
+    xor     word [bp+di-0x5F],bx
+    xor     word [si+0x5F],bx ; 40 m/r/m mod=1
+    xor     word [si-0x5F],bx
+    xor     word [di+0x5F],bx ; 40 m/r/m mod=1
+    xor     word [di-0x5F],bx
+    xor     word [bp+0x5F],bx ; 40 m/r/m mod=1
+    xor     word [bp-0x5F],bx
+    xor     word [bx+0x5F],bx ; 40 m/r/m mod=1
+    xor     word [bx-0x5F],bx
+
+    xor     word [bx+si+0x1234],bx
+    xor     word [bx+di+0x1234],bx
+    xor     word [bp+si+0x1234],bx
+    xor     word [bp+di+0x1234],bx
+    xor     word [si+0x1234],bx
+    xor     word [di+0x1234],bx
+    xor     word [bp+0x1234],bx
+    xor     word [bx+0x1234],bx
+    xor     bx,ax           ; 00 m/r/m mod=3
+    xor     bx,cx           ; 00 m/r/m mod=3
+    xor     bx,dx           ; 00 m/r/m mod=3
+    xor     bx,bx           ; 00 m/r/m mod=3
+    xor     bx,si
+    xor     bx,di
+    xor     bx,bp
+    xor     bx,sp
+
+;--------------byte
+    xor     bl,byte [bx+si] ; 00 m/r/m mod=0
+    xor     bl,byte [bx+di] ; 00 m/r/m mod=0
+    xor     bl,byte [bp+si] ; 00 m/r/m mod=0
+    xor     bl,byte [bp+di] ; 00 m/r/m mod=0
+    xor     bl,byte [si]    ; 00 m/r/m mod=0
+    xor     bl,byte [di]    ; 00 m/r/m mod=0
+    xor     bl,byte [0x1234]; 00 m/r/m mod=0
+    xor     bl,byte [bx]    ; 00 m/r/m mod=0
+
+    xor     bl,byte [bx+si+0x5F] ; 40 m/r/m mod=1
+    xor     bl,byte [bx+si-0x5F]
+    xor     bl,byte [bx+di+0x5F] ; 40 m/r/m mod=1
+    xor     bl,byte [bx+di-0x5F]
+    xor     bl,byte [bp+si+0x5F] ; 40 m/r/m mod=1
+    xor     bl,byte [bp+si-0x5F]
+    xor     bl,byte [bp+di+0x5F] ; 40 m/r/m mod=1
+    xor     bl,byte [bp+di-0x5F]
+    xor     bl,byte [si+0x5F] ; 40 m/r/m mod=1
+    xor     bl,byte [si-0x5F]
+    xor     bl,byte [di+0x5F] ; 40 m/r/m mod=1
+    xor     bl,byte [di-0x5F]
+    xor     bl,byte [bp+0x5F] ; 40 m/r/m mod=1
+    xor     bl,byte [bp-0x5F]
+    xor     bl,byte [bx+0x5F] ; 40 m/r/m mod=1
+    xor     bl,byte [bx-0x5F]
+
+    xor     bl,byte [bx+si+0x1234]
+    xor     bl,byte [bx+di+0x1234]
+    xor     bl,byte [bp+si+0x1234]
+    xor     bl,byte [bp+di+0x1234]
+    xor     bl,byte [si+0x1234]
+    xor     bl,byte [di+0x1234]
+    xor     bl,byte [bp+0x1234]
+    xor     bl,byte [bx+0x1234]
+
+;--------------word
+    xor     bx,word [bx+si] ; 00 m/r/m mod=0
+    xor     bx,word [bx+di] ; 00 m/r/m mod=0
+    xor     bx,word [bp+si] ; 00 m/r/m mod=0
+    xor     bx,word [bp+di] ; 00 m/r/m mod=0
+    xor     bx,word [si]    ; 00 m/r/m mod=0
+    xor     bx,word [di]    ; 00 m/r/m mod=0
+    xor     bx,word [0x1234]; 00 m/r/m mod=0
+    xor     bx,word [bx]    ; 00 m/r/m mod=0
+
+    xor     bx,word [bx+si+0x5F] ; 40 m/r/m mod=1
+    xor     bx,word [bx+si-0x5F]
+    xor     bx,word [bx+di+0x5F] ; 40 m/r/m mod=1
+    xor     bx,word [bx+di-0x5F]
+    xor     bx,word [bp+si+0x5F] ; 40 m/r/m mod=1
+    xor     bx,word [bp+si-0x5F]
+    xor     bx,word [bp+di+0x5F] ; 40 m/r/m mod=1
+    xor     bx,word [bp+di-0x5F]
+    xor     bx,word [si+0x5F] ; 40 m/r/m mod=1
+    xor     bx,word [si-0x5F]
+    xor     bx,word [di+0x5F] ; 40 m/r/m mod=1
+    xor     bx,word [di-0x5F]
+    xor     bx,word [bp+0x5F] ; 40 m/r/m mod=1
+    xor     bx,word [bp-0x5F]
+    xor     bx,word [bx+0x5F] ; 40 m/r/m mod=1
+    xor     bx,word [bx-0x5F]
+
+    xor     bx,word [bx+si+0x1234]
+    xor     bx,word [bx+di+0x1234]
+    xor     bx,word [bp+si+0x1234]
+    xor     bx,word [bp+di+0x1234]
+    xor     bx,word [si+0x1234]
+    xor     bx,word [di+0x1234]
+    xor     bx,word [bp+0x1234]
+    xor     bx,word [bx+0x1234]
+
+;---------------xor imm
+    xor     al,0x12
+    xor     al,0xEF
+    xor     ax,0x1234
+    xor     ax,0xFEDC
+
