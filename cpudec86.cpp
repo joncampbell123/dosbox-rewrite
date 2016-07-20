@@ -1258,6 +1258,12 @@ after_prefix:
                             w += snprintf(w,(size_t)(wf-w),"FSTq %s ; MF=64-bit real",IPDecPrint16(mrm,disp,8,RC_FPUREG));
 #endif
                             break;
+                        case_span_by_mod_reg(/*mod*/3,/*reg*/2): // FST ST(0) to ST(i)
+                                                                 // ESCAPE 1 0 1 | 1 1 0 1 0 R/M     REG == 2 MOD == 3 RM == FPU register index
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FST ST(%u)",mrm.rm());
+#endif
+                            break;
                     };
                     break;
 

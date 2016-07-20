@@ -2498,3 +2498,13 @@ calltest1:
     fist    word [bx+di+0x1234]
     fist    word [si-6]
 
+; FST     | ESCAPE 1 0 1 | 1 1 0 1 0 R/M |     ST(0) to ST(i) where in R/M, MOD == 3, REG == 2, RM == FPU register index
+    fst     st0
+    fst     st1
+    fst     st2
+    fst     st3
+    fst     st4
+    fst     st5
+    fst     st6
+    fst     st7
+
