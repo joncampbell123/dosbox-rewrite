@@ -2008,3 +2008,13 @@ jmp1:
     db      0xC4,0xC1       ; LES AX,CX
     db      0xC4,0xC8       ; LES CX,AX
 
+; lds
+    lds     ax,[si]
+    lds     ax,[bx+si]
+    lds     ax,[0x1234]
+    lds     ax,[bx+si+0x1234]
+    lds     bx,[bx+di-0x44]
+    db      0xC5,0xC0       ; LDS AX,AX (illegal, YASM won't encode it)
+    db      0xC5,0xC1       ; LDS AX,CX
+    db      0xC5,0xC8       ; LDS CX,AX
+
