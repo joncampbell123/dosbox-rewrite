@@ -1210,6 +1210,11 @@ after_prefix:
 #endif
                     break;
                 case 0xFE:
+                    // Question: If the 8086 encounters illegal encoding (reg >= 2) does it either:
+                    //             a) read MRM, displacement field, then ignore instruction?
+                    //             b) read MRM, then abort and ignore instruction (leaving IP at displacement field bytes)?
+                    //             c) read MRM, displacement field, then execute some unknown alias of valid instructions?
+                    //           Since 286 and higher have #INVD exception, this question applies only to 8086.
                     mrm.set(IPFB());
                     disp = IPFmrmdisplace16(/*&*/mrm);
 #ifdef DECOMPILEMODE
@@ -1220,6 +1225,11 @@ after_prefix:
 #endif
                     break;
                 case 0xFF:
+                    // Question: If the 8086 encounters illegal encoding (reg == 7) does it either:
+                    //             a) read MRM, displacement field, then ignore instruction?
+                    //             b) read MRM, then abort and ignore instruction (leaving IP at displacement field bytes)?
+                    //             c) read MRM, displacement field, then execute some unknown alias of valid instructions?
+                    //           Since 286 and higher have #INVD exception, this question applies only to 8086.
                     mrm.set(IPFB());
                     disp = IPFmrmdisplace16(/*&*/mrm);
 #ifdef DECOMPILEMODE
