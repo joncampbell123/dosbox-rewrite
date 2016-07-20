@@ -29,6 +29,10 @@ unsigned char*          exe_image_fence = NULL;
 #define case_span_16(x) \
     case_span_8(x): case_span_8((x)+8)
 
+// this macro covers one whole 8-value block where in MOD/REG/RM MOD == mod and REG == reg for any value of R/M
+#define case_span_by_mod_reg(mod,reg) \
+        case_span_8(((mod) << 6) + ((reg) << 3))
+
 static const char *CPUregs16[8] = {
     "AX","CX","DX","BX", "SP","BP","SI","DI"
 };
@@ -1180,14 +1184,11 @@ after_prefix:
                             w += snprintf(w,(size_t)(wf-w),"FSCALE");
 #endif
                             break;
-                        case 0x00: case 0x01: case 0x02: case 0x03: // \______ FLD integer/real mem to ST(0)     MF == 0 32-bit real
-                        case 0x04: case 0x05: case 0x06: case 0x07: // /       ESCAPE M F 1 | MOD 0 0 0 R/M      MOD == 0 REG == 0 R/M == memory ref
-                        case 0x40: case 0x41: case 0x42: case 0x43: // \______ FLD integer/real mem to ST(0)     MF == 0 32-bit real
-                        case 0x44: case 0x45: case 0x46: case 0x47: // /       ESCAPE M F 1 | MOD 0 0 0 R/M      MOD == 1 REG == 0 R/M == memory ref
-                        case 0x80: case 0x81: case 0x82: case 0x83: // \______ FLD integer/real mem to ST(0)     MF == 0 32-bit real
-                        case 0x84: case 0x85: case 0x86: case 0x87: // /       ESCAPE M F 1 | MOD 0 0 0 R/M      MOD == 2 REG == 0 R/M == memory ref
- #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FLDd %s",IPDecPrint16(mrm,disp,4,RC_FPUREG));
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/0): // FLD integer/real mem to ST(0)    MF == 0 32-bit real
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/0): // ESCAPE M F 1 | MOD 0 0 0 R/M     REG == 0 MOD == 0,1,2 RM == mem ref
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/0):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FLDd %s ; MF=32-bit real",IPDecPrint16(mrm,disp,4,RC_FPUREG));
 #endif
                             break;
                     };

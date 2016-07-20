@@ -2433,6 +2433,9 @@ calltest1:
 ; FLD     | ESCAPE M F 1 | MOD 0 0 0 R/M |     integer/real memory to ST(0)
 ; assemblers differentiate by using "FILD" for integer load
     fld     dword [bx]                      ; MF=0 op 0xD9
+    fld     dword [bx+si]
+    fld     dword [bx+di+0x1234]
+    fld     dword [si-6]
     fild    dword [bx]                      ; MF=1 op 0xDB
     fld     qword [bx]                      ; MF=2 op 0xDD
     fild    word [bx]                       ; MF=3 op 0xDF
