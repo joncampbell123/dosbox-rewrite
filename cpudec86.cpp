@@ -161,6 +161,7 @@ void IPDec(x86_offset_t ip) {
     x86_offset_t disp;
     x86ModRegRm mrm;
     uint8_t op1,v8;
+    uint16_t v16b;
     uint16_t v16;
 
     {
@@ -741,7 +742,13 @@ after_prefix:
                     w += snprintf(w,(size_t)(wf-w),"CWDw");
 #endif
                     break;
-
+                case 0x9A:
+                    v16 = IPFW();//offset
+                    v16b = IPFW();//segment
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"CALLw %04Xh:%04Xh",v16b,v16);
+#endif
+                    break;
                 case 0x9B:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"WAIT");

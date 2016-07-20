@@ -1964,3 +1964,7 @@ jmp1:
     db      0x8F,0xC0       ; POP AX
     db      0x8F,0xC1       ; POP CX
 
+; call Ap (0x9A)
+    call    0x1234:0x5678
+    call    0xABCD:0x1234
+
