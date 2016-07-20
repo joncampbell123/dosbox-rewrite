@@ -651,6 +651,20 @@ after_prefix:
                     w += snprintf(w,(size_t)(wf-w),"TESTw %s,%s",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()]);
 #endif
                     break;
+                case 0x86: // XCHG r/m,reg byte size
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"XCHGb %s,%s",CPUregs8[mrm.reg()],IPDecPrint16(mrm,disp,1));
+#endif
+                    break;
+                case 0x87: // XCHG r/m,reg word size
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"XCHGw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+#endif
+                    break;
 
                 case 0x90:
 #ifdef DECOMPILEMODE

@@ -1845,3 +1845,32 @@ jmp1:
     test    word [bp+0x1234],dx
     test    word [bx+0x1234],dx
 
+; XOR 86h-87h
+    xchg    bl,cl           ; 86h
+    xchg    bl,dl           ; 86h
+    xchg    cl,dl
+    xchg    dl,al
+
+    xchg    bx,cx
+    xchg    bx,dx
+    xchg    cx,dx
+    xchg    dx,ax
+
+    xchg    byte [bx+si],cl
+    xchg    byte [bx+di],dl
+    xchg    byte [0x1234],dl
+    xchg    byte [bx],dl
+    xchg    byte [bx+si+0x1234],cl
+    xchg    byte [bx+di+0x1234],dl
+    xchg    byte [bp+0x1234],dl
+    xchg    byte [bx+0x1234],dl
+
+    xchg    word [bx+si],cx
+    xchg    word [bx+di],dx
+    xchg    word [0x1234],dx
+    xchg    word [bx],dx
+    xchg    word [bx+si+0x1234],cx
+    xchg    word [bx+di+0x1234],dx
+    xchg    word [bp+0x1234],dx
+    xchg    word [bx+0x1234],dx
+
