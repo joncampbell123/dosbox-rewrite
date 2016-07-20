@@ -2693,3 +2693,68 @@ calltest1:
     faddp   st6,st0
     faddp   st7,st0
 
+; FSUB    | ESCAPE M F 0 | MOD 1 0 0 R/M |     Subtract integer/real memory from ST(0)
+; also known as "FISUB" for integer subtraction
+    fsub    dword [bx]                      ; MF=0 op 0xD8
+    fsub    dword [bx+si]
+    fsub    dword [bx+di+0x1234]
+    fsub    dword [si-6]
+    fisub   dword [bx]                      ; MF=1 op 0xDA
+    fisub   dword [bx+si]
+    fisub   dword [bx+di+0x1234]
+    fisub   dword [si-6]
+    fsub    qword [bx]                      ; MF=2 op 0xDC
+    fsub    qword [bx+si]
+    fsub    qword [bx+di+0x1234]
+    fsub    qword [si-6]
+    fisub   word [bx]                       ; MF=3 op 0xDE
+    fisub   word [bx+si]
+    fisub   word [bx+di+0x1234]
+    fisub   word [si-6]
+
+; FSUB    | ESCAPE d P 0 | 1 1 1 0 R R/M |     Subtract ST(i) from ST(0) d=0 (destination is ST(0)) P=0 don't pop after add R=0 dest OP src
+    fsub    st0,st0
+    fsub    st0,st1
+    fsub    st0,st2
+    fsub    st0,st3
+    fsub    st0,st4
+    fsub    st0,st5
+    fsub    st0,st6
+    fsub    st0,st7
+
+; FSUB    | ESCAPE d P 0 | 1 1 1 0 R R/M |     Subtract ST(i) to ST(0) d=0 (destination is ST(0)) P=1 pop after add R=0 dest OP src
+; Note that YASM won't let me encode these directly. For one, they don't really make sense to use.
+; Why add something to ST(0) just to pop it off the stack?
+; Second, later i686 processors (Pentium II or higher) re-use these opcodes for the FCMOV instruction (conditional floating point move).
+; NASM's disassembler shows the following as ?????? instructions.
+; However, Intel's 8086 datasheet implies the original 8087 would treat this as a command to FADD and pop, so, that's what we're testing here.
+; The datasheet simply documents FSUB ST(i),ST(0) as having a D and P (direction and pop) bit in bits 2 and 1 of the first opcode byte.
+    db      0xDA,0xE0       ; fsubp   st0,st0
+    db      0xDA,0xE1       ; fsubp   st0,st1   YASM won't let me encode this
+    db      0xDA,0xE2       ; fsubp   st0,st2
+    db      0xDA,0xE3       ; fsubp   st0,st3
+    db      0xDA,0xE4       ; fsubp   st0,st4
+    db      0xDA,0xE5       ; fsubp   st0,st5
+    db      0xDA,0xE6       ; fsubp   st0,st6
+    db      0xDA,0xE7       ; fsubp   st0,st7
+
+; FADD    | ESCAPE d P 0 | 1 1 1 0 R R/M |     Sub ST(i) to ST(0) d=1 (destination is ST(i)) P=0 don't pop after add R=0 dest OP src
+    db      0xDC,0xE0       ; fsub    st0,st0   YASM prefers encoding fsub ST(i),ST(0) form with R=1, won't encode this form
+    db      0xDC,0xE1       ; fsub    st1,st0
+    db      0xDC,0xE2       ; fsub    st2,st0
+    db      0xDC,0xE3       ; fsub    st3,st0
+    db      0xDC,0xE4       ; fsub    st4,st0
+    db      0xDC,0xE5       ; fsub    st5,st0
+    db      0xDC,0xE6       ; fsub    st6,st0
+    db      0xDC,0xE7       ; fsub    st7,st0
+
+; FADD    | ESCAPE d P 0 | 1 1 1 0 R R/M |     Sub ST(i) to ST(0) d=1 (destination is ST(i)) P=1 pop after add R=0 dest OP src
+    db      0xDE,0xE0       ; fsubp   st0,st0   YASM prefers encoding fsubp ST(i),ST(0) form with R=1, won't encode this form
+    db      0xDE,0xE1       ; fsubp   st1,st0
+    db      0xDE,0xE2       ; fsubp   st2,st0
+    db      0xDE,0xE3       ; fsubp   st3,st0
+    db      0xDE,0xE4       ; fsubp   st4,st0
+    db      0xDE,0xE5       ; fsubp   st5,st0
+    db      0xDE,0xE6       ; fsubp   st6,st0
+    db      0xDE,0xE7       ; fsubp   st7,st0
+
