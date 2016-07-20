@@ -2149,3 +2149,103 @@ calltest1:
     sar     word [bx+di],1
     sar     word [0x1234],1
 
+; GRP2 D2
+    rol     al,cl
+    rol     bl,cl
+    rol     byte [bx+si],cl
+    rol     byte [bx+di],cl
+    rol     byte [0x1234],cl
+
+    ror     al,cl
+    ror     bl,cl
+    ror     byte [bx+si],cl
+    ror     byte [bx+di],cl
+    ror     byte [0x1234],cl
+
+    rcl     al,cl
+    rcl     bl,cl
+    rcl     byte [bx+si],cl
+    rcl     byte [bx+di],cl
+    rcl     byte [0x1234],cl
+
+    rcr     al,cl
+    rcr     bl,cl
+    rcr     byte [bx+si],cl
+    rcr     byte [bx+di],cl
+    rcr     byte [0x1234],cl
+
+    shl     al,cl
+    shl     bl,cl
+    shl     byte [bx+si],cl
+    shl     byte [bx+di],cl
+    shl     byte [0x1234],cl
+
+    shr     al,cl
+    shr     bl,cl
+    shr     byte [bx+si],cl
+    shr     byte [bx+di],cl
+    shr     byte [0x1234],cl
+
+; nasm/yasm won't encode SAL as SAL but as an alias of SHL
+    db      0xD2,0xF0           ; sal     al,cl
+    db      0xD2,0xF0           ; sal     bl,cl
+    db      0xD2,0x30           ; sal     byte [bx+si],cl
+    db      0xD2,0x31           ; sal     byte [bx+di],cl
+    db      0xD2,0x36,0x34,0x12 ; sal     byte [0x1234],cl
+
+    sar     al,cl
+    sar     bl,cl
+    sar     byte [bx+si],cl
+    sar     byte [bx+di],cl
+    sar     byte [0x1234],cl
+
+; GRP2 D3
+    rol     ax,cl
+    rol     bx,cl
+    rol     word [bx+si],cl
+    rol     word [bx+di],cl
+    rol     word [0x1234],cl
+
+    ror     ax,cl
+    ror     bx,cl
+    ror     word [bx+si],cl
+    ror     word [bx+di],cl
+    ror     word [0x1234],cl
+
+    rcl     ax,cl
+    rcl     bx,cl
+    rcl     word [bx+si],cl
+    rcl     word [bx+di],cl
+    rcl     word [0x1234],cl
+
+    rcr     ax,cl
+    rcr     bx,cl
+    rcr     word [bx+si],cl
+    rcr     word [bx+di],cl
+    rcr     word [0x1234],cl
+
+    shl     ax,cl
+    shl     bx,cl
+    shl     word [bx+si],cl
+    shl     word [bx+di],cl
+    shl     word [0x1234],cl
+
+    shr     ax,cl
+    shr     bx,cl
+    shr     word [bx+si],cl
+    shr     word [bx+di],cl
+    shr     word [0x1234],cl
+
+; nasm/yasm won't encode SAL as SAL but as an alias of SHL
+    db      0xD3,0xF0           ; sal     ax,cl
+    db      0xD3,0xF0           ; sal     bx,cl
+    db      0xD3,0x30           ; sal     word [bx+si],cl
+    db      0xD3,0x31           ; sal     word [bx+di],cl
+    db      0xD3,0x36,0x34,0x12 ; sal     word [0x1234],cl
+
+    sar     ax,cl
+    sar     bx,cl
+    sar     word [bx+si],cl
+    sar     word [bx+di],cl
+    sar     word [0x1234],cl
+
