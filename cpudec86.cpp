@@ -665,6 +665,34 @@ after_prefix:
                     w += snprintf(w,(size_t)(wf-w),"XCHGw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
 #endif
                     break;
+                case 0x88: // MOV r/m,reg byte size
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"MOVb %s,%s",IPDecPrint16(mrm,disp,1),CPUregs8[mrm.reg()]);
+#endif
+                    break;
+                case 0x89: // MOV r/m,reg word size
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"MOVw %s,%s",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()]);
+#endif
+                    break;
+                case 0x8A: // MOV reg,r/m byte size
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"MOVb %s,%s",CPUregs8[mrm.reg()],IPDecPrint16(mrm,disp,1));
+#endif
+                    break;
+                case 0x8B: // MOV reg,r/m word size
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"MOVw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+#endif
+                    break;
 
                 case 0x90:
 #ifdef DECOMPILEMODE

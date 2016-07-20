@@ -1874,3 +1874,50 @@ jmp1:
     xchg    word [bp+0x1234],dx
     xchg    word [bx+0x1234],dx
 
+; MOV 88-8B
+    mov     bl,cl
+    mov     bl,dl
+    mov     cl,dl
+    mov     dl,al
+
+    mov     bx,cx
+    mov     bx,dx
+    mov     cx,dx
+    mov     dx,ax
+
+    mov     byte [bx+si],cl
+    mov     byte [bx+di],dl
+    mov     byte [0x1234],dl
+    mov     byte [bx],dl
+    mov     byte [bx+si+0x1234],cl
+    mov     byte [bx+di+0x1234],dl
+    mov     byte [bp+0x1234],dl
+    mov     byte [bx+0x1234],dl
+
+    mov     word [bx+si],cx
+    mov     word [bx+di],dx
+    mov     word [0x1234],dx
+    mov     word [bx],dx
+    mov     word [bx+si+0x1234],cx
+    mov     word [bx+di+0x1234],dx
+    mov     word [bp+0x1234],dx
+    mov     word [bx+0x1234],dx
+
+    mov     cl,byte [bx+si]
+    mov     dl,byte [bx+di]
+    mov     dl,byte [0x1234]
+    mov     dl,byte [bx]
+    mov     cl,byte [bx+si+0x1234]
+    mov     dl,byte [bx+di+0x1234]
+    mov     dl,byte [bp+0x1234]
+    mov     dl,byte [bx+0x1234]
+
+    mov     cx,word [bx+si]
+    mov     dx,word [bx+di]
+    mov     dx,word [0x1234]
+    mov     dx,word [bx]
+    mov     cx,word [bx+si+0x1234]
+    mov     dx,word [bx+di+0x1234]
+    mov     dx,word [bp+0x1234]
+    mov     dx,word [bx+0x1234]
+
