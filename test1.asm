@@ -1816,3 +1816,32 @@ jmp1:
     cmp     word [0x1234],-0x56
     cmp     word [bx],-0x56
 
+; TEST 84h-85h
+    test    bl,cl           ; 84h
+    test    bl,dl           ; 84h
+    test    cl,dl
+    test    dl,al
+
+    test    bx,cx
+    test    bx,dx
+    test    cx,dx
+    test    dx,ax
+
+    test    byte [bx+si],cl
+    test    byte [bx+di],dl
+    test    byte [0x1234],dl
+    test    byte [bx],dl
+    test    byte [bx+si+0x1234],cl
+    test    byte [bx+di+0x1234],dl
+    test    byte [bp+0x1234],dl
+    test    byte [bx+0x1234],dl
+
+    test    word [bx+si],cx
+    test    word [bx+di],dx
+    test    word [0x1234],dx
+    test    word [bx],dx
+    test    word [bx+si+0x1234],cx
+    test    word [bx+di+0x1234],dx
+    test    word [bp+0x1234],dx
+    test    word [bx+0x1234],dx
+
