@@ -975,6 +975,34 @@ after_prefix:
 #endif
                     break;
 
+                case 0xE0:
+                    v16 = (uint16_t)IPFBsigned();
+                    v16 = (v16 + IPval()) & 0xFFFFU;
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"LOOPNZw %04Xh",v16);
+#endif
+                    break;
+                case 0xE1:
+                    v16 = (uint16_t)IPFBsigned();
+                    v16 = (v16 + IPval()) & 0xFFFFU;
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"LOOPZw %04Xh",v16);
+#endif
+                    break;
+                case 0xE2:
+                    v16 = (uint16_t)IPFBsigned();
+                    v16 = (v16 + IPval()) & 0xFFFFU;
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"LOOPw %04Xh",v16);
+#endif
+                    break;
+                case 0xE3:
+                    v16 = (uint16_t)IPFBsigned();
+                    v16 = (v16 + IPval()) & 0xFFFFU;
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"JCXZw %04Xh",v16);
+#endif
+                    break;
                 case 0xE4:
                     v8 = IPFB(); // immediate port number
 #ifdef DECOMPILEMODE

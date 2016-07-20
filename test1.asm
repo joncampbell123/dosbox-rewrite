@@ -2035,3 +2035,10 @@ jmp1:
 ; into
     into
 
+; loop/jcxz
+looptest1:
+    loopnz  looptest1
+    loopz   looptest1
+    loop    looptest1
+    jcxz    looptest1
+
