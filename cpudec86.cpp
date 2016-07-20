@@ -939,7 +939,11 @@ after_prefix:
                     w += snprintf(w,(size_t)(wf-w),"INTw %02Xh",v8);
 #endif
                     break;
-
+                case 0xCE:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"INTOw");
+#endif
+                    break;
                 case 0xCF:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"IRETw");
