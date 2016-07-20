@@ -875,14 +875,6 @@ after_prefix:
 #endif
                     break;
 
-                case 0xEB:
-                    v8 = IPFB();
-                    v16 = (IPval() + ((int8_t)v8)) & 0xFFFFU; /* need to sign-extend the byte. offset relative to first byte after Jcc instruction */
-#ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"JMPw %04Xh",v16);
-#endif
-                    break;
-
                 case 0xC2:
                     v16 = IPFW();
 #ifdef DECOMPILEMODE
@@ -974,6 +966,13 @@ after_prefix:
 #endif
                     break;
 
+                case 0xEB:
+                    v8 = IPFB();
+                    v16 = (IPval() + ((int8_t)v8)) & 0xFFFFU; /* need to sign-extend the byte. offset relative to first byte after Jcc instruction */
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"JMPw %04Xh",v16);
+#endif
+                    break;
                 case 0xEC:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"INb AL,DX");
