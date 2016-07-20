@@ -218,7 +218,46 @@ after_prefix:
                     w += snprintf(w,(size_t)(wf-w),"POP ES");
 #endif
                     break;
-
+                case 0x08: // OR r/m,reg byte size
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"ORb %s,%s",IPDecPrint16(mrm,disp,1),CPUregs8[mrm.reg()]);
+#endif
+                    break;
+                case 0x09: // OR r/m,reg word size
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"ORw %s,%s",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()]);
+#endif
+                    break;
+                case 0x0A: // OR reg,r/m byte size
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"ORb %s,%s",CPUregs8[mrm.reg()],IPDecPrint16(mrm,disp,1));
+#endif
+                    break;
+                case 0x0B: // OR reg,r/m word size
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"ORw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+#endif
+                    break;
+                case 0x0C: // OR AL,imm8
+                    v8 = IPFB();
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"ORb AL,%02xh",v8);
+#endif
+                    break;
+                case 0x0D: // OR AX,imm16
+                    v16 = IPFW();
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"ORw AX,%04xh",v16);
+#endif
+                    break;
                 case 0x0E:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"PUSH CS");
