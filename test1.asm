@@ -2049,3 +2049,53 @@ calltest1:
     jmp     0x1234:0x5678       ; EA
     jmp     short calltest1     ; EB
 
+; GRP2 D0
+    rol     al,1
+    rol     bl,1
+    rol     byte [bx+si],1
+    rol     byte [bx+di],1
+    rol     byte [0x1234],1
+
+    ror     al,1
+    ror     bl,1
+    ror     byte [bx+si],1
+    ror     byte [bx+di],1
+    ror     byte [0x1234],1
+
+    rcl     al,1
+    rcl     bl,1
+    rcl     byte [bx+si],1
+    rcl     byte [bx+di],1
+    rcl     byte [0x1234],1
+
+    rcr     al,1
+    rcr     bl,1
+    rcr     byte [bx+si],1
+    rcr     byte [bx+di],1
+    rcr     byte [0x1234],1
+
+    shl     al,1
+    shl     bl,1
+    shl     byte [bx+si],1
+    shl     byte [bx+di],1
+    shl     byte [0x1234],1
+
+    shr     al,1
+    shr     bl,1
+    shr     byte [bx+si],1
+    shr     byte [bx+di],1
+    shr     byte [0x1234],1
+
+; nasm/yasm won't encode SAL as SAL but as an alias of SHL
+    db      0xD0,0xF0           ; sal     al,1
+    db      0xD0,0xF0           ; sal     bl,1
+    db      0xD0,0x30           ; sal     byte [bx+si],1
+    db      0xD0,0x31           ; sal     byte [bx+di],1
+    db      0xD0,0x36,0x34,0x12 ; sal     byte [0x1234],1
+
+    sar     al,1
+    sar     bl,1
+    sar     byte [bx+si],1
+    sar     byte [bx+di],1
+    sar     byte [0x1234],1
+

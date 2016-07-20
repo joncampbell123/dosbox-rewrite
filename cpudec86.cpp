@@ -62,6 +62,13 @@ static const char *CPUGRP1[8] = {
     "XOR","CMP"
 };
 
+static const char *CPUGRP2[8] = {
+    "ROL","ROR",
+    "RCL","RCR",
+    "SHL","SHR",
+    "SAL","SAR"
+};
+
 static const char *CPUmod0displacement16[8] = {
     "BX+SI","BX+DI","BP+SI","BP+DI",
     "SI",   "DI",   "BP",   "BX"
@@ -951,6 +958,13 @@ after_prefix:
                 case 0xCF:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"IRETw");
+#endif
+                    break;
+                case 0xD0: // GRP2 r/m,1  NTS: undocumented reg==6 could be called "SAL", acts like "SHL"
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"%sb %s,1",CPUGRP2[mrm.reg()],IPDecPrint16(mrm,disp,1));
 #endif
                     break;
 
