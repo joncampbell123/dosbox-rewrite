@@ -76,6 +76,13 @@ static const char *CPUGRP3[8] = {
     "DIV","IDIV"
 };
 
+static const char *CPUGRP4[8] = {
+    "INC","DEC",
+    "CALL","CALLF", // reg==2 (CALL) or higher invalid unless opcode == 0xFF
+    "JMP","JMPF",
+    "PUSH","???"    // reg==7 illegal
+};
+
 static const char *CPUmod0displacement16[8] = {
     "BX+SI","BX+DI","BP+SI","BP+DI",
     "SI",   "DI",   "BP",   "BX"
@@ -1202,7 +1209,26 @@ after_prefix:
                     w += snprintf(w,(size_t)(wf-w),"STD");
 #endif
                     break;
-
+                case 0xFE:
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    if (mrm.reg() <= 1)
+                        w += snprintf(w,(size_t)(wf-w),"%sb %s",CPUGRP4[mrm.reg()],IPDecPrint16(mrm,disp,1));
+                    else // NTS: DOSBox 0.74 uses this opcode reg==7 for it's callback instruction which breaks the mod/reg/rm pattern
+                        w += snprintf(w,(size_t)(wf-w),"%sb %s","(illegal)",IPDecPrint16(mrm,disp,1));
+#endif
+                    break;
+                case 0xFF:
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    if (mrm.reg() != 7)
+                        w += snprintf(w,(size_t)(wf-w),"%sw %s",CPUGRP4[mrm.reg()],IPDecPrint16(mrm,disp,2));
+                    else
+                        w += snprintf(w,(size_t)(wf-w),"%sw %s","(illegal)",IPDecPrint16(mrm,disp,2));
+#endif
+                    break;
                 default:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"(invalid opcode %02Xh)",op1);

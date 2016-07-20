@@ -2300,3 +2300,73 @@ calltest1:
     div     word [bx+si]
     idiv    word [bx+si]
 
+; GRP4 FE-FF
+    inc     al
+    inc     ah
+    inc     bl
+    inc     bh
+    inc     byte [bx+si]
+    inc     byte [bx+di]
+    inc     byte [0x1234]
+    inc     byte [bx]
+
+    dec     al
+    dec     ah
+    dec     bl
+    dec     bh
+    dec     byte [bx+si]
+    dec     byte [bx+di]
+    dec     byte [0x1234]
+    dec     byte [bx]
+
+    db      0xFF,0xC0       ; inc     ax
+    db      0xFF,0xC3       ; inc     bx
+    db      0xFF,0xC1       ; inc     cx
+    db      0xFF,0xC2       ; inc     dx
+    inc     word [bx+si]
+    inc     word [bx+di]
+    inc     word [0x1234]
+    inc     word [bx]
+
+    db      0xFF,0xC8       ; dec     ax
+    db      0xFF,0xCB       ; dec     bx
+    db      0xFF,0xC9       ; dec     cx
+    db      0xFF,0xCA       ; dec     dx
+    dec     word [bx+si]
+    dec     word [bx+di]
+    dec     word [0x1234]
+    dec     word [bx]
+
+    call    ax
+    call    word [bx]
+    call    word [bx+si]
+    call    word [bx+di]
+    call    word [0x1234]
+    call    bx
+
+    jmp     ax
+    jmp     word [bx]
+    jmp     word [bx+si]
+    jmp     word [bx+di]
+    jmp     word [0x1234]
+    jmp     bx
+
+    call far word [bx]
+    call far word [bx+si]
+    call far word [bx+di]
+    call far word [0x1234]
+
+    jmp far word [bx]
+    jmp far word [bx+si]
+    jmp far word [bx+di]
+    jmp far word [0x1234]
+
+    push    word [bx]
+    push    word [bx+si]
+    push    word [bx+di]
+    push    word [0x1234]
+    db      0xFF,0xF0       ; PUSH AX
+    db      0xFF,0xF1       ; PUSH CX
+    db      0xFF,0xF2       ; PUSH DX
+    db      0xFF,0xF3       ; PUSH BX
+
