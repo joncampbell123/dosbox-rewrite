@@ -1159,7 +1159,7 @@ after_prefix:
                     }
 #endif
                     break;
-                case 0xF7: // GRP3 r/m reg > 1  or GRP3 r/m,imm8 reg <= 1  reg == 1 is not defined, but x86 opcode map geek edition lists it as alias of reg == 0
+                case 0xF7: // GRP3 r/m reg > 1  or GRP3 r/m,imm16 reg <= 1  reg == 1 is not defined, but x86 opcode map geek edition lists it as alias of reg == 0
                     mrm.set(IPFB());
                     disp = IPFmrmdisplace16(/*&*/mrm);
 #ifdef DECOMPILEMODE
