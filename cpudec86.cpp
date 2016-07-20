@@ -216,12 +216,12 @@ after_prefix:
                     break;
                 case 0x06:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"PUSH ES");
+                    w += snprintf(w,(size_t)(wf-w),"PUSHw ES");
 #endif
                     break;
                 case 0x07:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"POP ES");
+                    w += snprintf(w,(size_t)(wf-w),"POPw ES");
 #endif
                     break;
                 case 0x08: // OR r/m,reg byte size
@@ -266,12 +266,12 @@ after_prefix:
                     break;
                 case 0x0E:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"PUSH CS");
+                    w += snprintf(w,(size_t)(wf-w),"PUSHw CS");
 #endif
                     break;
                 case 0x0F: // 8086 only!
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"POP CS");
+                    w += snprintf(w,(size_t)(wf-w),"POPw CS");
 #endif
                     break;
                 case 0x10: // ADC r/m,reg byte size
@@ -316,12 +316,12 @@ after_prefix:
                     break;
                 case 0x16:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"PUSH SS");
+                    w += snprintf(w,(size_t)(wf-w),"PUSHw SS");
 #endif
                     break;
                 case 0x17:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"POP SS");
+                    w += snprintf(w,(size_t)(wf-w),"POPw SS");
 #endif
                     break;
                 case 0x18: // SBB r/m,reg byte size
@@ -366,12 +366,12 @@ after_prefix:
                     break;
                 case 0x1E:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"PUSH DS");
+                    w += snprintf(w,(size_t)(wf-w),"PUSHw DS");
 #endif
                     break;
                 case 0x1F:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"POP DS");
+                    w += snprintf(w,(size_t)(wf-w),"POPw DS");
 #endif
                     break;
                 case 0x20: // AND r/m,reg byte size
@@ -577,25 +577,25 @@ after_prefix:
                 case 0x40: case 0x41: case 0x42: case 0x43:
                 case 0x44: case 0x45: case 0x46: case 0x47:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"INC %s",CPUregs16[op1&7]);
+                    w += snprintf(w,(size_t)(wf-w),"INCw %s",CPUregs16[op1&7]);
 #endif
                     break;
                 case 0x48: case 0x49: case 0x4A: case 0x4B:
                 case 0x4C: case 0x4D: case 0x4E: case 0x4F:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"DEC %s",CPUregs16[op1&7]);
+                    w += snprintf(w,(size_t)(wf-w),"DECw %s",CPUregs16[op1&7]);
 #endif
                     break;
                 case 0x50: case 0x51: case 0x52: case 0x53:
                 case 0x54: case 0x55: case 0x56: case 0x57:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"PUSH %s",CPUregs16[op1&7]);
+                    w += snprintf(w,(size_t)(wf-w),"PUSHw %s",CPUregs16[op1&7]);
 #endif
                     break;
                 case 0x58: case 0x59: case 0x5A: case 0x5B:
                 case 0x5C: case 0x5D: case 0x5E: case 0x5F:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"POP %s",CPUregs16[op1&7]);
+                    w += snprintf(w,(size_t)(wf-w),"POPw %s",CPUregs16[op1&7]);
 #endif
                     break;
 
@@ -609,7 +609,7 @@ after_prefix:
                     v16 = (uint16_t)IPFBsigned();
                     v16 = (v16 + IPval()) & 0xFFFFU;
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"%s %04xh",CPUjcc7x[op1&15],v16);
+                    w += snprintf(w,(size_t)(wf-w),"%sw %04xh",CPUjcc7x[op1&15],v16);
 #endif
                     break;
                 case 0x80: // GRP1 byte r/m, imm8
@@ -728,17 +728,17 @@ after_prefix:
                     break;
                 case 0x91: case 0x92: case 0x93: case 0x94: case 0x95: case 0x96: case 0x97:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"XCHG %s,AX",CPUregs16[op1&7]);
+                    w += snprintf(w,(size_t)(wf-w),"XCHGw %s,AX",CPUregs16[op1&7]);
 #endif
                     break;
                 case 0x98:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"CBW");
+                    w += snprintf(w,(size_t)(wf-w),"CBWb");
 #endif
                     break;
                 case 0x99:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"CWD");
+                    w += snprintf(w,(size_t)(wf-w),"CWDw");
 #endif
                     break;
 
@@ -749,22 +749,22 @@ after_prefix:
                     break;
                 case 0x9C:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"PUSHF");
+                    w += snprintf(w,(size_t)(wf-w),"PUSHFw");
 #endif
                     break;
                 case 0x9D:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"POPF");
+                    w += snprintf(w,(size_t)(wf-w),"POPFw");
 #endif
                     break;
                 case 0x9E:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"SAHF");
+                    w += snprintf(w,(size_t)(wf-w),"SAHFb");
 #endif
                     break;
                 case 0x9F:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"LAHF");
+                    w += snprintf(w,(size_t)(wf-w),"LAHFb");
 #endif
                     break;
 
@@ -824,31 +824,31 @@ after_prefix:
                     v8 = IPFB();
                     v16 = (IPval() + ((int8_t)v8)) & 0xFFFFU; /* need to sign-extend the byte. offset relative to first byte after Jcc instruction */
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"JMP %04xh",v16);
+                    w += snprintf(w,(size_t)(wf-w),"JMPw %04xh",v16);
 #endif
                     break;
 
                 case 0xC2:
                     v16 = IPFW();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"RET %04xh",v16);
+                    w += snprintf(w,(size_t)(wf-w),"RETw %04xh",v16);
 #endif
                     break;
                 case 0xC3:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"RET");
+                    w += snprintf(w,(size_t)(wf-w),"RETw");
 #endif
                     break;
 
                 case 0xCA:
                     v16 = IPFW();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"RETF %04xh",v16);
+                    w += snprintf(w,(size_t)(wf-w),"RETFw %04xh",v16);
 #endif
                     break;
                 case 0xCB:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"RETF");
+                    w += snprintf(w,(size_t)(wf-w),"RETFw");
 #endif
                     break;
                 case 0xCC:
@@ -865,7 +865,7 @@ after_prefix:
 
                 case 0xCF:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"IRET");
+                    w += snprintf(w,(size_t)(wf-w),"IRETw");
 #endif
                     break;
 
@@ -890,53 +890,53 @@ after_prefix:
 
                 case 0xD7:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"XLAT");
+                    w += snprintf(w,(size_t)(wf-w),"XLATw");
 #endif
                     break;
 
                 case 0xE4:
                     v8 = IPFB(); // immediate port number
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"IN AL,%02xh",v8);
+                    w += snprintf(w,(size_t)(wf-w),"INb AL,%02xh",v8);
 #endif
                     break;
                 case 0xE5:
                     v8 = IPFB(); // immediate port number
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"IN AX,%02xh",v8);
+                    w += snprintf(w,(size_t)(wf-w),"INw AX,%02xh",v8);
 #endif
                     break;
                 case 0xE6:
                     v8 = IPFB(); // immediate port number
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"OUT %02xh,AL",v8);
+                    w += snprintf(w,(size_t)(wf-w),"OUTb %02xh,AL",v8);
 #endif
                     break;
                 case 0xE7:
                     v8 = IPFB(); // immediate port number
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"OUT %02xh,AX",v8);
+                    w += snprintf(w,(size_t)(wf-w),"OUTw %02xh,AX",v8);
 #endif
                     break;
 
                 case 0xEC:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"IN AL,DX");
+                    w += snprintf(w,(size_t)(wf-w),"INb AL,DX");
 #endif
                     break;
                 case 0xED:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"IN AX,DX");
+                    w += snprintf(w,(size_t)(wf-w),"INw AX,DX");
 #endif
                     break;
                 case 0xEE:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"OUT DX,AL");
+                    w += snprintf(w,(size_t)(wf-w),"OUTb DX,AL");
 #endif
                     break;
                 case 0xEF:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"OUT DX,AX");
+                    w += snprintf(w,(size_t)(wf-w),"OUTw DX,AX");
 #endif
                     break;
                 case 0xF0:
