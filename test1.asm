@@ -2508,3 +2508,52 @@ calltest1:
     fst     st6
     fst     st7
 
+; FSTP    | ESCAPE M F 1 | MOD 0 1 1 R/M |     ST(0) to integer/real memory
+; assemblers differentiate by using "FISTP" for integer load
+    fstp    dword [bx]                      ; MF=0 op 0xD9
+    fstp    dword [bx+si]
+    fstp    dword [bx+di+0x1234]
+    fstp    dword [si-6]
+    fistp   dword [bx]                      ; MF=1 op 0xDB
+    fistp   dword [bx+si]
+    fistp   dword [bx+di+0x1234]
+    fistp   dword [si-6]
+    fstp    qword [bx]                      ; MF=2 op 0xDD
+    fstp    qword [bx+si]
+    fstp    qword [bx+di+0x1234]
+    fstp    qword [si-6]
+    fistp   word [bx]                       ; MF=3 op 0xDF
+    fistp   word [bx+si]
+    fistp   word [bx+di+0x1234]
+    fistp   word [si-6]
+
+; FSTP    | ESCAPE 1 1 1 | MOD 1 1 1 R/M |     ST(0) to long integer memory
+; assemblers refer to this by "FISTP" and a 64-bit datatype
+    fistp   qword [bx]
+    fistp   qword [bx+si]
+    fistp   qword [bx+di+0x1234]
+    fistp   qword [si-6]
+
+; FSTP    | ESCAPE 0 1 1 | MOD 1 1 1 R/M |     ST(0) to temporary real memory
+    fstp    tword [bx]
+    fstp    tword [bx+si]
+    fstp    tword [bx+di+0x1234]
+    fstp    tword [si-6]
+
+; FSTP    | ESCAPE 1 1 1 | MOD 1 1 0 R/M |     ST(0) to packed BCD memory
+; assemblers refer to this by "FBSTP" and a 80-bit datatype
+    fbstp   tword [bx]
+    fbstp   tword [bx+si]
+    fbstp   tword [bx+di+0x1234]
+    fbstp   tword [si-6]
+
+; FSTP    | ESCAPE 1 0 1 | 1 1 0 1 1 R/M |     ST(0) to ST(i) where in R/M, MOD == 3, REG == 3, RM == FPU register index
+    fstp    st0
+    fstp    st1
+    fstp    st2
+    fstp    st3
+    fstp    st4
+    fstp    st5
+    fstp    st6
+    fstp    st7
+
