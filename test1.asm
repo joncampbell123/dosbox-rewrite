@@ -2099,3 +2099,53 @@ calltest1:
     sar     byte [bx+di],1
     sar     byte [0x1234],1
 
+; GRP2 D1
+    rol     ax,1
+    rol     bx,1
+    rol     word [bx+si],1
+    rol     word [bx+di],1
+    rol     word [0x1234],1
+
+    ror     ax,1
+    ror     bx,1
+    ror     word [bx+si],1
+    ror     word [bx+di],1
+    ror     word [0x1234],1
+
+    rcl     ax,1
+    rcl     bx,1
+    rcl     word [bx+si],1
+    rcl     word [bx+di],1
+    rcl     word [0x1234],1
+
+    rcr     ax,1
+    rcr     bx,1
+    rcr     word [bx+si],1
+    rcr     word [bx+di],1
+    rcr     word [0x1234],1
+
+    shl     ax,1
+    shl     bx,1
+    shl     word [bx+si],1
+    shl     word [bx+di],1
+    shl     word [0x1234],1
+
+    shr     ax,1
+    shr     bx,1
+    shr     word [bx+si],1
+    shr     word [bx+di],1
+    shr     word [0x1234],1
+
+; nasm/yasm won't encode SAL as SAL but as an alias of SHL
+    db      0xD1,0xF0           ; sal     ax,1
+    db      0xD1,0xF0           ; sal     bx,1
+    db      0xD1,0x30           ; sal     word [bx+si],1
+    db      0xD1,0x31           ; sal     word [bx+di],1
+    db      0xD1,0x36,0x34,0x12 ; sal     word [0x1234],1
+
+    sar     ax,1
+    sar     bx,1
+    sar     word [bx+si],1
+    sar     word [bx+di],1
+    sar     word [0x1234],1
+

@@ -967,6 +967,13 @@ after_prefix:
                     w += snprintf(w,(size_t)(wf-w),"%sb %s,1",CPUGRP2[mrm.reg()],IPDecPrint16(mrm,disp,1));
 #endif
                     break;
+                case 0xD1: // GRP2 r/m,1  NTS: undocumented reg==6 could be called "SAL", acts like "SHL"
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"%sw %s,1",CPUGRP2[mrm.reg()],IPDecPrint16(mrm,disp,2));
+#endif
+                    break;
 
                 case 0xD4:
                     v8 = IPFB();
