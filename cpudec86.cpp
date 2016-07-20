@@ -20,6 +20,15 @@ unsigned char*          exe_image_fence = NULL;
 
 #include <endian.h>
 
+#define case_span_2(x) \
+    case (x)+0: case (x)+1
+#define case_span_4(x) \
+    case_span_2(x): case_span_2((x)+2)
+#define case_span_8(x) \
+    case_span_4(x): case_span_4((x)+4)
+#define case_span_16(x) \
+    case_span_8(x): case_span_8((x)+8)
+
 static const char *CPUregs16[8] = {
     "AX","CX","DX","BX", "SP","BP","SI","DI"
 };
@@ -612,41 +621,33 @@ after_prefix:
                     w += snprintf(w,(size_t)(wf-w),"AAS");
 #endif
                     break;
-                case 0x40: case 0x41: case 0x42: case 0x43:
-                case 0x44: case 0x45: case 0x46: case 0x47:
+                case_span_8(0x40): // 0x40-0x47
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"INCw %s",CPUregs16[op1&7]);
 #endif
                     break;
-                case 0x48: case 0x49: case 0x4A: case 0x4B:
-                case 0x4C: case 0x4D: case 0x4E: case 0x4F:
+                case_span_8(0x48): // 0x48-0x4F
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"DECw %s",CPUregs16[op1&7]);
 #endif
                     break;
-                case 0x50: case 0x51: case 0x52: case 0x53:
-                case 0x54: case 0x55: case 0x56: case 0x57:
+                case_span_8(0x50): // 0x50-0x57
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"PUSHw %s",CPUregs16[op1&7]);
 #endif
                     break;
-                case 0x58: case 0x59: case 0x5A: case 0x5B:
-                case 0x5C: case 0x5D: case 0x5E: case 0x5F:
+                case_span_8(0x58): // 0x58-0x5F
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"POPw %s",CPUregs16[op1&7]);
 #endif
                     break;
                 // ALIAS 8086
+                // 8086: 60-6F not documented, but found to be aliases of 70-7F
+                // according to http://www.os2museum.com/wp/undocumented-8086-opcodes/
                 // TODO: Pull out the old IBM 5150 and check that these are alias
-                case 0x60: case 0x61: case 0x62: case 0x63: // 8086: 60-6F not documented, but found to be aliases of 70-7F
-                case 0x64: case 0x65: case 0x66: case 0x67: // according to http://www.os2museum.com/wp/undocumented-8086-opcodes/
-                case 0x68: case 0x69: case 0x6A: case 0x6B:
-                case 0x6C: case 0x6D: case 0x6E: case 0x6F:
+                case_span_16(0x60): // 0x60-0x6F
                 // END ALIAS
-                case 0x70: case 0x71: case 0x72: case 0x73:
-                case 0x74: case 0x75: case 0x76: case 0x77:
-                case 0x78: case 0x79: case 0x7A: case 0x7B:
-                case 0x7C: case 0x7D: case 0x7E: case 0x7F:
+                case_span_16(0x70): // 0x70-0x7F
                     v16 = (uint16_t)IPFBsigned();
                     v16 = (v16 + IPval()) & 0xFFFFU;
 #ifdef DECOMPILEMODE
@@ -900,15 +901,13 @@ after_prefix:
                     w += snprintf(w,(size_t)(wf-w),"SCASW");
 #endif
                     break;
-                case 0xB0: case 0xB1: case 0xB2: case 0xB3:
-                case 0xB4: case 0xB5: case 0xB6: case 0xB7:
+                case_span_8(0xB0):
                     v8 = IPFB();
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"MOV %s,%02Xh",CPUregs8[op1&7],v8);
 #endif
                     break;
-                case 0xB8: case 0xB9: case 0xBA: case 0xBB:
-                case 0xBC: case 0xBD: case 0xBE: case 0xBF:
+                case_span_8(0xB8):
                     v16 = IPFW();
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"MOV %s,%04Xh",CPUregs16[op1&7],v16);
