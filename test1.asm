@@ -1521,3 +1521,76 @@ jmp1:
     cmp     ax,0x1234
     cmp     ax,0xFEDC
 
+; GRP1 80h
+    add     byte [bx+si],0x12
+    add     byte [bx+di],0x12
+    add     byte [bp+si],0x12
+    add     byte [bp+di],0x12
+    add     byte [si],0x12
+    add     byte [di],0x12
+    add     byte [0x1234],0x12
+    add     byte [bx],0x12
+
+    or      byte [bx+si],0x12
+    or      byte [bx+di],0x12
+    or      byte [bp+si],0x12
+    or      byte [bp+di],0x12
+    or      byte [si],0x12
+    or      byte [di],0x12
+    or      byte [0x1234],0x12
+    or      byte [bx],0x12
+
+    adc     byte [bx+si],0x12
+    adc     byte [bx+di],0x12
+    adc     byte [bp+si],0x12
+    adc     byte [bp+di],0x12
+    adc     byte [si],0x12
+    adc     byte [di],0x12
+    adc     byte [0x1234],0x12
+    adc     byte [bx],0x12
+
+    sbb     byte [bx+si],0x12
+    sbb     byte [bx+di],0x12
+    sbb     byte [bp+si],0x12
+    sbb     byte [bp+di],0x12
+    sbb     byte [si],0x12
+    sbb     byte [di],0x12
+    sbb     byte [0x1234],0x12
+    sbb     byte [bx],0x12
+
+    and     byte [bx+si],0x12
+    and     byte [bx+di],0x12
+    and     byte [bp+si],0x12
+    and     byte [bp+di],0x12
+    and     byte [si],0x12
+    and     byte [di],0x12
+    and     byte [0x1234],0x12
+    and     byte [bx],0x12
+
+    sub     byte [bx+si],0x12
+    sub     byte [bx+di],0x12
+    sub     byte [bp+si],0x12
+    sub     byte [bp+di],0x12
+    sub     byte [si],0x12
+    sub     byte [di],0x12
+    sub     byte [0x1234],0x12
+    sub     byte [bx],0x12
+
+    xor     byte [bx+si],0x12
+    xor     byte [bx+di],0x12
+    xor     byte [bp+si],0x12
+    xor     byte [bp+di],0x12
+    xor     byte [si],0x12
+    xor     byte [di],0x12
+    xor     byte [0x1234],0x12
+    xor     byte [bx],0x12
+
+    cmp     byte [bx+si],0x12
+    cmp     byte [bx+di],0x12
+    cmp     byte [bp+si],0x12
+    cmp     byte [bp+di],0x12
+    cmp     byte [si],0x12
+    cmp     byte [di],0x12
+    cmp     byte [0x1234],0x12
+    cmp     byte [bx],0x12
+

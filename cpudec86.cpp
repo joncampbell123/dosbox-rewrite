@@ -55,6 +55,13 @@ static const char *CPUjcc7x[16] = {
     "JLE","JG"
 };
 
+static const char *CPUGRP1[8] = {
+    "ADD","OR",
+    "ADC","SBB",
+    "AND","SUB",
+    "XOR","CMP"
+};
+
 static const char *CPUmod0displacement16[8] = {
     "BX+SI","BX+DI","BP+SI","BP+DI",
     "SI",   "DI",   "BP",   "BX"
@@ -603,6 +610,14 @@ after_prefix:
                     v16 = (v16 + IPval()) & 0xFFFFU;
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"%s %04xh",CPUjcc7x[op1&15],v16);
+#endif
+                    break;
+                case 0x80: // GRP1 byte r/m, imm8
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    v8 = IPFB();
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"%s %s,%02xh",CPUGRP1[mrm.reg()],IPDecPrint16(mrm,disp,1),v8);
 #endif
                     break;
 
