@@ -617,7 +617,15 @@ after_prefix:
                     disp = IPFmrmdisplace16(/*&*/mrm);
                     v8 = IPFB();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"%s %s,%02xh",CPUGRP1[mrm.reg()],IPDecPrint16(mrm,disp,1),v8);
+                    w += snprintf(w,(size_t)(wf-w),"%sb %s,%02xh",CPUGRP1[mrm.reg()],IPDecPrint16(mrm,disp,1),v8);
+#endif
+                    break;
+                case 0x81: // GRP1 word r/m, imm16
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    v16 = IPFW();
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"%sw %s,%04xh",CPUGRP1[mrm.reg()],IPDecPrint16(mrm,disp,2),v16);
 #endif
                     break;
 

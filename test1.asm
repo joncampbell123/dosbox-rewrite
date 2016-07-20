@@ -1594,3 +1594,76 @@ jmp1:
     cmp     byte [0x1234],0x12
     cmp     byte [bx],0x12
 
+; GRP1 81h
+    add     word [bx+si],0x1234
+    add     word [bx+di],0x1234
+    add     word [bp+si],0x1234
+    add     word [bp+di],0x1234
+    add     word [si],0x1234
+    add     word [di],0x1234
+    add     word [0x1234],0x1234
+    add     word [bx],0x1234
+
+    or      word [bx+si],0x1234
+    or      word [bx+di],0x1234
+    or      word [bp+si],0x1234
+    or      word [bp+di],0x1234
+    or      word [si],0x1234
+    or      word [di],0x1234
+    or      word [0x1234],0x1234
+    or      word [bx],0x1234
+
+    adc     word [bx+si],0x1234
+    adc     word [bx+di],0x1234
+    adc     word [bp+si],0x1234
+    adc     word [bp+di],0x1234
+    adc     word [si],0x1234
+    adc     word [di],0x1234
+    adc     word [0x1234],0x1234
+    adc     word [bx],0x1234
+
+    sbb     word [bx+si],0x1234
+    sbb     word [bx+di],0x1234
+    sbb     word [bp+si],0x1234
+    sbb     word [bp+di],0x1234
+    sbb     word [si],0x1234
+    sbb     word [di],0x1234
+    sbb     word [0x1234],0x1234
+    sbb     word [bx],0x1234
+
+    and     word [bx+si],0x1234
+    and     word [bx+di],0x1234
+    and     word [bp+si],0x1234
+    and     word [bp+di],0x1234
+    and     word [si],0x1234
+    and     word [di],0x1234
+    and     word [0x1234],0x1234
+    and     word [bx],0x1234
+
+    sub     word [bx+si],0x1234
+    sub     word [bx+di],0x1234
+    sub     word [bp+si],0x1234
+    sub     word [bp+di],0x1234
+    sub     word [si],0x1234
+    sub     word [di],0x1234
+    sub     word [0x1234],0x1234
+    sub     word [bx],0x1234
+
+    xor     word [bx+si],0x1234
+    xor     word [bx+di],0x1234
+    xor     word [bp+si],0x1234
+    xor     word [bp+di],0x1234
+    xor     word [si],0x1234
+    xor     word [di],0x1234
+    xor     word [0x1234],0x1234
+    xor     word [bx],0x1234
+
+    cmp     word [bx+si],0x1234
+    cmp     word [bx+di],0x1234
+    cmp     word [bp+si],0x1234
+    cmp     word [bp+di],0x1234
+    cmp     word [si],0x1234
+    cmp     word [di],0x1234
+    cmp     word [0x1234],0x1234
+    cmp     word [bx],0x1234
+
