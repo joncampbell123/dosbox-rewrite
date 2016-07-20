@@ -69,6 +69,13 @@ static const char *CPUGRP2[8] = {
     "SAL","SAR"
 };
 
+static const char *CPUGRP3[8] = {
+    "TEST","TEST", // according to x86 opcode map geek edition, reg==1 is undefined alias of reg==0
+    "NOT","NEG",
+    "MUL","IMUL",
+    "DIV","IDIV"
+};
+
 static const char *CPUmod0displacement16[8] = {
     "BX+SI","BX+DI","BP+SI","BP+DI",
     "SI",   "DI",   "BP",   "BX"
@@ -1137,6 +1144,20 @@ after_prefix:
                 case 0xF5:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"CMC");
+#endif
+                    break;
+
+                case 0xF6: // GRP3 r/m reg > 1  or GRP3 r/m,imm8 reg <= 1  reg == 1 is not defined, but x86 opcode map geek edition lists it as alias of reg == 0
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    if (mrm.reg() <= 1) {
+                        v8 = IPFB();
+                        w += snprintf(w,(size_t)(wf-w),"%sb %s,%02Xh",CPUGRP3[mrm.reg()],IPDecPrint16(mrm,disp,1),v8);
+                    }
+                    else {
+                        w += snprintf(w,(size_t)(wf-w),"%sb %s",CPUGRP3[mrm.reg()],IPDecPrint16(mrm,disp,1));
+                    }
 #endif
                     break;
 

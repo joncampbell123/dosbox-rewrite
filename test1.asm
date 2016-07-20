@@ -2249,3 +2249,29 @@ calltest1:
     sar     word [bx+di],cl
     sar     word [0x1234],cl
 
+; GRP3 F6-F7
+    test    byte [bx+si],0x12
+    test    byte [bx+di],0x12
+    test    byte [0x1234],0x12
+    db      0xF6,0x08,0x12      ; TEST BYTE [BX+SI],0x12   reg == 1 undocumented alias
+    not     al
+    not     ah
+    not     bl
+    not     bh
+    neg     al
+    neg     bl
+    mul     al
+    mul     bl
+    imul    al
+    imul    bl
+    div     al
+    div     bl
+    idiv    al
+    idiv    bl
+    not     byte [bx+si]
+    neg     byte [bx+si]
+    mul     byte [bx+si]
+    imul    byte [bx+si]
+    div     byte [bx+si]
+    idiv    byte [bx+si]
+
