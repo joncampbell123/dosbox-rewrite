@@ -2625,3 +2625,6 @@ calltest1:
     fcomp   st6
     fcomp   st7
 
+; FCOMPP  | ESCAPE 1 1 0 | 1 1 0 1 1 0 0 1 |   Compare ST(1) to ST(0) and pop both
+    fcompp
+

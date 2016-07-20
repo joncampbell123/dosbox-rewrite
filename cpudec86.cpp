@@ -1403,6 +1403,12 @@ after_prefix:
                             w += snprintf(w,(size_t)(wf-w),"FCOMPd %s ; MF=16-bit integer",IPDecPrint16(mrm,disp,2,RC_FPUREG));
 #endif
                             break;
+
+                        case 0xD9: // FCOMPP  MOD == 3 REG == 3 RM == 1
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FCOMPP");
+#endif
+                            break;
                     };
                     break;
 
