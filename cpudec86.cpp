@@ -853,13 +853,13 @@ after_prefix:
                     break;
                 case 0xCC:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"INT3");
+                    w += snprintf(w,(size_t)(wf-w),"INT3w");
 #endif
                     break;
                 case 0xCD:
                     v8 = IPFB();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"INT %02Xh",v8);
+                    w += snprintf(w,(size_t)(wf-w),"INTw %02Xh",v8);
 #endif
                     break;
 
