@@ -592,6 +592,9 @@ after_prefix:
 #endif
                     break;
 
+                // 8086 does not have opcodes 0x60-0x6F.
+                // Though according to some sites, these opcodes are aliases of some other opcodes.
+
                 case 0x70: case 0x71: case 0x72: case 0x73:
                 case 0x74: case 0x75: case 0x76: case 0x77:
                 case 0x78: case 0x79: case 0x7A: case 0x7B:
