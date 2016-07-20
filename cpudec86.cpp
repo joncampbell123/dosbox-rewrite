@@ -1058,7 +1058,7 @@ after_prefix:
                 case 0xD9: // FPU ESCAPE + 0x1
                     mrm.set(IPFB());
                     disp = IPFmrmdisplace16(/*&*/mrm);
-                    switch (mrm.byte) { // NTS: byte & 0x3F to ignore MOD 
+                    switch (mrm.byte) {
                         case 0xD0: // FNOP
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"FNOP");
