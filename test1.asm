@@ -2469,3 +2469,13 @@ calltest1:
     fbld    tword [bx+di+0x1234]
     fbld    tword [si-6]
 
+; FLD     | ESCAPE 0 0 1 | 1 1 0 0 0 R/M |     ST(i) to ST(0) where in R/M, MOD == 3, REG == 0, RM == FPU register index
+    fld     st0
+    fld     st1
+    fld     st2
+    fld     st3
+    fld     st4
+    fld     st5
+    fld     st6
+    fld     st7
+
