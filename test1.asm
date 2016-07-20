@@ -1974,3 +1974,7 @@ jmp1:
     mov     [0x1234],al
     mov     [0x1234],ax
 
+; TEST A8-A9
+    test    al,0x12
+    test    ax,0x1234
+

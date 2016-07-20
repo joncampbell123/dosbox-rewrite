@@ -818,7 +818,18 @@ after_prefix:
                     w += snprintf(w,(size_t)(wf-w),"CMPSW");
 #endif
                     break;
-
+                case 0xA8:
+                    v8 = IPFB();
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"TEST AL,%02Xh",v8);
+#endif
+                    break;
+                case 0xA9:
+                    v16 = IPFW();
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"TEST AX,%04Xh",v16);
+#endif
+                    break;
                 case 0xAA:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"STOSB");
