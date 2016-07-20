@@ -1945,3 +1945,10 @@ jmp1:
     mov     ds,word [bx+di]
     mov     ds,word [0x1234]
 
+; lea
+    lea     ax,[si]
+    lea     ax,[bx+si]
+    lea     ax,[0x1234]
+    lea     ax,[bx+si+0x1234]
+    lea     bx,[bx+di-0x44]
+
