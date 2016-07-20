@@ -1978,3 +1978,13 @@ jmp1:
     test    al,0x12
     test    ax,0x1234
 
+; MOV B0-B7
+    mov     al,0x12
+    mov     cl,0x12
+    mov     dl,0x12
+    mov     bl,0x12
+    mov     ah,0x12
+    mov     ch,0x12
+    mov     dh,0x12
+    mov     bh,0x12
+
