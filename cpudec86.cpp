@@ -1059,6 +1059,20 @@ after_prefix:
                     mrm.set(IPFB());
                     disp = IPFmrmdisplace16(/*&*/mrm);
                     switch (mrm.byte) {
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/0): // FADD integer/real mem to ST(0)   MF == 0 32-bit real
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/0): // ESCAPE M F 0 | MOD 0 0 0 R/M     REG == 0 MOD == 0,1,2 RM == mem ref
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/0):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FADDd %s ; MF=32-bit real",IPDecPrint16(mrm,disp,4,RC_FPUREG));
+#endif
+                            break;
+                        case_span_by_mod_reg(/*mod*/3,/*reg*/0): // FADD ST(i) to ST(0)
+                                                                 // ESCAPE D P 0 | 1 1 0 0 0 R/M     REG == 0 MOD == 3 RM == FPU register index D == 0 P == 0
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FADD ST(0),ST(%u) ; ST(0) += ST(%u)",mrm.rm(),mrm.rm());
+#endif
+                            break;
+
                         case_span_by_mod_reg(/*mod*/0,/*reg*/2): // FCOM integer/real mem to ST(0)   MF == 0 32-bit real
                         case_span_by_mod_reg(/*mod*/1,/*reg*/2): // ESCAPE M F 0 | MOD 0 1 0 R/M     REG == 2 MOD == 0,1,2 RM == mem ref
                         case_span_by_mod_reg(/*mod*/2,/*reg*/2):
@@ -1258,6 +1272,24 @@ after_prefix:
                     mrm.set(IPFB());
                     disp = IPFmrmdisplace16(/*&*/mrm);
                     switch (mrm.byte) {
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/0): // FADD integer/real mem to ST(0)   MF == 1 32-bit integer
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/0): // ESCAPE M F 0 | MOD 0 0 0 R/M     REG == 0 MOD == 0,1,2 RM == mem ref
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/0):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FADDd %s ; MF=32-bit integer",IPDecPrint16(mrm,disp,4,RC_FPUREG));
+#endif
+                            break;
+                        // WARNING: This is how the 8087 would interpret this opcode, according to Intel's datasheet.
+                        //          Note that nobody would use this instruction because it is nonsensical (add to ST(0) then pop ST(0)).
+                        //          It's not defined or known yet how later processors (286, 386, 486, Pentium, etc.) handle this opcode.
+                        //          Later processors starting with the Pentium II re-define this opcode as FCMOVxx instructions.
+                        case_span_by_mod_reg(/*mod*/3,/*reg*/0): // FADD ST(i) to ST(0)
+                                                                 // ESCAPE D P 0 | 1 1 0 0 0 R/M     REG == 0 MOD == 3 RM == FPU register index D == 0 P == 1
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FADDP ST(0),ST(%u) ; ST(0) += ST(%u), POP",mrm.rm(),mrm.rm());
+#endif
+                            break;
+
                         case_span_by_mod_reg(/*mod*/0,/*reg*/2): // FCOM integer/real mem to ST(0)   MF == 1 32-bit integer
                         case_span_by_mod_reg(/*mod*/1,/*reg*/2): // ESCAPE M F 0 | MOD 0 1 0 R/M     REG == 2 MOD == 0,1,2 RM == mem ref
                         case_span_by_mod_reg(/*mod*/2,/*reg*/2):
@@ -1325,11 +1357,25 @@ after_prefix:
                     mrm.set(IPFB());
                     disp = IPFmrmdisplace16(/*&*/mrm);
                     switch (mrm.byte) {
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/0): // FADD integer/real mem to ST(0)   MF == 2 64-bit real
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/0): // ESCAPE M F 0 | MOD 0 0 0 R/M     REG == 0 MOD == 0,1,2 RM == mem ref
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/0):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FADDq %s ; MF=64-bit real",IPDecPrint16(mrm,disp,8,RC_FPUREG));
+#endif
+                            break;
+                        case_span_by_mod_reg(/*mod*/3,/*reg*/0): // FADD ST(0) to ST(i)
+                                                                 // ESCAPE D P 0 | 1 1 0 0 0 R/M     REG == 0 MOD == 3 RM == FPU register index D == 1 P == 0
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FADD ST(%u),ST(0) ; ST(%u) += ST(0)",mrm.rm(),mrm.rm());
+#endif
+                            break;
+
                         case_span_by_mod_reg(/*mod*/0,/*reg*/2): // FCOM integer/real mem to ST(0)   MF == 2 64-bit real
                         case_span_by_mod_reg(/*mod*/1,/*reg*/2): // ESCAPE M F 0 | MOD 0 1 0 R/M     REG == 2 MOD == 0,1,2 RM == mem ref
                         case_span_by_mod_reg(/*mod*/2,/*reg*/2):
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FCOMd %s ; MF=64-bit real",IPDecPrint16(mrm,disp,8,RC_FPUREG));
+                            w += snprintf(w,(size_t)(wf-w),"FCOMq %s ; MF=64-bit real",IPDecPrint16(mrm,disp,8,RC_FPUREG));
 #endif
                             break;
 
@@ -1337,7 +1383,7 @@ after_prefix:
                         case_span_by_mod_reg(/*mod*/1,/*reg*/3): // ESCAPE M F 0 | MOD 0 1 1 R/M     REG == 3 MOD == 0,1,2 RM == mem ref
                         case_span_by_mod_reg(/*mod*/2,/*reg*/3):
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FCOMPd %s ; MF=64-bit real",IPDecPrint16(mrm,disp,8,RC_FPUREG));
+                            w += snprintf(w,(size_t)(wf-w),"FCOMPq %s ; MF=64-bit real",IPDecPrint16(mrm,disp,8,RC_FPUREG));
 #endif
                             break;
                     };
@@ -1388,11 +1434,25 @@ after_prefix:
                     mrm.set(IPFB());
                     disp = IPFmrmdisplace16(/*&*/mrm);
                     switch (mrm.byte) {
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/0): // FADD integer/real mem to ST(0)   MF == 3 16-bit integer
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/0): // ESCAPE M F 0 | MOD 0 0 0 R/M     REG == 0 MOD == 0,1,2 RM == mem ref
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/0):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FADDw %s ; MF=16-bit integer",IPDecPrint16(mrm,disp,2,RC_FPUREG));
+#endif
+                            break;
+                        case_span_by_mod_reg(/*mod*/3,/*reg*/0): // FADD ST(0) to ST(i), POP
+                                                                 // ESCAPE D P 0 | 1 1 0 0 0 R/M     REG == 0 MOD == 3 RM == FPU register index D == 1 P == 1
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FADDP ST(%u),ST(0) ; ST(%u) += ST(0), POP",mrm.rm(),mrm.rm());
+#endif
+                            break;
+
                         case_span_by_mod_reg(/*mod*/0,/*reg*/2): // FCOM integer/real mem to ST(0)   MF == 3 16-bit integer
                         case_span_by_mod_reg(/*mod*/1,/*reg*/2): // ESCAPE M F 0 | MOD 0 1 0 R/M     REG == 2 MOD == 0,1,2 RM == mem ref
                         case_span_by_mod_reg(/*mod*/2,/*reg*/2):
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FCOMd %s ; MF=16-bit integer",IPDecPrint16(mrm,disp,2,RC_FPUREG));
+                            w += snprintf(w,(size_t)(wf-w),"FCOMw %s ; MF=16-bit integer",IPDecPrint16(mrm,disp,2,RC_FPUREG));
 #endif
                             break;
 
@@ -1400,7 +1460,7 @@ after_prefix:
                         case_span_by_mod_reg(/*mod*/1,/*reg*/3): // ESCAPE M F 0 | MOD 0 1 0 R/M     REG == 3 MOD == 0,1,2 RM == mem ref
                         case_span_by_mod_reg(/*mod*/2,/*reg*/3):
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FCOMPd %s ; MF=16-bit integer",IPDecPrint16(mrm,disp,2,RC_FPUREG));
+                            w += snprintf(w,(size_t)(wf-w),"FCOMPw %s ; MF=16-bit integer",IPDecPrint16(mrm,disp,2,RC_FPUREG));
 #endif
                             break;
 

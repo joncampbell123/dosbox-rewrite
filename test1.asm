@@ -2628,3 +2628,68 @@ calltest1:
 ; FCOMPP  | ESCAPE 1 1 0 | 1 1 0 1 1 0 0 1 |   Compare ST(1) to ST(0) and pop both
     fcompp
 
+; FADD    | ESCAPE M F 0 | MOD 0 0 0 R/M |     Add integer/real memory to ST(0)
+; also known as "FIADD" for integer addition
+    fadd    dword [bx]                      ; MF=0 op 0xD8
+    fadd    dword [bx+si]
+    fadd    dword [bx+di+0x1234]
+    fadd    dword [si-6]
+    fiadd   dword [bx]                      ; MF=1 op 0xDA
+    fiadd   dword [bx+si]
+    fiadd   dword [bx+di+0x1234]
+    fiadd   dword [si-6]
+    fadd    qword [bx]                      ; MF=2 op 0xDC
+    fadd    qword [bx+si]
+    fadd    qword [bx+di+0x1234]
+    fadd    qword [si-6]
+    fiadd   word [bx]                       ; MF=3 op 0xDE
+    fiadd   word [bx+si]
+    fiadd   word [bx+di+0x1234]
+    fiadd   word [si-6]
+
+; FADD    | ESCAPE d P 0 | 1 1 0 0 0 R/M |     Add ST(i) to ST(0) d=0 (destination is ST(0)) P=0 don't pop after add
+    fadd    st0,st0
+    fadd    st0,st1
+    fadd    st0,st2
+    fadd    st0,st3
+    fadd    st0,st4
+    fadd    st0,st5
+    fadd    st0,st6
+    fadd    st0,st7
+
+; FADD    | ESCAPE d P 0 | 1 1 0 0 0 R/M |     Add ST(i) to ST(0) d=0 (destination is ST(0)) P=1 pop after add
+; Note that YASM won't let me encode these directly. For one, they don't really make sense to use.
+; Why add something to ST(0) just to pop it off the stack?
+; Second, later i686 processors (Pentium II or higher) re-use these opcodes for the FCMOV instruction (conditional floating point move).
+; NASM's disassembler shows the following as FCMOVB instructions.
+; However, Intel's 8086 datasheet implies the original 8087 would treat this as a command to FADD and pop, so, that's what we're testing here.
+; The datasheet simply documents FADD ST(i),ST(0) as having a D and P (direction and pop) bit in bits 2 and 1 of the first opcode byte.
+    db      0xDA,0xC0       ; faddp   st0,st0
+    db      0xDA,0xC1       ; faddp   st0,st1   YASM won't let me encode this
+    db      0xDA,0xC2       ; faddp   st0,st2
+    db      0xDA,0xC3       ; faddp   st0,st3
+    db      0xDA,0xC4       ; faddp   st0,st4
+    db      0xDA,0xC5       ; faddp   st0,st5
+    db      0xDA,0xC6       ; faddp   st0,st6
+    db      0xDA,0xC7       ; faddp   st0,st7
+
+; FADD    | ESCAPE d P 0 | 1 1 0 0 0 R/M |     Add ST(i) to ST(0) d=1 (destination is ST(i)) P=0 don't pop after add
+    db      0xDC,0xC0       ; fadd    st0,st0
+    fadd    st1,st0
+    fadd    st2,st0
+    fadd    st3,st0
+    fadd    st4,st0
+    fadd    st5,st0
+    fadd    st6,st0
+    fadd    st7,st0
+
+; FADD    | ESCAPE d P 0 | 1 1 0 0 0 R/M |     Add ST(i) to ST(0) d=1 (destination is ST(i)) P=1 pop after add
+    faddp   st0,st0
+    faddp   st1,st0
+    faddp   st2,st0
+    faddp   st3,st0
+    faddp   st4,st0
+    faddp   st5,st0
+    faddp   st6,st0
+    faddp   st7,st0
+
