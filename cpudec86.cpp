@@ -40,8 +40,8 @@ static const char **CPUregsN[5] = {
     CPUregsZ                        // sz=4
 };
 
-static const char *CPUsregs[4] = {
-    "ES","CS","SS","DS"
+static const char *CPUsregs[8] = {
+    "ES","CS","SS","DS","","","",""
 };
 
 static const char *CPUjcc7x[16] = {
@@ -691,6 +691,22 @@ after_prefix:
                     disp = IPFmrmdisplace16(/*&*/mrm);
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"MOVw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+#endif
+                    break;
+
+                case 0x8C: // MOV r/m,sreg word size
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"MOVw %s,%s",IPDecPrint16(mrm,disp,2),CPUsregs[mrm.reg()]);
+#endif
+                    break;
+
+                case 0x8E: // MOV sreg,r/m word size
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"MOVw %s,%s",CPUsregs[mrm.reg()],IPDecPrint16(mrm,disp,2));
 #endif
                     break;
 

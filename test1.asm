@@ -1921,3 +1921,27 @@ jmp1:
     mov     dx,word [bp+0x1234]
     mov     dx,word [bx+0x1234]
 
+; mov r/m,sreg
+    mov     ax,cs
+    mov     cs,ax
+    mov     ax,ds
+    mov     ds,ax
+    mov     ax,es
+    mov     es,ax
+    mov     ax,ss
+    mov     ss,ax
+
+    mov     word [bx+si],cs
+    mov     word [bx+di],cs
+    mov     word [0x1234],cs
+    mov     cs,word [bx+si]
+    mov     cs,word [bx+di]
+    mov     cs,word [0x1234]
+
+    mov     word [bx+si],ds
+    mov     word [bx+di],ds
+    mov     word [0x1234],ds
+    mov     ds,word [bx+si]
+    mov     ds,word [bx+di]
+    mov     ds,word [0x1234]
+
