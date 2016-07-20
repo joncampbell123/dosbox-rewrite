@@ -103,6 +103,10 @@ static inline uint16_t IPFW(void) {
     return r;
 }
 
+static inline int32_t IPFWsigned(void) {
+    return (int32_t)((int16_t)IPFW());
+}
+
 static inline uint32_t IPFDW(void) {
     const uint32_t r = le32toh(*((const uint32_t*)exe_ip_ptr));
     exe_ip_ptr += 4;
@@ -1027,10 +1031,30 @@ after_prefix:
                     w += snprintf(w,(size_t)(wf-w),"OUTw %02Xh,AX",v8);
 #endif
                     break;
-
+                case 0xE8:
+                    v16 = (uint16_t)IPFWsigned();
+                    v16 = (v16 + IPval()) & 0xFFFFU;
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"CALLw %04Xh",v16);
+#endif
+                    break;
+                case 0xE9:
+                    v16 = (uint16_t)IPFWsigned();
+                    v16 = (v16 + IPval()) & 0xFFFFU;
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"JMPw %04Xh",v16);
+#endif
+                    break;
+                case 0xEA:
+                    v16 = IPFW();//offset
+                    v16b = IPFW();//segment
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"JMPw %04Xh:%04Xh",v16b,v16);
+#endif
+                    break;
                 case 0xEB:
-                    v8 = IPFB();
-                    v16 = (IPval() + ((int8_t)v8)) & 0xFFFFU; /* need to sign-extend the byte. offset relative to first byte after Jcc instruction */
+                    v16 = (uint16_t)IPFBsigned();
+                    v16 = (v16 + IPval()) & 0xFFFFU;
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"JMPw %04Xh",v16);
 #endif

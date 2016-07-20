@@ -2042,3 +2042,10 @@ looptest1:
     loop    looptest1
     jcxz    looptest1
 
+; CALL/JMP E8-EB
+calltest1:
+    call    near calltest1      ; E8
+    jmp     near calltest1      ; E9
+    jmp     0x1234:0x5678       ; EA
+    jmp     short calltest1     ; EB
+
