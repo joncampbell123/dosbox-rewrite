@@ -2437,6 +2437,15 @@ calltest1:
     fld     dword [bx+di+0x1234]
     fld     dword [si-6]
     fild    dword [bx]                      ; MF=1 op 0xDB
+    fild    dword [bx+si]
+    fild    dword [bx+di+0x1234]
+    fild    dword [si-6]
     fld     qword [bx]                      ; MF=2 op 0xDD
+    fld     qword [bx+si]
+    fld     qword [bx+di+0x1234]
+    fld     qword [si-6]
     fild    word [bx]                       ; MF=3 op 0xDF
+    fild    word [bx+si]
+    fild    word [bx+di+0x1234]
+    fild    word [si-6]
 
