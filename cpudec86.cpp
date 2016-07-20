@@ -212,7 +212,6 @@ after_prefix:
                     w += snprintf(w,(size_t)(wf-w),"PUSH ES");
 #endif
                     break;
-
                 case 0x07:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"POP ES");
@@ -263,7 +262,6 @@ after_prefix:
                     w += snprintf(w,(size_t)(wf-w),"PUSH CS");
 #endif
                     break;
-
                 case 0x0F: // 8086 only!
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"POP CS");
@@ -314,19 +312,56 @@ after_prefix:
                     w += snprintf(w,(size_t)(wf-w),"PUSH SS");
 #endif
                     break;
-
                 case 0x17:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"POP SS");
 #endif
                     break;
-
+                case 0x18: // SBB r/m,reg byte size
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"SBBb %s,%s",IPDecPrint16(mrm,disp,1),CPUregs8[mrm.reg()]);
+#endif
+                    break;
+                case 0x19: // SBB r/m,reg word size
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"SBBw %s,%s",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()]);
+#endif
+                    break;
+                case 0x1A: // SBB reg,r/m byte size
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"SBBb %s,%s",CPUregs8[mrm.reg()],IPDecPrint16(mrm,disp,1));
+#endif
+                    break;
+                case 0x1B: // SBB reg,r/m word size
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"SBBw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+#endif
+                    break;
+                case 0x1C: // SBB AL,imm8
+                    v8 = IPFB();
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"SBBb AL,%02xh",v8);
+#endif
+                    break;
+                case 0x1D: // SBB AX,imm16
+                    v16 = IPFW();
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"SBBw AX,%04xh",v16);
+#endif
+                    break;
                 case 0x1E:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"PUSH DS");
 #endif
                     break;
-
                 case 0x1F:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"POP DS");
