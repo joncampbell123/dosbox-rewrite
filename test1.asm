@@ -1951,6 +1951,9 @@ jmp1:
     lea     ax,[0x1234]
     lea     ax,[bx+si+0x1234]
     lea     bx,[bx+di-0x44]
+    db      0x8D,0xC0       ; LEA AX,AX (illegal, YASM won't encode it)
+    db      0x8D,0xC1       ; LEA AX,CX
+    db      0x8D,0xC8       ; LEA CX,AX
 
 ; pop 8Fh
     pop     word [si]

@@ -704,7 +704,7 @@ after_prefix:
                     mrm.set(IPFB());
                     disp = IPFmrmdisplace16(/*&*/mrm);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"LEAw %s,%s",CPUsregs[mrm.reg()],IPDecPrint16(mrm,disp,2));
+                    w += snprintf(w,(size_t)(wf-w),"LEAw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
 #endif
                     break;
                 case 0x8E: // MOV sreg,r/m word size
