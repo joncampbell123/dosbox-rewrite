@@ -1146,7 +1146,6 @@ after_prefix:
                     w += snprintf(w,(size_t)(wf-w),"CMC");
 #endif
                     break;
-
                 case 0xF6: // GRP3 r/m reg > 1  or GRP3 r/m,imm8 reg <= 1  reg == 1 is not defined, but x86 opcode map geek edition lists it as alias of reg == 0
                     mrm.set(IPFB());
                     disp = IPFmrmdisplace16(/*&*/mrm);
@@ -1160,7 +1159,19 @@ after_prefix:
                     }
 #endif
                     break;
-
+                case 0xF7: // GRP3 r/m reg > 1  or GRP3 r/m,imm8 reg <= 1  reg == 1 is not defined, but x86 opcode map geek edition lists it as alias of reg == 0
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    if (mrm.reg() <= 1) {
+                        v16 = IPFW();
+                        w += snprintf(w,(size_t)(wf-w),"%sb %s,%04Xh",CPUGRP3[mrm.reg()],IPDecPrint16(mrm,disp,2),v16);
+                    }
+                    else {
+                        w += snprintf(w,(size_t)(wf-w),"%sb %s",CPUGRP3[mrm.reg()],IPDecPrint16(mrm,disp,2));
+                    }
+#endif
+                    break;
                 case 0xF8:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"CLC");

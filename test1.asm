@@ -2275,3 +2275,28 @@ calltest1:
     div     byte [bx+si]
     idiv    byte [bx+si]
 
+    test    word [bx+si],0x1234
+    test    word [bx+di],0x1234
+    test    word [0x1234],0x1234
+    db      0xF7,0x08,0x32,0x12      ; TEST WORD [BX+SI],0x1234   reg == 1 undocumented alias
+    not     ax
+    not     bx
+    not     cx
+    not     dx
+    neg     ax
+    neg     bx
+    mul     ax
+    mul     bx
+    imul    ax
+    imul    bx
+    div     ax
+    div     bx
+    idiv    ax
+    idiv    bx
+    not     word [bx+si]
+    neg     word [bx+si]
+    mul     word [bx+si]
+    imul    word [bx+si]
+    div     word [bx+si]
+    idiv    word [bx+si]
+
