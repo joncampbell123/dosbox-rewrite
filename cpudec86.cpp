@@ -1198,6 +1198,12 @@ after_prefix:
 #endif
                             break;
 
+                        case_span_by_mod_reg(/*mod*/3,/*reg*/1): // FXCH ST(i) and ST(0)
+                                                                 // ESCAPE 0 0 1 | 1 1 0 0 1 R/M     REG == 1 MOD == 3 RM == FPU register index
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FXCH ST(%u)",mrm.rm());
+#endif
+                            break;
                         case_span_by_mod_reg(/*mod*/0,/*reg*/2): // FST ST(0) to integer/real mem    MF == 0 32-bit real
                         case_span_by_mod_reg(/*mod*/1,/*reg*/2): // ESCAPE M F 1 | MOD 0 1 0 R/M     REG == 2 MOD == 0,1,2 RM == mem ref
                         case_span_by_mod_reg(/*mod*/2,/*reg*/2):

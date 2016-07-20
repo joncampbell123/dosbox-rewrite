@@ -2557,3 +2557,13 @@ calltest1:
     fstp    st6
     fstp    st7
 
+; FXCH    | ESCAPE 0 0 1 | 1 1 0 0 1 R/M |     Exchange ST(0) and ST(i)
+    fxch    st0
+    fxch    st1
+    fxch    st2
+    fxch    st3
+    fxch    st4
+    fxch    st5
+    fxch    st6
+    fxch    st7
+
