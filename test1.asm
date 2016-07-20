@@ -2596,3 +2596,32 @@ calltest1:
     fcom    st6
     fcom    st7
 
+; FCOMP   | ESCAPE M F 0 | MOD 0 1 0 R/M |     Integer/Real compare to ST(0) and pop
+; also known as "FICOMP" for integer compares
+    fcomp   dword [bx]                      ; MF=0 op 0xD8
+    fcomp   dword [bx+si]
+    fcomp   dword [bx+di+0x1234]
+    fcomp   dword [si-6]
+    ficomp  dword [bx]                      ; MF=1 op 0xDA
+    ficomp  dword [bx+si]
+    ficomp  dword [bx+di+0x1234]
+    ficomp  dword [si-6]
+    fcomp   qword [bx]                      ; MF=2 op 0xDC
+    fcomp   qword [bx+si]
+    fcomp   qword [bx+di+0x1234]
+    fcomp   qword [si-6]
+    ficomp  word [bx]                       ; MF=3 op 0xDE
+    ficomp  word [bx+si]
+    ficomp  word [bx+di+0x1234]
+    ficomp  word [si-6]
+
+; FCOMP   | ESCAPE 0 0 0 | 1 1 0 1 0 R/M |     Compare ST(i) to ST(0) and pop
+    fcomp   st0
+    fcomp   st1
+    fcomp   st2
+    fcomp   st3
+    fcomp   st4
+    fcomp   st5
+    fcomp   st6
+    fcomp   st7
+

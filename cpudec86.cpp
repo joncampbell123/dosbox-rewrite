@@ -1072,6 +1072,19 @@ after_prefix:
                             w += snprintf(w,(size_t)(wf-w),"FCOM ST(%u)",mrm.rm());
 #endif
                             break;
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/3): // FCOMP integer/real mem to ST(0)  MF == 0 32-bit real
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/3): // ESCAPE M F 0 | MOD 0 1 1 R/M     REG == 3 MOD == 0,1,2 RM == mem ref
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/3):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FCOMPd %s ; MF=32-bit real",IPDecPrint16(mrm,disp,4,RC_FPUREG));
+#endif
+                            break;
+                        case_span_by_mod_reg(/*mod*/3,/*reg*/3): // FCOMP ST(i) to ST(0)
+                                                                 // ESCAPE 0 0 0 | 1 1 0 1 1 R/M     REG == 3 MOD == 3 RM == FPU register index
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FCOMP ST(%u)",mrm.rm());
+#endif
+                            break;
                     };
                     break;
 
@@ -1252,6 +1265,14 @@ after_prefix:
                             w += snprintf(w,(size_t)(wf-w),"FCOMd %s ; MF=32-bit integer",IPDecPrint16(mrm,disp,4,RC_FPUREG));
 #endif
                             break;
+
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/3): // FCOMP integer/real mem to ST(0)  MF == 1 32-bit integer
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/3): // ESCAPE M F 0 | MOD 0 1 1 R/M     REG == 3 MOD == 0,1,2 RM == mem ref
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/3):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FCOMPd %s ; MF=32-bit integer",IPDecPrint16(mrm,disp,4,RC_FPUREG));
+#endif
+                            break;
                     };
                     break;
 
@@ -1311,6 +1332,14 @@ after_prefix:
                             w += snprintf(w,(size_t)(wf-w),"FCOMd %s ; MF=64-bit real",IPDecPrint16(mrm,disp,8,RC_FPUREG));
 #endif
                             break;
+
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/3): // FCOMP integer/real mem to ST(0)  MF == 2 64-bit real
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/3): // ESCAPE M F 0 | MOD 0 1 1 R/M     REG == 3 MOD == 0,1,2 RM == mem ref
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/3):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FCOMPd %s ; MF=64-bit real",IPDecPrint16(mrm,disp,8,RC_FPUREG));
+#endif
+                            break;
                     };
                     break;
 
@@ -1364,6 +1393,14 @@ after_prefix:
                         case_span_by_mod_reg(/*mod*/2,/*reg*/2):
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"FCOMd %s ; MF=16-bit integer",IPDecPrint16(mrm,disp,2,RC_FPUREG));
+#endif
+                            break;
+
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/3): // FCOMP integer/real mem to ST(0)  MF == 3 16-bit integer
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/3): // ESCAPE M F 0 | MOD 0 1 0 R/M     REG == 3 MOD == 0,1,2 RM == mem ref
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/3):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FCOMPd %s ; MF=16-bit integer",IPDecPrint16(mrm,disp,2,RC_FPUREG));
 #endif
                             break;
                     };
