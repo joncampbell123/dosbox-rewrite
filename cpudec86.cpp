@@ -900,6 +900,22 @@ after_prefix:
                     w += snprintf(w,(size_t)(wf-w),"LDSw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
 #endif
                     break;
+                case 0xC6: // MOV r/m,imm8
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    v8 = IPFB();
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"MOVb %s,%02Xh",IPDecPrint16(mrm,disp,1),v8);
+#endif
+                    break;
+                case 0xC7: // MOV r/m,imm16
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    v16 = IPFW();
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"MOVw %s,%04Xh",IPDecPrint16(mrm,disp,2),v16);
+#endif
+                    break;
 
                 case 0xCA:
                     v16 = IPFW();
