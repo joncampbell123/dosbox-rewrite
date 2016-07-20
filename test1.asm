@@ -1998,3 +1998,13 @@ jmp1:
     mov     si,0x1234
     mov     di,0x1234
 
+; les
+    les     ax,[si]
+    les     ax,[bx+si]
+    les     ax,[0x1234]
+    les     ax,[bx+si+0x1234]
+    les     bx,[bx+di-0x44]
+    db      0xC4,0xC0       ; LES AX,AX (illegal, YASM won't encode it)
+    db      0xC4,0xC1       ; LES AX,CX
+    db      0xC4,0xC8       ; LES CX,AX
+

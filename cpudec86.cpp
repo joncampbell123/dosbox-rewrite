@@ -886,6 +886,13 @@ after_prefix:
                     w += snprintf(w,(size_t)(wf-w),"RETw");
 #endif
                     break;
+                case 0xC4: // LES reg,r/m word size
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"LESw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+#endif
+                    break;
 
                 case 0xCA:
                     v16 = IPFW();
