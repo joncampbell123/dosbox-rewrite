@@ -2449,10 +2449,16 @@ calltest1:
     fild    word [bx+di+0x1234]
     fild    word [si-6]
 
-; FLD     | ESCAPE 1 1 1 | MOD 0 0 0 R/M |     long integer memory to ST(0)
+; FLD     | ESCAPE 1 1 1 | MOD 1 0 1 R/M |     long integer memory to ST(0)
 ; assemblers refer to this by "FILD" and a 64-bit datatype
     fild    qword [bx]
     fild    qword [bx+si]
     fild    qword [bx+di+0x1234]
     fild    qword [si-6]
+
+; FLD     | ESCAPE 0 1 1 | MOD 1 0 1 R/M |     temporary real memory to ST(0)
+    fld     tword [bx]
+    fld     tword [bx+si]
+    fld     tword [bx+di+0x1234]
+    fld     tword [si-6]
 

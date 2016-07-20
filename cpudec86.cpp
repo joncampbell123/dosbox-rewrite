@@ -1205,6 +1205,14 @@ after_prefix:
                             w += snprintf(w,(size_t)(wf-w),"FLDd %s ; MF=32-bit integer",IPDecPrint16(mrm,disp,4,RC_FPUREG));
 #endif
                             break;
+
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/5): // FLD temporary real (80) mem to ST(0)
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/5): // ESCAPE 0 1 1 | MOD 1 0 1 R/M     REG == 5 MOD == 0,1,2 RM == mem ref
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/5):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FLDt %s ; MF=80-bit temporary real",IPDecPrint16(mrm,disp,10,RC_FPUREG));
+#endif
+                            break;
                     };
                     break;
 
