@@ -2370,3 +2370,8 @@ calltest1:
     db      0xFF,0xF2       ; PUSH DX
     db      0xFF,0xF3       ; PUSH BX
 
+    db      0xFE,0x10       ; illegal FE (byte CALL!)
+    db      0xFE,0x18       ; illegal FE (byte CALL FAR)
+
+    db      0xFF,0xFF       ; illegal FF
+
