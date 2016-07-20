@@ -1242,6 +1242,14 @@ after_prefix:
 #endif
                             break;
 
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/4): // FLD packed BCD (80) mem to ST(0)
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/4): // ESCAPE 1 1 1 | MOD 1 0 0 R/M     REG == 4 MOD == 0,1,2 RM == mem ref
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/4):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FBLDt %s ; MF=80-bit packed BCD",IPDecPrint16(mrm,disp,10,RC_FPUREG));
+#endif
+                            break;
+
                         case_span_by_mod_reg(/*mod*/0,/*reg*/5): // FLD long integer (64) mem to ST(0)
                         case_span_by_mod_reg(/*mod*/1,/*reg*/5): // ESCAPE 1 1 1 | MOD 1 0 1 R/M     REG == 5 MOD == 0,1,2 RM == mem ref
                         case_span_by_mod_reg(/*mod*/2,/*reg*/5):

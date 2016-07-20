@@ -2462,3 +2462,10 @@ calltest1:
     fld     tword [bx+di+0x1234]
     fld     tword [si-6]
 
+; FLD     | ESCAPE 1 1 1 | MOD 1 0 0 R/M |     packed BCD memory to ST(0)
+; assemblers refer to this by "FBLD" and a 80-bit datatype
+    fbld    tword [bx]
+    fbld    tword [bx+si]
+    fbld    tword [bx+di+0x1234]
+    fbld    tword [si-6]
+
