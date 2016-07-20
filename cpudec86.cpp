@@ -155,8 +155,13 @@ static inline uint8_t IPDec8abs(uint8_t v) {
     return v;
 }
 
+enum IPDecRegClass {
+    RC_REG=0,
+    RC_FPUREG
+};
+
 // print 16-bit code form of mod/reg/rm with displacement
-const char *IPDecPrint16(const x86ModRegRm &mrm,const x86_offset_t ofs,const unsigned int sz) {
+const char *IPDecPrint16(const x86ModRegRm &mrm,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass=RC_REG) {
     static char tmp[64];
     char *w=tmp,*wf=tmp+sizeof(tmp)-1;
 
@@ -174,7 +179,14 @@ const char *IPDecPrint16(const x86ModRegRm &mrm,const x86_offset_t ofs,const uns
             w += snprintf(w,(size_t)(wf-w),"[%s+%04Xh]",CPUmod0displacement16[mrm.rm()],(uint16_t)ofs);
             break;
         case 3: // register
-            w += snprintf(w,(size_t)(wf-w),"%s",CPUregsN[sz][mrm.rm()]);
+            switch (regclass) {
+                case RC_REG:
+                    w += snprintf(w,(size_t)(wf-w),"%s",CPUregsN[sz][mrm.rm()]);
+                    break;
+                case RC_FPUREG: // Floating point registers
+                    w += snprintf(w,(size_t)(wf-w),"ST(%u)",mrm.rm());
+                    break;
+            };
             break;
     }
 
@@ -1043,133 +1055,145 @@ after_prefix:
                 case 0xD9: // FPU ESCAPE + 0x1
                     mrm.set(IPFB());
                     disp = IPFmrmdisplace16(/*&*/mrm);
-                    switch (mrm.byte) {
-                        case 0xD0: // FNOP
+                    if (mrm.mod() == 3) {
+                        switch (mrm.byte) { // FIXME: Could we AND this with 0x3F to reduce the possible outcomes and encourage GCC to make a jumptable?
+                            case 0xD0: // FNOP
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FNOP");
+                                w += snprintf(w,(size_t)(wf-w),"FNOP");
 #endif
-                            break;
+                                break;
 
-                        case 0xE0: // FCHS
+                            case 0xE0: // FCHS
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FCHS");
+                                w += snprintf(w,(size_t)(wf-w),"FCHS");
 #endif
-                            break;
-                        case 0xE1: // FABS
+                                break;
+                            case 0xE1: // FABS
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FABS");
+                                w += snprintf(w,(size_t)(wf-w),"FABS");
 #endif
-                            break;
-                        case 0xE4: // FTST
+                                break;
+                            case 0xE4: // FTST
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FTST");
+                                w += snprintf(w,(size_t)(wf-w),"FTST");
 #endif
-                            break;
-                        case 0xE5: // FXAM
+                                break;
+                            case 0xE5: // FXAM
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FXAM");
+                                w += snprintf(w,(size_t)(wf-w),"FXAM");
 #endif
-                            break;
+                                break;
 
-                        case 0xE8: // FLD1
+                            case 0xE8: // FLD1
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FLD1");
+                                w += snprintf(w,(size_t)(wf-w),"FLD1");
 #endif
-                            break;
-                        case 0xE9: // FLDL2T
+                                break;
+                            case 0xE9: // FLDL2T
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FLDL2T");
+                                w += snprintf(w,(size_t)(wf-w),"FLDL2T");
 #endif
-                            break;
-                        case 0xEA: // FLDL2E
+                                break;
+                            case 0xEA: // FLDL2E
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FLDL2E");
+                                w += snprintf(w,(size_t)(wf-w),"FLDL2E");
 #endif
-                            break;
-                        case 0xEB: // FLDPI
+                                break;
+                            case 0xEB: // FLDPI
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FLDPI");
+                                w += snprintf(w,(size_t)(wf-w),"FLDPI");
 #endif
-                            break;
-                        case 0xEC: // FLDLG2
+                                break;
+                            case 0xEC: // FLDLG2
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FLDLG2");
+                                w += snprintf(w,(size_t)(wf-w),"FLDLG2");
 #endif
-                            break;
-                        case 0xED: // FLDLN2
+                                break;
+                            case 0xED: // FLDLN2
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FLDLN2");
+                                w += snprintf(w,(size_t)(wf-w),"FLDLN2");
 #endif
-                            break;
-                        case 0xEE: // FLDZ
+                                break;
+                            case 0xEE: // FLDZ
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FLDZ");
+                                w += snprintf(w,(size_t)(wf-w),"FLDZ");
 #endif
-                            break;
+                                break;
 
-                        case 0xF0: // F2XM1
+                            case 0xF0: // F2XM1
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"F2XM1");
+                                w += snprintf(w,(size_t)(wf-w),"F2XM1");
 #endif
-                            break;
-                        case 0xF1: // FYL2X
+                                break;
+                            case 0xF1: // FYL2X
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FYL2X");
+                                w += snprintf(w,(size_t)(wf-w),"FYL2X");
 #endif
-                            break;
-                        case 0xF2: // FPTAN
+                                break;
+                            case 0xF2: // FPTAN
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FPTAN");
+                                w += snprintf(w,(size_t)(wf-w),"FPTAN");
 #endif
-                            break;
-                        case 0xF3: // FPATAN
+                                break;
+                            case 0xF3: // FPATAN
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FPATAN");
+                                w += snprintf(w,(size_t)(wf-w),"FPATAN");
 #endif
-                            break;
-                        case 0xF4: // FXTRACT
+                                break;
+                            case 0xF4: // FXTRACT
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FXTRACT");
+                                w += snprintf(w,(size_t)(wf-w),"FXTRACT");
 #endif
-                            break;
+                                break;
 
-                        case 0xF6: // FDECSTP
+                            case 0xF6: // FDECSTP
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FDECSTP");
+                                w += snprintf(w,(size_t)(wf-w),"FDECSTP");
 #endif
-                            break;
-                        case 0xF7: // FINCSTP
+                                break;
+                            case 0xF7: // FINCSTP
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FINCSTP");
+                                w += snprintf(w,(size_t)(wf-w),"FINCSTP");
 #endif
-                            break;
-                        case 0xF8: // FPREM
+                                break;
+                            case 0xF8: // FPREM
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FPREM");
+                                w += snprintf(w,(size_t)(wf-w),"FPREM");
 #endif
-                            break;
-                        case 0xF9: // FYL2XP1
+                                break;
+                            case 0xF9: // FYL2XP1
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FYL2XP1");
+                                w += snprintf(w,(size_t)(wf-w),"FYL2XP1");
 #endif
-                            break;
-                        case 0xFA: // FSQRT
+                                break;
+                            case 0xFA: // FSQRT
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FSQRT");
+                                w += snprintf(w,(size_t)(wf-w),"FSQRT");
 #endif
-                            break;
+                                break;
 
-                        case 0xFC: // FRNDINT
+                            case 0xFC: // FRNDINT
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FRNDINT");
+                                w += snprintf(w,(size_t)(wf-w),"FRNDINT");
 #endif
-                            break;
-                        case 0xFD: // FSCALE
+                                break;
+                            case 0xFD: // FSCALE
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FSCALE");
+                                w += snprintf(w,(size_t)(wf-w),"FSCALE");
 #endif
-                            break;
-                    };
+                                break;
+                        };
+                    }
+                    else {
+                        /* anything not mod == 3 tends to use r/m memory location and reg to differentiate instruction */
+                        switch (mrm.reg()) {
+                            case 0: // FLD integer/real memory to ST(0)  ESCAPE M F 1 | MOD 0 0 0 R/M   where MF == 0 therefore 32-bit real
+#ifdef DECOMPILEMODE
+                                w += snprintf(w,(size_t)(wf-w),"FLDd %s",IPDecPrint16(mrm,disp,2,RC_FPUREG));
+#endif
+                                break;
+                        };
+                    }
                     break;
 
                 case 0xE0:

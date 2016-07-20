@@ -2414,3 +2414,26 @@ calltest1:
     frndint                 ; 0xD9(ESC + 0x1) 0xFC
     fscale                  ; 0xD9(ESC + 0x1) 0xFD
 
+; FPU, going down the instruction list in Intel's 8087 datasheet
+; Ref:
+;   word integer: 16-bit two's complement
+;   short integer: 32-bit two's complement
+;   long integer: 64-bit two's complement
+;   packed BCD: 10-byte packed BCD
+;   short real: 32-bit float
+;   long real: 64-bit float
+;   temporary real: 80-bit float
+;
+; Memory Format (MF) bits
+;   00b = 32-bit real
+;   01b = 32-bit integer
+;   10b = 64-bit real
+;   11b = 16-bit integer
+
+; FLD     | ESCAPE M F 1 | MOD 0 0 0 R/M |     integer/real memory to ST(0)
+; assemblers differentiate by using "FILD" for integer load
+    fld     dword [bx]                      ; MF=0 op 0xD9
+    fild    dword [bx]                      ; MF=1 op 0xDB
+    fld     qword [bx]                      ; MF=2 op 0xDD
+    fild    word [bx]                       ; MF=3 op 0xDF
+
