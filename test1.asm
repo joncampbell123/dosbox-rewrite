@@ -1667,3 +1667,6 @@ jmp1:
     cmp     word [0x1234],0x1234
     cmp     word [bx],0x1234
 
+; GRP1 82h alias
+    db      0x82,0x00,0x12
+

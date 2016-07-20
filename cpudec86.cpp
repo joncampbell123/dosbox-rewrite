@@ -613,6 +613,7 @@ after_prefix:
 #endif
                     break;
                 case 0x80: // GRP1 byte r/m, imm8
+                case 0x82: // GRP1 byte r/m, imm8 alias
                     mrm.set(IPFB());
                     disp = IPFmrmdisplace16(/*&*/mrm);
                     v8 = IPFB();
