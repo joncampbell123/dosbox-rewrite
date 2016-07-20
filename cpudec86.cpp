@@ -867,6 +867,13 @@ after_prefix:
                     w += snprintf(w,(size_t)(wf-w),"MOV %s,%02Xh",CPUregs8[op1&7],v8);
 #endif
                     break;
+                case 0xB8: case 0xB9: case 0xBA: case 0xBB:
+                case 0xBC: case 0xBD: case 0xBE: case 0xBF:
+                    v16 = IPFW();
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"MOV %s,%04Xh",CPUregs16[op1&7],v16);
+#endif
+                    break;
 
                 case 0xEB:
                     v8 = IPFB();

@@ -1988,3 +1988,13 @@ jmp1:
     mov     dh,0x12
     mov     bh,0x12
 
+; MOV B8-BF
+    mov     ax,0x1234
+    mov     cx,0x1234
+    mov     dx,0x1234
+    mov     bx,0x1234
+    mov     sp,0x1234
+    mov     bp,0x1234
+    mov     si,0x1234
+    mov     di,0x1234
+
