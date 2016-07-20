@@ -1968,3 +1968,9 @@ jmp1:
     call    0x1234:0x5678
     call    0xABCD:0x1234
 
+; MOV 0xA0-0xA3
+    mov     al,[0x1234]
+    mov     ax,[0x1234]
+    mov     [0x1234],al
+    mov     [0x1234],ax
+

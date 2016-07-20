@@ -774,7 +774,30 @@ after_prefix:
                     w += snprintf(w,(size_t)(wf-w),"LAHFb");
 #endif
                     break;
-
+                case 0xA0:
+                    v16 = IPFW();
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"MOVw AL,[%04Xh]",v16);
+#endif
+                    break;
+                case 0xA1:
+                    v16 = IPFW();
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"MOVw AX,[%04Xh]",v16);
+#endif
+                    break;
+                case 0xA2:
+                    v16 = IPFW();
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"MOVw [%04Xh],AL",v16);
+#endif
+                    break;
+                case 0xA3:
+                    v16 = IPFW();
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"MOVw [%04Xh],AX",v16);
+#endif
+                    break;
                 case 0xA4:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"MOVSB");
