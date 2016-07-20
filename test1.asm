@@ -1023,3 +1023,169 @@ jmp1:
     and     ax,0x1234
     and     ax,0xFEDC
 
+;--------------byte
+    sub     byte [bx+si],bl ; 00 m/r/m mod=0
+    sub     byte [bx+di],bl ; 00 m/r/m mod=0
+    sub     byte [bp+si],bl ; 00 m/r/m mod=0
+    sub     byte [bp+di],bl ; 00 m/r/m mod=0
+    sub     byte [si],bl    ; 00 m/r/m mod=0
+    sub     byte [di],bl    ; 00 m/r/m mod=0
+    sub     byte [0x1234],bl; 00 m/r/m mod=0
+    sub     byte [bx],bl    ; 00 m/r/m mod=0
+
+    sub     byte [bx+si+0x5F],bl ; 40 m/r/m mod=1
+    sub     byte [bx+si-0x5F],bl
+    sub     byte [bx+di+0x5F],bl ; 40 m/r/m mod=1
+    sub     byte [bx+di-0x5F],bl
+    sub     byte [bp+si+0x5F],bl ; 40 m/r/m mod=1
+    sub     byte [bp+si-0x5F],bl
+    sub     byte [bp+di+0x5F],bl ; 40 m/r/m mod=1
+    sub     byte [bp+di-0x5F],bl
+    sub     byte [si+0x5F],bl ; 40 m/r/m mod=1
+    sub     byte [si-0x5F],bl
+    sub     byte [di+0x5F],bl ; 40 m/r/m mod=1
+    sub     byte [di-0x5F],bl
+    sub     byte [bp+0x5F],bl ; 40 m/r/m mod=1
+    sub     byte [bp-0x5F],bl
+    sub     byte [bx+0x5F],bl ; 40 m/r/m mod=1
+    sub     byte [bx-0x5F],bl
+
+    sub     byte [bx+si+0x1234],bl
+    sub     byte [bx+di+0x1234],bl
+    sub     byte [bp+si+0x1234],bl
+    sub     byte [bp+di+0x1234],bl
+    sub     byte [si+0x1234],bl
+    sub     byte [di+0x1234],bl
+    sub     byte [bp+0x1234],bl
+    sub     byte [bx+0x1234],bl
+    sub     bl,al           ; 00 m/r/m mod=3
+    sub     bl,cl           ; 00 m/r/m mod=3
+    sub     bl,dl           ; 00 m/r/m mod=3
+    sub     bl,bl           ; 00 m/r/m mod=3
+    sub     bl,ah
+    sub     bl,ch
+    sub     bl,dh
+    sub     bl,bh
+
+;--------------word
+    sub     word [bx+si],bx ; 00 m/r/m mod=0
+    sub     word [bx+di],bx ; 00 m/r/m mod=0
+    sub     word [bp+si],bx ; 00 m/r/m mod=0
+    sub     word [bp+di],bx ; 00 m/r/m mod=0
+    sub     word [si],bx    ; 00 m/r/m mod=0
+    sub     word [di],bx    ; 00 m/r/m mod=0
+    sub     word [0x1234],bx; 00 m/r/m mod=0
+    sub     word [bx],bx    ; 00 m/r/m mod=0
+
+    sub     word [bx+si+0x5F],bx ; 40 m/r/m mod=1
+    sub     word [bx+si-0x5F],bx
+    sub     word [bx+di+0x5F],bx ; 40 m/r/m mod=1
+    sub     word [bx+di-0x5F],bx
+    sub     word [bp+si+0x5F],bx ; 40 m/r/m mod=1
+    sub     word [bp+si-0x5F],bx
+    sub     word [bp+di+0x5F],bx ; 40 m/r/m mod=1
+    sub     word [bp+di-0x5F],bx
+    sub     word [si+0x5F],bx ; 40 m/r/m mod=1
+    sub     word [si-0x5F],bx
+    sub     word [di+0x5F],bx ; 40 m/r/m mod=1
+    sub     word [di-0x5F],bx
+    sub     word [bp+0x5F],bx ; 40 m/r/m mod=1
+    sub     word [bp-0x5F],bx
+    sub     word [bx+0x5F],bx ; 40 m/r/m mod=1
+    sub     word [bx-0x5F],bx
+
+    sub     word [bx+si+0x1234],bx
+    sub     word [bx+di+0x1234],bx
+    sub     word [bp+si+0x1234],bx
+    sub     word [bp+di+0x1234],bx
+    sub     word [si+0x1234],bx
+    sub     word [di+0x1234],bx
+    sub     word [bp+0x1234],bx
+    sub     word [bx+0x1234],bx
+    sub     bx,ax           ; 00 m/r/m mod=3
+    sub     bx,cx           ; 00 m/r/m mod=3
+    sub     bx,dx           ; 00 m/r/m mod=3
+    sub     bx,bx           ; 00 m/r/m mod=3
+    sub     bx,si
+    sub     bx,di
+    sub     bx,bp
+    sub     bx,sp
+
+;--------------byte
+    sub     bl,byte [bx+si] ; 00 m/r/m mod=0
+    sub     bl,byte [bx+di] ; 00 m/r/m mod=0
+    sub     bl,byte [bp+si] ; 00 m/r/m mod=0
+    sub     bl,byte [bp+di] ; 00 m/r/m mod=0
+    sub     bl,byte [si]    ; 00 m/r/m mod=0
+    sub     bl,byte [di]    ; 00 m/r/m mod=0
+    sub     bl,byte [0x1234]; 00 m/r/m mod=0
+    sub     bl,byte [bx]    ; 00 m/r/m mod=0
+
+    sub     bl,byte [bx+si+0x5F] ; 40 m/r/m mod=1
+    sub     bl,byte [bx+si-0x5F]
+    sub     bl,byte [bx+di+0x5F] ; 40 m/r/m mod=1
+    sub     bl,byte [bx+di-0x5F]
+    sub     bl,byte [bp+si+0x5F] ; 40 m/r/m mod=1
+    sub     bl,byte [bp+si-0x5F]
+    sub     bl,byte [bp+di+0x5F] ; 40 m/r/m mod=1
+    sub     bl,byte [bp+di-0x5F]
+    sub     bl,byte [si+0x5F] ; 40 m/r/m mod=1
+    sub     bl,byte [si-0x5F]
+    sub     bl,byte [di+0x5F] ; 40 m/r/m mod=1
+    sub     bl,byte [di-0x5F]
+    sub     bl,byte [bp+0x5F] ; 40 m/r/m mod=1
+    sub     bl,byte [bp-0x5F]
+    sub     bl,byte [bx+0x5F] ; 40 m/r/m mod=1
+    sub     bl,byte [bx-0x5F]
+
+    sub     bl,byte [bx+si+0x1234]
+    sub     bl,byte [bx+di+0x1234]
+    sub     bl,byte [bp+si+0x1234]
+    sub     bl,byte [bp+di+0x1234]
+    sub     bl,byte [si+0x1234]
+    sub     bl,byte [di+0x1234]
+    sub     bl,byte [bp+0x1234]
+    sub     bl,byte [bx+0x1234]
+
+;--------------word
+    sub     bx,word [bx+si] ; 00 m/r/m mod=0
+    sub     bx,word [bx+di] ; 00 m/r/m mod=0
+    sub     bx,word [bp+si] ; 00 m/r/m mod=0
+    sub     bx,word [bp+di] ; 00 m/r/m mod=0
+    sub     bx,word [si]    ; 00 m/r/m mod=0
+    sub     bx,word [di]    ; 00 m/r/m mod=0
+    sub     bx,word [0x1234]; 00 m/r/m mod=0
+    sub     bx,word [bx]    ; 00 m/r/m mod=0
+
+    sub     bx,word [bx+si+0x5F] ; 40 m/r/m mod=1
+    sub     bx,word [bx+si-0x5F]
+    sub     bx,word [bx+di+0x5F] ; 40 m/r/m mod=1
+    sub     bx,word [bx+di-0x5F]
+    sub     bx,word [bp+si+0x5F] ; 40 m/r/m mod=1
+    sub     bx,word [bp+si-0x5F]
+    sub     bx,word [bp+di+0x5F] ; 40 m/r/m mod=1
+    sub     bx,word [bp+di-0x5F]
+    sub     bx,word [si+0x5F] ; 40 m/r/m mod=1
+    sub     bx,word [si-0x5F]
+    sub     bx,word [di+0x5F] ; 40 m/r/m mod=1
+    sub     bx,word [di-0x5F]
+    sub     bx,word [bp+0x5F] ; 40 m/r/m mod=1
+    sub     bx,word [bp-0x5F]
+    sub     bx,word [bx+0x5F] ; 40 m/r/m mod=1
+    sub     bx,word [bx-0x5F]
+
+    sub     bx,word [bx+si+0x1234]
+    sub     bx,word [bx+di+0x1234]
+    sub     bx,word [bp+si+0x1234]
+    sub     bx,word [bp+di+0x1234]
+    sub     bx,word [si+0x1234]
+    sub     bx,word [di+0x1234]
+    sub     bx,word [bp+0x1234]
+    sub     bx,word [bx+0x1234]
+
+;---------------sub imm
+    sub     al,0x12
+    sub     al,0xEF
+    sub     ax,0x1234
+    sub     ax,0xFEDC
+
