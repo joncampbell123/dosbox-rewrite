@@ -714,7 +714,13 @@ after_prefix:
                     w += snprintf(w,(size_t)(wf-w),"MOVw %s,%s",CPUsregs[mrm.reg()],IPDecPrint16(mrm,disp,2));
 #endif
                     break;
-
+                case 0x8F: // POP r/m word size
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"POPw %s",IPDecPrint16(mrm,disp,2));
+#endif
+                    break;
                 case 0x90:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"NOP");

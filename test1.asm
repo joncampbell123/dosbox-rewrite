@@ -1952,3 +1952,12 @@ jmp1:
     lea     ax,[bx+si+0x1234]
     lea     bx,[bx+di-0x44]
 
+; pop 8Fh
+    pop     word [si]
+    pop     word [di]
+    pop     word [bx+si]
+    pop     word [bx+di]
+    pop     word [0x1234]
+    db      0x8F,0xC0       ; POP AX
+    db      0x8F,0xC1       ; POP CX
+
