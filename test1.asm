@@ -2567,3 +2567,32 @@ calltest1:
     fxch    st6
     fxch    st7
 
+; FCOM    | ESCAPE M F 0 | MOD 0 1 0 R/M |     Integer/Real compare to ST(0)
+; also known as "FICOM" for integer compares
+    fcom    dword [bx]                      ; MF=0 op 0xD8
+    fcom    dword [bx+si]
+    fcom    dword [bx+di+0x1234]
+    fcom    dword [si-6]
+    ficom   dword [bx]                      ; MF=1 op 0xDA
+    ficom   dword [bx+si]
+    ficom   dword [bx+di+0x1234]
+    ficom   dword [si-6]
+    fcom    qword [bx]                      ; MF=2 op 0xDC
+    fcom    qword [bx+si]
+    fcom    qword [bx+di+0x1234]
+    fcom    qword [si-6]
+    ficom   word [bx]                       ; MF=3 op 0xDE
+    ficom   word [bx+si]
+    ficom   word [bx+di+0x1234]
+    ficom   word [si-6]
+
+; FCOM    | ESCAPE 0 0 0 | 1 1 0 1 0 R/M |     Compare ST(i) to ST(0)
+    fcom    st0
+    fcom    st1
+    fcom    st2
+    fcom    st3
+    fcom    st4
+    fcom    st5
+    fcom    st6
+    fcom    st7
+
