@@ -1192,6 +1192,14 @@ after_prefix:
 #endif
                             break;
 
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/2): // FST ST(0) to integer/real mem    MF == 0 32-bit real
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/2): // ESCAPE M F 1 | MOD 0 1 0 R/M     REG == 2 MOD == 0,1,2 RM == mem ref
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/2):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FSTd %s ; MF=32-bit real",IPDecPrint16(mrm,disp,4,RC_FPUREG));
+#endif
+                            break;
+
                         case_span_by_mod_reg(/*mod*/3,/*reg*/0): // FLD ST(i) to ST(0)
                                                                  // ESCAPE 0 0 1 | 1 1 0 0 0 R/M     REG == 0 MOD == 3 RM == FPU register index
 #ifdef DECOMPILEMODE
@@ -1210,6 +1218,14 @@ after_prefix:
                         case_span_by_mod_reg(/*mod*/2,/*reg*/0):
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"FLDd %s ; MF=32-bit integer",IPDecPrint16(mrm,disp,4,RC_FPUREG));
+#endif
+                            break;
+
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/2): // FST ST(0) to integer/real mem    MF == 1 32-bit integer
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/2): // ESCAPE M F 1 | MOD 0 1 0 R/M     REG == 2 MOD == 0,1,2 RM == mem ref
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/2):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FSTd %s ; MF=32-bit integer",IPDecPrint16(mrm,disp,4,RC_FPUREG));
 #endif
                             break;
 
@@ -1234,6 +1250,14 @@ after_prefix:
                             w += snprintf(w,(size_t)(wf-w),"FLDq %s ; MF=64-bit real",IPDecPrint16(mrm,disp,8,RC_FPUREG));
 #endif
                             break;
+
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/2): // FST ST(0) to integer/real mem    MF == 2 64-bit real
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/2): // ESCAPE M F 1 | MOD 0 1 0 R/M     REG == 2 MOD == 0,1,2 RM == mem ref
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/2):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FSTq %s ; MF=64-bit real",IPDecPrint16(mrm,disp,8,RC_FPUREG));
+#endif
+                            break;
                     };
                     break;
 
@@ -1249,6 +1273,14 @@ after_prefix:
 #endif
                             break;
 
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/2): // FST ST(0) to integer/real mem    MF == 3 16-bit integer
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/2): // ESCAPE M F 1 | MOD 0 1 0 R/M     REG == 2 MOD == 0,1,2 RM == mem ref
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/2):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FSTw %s ; MF=16-bit integer",IPDecPrint16(mrm,disp,2,RC_FPUREG));
+#endif
+                            break;
+
                         case_span_by_mod_reg(/*mod*/0,/*reg*/4): // FLD packed BCD (80) mem to ST(0)
                         case_span_by_mod_reg(/*mod*/1,/*reg*/4): // ESCAPE 1 1 1 | MOD 1 0 0 R/M     REG == 4 MOD == 0,1,2 RM == mem ref
                         case_span_by_mod_reg(/*mod*/2,/*reg*/4):
@@ -1261,7 +1293,7 @@ after_prefix:
                         case_span_by_mod_reg(/*mod*/1,/*reg*/5): // ESCAPE 1 1 1 | MOD 1 0 1 R/M     REG == 5 MOD == 0,1,2 RM == mem ref
                         case_span_by_mod_reg(/*mod*/2,/*reg*/5):
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FILDq %s ; MF=64-bit integer",IPDecPrint16(mrm,disp,8,RC_FPUREG));
+                            w += snprintf(w,(size_t)(wf-w),"FLDq %s ; MF=64-bit integer",IPDecPrint16(mrm,disp,8,RC_FPUREG));
 #endif
                             break;
                     };

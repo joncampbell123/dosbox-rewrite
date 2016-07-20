@@ -2479,3 +2479,22 @@ calltest1:
     fld     st6
     fld     st7
 
+; FST     | ESCAPE M F 1 | MOD 0 1 0 R/M |     ST(0) to integer/real memory
+; assemblers differentiate by using "FIST" for integer load
+    fst     dword [bx]                      ; MF=0 op 0xD9
+    fst     dword [bx+si]
+    fst     dword [bx+di+0x1234]
+    fst     dword [si-6]
+    fist    dword [bx]                      ; MF=1 op 0xDB
+    fist    dword [bx+si]
+    fist    dword [bx+di+0x1234]
+    fist    dword [si-6]
+    fst     qword [bx]                      ; MF=2 op 0xDD
+    fst     qword [bx+si]
+    fst     qword [bx+di+0x1234]
+    fst     qword [si-6]
+    fist    word [bx]                       ; MF=3 op 0xDF
+    fist    word [bx+si]
+    fist    word [bx+di+0x1234]
+    fist    word [si-6]
+
