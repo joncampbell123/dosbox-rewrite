@@ -1670,3 +1670,149 @@ jmp1:
 ; GRP1 82h alias
     db      0x82,0x00,0x12
 
+; GRP1 83h
+    add     word [bx+si],0x5E
+    add     word [bx+di],0x5E
+    add     word [bp+si],0x5E
+    add     word [bp+di],0x5E
+    add     word [si],0x5E
+    add     word [di],0x5E
+    add     word [0x1234],0x5E
+    add     word [bx],0x5E
+
+    or      word [bx+si],0x5E
+    or      word [bx+di],0x5E
+    or      word [bp+si],0x5E
+    or      word [bp+di],0x5E
+    or      word [si],0x5E
+    or      word [di],0x5E
+    or      word [0x1234],0x5E
+    or      word [bx],0x5E
+
+    adc     word [bx+si],0x5E
+    adc     word [bx+di],0x5E
+    adc     word [bp+si],0x5E
+    adc     word [bp+di],0x5E
+    adc     word [si],0x5E
+    adc     word [di],0x5E
+    adc     word [0x1234],0x5E
+    adc     word [bx],0x5E
+
+    sbb     word [bx+si],0x5E
+    sbb     word [bx+di],0x5E
+    sbb     word [bp+si],0x5E
+    sbb     word [bp+di],0x5E
+    sbb     word [si],0x5E
+    sbb     word [di],0x5E
+    sbb     word [0x1234],0x5E
+    sbb     word [bx],0x5E
+
+    and     word [bx+si],0x5E
+    and     word [bx+di],0x5E
+    and     word [bp+si],0x5E
+    and     word [bp+di],0x5E
+    and     word [si],0x5E
+    and     word [di],0x5E
+    and     word [0x1234],0x5E
+    and     word [bx],0x5E
+
+    sub     word [bx+si],0x5E
+    sub     word [bx+di],0x5E
+    sub     word [bp+si],0x5E
+    sub     word [bp+di],0x5E
+    sub     word [si],0x5E
+    sub     word [di],0x5E
+    sub     word [0x1234],0x5E
+    sub     word [bx],0x5E
+
+    xor     word [bx+si],0x5E
+    xor     word [bx+di],0x5E
+    xor     word [bp+si],0x5E
+    xor     word [bp+di],0x5E
+    xor     word [si],0x5E
+    xor     word [di],0x5E
+    xor     word [0x1234],0x5E
+    xor     word [bx],0x5E
+
+    cmp     word [bx+si],0x5E
+    cmp     word [bx+di],0x5E
+    cmp     word [bp+si],0x5E
+    cmp     word [bp+di],0x5E
+    cmp     word [si],0x5E
+    cmp     word [di],0x5E
+    cmp     word [0x1234],0x5E
+    cmp     word [bx],0x5E
+
+; GRP1 83h
+    add     word [bx+si],-0x56
+    add     word [bx+di],-0x56
+    add     word [bp+si],-0x56
+    add     word [bp+di],-0x56
+    add     word [si],-0x56
+    add     word [di],-0x56
+    add     word [0x1234],-0x56
+    add     word [bx],-0x56
+
+    or      word [bx+si],-0x56
+    or      word [bx+di],-0x56
+    or      word [bp+si],-0x56
+    or      word [bp+di],-0x56
+    or      word [si],-0x56
+    or      word [di],-0x56
+    or      word [0x1234],-0x56
+    or      word [bx],-0x56
+
+    adc     word [bx+si],-0x56
+    adc     word [bx+di],-0x56
+    adc     word [bp+si],-0x56
+    adc     word [bp+di],-0x56
+    adc     word [si],-0x56
+    adc     word [di],-0x56
+    adc     word [0x1234],-0x56
+    adc     word [bx],-0x56
+
+    sbb     word [bx+si],-0x56
+    sbb     word [bx+di],-0x56
+    sbb     word [bp+si],-0x56
+    sbb     word [bp+di],-0x56
+    sbb     word [si],-0x56
+    sbb     word [di],-0x56
+    sbb     word [0x1234],-0x56
+    sbb     word [bx],-0x56
+
+    and     word [bx+si],-0x56
+    and     word [bx+di],-0x56
+    and     word [bp+si],-0x56
+    and     word [bp+di],-0x56
+    and     word [si],-0x56
+    and     word [di],-0x56
+    and     word [0x1234],-0x56
+    and     word [bx],-0x56
+
+    sub     word [bx+si],-0x56
+    sub     word [bx+di],-0x56
+    sub     word [bp+si],-0x56
+    sub     word [bp+di],-0x56
+    sub     word [si],-0x56
+    sub     word [di],-0x56
+    sub     word [0x1234],-0x56
+    sub     word [bx],-0x56
+
+    xor     word [bx+si],-0x56
+    xor     word [bx+di],-0x56
+    xor     word [bp+si],-0x56
+    xor     word [bp+di],-0x56
+    xor     word [si],-0x56
+    xor     word [di],-0x56
+    xor     word [0x1234],-0x56
+    xor     word [bx],-0x56
+
+    cmp     word [bx+si],-0x56
+    cmp     word [bx+di],-0x56
+    cmp     word [bp+si],-0x56
+    cmp     word [bp+di],-0x56
+    cmp     word [si],-0x56
+    cmp     word [di],-0x56
+    cmp     word [0x1234],-0x56
+    cmp     word [bx],-0x56
+
