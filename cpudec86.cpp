@@ -269,7 +269,46 @@ after_prefix:
                     w += snprintf(w,(size_t)(wf-w),"POP CS");
 #endif
                     break;
-
+                case 0x10: // ADC r/m,reg byte size
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"ADCb %s,%s",IPDecPrint16(mrm,disp,1),CPUregs8[mrm.reg()]);
+#endif
+                    break;
+                case 0x11: // ADC r/m,reg word size
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"ADCw %s,%s",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()]);
+#endif
+                    break;
+                case 0x12: // ADC reg,r/m byte size
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"ADCb %s,%s",CPUregs8[mrm.reg()],IPDecPrint16(mrm,disp,1));
+#endif
+                    break;
+                case 0x13: // ADC reg,r/m word size
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"ADCw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+#endif
+                    break;
+                case 0x14: // ADC AL,imm8
+                    v8 = IPFB();
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"ADCb AL,%02xh",v8);
+#endif
+                    break;
+                case 0x15: // ADC AX,imm16
+                    v16 = IPFW();
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"ADCw AX,%04xh",v16);
+#endif
+                    break;
                 case 0x16:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"PUSH SS");
