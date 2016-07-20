@@ -2375,3 +2375,17 @@ calltest1:
 
     db      0xFF,0xFF       ; illegal FF
 
+; 8086 6x alias of 7x Jcc short
+    db      0x60,0xFE
+    db      0x61,0xFC
+
+; undocumented 8086
+    salc
+    db      0xF1            ; alias of LOCK prefix (http://www.os2museum.com/wp/undocumented-8086-opcodes/)
+    db      0x90,0x90       ; nop
+; undocumented 8086 aliases (http://www.os2museum.com/wp/undocumented-8086-opcodes/)
+    db      0xC0,0x34,0x12  ; RET N
+    db      0xC1            ; RET
+    db      0xC8,0x34,0x12  ; RETF N
+    db      0xC9            ; RETF
+

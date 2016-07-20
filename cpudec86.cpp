@@ -624,10 +624,13 @@ after_prefix:
                     w += snprintf(w,(size_t)(wf-w),"POPw %s",CPUregs16[op1&7]);
 #endif
                     break;
-
-                // 8086 does not have opcodes 0x60-0x6F.
-                // Though according to some sites, these opcodes are aliases of some other opcodes.
-
+                // ALIAS 8086
+                // TODO: Pull out the old IBM 5150 and check that these are alias
+                case 0x60: case 0x61: case 0x62: case 0x63: // 8086: 60-6F not documented, but found to be aliases of 70-7F
+                case 0x64: case 0x65: case 0x66: case 0x67: // according to http://www.os2museum.com/wp/undocumented-8086-opcodes/
+                case 0x68: case 0x69: case 0x6A: case 0x6B:
+                case 0x6C: case 0x6D: case 0x6E: case 0x6F:
+                // END ALIAS
                 case 0x70: case 0x71: case 0x72: case 0x73:
                 case 0x74: case 0x75: case 0x76: case 0x77:
                 case 0x78: case 0x79: case 0x7A: case 0x7B:
@@ -899,14 +902,17 @@ after_prefix:
                     w += snprintf(w,(size_t)(wf-w),"MOV %s,%04Xh",CPUregs16[op1&7],v16);
 #endif
                     break;
-
                 case 0xC2:
+                case 0xC0: // ALIAS 8086
+                    // TODO: Pull out the old IBM 5150 and check that 0xC0 is alias
                     v16 = IPFW();
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"RETw %04Xh",v16);
 #endif
                     break;
                 case 0xC3:
+                case 0xC1: // ALIAS 8086
+                    // TODO: Pull out the old IBM 5150 and check that 0xC1 is alias
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"RETw");
 #endif
@@ -941,14 +947,17 @@ after_prefix:
                     w += snprintf(w,(size_t)(wf-w),"MOVw %s,%04Xh",IPDecPrint16(mrm,disp,2),v16);
 #endif
                     break;
-
                 case 0xCA:
+                case 0xC8: // ALIAS 8086
+                    // TODO: Pull out the old IBM 5150 and check that 0xC8 is alias
                     v16 = IPFW();
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"RETFw %04Xh",v16);
 #endif
                     break;
                 case 0xCB:
+                case 0xC9: // ALIAS 8086
+                    // TODO: Pull out the old IBM 5150 and check that 0xC9 is alias
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"RETFw");
 #endif
@@ -1020,7 +1029,11 @@ after_prefix:
                         w += snprintf(w,(size_t)(wf-w),"AAD %02Xh",v8);
 #endif
                     break;
-
+                case 0xD6:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"SALCb");
+#endif
+                    break;
                 case 0xD7:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"XLATw");
@@ -1128,11 +1141,12 @@ after_prefix:
 #endif
                     break;
                 case 0xF0:
+                case 0xF1: // 8086 ALIAS [http://www.os2museum.com/wp/undocumented-8086-opcodes/]
+                    // TODO: Pull out the old IBM 5150 and check that 0xF1 is alias
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"LOCK ");
 #endif
                     goto after_prefix;
-
                 case 0xF2:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"REPNZ ");
