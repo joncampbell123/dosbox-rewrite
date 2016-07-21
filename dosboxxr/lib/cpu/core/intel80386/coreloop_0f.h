@@ -98,7 +98,11 @@
                             w += snprintf(w,(size_t)(wf-w),"%sw %04Xh",CPUjcc0F8x[op0F&15],v16);
 #endif
                             break;
-
+                        case_span_16(0x90): // 0x90-0x9F
+                            mrm.set(IPFB());
+                            disp = IPFmrmdisplace16(/*&*/mrm);
+                            w += snprintf(w,(size_t)(wf-w),"%sb %s",CPUsetcc0F9x[op0F&15],IPDecPrint16(mrm,disp,1));
+                            break;
                         case 0xA0:
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"PUSHw FS");

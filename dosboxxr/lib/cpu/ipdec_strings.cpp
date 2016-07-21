@@ -62,6 +62,17 @@ const char *CPUjcc0F8x[16] = {
     "JLE","JG"
 };
 
+const char *CPUsetcc0F9x[16] = {
+    "SETO","SETNO",
+    "SETB","SETNB",
+    "SETZ","SETNZ",
+    "SETBE","SETA",
+    "SETS","SETNS",
+    "SETPE","SETPO",
+    "SETL","SETGE",
+    "SETLE","SETG"
+};
+
 const char *CPUGRP1[8] = {
     "ADD","OR",
     "ADC","SBB",

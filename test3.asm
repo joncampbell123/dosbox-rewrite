@@ -3536,3 +3536,54 @@ jmp2:
     db      0x0F,0xB7,0x1E,0x34,0x12; MOVZX BX,[0x1234]
     db      0x0F,0xB7,0x4C,0xFA ; MOVZX CX,[SI-6]
 
+    seto    bl
+    setno   bl
+    setb    bl
+    setnb   bl
+    setz    bl
+    setnz   bl
+    setbe   bl
+    seta    bl
+    sets    bl
+    setns   bl
+    setpe   bl
+    setpo   bl
+    setl    bl
+    setge   bl
+    setle   bl
+    setg    bl
+
+    seto    byte [si]
+    setno   byte [si]
+    setb    byte [si]
+    setnb   byte [si]
+    setz    byte [si]
+    setnz   byte [si]
+    setbe   byte [si]
+    seta    byte [si]
+    sets    byte [si]
+    setns   byte [si]
+    setpe   byte [si]
+    setpo   byte [si]
+    setl    byte [si]
+    setge   byte [si]
+    setle   byte [si]
+    setg    byte [si]
+
+    seto    byte [bx+si]
+    setno   byte [bx+si]
+    setb    byte [bx+si]
+    setnb   byte [bx+si]
+    setz    byte [bx+si]
+    setnz   byte [bx+si]
+    setbe   byte [bx+si]
+    seta    byte [bx+si]
+    sets    byte [bx+si]
+    setns   byte [bx+si]
+    setpe   byte [bx+si]
+    setpo   byte [bx+si]
+    setl    byte [bx+si]
+    setge   byte [bx+si]
+    setle   byte [bx+si]
+    setg    byte [bx+si]
+
