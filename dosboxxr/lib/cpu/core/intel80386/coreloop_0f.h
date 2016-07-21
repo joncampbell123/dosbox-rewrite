@@ -47,6 +47,35 @@
 #endif
                             break;
 
+                        case 0x20: // MOV from control registers (i.e. MOV EAX,CR0). Only the register form is legal, not from/to memory. Register is ALWAYS 32-bit.
+                            mrm.set(IPFB());
+                            if (mrm.mod() == 3)
+                                w += snprintf(w,(size_t)(wf-w),"MOVd %s,CR%u",CPUregs32[mrm.rm()],mrm.reg());
+                            else
+                                goto invalidopcode;
+                            break;
+                        case 0x21: // MOV from debug registers (i.e. MOV EAX,DR0). Only the register form is legal, not from/to memory. Register is ALWAYS 32-bit.
+                            mrm.set(IPFB());
+                            if (mrm.mod() == 3)
+                                w += snprintf(w,(size_t)(wf-w),"MOVd %s,DR%u",CPUregs32[mrm.rm()],mrm.reg());
+                            else
+                                goto invalidopcode;
+                            break;
+                        case 0x22: // MOV to control registers (i.e. MOV CR0,EAX). Only the register form is legal, not from/to memory. Register is ALWAYS 32-bit.
+                            mrm.set(IPFB());
+                            if (mrm.mod() == 3)
+                                w += snprintf(w,(size_t)(wf-w),"MOVd CR%u,%s",mrm.reg(),CPUregs32[mrm.rm()]);
+                            else
+                                goto invalidopcode;
+                            break;
+                        case 0x23: // MOV to control registers (i.e. MOV DR0,EAX). Only the register form is legal, not from/to memory. Register is ALWAYS 32-bit.
+                            mrm.set(IPFB());
+                            if (mrm.mod() == 3)
+                                w += snprintf(w,(size_t)(wf-w),"MOVd DR%u,%s",mrm.reg(),CPUregs32[mrm.rm()]);
+                            else
+                                goto invalidopcode;
+                            break;
+
                         case_span_16(0x80): // 0x80-0x8F
                             v16 = (uint16_t)IPFWsigned();
                             v16 = (v16 + IPval()) & 0xFFFFU;

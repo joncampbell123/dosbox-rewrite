@@ -3470,3 +3470,28 @@ jmp2:
     jle     near jmp2
     jg      near jmp2
 
+; MOV CRx...
+    mov     eax,cr0
+    mov     cr0,eax
+    mov     eax,cr2     ; NTS: YASM won't let me encode "mov eax,cr1"
+    mov     cr2,eax
+    mov     eax,cr4
+    mov     cr4,eax
+    mov     ebx,cr0
+    mov     cr0,ebx
+    mov     ecx,cr2
+    mov     cr2,ecx
+; MOV DRx...
+    mov     eax,dr0
+    mov     dr0,eax
+    mov     eax,dr2
+    mov     dr2,eax
+    mov     eax,dr4
+    mov     dr4,eax
+    mov     ebx,dr0
+    mov     dr0,ebx
+    mov     ebx,dr0
+    mov     dr0,ebx
+    mov     ecx,dr0
+    mov     dr0,ecx
+

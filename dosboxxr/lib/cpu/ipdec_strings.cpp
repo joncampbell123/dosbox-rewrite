@@ -8,6 +8,10 @@
 x86_offset_t            IPDecIP;
 char                    IPDecStr[256];
 
+const char *CPUregs32[8] = {
+    "EAX","ECX","EDX","EBX", "ESP","EBP","ESI","EDI"
+};
+
 const char *CPUregs16[8] = {
     "AX","CX","DX","BX", "SP","BP","SI","DI"
 };
@@ -25,11 +29,15 @@ const char **CPUregsN[5] = {
     CPUregs8,                       // sz=1
     CPUregs16,                      // sz=2
     CPUregsZ,                       // sz=3
-    CPUregsZ                        // sz=4
+    CPUregs32                       // sz=4
 };
 
 const char *CPUsregs_8086[8] = {
     "ES","CS","SS","DS","","","",""
+};
+
+const char *CPUsregs_80386[8] = {
+    "ES","CS","SS","DS","FS","GS","",""
 };
 
 const char *CPUjcc7x[16] = {
