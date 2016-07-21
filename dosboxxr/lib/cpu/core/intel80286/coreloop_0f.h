@@ -21,6 +21,20 @@
                                 goto invalidopcode;
 #endif
                             break;
+                        case 0x02: // LAR
+                            mrm.set(IPFB());
+                            disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"LARw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+#endif
+                            break;
+                        case 0x03: // LSL
+                            mrm.set(IPFB());
+                            disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"LSLw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+#endif
+                            break;
 
                         case 0x06: // CLTS (NTS: Intel 80286 datasheet calls this CTS for some reason)
 #ifdef DECOMPILEMODE

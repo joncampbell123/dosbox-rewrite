@@ -3282,4 +3282,22 @@ calltest1:
     verw    word [bx+di]
     verw    word [bx+di+0x1234]
     verw    word [0x1234]
+; LAR/LSL
+    lar     ax,bx
+    lar     bx,cx
+    lar     cx,dx
+    lar     ax,[si]
+    lar     bx,[bx]
+    lar     cx,[bx+di+0x1234]
+    lar     dx,[0x1234]
+    lar     si,[si-6]
+
+    lsl     ax,bx
+    lsl     bx,cx
+    lsl     cx,dx
+    lsl     ax,[si]
+    lsl     bx,[bx]
+    lsl     cx,[bx+di+0x1234]
+    lsl     dx,[0x1234]
+    lsl     si,[si-6]
 
