@@ -1,3 +1,4 @@
+; 8086/8087 test instruction set
 
     bits    16
     org     100h
@@ -3026,8 +3027,8 @@ calltest1:
     fstsw   [bx+si+0x1234]
     fstsw   [0x1234]
     fstsw   [si-6]
-; FIXME: The form "FSTSW AX" is not mentioned in the Intel 8087 datasheet.
-;        So I can assume then that instruction didn't exist on the 8087?
+; NTS: The "FSTSW AX" instruction does not appear until Intel's 80287 datasheet,
+;      therefore I am assuming that the 8087 does not have that instruction.
 
 ; FCLEX   | ESCAPE 0 1 1 | 1 1 1 0 0 0 1 0
     fclex
