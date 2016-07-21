@@ -455,7 +455,26 @@
                     w += snprintf(w,(size_t)(wf-w),"IMUL %s,%s,%02Xh ; 1st = 2nd * 3rd",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2),v8);
 #endif
                     break;
-
+                case 0x6C: // INSB
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"INSB");
+#endif
+                    break;
+                case 0x6D: // INSW
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"INSW");
+#endif
+                    break;
+                case 0x6E: // OUTSB
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"OUTSB");
+#endif
+                    break;
+                case 0x6F: // OUTSW
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"OUTSW");
+#endif
+                    break;
                 case_span_16(0x70): // 0x70-0x7F
                     v16 = (uint16_t)IPFBsigned();
                     v16 = (v16 + IPval()) & 0xFFFFU;

@@ -3202,3 +3202,9 @@ calltest1:
     sar     word [bx+di],7
     sar     word [0x1234],7
 
+; more
+    insb
+    insw
+    outsb
+    outsw
+
