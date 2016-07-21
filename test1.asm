@@ -3032,3 +3032,17 @@ calltest1:
 ; FCLEX   | ESCAPE 0 1 1 | 1 1 1 0 0 0 1 0
     fclex
 
+; FSTENV  | ESCAPE 0 0 1 | MOD 1 1 0 R/M
+    fstenv  [bx]
+    fstenv  [bx+si]
+    fstenv  [bx+di+0x1234]
+    fstenv  [0x1234]
+    fstenv  [si-6]
+
+; FLDENV  | ESCAPE 0 0 1 | MOD 1 0 0 R/M
+    fldenv  [bx]
+    fldenv  [bx+si]
+    fldenv  [bx+di+0x1234]
+    fldenv  [0x1234]
+    fldenv  [si-6]
+

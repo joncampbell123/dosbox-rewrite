@@ -1331,11 +1331,27 @@ after_prefix:
 #endif
                             break;
 
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/4): // FLDENV
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/4): // ESCAPE 0 0 1 | MOD 1 0 0 R/M     REG == 4 MOD == 0,1,2 RM == mem ref
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/4):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FLDENV %s",IPDecPrint16(mrm,disp,2,RC_REG));
+#endif
+                            break;
+
                         case_span_by_mod_reg(/*mod*/0,/*reg*/5): // FLDCW
                         case_span_by_mod_reg(/*mod*/1,/*reg*/5): // ESCAPE 0 0 1 | MOD 1 0 1 R/M     REG == 5 MOD == 0,1,2 RM == mem ref
                         case_span_by_mod_reg(/*mod*/2,/*reg*/5):
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"FLDCWw %s",IPDecPrint16(mrm,disp,2,RC_REG));
+#endif
+                            break;
+
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/6): // FSTENV
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/6): // ESCAPE 0 0 1 | MOD 1 1 0 R/M     REG == 6 MOD == 0,1,2 RM == mem ref
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/6):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FSTENV %s",IPDecPrint16(mrm,disp,2,RC_REG));
 #endif
                             break;
 
