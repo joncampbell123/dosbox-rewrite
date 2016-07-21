@@ -436,6 +436,13 @@
                         goto invalidopcode;
 #endif
                     break;
+                case 0x63: // ARPL r/m,reg
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"ARPLw %s,%s",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()]);
+#endif
+                    break;
 
                 case 0x68: // PUSH imm16
                     v16 = IPFW();

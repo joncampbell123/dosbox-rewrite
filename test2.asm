@@ -3300,4 +3300,13 @@ calltest1:
     lsl     cx,[bx+di+0x1234]
     lsl     dx,[0x1234]
     lsl     si,[si-6]
+; ARPL
+    arpl    ax,bx
+    arpl    bx,cx
+    arpl    cx,dx
+    arpl    [si],ax
+    arpl    [bx],bx
+    arpl    [bx+di+0x1234],cx
+    arpl    [0x1234],dx
+    arpl    [si-6],cx
 
