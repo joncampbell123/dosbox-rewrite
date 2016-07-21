@@ -11,23 +11,18 @@
 #include <unistd.h>
 #include <endian.h>
 
+#include "dosboxxr/lib/cpu/ipdec.h"
 #include "dosboxxr/lib/cpu/x86ModRegRm.h"
 #include "dosboxxr/lib/cpu/memreftypes.h"
 #include "dosboxxr/lib/util/case_groups.h"
+
+x86_offset_t            IPDecIP;
+char                    IPDecStr[256];
 
 x86_offset_t            exe_ip = 0;
 unsigned char*          exe_ip_ptr = NULL;
 unsigned char*          exe_image = NULL;
 unsigned char*          exe_image_fence = NULL;
-
-// include header core requires this
-static x86_offset_t IPDecIP;
-static char IPDecStr[256];
-
-enum IPDecRegClass {
-    RC_REG=0,
-    RC_FPUREG
-};
 
 static const char *CPUregs16[8] = {
     "AX","CX","DX","BX", "SP","BP","SI","DI"
@@ -49,7 +44,7 @@ static const char **CPUregsN[5] = {
     CPUregsZ                        // sz=4
 };
 
-static const char *CPUsregs[8] = {
+static const char *CPUsregs_8086[8] = {
     "ES","CS","SS","DS","","","",""
 };
 
@@ -738,7 +733,7 @@ after_prefix:
                     mrm.set(IPFB());
                     disp = IPFmrmdisplace16(/*&*/mrm);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"MOVw %s,%s",IPDecPrint16(mrm,disp,2),CPUsregs[mrm.reg()]);
+                    w += snprintf(w,(size_t)(wf-w),"MOVw %s,%s",IPDecPrint16(mrm,disp,2),CPUsregs_8086[mrm.reg()]);
 #endif
                     break;
                 case 0x8D: // LEA reg,r/m word size
@@ -752,7 +747,7 @@ after_prefix:
                     mrm.set(IPFB());
                     disp = IPFmrmdisplace16(/*&*/mrm);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"MOVw %s,%s",CPUsregs[mrm.reg()],IPDecPrint16(mrm,disp,2));
+                    w += snprintf(w,(size_t)(wf-w),"MOVw %s,%s",CPUsregs_8086[mrm.reg()],IPDecPrint16(mrm,disp,2));
 #endif
                     break;
                 case 0x8F: // POP r/m word size
