@@ -2876,3 +2876,121 @@ calltest1:
     fmulp   st6,st0
     fmulp   st7,st0
 
+; FDIV    | ESCAPE M F 0 | MOD 1 1 R R/M |     Divide integer/real memory from ST(0) R == 0
+; also known as "FIDIV" for integer subtraction
+    fdiv    dword [bx]                      ; MF=0 op 0xD8
+    fdiv    dword [bx+si]
+    fdiv    dword [bx+di+0x1234]
+    fdiv    dword [si-6]
+    fidiv   dword [bx]                      ; MF=1 op 0xDA
+    fidiv   dword [bx+si]
+    fidiv   dword [bx+di+0x1234]
+    fidiv   dword [si-6]
+    fdiv    qword [bx]                      ; MF=2 op 0xDC
+    fdiv    qword [bx+si]
+    fdiv    qword [bx+di+0x1234]
+    fdiv    qword [si-6]
+    fidiv   word [bx]                       ; MF=3 op 0xDE
+    fidiv   word [bx+si]
+    fidiv   word [bx+di+0x1234]
+    fidiv   word [si-6]
+
+; FDIV    | ESCAPE d P 0 | 1 1 1 1 R R/M |     Divide ST(i) from ST(0) d=0 (destination is ST(0)) P=0 don't pop after add R=0 dest OP src
+    fdiv    st0,st0
+    fdiv    st0,st1
+    fdiv    st0,st2
+    fdiv    st0,st3
+    fdiv    st0,st4
+    fdiv    st0,st5
+    fdiv    st0,st6
+    fdiv    st0,st7
+
+; FDIV    | ESCAPE d P 0 | 1 1 1 1 R R/M |     Divide ST(i) to ST(0) d=0 (destination is ST(0)) P=1 pop after add R=0 dest OP src
+    db      0xDA,0xF0       ; fdivp   st0,st0
+    db      0xDA,0xF1       ; fdivp   st0,st1   YASM won't let me encode this
+    db      0xDA,0xF2       ; fdivp   st0,st2
+    db      0xDA,0xF3       ; fdivp   st0,st3
+    db      0xDA,0xF4       ; fdivp   st0,st4
+    db      0xDA,0xF5       ; fdivp   st0,st5
+    db      0xDA,0xF6       ; fdivp   st0,st6
+    db      0xDA,0xF7       ; fdivp   st0,st7
+
+; FDIV    | ESCAPE d P 0 | 1 1 1 1 R R/M |     Sub ST(i) to ST(0) d=1 (destination is ST(i)) P=0 don't pop after add R=0 dest OP src
+    db      0xDC,0xF0       ; fdiv    st0,st0   YASM prefers encoding fdiv ST(i),ST(0) form with R=1, won't encode this form
+    db      0xDC,0xF1       ; fdiv    st1,st0
+    db      0xDC,0xF2       ; fdiv    st2,st0
+    db      0xDC,0xF3       ; fdiv    st3,st0
+    db      0xDC,0xF4       ; fdiv    st4,st0
+    db      0xDC,0xF5       ; fdiv    st5,st0
+    db      0xDC,0xF6       ; fdiv    st6,st0
+    db      0xDC,0xF7       ; fdiv    st7,st0
+
+; FDIV    | ESCAPE d P 0 | 1 1 1 1 R R/M |     Sub ST(i) to ST(0) d=1 (destination is ST(i)) P=1 pop after add R=0 dest OP src
+    db      0xDE,0xF0       ; fdivp   st0,st0   YASM prefers encoding fdivp ST(i),ST(0) form with R=1, won't encode this form
+    db      0xDE,0xF1       ; fdivp   st1,st0
+    db      0xDE,0xF2       ; fdivp   st2,st0
+    db      0xDE,0xF3       ; fdivp   st3,st0
+    db      0xDE,0xF4       ; fdivp   st4,st0
+    db      0xDE,0xF5       ; fdivp   st5,st0
+    db      0xDE,0xF6       ; fdivp   st6,st0
+    db      0xDE,0xF7       ; fdivp   st7,st0
+
+; FDIV    | ESCAPE M F 0 | MOD 1 1 R R/M |     Subtract integer/real memory from ST(0) R == 1
+; also known as "FIDIV" for integer subtraction
+    fdivr   dword [bx]                      ; MF=0 op 0xD8
+    fdivr   dword [bx+si]
+    fdivr   dword [bx+di+0x1234]
+    fdivr   dword [si-6]
+    fidivr  dword [bx]                      ; MF=1 op 0xDA
+    fidivr  dword [bx+si]
+    fidivr  dword [bx+di+0x1234]
+    fidivr  dword [si-6]
+    fdivr   qword [bx]                      ; MF=2 op 0xDC
+    fdivr   qword [bx+si]
+    fdivr   qword [bx+di+0x1234]
+    fdivr   qword [si-6]
+    fidivr  word [bx]                       ; MF=3 op 0xDE
+    fidivr  word [bx+si]
+    fidivr  word [bx+di+0x1234]
+    fidivr  word [si-6]
+
+; FDIV    | ESCAPE d P 0 | 1 1 1 1 R R/M |     Subtract ST(i) from ST(0) d=0 (destination is ST(0)) P=0 don't pop after add R=1 src OP dest
+    fdivr   st0,st0
+    fdivr   st0,st1
+    fdivr   st0,st2
+    fdivr   st0,st3
+    fdivr   st0,st4
+    fdivr   st0,st5
+    fdivr   st0,st6
+    fdivr   st0,st7
+
+; FDIV    | ESCAPE d P 0 | 1 1 1 1 R R/M |     Subtract ST(i) to ST(0) d=0 (destination is ST(0)) P=1 pop after add R=1 src OP dest
+    db      0xDA,0xF8       ; fdivrp   st0,st0
+    db      0xDA,0xF9       ; fdivrp   st0,st1   YASM won't let me encode this
+    db      0xDA,0xFA       ; fdivrp   st0,st2
+    db      0xDA,0xFB       ; fdivrp   st0,st3
+    db      0xDA,0xFC       ; fdivrp   st0,st4
+    db      0xDA,0xFD       ; fdivrp   st0,st5
+    db      0xDA,0xFE       ; fdivrp   st0,st6
+    db      0xDA,0xFF       ; fdivrp   st0,st7
+
+; FDIV    | ESCAPE d P 0 | 1 1 1 1 R R/M |     Sub ST(i) to ST(0) d=1 (destination is ST(i)) P=0 don't pop after add R=0 dest OP src
+    db      0xDC,0xF8       ; fdivr    st0,st0   YASM prefers encoding fdiv ST(i),ST(0) form with R=1, won't encode this form
+    db      0xDC,0xF9       ; fdivr    st1,st0
+    db      0xDC,0xFA       ; fdivr    st2,st0
+    db      0xDC,0xFB       ; fdivr    st3,st0
+    db      0xDC,0xFC       ; fdivr    st4,st0
+    db      0xDC,0xFD       ; fdivr    st5,st0
+    db      0xDC,0xFE       ; fdivr    st6,st0
+    db      0xDC,0xFF       ; fdivr    st7,st0
+
+; FDIV    | ESCAPE d P 0 | 1 1 1 1 R R/M |     Sub ST(i) to ST(0) d=1 (destination is ST(i)) P=1 pop after add R=0 dest OP src
+    db      0xDE,0xF8       ; fdivrp   st0,st0   YASM prefers encoding fdivp ST(i),ST(0) form with R=1, won't encode this form
+    db      0xDE,0xF9       ; fdivrp   st1,st0
+    db      0xDE,0xFA       ; fdivrp   st2,st0
+    db      0xDE,0xFB       ; fdivrp   st3,st0
+    db      0xDE,0xFC       ; fdivrp   st4,st0
+    db      0xDE,0xFD       ; fdivrp   st5,st0
+    db      0xDE,0xFE       ; fdivrp   st6,st0
+    db      0xDE,0xFF       ; fdivrp   st7,st0
+

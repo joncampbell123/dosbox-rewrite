@@ -1137,6 +1137,33 @@ after_prefix:
                             w += snprintf(w,(size_t)(wf-w),"FSUBR ST(0),ST(%u) ; ST(0) -= ST(%u)",mrm.rm(),mrm.rm());
 #endif
                             break;
+
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/6): // FDIV integer/real mem to ST(0)   MF == 0 32-bit real
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/6): // ESCAPE M F 0 | MOD 1 1 R R/M     REG == 6 MOD == 0,1,2 RM == mem ref R == 0
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/6):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FDIVd %s ; MF=32-bit real",IPDecPrint16(mrm,disp,4,RC_FPUREG));
+#endif
+                            break;
+                        case_span_by_mod_reg(/*mod*/3,/*reg*/6): // FDIV ST(i) to ST(0)
+                                                                 // ESCAPE D P 0 | 1 1 1 1 R R/M     REG == 6 MOD == 3 RM == FPU register index D == 0 P == 0 R == 0
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FDIV ST(0),ST(%u) ; ST(0) /= ST(%u)",mrm.rm(),mrm.rm());
+#endif
+                            break;
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/7): // FDIVR integer/real mem to ST(0)  MF == 0 32-bit real
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/7): // ESCAPE M F 0 | MOD 1 1 R R/M     REG == 7 MOD == 0,1,2 RM == mem ref R == 1
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/7):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FDIVRd %s ; MF=32-bit real",IPDecPrint16(mrm,disp,4,RC_FPUREG));
+#endif
+                            break;
+                        case_span_by_mod_reg(/*mod*/3,/*reg*/7): // FDIVR ST(i) to ST(0)
+                                                                 // ESCAPE D P 0 | 1 1 1 1 R R/M     REG == 7 MOD == 3 RM == FPU register index D == 0 P == 0 R == 1
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FDIVR ST(0),ST(%u) ; ST(0) /= ST(%u)",mrm.rm(),mrm.rm());
+#endif
+                            break;
                     };
                     break;
 
@@ -1342,7 +1369,7 @@ after_prefix:
                         case_span_by_mod_reg(/*mod*/3,/*reg*/1): // FMUL ST(i) to ST(0)
                                                                  // ESCAPE D P 0 | 1 1 0 0 1 R/M     REG == 1 MOD == 3 RM == FPU register index D == 0 P == 1
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FMULP ST(0),ST(%u) ; ST(0) += ST(%u), POP",mrm.rm(),mrm.rm());
+                            w += snprintf(w,(size_t)(wf-w),"FMULP ST(0),ST(%u) ; ST(0) *= ST(%u), POP",mrm.rm(),mrm.rm());
 #endif
                             break;
 
@@ -1362,7 +1389,7 @@ after_prefix:
 #endif
                             break;
 
-                        case_span_by_mod_reg(/*mod*/0,/*reg*/4): // FADD integer/real mem to ST(0)   MF == 1 32-bit integer
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/4): // FSUB integer/real mem to ST(0)   MF == 1 32-bit integer
                         case_span_by_mod_reg(/*mod*/1,/*reg*/4): // ESCAPE M F 0 | MOD 1 0 R R/M     REG == 4 MOD == 0,1,2 RM == mem ref R == 0
                         case_span_by_mod_reg(/*mod*/2,/*reg*/4):
 #ifdef DECOMPILEMODE
@@ -1373,7 +1400,7 @@ after_prefix:
                         //          Note that nobody would use this instruction because it is nonsensical (sub from ST(0) then pop ST(0)).
                         //          It's not defined or known yet how later processors (286, 386, 486, Pentium, etc.) handle this opcode.
                         //          Later processors starting with the Pentium II re-define this opcode as ??????(TODO) instructions.
-                        case_span_by_mod_reg(/*mod*/3,/*reg*/4): // FADD ST(i) to ST(0)
+                        case_span_by_mod_reg(/*mod*/3,/*reg*/4): // FSUB ST(i) to ST(0)
                                                                  // ESCAPE D P 0 | 1 1 1 0 R R/M     REG == 4 MOD == 3 RM == FPU register index D == 0 P == 1 R == 0
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"FSUBP ST(0),ST(%u) ; ST(0) -= ST(%u), POP",mrm.rm(),mrm.rm());
@@ -1395,6 +1422,42 @@ after_prefix:
                                                                  // ESCAPE D P 0 | 1 1 1 0 R R/M     REG == 5 MOD == 3 RM == FPU register index D == 0 P == 1 R == 1
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"FSUBRP ST(0),ST(%u) ; ST(0) -= ST(%u), POP",mrm.rm(),mrm.rm());
+#endif
+                            break;
+
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/6): // FDIV integer/real mem to ST(0)   MF == 1 32-bit integer
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/6): // ESCAPE M F 0 | MOD 1 1 R R/M     REG == 6 MOD == 0,1,2 RM == mem ref R == 0
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/6):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FDIVd %s ; MF=32-bit integer",IPDecPrint16(mrm,disp,4,RC_FPUREG));
+#endif
+                            break;
+                        // WARNING: This is how the 8087 would interpret this opcode, according to Intel's datasheet.
+                        //          Note that nobody would use this instruction because it is nonsensical (sub from ST(0) then pop ST(0)).
+                        //          It's not defined or known yet how later processors (286, 386, 486, Pentium, etc.) handle this opcode.
+                        //          Later processors starting with the Pentium II re-define this opcode as ??????(TODO) instructions.
+                        case_span_by_mod_reg(/*mod*/3,/*reg*/6): // FDIV ST(i) to ST(0)
+                                                                 // ESCAPE D P 0 | 1 1 1 1 R R/M     REG == 6 MOD == 3 RM == FPU register index D == 0 P == 1 R == 0
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FDIVP ST(0),ST(%u) ; ST(0) /= ST(%u), POP",mrm.rm(),mrm.rm());
+#endif
+                            break;
+
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/7): // FDIVR integer/real mem to ST(0)  MF == 1 32-bit integer
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/7): // ESCAPE M F 0 | MOD 1 1 R R/M     REG == 7 MOD == 0,1,2 RM == mem ref R == 1
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/7):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FDIVRd %s ; MF=32-bit integer",IPDecPrint16(mrm,disp,4,RC_FPUREG));
+#endif
+                            break;
+                        // WARNING: This is how the 8087 would interpret this opcode, according to Intel's datasheet.
+                        //          Note that nobody would use this instruction because it is nonsensical (sub from ST(0) then pop ST(0)).
+                        //          It's not defined or known yet how later processors (286, 386, 486, Pentium, etc.) handle this opcode.
+                        //          Later processors starting with the Pentium II re-define this opcode as ??????(TODO) instructions.
+                        case_span_by_mod_reg(/*mod*/3,/*reg*/7): // FDIVR ST(i) to ST(0)
+                                                                 // ESCAPE D P 0 | 1 1 1 1 R R/M     REG == 7 MOD == 3 RM == FPU register index D == 0 P == 1 R == 1
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FDIVRP ST(0),ST(%u) ; ST(0) /= ST(%u), POP",mrm.rm(),mrm.rm());
 #endif
                             break;
                     };
@@ -1473,7 +1536,7 @@ after_prefix:
                         case_span_by_mod_reg(/*mod*/3,/*reg*/1): // FMUL ST(0) to ST(i)
                                                                  // ESCAPE D P 0 | 1 1 0 0 1 R/M     REG == 1 MOD == 3 RM == FPU register index D == 1 P == 0
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FMUL ST(%u),ST(0) ; ST(%u) += ST(0)",mrm.rm(),mrm.rm());
+                            w += snprintf(w,(size_t)(wf-w),"FMUL ST(%u),ST(0) ; ST(%u) *= ST(0)",mrm.rm(),mrm.rm());
 #endif
                             break;
 
@@ -1508,16 +1571,44 @@ after_prefix:
                             break;
 
                         case_span_by_mod_reg(/*mod*/0,/*reg*/5): // FSUBR integer/real mem to ST(0)  MF == 2 64-bit real
-                        case_span_by_mod_reg(/*mod*/1,/*reg*/5): // ESCAPE M F 0 | MOD 1 0 R R/M     REG == 4 MOD == 0,1,2 RM == mem ref R == 1
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/5): // ESCAPE M F 0 | MOD 1 0 R R/M     REG == 5 MOD == 0,1,2 RM == mem ref R == 1
                         case_span_by_mod_reg(/*mod*/2,/*reg*/5):
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"FSUBRq %s ; MF=64-bit real",IPDecPrint16(mrm,disp,8,RC_FPUREG));
 #endif
                             break;
                         case_span_by_mod_reg(/*mod*/3,/*reg*/5): // FSUB ST(0) to ST(i)
-                                                                 // ESCAPE D P 0 | 1 1 1 0 R R/M     REG == 4 MOD == 3 RM == FPU register index D == 1 P == 0 R == 1
+                                                                 // ESCAPE D P 0 | 1 1 1 0 R R/M     REG == 5 MOD == 3 RM == FPU register index D == 1 P == 0 R == 1
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"FSUBR ST(%u),ST(0) ; ST(%u) -= ST(0)",mrm.rm(),mrm.rm());
+#endif
+                            break;
+
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/6): // FDIV integer/real mem to ST(0)   MF == 2 64-bit real
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/6): // ESCAPE M F 0 | MOD 1 1 R R/M     REG == 6 MOD == 0,1,2 RM == mem ref R == 0
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/6):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FDIVq %s ; MF=64-bit real",IPDecPrint16(mrm,disp,8,RC_FPUREG));
+#endif
+                            break;
+                        case_span_by_mod_reg(/*mod*/3,/*reg*/6): // FSUB ST(0) to ST(i)
+                                                                 // ESCAPE D P 0 | 1 1 1 1 R R/M     REG == 6 MOD == 3 RM == FPU register index D == 1 P == 0 R == 0
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FDIV ST(%u),ST(0) ; ST(%u) /= ST(0)",mrm.rm(),mrm.rm());
+#endif
+                            break;
+
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/7): // FDIVR integer/real mem to ST(0)  MF == 2 64-bit real
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/7): // ESCAPE M F 0 | MOD 1 1 R R/M     REG == 7 MOD == 0,1,2 RM == mem ref R == 1
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/7):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FDIVRq %s ; MF=64-bit real",IPDecPrint16(mrm,disp,8,RC_FPUREG));
+#endif
+                            break;
+                        case_span_by_mod_reg(/*mod*/3,/*reg*/7): // FDIV ST(0) to ST(i)
+                                                                 // ESCAPE D P 0 | 1 1 1 1 R R/M     REG == 7 MOD == 3 RM == FPU register index D == 1 P == 0 R == 1
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FDIVR ST(%u),ST(0) ; ST(%u) /= ST(0)",mrm.rm(),mrm.rm());
 #endif
                             break;
                     };
@@ -1592,7 +1683,7 @@ after_prefix:
                         case_span_by_mod_reg(/*mod*/3,/*reg*/1): // FMUL ST(0) to ST(i), POP
                                                                  // ESCAPE D P 0 | 1 1 0 0 1 R/M     REG == 1 MOD == 3 RM == FPU register index D == 1 P == 1
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FMULP ST(%u),ST(0) ; ST(%u) += ST(0), POP",mrm.rm(),mrm.rm());
+                            w += snprintf(w,(size_t)(wf-w),"FMULP ST(%u),ST(0) ; ST(%u) *= ST(0), POP",mrm.rm(),mrm.rm());
 #endif
                             break;
 
@@ -1627,16 +1718,44 @@ after_prefix:
                             break;
 
                         case_span_by_mod_reg(/*mod*/0,/*reg*/5): // FSUB integer/real mem to ST(0)   MF == 3 16-bit integer
-                        case_span_by_mod_reg(/*mod*/1,/*reg*/5): // ESCAPE M F 0 | MOD 1 0 R R/M     REG == 4 MOD == 0,1,2 RM == mem ref R == 1
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/5): // ESCAPE M F 0 | MOD 1 0 R R/M     REG == 5 MOD == 0,1,2 RM == mem ref R == 1
                         case_span_by_mod_reg(/*mod*/2,/*reg*/5):
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"FSUBRw %s ; MF=16-bit integer",IPDecPrint16(mrm,disp,2,RC_FPUREG));
 #endif
                             break;
                         case_span_by_mod_reg(/*mod*/3,/*reg*/5): // FSUB ST(0) to ST(i), POP
-                                                                 // ESCAPE D P 0 | 1 1 1 0 R R/M     REG == 4 MOD == 3 RM == FPU register index D == 1 P == 1 R == 1
+                                                                 // ESCAPE D P 0 | 1 1 1 0 R R/M     REG == 5 MOD == 3 RM == FPU register index D == 1 P == 1 R == 1
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"FSUBRP ST(%u),ST(0) ; ST(%u) -= ST(0), POP",mrm.rm(),mrm.rm());
+#endif
+                            break;
+
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/6): // FDIV integer/real mem to ST(0)   MF == 3 16-bit integer
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/6): // ESCAPE M F 0 | MOD 1 1 R R/M     REG == 6 MOD == 0,1,2 RM == mem ref R == 0
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/6):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FDIVw %s ; MF=16-bit integer",IPDecPrint16(mrm,disp,2,RC_FPUREG));
+#endif
+                            break;
+                        case_span_by_mod_reg(/*mod*/3,/*reg*/6): // FDIV ST(0) to ST(i), POP
+                                                                 // ESCAPE D P 0 | 1 1 1 1 R R/M     REG == 6 MOD == 3 RM == FPU register index D == 1 P == 1 R == 0
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FDIVP ST(%u),ST(0) ; ST(%u) -= ST(0), POP",mrm.rm(),mrm.rm());
+#endif
+                            break;
+
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/7): // FDIV integer/real mem to ST(0)   MF == 3 16-bit integer
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/7): // ESCAPE M F 0 | MOD 1 1 R R/M     REG == 7 MOD == 0,1,2 RM == mem ref R == 1
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/7):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FDIVRw %s ; MF=16-bit integer",IPDecPrint16(mrm,disp,2,RC_FPUREG));
+#endif
+                            break;
+                        case_span_by_mod_reg(/*mod*/3,/*reg*/7): // FDIV ST(0) to ST(i), POP
+                                                                 // ESCAPE D P 0 | 1 1 1 1 R R/M     REG == 7 MOD == 3 RM == FPU register index D == 1 P == 1 R == 1
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FDIVRP ST(%u),ST(0) ; ST(%u) -= ST(0), POP",mrm.rm(),mrm.rm());
 #endif
                             break;
 
