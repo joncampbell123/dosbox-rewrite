@@ -178,6 +178,10 @@
     pop     ss
     push    ds
     pop     ds
+    push    fs
+    pop     fs
+    push    gs
+    pop     gs
 
 jmp1:
     jo      short jmp1

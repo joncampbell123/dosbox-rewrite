@@ -99,10 +99,32 @@
 #endif
                             break;
 
+                        case 0xA0:
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"PUSHw FS");
+#endif
+                            break;
+                        case 0xA1:
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"POPw FS");
+#endif
+                            break;
+
                         case 0xA3: // BT r/m,reg
                             mrm.set(IPFB());
                             disp = IPFmrmdisplace16(/*&*/mrm);
                             w += snprintf(w,(size_t)(wf-w),"BTw %s,%s",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()]);
+                            break;
+
+                        case 0xA8:
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"PUSHw GS");
+#endif
+                            break;
+                        case 0xA9:
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"POPw GS");
+#endif
                             break;
 
                         case 0xAB: // BTS r/m,reg
