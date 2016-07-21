@@ -3217,4 +3217,8 @@ calltest1:
     leave
     leave
     leave
+    bound   ax,word [si]
+    bound   bx,word [bx+di]
+    bound   cx,word [bx+di+0x1234]
+    bound   dx,word [0x1234]
 

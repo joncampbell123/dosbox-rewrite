@@ -426,6 +426,16 @@
                     w += snprintf(w,(size_t)(wf-w),"POPAw");
 #endif
                     break;
+                case 0x62: // BOUND reg,r/m
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                    if (mrm.mod() != 3)
+                        w += snprintf(w,(size_t)(wf-w),"BOUNDw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+                    else
+                        goto invalidopcode;
+#endif
+                    break;
 
                 case 0x68: // PUSH imm16
                     v16 = IPFW();
