@@ -3393,4 +3393,22 @@ calltest1:
     btr     word [bx+si+0x1234],3
     btr     word [0x1234],4
     btr     word [si-6],5
+; BTS
+    bts     ax,bx
+    bts     bx,cx
+    bts     cx,dx
+    bts     [si],ax
+    bts     [bx+di],bx
+    bts     [bx+si+0x1234],cx
+    bts     [0x1234],dx
+    bts     [si-6],si
+    bts     ax,1
+    bts     bx,2
+    bts     cx,3
+    bts     dx,4
+    bts     word [si],1
+    bts     word [bx+di],2
+    bts     word [bx+si+0x1234],3
+    bts     word [0x1234],4
+    bts     word [si-6],5
 

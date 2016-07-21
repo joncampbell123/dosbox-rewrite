@@ -53,6 +53,12 @@
                             w += snprintf(w,(size_t)(wf-w),"BTw %s,%s",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()]);
                             break;
 
+                        case 0xAB: // BTS r/m,reg
+                            mrm.set(IPFB());
+                            disp = IPFmrmdisplace16(/*&*/mrm);
+                            w += snprintf(w,(size_t)(wf-w),"BTSw %s,%s",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()]);
+                            break;
+
                         case 0xB3: // BTR
                             mrm.set(IPFB());
                             disp = IPFmrmdisplace16(/*&*/mrm);
@@ -67,7 +73,10 @@
                                     v8 = IPFB();
                                     w += snprintf(w,(size_t)(wf-w),"BTw %s,%02Xh",IPDecPrint16(mrm,disp,2),v8);
                                     break;
-
+                                case 5: // BTS r/m,imm8
+                                    v8 = IPFB();
+                                    w += snprintf(w,(size_t)(wf-w),"BTSw %s,%02Xh",IPDecPrint16(mrm,disp,2),v8);
+                                    break;
                                 case 6: // BTR r/m,imm8
                                     v8 = IPFB();
                                     w += snprintf(w,(size_t)(wf-w),"BTRw %s,%02Xh",IPDecPrint16(mrm,disp,2),v8);
