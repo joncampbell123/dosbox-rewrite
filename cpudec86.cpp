@@ -16,9 +16,6 @@
 #include "dosboxxr/lib/cpu/memreftypes.h"
 #include "dosboxxr/lib/util/case_groups.h"
 
-x86_offset_t            IPDecIP;
-char                    IPDecStr[256];
-
 x86_offset_t            exe_ip = 0;
 unsigned char*          exe_ip_ptr = NULL;
 unsigned char*          exe_image = NULL;

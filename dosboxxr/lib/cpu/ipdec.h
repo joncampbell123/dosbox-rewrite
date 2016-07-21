@@ -1,4 +1,6 @@
 
+#include "dosboxxr/lib/cpu/memreftypes.h"
+
 enum IPDecRegClass {
     RC_REG=0,
     RC_FPUREG
@@ -15,4 +17,7 @@ extern const char *CPUGRP2[8];
 extern const char *CPUGRP3[8];
 extern const char *CPUGRP4[8];
 extern const char *CPUmod0displacement16[8];
+
+extern x86_offset_t             IPDecIP;
+extern char                     IPDecStr[256];
 

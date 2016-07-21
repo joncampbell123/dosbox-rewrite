@@ -1,6 +1,9 @@
 
 #include "dosboxxr/lib/cpu/ipdec.h"
 
+x86_offset_t            IPDecIP;
+char                    IPDecStr[256];
+
 const char *CPUregs16[8] = {
     "AX","CX","DX","BX", "SP","BP","SI","DI"
 };

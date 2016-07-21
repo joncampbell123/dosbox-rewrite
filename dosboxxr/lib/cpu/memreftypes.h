@@ -1,4 +1,7 @@
 
+#ifndef DOSBOXXR_LIB_CPU_MEMREFTYPES_H
+#define DOSBOXXR_LIB_CPU_MEMREFTYPES_H
+
 #include <stdint.h>
 
 /* memory reference types */
@@ -36,4 +39,6 @@ typedef uint32_t            x86_virtaddr_t;
 
 /* physical memory address (after virt->phys page mapping). this is what gets sent out to the bus from the CPU. */
 typedef uint32_t            x86_physaddr_t;
+
+#endif //DOSBOXXR_LIB_CPU_MEMREFTYPES_H
 
