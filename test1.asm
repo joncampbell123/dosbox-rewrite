@@ -3046,3 +3046,17 @@ calltest1:
     fldenv  [0x1234]
     fldenv  [si-6]
 
+; FSAVE   | ESCAPE 1 0 1 | MOD 1 1 0 R/M
+    fsave   [bx]
+    fsave   [bx+si]
+    fsave   [bx+di+0x1234]
+    fsave   [0x1234]
+    fsave   [si-6]
+
+; FRSTOR  | ESCAPE 1 0 1 | MOD 1 0 0 R/M
+    frstor  [bx]
+    frstor  [bx+si]
+    frstor  [bx+di+0x1234]
+    frstor  [0x1234]
+    frstor  [si-6]
+

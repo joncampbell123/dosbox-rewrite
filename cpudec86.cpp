@@ -1706,6 +1706,22 @@ after_prefix:
 #endif
                             break;
 
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/4): // FRSTOR
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/4): // ESCAPE 1 0 1 | MOD 1 0 0 R/M     REG == 4 MOD == 0,1,2 RM == mem ref
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/4):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FRSTOR %s",IPDecPrint16(mrm,disp,2,RC_REG));
+#endif
+                            break;
+
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/6): // FSAVE
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/6): // ESCAPE 1 0 1 | MOD 1 1 0 R/M     REG == 6 MOD == 0,1,2 RM == mem ref
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/6):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FSAVE %s",IPDecPrint16(mrm,disp,2,RC_REG));
+#endif
+                            break;
+
                         case_span_by_mod_reg(/*mod*/0,/*reg*/7): // FSTSW
                         case_span_by_mod_reg(/*mod*/1,/*reg*/7): // ESCAPE 1 0 1 | MOD 1 1 1 R/M     REG == 7 MOD == 0,1,2 RM == mem ref
                         case_span_by_mod_reg(/*mod*/2,/*reg*/7):
