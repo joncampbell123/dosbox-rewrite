@@ -2003,6 +2003,36 @@ jmp1:
     mov     si,0x1234
     mov     di,0x1234
 
+; lgs (386 or later)
+    lgs     ax,[si]
+    lgs     ax,[bx+si]
+    lgs     ax,[0x1234]
+    lgs     ax,[bx+si+0x1234]
+    lgs     bx,[bx+di-0x44]
+    db      0x0F,0xB5,0xC0  ; LGS AX,AX (illegal, YASM won't encode it)
+    db      0x0F,0xB5,0xC1  ; LGS AX,CX
+    db      0x0F,0xB5,0xC8  ; LGS CX,AX
+
+; lfs (386 or later)
+    lfs     ax,[si]
+    lfs     ax,[bx+si]
+    lfs     ax,[0x1234]
+    lfs     ax,[bx+si+0x1234]
+    lfs     bx,[bx+di-0x44]
+    db      0x0F,0xB4,0xC0  ; LFS AX,AX (illegal, YASM won't encode it)
+    db      0x0F,0xB4,0xC1  ; LFS AX,CX
+    db      0x0F,0xB4,0xC8  ; LFS CX,AX
+
+; lss (386 or later)
+    lss     ax,[si]
+    lss     ax,[bx+si]
+    lss     ax,[0x1234]
+    lss     ax,[bx+si+0x1234]
+    lss     bx,[bx+di-0x44]
+    db      0x0F,0xB2,0xC0  ; LSS AX,AX (illegal, YASM won't encode it)
+    db      0x0F,0xB2,0xC1  ; LSS AX,CX
+    db      0x0F,0xB2,0xC8  ; LSS CX,AX
+
 ; les
     les     ax,[si]
     les     ax,[bx+si]

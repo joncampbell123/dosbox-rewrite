@@ -73,10 +73,31 @@
                             w += snprintf(w,(size_t)(wf-w),"IMULw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
                             break;
 
+                        case 0xB2: // LSS reg,r/m word size
+                            mrm.set(IPFB());
+                            disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"LSSw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+#endif
+                            break;
                         case 0xB3: // BTR
                             mrm.set(IPFB());
                             disp = IPFmrmdisplace16(/*&*/mrm);
                             w += snprintf(w,(size_t)(wf-w),"BTRw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+                            break;
+                        case 0xB4: // LFS reg,r/m word size
+                            mrm.set(IPFB());
+                            disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"LFSw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+#endif
+                            break;
+                        case 0xB5: // LGS reg,r/m word size
+                            mrm.set(IPFB());
+                            disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"LGSw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+#endif
                             break;
 
                         case 0xBA: // 0x0F 0xBA group
