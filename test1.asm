@@ -2693,7 +2693,7 @@ calltest1:
     faddp   st6,st0
     faddp   st7,st0
 
-; FSUB    | ESCAPE M F 0 | MOD 1 0 0 R/M |     Subtract integer/real memory from ST(0)
+; FSUB    | ESCAPE M F 0 | MOD 1 0 R R/M |     Subtract integer/real memory from ST(0) R == 0
 ; also known as "FISUB" for integer subtraction
     fsub    dword [bx]                      ; MF=0 op 0xD8
     fsub    dword [bx+si]
@@ -2738,7 +2738,7 @@ calltest1:
     db      0xDA,0xE6       ; fsubp   st0,st6
     db      0xDA,0xE7       ; fsubp   st0,st7
 
-; FADD    | ESCAPE d P 0 | 1 1 1 0 R R/M |     Sub ST(i) to ST(0) d=1 (destination is ST(i)) P=0 don't pop after add R=0 dest OP src
+; FSUB    | ESCAPE d P 0 | 1 1 1 0 R R/M |     Sub ST(i) to ST(0) d=1 (destination is ST(i)) P=0 don't pop after add R=0 dest OP src
     db      0xDC,0xE0       ; fsub    st0,st0   YASM prefers encoding fsub ST(i),ST(0) form with R=1, won't encode this form
     db      0xDC,0xE1       ; fsub    st1,st0
     db      0xDC,0xE2       ; fsub    st2,st0
@@ -2748,7 +2748,7 @@ calltest1:
     db      0xDC,0xE6       ; fsub    st6,st0
     db      0xDC,0xE7       ; fsub    st7,st0
 
-; FADD    | ESCAPE d P 0 | 1 1 1 0 R R/M |     Sub ST(i) to ST(0) d=1 (destination is ST(i)) P=1 pop after add R=0 dest OP src
+; FSUB    | ESCAPE d P 0 | 1 1 1 0 R R/M |     Sub ST(i) to ST(0) d=1 (destination is ST(i)) P=1 pop after add R=0 dest OP src
     db      0xDE,0xE0       ; fsubp   st0,st0   YASM prefers encoding fsubp ST(i),ST(0) form with R=1, won't encode this form
     db      0xDE,0xE1       ; fsubp   st1,st0
     db      0xDE,0xE2       ; fsubp   st2,st0
@@ -2757,4 +2757,63 @@ calltest1:
     db      0xDE,0xE5       ; fsubp   st5,st0
     db      0xDE,0xE6       ; fsubp   st6,st0
     db      0xDE,0xE7       ; fsubp   st7,st0
+
+; FSUB    | ESCAPE M F 0 | MOD 1 0 R R/M |     Subtract integer/real memory from ST(0) R == 1
+; also known as "FISUB" for integer subtraction
+    fsubr   dword [bx]                      ; MF=0 op 0xD8
+    fsubr   dword [bx+si]
+    fsubr   dword [bx+di+0x1234]
+    fsubr   dword [si-6]
+    fisubr  dword [bx]                      ; MF=1 op 0xDA
+    fisubr  dword [bx+si]
+    fisubr  dword [bx+di+0x1234]
+    fisubr  dword [si-6]
+    fsubr   qword [bx]                      ; MF=2 op 0xDC
+    fsubr   qword [bx+si]
+    fsubr   qword [bx+di+0x1234]
+    fsubr   qword [si-6]
+    fisubr  word [bx]                       ; MF=3 op 0xDE
+    fisubr  word [bx+si]
+    fisubr  word [bx+di+0x1234]
+    fisubr  word [si-6]
+
+; FSUB    | ESCAPE d P 0 | 1 1 1 0 R R/M |     Subtract ST(i) from ST(0) d=0 (destination is ST(0)) P=0 don't pop after add R=1 src OP dest
+    fsubr   st0,st0
+    fsubr   st0,st1
+    fsubr   st0,st2
+    fsubr   st0,st3
+    fsubr   st0,st4
+    fsubr   st0,st5
+    fsubr   st0,st6
+    fsubr   st0,st7
+
+; FSUB    | ESCAPE d P 0 | 1 1 1 0 R R/M |     Subtract ST(i) to ST(0) d=0 (destination is ST(0)) P=1 pop after add R=1 src OP dest
+    db      0xDA,0xE8       ; fsubrp   st0,st0
+    db      0xDA,0xE9       ; fsubrp   st0,st1   YASM won't let me encode this
+    db      0xDA,0xEA       ; fsubrp   st0,st2
+    db      0xDA,0xEB       ; fsubrp   st0,st3
+    db      0xDA,0xEC       ; fsubrp   st0,st4
+    db      0xDA,0xED       ; fsubrp   st0,st5
+    db      0xDA,0xEE       ; fsubrp   st0,st6
+    db      0xDA,0xEF       ; fsubrp   st0,st7
+
+; FSUB    | ESCAPE d P 0 | 1 1 1 0 R R/M |     Sub ST(i) to ST(0) d=1 (destination is ST(i)) P=0 don't pop after add R=0 dest OP src
+    db      0xDC,0xE8       ; fsubr    st0,st0   YASM prefers encoding fsub ST(i),ST(0) form with R=1, won't encode this form
+    db      0xDC,0xE9       ; fsubr    st1,st0
+    db      0xDC,0xEA       ; fsubr    st2,st0
+    db      0xDC,0xEB       ; fsubr    st3,st0
+    db      0xDC,0xEC       ; fsubr    st4,st0
+    db      0xDC,0xED       ; fsubr    st5,st0
+    db      0xDC,0xEE       ; fsubr    st6,st0
+    db      0xDC,0xEF       ; fsubr    st7,st0
+
+; FSUB    | ESCAPE d P 0 | 1 1 1 0 R R/M |     Sub ST(i) to ST(0) d=1 (destination is ST(i)) P=1 pop after add R=0 dest OP src
+    db      0xDE,0xE8       ; fsubrp   st0,st0   YASM prefers encoding fsubp ST(i),ST(0) form with R=1, won't encode this form
+    db      0xDE,0xE9       ; fsubrp   st1,st0
+    db      0xDE,0xEA       ; fsubrp   st2,st0
+    db      0xDE,0xEB       ; fsubrp   st3,st0
+    db      0xDE,0xEC       ; fsubrp   st4,st0
+    db      0xDE,0xED       ; fsubrp   st5,st0
+    db      0xDE,0xEE       ; fsubrp   st6,st0
+    db      0xDE,0xEF       ; fsubrp   st7,st0
 
