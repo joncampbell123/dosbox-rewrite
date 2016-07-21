@@ -3640,3 +3640,12 @@ jmp2:
 ; FUCOMPP | ESCAPE 0 1 0 | 1 1 1 0 1 0 0 1
     fucompp
 
+; FCOS    | ESCAPE 0 0 1 | 1 1 1 1 1 1 1 1
+    fcos
+
+; FSIN    | ESCAPE 0 0 1 | 1 1 1 1 1 1 1 0
+    fsin
+
+; FSINCOS | ESCAPE 0 0 1 | 1 1 1 1 1 0 1 1
+    fsincos
+

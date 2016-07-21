@@ -239,7 +239,11 @@
                             w += snprintf(w,(size_t)(wf-w),"FSQRT");
 #endif
                             break;
-
+                        case 0xFB: // FSINCOS
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FSINCOS");
+#endif
+                            break;
                         case 0xFC: // FRNDINT
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"FRNDINT");
@@ -250,6 +254,17 @@
                             w += snprintf(w,(size_t)(wf-w),"FSCALE");
 #endif
                             break;
+                        case 0xFE: // FSIN
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FSIN");
+#endif
+                            break;
+                        case 0xFF: // FCOS
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FCOS");
+#endif
+                            break;
+
                         case_span_by_mod_reg(/*mod*/0,/*reg*/0): // FLD integer/real mem to ST(0)    MF == 0 32-bit real
                         case_span_by_mod_reg(/*mod*/1,/*reg*/0): // ESCAPE M F 1 | MOD 0 0 0 R/M     REG == 0 MOD == 0,1,2 RM == mem ref
                         case_span_by_mod_reg(/*mod*/2,/*reg*/0):
@@ -818,6 +833,7 @@
                             w += snprintf(w,(size_t)(wf-w),"FCOMPP");
 #endif
                             break;
+
                         default:
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"(invalid FPU opcode %02Xh %02Xh)",op1,mrm.byte);
