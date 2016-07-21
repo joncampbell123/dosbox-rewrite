@@ -3617,3 +3617,26 @@ jmp2:
     shrd    [0x1234],cx,cl
     shrd    [si-6],dx,cl
 
+; FUCOM   | ESCAPE 1 0 1 | 1 1 1 0 0 R/M
+    fucom   st0
+    fucom   st1
+    fucom   st2
+    fucom   st3
+    fucom   st4
+    fucom   st5
+    fucom   st6
+    fucom   st7
+
+; FUCOMP  | ESCAPE 1 0 1 | 1 1 1 0 1 R/M
+    fucomp  st0
+    fucomp  st1
+    fucomp  st2
+    fucomp  st3
+    fucomp  st4
+    fucomp  st5
+    fucomp  st6
+    fucomp  st7
+
+; FUCOMPP | ESCAPE 0 1 0 | 1 1 1 0 1 0 0 1
+    fucompp
+

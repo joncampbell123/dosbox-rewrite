@@ -396,13 +396,10 @@
                             w += snprintf(w,(size_t)(wf-w),"FISUBRd %s ; MF=32-bit integer",IPDecPrint16(mrm,disp,4,RC_FPUREG));
 #endif
                             break;
-                        // FIXME: Does the 80287 decode this or ignore it?
-                        case_span_by_mod_reg(/*mod*/3,/*reg*/5): // FSUBR ST(i) to ST(0)
-                                                                 // ESCAPE D P 0 | 1 1 1 0 R R/M     REG == 5 MOD == 3 RM == FPU register index D == 0 P == 1 R == 1
-#ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"FSUBRP ST(0),ST(%u) ; ST(0) -= ST(%u), POP",mrm.rm(),mrm.rm());
-#endif
-                            break;
+
+                        // NTS: REG == 5 MOD == 3 RM == FPU REG FSUBRP range unused encoding is effectively replaced
+                        //      with new 80387 instructions.
+
                         case_span_by_mod_reg(/*mod*/0,/*reg*/6): // FDIV integer/real mem to ST(0)   MF == 1 32-bit integer
                         case_span_by_mod_reg(/*mod*/1,/*reg*/6): // ESCAPE M F 0 | MOD 1 1 R R/M     REG == 6 MOD == 0,1,2 RM == mem ref R == 0
                         case_span_by_mod_reg(/*mod*/2,/*reg*/6):
@@ -431,6 +428,11 @@
                             w += snprintf(w,(size_t)(wf-w),"FDIVRP ST(0),ST(%u) ; ST(0) /= ST(%u), POP",mrm.rm(),mrm.rm());
 #endif
                             break;
+
+                        case 0xE9: // FUCOMPP
+                            w += snprintf(w,(size_t)(wf-w),"FUCOMPP");
+                            break;
+
                         default:
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"(invalid FPU opcode %02Xh %02Xh)",op1,mrm.byte);
@@ -674,6 +676,18 @@
                         case_span_by_mod_reg(/*mod*/2,/*reg*/4):
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"FRSTOR %s",IPDecPrint16(mrm,disp,2,RC_REG));
+#endif
+                            break;
+
+                        case_span_by_mod_reg(/*mod*/3,/*reg*/4): // FUCOM
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FUCOM ST(%u)",mrm.rm());
+#endif
+                            break;
+
+                        case_span_by_mod_reg(/*mod*/3,/*reg*/5): // FUCOMP
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FUCOMP ST(%u)",mrm.rm());
 #endif
                             break;
 
