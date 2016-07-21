@@ -209,7 +209,11 @@
                             w += snprintf(w,(size_t)(wf-w),"FXTRACT");
 #endif
                             break;
-
+                        case 0xF5: // FPREM1
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FPREM1");
+#endif
+                            break;
                         case 0xF6: // FDECSTP
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"FDECSTP");
