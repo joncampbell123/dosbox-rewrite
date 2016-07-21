@@ -70,6 +70,11 @@ static inline void IPFModRegRm(x86ModRegRm &m) {
     m.byte = IPFB();
 }
 
+static inline uint8_t IPDec8abs(uint8_t v) {
+    if (v & 0x80) return 0x100 - v;
+    return v;
+}
+
 // given mod/reg/rm fetch displacement (16-bit code)
 static inline x86_offset_t IPFmrmdisplace16(x86ModRegRm &mrm) {
     switch (mrm.mod()) {
@@ -83,11 +88,6 @@ static inline x86_offset_t IPFmrmdisplace16(x86ModRegRm &mrm) {
         case 3:
             return 0;
     };
-}
-
-static inline uint8_t IPDec8abs(uint8_t v) {
-    if (v & 0x80) return 0x100 - v;
-    return v;
 }
 
 // print 16-bit code form of mod/reg/rm with displacement
