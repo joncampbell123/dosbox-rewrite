@@ -95,11 +95,7 @@
                     w += snprintf(w,(size_t)(wf-w),"PUSHw CS");
 #endif
                     break;
-                case 0x0F: // 8086 only!
-#ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"POPw CS");
-#endif
-                    break;
+#include "dosboxxr/lib/cpu/core/intel80286/coreloop_0f.h"
                 case 0x10: // ADC r/m,reg byte size
                     mrm.set(IPFB());
                     disp = IPFmrmdisplace16(/*&*/mrm);
@@ -420,12 +416,7 @@
                     w += snprintf(w,(size_t)(wf-w),"POPw %s",CPUregs16[op1&7]);
 #endif
                     break;
-                // ALIAS 8086
-                // 8086: 60-6F not documented, but found to be aliases of 70-7F
-                // according to http://www.os2museum.com/wp/undocumented-8086-opcodes/
-                // TODO: Pull out the old IBM 5150 and check that these are alias
-                case_span_16(0x60): // 0x60-0x6F
-                // END ALIAS
+
                 case_span_16(0x70): // 0x70-0x7F
                     v16 = (uint16_t)IPFBsigned();
                     v16 = (v16 + IPval()) & 0xFFFFU;
@@ -692,17 +683,14 @@
                     w += snprintf(w,(size_t)(wf-w),"MOV %s,%04Xh",CPUregs16[op1&7],v16);
 #endif
                     break;
+
                 case 0xC2:
-                case 0xC0: // ALIAS 8086
-                    // TODO: Pull out the old IBM 5150 and check that 0xC0 is alias
                     v16 = IPFW();
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"RETw %04Xh",v16);
 #endif
                     break;
                 case 0xC3:
-                case 0xC1: // ALIAS 8086
-                    // TODO: Pull out the old IBM 5150 and check that 0xC1 is alias
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"RETw");
 #endif
@@ -737,17 +725,14 @@
                     w += snprintf(w,(size_t)(wf-w),"MOVw %s,%04Xh",IPDecPrint16(mrm,disp,2),v16);
 #endif
                     break;
+
                 case 0xCA:
-                case 0xC8: // ALIAS 8086
-                    // TODO: Pull out the old IBM 5150 and check that 0xC8 is alias
                     v16 = IPFW();
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"RETFw %04Xh",v16);
 #endif
                     break;
                 case 0xCB:
-                case 0xC9: // ALIAS 8086
-                    // TODO: Pull out the old IBM 5150 and check that 0xC9 is alias
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"RETFw");
 #endif
@@ -829,7 +814,7 @@
                     w += snprintf(w,(size_t)(wf-w),"XLATw");
 #endif
                     break;
-#include "dosboxxr/lib/cpu/core/intel8086/coreloop_fpu.h"
+#include "dosboxxr/lib/cpu/core/intel80286/coreloop_fpu.h"
                 case 0xE0:
                     v16 = (uint16_t)IPFBsigned();
                     v16 = (v16 + IPval()) & 0xFFFFU;
@@ -931,12 +916,11 @@
 #endif
                     break;
                 case 0xF0:
-                case 0xF1: // 8086 ALIAS [http://www.os2museum.com/wp/undocumented-8086-opcodes/]
-                    // TODO: Pull out the old IBM 5150 and check that 0xF1 is alias
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"LOCK ");
 #endif
                     goto after_prefix;
+
                 case 0xF2:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"REPNZ ");
@@ -1014,33 +998,23 @@
 #endif
                     break;
                 case 0xFE:
-                    // Question: If the 8086 encounters illegal encoding (reg >= 2) does it either:
-                    //             a) read MRM, displacement field, then ignore instruction?
-                    //             b) read MRM, then abort and ignore instruction (leaving IP at displacement field bytes)?
-                    //             c) read MRM, displacement field, then execute some unknown alias of valid instructions?
-                    //           Since 286 and higher have #INVD exception, this question applies only to 8086.
                     mrm.set(IPFB());
                     disp = IPFmrmdisplace16(/*&*/mrm);
 #ifdef DECOMPILEMODE
                     if (mrm.reg() <= 1)
                         w += snprintf(w,(size_t)(wf-w),"%sb %s",CPUGRP4[mrm.reg()],IPDecPrint16(mrm,disp,1));
-                    else // NTS: DOSBox 0.74 uses this opcode reg==7 for it's callback instruction which breaks the mod/reg/rm pattern
-                        w += snprintf(w,(size_t)(wf-w),"%sb %s","(illegal)",IPDecPrint16(mrm,disp,1));
+                    else
+                        goto invalidopcode;
 #endif
                     break;
                 case 0xFF:
-                    // Question: If the 8086 encounters illegal encoding (reg == 7) does it either:
-                    //             a) read MRM, displacement field, then ignore instruction?
-                    //             b) read MRM, then abort and ignore instruction (leaving IP at displacement field bytes)?
-                    //             c) read MRM, displacement field, then execute some unknown alias of valid instructions?
-                    //           Since 286 and higher have #INVD exception, this question applies only to 8086.
                     mrm.set(IPFB());
                     disp = IPFmrmdisplace16(/*&*/mrm);
 #ifdef DECOMPILEMODE
                     if (mrm.reg() != 7)
                         w += snprintf(w,(size_t)(wf-w),"%sw %s",CPUGRP4[mrm.reg()],IPDecPrint16(mrm,disp,2));
                     else
-                        w += snprintf(w,(size_t)(wf-w),"%sw %s","(illegal)",IPDecPrint16(mrm,disp,2));
+                        goto invalidopcode;
 #endif
                     break;
                 default:

@@ -334,10 +334,7 @@
                             w += snprintf(w,(size_t)(wf-w),"FIADDd %s ; MF=32-bit integer",IPDecPrint16(mrm,disp,4,RC_FPUREG));
 #endif
                             break;
-                        // WARNING: This is how the 8087 would interpret this opcode, according to Intel's datasheet.
-                        //          Note that nobody would use this instruction because it is nonsensical (add to ST(0) then pop ST(0)).
-                        //          It's not defined or known yet how later processors (286, 386, 486, Pentium, etc.) handle this opcode.
-                        //          Later processors starting with the Pentium II re-define this opcode as FCMOVxx instructions.
+                        // FIXME: Does the 80287 decode this or ignore it?
                         case_span_by_mod_reg(/*mod*/3,/*reg*/0): // FADD ST(i) to ST(0)
                                                                  // ESCAPE D P 0 | 1 1 0 0 0 R/M     REG == 0 MOD == 3 RM == FPU register index D == 0 P == 1
 #ifdef DECOMPILEMODE
@@ -351,10 +348,7 @@
                             w += snprintf(w,(size_t)(wf-w),"FIMULd %s ; MF=32-bit integer",IPDecPrint16(mrm,disp,4,RC_FPUREG));
 #endif
                             break;
-                        // WARNING: This is how the 8087 would interpret this opcode, according to Intel's datasheet.
-                        //          Note that nobody would use this instruction because it is nonsensical (add to ST(0) then pop ST(0)).
-                        //          It's not defined or known yet how later processors (286, 386, 486, Pentium, etc.) handle this opcode.
-                        //          Later processors starting with the Pentium II re-define this opcode as FCMOVxx instructions.
+                        // FIXME: Does the 80287 decode this or ignore it?
                         case_span_by_mod_reg(/*mod*/3,/*reg*/1): // FMUL ST(i) to ST(0)
                                                                  // ESCAPE D P 0 | 1 1 0 0 1 R/M     REG == 1 MOD == 3 RM == FPU register index D == 0 P == 1
 #ifdef DECOMPILEMODE
@@ -384,10 +378,7 @@
                             w += snprintf(w,(size_t)(wf-w),"FISUBd %s ; MF=32-bit integer",IPDecPrint16(mrm,disp,4,RC_FPUREG));
 #endif
                             break;
-                        // WARNING: This is how the 8087 would interpret this opcode, according to Intel's datasheet.
-                        //          Note that nobody would use this instruction because it is nonsensical (sub from ST(0) then pop ST(0)).
-                        //          It's not defined or known yet how later processors (286, 386, 486, Pentium, etc.) handle this opcode.
-                        //          Later processors starting with the Pentium II re-define this opcode as ??????(TODO) instructions.
+                        // FIXME: Does the 80287 decode this or ignore it?
                         case_span_by_mod_reg(/*mod*/3,/*reg*/4): // FSUB ST(i) to ST(0)
                                                                  // ESCAPE D P 0 | 1 1 1 0 R R/M     REG == 4 MOD == 3 RM == FPU register index D == 0 P == 1 R == 0
 #ifdef DECOMPILEMODE
@@ -401,10 +392,7 @@
                             w += snprintf(w,(size_t)(wf-w),"FISUBRd %s ; MF=32-bit integer",IPDecPrint16(mrm,disp,4,RC_FPUREG));
 #endif
                             break;
-                        // WARNING: This is how the 8087 would interpret this opcode, according to Intel's datasheet.
-                        //          Note that nobody would use this instruction because it is nonsensical (sub from ST(0) then pop ST(0)).
-                        //          It's not defined or known yet how later processors (286, 386, 486, Pentium, etc.) handle this opcode.
-                        //          Later processors starting with the Pentium II re-define this opcode as ??????(TODO) instructions.
+                        // FIXME: Does the 80287 decode this or ignore it?
                         case_span_by_mod_reg(/*mod*/3,/*reg*/5): // FSUBR ST(i) to ST(0)
                                                                  // ESCAPE D P 0 | 1 1 1 0 R R/M     REG == 5 MOD == 3 RM == FPU register index D == 0 P == 1 R == 1
 #ifdef DECOMPILEMODE
@@ -418,10 +406,7 @@
                             w += snprintf(w,(size_t)(wf-w),"FIDIVd %s ; MF=32-bit integer",IPDecPrint16(mrm,disp,4,RC_FPUREG));
 #endif
                             break;
-                        // WARNING: This is how the 8087 would interpret this opcode, according to Intel's datasheet.
-                        //          Note that nobody would use this instruction because it is nonsensical (sub from ST(0) then pop ST(0)).
-                        //          It's not defined or known yet how later processors (286, 386, 486, Pentium, etc.) handle this opcode.
-                        //          Later processors starting with the Pentium II re-define this opcode as ??????(TODO) instructions.
+                        // FIXME: Does the 80287 decode this or ignore it?
                         case_span_by_mod_reg(/*mod*/3,/*reg*/6): // FDIV ST(i) to ST(0)
                                                                  // ESCAPE D P 0 | 1 1 1 1 R R/M     REG == 6 MOD == 3 RM == FPU register index D == 0 P == 1 R == 0
 #ifdef DECOMPILEMODE
@@ -435,10 +420,7 @@
                             w += snprintf(w,(size_t)(wf-w),"FIDIVRd %s ; MF=32-bit integer",IPDecPrint16(mrm,disp,4,RC_FPUREG));
 #endif
                             break;
-                        // WARNING: This is how the 8087 would interpret this opcode, according to Intel's datasheet.
-                        //          Note that nobody would use this instruction because it is nonsensical (sub from ST(0) then pop ST(0)).
-                        //          It's not defined or known yet how later processors (286, 386, 486, Pentium, etc.) handle this opcode.
-                        //          Later processors starting with the Pentium II re-define this opcode as ??????(TODO) instructions.
+                        // FIXME: Does the 80287 decode this or ignore it?
                         case_span_by_mod_reg(/*mod*/3,/*reg*/7): // FDIVR ST(i) to ST(0)
                                                                  // ESCAPE D P 0 | 1 1 1 1 R R/M     REG == 7 MOD == 3 RM == FPU register index D == 0 P == 1 R == 1
 #ifdef DECOMPILEMODE

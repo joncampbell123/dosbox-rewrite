@@ -84,9 +84,9 @@ done:
 
 static void IPDec_80286(x86_offset_t ip) {
     char *w = IPDecStr,*wf = IPDecStr+sizeof(IPDecStr)-1;
+    uint8_t op1,v8,op0F;
     x86_offset_t disp;
     x86ModRegRm mrm;
-    uint8_t op1,v8;
     uint16_t v16b;
     uint16_t v16;
 
