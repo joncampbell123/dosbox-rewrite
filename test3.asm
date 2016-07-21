@@ -3494,4 +3494,9 @@ jmp2:
     mov     dr0,ebx
     mov     ecx,dr0
     mov     dr0,ecx
+; MOV TRx...
+    db      0x0F,0x24,0xC0      ; MOV EAX,TR0   YASM won't let me encode this. Wuss...
+    db      0x0F,0x26,0xC0      ; MOV TR0,EAX
+    db      0x0F,0x24,0xC1      ; MOV ECX,TR0
+    db      0x0F,0x26,0xC1      ; MOV TR0,ECX
 
