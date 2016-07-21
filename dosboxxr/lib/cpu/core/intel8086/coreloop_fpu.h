@@ -81,7 +81,6 @@
                             w += snprintf(w,(size_t)(wf-w),"FSUBR ST(0),ST(%u) ; ST(0) -= ST(%u)",mrm.rm(),mrm.rm());
 #endif
                             break;
-
                         case_span_by_mod_reg(/*mod*/0,/*reg*/6): // FDIV integer/real mem to ST(0)   MF == 0 32-bit real
                         case_span_by_mod_reg(/*mod*/1,/*reg*/6): // ESCAPE M F 0 | MOD 1 1 R R/M     REG == 6 MOD == 0,1,2 RM == mem ref R == 0
                         case_span_by_mod_reg(/*mod*/2,/*reg*/6):
@@ -117,7 +116,6 @@
 #endif
                     };
                     break;
-
                 case 0xD9: // FPU ESCAPE + 0x1
                     mrm.set(IPFB());
                     disp = IPFmrmdisplace16(/*&*/mrm);
@@ -138,6 +136,7 @@
                             w += snprintf(w,(size_t)(wf-w),"FABS");
 #endif
                             break;
+
                         case 0xE4: // FTST
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"FTST");
@@ -260,13 +259,13 @@
                             w += snprintf(w,(size_t)(wf-w),"FLD ST(%u)",mrm.rm());
 #endif
                             break;
-
                         case_span_by_mod_reg(/*mod*/3,/*reg*/1): // FXCH ST(i) and ST(0)
                                                                  // ESCAPE 0 0 1 | 1 1 0 0 1 R/M     REG == 1 MOD == 3 RM == FPU register index
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"FXCH ST(%u)",mrm.rm());
 #endif
                             break;
+
                         case_span_by_mod_reg(/*mod*/0,/*reg*/2): // FST ST(0) to integer/real mem    MF == 0 32-bit real
                         case_span_by_mod_reg(/*mod*/1,/*reg*/2): // ESCAPE M F 1 | MOD 0 1 0 R/M     REG == 2 MOD == 0,1,2 RM == mem ref
                         case_span_by_mod_reg(/*mod*/2,/*reg*/2):
@@ -274,6 +273,7 @@
                             w += snprintf(w,(size_t)(wf-w),"FSTd %s ; MF=32-bit real",IPDecPrint16(mrm,disp,4,RC_FPUREG));
 #endif
                             break;
+
                         case_span_by_mod_reg(/*mod*/0,/*reg*/3): // FSTP ST(0) to integer/real mem   MF == 0 32-bit real
                         case_span_by_mod_reg(/*mod*/1,/*reg*/3): // ESCAPE M F 1 | MOD 0 1 1 R/M     REG == 3 MOD == 0,1,2 RM == mem ref
                         case_span_by_mod_reg(/*mod*/2,/*reg*/3):
@@ -344,7 +344,6 @@
                             w += snprintf(w,(size_t)(wf-w),"FADDP ST(0),ST(%u) ; ST(0) += ST(%u), POP",mrm.rm(),mrm.rm());
 #endif
                             break;
-
                         case_span_by_mod_reg(/*mod*/0,/*reg*/1): // FMUL integer/real mem to ST(0)   MF == 1 32-bit integer
                         case_span_by_mod_reg(/*mod*/1,/*reg*/1): // ESCAPE M F 0 | MOD 0 0 1 R/M     REG == 1 MOD == 0,1,2 RM == mem ref
                         case_span_by_mod_reg(/*mod*/2,/*reg*/1):
@@ -362,7 +361,6 @@
                             w += snprintf(w,(size_t)(wf-w),"FMULP ST(0),ST(%u) ; ST(0) *= ST(%u), POP",mrm.rm(),mrm.rm());
 #endif
                             break;
-
                         case_span_by_mod_reg(/*mod*/0,/*reg*/2): // FCOM integer/real mem to ST(0)   MF == 1 32-bit integer
                         case_span_by_mod_reg(/*mod*/1,/*reg*/2): // ESCAPE M F 0 | MOD 0 1 0 R/M     REG == 2 MOD == 0,1,2 RM == mem ref
                         case_span_by_mod_reg(/*mod*/2,/*reg*/2):
@@ -396,7 +394,6 @@
                             w += snprintf(w,(size_t)(wf-w),"FSUBP ST(0),ST(%u) ; ST(0) -= ST(%u), POP",mrm.rm(),mrm.rm());
 #endif
                             break;
-
                         case_span_by_mod_reg(/*mod*/0,/*reg*/5): // FSUBR integer/real mem to ST(0)  MF == 1 32-bit integer
                         case_span_by_mod_reg(/*mod*/1,/*reg*/5): // ESCAPE M F 0 | MOD 1 0 R R/M     REG == 5 MOD == 0,1,2 RM == mem ref R == 1
                         case_span_by_mod_reg(/*mod*/2,/*reg*/5):
@@ -414,7 +411,6 @@
                             w += snprintf(w,(size_t)(wf-w),"FSUBRP ST(0),ST(%u) ; ST(0) -= ST(%u), POP",mrm.rm(),mrm.rm());
 #endif
                             break;
-
                         case_span_by_mod_reg(/*mod*/0,/*reg*/6): // FDIV integer/real mem to ST(0)   MF == 1 32-bit integer
                         case_span_by_mod_reg(/*mod*/1,/*reg*/6): // ESCAPE M F 0 | MOD 1 1 R R/M     REG == 6 MOD == 0,1,2 RM == mem ref R == 0
                         case_span_by_mod_reg(/*mod*/2,/*reg*/6):
@@ -432,7 +428,6 @@
                             w += snprintf(w,(size_t)(wf-w),"FDIVP ST(0),ST(%u) ; ST(0) /= ST(%u), POP",mrm.rm(),mrm.rm());
 #endif
                             break;
-
                         case_span_by_mod_reg(/*mod*/0,/*reg*/7): // FDIVR integer/real mem to ST(0)  MF == 1 32-bit integer
                         case_span_by_mod_reg(/*mod*/1,/*reg*/7): // ESCAPE M F 0 | MOD 1 1 R R/M     REG == 7 MOD == 0,1,2 RM == mem ref R == 1
                         case_span_by_mod_reg(/*mod*/2,/*reg*/7):
@@ -459,7 +454,6 @@
 #endif
                     };
                     break;
-
                 case 0xDB: // FPU ESCAPE + 0x3
                     mrm.set(IPFB());
                     disp = IPFmrmdisplace16(/*&*/mrm);
@@ -479,6 +473,7 @@
                             w += snprintf(w,(size_t)(wf-w),"FISTd %s ; MF=32-bit integer",IPDecPrint16(mrm,disp,4,RC_FPUREG));
 #endif
                             break;
+
                         case_span_by_mod_reg(/*mod*/0,/*reg*/3): // FSTP ST(0) to integer/real mem   MF == 1 32-bit integer
                         case_span_by_mod_reg(/*mod*/1,/*reg*/3): // ESCAPE M F 1 | MOD 0 1 1 R/M     REG == 2 MOD == 0,1,2 RM == mem ref
                         case_span_by_mod_reg(/*mod*/2,/*reg*/3):
@@ -532,7 +527,6 @@
 #endif
                     };
                     break;
-
                 case 0xDC: // FPU ESCAPE + 0x4
                     mrm.set(IPFB());
                     disp = IPFmrmdisplace16(/*&*/mrm);
@@ -550,7 +544,6 @@
                             w += snprintf(w,(size_t)(wf-w),"FADD ST(%u),ST(0) ; ST(%u) += ST(0)",mrm.rm(),mrm.rm());
 #endif
                             break;
-
                         case_span_by_mod_reg(/*mod*/0,/*reg*/1): // FMUL integer/real mem to ST(0)   MF == 2 64-bit real
                         case_span_by_mod_reg(/*mod*/1,/*reg*/1): // ESCAPE M F 0 | MOD 0 0 1 R/M     REG == 1 MOD == 0,1,2 RM == mem ref
                         case_span_by_mod_reg(/*mod*/2,/*reg*/1):
@@ -564,7 +557,6 @@
                             w += snprintf(w,(size_t)(wf-w),"FMUL ST(%u),ST(0) ; ST(%u) *= ST(0)",mrm.rm(),mrm.rm());
 #endif
                             break;
-
                         case_span_by_mod_reg(/*mod*/0,/*reg*/2): // FCOM integer/real mem to ST(0)   MF == 2 64-bit real
                         case_span_by_mod_reg(/*mod*/1,/*reg*/2): // ESCAPE M F 0 | MOD 0 1 0 R/M     REG == 2 MOD == 0,1,2 RM == mem ref
                         case_span_by_mod_reg(/*mod*/2,/*reg*/2):
@@ -594,7 +586,6 @@
                             w += snprintf(w,(size_t)(wf-w),"FSUB ST(%u),ST(0) ; ST(%u) -= ST(0)",mrm.rm(),mrm.rm());
 #endif
                             break;
-
                         case_span_by_mod_reg(/*mod*/0,/*reg*/5): // FSUBR integer/real mem to ST(0)  MF == 2 64-bit real
                         case_span_by_mod_reg(/*mod*/1,/*reg*/5): // ESCAPE M F 0 | MOD 1 0 R R/M     REG == 5 MOD == 0,1,2 RM == mem ref R == 1
                         case_span_by_mod_reg(/*mod*/2,/*reg*/5):
@@ -608,7 +599,6 @@
                             w += snprintf(w,(size_t)(wf-w),"FSUBR ST(%u),ST(0) ; ST(%u) -= ST(0)",mrm.rm(),mrm.rm());
 #endif
                             break;
-
                         case_span_by_mod_reg(/*mod*/0,/*reg*/6): // FDIV integer/real mem to ST(0)   MF == 2 64-bit real
                         case_span_by_mod_reg(/*mod*/1,/*reg*/6): // ESCAPE M F 0 | MOD 1 1 R R/M     REG == 6 MOD == 0,1,2 RM == mem ref R == 0
                         case_span_by_mod_reg(/*mod*/2,/*reg*/6):
@@ -622,7 +612,6 @@
                             w += snprintf(w,(size_t)(wf-w),"FDIV ST(%u),ST(0) ; ST(%u) /= ST(0)",mrm.rm(),mrm.rm());
 #endif
                             break;
-
                         case_span_by_mod_reg(/*mod*/0,/*reg*/7): // FDIVR integer/real mem to ST(0)  MF == 2 64-bit real
                         case_span_by_mod_reg(/*mod*/1,/*reg*/7): // ESCAPE M F 0 | MOD 1 1 R R/M     REG == 7 MOD == 0,1,2 RM == mem ref R == 1
                         case_span_by_mod_reg(/*mod*/2,/*reg*/7):
@@ -645,7 +634,6 @@
 #endif
                     };
                     break;
-
                 case 0xDD: // FPU ESCAPE + 0x5
                     mrm.set(IPFB());
                     disp = IPFmrmdisplace16(/*&*/mrm);
@@ -690,7 +678,6 @@
                             w += snprintf(w,(size_t)(wf-w),"FSTP ST(%u)",mrm.rm());
 #endif
                             break;
-
                         case_span_by_mod_reg(/*mod*/0,/*reg*/4): // FRSTOR
                         case_span_by_mod_reg(/*mod*/1,/*reg*/4): // ESCAPE 1 0 1 | MOD 1 0 0 R/M     REG == 4 MOD == 0,1,2 RM == mem ref
                         case_span_by_mod_reg(/*mod*/2,/*reg*/4):
@@ -723,7 +710,6 @@
 #endif
                     };
                     break;
-
                 case 0xDE: // FPU ESCAPE + 0x6
                     mrm.set(IPFB());
                     disp = IPFmrmdisplace16(/*&*/mrm);
@@ -741,7 +727,6 @@
                             w += snprintf(w,(size_t)(wf-w),"FADDP ST(%u),ST(0) ; ST(%u) += ST(0), POP",mrm.rm(),mrm.rm());
 #endif
                             break;
-
                         case_span_by_mod_reg(/*mod*/0,/*reg*/1): // FMUL integer/real mem to ST(0)   MF == 3 16-bit integer
                         case_span_by_mod_reg(/*mod*/1,/*reg*/1): // ESCAPE M F 0 | MOD 0 0 1 R/M     REG == 1 MOD == 0,1,2 RM == mem ref
                         case_span_by_mod_reg(/*mod*/2,/*reg*/1):
@@ -755,7 +740,6 @@
                             w += snprintf(w,(size_t)(wf-w),"FMULP ST(%u),ST(0) ; ST(%u) *= ST(0), POP",mrm.rm(),mrm.rm());
 #endif
                             break;
-
                         case_span_by_mod_reg(/*mod*/0,/*reg*/2): // FCOM integer/real mem to ST(0)   MF == 3 16-bit integer
                         case_span_by_mod_reg(/*mod*/1,/*reg*/2): // ESCAPE M F 0 | MOD 0 1 0 R/M     REG == 2 MOD == 0,1,2 RM == mem ref
                         case_span_by_mod_reg(/*mod*/2,/*reg*/2):
@@ -785,7 +769,6 @@
                             w += snprintf(w,(size_t)(wf-w),"FSUBP ST(%u),ST(0) ; ST(%u) -= ST(0), POP",mrm.rm(),mrm.rm());
 #endif
                             break;
-
                         case_span_by_mod_reg(/*mod*/0,/*reg*/5): // FSUB integer/real mem to ST(0)   MF == 3 16-bit integer
                         case_span_by_mod_reg(/*mod*/1,/*reg*/5): // ESCAPE M F 0 | MOD 1 0 R R/M     REG == 5 MOD == 0,1,2 RM == mem ref R == 1
                         case_span_by_mod_reg(/*mod*/2,/*reg*/5):
@@ -799,7 +782,6 @@
                             w += snprintf(w,(size_t)(wf-w),"FSUBRP ST(%u),ST(0) ; ST(%u) -= ST(0), POP",mrm.rm(),mrm.rm());
 #endif
                             break;
-
                         case_span_by_mod_reg(/*mod*/0,/*reg*/6): // FDIV integer/real mem to ST(0)   MF == 3 16-bit integer
                         case_span_by_mod_reg(/*mod*/1,/*reg*/6): // ESCAPE M F 0 | MOD 1 1 R R/M     REG == 6 MOD == 0,1,2 RM == mem ref R == 0
                         case_span_by_mod_reg(/*mod*/2,/*reg*/6):
@@ -813,7 +795,6 @@
                             w += snprintf(w,(size_t)(wf-w),"FDIVP ST(%u),ST(0) ; ST(%u) -= ST(0), POP",mrm.rm(),mrm.rm());
 #endif
                             break;
-
                         case_span_by_mod_reg(/*mod*/0,/*reg*/7): // FDIV integer/real mem to ST(0)   MF == 3 16-bit integer
                         case_span_by_mod_reg(/*mod*/1,/*reg*/7): // ESCAPE M F 0 | MOD 1 1 R R/M     REG == 7 MOD == 0,1,2 RM == mem ref R == 1
                         case_span_by_mod_reg(/*mod*/2,/*reg*/7):
@@ -827,7 +808,6 @@
                             w += snprintf(w,(size_t)(wf-w),"FDIVRP ST(%u),ST(0) ; ST(%u) -= ST(0), POP",mrm.rm(),mrm.rm());
 #endif
                             break;
-
                         case 0xD9: // FCOMPP  MOD == 3 REG == 3 RM == 1
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"FCOMPP");
@@ -842,7 +822,6 @@
 #endif
                     };
                     break;
-
                 case 0xDF: // FPU ESCAPE + 0x7
                     mrm.set(IPFB());
                     disp = IPFmrmdisplace16(/*&*/mrm);
