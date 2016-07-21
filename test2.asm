@@ -3211,4 +3211,10 @@ calltest1:
     rep     insw
     rep     outsb
     rep     outsw
+    enter   0,0
+    enter   0x1234,1
+    enter   0x1234,0x12
+    leave
+    leave
+    leave
 

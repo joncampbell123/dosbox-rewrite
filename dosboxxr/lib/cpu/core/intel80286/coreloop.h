@@ -798,7 +798,18 @@
                     w += snprintf(w,(size_t)(wf-w),"MOVw %s,%04Xh",IPDecPrint16(mrm,disp,2),v16);
 #endif
                     break;
-
+                case 0xC8:
+                    v16 = IPFW();
+                    v8 = IPFB();
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"ENTERw %04Xh,%02Xh",v16,v8);
+#endif
+                    break;
+                case 0xC9:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"LEAVEw");
+#endif
+                    break;
                 case 0xCA:
                     v16 = IPFW();
 #ifdef DECOMPILEMODE
