@@ -149,7 +149,7 @@ static inline uint32_t IPFDW(void) {
 }
 
 // given mod/reg/rm fetch displacement (16-bit code)
-x86_offset_t IPFmrmdisplace16(x86ModRegRm &mrm) {
+static inline x86_offset_t IPFmrmdisplace16(x86ModRegRm &mrm) {
     switch (mrm.mod()) {
         case 0:
             if (mrm.rm() == 6) return IPFW();
@@ -174,7 +174,7 @@ enum IPDecRegClass {
 };
 
 // print 16-bit code form of mod/reg/rm with displacement
-const char *IPDecPrint16(const x86ModRegRm &mrm,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass=RC_REG) {
+static inline const char *IPDecPrint16(const x86ModRegRm &mrm,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass=RC_REG) {
     static char tmp[64];
     char *w=tmp,*wf=tmp+sizeof(tmp)-1;
 
@@ -207,12 +207,14 @@ const char *IPDecPrint16(const x86ModRegRm &mrm,const x86_offset_t ofs,const uns
 }
 
 void IPDec(x86_offset_t ip) {
+#ifdef DECOMPILEMODE
     char *w = IPDecStr,*wf = IPDecStr+sizeof(IPDecStr)-1;
-    x86_offset_t disp;
-    x86ModRegRm mrm;
-    uint8_t op1,v8;
-    uint16_t v16b;
-    uint16_t v16;
+#endif
+    static x86_offset_t disp;
+    static x86ModRegRm mrm;
+    static uint8_t op1,v8;
+    static uint16_t v16b;
+    static uint16_t v16;
 
     {
 #ifdef DECOMPILEMODE
