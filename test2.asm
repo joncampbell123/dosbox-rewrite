@@ -3316,3 +3316,6 @@ calltest1:
 ; FSTSW AX| ESCAPE 1 1 1 | 1 1 1 0 0 0 0 0
     fstsw   ax
 
+; LOADALL 286
+    db      0x0F,0x05       ; LOADALL 286 version
+

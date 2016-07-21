@@ -36,6 +36,11 @@
 #endif
                             break;
 
+                        case 0x05: // LOADALL (286)
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"LOADALL286");
+#endif
+                            break;
                         case 0x06: // CLTS (NTS: Intel 80286 datasheet calls this CTS for some reason)
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"CLTS");
