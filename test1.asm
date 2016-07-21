@@ -3013,10 +3013,22 @@ calltest1:
     fldcw   [0x1234]
     fldcw   [si-6]
 
-; FSTCW   | ESCAPE 1 0 1 | MOD 1 1 1 R/M
+; FSTCW   | ESCAPE 0 0 1 | MOD 1 1 1 R/M
     fstcw   [bx]
     fstcw   [bx+si]
     fstcw   [bx+si+0x1234]
     fstcw   [0x1234]
     fstcw   [si-6]
+
+; FSTSW   | ESCAPE 1 0 1 | MOD 1 1 1 R/M
+    fstsw   [bx]
+    fstsw   [bx+si]
+    fstsw   [bx+si+0x1234]
+    fstsw   [0x1234]
+    fstsw   [si-6]
+; FIXME: The form "FSTSW AX" is not mentioned in the Intel 8087 datasheet.
+;        So I can assume then that instruction didn't exist on the 8087?
+
+; FCLEX   | ESCAPE 0 1 1 | 1 1 1 0 0 0 1 0
+    fclex
 

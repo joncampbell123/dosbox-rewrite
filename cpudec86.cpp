@@ -1532,7 +1532,11 @@ after_prefix:
                             w += snprintf(w,(size_t)(wf-w),"FDISI");
 #endif
                             break;
-
+                        case 0xE2:
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FCLEX");
+#endif
+                            break;
                         case 0xE3:
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"FINIT");
@@ -1683,6 +1687,14 @@ after_prefix:
                                                                  // ESCAPE 1 0 1 | 1 1 0 1 1 R/M     REG == 3 MOD == 3 RM == FPU register index
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"FSTP ST(%u)",mrm.rm());
+#endif
+                            break;
+
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/7): // FSTSW
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/7): // ESCAPE 1 0 1 | MOD 1 1 1 R/M     REG == 7 MOD == 0,1,2 RM == mem ref
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/7):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FSTSWw %s ; MF=64-bit real",IPDecPrint16(mrm,disp,8,RC_FPUREG));
 #endif
                             break;
                     };
