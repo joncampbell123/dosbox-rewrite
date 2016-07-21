@@ -12,6 +12,7 @@
 
 #include "dosboxxr/lib/cpu/x86ModRegRm.h"
 #include "dosboxxr/lib/cpu/memreftypes.h"
+#include "dosboxxr/lib/util/case_groups.h"
 
 x86_offset_t            exe_ip = 0;
 unsigned char*          exe_ip_ptr = NULL;
@@ -19,19 +20,6 @@ unsigned char*          exe_image = NULL;
 unsigned char*          exe_image_fence = NULL;
 
 #include <endian.h>
-
-#define case_span_2(x) \
-    case (x)+0: case (x)+1
-#define case_span_4(x) \
-    case_span_2(x): case_span_2((x)+2)
-#define case_span_8(x) \
-    case_span_4(x): case_span_4((x)+4)
-#define case_span_16(x) \
-    case_span_8(x): case_span_8((x)+8)
-
-// this macro covers one whole 8-value block where in MOD/REG/RM MOD == mod and REG == reg for any value of R/M
-#define case_span_by_mod_reg(mod,reg) \
-        case_span_8(((mod) << 6) + ((reg) << 3))
 
 static const char *CPUregs16[8] = {
     "AX","CX","DX","BX", "SP","BP","SI","DI"
