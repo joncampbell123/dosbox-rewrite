@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <unistd.h>
+#include <endian.h>
 
 #include "dosboxxr/lib/cpu/x86ModRegRm.h"
 #include "dosboxxr/lib/cpu/memreftypes.h"
@@ -19,7 +20,14 @@ unsigned char*          exe_ip_ptr = NULL;
 unsigned char*          exe_image = NULL;
 unsigned char*          exe_image_fence = NULL;
 
-#include <endian.h>
+// include header core requires this
+static x86_offset_t IPDecIP;
+static char IPDecStr[256];
+
+enum IPDecRegClass {
+    RC_REG=0,
+    RC_FPUREG
+};
 
 static const char *CPUregs16[8] = {
     "AX","CX","DX","BX", "SP","BP","SI","DI"
@@ -92,17 +100,17 @@ static const char *CPUmod0displacement16[8] = {
 //// CPU CORE
 #define DECOMPILEMODE
 
-static x86_offset_t IPDecIP;
-static char IPDecStr[256];
-
+// include header core requires this
 static inline bool IPcontinue(void) {
     return (exe_ip_ptr < exe_image_fence);
 }
 
+// include header core requires this
 static inline x86_offset_t IPval(void) {
     return exe_ip;
 }
 
+// include header core requires this
 static inline uint8_t IPFB(void) {
     const uint8_t r = *((const uint8_t*)exe_ip_ptr);
     exe_ip_ptr += 1;
@@ -110,14 +118,7 @@ static inline uint8_t IPFB(void) {
     return r;
 }
 
-static inline int32_t IPFBsigned(void) {
-    return (int32_t)((int8_t)IPFB());
-}
-
-static inline void IPFModRegRm(x86ModRegRm &m) {
-    m.byte = IPFB();
-}
-
+// include header core requires this
 static inline uint16_t IPFW(void) {
     const uint16_t r = le16toh(*((const uint16_t*)exe_ip_ptr));
     exe_ip_ptr += 2;
@@ -125,15 +126,24 @@ static inline uint16_t IPFW(void) {
     return r;
 }
 
-static inline int32_t IPFWsigned(void) {
-    return (int32_t)((int16_t)IPFW());
-}
-
+// include header core requires this
 static inline uint32_t IPFDW(void) {
     const uint32_t r = le32toh(*((const uint32_t*)exe_ip_ptr));
     exe_ip_ptr += 4;
     exe_ip += 4;
     return r;
+}
+
+static inline int32_t IPFBsigned(void) {
+    return (int32_t)((int8_t)IPFB());
+}
+
+static inline int32_t IPFWsigned(void) {
+    return (int32_t)((int16_t)IPFW());
+}
+
+static inline void IPFModRegRm(x86ModRegRm &m) {
+    m.byte = IPFB();
 }
 
 // given mod/reg/rm fetch displacement (16-bit code)
@@ -155,11 +165,6 @@ static inline uint8_t IPDec8abs(uint8_t v) {
     if (v & 0x80) return 0x100 - v;
     return v;
 }
-
-enum IPDecRegClass {
-    RC_REG=0,
-    RC_FPUREG
-};
 
 // print 16-bit code form of mod/reg/rm with displacement
 static inline const char *IPDecPrint16(const x86ModRegRm &mrm,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass=RC_REG) {
@@ -194,15 +199,15 @@ static inline const char *IPDecPrint16(const x86ModRegRm &mrm,const x86_offset_t
     return tmp;
 }
 
-void IPDec(x86_offset_t ip) {
+static void IPDec(x86_offset_t ip) {
 #ifdef DECOMPILEMODE
     char *w = IPDecStr,*wf = IPDecStr+sizeof(IPDecStr)-1;
 #endif
-    static x86_offset_t disp;
-    static x86ModRegRm mrm;
-    static uint8_t op1,v8;
-    static uint16_t v16b;
-    static uint16_t v16;
+    x86_offset_t disp;
+    x86ModRegRm mrm;
+    uint8_t op1,v8;
+    uint16_t v16b;
+    uint16_t v16;
 
     {
 #ifdef DECOMPILEMODE
