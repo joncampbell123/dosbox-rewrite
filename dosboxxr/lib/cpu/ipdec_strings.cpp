@@ -76,6 +76,13 @@ const char *CPUmod0displacement16[8] = {
     "SI",   "DI",   "BP",   "BX"
 };
 
+const char *CPU0F00ops[8] = {
+    "SLDT","STR",
+    "LLDT","LTR",
+    "VERR","VERW",
+    "",""
+};
+
 const char *CPU0F01ops[8] = {
     "SGDT","SIDT",
     "LGDT","LIDT",

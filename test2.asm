@@ -3252,4 +3252,34 @@ calltest1:
     lmsw    word [bx+di]
     lmsw    word [bx+di+0x1234]
     lmsw    word [0x1234]
+; 0x0F 0x00 group
+    sldt    word [bx]               ; 0x0F 0x00 MRM   MOD != 3  REG == 0  R/M == location
+    sldt    word [bx+di]
+    sldt    word [bx+di+0x1234]
+    sldt    word [0x1234]
+
+    str     word [bx]               ; 0x0F 0x00 MRM   MOD != 3  REG == 1  R/M == location
+    str     word [bx+di]
+    str     word [bx+di+0x1234]
+    str     word [0x1234]
+
+    lldt    word [bx]               ; 0x0F 0x00 MRM   MOD != 3  REG == 2  R/M == location
+    lldt    word [bx+di]
+    lldt    word [bx+di+0x1234]
+    lldt    word [0x1234]
+
+    ltr     word [bx]               ; 0x0F 0x00 MRM   MOD != 3  REG == 3  R/M == location
+    ltr     word [bx+di]
+    ltr     word [bx+di+0x1234]
+    ltr     word [0x1234]
+
+    verr    word [bx]               ; 0x0F 0x00 MRM   MOD != 3  REG == 4  R/M == location
+    verr    word [bx+di]
+    verr    word [bx+di+0x1234]
+    verr    word [0x1234]
+
+    verw    word [bx]               ; 0x0F 0x00 MRM   MOD != 3  REG == 5  R/M == location
+    verw    word [bx+di]
+    verw    word [bx+di+0x1234]
+    verw    word [0x1234]
 

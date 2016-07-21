@@ -1,6 +1,16 @@
 /* sub-sub fragment for 286 0F prefix */
-                case 0x0F: // FPU ESCAPE + 0x0
+                case 0x0F: // 0x0F prefix
                     switch (op0F=IPFB()) {
+                        case 0x00: // SLDT,STR,LLDT,LTR,VERR,VERW,#UD,#UD
+                            mrm.set(IPFB());
+                            disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                            if (mrm.mod() != 3 && mrm.reg() <= 5)
+                                w += snprintf(w,(size_t)(wf-w),"%sw %s",CPU0F00ops[mrm.reg()],IPDecPrint16(mrm,disp,2));
+                            else
+                                goto invalidopcode;
+#endif
+                            break;
                         case 0x01: // LGDT,SGDT,LIDT,SGDT,SMSW,#UD,LMSW,#UD
                             mrm.set(IPFB());
                             disp = IPFmrmdisplace16(/*&*/mrm);
