@@ -3321,3 +3321,13 @@ calltest1:
 ; LOADALL 386
     db      0x0F,0x07       ; LOADALL 386
 
+; BSF
+    bsf     ax,bx
+    bsf     bx,cx
+    bsf     cx,dx
+    bsf     ax,[si]
+    bsf     bx,[bx+di]
+    bsf     cx,[bx+si+0x1234]
+    bsf     dx,[0x1234]
+    bsf     si,[si-6]
+
