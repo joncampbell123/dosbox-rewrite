@@ -722,7 +722,22 @@
                     w += snprintf(w,(size_t)(wf-w),"MOV %s,%04Xh",CPUregs16[op1&7],v16);
 #endif
                     break;
-
+                case 0xC0: // GRP2 r/m,imm8  NTS: undocumented reg==6 could be called "SAL", acts like "SHL"
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    v8 = IPFB();
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"%sb %s,%02Xh",CPUGRP2[mrm.reg()],IPDecPrint16(mrm,disp,1),v8);
+#endif
+                    break;
+                case 0xC1: // GRP2 r/m,imm8  NTS: undocumented reg==6 could be called "SAL", acts like "SHL"
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    v8 = IPFB();
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"%sw %s,%02Xh",CPUGRP2[mrm.reg()],IPDecPrint16(mrm,disp,2),v8);
+#endif
+                    break;
                 case 0xC2:
                     v16 = IPFW();
 #ifdef DECOMPILEMODE
