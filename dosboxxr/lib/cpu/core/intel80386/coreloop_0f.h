@@ -47,6 +47,14 @@
 #endif
                             break;
 
+                        case_span_16(0x80): // 0x80-0x8F
+                            v16 = (uint16_t)IPFWsigned();
+                            v16 = (v16 + IPval()) & 0xFFFFU;
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"%sw %04Xh",CPUjcc0F8x[op0F&15],v16);
+#endif
+                            break;
+
                         case 0xA3: // BT r/m,reg
                             mrm.set(IPFB());
                             disp = IPFmrmdisplace16(/*&*/mrm);

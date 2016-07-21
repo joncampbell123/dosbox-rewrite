@@ -3421,3 +3421,22 @@ calltest1:
     bts     word [0x1234],4
     bts     word [si-6],5
 
+; 386 near Jcc
+jmp2:
+    jo      near jmp2
+    jno     near jmp2
+    jb      near jmp2
+    jnb     near jmp2
+    jz      near jmp2
+    jnz     near jmp2
+    jbe     near jmp2
+    ja      near jmp2
+    js      near jmp2
+    jns     near jmp2
+    jpe     near jmp2
+    jpo     near jmp2
+    jl      near jmp2
+    jge     near jmp2
+    jle     near jmp2
+    jg      near jmp2
+

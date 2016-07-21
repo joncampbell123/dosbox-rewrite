@@ -43,6 +43,17 @@ const char *CPUjcc7x[16] = {
     "JLE","JG"
 };
 
+const char *CPUjcc0F8x[16] = {
+    "JO","JNO",
+    "JB","JNB",
+    "JZ","JNZ",
+    "JBE","JA",
+    "JS","JNS",
+    "JPE","JPO",
+    "JL","JGE",
+    "JLE","JG"
+};
+
 const char *CPUGRP1[8] = {
     "ADD","OR",
     "ADC","SBB",
