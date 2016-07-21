@@ -59,6 +59,12 @@
                             w += snprintf(w,(size_t)(wf-w),"BTSw %s,%s",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()]);
                             break;
 
+                        case 0xAF: // IMUL reg,r/m
+                            mrm.set(IPFB());
+                            disp = IPFmrmdisplace16(/*&*/mrm);
+                            w += snprintf(w,(size_t)(wf-w),"IMULw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+                            break;
+
                         case 0xB3: // BTR
                             mrm.set(IPFB());
                             disp = IPFmrmdisplace16(/*&*/mrm);

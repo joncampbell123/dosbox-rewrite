@@ -3101,6 +3101,15 @@ calltest1:
     imul    ax,word [si],0x1234
     imul    bx,word [bx+di],0x1234
     imul    cx,word [0x1234],0x1234
+; 386 imul extension (0x0F 0xAF /r)
+    imul    ax,bx
+    imul    bx,cx
+    imul    cx,dx
+    imul    dx,si
+    imul    ax,word [si]
+    imul    bx,word [bx+di]
+    imul    cx,word [0x1234]
+    imul    dx,[si-6]
 
 ; GRP2 C0
     rol     al,7
