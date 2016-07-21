@@ -61,9 +61,7 @@ static inline uint32_t IPFDW(void) {
 #define DECOMPILEMODE
 
 static void IPDec_8086(x86_offset_t ip) {
-#ifdef DECOMPILEMODE
     char *w = IPDecStr,*wf = IPDecStr+sizeof(IPDecStr)-1;
-#endif
     x86_offset_t disp;
     x86ModRegRm mrm;
     uint8_t op1,v8;
@@ -71,17 +69,11 @@ static void IPDec_8086(x86_offset_t ip) {
     uint16_t v16;
 
     {
-#ifdef DECOMPILEMODE
         /* one instruction only */
         IPDecStr[0] = 0;
         IPDecIP = ip;
-#else
-        while (IPcontinue())
-#endif
-        {
 after_prefix:
 #include "dosboxxr/lib/cpu/core/intel8086/coreloop.h"
-        }
         goto done;
 invalidopcode:
 done:
