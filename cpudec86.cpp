@@ -1164,6 +1164,13 @@ after_prefix:
                             w += snprintf(w,(size_t)(wf-w),"FDIVR ST(0),ST(%u) ; ST(0) /= ST(%u)",mrm.rm(),mrm.rm());
 #endif
                             break;
+                        default:
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"(invalid FPU opcode %02Xh %02Xh)",op1,mrm.byte);
+                            break;
+#else
+                            goto invalidopcode;
+#endif
                     };
                     break;
 
@@ -1362,6 +1369,13 @@ after_prefix:
                             w += snprintf(w,(size_t)(wf-w),"FSTCWw %s",IPDecPrint16(mrm,disp,2,RC_REG));
 #endif
                             break;
+                        default:
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"(invalid FPU opcode %02Xh %02Xh)",op1,mrm.byte);
+                            break;
+#else
+                            goto invalidopcode;
+#endif
                     };
                     break;
 
@@ -1492,6 +1506,13 @@ after_prefix:
                             w += snprintf(w,(size_t)(wf-w),"FDIVRP ST(0),ST(%u) ; ST(0) /= ST(%u), POP",mrm.rm(),mrm.rm());
 #endif
                             break;
+                        default:
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"(invalid FPU opcode %02Xh %02Xh)",op1,mrm.byte);
+                            break;
+#else
+                            goto invalidopcode;
+#endif
                     };
                     break;
 
@@ -1558,6 +1579,13 @@ after_prefix:
                             w += snprintf(w,(size_t)(wf-w),"FINIT");
 #endif
                             break;
+                        default:
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"(invalid FPU opcode %02Xh %02Xh)",op1,mrm.byte);
+                            break;
+#else
+                            goto invalidopcode;
+#endif
                     };
                     break;
 
@@ -1664,6 +1692,13 @@ after_prefix:
                             w += snprintf(w,(size_t)(wf-w),"FDIVR ST(%u),ST(0) ; ST(%u) /= ST(0)",mrm.rm(),mrm.rm());
 #endif
                             break;
+                        default:
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"(invalid FPU opcode %02Xh %02Xh)",op1,mrm.byte);
+                            break;
+#else
+                            goto invalidopcode;
+#endif
                     };
                     break;
 
@@ -1735,6 +1770,13 @@ after_prefix:
                             w += snprintf(w,(size_t)(wf-w),"FSTSWw %s ; MF=64-bit real",IPDecPrint16(mrm,disp,8,RC_FPUREG));
 #endif
                             break;
+                        default:
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"(invalid FPU opcode %02Xh %02Xh)",op1,mrm.byte);
+                            break;
+#else
+                            goto invalidopcode;
+#endif
                     };
                     break;
 
@@ -1847,6 +1889,13 @@ after_prefix:
                             w += snprintf(w,(size_t)(wf-w),"FCOMPP");
 #endif
                             break;
+                        default:
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"(invalid FPU opcode %02Xh %02Xh)",op1,mrm.byte);
+                            break;
+#else
+                            goto invalidopcode;
+#endif
                     };
                     break;
 
@@ -1904,6 +1953,13 @@ after_prefix:
                             w += snprintf(w,(size_t)(wf-w),"FSTPq %s ; MF=64-bit integer",IPDecPrint16(mrm,disp,8,RC_FPUREG));
 #endif
                             break;
+                        default:
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"(invalid FPU opcode %02Xh %02Xh)",op1,mrm.byte);
+                            break;
+#else
+                            goto invalidopcode;
+#endif
                     };
                     break;
 
