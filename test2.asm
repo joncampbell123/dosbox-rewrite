@@ -1,6 +1,6 @@
 ; 80286/80287 test instruction set
 
-    cpu     80286 FPU Undoc
+    cpu     80286 FPU Undoc Obsolete ; "FSETPM is 286 obsolete instruction" No shit sherlock
 
     bits    16
     org     100h
@@ -3309,4 +3309,10 @@ calltest1:
     arpl    [bx+di+0x1234],cx
     arpl    [0x1234],dx
     arpl    [si-6],cx
+
+; FSETPM  | ESCAPE 0 1 1 | 1 1 1 0 0 1 0 0
+    fsetpm
+
+; FSTSW AX| ESCAPE 1 1 1 | 1 1 1 0 0 0 0 0
+    fstsw   ax
 

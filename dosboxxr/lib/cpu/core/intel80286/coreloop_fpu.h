@@ -500,6 +500,11 @@
                             w += snprintf(w,(size_t)(wf-w),"FINIT");
 #endif
                             break;
+                        case 0xE4:
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FSETPM");
+#endif
+                            break;
                         default:
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"(invalid FPU opcode %02Xh %02Xh)",op1,mrm.byte);
@@ -858,6 +863,13 @@
                             w += snprintf(w,(size_t)(wf-w),"FISTPq %s ; MF=64-bit integer",IPDecPrint16(mrm,disp,8,RC_FPUREG));
 #endif
                             break;
+
+                        case 0xE0:
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FSTSWw AX");
+#endif
+                            break;
+
                         default:
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"(invalid FPU opcode %02Xh %02Xh)",op1,mrm.byte);
