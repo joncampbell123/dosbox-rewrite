@@ -1,5 +1,6 @@
 
 #include "dosboxxr/lib/cpu/memreftypes.h"
+#include "dosboxxr/lib/cpu/x86ModRegRm.h"
 
 enum IPDecRegClass {
     RC_REG=0,
@@ -20,4 +21,11 @@ extern const char *CPUmod0displacement16[8];
 
 extern x86_offset_t             IPDecIP;
 extern char                     IPDecStr[256];
+
+static inline uint8_t IPDec8abs(uint8_t v) {
+    if (v & 0x80) return 0x100 - v;
+    return v;
+}
+
+const char *IPDecPrint16(const x86ModRegRm &mrm,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass=RC_REG);
 

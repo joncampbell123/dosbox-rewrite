@@ -21,9 +21,6 @@ unsigned char*          exe_ip_ptr = NULL;
 unsigned char*          exe_image = NULL;
 unsigned char*          exe_image_fence = NULL;
 
-//// CPU CORE
-#define DECOMPILEMODE
-
 // include header core requires this
 static inline bool IPcontinue(void) {
     return (exe_ip_ptr < exe_image_fence);
@@ -70,11 +67,6 @@ static inline void IPFModRegRm(x86ModRegRm &m) {
     m.byte = IPFB();
 }
 
-static inline uint8_t IPDec8abs(uint8_t v) {
-    if (v & 0x80) return 0x100 - v;
-    return v;
-}
-
 // given mod/reg/rm fetch displacement (16-bit code)
 static inline x86_offset_t IPFmrmdisplace16(x86ModRegRm &mrm) {
     switch (mrm.mod()) {
@@ -90,38 +82,8 @@ static inline x86_offset_t IPFmrmdisplace16(x86ModRegRm &mrm) {
     };
 }
 
-// print 16-bit code form of mod/reg/rm with displacement
-static inline const char *IPDecPrint16(const x86ModRegRm &mrm,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass=RC_REG) {
-    static char tmp[64];
-    char *w=tmp,*wf=tmp+sizeof(tmp)-1;
-
-    switch (mrm.mod()) {
-        case 0: // [indirect] or [displacement]
-            if (mrm.rm() == 6)
-                w += snprintf(w,(size_t)(wf-w),"[%04lxh]",(unsigned long)ofs);
-            else
-                w += snprintf(w,(size_t)(wf-w),"[%s]",CPUmod0displacement16[mrm.rm()]);
-            break;
-        case 1: // [indirect+disp8]
-            w += snprintf(w,(size_t)(wf-w),"[%s%c%02Xh]",CPUmod0displacement16[mrm.rm()],ofs&0x80?'-':'+',IPDec8abs((uint8_t)ofs));
-            break;
-        case 2: // [indirect+disp16]
-            w += snprintf(w,(size_t)(wf-w),"[%s+%04Xh]",CPUmod0displacement16[mrm.rm()],(uint16_t)ofs);
-            break;
-        case 3: // register
-            switch (regclass) {
-                case RC_REG:
-                    w += snprintf(w,(size_t)(wf-w),"%s",CPUregsN[sz][mrm.rm()]);
-                    break;
-                case RC_FPUREG: // Floating point registers
-                    w += snprintf(w,(size_t)(wf-w),"ST(%u)",mrm.rm());
-                    break;
-            };
-            break;
-    }
-
-    return tmp;
-}
+//// CPU CORE
+#define DECOMPILEMODE
 
 static void IPDec(x86_offset_t ip) {
 #ifdef DECOMPILEMODE

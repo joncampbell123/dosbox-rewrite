@@ -1,4 +1,7 @@
 
+#ifndef DOSBOXXR_LIB_CPU_X86MODREGRM_H
+#define DOSBOXXR_LIB_CPU_X86MODREGRM_H
+
 #include <stdint.h>
 
 struct x86ModRegRm {
@@ -51,4 +54,6 @@ public:
         return byte >> 6;
     }
 };
+
+#endif //DOSBOXXR_LIB_CPU_X86MODREGRM_H
 
