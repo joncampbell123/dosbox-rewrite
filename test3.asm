@@ -3499,4 +3499,20 @@ jmp2:
     db      0x0F,0x26,0xC0      ; MOV TR0,EAX
     db      0x0F,0x24,0xC1      ; MOV ECX,TR0
     db      0x0F,0x26,0xC1      ; MOV TR0,ECX
+; MOVSX
+    movsx   ax,al
+    movsx   ax,bl
+    movsx   bx,al
+    movsx   ax,byte [si]
+    movsx   ax,byte [bx+di]
+    movsx   bx,byte [0x1234]
+    movsx   cx,byte [si-6]
+; deliberately useless MOVSX [word],[word]. YASM won't let me encode this. NASM disassembler refuses to decompile these. It's a good bet the 80386 allowed this though.
+    db      0x0F,0xBF,0xC0      ; MOVSX AX,AX
+    db      0x0F,0xBF,0xC3      ; MOVSX AX,BX
+    db      0x0F,0xBF,0xD8      ; MOVSX BX,AX
+    db      0x0F,0xBF,0x04      ; MOVSX AX,[SI]
+    db      0x0F,0xBF,0x01      ; MOVSX AX,[BX+DI]
+    db      0x0F,0xBF,0x1E,0x34,0x12; MOVSX BX,[0x1234]
+    db      0x0F,0xBF,0x4C,0xFA ; MOVSX CX,[SI-6]
 

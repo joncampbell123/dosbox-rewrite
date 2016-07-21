@@ -183,6 +183,23 @@
                             disp = IPFmrmdisplace16(/*&*/mrm);
                             w += snprintf(w,(size_t)(wf-w),"BSRw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
                             break;
+                        case 0xBE: // MOVSX reg,r/m    byte -> word
+                            mrm.set(IPFB());
+                            disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"MOVSXw %s,%s ; byte -> word",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,1));
+#endif
+                            break;
+                        case 0xBF: // MOVSX reg,r/m    word -> word
+                            // FIXME: What does the Intel 80386 do when this instruction is used in the 16-bit mode? The obvious intent
+                            //        of this instruction is for use from 32-bit code (or 16-bit code with 32-bit override) to expand
+                            //        16-bit to 32-bit i.e. MOVSX EAX,AX.
+                            mrm.set(IPFB());
+                            disp = IPFmrmdisplace16(/*&*/mrm);
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"MOVSXw %s,%s ; word -> word",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+#endif
+                            break;
 
                         default:
 #ifdef DECOMPILEMODE
