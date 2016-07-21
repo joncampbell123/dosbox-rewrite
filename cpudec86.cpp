@@ -117,7 +117,7 @@ static void IPDec_80386(x86_offset_t ip) {
         IPDecStr[0] = 0;
         IPDecIP = ip;
 after_prefix:
-#include "dosboxxr/lib/cpu/core/intel80286/coreloop.h"
+#include "dosboxxr/lib/cpu/core/intel80386/coreloop.h"
         goto done;
 invalidopcode:
 done:
