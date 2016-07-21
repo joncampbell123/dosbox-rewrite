@@ -427,6 +427,20 @@
 #endif
                     break;
 
+                case 0x68: // PUSH imm16
+                    v16 = IPFW();
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"PUSH %04Xh",v16);
+#endif
+                    break;
+
+                case 0x6A: // PUSH imm8
+                    v16 = IPFBsigned();
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"PUSH %c%02Xh",v16&0x80?'-':'+',IPDec8abs((uint8_t)v16));
+#endif
+                    break;
+
                 case_span_16(0x70): // 0x70-0x7F
                     v16 = (uint16_t)IPFBsigned();
                     v16 = (v16 + IPval()) & 0xFFFFU;
