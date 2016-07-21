@@ -416,6 +416,16 @@
                     w += snprintf(w,(size_t)(wf-w),"POPw %s",CPUregs16[op1&7]);
 #endif
                     break;
+                case 0x60: // PUSHA
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"PUSHAw");
+#endif
+                    break;
+                case 0x61: // POPA
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"POPAw");
+#endif
+                    break;
 
                 case_span_16(0x70): // 0x70-0x7F
                     v16 = (uint16_t)IPFBsigned();
@@ -920,7 +930,11 @@
                     w += snprintf(w,(size_t)(wf-w),"LOCK ");
 #endif
                     goto after_prefix;
-
+                case 0xF1:
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"(undefined opcode F1h)"); /* "Does not Generate #UD" according to X86 Opcode on x86asm geek.html */
+#endif
+                    break;
                 case 0xF2:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"REPNZ ");

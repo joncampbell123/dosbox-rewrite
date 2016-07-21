@@ -1,5 +1,7 @@
 ; 8086/8087 test instruction set
 
+    cpu     8086 FPU Undoc
+
     bits    16
     org     100h
 
