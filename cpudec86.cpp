@@ -1330,6 +1330,22 @@ after_prefix:
                             w += snprintf(w,(size_t)(wf-w),"FSTPd %s ; MF=32-bit real",IPDecPrint16(mrm,disp,4,RC_FPUREG));
 #endif
                             break;
+
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/5): // FLDCW
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/5): // ESCAPE 0 0 1 | MOD 1 0 1 R/M     REG == 5 MOD == 0,1,2 RM == mem ref
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/5):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FLDCWw %s",IPDecPrint16(mrm,disp,2,RC_REG));
+#endif
+                            break;
+
+                        case_span_by_mod_reg(/*mod*/0,/*reg*/7): // FSTCW
+                        case_span_by_mod_reg(/*mod*/1,/*reg*/7): // ESCAPE 0 0 1 | MOD 1 1 1 R/M     REG == 7 MOD == 0,1,2 RM == mem ref
+                        case_span_by_mod_reg(/*mod*/2,/*reg*/7):
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FSTCWw %s",IPDecPrint16(mrm,disp,2,RC_REG));
+#endif
+                            break;
                     };
                     break;
 
@@ -1503,6 +1519,23 @@ after_prefix:
                         case_span_by_mod_reg(/*mod*/2,/*reg*/7):
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"FSTPt %s ; MF=80-bit temporary real",IPDecPrint16(mrm,disp,10,RC_FPUREG));
+#endif
+                            break;
+
+                        case 0xE0:
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FENI");
+#endif
+                            break;
+                        case 0xE1:
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FDISI");
+#endif
+                            break;
+
+                        case 0xE3:
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"FINIT");
 #endif
                             break;
                     };

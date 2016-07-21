@@ -2994,3 +2994,29 @@ calltest1:
     db      0xDE,0xFE       ; fdivrp   st6,st0
     db      0xDE,0xFF       ; fdivrp   st7,st0
 
+; F2XM1   | ESCAPE 0 0 1 | 1 1 1 1 0 0 0 0
+    f2xm1
+
+; FINIT   | ESCAPE 0 1 1 | 1 1 1 0 0 0 1 1     WARNING: YASM inserts WAIT before FINIT
+    finit
+
+; FENI    | ESCAPE 0 1 1 | 1 1 1 0 0 0 0 0
+    db      0xDB,0xE0                       ; FENI (YASM won't encode it?)
+
+; FDISI   | ESCAPE 0 1 1 | 1 1 1 0 0 0 0 1
+    db      0xDB,0xE1                       ; FDISI (YASM won't encode it?)
+
+; FLDCW   | ESCAPE 0 0 1 | MOD 1 0 1 R/M
+    fldcw   [bx]
+    fldcw   [bx+si]
+    fldcw   [bx+si+0x1234]
+    fldcw   [0x1234]
+    fldcw   [si-6]
+
+; FSTCW   | ESCAPE 1 0 1 | MOD 1 1 1 R/M
+    fstcw   [bx]
+    fstcw   [bx+si]
+    fstcw   [bx+si+0x1234]
+    fstcw   [0x1234]
+    fstcw   [si-6]
+
