@@ -3357,4 +3357,40 @@ calltest1:
     bt      word [bx+si+0x1234],3
     bt      word [0x1234],4
     bt      word [si-6],5
+; BTC
+    btc     ax,bx
+    btc     bx,cx
+    btc     cx,dx
+    btc     [si],ax
+    btc     [bx+di],bx
+    btc     [bx+si+0x1234],cx
+    btc     [0x1234],dx
+    btc     [si-6],si
+    btc     ax,1
+    btc     bx,2
+    btc     cx,3
+    btc     dx,4
+    btc     word [si],1
+    btc     word [bx+di],2
+    btc     word [bx+si+0x1234],3
+    btc     word [0x1234],4
+    btc     word [si-6],5
+; BTR
+    btr     ax,bx
+    btr     bx,cx
+    btr     cx,dx
+    btr     [si],ax
+    btr     [bx+di],bx
+    btr     [bx+si+0x1234],cx
+    btr     [0x1234],dx
+    btr     [si-6],si
+    btr     ax,1
+    btr     bx,2
+    btr     cx,3
+    btr     dx,4
+    btr     word [si],1
+    btr     word [bx+di],2
+    btr     word [bx+si+0x1234],3
+    btr     word [0x1234],4
+    btr     word [si-6],5
 
