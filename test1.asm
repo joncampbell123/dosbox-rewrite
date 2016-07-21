@@ -2857,7 +2857,7 @@ calltest1:
     db      0xDA,0xCF       ; fmulp   st0,st7
 
 ; FMUL    | ESCAPE d P 0 | 1 1 0 0 1 R/M |     Multiply ST(i) to ST(0) d=1 (destination is ST(i)) P=0 don't pop after add
-    db      0xDC,0xC0       ; fmul    st0,st0
+    db      0xDC,0xC8       ; fmul    st0,st0
     fmul    st1,st0
     fmul    st2,st0
     fmul    st3,st0
