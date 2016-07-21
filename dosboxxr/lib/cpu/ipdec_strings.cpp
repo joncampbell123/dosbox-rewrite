@@ -76,6 +76,13 @@ const char *CPUmod0displacement16[8] = {
     "SI",   "DI",   "BP",   "BX"
 };
 
+const char *CPU0F01ops[8] = {
+    "SGDT","SIDT",
+    "LGDT","LIDT",
+    "SMSW","",
+    "LMSW",""
+};
+
 // print 16-bit code form of mod/reg/rm with displacement
 const char *IPDecPrint16(const x86ModRegRm &mrm,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass) {
     static char tmp[64];

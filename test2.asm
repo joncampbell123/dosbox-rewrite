@@ -3222,4 +3222,34 @@ calltest1:
     bound   cx,word [bx+di+0x1234]
     bound   dx,word [0x1234]
     clts
+; 0x0F 0x01 group
+    sgdt    word [bx]               ; 0x0F 0x01 MRM   MOD != 3  REG == 0  R/M == location
+    sgdt    word [bx+di]
+    sgdt    word [bx+di+0x1234]
+    sgdt    word [0x1234]
+
+    sidt    word [bx]               ; 0x0F 0x01 MRM   MOD != 3  REG == 1  R/M == location
+    sidt    word [bx+di]
+    sidt    word [bx+di+0x1234]
+    sidt    word [0x1234]
+
+    lgdt    word [bx]               ; 0x0F 0x01 MRM   MOD != 3  REG == 2  R/M == location
+    lgdt    word [bx+di]
+    lgdt    word [bx+di+0x1234]
+    lgdt    word [0x1234]
+
+    lidt    word [bx]               ; 0x0F 0x01 MRM   MOD != 3  REG == 3  R/M == location
+    lidt    word [bx+di]
+    lidt    word [bx+di+0x1234]
+    lidt    word [0x1234]
+
+    smsw    word [bx]               ; 0x0F 0x01 MRM   MOD != 3  REG == 4  R/M == location
+    smsw    word [bx+di]
+    smsw    word [bx+di+0x1234]
+    smsw    word [0x1234]
+
+    lmsw    word [bx]               ; 0x0F 0x01 MRM   MOD != 3  REG == 6  R/M == location
+    lmsw    word [bx+di]
+    lmsw    word [bx+di+0x1234]
+    lmsw    word [0x1234]
 

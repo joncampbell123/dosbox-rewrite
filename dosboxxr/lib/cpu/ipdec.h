@@ -18,6 +18,7 @@ extern const char *CPUGRP2[8];
 extern const char *CPUGRP3[8];
 extern const char *CPUGRP4[8];
 extern const char *CPUmod0displacement16[8];
+extern const char *CPU0F01ops[8];
 
 extern x86_offset_t             IPDecIP;
 extern char                     IPDecStr[256];
