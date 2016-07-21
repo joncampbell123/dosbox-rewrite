@@ -3601,4 +3601,18 @@ jmp2:
     shld    [bx+di],bx,cl
     shld    [0x1234],cx,cl
     shld    [si-6],dx,cl
+; SHRD
+    shrd    ax,bx,1
+    shrd    bx,cx,6
+    shrd    [si],ax,8
+    shrd    [bx+di],bx,4
+    shrd    [0x1234],cx,4
+    shrd    [si-6],dx,4
+; SHRD
+    shrd    ax,bx,cl
+    shrd    bx,cx,cl
+    shrd    [si],ax,cl
+    shrd    [bx+di],bx,cl
+    shrd    [0x1234],cx,cl
+    shrd    [si-6],dx,cl
 

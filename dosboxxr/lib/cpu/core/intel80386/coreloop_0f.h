@@ -147,6 +147,17 @@
                             disp = IPFmrmdisplace16(/*&*/mrm);
                             w += snprintf(w,(size_t)(wf-w),"BTSw %s,%s",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()]);
                             break;
+                        case 0xAC: // SHRD r/m,reg,imm8
+                            mrm.set(IPFB());
+                            disp = IPFmrmdisplace16(/*&*/mrm);
+                            v8 = IPFB();
+                            w += snprintf(w,(size_t)(wf-w),"SHRDw %s,%s,%02Xh",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()],v8);
+                            break;
+                        case 0xAD: // SHRD r/m,reg,CL
+                            mrm.set(IPFB());
+                            disp = IPFmrmdisplace16(/*&*/mrm);
+                            w += snprintf(w,(size_t)(wf-w),"SHRDw %s,%s,CL",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()]);
+                            break;
 
                         case 0xAF: // IMUL reg,r/m
                             mrm.set(IPFB());
