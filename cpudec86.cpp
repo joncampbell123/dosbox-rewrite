@@ -60,7 +60,7 @@ static inline uint32_t IPFDW(void) {
 //// CPU CORE
 #define DECOMPILEMODE
 
-static void IPDec(x86_offset_t ip) {
+static void IPDec_8086(x86_offset_t ip) {
 #ifdef DECOMPILEMODE
     char *w = IPDecStr,*wf = IPDecStr+sizeof(IPDecStr)-1;
 #endif
@@ -2109,7 +2109,7 @@ int main(int argc,char **argv) {
         unsigned char *i_ptr = exe_ip_ptr;
         unsigned int bip;
 
-        IPDec(exe_ip);
+        IPDec_8086(exe_ip);
         printf("%04X: ",IPDecIP);
 
         for (bip=0;bip < (exe_ip-IPDecIP);bip++)
