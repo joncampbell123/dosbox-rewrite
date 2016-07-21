@@ -433,11 +433,26 @@
                     w += snprintf(w,(size_t)(wf-w),"PUSH %04Xh",v16);
 #endif
                     break;
-
+                case 0x69: // IMUL reg,r/m,imm16
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    v16 = IPFW();
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"IMUL %s,%s,%04Xh ; 1st = 2nd * 3rd",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2),v16);
+#endif
+                    break;
                 case 0x6A: // PUSH imm8
                     v16 = IPFBsigned();
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"PUSH %c%02Xh",v16&0x80?'-':'+',IPDec8abs((uint8_t)v16));
+#endif
+                    break;
+                case 0x6B: // IMUL reg,r/m,imm8
+                    mrm.set(IPFB());
+                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    v8 = IPFB();
+#ifdef DECOMPILEMODE
+                    w += snprintf(w,(size_t)(wf-w),"IMUL %s,%s,%02Xh ; 1st = 2nd * 3rd",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2),v8);
 #endif
                     break;
 
