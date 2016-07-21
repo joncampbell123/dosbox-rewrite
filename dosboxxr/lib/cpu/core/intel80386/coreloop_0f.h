@@ -119,6 +119,17 @@
                             disp = IPFmrmdisplace16(/*&*/mrm);
                             w += snprintf(w,(size_t)(wf-w),"BTw %s,%s",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()]);
                             break;
+                        case 0xA4: // SHLD r/m,reg,imm8
+                            mrm.set(IPFB());
+                            disp = IPFmrmdisplace16(/*&*/mrm);
+                            v8 = IPFB();
+                            w += snprintf(w,(size_t)(wf-w),"SHLDw %s,%s,%02Xh",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()],v8);
+                            break;
+                        case 0xA5: // SHLD r/m,reg,CL
+                            mrm.set(IPFB());
+                            disp = IPFmrmdisplace16(/*&*/mrm);
+                            w += snprintf(w,(size_t)(wf-w),"SHLDw %s,%s,CL",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()]);
+                            break;
 
                         case 0xA8:
 #ifdef DECOMPILEMODE

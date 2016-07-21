@@ -3587,3 +3587,18 @@ jmp2:
     setle   byte [bx+si]
     setg    byte [bx+si]
 
+; SHLD
+    shld    ax,bx,1
+    shld    bx,cx,6
+    shld    [si],ax,8
+    shld    [bx+di],bx,4
+    shld    [0x1234],cx,4
+    shld    [si-6],dx,4
+; SHLD
+    shld    ax,bx,cl
+    shld    bx,cx,cl
+    shld    [si],ax,cl
+    shld    [bx+di],bx,cl
+    shld    [0x1234],cx,cl
+    shld    [si-6],dx,cl
+
