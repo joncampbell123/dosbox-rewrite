@@ -2817,3 +2817,62 @@ calltest1:
     db      0xDE,0xEE       ; fsubrp   st6,st0
     db      0xDE,0xEF       ; fsubrp   st7,st0
 
+; FMUL    | ESCAPE M F 0 | MOD 0 0 1 R/M |     Multiply integer/real memory to ST(0)
+; also known as "FIMUL" for integer addition
+    fmul    dword [bx]                      ; MF=0 op 0xD8
+    fmul    dword [bx+si]
+    fmul    dword [bx+di+0x1234]
+    fmul    dword [si-6]
+    fimul   dword [bx]                      ; MF=1 op 0xDA
+    fimul   dword [bx+si]
+    fimul   dword [bx+di+0x1234]
+    fimul   dword [si-6]
+    fmul    qword [bx]                      ; MF=2 op 0xDC
+    fmul    qword [bx+si]
+    fmul    qword [bx+di+0x1234]
+    fmul    qword [si-6]
+    fimul   word [bx]                       ; MF=3 op 0xDE
+    fimul   word [bx+si]
+    fimul   word [bx+di+0x1234]
+    fimul   word [si-6]
+
+; FMUL    | ESCAPE d P 0 | 1 1 0 0 1 R/M |     Multiply ST(i) to ST(0) d=0 (destination is ST(0)) P=0 don't pop after add
+    fmul    st0,st0
+    fmul    st0,st1
+    fmul    st0,st2
+    fmul    st0,st3
+    fmul    st0,st4
+    fmul    st0,st5
+    fmul    st0,st6
+    fmul    st0,st7
+
+; FMUL    | ESCAPE d P 0 | 1 1 0 0 1 R/M |     Multiply ST(i) to ST(0) d=0 (destination is ST(0)) P=1 pop after add
+    db      0xDA,0xC8       ; fmulp   st0,st0
+    db      0xDA,0xC9       ; fmulp   st0,st1   YASM won't let me encode this
+    db      0xDA,0xCA       ; fmulp   st0,st2
+    db      0xDA,0xCB       ; fmulp   st0,st3
+    db      0xDA,0xCC       ; fmulp   st0,st4
+    db      0xDA,0xCD       ; fmulp   st0,st5
+    db      0xDA,0xCE       ; fmulp   st0,st6
+    db      0xDA,0xCF       ; fmulp   st0,st7
+
+; FMUL    | ESCAPE d P 0 | 1 1 0 0 1 R/M |     Multiply ST(i) to ST(0) d=1 (destination is ST(i)) P=0 don't pop after add
+    db      0xDC,0xC0       ; fmul    st0,st0
+    fmul    st1,st0
+    fmul    st2,st0
+    fmul    st3,st0
+    fmul    st4,st0
+    fmul    st5,st0
+    fmul    st6,st0
+    fmul    st7,st0
+
+; FMUL    | ESCAPE d P 0 | 1 1 0 0 1 R/M |     Add ST(i) to ST(0) d=1 (destination is ST(i)) P=1 pop after add
+    fmulp   st0,st0
+    fmulp   st1,st0
+    fmulp   st2,st0
+    fmulp   st3,st0
+    fmulp   st4,st0
+    fmulp   st5,st0
+    fmulp   st6,st0
+    fmulp   st7,st0
+
