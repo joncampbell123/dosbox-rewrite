@@ -3060,3 +3060,22 @@ calltest1:
     frstor  [0x1234]
     frstor  [si-6]
 
+; FINCSTP | ESCAPE 0 0 1 | 1 1 1 1 0 1 1 1
+    fincstp
+
+; FDECSTP | ESCAPE 0 0 1 | 1 1 1 1 0 1 1 0
+    fdecstp
+
+; FFREE   | ESCAPE 1 0 1 | 1 1 0 0 0 REG
+    ffree   st0
+    ffree   st1
+    ffree   st2
+    ffree   st3
+    ffree   st4
+    ffree   st5
+    ffree   st6
+    ffree   st7
+
+; FNOP    | ESCAPE 0 0 1 | 1 1 0 1 0 0 0 0
+    fnop
+
