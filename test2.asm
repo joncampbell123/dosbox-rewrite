@@ -3207,4 +3207,8 @@ calltest1:
     insw
     outsb
     outsw
+    rep     insb
+    rep     insw
+    rep     outsb
+    rep     outsw
 
