@@ -51,5 +51,8 @@ test1.bin: test1.asm
 test2.bin: test2.asm
 	yasm -o $@ -f bin $<
 
-test-bins: test1.bin test2.bin
+test3.bin: test3.asm
+	yasm -o $@ -f bin $<
+
+test-bins: test1.bin test2.bin test3.bin
 

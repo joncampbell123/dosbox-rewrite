@@ -104,6 +104,28 @@ done:
 }
 //// END CORE
 
+static void IPDec_80386(x86_offset_t ip) {
+    char *w = IPDecStr,*wf = IPDecStr+sizeof(IPDecStr)-1;
+    uint8_t op1,v8,op0F;
+    x86_offset_t disp;
+    x86ModRegRm mrm;
+    uint16_t v16b;
+    uint16_t v16;
+
+    {
+        /* one instruction only */
+        IPDecStr[0] = 0;
+        IPDecIP = ip;
+after_prefix:
+#include "dosboxxr/lib/cpu/core/intel80286/coreloop.h"
+        goto done;
+invalidopcode:
+done:
+        { }
+    }
+}
+//// END CORE
+
 static void (*IPDec)(x86_offset_t ip) = IPDec_8086;
 
 int main(int argc,char **argv) {
@@ -128,6 +150,8 @@ int main(int argc,char **argv) {
                     IPDec = IPDec_8086;
                 else if (!strcmp(a,"intel80286") || !strcmp(a,"intel286") || !strcmp(a,"286"))
                     IPDec = IPDec_80286;
+                else if (!strcmp(a,"intel80386") || !strcmp(a,"intel386") || !strcmp(a,"386"))
+                    IPDec = IPDec_80386;
                 else {
                     fprintf(stderr,"Unknown CPU\n");
                     return 1;
