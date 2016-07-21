@@ -82,6 +82,8 @@ done:
 }
 //// END CORE
 
+static void (*IPDec)(x86_offset_t ip) = IPDec_8086;
+
 int main(int argc,char **argv) {
     const char *src_file = NULL,*arg;
     off_t file_size;
@@ -96,6 +98,16 @@ int main(int argc,char **argv) {
 
             if (!strcmp(arg,"i")) {
                 src_file = argv[i++];
+            }
+            else if (!strcmp(arg,"cpu")) {
+                const char *a = argv[i++];
+
+                if (!strcmp(a,"intel8086"))
+                    IPDec = IPDec_8086;
+                else {
+                    fprintf(stderr,"Unknown CPU\n");
+                    return 1;
+                }
             }
             else {
                 fprintf(stderr,"Unknown sw %s\n",arg);
@@ -142,7 +154,7 @@ int main(int argc,char **argv) {
         unsigned char *i_ptr = exe_ip_ptr;
         unsigned int bip;
 
-        IPDec_8086(exe_ip);
+        IPDec(exe_ip);
         printf("%04X: ",IPDecIP);
 
         for (bip=0;bip < (exe_ip-IPDecIP);bip++)
