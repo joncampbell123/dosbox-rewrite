@@ -3330,4 +3330,31 @@ calltest1:
     bsf     cx,[bx+si+0x1234]
     bsf     dx,[0x1234]
     bsf     si,[si-6]
+; BSR
+    bsr     ax,bx
+    bsr     bx,cx
+    bsr     cx,dx
+    bsr     ax,[si]
+    bsr     bx,[bx+di]
+    bsr     cx,[bx+si+0x1234]
+    bsr     dx,[0x1234]
+    bsr     si,[si-6]
+; BT
+    bt      ax,bx
+    bt      bx,cx
+    bt      cx,dx
+    bt      [si],ax
+    bt      [bx+di],bx
+    bt      [bx+si+0x1234],cx
+    bt      [0x1234],dx
+    bt      [si-6],si
+    bt      ax,1
+    bt      bx,2
+    bt      cx,3
+    bt      dx,4
+    bt      word [si],1
+    bt      word [bx+di],2
+    bt      word [bx+si+0x1234],3
+    bt      word [0x1234],4
+    bt      word [si-6],5
 

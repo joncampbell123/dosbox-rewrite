@@ -47,10 +47,34 @@
 #endif
                             break;
 
+                        case 0xA3: // BT r/m,reg
+                            mrm.set(IPFB());
+                            disp = IPFmrmdisplace16(/*&*/mrm);
+                            w += snprintf(w,(size_t)(wf-w),"BTw %s,%s",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()]);
+                            break;
+
+                        case 0xBA: // 0x0F 0xBA group
+                            mrm.set(IPFB());
+                            disp = IPFmrmdisplace16(/*&*/mrm);
+                            switch (mrm.reg()) {
+                                case 4: // BT r/m,imm8
+                                    v8 = IPFB();
+                                    w += snprintf(w,(size_t)(wf-w),"BTw %s,%02Xh",IPDecPrint16(mrm,disp,2),v8);
+                                    break;
+                                default:
+                                    goto invalidopcode;
+                            };
+                            break;
+
                         case 0xBC: // BSF
                             mrm.set(IPFB());
                             disp = IPFmrmdisplace16(/*&*/mrm);
                             w += snprintf(w,(size_t)(wf-w),"BSFw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+                            break;
+                        case 0xBD: // BSR
+                            mrm.set(IPFB());
+                            disp = IPFmrmdisplace16(/*&*/mrm);
+                            w += snprintf(w,(size_t)(wf-w),"BSRw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
                             break;
 
                         default:
