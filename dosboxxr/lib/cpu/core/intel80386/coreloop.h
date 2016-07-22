@@ -633,7 +633,10 @@
                     break;
                 case 0x99:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"CWDw");
+                    if (COREWORDSIZE == 4)
+                        w += snprintf(w,(size_t)(wf-w),"CDQd");
+                    else
+                        w += snprintf(w,(size_t)(wf-w),"CWDw");
 #endif
                     break;
                 case 0x9A:
@@ -650,12 +653,18 @@
                     break;
                 case 0x9C:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"PUSHFw");
+                    if (COREWORDSIZE == 4)
+                        w += snprintf(w,(size_t)(wf-w),"PUSHFd");
+                    else
+                        w += snprintf(w,(size_t)(wf-w),"PUSHFw");
 #endif
                     break;
                 case 0x9D:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"POPFw");
+                    if (COREWORDSIZE == 4)
+                        w += snprintf(w,(size_t)(wf-w),"POPFd");
+                    else
+                        w += snprintf(w,(size_t)(wf-w),"POPFw");
 #endif
                     break;
                 case 0x9E:

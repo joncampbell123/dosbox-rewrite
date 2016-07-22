@@ -8,10 +8,13 @@
     nop
     cbw
     cwd
+    cdq
     cli
     sti
     pushf
+    pushfd
     popf
+    popfd
     ret
     ret     4
     retf
