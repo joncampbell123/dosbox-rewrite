@@ -517,7 +517,7 @@
                 case_span_16(0x70): // 0x70-0x7F
                     v32 = ((uint32_t)IPFBsigned() + (uint32_t)IPval()) & (uint32_t)COREOPMASK;
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"%sd %08lXh",CPUjcc7x[op1&15],(unsigned long)v32);
+                    w += snprintf(w,(size_t)(wf-w),"%s%s %08lXh",CPUjcc7x[op1&15],sizesuffix[COREWORDSIZE],(unsigned long)v32);
 #endif
                     break;
                 case 0x80: // GRP1 byte r/m, imm8
@@ -654,10 +654,10 @@
 #endif
                     break;
                 case 0x9A:
-                    v16 = IPFW();//offset
-                    v16b = IPFW();//segment
+                    v32 = COREWORDSIZE == 4 ? IPFDW() : IPFW();//offset
+                    v16 = IPFW();//segment
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"CALLw %04Xh:%04Xh",v16b,v16);
+                    w += snprintf(w,(size_t)(wf-w),"CALL%s %04Xh:%08Xh",sizesuffix[COREWORDSIZE],v16,v32);
 #endif
                     break;
                 case 0x9B:
@@ -1021,41 +1021,31 @@
 #endif
                     break;
                 case 0xE8:
-                    v16 = (uint16_t)IPFWsigned();
-                    v16 = (v16 + IPval()) & 0xFFFFU;
+                    v32 = COREWORDSIZE == 4 ? IPFDWsigned() : IPFWsigned();
+                    v32 = (v32 + (uint32_t)IPval()) & (uint32_t)COREOPMASK;
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"CALLw %04Xh",v16);
+                    w += snprintf(w,(size_t)(wf-w),"CALL%s %04Xh",sizesuffix[COREWORDSIZE],(unsigned long)v32);
 #endif
                     break;
                 case 0xE9:
-                    v16 = (uint16_t)IPFWsigned();
-                    v16 = (v16 + IPval()) & 0xFFFFU;
+                    v32 = COREWORDSIZE == 4 ? IPFDWsigned() : IPFWsigned();
+                    v32 = (v32 + (uint32_t)IPval()) & (uint32_t)COREOPMASK;
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"JMPw %04Xh",v16);
+                    w += snprintf(w,(size_t)(wf-w),"JMP%s %08lXh",sizesuffix[COREWORDSIZE],(unsigned long)v32);
 #endif
                     break;
                 case 0xEA:
-                    v16 = IPFW();//offset
-                    v16b = IPFW();//segment
+                    v32 = COREWORDSIZE == 4 ? IPFDW() : IPFW();//offset
+                    v16 = IPFW();//segment
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"JMPw %04Xh:%04Xh",v16b,v16);
+                    w += snprintf(w,(size_t)(wf-w),"JMP%s %04Xh:%04Xh",sizesuffix[COREWORDSIZE],v16,v32);
 #endif
                     break;
                 case 0xEB:
-                    if (COREWORDSIZE == 4) {
-                        v32 = (uint32_t)IPFBsigned();
-                        v32 = (v32 + IPval()) & 0xFFFFFFFFU;
+                    v32 = ((uint32_t)IPFBsigned() + (uint32_t)IPval()) & (uint32_t)COREOPMASK;
 #ifdef DECOMPILEMODE
-                        w += snprintf(w,(size_t)(wf-w),"JMPd %08lXh",(unsigned long)v32);
+                    w += snprintf(w,(size_t)(wf-w),"JMP%s %08lXh",sizesuffix[COREWORDSIZE],(unsigned long)v32);
 #endif
-                    }
-                    else {
-                        v16 = (uint16_t)IPFBsigned();
-                        v16 = (v16 + IPval()) & 0xFFFFU;
-#ifdef DECOMPILEMODE
-                        w += snprintf(w,(size_t)(wf-w),"JMPw %04Xh",v16);
-#endif
-                    }
                     break;
                 case 0xEC:
 #ifdef DECOMPILEMODE

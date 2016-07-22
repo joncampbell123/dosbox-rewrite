@@ -7,6 +7,10 @@ static inline int32_t IPFWsigned(void) {
     return (int32_t)((int16_t)IPFW());
 }
 
+static inline int32_t IPFDWsigned(void) {
+    return (int32_t)IPFDW();
+}
+
 static inline void IPFModRegRm(x86ModRegRm &m) {
     m.byte = IPFB();
 }

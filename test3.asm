@@ -1929,6 +1929,16 @@ jmp1:
     xor     bx,word [bp+0x1234]
     xor     bx,word [bx+0x1234]
 
+;--------------dword
+    xor     ebx,dword [ebx+esi] ; 00 m/r/m mod=0
+    xor     ebx,dword [ebx+edi] ; 00 m/r/m mod=0
+    xor     ebx,dword [ebp+esi] ; 00 m/r/m mod=0
+    xor     ebx,dword [ebp+edi] ; 00 m/r/m mod=0
+    xor     ebx,dword [esi]    ; 00 m/r/m mod=0
+    xor     ebx,dword [edi]    ; 00 m/r/m mod=0
+    a32 xor ebx,dword [0x12345678]; 00 m/r/m mod=0
+    xor     ebx,dword [ebx]    ; 00 m/r/m mod=0
+
 ;---------------xor imm
     xor     al,0x12
     xor     al,0xEF
@@ -2024,6 +2034,16 @@ jmp1:
     cmp     bx,di
     cmp     bx,bp
     cmp     bx,sp
+
+;--------------dword
+    cmp     dword [ebx+esi],ebx ; 00 m/r/m mod=0
+    cmp     dword [ebx+edi],ebx ; 00 m/r/m mod=0
+    cmp     dword [ebp+esi],ebx ; 00 m/r/m mod=0
+    cmp     dword [ebp+edi],ebx ; 00 m/r/m mod=0
+    cmp     dword [esi],ebx    ; 00 m/r/m mod=0
+    cmp     dword [edi],ebx    ; 00 m/r/m mod=0
+    a32 cmp dword [0x12345678],ebx; 00 m/r/m mod=0
+    cmp     dword [ebx],ebx    ; 00 m/r/m mod=0
 
 ;--------------byte
     cmp     bl,byte [bx+si] ; 00 m/r/m mod=0
@@ -2651,6 +2671,8 @@ jmp1:
 ; call Ap (0x9A)
     call    0x1234:0x5678
     call    0xABCD:0x1234
+    o32 call 0x1234:0x56789ABC
+    o32 call 0xABCD:0x12345678
 
 ; MOV 0xA0-0xA3
     mov     al,[0x1234]
@@ -2752,16 +2774,26 @@ jmp1:
 ; loop/jcxz
 looptest1:
     loopnz  looptest1
+    o32 loopnz looptest1
     loopz   looptest1
+    o32 loopz looptest1
     loop    looptest1
+    o32 loop looptest1
     jcxz    looptest1
+    o32 jcxz looptest1
 
 ; CALL/JMP E8-EB
 calltest1:
     call    near calltest1      ; E8
+    o32 call near calltest1
     jmp     near calltest1      ; E9
+    o32 jmp near calltest1
     jmp     0x1234:0x5678       ; EA
+    o32 jmp 0x1234:0x56789ABC
     jmp     short calltest1     ; EB
+    o32 jmp short calltest1
+    call    0x1234:0x5678
+    o32 call 0x1234:0x56789ABC
 
 ; GRP2 D0
     rol     al,1
@@ -4223,6 +4255,23 @@ jmp2:
     jge     near jmp2
     jle     near jmp2
     jg      near jmp2
+
+    o32 jo      near jmp2
+    o32 jno     near jmp2
+    o32 jb      near jmp2
+    o32 jnb     near jmp2
+    o32 jz      near jmp2
+    o32 jnz     near jmp2
+    o32 jbe     near jmp2
+    o32 ja      near jmp2
+    o32 js      near jmp2
+    o32 jns     near jmp2
+    o32 jpe     near jmp2
+    o32 jpo     near jmp2
+    o32 jl      near jmp2
+    o32 jge     near jmp2
+    o32 jle     near jmp2
+    o32 jg      near jmp2
 
 ; MOV CRx...
     mov     eax,cr0
