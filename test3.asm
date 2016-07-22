@@ -1645,6 +1645,50 @@ jmp1:
     sub     bx,bp
     sub     bx,sp
 
+;--------------dword
+    sub     dword [ebx+esi],ebx ; 00 m/r/m mod=0
+    sub     dword [ebx+edi],ebx ; 00 m/r/m mod=0
+    sub     dword [ebp+esi],ebx ; 00 m/r/m mod=0
+    sub     dword [ebp+edi],ebx ; 00 m/r/m mod=0
+    sub     dword [esi],ebx    ; 00 m/r/m mod=0
+    sub     dword [edi],ebx    ; 00 m/r/m mod=0
+    a32 sub dword [0x12345678],ebx; 00 m/r/m mod=0
+    sub     dword [ebx],ebx    ; 00 m/r/m mod=0
+
+    sub     dword [ebx+esi+0x5F],ebx ; 40 m/r/m mod=1
+    sub     dword [ebx+esi-0x5F],ebx
+    sub     dword [ebx+edi+0x5F],ebx ; 40 m/r/m mod=1
+    sub     dword [ebx+edi-0x5F],ebx
+    sub     dword [ebp+esi+0x5F],ebx ; 40 m/r/m mod=1
+    sub     dword [ebp+esi-0x5F],ebx
+    sub     dword [ebp+edi+0x5F],ebx ; 40 m/r/m mod=1
+    sub     dword [ebp+edi-0x5F],ebx
+    sub     dword [esi+0x5F],ebx ; 40 m/r/m mod=1
+    sub     dword [esi-0x5F],ebx
+    sub     dword [edi+0x5F],ebx ; 40 m/r/m mod=1
+    sub     dword [edi-0x5F],ebx
+    sub     dword [ebp+0x5F],ebx ; 40 m/r/m mod=1
+    sub     dword [ebp-0x5F],ebx
+    sub     dword [ebx+0x5F],ebx ; 40 m/r/m mod=1
+    sub     dword [ebx-0x5F],ebx
+
+    sub     dword [ebx+esi+0x1234],ebx
+    sub     dword [ebx+edi+0x1234],ebx
+    sub     dword [ebp+esi+0x1234],ebx
+    sub     dword [ebp+edi+0x1234],ebx
+    sub     dword [esi+0x1234],ebx
+    sub     dword [edi+0x1234],ebx
+    sub     dword [ebp+0x1234],ebx
+    sub     dword [ebx+0x1234],ebx
+    sub     ebx,eax           ; 00 m/r/m mod=3
+    sub     ebx,ecx           ; 00 m/r/m mod=3
+    sub     ebx,edx           ; 00 m/r/m mod=3
+    sub     ebx,ebx           ; 00 m/r/m mod=3
+    sub     ebx,esi
+    sub     ebx,edi
+    sub     ebx,ebp
+    sub     ebx,esp
+
 ;--------------byte
     sub     bl,byte [bx+si] ; 00 m/r/m mod=0
     sub     bl,byte [bx+di] ; 00 m/r/m mod=0
@@ -1722,6 +1766,8 @@ jmp1:
     sub     al,0xEF
     sub     ax,0x1234
     sub     ax,0xFEDC
+    sub     eax,0x12345678
+    sub     eax,0xFEDCBA98
 
 ;--------------byte
     xor     byte [bx+si],bl ; 00 m/r/m mod=0

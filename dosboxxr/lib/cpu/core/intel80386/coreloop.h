@@ -39,7 +39,7 @@
                     // COREWORDSIZE is a #define and therefore the ternary statements are predictable and can be reduced to one or the other for 16/32-bit modes.
                     v32 = COREWORDSIZE == 4 ? IPFDW() : IPFW();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"ADD%c AX,%08lXh",COREWORDSIZE == 4 ? 'd' : 'w',(unsigned long)v32);
+                    w += snprintf(w,(size_t)(wf-w),"ADD%c %s,%08lXh",COREWORDSIZE == 4 ? 'd' : 'w',CPUregsN[COREWORDSIZE][/*AX*/0],(unsigned long)v32);
 #endif
                     break;
                 case 0x06:
@@ -89,7 +89,7 @@
                 case 0x0D: // OR AX,immword
                     v32 = COREWORDSIZE == 4 ? IPFDW() : IPFW();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"OR%c AX,%08lXh",COREWORDSIZE == 4 ? 'd' : 'w',(unsigned long)v32);
+                    w += snprintf(w,(size_t)(wf-w),"OR%c %s,%08lXh",COREWORDSIZE == 4 ? 'd' : 'w',CPUregsN[COREWORDSIZE][/*AX*/0],(unsigned long)v32);
 #endif
                     break;
                 case 0x0E:
@@ -137,7 +137,7 @@
                     // COREWORDSIZE is a #define and therefore the ternary statements are predictable and can be reduced to one or the other for 16/32-bit modes.
                     v32 = COREWORDSIZE == 4 ? IPFDW() : IPFW();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"ADC%c AX,%08lXh",COREWORDSIZE == 4 ? 'd' : 'w',(unsigned long)v32);
+                    w += snprintf(w,(size_t)(wf-w),"ADC%c %s,%08lXh",COREWORDSIZE == 4 ? 'd' : 'w',CPUregsN[COREWORDSIZE][/*AX*/0],(unsigned long)v32);
 #endif
                     break;
                 case 0x16:
@@ -187,7 +187,7 @@
                 case 0x1D: // SBB AX,immword
                     v32 = COREWORDSIZE == 4 ? IPFDW() : IPFW();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"SBB%c AX,%08lXh",COREWORDSIZE == 4 ? 'd' : 'w',(unsigned long)v32);
+                    w += snprintf(w,(size_t)(wf-w),"SBB%c %s,%08lXh",COREWORDSIZE == 4 ? 'd' : 'w',CPUregsN[COREWORDSIZE][/*AX*/0],(unsigned long)v32);
 #endif
                     break;
                 case 0x1E:
@@ -239,7 +239,7 @@
                     // COREWORDSIZE is a #define and therefore the ternary statements are predictable and can be reduced to one or the other for 16/32-bit modes.
                     v32 = COREWORDSIZE == 4 ? IPFDW() : IPFW();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"AND%c AX,%08lXh",COREWORDSIZE == 4 ? 'd' : 'w',(unsigned long)v32);
+                    w += snprintf(w,(size_t)(wf-w),"AND%c %s,%08lXh",COREWORDSIZE == 4 ? 'd' : 'w',CPUregsN[COREWORDSIZE][/*AX*/0],(unsigned long)v32);
 #endif
                     break;
                 case 0x26:
@@ -253,31 +253,31 @@
 #endif
                     break;
                 case 0x28: // SUB r/m,reg byte size
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"SUBb %s,%s",IPDecPrint16(mrm,disp,1),CPUregs8[mrm.reg()]);
+                    w += snprintf(w,(size_t)(wf-w),"SUB%s %s,%s",sizesuffix[1],
+                        IPDecPrint386(mrm,sib,disp,1,addr32),CPUregsN[1][mrm.reg()]);
 #endif
                     break;
                 case 0x29: // SUB r/m,reg word size
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"SUBw %s,%s",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()]);
+                    w += snprintf(w,(size_t)(wf-w),"SUB%s %s,%s",sizesuffix[COREWORDSIZE],
+                        IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32),CPUregsN[COREWORDSIZE][mrm.reg()]);
 #endif
                     break;
                 case 0x2A: // SUB reg,r/m byte size
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"SUBb %s,%s",CPUregs8[mrm.reg()],IPDecPrint16(mrm,disp,1));
+                    w += snprintf(w,(size_t)(wf-w),"SUB%s %s,%s",sizesuffix[1],
+                        CPUregsN[1][mrm.reg()],IPDecPrint386(mrm,sib,disp,1,addr32));
 #endif
                     break;
                 case 0x2B: // SUB reg,r/m word size
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"SUBw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+                    w += snprintf(w,(size_t)(wf-w),"SUB%s %s,%s",sizesuffix[COREWORDSIZE],
+                        CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32));
 #endif
                     break;
                 case 0x2C: // SUB AL,imm8
@@ -286,10 +286,12 @@
                     w += snprintf(w,(size_t)(wf-w),"SUBb AL,%02Xh",v8);
 #endif
                     break;
-                case 0x2D: // SUB AX,imm16
-                    v16 = IPFW();
+                case 0x2D: // SUB AX,immword
+                    // Your C++ compiler is smart enough to optimize out the conditional here, right?
+                    // COREWORDSIZE is a #define and therefore the ternary statements are predictable and can be reduced to one or the other for 16/32-bit modes.
+                    v32 = COREWORDSIZE == 4 ? IPFDW() : IPFW();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"SUBw AX,%04Xh",v16);
+                    w += snprintf(w,(size_t)(wf-w),"SUB%c %s,%08lXh",COREWORDSIZE == 4 ? 'd' : 'w',CPUregsN[COREWORDSIZE][/*AX*/0],(unsigned long)v32);
 #endif
                     break;
                 case 0x2E:
