@@ -466,7 +466,7 @@
                     addr32 = !addr32;
                     pre67 = !pre67;
                     goto after_prefix_COREMODE;
-                case 0x68: // PUSH imm16
+                case 0x68: // PUSH imm<word>
                     v32 = COREWORDSIZE == 4 ? IPFDW() : IPFW();
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"PUSH%s %08Xh",sizesuffix[COREWORDSIZE],v32);
