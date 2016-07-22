@@ -24,6 +24,12 @@ const char *CPUregsZ[8] = {
     "","","","", "","","",""
 };
 
+const char *sizesuffix[12] = {
+    "", "b","w","",         // 0-3
+    "d","", "", "",         // 4-7
+    "q","", "t",""          // 8-11
+};
+
 const char **CPUregsN[5] = {
     CPUregsZ,                       // sz=0
     CPUregs8,                       // sz=1

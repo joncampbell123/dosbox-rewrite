@@ -108,21 +108,50 @@ static void IPDec_80386(x86_offset_t ip) {
     char *w = IPDecStr,*wf = IPDecStr+sizeof(IPDecStr)-1;
     uint8_t op1,v8,op0F;
     x86_offset_t disp;
+    bool opcode32=false;
+    bool addr32=false;
+    bool pre66=false;
+    bool pre67=false;
     x86ModRegRm mrm;
     uint16_t v16b;
+    uint32_t v32;
     uint16_t v16;
 
-    {
-        /* one instruction only */
-        IPDecStr[0] = 0;
-        IPDecIP = ip;
-after_prefix:
+    /* one instruction only */
+    IPDecStr[0] = 0;
+    IPDecIP = ip;
+
+    /* the path we take depends on whether the CPU is running 16-bit or 32-bit code.
+     * if the opcode size prefix is encountered we hop to the OTHER opcode condition. */
+    if (opcode32) {
+#define COREMODE 32
+#define COREWORDSIZE 4
+#define after_prefix_COREMODE after_prefix_32
+#define after_prefix_COREMODE_opsizechg after_prefix_16
+after_prefix_32:
 #include "dosboxxr/lib/cpu/core/intel80386/coreloop.h"
         goto done;
+#undef after_prefix_COREMODE_opsizechg
+#undef after_prefix_COREMODE
+#undef COREWORDSIZE
+#undef COREMODE
+    }
+    else {
+#define COREMODE 16
+#define COREWORDSIZE 2
+#define after_prefix_COREMODE after_prefix_16
+#define after_prefix_COREMODE_opsizechg after_prefix_32
+after_prefix_16:
+#include "dosboxxr/lib/cpu/core/intel80386/coreloop.h"
+        goto done;
+#undef after_prefix_COREMODE_opsizechg
+#undef after_prefix_COREMODE
+#undef COREWORDSIZE
+#undef COREMODE
+    }
 invalidopcode:
 done:
-        { }
-    }
+    { }
 }
 //// END CORE
 

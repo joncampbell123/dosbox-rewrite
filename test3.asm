@@ -3520,6 +3520,14 @@ jmp2:
     db      0x0F,0xBF,0x01      ; MOVSX AX,[BX+DI]
     db      0x0F,0xBF,0x1E,0x34,0x12; MOVSX BX,[0x1234]
     db      0x0F,0xBF,0x4C,0xFA ; MOVSX CX,[SI-6]
+; 32-bit versions
+    movsx   eax,ax
+    movsx   eax,bx
+    movsx   ebx,ax
+    movsx   eax,word [si]
+    movsx   eax,word [bx+di]
+    movsx   ebx,word [0x1234]
+    movsx   ecx,word [si-6]
 ; MOVZX
     movzx   ax,al
     movzx   ax,bl
@@ -3536,6 +3544,21 @@ jmp2:
     db      0x0F,0xB7,0x01      ; MOVZX AX,[BX+DI]
     db      0x0F,0xB7,0x1E,0x34,0x12; MOVZX BX,[0x1234]
     db      0x0F,0xB7,0x4C,0xFA ; MOVZX CX,[SI-6]
+; MOVZX
+    movzx   eax,al
+    movzx   eax,bl
+    movzx   ebx,al
+    movzx   eax,byte [si]
+    movzx   eax,byte [bx+di]
+    movzx   ebx,byte [0x1234]
+    movzx   ecx,byte [si-6]
+    movzx   eax,ax
+    movzx   eax,bx
+    movzx   ebx,ax
+    movzx   eax,word [si]
+    movzx   eax,word [bx+di]
+    movzx   ebx,word [0x1234]
+    movzx   ecx,word [si-6]
 
     seto    bl
     setno   bl

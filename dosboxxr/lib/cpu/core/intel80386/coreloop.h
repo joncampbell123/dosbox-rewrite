@@ -240,7 +240,7 @@
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"ES: ");
 #endif
-                    goto after_prefix;
+                    goto after_prefix_COREMODE;
                 case 0x27:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"DAA");
@@ -290,7 +290,7 @@
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"CS: ");
 #endif
-                    goto after_prefix;
+                    goto after_prefix_COREMODE;
                 case 0x2F:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"DAS");
@@ -340,7 +340,7 @@
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"SS: ");
 #endif
-                    goto after_prefix;
+                    goto after_prefix_COREMODE;
                 case 0x37:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"AAA");
@@ -390,7 +390,7 @@
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"DS: ");
 #endif
-                    goto after_prefix;
+                    goto after_prefix_COREMODE;
                 case 0x3F:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"AAS");
@@ -444,6 +444,14 @@
 #endif
                     break;
 
+                case 0x66: // operand size prefix (16->32 or 32->16 toggle)
+                    opcode32 = !opcode32;
+                    pre66 = !pre66;
+                    goto after_prefix_COREMODE_opsizechg;
+                case 0x67: // address size prefix (16->32 or 32->16 toggle)
+                    addr32 = !addr32;
+                    pre67 = !pre67;
+                    goto after_prefix_COREMODE;
                 case 0x68: // PUSH imm16
                     v16 = IPFW();
 #ifdef DECOMPILEMODE
@@ -1020,7 +1028,7 @@
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"LOCK ");
 #endif
-                    goto after_prefix;
+                    goto after_prefix_COREMODE;
                 case 0xF1:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"(undefined opcode F1h)"); /* "Does not Generate #UD" according to X86 Opcode on x86asm geek.html */
@@ -1030,12 +1038,12 @@
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"REPNZ ");
 #endif
-                    goto after_prefix;
+                    goto after_prefix_COREMODE;
                 case 0xF3:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"REPZ ");
 #endif
-                    goto after_prefix;
+                    goto after_prefix_COREMODE;
                 case 0xF4:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"HLT");

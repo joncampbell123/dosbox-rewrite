@@ -195,7 +195,8 @@
                             mrm.set(IPFB());
                             disp = IPFmrmdisplace16(/*&*/mrm);
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"MOVZXw %s,%s ; byte -> word",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,1));
+                            w += snprintf(w,(size_t)(wf-w),"MOVZX%s %s,%s ; byte -> word",sizesuffix[COREWORDSIZE],
+                                CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint16(mrm,disp,1));
 #endif
                             break;
                         case 0xB7: // MOVZX reg,r/m    word -> word
@@ -205,7 +206,8 @@
                             mrm.set(IPFB());
                             disp = IPFmrmdisplace16(/*&*/mrm);
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"MOVZXw %s,%s ; word -> word",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+                            w += snprintf(w,(size_t)(wf-w),"MOVZX%s %s,%s ; word16 -> word",sizesuffix[COREWORDSIZE],
+                                CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint16(mrm,disp,2));
 #endif
                             break;
 
@@ -252,7 +254,8 @@
                             mrm.set(IPFB());
                             disp = IPFmrmdisplace16(/*&*/mrm);
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"MOVSXw %s,%s ; byte -> word",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,1));
+                            w += snprintf(w,(size_t)(wf-w),"MOVSX%s %s,%s ; byte -> word",sizesuffix[COREWORDSIZE],
+                                CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint16(mrm,disp,1));
 #endif
                             break;
                         case 0xBF: // MOVSX reg,r/m    word -> word
@@ -262,7 +265,8 @@
                             mrm.set(IPFB());
                             disp = IPFmrmdisplace16(/*&*/mrm);
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"MOVSXw %s,%s ; word -> word",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+                            w += snprintf(w,(size_t)(wf-w),"MOVSX%s %s,%s ; word16 -> word",sizesuffix[COREWORDSIZE],
+                                CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint16(mrm,disp,2));
 #endif
                             break;
 
