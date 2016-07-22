@@ -105,12 +105,12 @@
                             break;
                         case 0xA0:
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"PUSHw FS");
+                            w += snprintf(w,(size_t)(wf-w),"PUSH%s FS",sizesuffix[COREWORDSIZE]);
 #endif
                             break;
                         case 0xA1:
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"POPw FS");
+                            w += snprintf(w,(size_t)(wf-w),"POP%s FS",sizesuffix[COREWORDSIZE]);
 #endif
                             break;
 
@@ -133,12 +133,12 @@
 
                         case 0xA8:
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"PUSHw GS");
+                            w += snprintf(w,(size_t)(wf-w),"PUSH%s GS",sizesuffix[COREWORDSIZE]);
 #endif
                             break;
                         case 0xA9:
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"POPw GS");
+                            w += snprintf(w,(size_t)(wf-w),"POP%s GS",sizesuffix[COREWORDSIZE]);
 #endif
                             break;
 

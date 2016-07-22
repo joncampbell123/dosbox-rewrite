@@ -268,6 +268,18 @@
     push    gs
     pop     gs
 
+    o32 push    es
+    o32 pop     es
+    o32 push    cs
+    o32 push    ss
+    o32 pop     ss
+    o32 push    ds
+    o32 pop     ds
+    o32 push    fs
+    o32 pop     fs
+    o32 push    gs
+    o32 pop     gs
+
 jmp1:
     jo      short jmp1
     jno     short jmp1

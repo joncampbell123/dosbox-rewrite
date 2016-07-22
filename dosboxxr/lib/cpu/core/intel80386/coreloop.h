@@ -42,12 +42,12 @@
                     break;
                 case 0x06:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"PUSHw ES");
+                    w += snprintf(w,(size_t)(wf-w),"PUSH%s ES",sizesuffix[COREWORDSIZE]);
 #endif
                     break;
                 case 0x07:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"POPw ES");
+                    w += snprintf(w,(size_t)(wf-w),"POP%s ES",sizesuffix[COREWORDSIZE]);
 #endif
                     break;
                 case 0x08: // OR r/m,reg byte size
@@ -92,7 +92,7 @@
                     break;
                 case 0x0E:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"PUSHw CS");
+                    w += snprintf(w,(size_t)(wf-w),"PUSH%s CS",sizesuffix[COREWORDSIZE]);
 #endif
                     break;
 #include "dosboxxr/lib/cpu/core/intel80386/coreloop_0f.h"
@@ -138,12 +138,12 @@
                     break;
                 case 0x16:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"PUSHw SS");
+                    w += snprintf(w,(size_t)(wf-w),"PUSH%s SS",sizesuffix[COREWORDSIZE]);
 #endif
                     break;
                 case 0x17:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"POPw SS");
+                    w += snprintf(w,(size_t)(wf-w),"POP%s SS",sizesuffix[COREWORDSIZE]);
 #endif
                     break;
                 case 0x18: // SBB r/m,reg byte size
@@ -188,12 +188,12 @@
                     break;
                 case 0x1E:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"PUSHw DS");
+                    w += snprintf(w,(size_t)(wf-w),"PUSH%s DS",sizesuffix[COREWORDSIZE]);
 #endif
                     break;
                 case 0x1F:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"POPw DS");
+                    w += snprintf(w,(size_t)(wf-w),"POP%s DS",sizesuffix[COREWORDSIZE]);
 #endif
                     break;
                 case 0x20: // AND r/m,reg byte size
