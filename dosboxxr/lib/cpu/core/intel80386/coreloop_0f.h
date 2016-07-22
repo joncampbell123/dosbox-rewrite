@@ -168,10 +168,10 @@
                             break;
 
                         case 0xB2: // LSS reg,r/m word size
-                            mrm.set(IPFB());
-                            disp = IPFmrmdisplace16(/*&*/mrm);
+                            IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"LSSw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+                            w += snprintf(w,(size_t)(wf-w),"LSS%s %s,%s",sizesuffix[COREWORDSIZE],
+                                CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32));
 #endif
                             break;
                         case 0xB3: // BTR
@@ -180,17 +180,17 @@
                             w += snprintf(w,(size_t)(wf-w),"BTRw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
                             break;
                         case 0xB4: // LFS reg,r/m word size
-                            mrm.set(IPFB());
-                            disp = IPFmrmdisplace16(/*&*/mrm);
+                            IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"LFSw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+                            w += snprintf(w,(size_t)(wf-w),"LFS%s %s,%s",sizesuffix[COREWORDSIZE],
+                                CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32));
 #endif
                             break;
                         case 0xB5: // LGS reg,r/m word size
-                            mrm.set(IPFB());
-                            disp = IPFmrmdisplace16(/*&*/mrm);
+                            IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"LGSw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+                            w += snprintf(w,(size_t)(wf-w),"LGS%s %s,%s",sizesuffix[COREWORDSIZE],
+                                CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32));
 #endif
                             break;
                         case 0xB6: // MOVZX reg,r/m    byte -> word
