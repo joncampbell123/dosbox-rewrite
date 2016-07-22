@@ -944,7 +944,7 @@
                     break;
                 case 0xD7:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"XLATw");
+                    w += snprintf(w,(size_t)(wf-w),"XLATB%s",sizesuffix[addr32?4:2]);
 #endif
                     break;
 #include "dosboxxr/lib/cpu/core/intel80386/coreloop_fpu.h"

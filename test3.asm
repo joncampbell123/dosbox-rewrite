@@ -126,6 +126,7 @@
     nop
 
     xlatb
+    a32 xlatb
 
     movsb
     movsw
