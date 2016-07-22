@@ -2717,6 +2717,7 @@ jmp1:
 ; TEST A8-A9
     test    al,0x12
     test    ax,0x1234
+    test    eax,0x12345678
 
 ; MOV B0-B7
     mov     al,0x12
@@ -2737,6 +2738,16 @@ jmp1:
     mov     bp,0x1234
     mov     si,0x1234
     mov     di,0x1234
+
+; MOV B8-BF
+    mov     eax,0x12345678
+    mov     ecx,0x12345678
+    mov     edx,0x12345678
+    mov     ebx,0x12345678
+    mov     esp,0x12345678
+    mov     ebp,0x12345678
+    mov     esi,0x12345678
+    mov     edi,0x12345678
 
 ; lgs (386 or later)
     lgs     ax,[si]

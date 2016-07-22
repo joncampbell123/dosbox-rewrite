@@ -721,13 +721,13 @@
                 case 0xA8:
                     v8 = IPFB();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"TEST AL,%02Xh",v8);
+                    w += snprintf(w,(size_t)(wf-w),"TESTb AL,%02Xh",v8);
 #endif
                     break;
                 case 0xA9:
-                    v16 = IPFW();
+                    v32 = COREWORDSIZE == 4 ? IPFDW() : IPFW();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"TEST AX,%04Xh",v16);
+                    w += snprintf(w,(size_t)(wf-w),"TEST%s %s,%08Xh",sizesuffix[COREWORDSIZE],CPUregsN[COREWORDSIZE][/*AX*/0],v32);
 #endif
                     break;
                 case 0xAA:
@@ -763,13 +763,13 @@
                 case_span_8(0xB0):
                     v8 = IPFB();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"MOV %s,%02Xh",CPUregs8[op1&7],v8);
+                    w += snprintf(w,(size_t)(wf-w),"MOVb %s,%02Xh",CPUregs8[op1&7],v8);
 #endif
                     break;
                 case_span_8(0xB8):
-                    v16 = IPFW();
+                    v32 = COREWORDSIZE == 4 ? IPFDW() : IPFW();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"MOV %s,%04Xh",CPUregs16[op1&7],v16);
+                    w += snprintf(w,(size_t)(wf-w),"MOV%s %s,%08Xh",sizesuffix[COREWORDSIZE],CPUregsN[COREWORDSIZE][op1&7],v32);
 #endif
                     break;
                 case 0xC0: // GRP2 r/m,imm8  NTS: undocumented reg==6 could be called "SAL", acts like "SHL"
