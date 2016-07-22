@@ -34,19 +34,13 @@
                     w += snprintf(w,(size_t)(wf-w),"ADDb AL,%02Xh",v8);
 #endif
                     break;
-                case 0x05: // ADD AX,imm16
-                    if (COREWORDSIZE == 4) {
-                        v32 = IPFDW();
+                case 0x05: // ADD AX,immword
+                    // Your C++ compiler is smart enough to optimize out the conditional here, right?
+                    // COREWORDSIZE is a #define and therefore the ternary statements are predictable and can be reduced to one or the other for 16/32-bit modes.
+                    v32 = COREWORDSIZE == 4 ? IPFDW() : IPFW();
 #ifdef DECOMPILEMODE
-                        w += snprintf(w,(size_t)(wf-w),"ADDw AX,%08lXh",(unsigned long)v32);
+                    w += snprintf(w,(size_t)(wf-w),"ADD%c AX,%08lXh",COREWORDSIZE == 4 ? 'd' : 'w',(unsigned long)v32);
 #endif
-                    }
-                    else {
-                        v16 = IPFW();
-#ifdef DECOMPILEMODE
-                        w += snprintf(w,(size_t)(wf-w),"ADDw AX,%04Xh",v16);
-#endif
-                    }
                     break;
                 case 0x06:
 #ifdef DECOMPILEMODE
