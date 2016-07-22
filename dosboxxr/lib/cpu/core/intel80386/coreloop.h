@@ -430,12 +430,12 @@
                     break;
                 case 0x60: // PUSHA
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"PUSHAw");
+                    w += snprintf(w,(size_t)(wf-w),"PUSHA%s",sizesuffix[COREWORDSIZE]);
 #endif
                     break;
                 case 0x61: // POPA
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"POPAw");
+                    w += snprintf(w,(size_t)(wf-w),"POPA%s",sizesuffix[COREWORDSIZE]);
 #endif
                     break;
                 case 0x62: // BOUND reg,r/m
@@ -465,9 +465,9 @@
                     pre67 = !pre67;
                     goto after_prefix_COREMODE;
                 case 0x68: // PUSH imm16
-                    v16 = IPFW();
+                    v32 = COREWORDSIZE == 4 ? IPFDW() : IPFW();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"PUSH %04Xh",v16);
+                    w += snprintf(w,(size_t)(wf-w),"PUSH%s %08Xh",sizesuffix[COREWORDSIZE],v32);
 #endif
                     break;
                 case 0x69: // IMUL reg,r/m,imm16
@@ -479,9 +479,9 @@
 #endif
                     break;
                 case 0x6A: // PUSH imm8
-                    v16 = IPFBsigned();
+                    v32 = IPFBsigned();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"PUSH %c%02Xh",v16&0x80?'-':'+',IPDec8abs((uint8_t)v16));
+                    w += snprintf(w,(size_t)(wf-w),"PUSH%s %c%02Xh",sizesuffix[COREWORDSIZE],v32&0x80?'-':'+',IPDec8abs((uint8_t)v32));
 #endif
                     break;
                 case 0x6B: // IMUL reg,r/m,imm8

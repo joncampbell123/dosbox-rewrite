@@ -3787,10 +3787,15 @@ calltest1:
 
 ; 286 instructions
     pusha           ; opcode 0x60
+    pushad
     popa            ; opcode 0x61
+    popad
     push    word 0x1234 ; opcode 0x68
+    push    dword 0x12345678
     push    byte 0x12 ; opcode 0x6A
+    o32 push byte 0x12
     push    byte -0x44 ; opcode 0x6A
+    o32 push byte -0x44
     imul    ax,4
     imul    bx,4
     imul    cx,4
