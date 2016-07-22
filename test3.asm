@@ -2702,8 +2702,17 @@ jmp1:
 ; MOV 0xA0-0xA3
     mov     al,[0x1234]
     mov     ax,[0x1234]
+    mov     eax,[0x1234]
     mov     [0x1234],al
     mov     [0x1234],ax
+    mov     [0x1234],eax
+
+    a32 mov al,[0x12345678]
+    a32 mov ax,[0x12345678]
+    a32 mov eax,[0x12345678]
+    a32 mov [0x12345678],al
+    a32 mov [0x12345678],ax
+    a32 mov [0x12345678],eax
 
 ; TEST A8-A9
     test    al,0x12

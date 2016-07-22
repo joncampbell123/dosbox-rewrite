@@ -656,18 +656,12 @@
                     break;
                 case 0x9C:
 #ifdef DECOMPILEMODE
-                    if (COREWORDSIZE == 4)
-                        w += snprintf(w,(size_t)(wf-w),"PUSHFd");
-                    else
-                        w += snprintf(w,(size_t)(wf-w),"PUSHFw");
+                    w += snprintf(w,(size_t)(wf-w),"PUSHF%s",sizesuffix[COREWORDSIZE]);
 #endif
                     break;
                 case 0x9D:
 #ifdef DECOMPILEMODE
-                    if (COREWORDSIZE == 4)
-                        w += snprintf(w,(size_t)(wf-w),"POPFd");
-                    else
-                        w += snprintf(w,(size_t)(wf-w),"POPFw");
+                    w += snprintf(w,(size_t)(wf-w),"POPF%s",sizesuffix[COREWORDSIZE]);
 #endif
                     break;
                 case 0x9E:
@@ -681,27 +675,27 @@
 #endif
                     break;
                 case 0xA0:
-                    v16 = IPFW();
+                    v32 = addr32 ? IPFDW() : IPFW();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"MOVw AL,[%04Xh]",v16);
+                    w += snprintf(w,(size_t)(wf-w),"MOVb AL,[%08Xh]",v32);
 #endif
                     break;
                 case 0xA1:
-                    v16 = IPFW();
+                    v32 = addr32 ? IPFDW() : IPFW();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"MOVw AX,[%04Xh]",v16);
+                    w += snprintf(w,(size_t)(wf-w),"MOV%s %s,[%08Xh]",sizesuffix[COREWORDSIZE],CPUregsN[COREWORDSIZE][/*AX*/0],v32);
 #endif
                     break;
                 case 0xA2:
-                    v16 = IPFW();
+                    v32 = addr32 ? IPFDW() : IPFW();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"MOVw [%04Xh],AL",v16);
+                    w += snprintf(w,(size_t)(wf-w),"MOVb [%08Xh],AL",v32);
 #endif
                     break;
                 case 0xA3:
-                    v16 = IPFW();
+                    v32 = addr32 ? IPFDW() : IPFW();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"MOVw [%04Xh],AX",v16);
+                    w += snprintf(w,(size_t)(wf-w),"MOV%s [%08Xh],%s",sizesuffix[COREWORDSIZE],v32,CPUregsN[COREWORDSIZE][/*AX*/0]);
 #endif
                     break;
                 case 0xA4:
