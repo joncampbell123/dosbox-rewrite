@@ -130,14 +130,19 @@
 
     movsb
     movsw
+    movsd
     cmpsb
     cmpsw
+    cmpsd
     stosb
     stosw
+    stosd
     lodsb
     lodsw
+    lodsd
     scasb
     scasw
+    scasd
 
     hlt
     cmc
@@ -164,42 +169,70 @@
     repz
     movsw
     repz
+    movsd
+
+    repz
     cmpsb
     repz
     cmpsw
+    repz
+    cmpsd
+
     repz
     stosb
     repz
     stosw
     repz
+    stosd
+
+    repz
     lodsb
     repz
     lodsw
     repz
+    lodsd
+
+    repz
     scasb
     repz
     scasw
+    repz
+    scasd
 
     repnz
     movsb
     repnz
     movsw
     repnz
+    movsd
+
+    repnz
     cmpsb
     repnz
     cmpsw
+    repnz
+    cmpsd
+
     repnz
     stosb
     repnz
     stosw
     repnz
+    stosd
+
+    repnz
     lodsb
     repnz
     lodsw
     repnz
+    lodsd
+
+    repnz
     scasb
     repnz
     scasw
+    repnz
+    scasd
 
     lock    xchg    ax,ax
 

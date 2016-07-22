@@ -703,22 +703,22 @@
                     break;
                 case 0xA4:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"MOVSB");
+                    w += snprintf(w,(size_t)(wf-w),"MOVSb");
 #endif
                     break;
                 case 0xA5:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"MOVSW");
+                    w += snprintf(w,(size_t)(wf-w),"MOVS%s",sizesuffix[COREWORDSIZE]);
 #endif
                     break;
                 case 0xA6:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"CMPSB");
+                    w += snprintf(w,(size_t)(wf-w),"CMPSb");
 #endif
                     break;
                 case 0xA7:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"CMPSW");
+                    w += snprintf(w,(size_t)(wf-w),"CMPS%s",sizesuffix[COREWORDSIZE]);
 #endif
                     break;
                 case 0xA8:
@@ -735,32 +735,32 @@
                     break;
                 case 0xAA:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"STOSB");
+                    w += snprintf(w,(size_t)(wf-w),"STOSb");
 #endif
                     break;
                 case 0xAB:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"STOSW");
+                    w += snprintf(w,(size_t)(wf-w),"STOS%s",sizesuffix[COREWORDSIZE]);
 #endif
                     break;
                 case 0xAC:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"LODSB");
+                    w += snprintf(w,(size_t)(wf-w),"LODSb");
 #endif
                     break;
                 case 0xAD:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"LODSW");
+                    w += snprintf(w,(size_t)(wf-w),"LODS%s",sizesuffix[COREWORDSIZE]);
 #endif
                     break;
                 case 0xAE:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"SCASB");
+                    w += snprintf(w,(size_t)(wf-w),"SCASb");
 #endif
                     break;
                 case 0xAF:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"SCASW");
+                    w += snprintf(w,(size_t)(wf-w),"SCAS%s",sizesuffix[COREWORDSIZE]);
 #endif
                     break;
                 case_span_8(0xB0):
