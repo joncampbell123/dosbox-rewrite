@@ -985,7 +985,10 @@
                 case 0xE5:
                     v8 = IPFB(); // immediate port number
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"INw AX,%02Xh",v8);
+                    if (COREWORDSIZE == 4)
+                        w += snprintf(w,(size_t)(wf-w),"INd EAX,%02Xh",v8);
+                    else
+                        w += snprintf(w,(size_t)(wf-w),"INw AX,%02Xh",v8);
 #endif
                     break;
                 case 0xE6:
@@ -997,7 +1000,10 @@
                 case 0xE7:
                     v8 = IPFB(); // immediate port number
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"OUTw %02Xh,AX",v8);
+                    if (COREWORDSIZE == 4)
+                        w += snprintf(w,(size_t)(wf-w),"OUTd %02Xh,EAX",v8);
+                    else
+                        w += snprintf(w,(size_t)(wf-w),"OUTw %02Xh,AX",v8);
 #endif
                     break;
                 case 0xE8:
@@ -1035,7 +1041,10 @@
                     break;
                 case 0xED:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"INw AX,DX");
+                    if (COREWORDSIZE == 4)
+                        w += snprintf(w,(size_t)(wf-w),"INd EAX,DX");
+                    else
+                        w += snprintf(w,(size_t)(wf-w),"INw AX,DX");
 #endif
                     break;
                 case 0xEE:
@@ -1045,7 +1054,10 @@
                     break;
                 case 0xEF:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"OUTw DX,AX");
+                    if (COREWORDSIZE == 4)
+                        w += snprintf(w,(size_t)(wf-w),"OUTd DX,EAX");
+                    else
+                        w += snprintf(w,(size_t)(wf-w),"OUTw DX,AX");
 #endif
                     break;
                 case 0xF0:
