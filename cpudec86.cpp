@@ -129,6 +129,7 @@ static void IPDec_80386(x86_offset_t ip) {
     if (opcode32) {
 #define COREMODE 32
 #define COREWORDSIZE 4
+#define COREOPMASK 0xFFFFFFFFUL
 #define after_prefix_COREMODE after_prefix_32
 #define after_prefix_COREMODE_opsizechg after_prefix_16
 after_prefix_32:
@@ -137,11 +138,13 @@ after_prefix_32:
 #undef after_prefix_COREMODE_opsizechg
 #undef after_prefix_COREMODE
 #undef COREWORDSIZE
+#undef COREOPMASK
 #undef COREMODE
     }
     else {
 #define COREMODE 16
 #define COREWORDSIZE 2
+#define COREOPMASK 0xFFFFUL
 #define after_prefix_COREMODE after_prefix_16
 #define after_prefix_COREMODE_opsizechg after_prefix_32
 after_prefix_16:
@@ -150,6 +153,7 @@ after_prefix_16:
 #undef after_prefix_COREMODE_opsizechg
 #undef after_prefix_COREMODE
 #undef COREWORDSIZE
+#undef COREOPMASK
 #undef COREMODE
     }
 invalidopcode:

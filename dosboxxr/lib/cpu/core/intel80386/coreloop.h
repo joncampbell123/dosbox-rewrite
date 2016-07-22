@@ -515,20 +515,11 @@
 #endif
                     break;
                 case_span_16(0x70): // 0x70-0x7F
-                    if (COREWORDSIZE == 4) {
-                        v32 = (uint32_t)IPFBsigned();
-                        v32 = (v32 + IPval()) & 0xFFFFFFFFU;
+                    v32 = (uint32_t)IPFBsigned();
+                    v32 = (v32 + IPval()) & COREOPMASK;
 #ifdef DECOMPILEMODE
-                        w += snprintf(w,(size_t)(wf-w),"%sd %08lXh",CPUjcc7x[op1&15],(unsigned long)v32);
+                    w += snprintf(w,(size_t)(wf-w),"%sd %08lXh",CPUjcc7x[op1&15],(unsigned long)v32);
 #endif
-                    }
-                    else {
-                        v16 = (uint16_t)IPFBsigned();
-                        v16 = (v16 + IPval()) & 0xFFFFU;
-#ifdef DECOMPILEMODE
-                        w += snprintf(w,(size_t)(wf-w),"%sw %04Xh",CPUjcc7x[op1&15],v16);
-#endif
-                    }
                     break;
                 case 0x80: // GRP1 byte r/m, imm8
                 case 0x82: // GRP1 byte r/m, imm8 alias
