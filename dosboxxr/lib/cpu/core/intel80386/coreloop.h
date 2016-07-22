@@ -794,12 +794,18 @@
                 case 0xC2:
                     v16 = IPFW();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"RETw %04Xh",v16);
+                    if (COREWORDSIZE == 4)
+                        w += snprintf(w,(size_t)(wf-w),"RETd %04Xh",v16);
+                    else
+                        w += snprintf(w,(size_t)(wf-w),"RETw %04Xh",v16);
 #endif
                     break;
                 case 0xC3:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"RETw");
+                    if (COREWORDSIZE == 4)
+                        w += snprintf(w,(size_t)(wf-w),"RETd");
+                    else
+                        w += snprintf(w,(size_t)(wf-w),"RETw");
 #endif
                     break;
                 case 0xC4: // LES reg,r/m word size
@@ -847,12 +853,18 @@
                 case 0xCA:
                     v16 = IPFW();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"RETFw %04Xh",v16);
+                    if (COREWORDSIZE == 4)
+                        w += snprintf(w,(size_t)(wf-w),"RETFd %04Xh",v16);
+                    else
+                        w += snprintf(w,(size_t)(wf-w),"RETFw %04Xh",v16);
 #endif
                     break;
                 case 0xCB:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"RETFw");
+                    if (COREWORDSIZE == 4)
+                        w += snprintf(w,(size_t)(wf-w),"RETFd");
+                    else
+                        w += snprintf(w,(size_t)(wf-w),"RETFw");
 #endif
                     break;
                 case 0xCC:
@@ -873,7 +885,10 @@
                     break;
                 case 0xCF:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"IRETw");
+                    if (COREWORDSIZE == 4)
+                        w += snprintf(w,(size_t)(wf-w),"IRETd");
+                    else
+                        w += snprintf(w,(size_t)(wf-w),"IRETw");
 #endif
                     break;
                 case 0xD0: // GRP2 r/m,1  NTS: undocumented reg==6 could be called "SAL", acts like "SHL"

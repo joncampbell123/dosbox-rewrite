@@ -16,10 +16,15 @@
     popf
     popfd
     ret
+    o32 ret
     ret     4
+    o32 ret 4
     retf
+    o32 retf
     retf    4
+    o32 retf 4
     iret
+    o32 iret
     int     1
     int     3
     int3
@@ -30,10 +35,14 @@
     in      al,dx
     in      ax,0x44
     in      ax,dx
+    in      eax,0x44
+    in      eax,dx
     out     0x44,al
     out     dx,al
     out     0x44,ax
     out     dx,ax
+    out     0x44,eax
+    out     dx,eax
 
     inc     ax
     inc     cx
