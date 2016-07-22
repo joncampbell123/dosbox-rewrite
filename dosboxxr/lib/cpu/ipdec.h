@@ -14,6 +14,7 @@ extern const char *CPUregs8[8];
 extern const char *CPUregsZ[8];
 extern const char **CPUregsN[5];
 extern const char *CPUsregs_8086[8];
+extern const char *CPUsregs_80386[8];
 extern const char *CPUjcc7x[16];
 extern const char *CPUjcc0F8x[16];
 extern const char *CPUGRP1[8];

@@ -2630,6 +2630,15 @@ jmp1:
     mov     ax,ss
     mov     ss,ax
 
+    mov     eax,cs
+    o32 mov cs,eax
+    mov     eax,ds
+    o32 mov ds,eax
+    mov     eax,es
+    o32 mov es,eax
+    mov     eax,ss
+    o32 mov ss,eax
+
     mov     word [bx+si],cs
     mov     word [bx+di],cs
     mov     word [0x1234],cs
