@@ -21,6 +21,7 @@ x86_offset_t            exe_ip = 0;
 unsigned char*          exe_ip_ptr = NULL;
 unsigned char*          exe_image = NULL;
 unsigned char*          exe_image_fence = NULL;
+bool                    exe_code32 = false;
 
 // include header core requires this
 static inline bool IPcontinue(void) {
@@ -107,11 +108,11 @@ done:
 
 static void IPDec_80386(x86_offset_t ip) {
     char *w = IPDecStr,*wf = IPDecStr+sizeof(IPDecStr)-1;
+    bool opcode32=exe_code32;
+    bool addr32=exe_code32;
     x86ScaleIndexBase sib;
     uint8_t op1,v8,op0F;
     x86_offset_t disp;
-    bool opcode32=false;
-    bool addr32=false;
     bool pre66=false;
     bool pre67=false;
     x86ModRegRm mrm;
@@ -173,6 +174,9 @@ int main(int argc,char **argv) {
 
             if (!strcmp(arg,"i")) {
                 src_file = argv[i++];
+            }
+            else if (!strcmp(arg,"code32")) {
+                exe_code32 = true;
             }
             else if (!strcmp(arg,"cpu")) {
                 const char *a = argv[i++];
