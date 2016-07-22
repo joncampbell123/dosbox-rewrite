@@ -496,22 +496,22 @@
                     break;
                 case 0x6C: // INSB
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"INSB");
+                    w += snprintf(w,(size_t)(wf-w),"INS%s",sizesuffix[1]);
 #endif
                     break;
                 case 0x6D: // INSW
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"INSW");
+                    w += snprintf(w,(size_t)(wf-w),"INS%s",sizesuffix[COREWORDSIZE]);
 #endif
                     break;
                 case 0x6E: // OUTSB
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"OUTSB");
+                    w += snprintf(w,(size_t)(wf-w),"OUTS%s",sizesuffix[1]);
 #endif
                     break;
                 case 0x6F: // OUTSW
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"OUTSW");
+                    w += snprintf(w,(size_t)(wf-w),"OUTS%s",sizesuffix[COREWORDSIZE]);
 #endif
                     break;
                 case_span_16(0x70): // 0x70-0x7F

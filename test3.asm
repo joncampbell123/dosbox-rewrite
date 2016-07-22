@@ -3960,12 +3960,16 @@ calltest1:
 ; more
     insb
     insw
+    insd
     outsb
     outsw
+    outsd
     rep     insb
     rep     insw
+    rep     insd
     rep     outsb
     rep     outsw
+    rep     outsd
     enter   0,0
     enter   0x1234,1
     enter   0x1234,0x12
