@@ -3826,6 +3826,37 @@ calltest1:
     imul    cx,word [0x1234]
     imul    dx,[si-6]
 
+; 32-bit
+    imul    eax,4
+    imul    ebx,4
+    imul    ecx,4
+    imul    eax,ebx,4
+    imul    ebx,ecx,4
+    imul    ecx,edx,4
+    imul    edx,esi,4
+    imul    eax,dword [esi],4
+    imul    ebx,dword [ebx+edi],4
+    a32 imul ecx,dword [0x12345678],4
+    imul    eax,0x12345678
+    imul    ebx,0x12345678
+    imul    ecx,0x12345678
+    imul    eax,ebx,0x12345678
+    imul    ebx,ecx,0x12345678
+    imul    ecx,edx,0x12345678
+    imul    edx,esi,0x12345678
+    imul    eax,dword [esi],0x12345678
+    imul    ebx,dword [ebx+edi],0x12345678
+    a32 imul ecx,dword [0x12345678],0x12345678
+; 386 imul extension (0x0F 0xAF /r)
+    imul    eax,ebx
+    imul    ebx,ecx
+    imul    ecx,edx
+    imul    edx,esi
+    imul    eax,dword [esi]
+    imul    ebx,dword [ebx+edi]
+    a32 imul ecx,dword [0x12345678]
+    imul    edx,[esi-6]
+
 ; GRP2 C0
     rol     al,7
     rol     bl,7

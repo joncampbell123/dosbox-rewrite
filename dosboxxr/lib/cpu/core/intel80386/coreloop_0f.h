@@ -160,9 +160,11 @@
                             break;
 
                         case 0xAF: // IMUL reg,r/m
-                            mrm.set(IPFB());
-                            disp = IPFmrmdisplace16(/*&*/mrm);
-                            w += snprintf(w,(size_t)(wf-w),"IMULw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+                            IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"IMUL%s %s,%s ; 1st *= 2nd",sizesuffix[COREWORDSIZE],
+                                CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32));
+#endif
                             break;
 
                         case 0xB2: // LSS reg,r/m word size

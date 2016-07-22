@@ -451,10 +451,10 @@
                     }
                     break;
                 case 0x63: // ARPL r/m,reg. reg and memory ref are 16-bit only.
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"ARPLw %s,%s",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()]);
+                    w += snprintf(w,(size_t)(wf-w),"ARPL%s %s,%s",sizesuffix[COREWORDSIZE],
+                        IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()]);
 #endif
                     break;
 
@@ -473,11 +473,11 @@
 #endif
                     break;
                 case 0x69: // IMUL reg,r/m,imm16
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
-                    v16 = IPFW();
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
+                    v32 = COREWORDSIZE == 4 ? IPFDW() : IPFW();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"IMUL %s,%s,%04Xh ; 1st = 2nd * 3rd",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2),v16);
+                    w += snprintf(w,(size_t)(wf-w),"IMUL%s %s,%s,%08Xh ; 1st = 2nd * 3rd",sizesuffix[COREWORDSIZE],
+                        CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32),v32);
 #endif
                     break;
                 case 0x6A: // PUSH imm8
@@ -487,11 +487,11 @@
 #endif
                     break;
                 case 0x6B: // IMUL reg,r/m,imm8
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
                     v8 = IPFB();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"IMUL %s,%s,%02Xh ; 1st = 2nd * 3rd",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2),v8);
+                    w += snprintf(w,(size_t)(wf-w),"IMUL%s %s,%s,%02Xh ; 1st = 2nd * 3rd",sizesuffix[COREWORDSIZE],
+                        CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32),v8);
 #endif
                     break;
                 case 0x6C: // INSB
