@@ -405,6 +405,50 @@ jmp1:
     add     bx,bp
     add     bx,sp
 
+;--------------dword
+    add     dword [ebx+esi],ebx ; 00 m/r/m mod=0
+    add     dword [ebx+edi],ebx ; 00 m/r/m mod=0
+    add     dword [ebp+esi],ebx ; 00 m/r/m mod=0
+    add     dword [ebp+edi],ebx ; 00 m/r/m mod=0
+    add     dword [esi],ebx    ; 00 m/r/m mod=0
+    add     dword [edi],ebx    ; 00 m/r/m mod=0
+    a32 add dword [0x12345678],ebx; 00 m/r/m mod=0
+    add     dword [ebx],ebx    ; 00 m/r/m mod=0
+
+    add     dword [ebx+esi+0x5F],ebx ; 40 m/r/m mod=1
+    add     dword [ebx+esi-0x5F],ebx
+    add     dword [ebx+edi+0x5F],ebx ; 40 m/r/m mod=1
+    add     dword [ebx+edi-0x5F],ebx
+    add     dword [ebp+esi+0x5F],ebx ; 40 m/r/m mod=1
+    add     dword [ebp+esi-0x5F],ebx
+    add     dword [ebp+edi+0x5F],ebx ; 40 m/r/m mod=1
+    add     dword [ebp+edi-0x5F],ebx
+    add     dword [esi+0x5F],ebx ; 40 m/r/m mod=1
+    add     dword [esi-0x5F],ebx
+    add     dword [edi+0x5F],ebx ; 40 m/r/m mod=1
+    add     dword [edi-0x5F],ebx
+    add     dword [ebp+0x5F],ebx ; 40 m/r/m mod=1
+    add     dword [ebp-0x5F],ebx
+    add     dword [ebx+0x5F],ebx ; 40 m/r/m mod=1
+    add     dword [ebx-0x5F],ebx
+
+    add     dword [ebx+esi+0x1234],ebx
+    add     dword [ebx+edi+0x1234],ebx
+    add     dword [ebp+esi+0x1234],ebx
+    add     dword [ebp+edi+0x1234],ebx
+    add     dword [esi+0x1234],ebx
+    add     dword [edi+0x1234],ebx
+    add     dword [ebp+0x1234],ebx
+    add     dword [ebx+0x1234],ebx
+    add     ebx,eax           ; 00 m/r/m mod=3
+    add     ebx,ecx           ; 00 m/r/m mod=3
+    add     ebx,edx           ; 00 m/r/m mod=3
+    add     ebx,ebx           ; 00 m/r/m mod=3
+    add     ebx,esi
+    add     ebx,edi
+    add     ebx,ebp
+    add     ebx,esp
+
 ;--------------byte
     add     bl,byte [bx+si] ; 00 m/r/m mod=0
     add     bl,byte [bx+di] ; 00 m/r/m mod=0
@@ -477,11 +521,49 @@ jmp1:
     add     bx,word [bp+0x1234]
     add     bx,word [bx+0x1234]
 
+;--------------dword
+    add     ebx,dword [ebx+esi] ; 00 m/r/m mod=0
+    add     ebx,dword [ebx+edi] ; 00 m/r/m mod=0
+    add     ebx,dword [ebp+esi] ; 00 m/r/m mod=0
+    add     ebx,dword [ebp+edi] ; 00 m/r/m mod=0
+    add     ebx,dword [esi]    ; 00 m/r/m mod=0
+    add     ebx,dword [edi]    ; 00 m/r/m mod=0
+    a32 add ebx,dword [0x12345678]; 00 m/r/m mod=0
+    add     ebx,dword [ebx]    ; 00 m/r/m mod=0
+
+    add     ebx,dword [ebx+esi+0x5F] ; 40 m/r/m mod=1
+    add     ebx,dword [ebx+esi-0x5F]
+    add     ebx,dword [ebx+edi+0x5F] ; 40 m/r/m mod=1
+    add     ebx,dword [ebx+edi-0x5F]
+    add     ebx,dword [ebp+esi+0x5F] ; 40 m/r/m mod=1
+    add     ebx,dword [ebp+esi-0x5F]
+    add     ebx,dword [ebp+edi+0x5F] ; 40 m/r/m mod=1
+    add     ebx,dword [ebp+edi-0x5F]
+    add     ebx,dword [esi+0x5F] ; 40 m/r/m mod=1
+    add     ebx,dword [esi-0x5F]
+    add     ebx,dword [edi+0x5F] ; 40 m/r/m mod=1
+    add     ebx,dword [edi-0x5F]
+    add     ebx,dword [ebp+0x5F] ; 40 m/r/m mod=1
+    add     ebx,dword [ebp-0x5F]
+    add     ebx,dword [ebx+0x5F] ; 40 m/r/m mod=1
+    add     ebx,dword [ebx-0x5F]
+
+    add     ebx,dword [ebx+esi+0x1234]
+    add     ebx,dword [ebx+edi+0x1234]
+    add     ebx,dword [ebp+esi+0x1234]
+    add     ebx,dword [ebp+edi+0x1234]
+    add     ebx,dword [esi+0x1234]
+    add     ebx,dword [edi+0x1234]
+    add     ebx,dword [ebp+0x1234]
+    add     ebx,dword [ebx+0x1234]
+
 ;---------------add imm
     add     al,0x12
     add     al,0xEF
     add     ax,0x1234
     add     ax,0xFEDC
+    add     eax,0x12345678
+    add     eax,0xFEDCBA98
 
 ;--------------byte
     or      byte [bx+si],bl ; 00 m/r/m mod=0

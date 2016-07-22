@@ -1,31 +1,31 @@
 /* code fragment. include from within execute/decompile loop */
             switch (op1=IPFB()) {
                 case 0x00: // ADD r/m,reg byte size
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"ADDb %s,%s",IPDecPrint16(mrm,disp,1),CPUregs8[mrm.reg()]);
+                    w += snprintf(w,(size_t)(wf-w),"ADD%s %s,%s",sizesuffix[1],
+                        IPDecPrint386(mrm,sib,disp,1,addr32),CPUregsN[1][mrm.reg()]);
 #endif
                     break;
                 case 0x01: // ADD r/m,reg word size
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"ADDw %s,%s",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()]);
+                    w += snprintf(w,(size_t)(wf-w),"ADD%s %s,%s",sizesuffix[COREWORDSIZE],
+                        IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32),CPUregsN[COREWORDSIZE][mrm.reg()]);
 #endif
                     break;
                 case 0x02: // ADD reg,r/m byte size
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"ADDb %s,%s",CPUregs8[mrm.reg()],IPDecPrint16(mrm,disp,1));
+                    w += snprintf(w,(size_t)(wf-w),"ADD%s %s,%s",sizesuffix[1],
+                        CPUregsN[1][mrm.reg()],IPDecPrint386(mrm,sib,disp,1,addr32));
 #endif
                     break;
                 case 0x03: // ADD reg,r/m word size
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"ADDw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+                    w += snprintf(w,(size_t)(wf-w),"ADD%s %s,%s",sizesuffix[COREWORDSIZE],
+                        CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32));
 #endif
                     break;
                 case 0x04: // ADD AL,imm8
@@ -35,10 +35,18 @@
 #endif
                     break;
                 case 0x05: // ADD AX,imm16
-                    v16 = IPFW();
+                    if (COREWORDSIZE == 4) {
+                        v32 = IPFDW();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"ADDw AX,%04Xh",v16);
+                        w += snprintf(w,(size_t)(wf-w),"ADDw AX,%08lXh",(unsigned long)v32);
 #endif
+                    }
+                    else {
+                        v16 = IPFW();
+#ifdef DECOMPILEMODE
+                        w += snprintf(w,(size_t)(wf-w),"ADDw AX,%04Xh",v16);
+#endif
+                    }
                     break;
                 case 0x06:
 #ifdef DECOMPILEMODE
