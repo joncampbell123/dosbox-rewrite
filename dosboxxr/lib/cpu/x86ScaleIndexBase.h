@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 
-struct x86ScaleIndexByte {
+struct x86ScaleIndexBase {
     /* X86 MOD/REG/RM byte
      *
      *    7    6    5    4    3    2    1    0
@@ -14,9 +14,9 @@ struct x86ScaleIndexByte {
 public:
     uint8_t         byte;
 public:
-    x86ScaleIndexByte(void) { }
-    x86ScaleIndexByte(const uint8_t _byte) : byte(_byte) { }
-    x86ScaleIndexByte(const uint8_t scale,const uint8_t index,const uint8_t base) { set(scale,index,base); }
+    x86ScaleIndexBase(void) { }
+    x86ScaleIndexBase(const uint8_t _byte) : byte(_byte) { }
+    x86ScaleIndexBase(const uint8_t scale,const uint8_t index,const uint8_t base) { set(scale,index,base); }
 
     static inline uint8_t encode(const uint8_t scale,const uint8_t index,const uint8_t base) {
         return (scale << 6) + (index << 3) + base; // WARNING: No protection against illegal values.

@@ -107,6 +107,7 @@ done:
 
 static void IPDec_80386(x86_offset_t ip) {
     char *w = IPDecStr,*wf = IPDecStr+sizeof(IPDecStr)-1;
+    x86ScaleIndexBase sib;
     uint8_t op1,v8,op0F;
     x86_offset_t disp;
     bool opcode32=false;

@@ -192,22 +192,20 @@
 #endif
                             break;
                         case 0xB6: // MOVZX reg,r/m    byte -> word
-                            mrm.set(IPFB());
-                            disp = IPFmrmdisplace16(/*&*/mrm);
+                            IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"MOVZX%s %s,%s ; byte -> %s",sizesuffix[COREWORDSIZE],
-                                CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint16(mrm,disp,1),sizespec[COREWORDSIZE]);
+                                CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint386(mrm,sib,disp,1,addr32),sizespec[COREWORDSIZE]);
 #endif
                             break;
                         case 0xB7: // MOVZX reg,r/m    word -> word
                             // FIXME: What does the Intel 80386 do when this instruction is used in the 16-bit mode? The obvious intent
                             //        of this instruction is for use from 32-bit code (or 16-bit code with 32-bit override) to expand
                             //        16-bit to 32-bit i.e. MOVZX EAX,AX.
-                            mrm.set(IPFB());
-                            disp = IPFmrmdisplace16(/*&*/mrm);
+                            IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"MOVZX%s %s,%s ; word -> %s",sizesuffix[COREWORDSIZE],
-                                CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint16(mrm,disp,2),sizespec[COREWORDSIZE]);
+                                CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint386(mrm,sib,disp,2,addr32),sizespec[COREWORDSIZE]);
 #endif
                             break;
 
@@ -251,22 +249,20 @@
                             w += snprintf(w,(size_t)(wf-w),"BSRw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
                             break;
                         case 0xBE: // MOVSX reg,r/m    byte -> word
-                            mrm.set(IPFB());
-                            disp = IPFmrmdisplace16(/*&*/mrm);
+                            IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"MOVSX%s %s,%s ; byte -> %s",sizesuffix[COREWORDSIZE],
-                                CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint16(mrm,disp,1),sizespec[COREWORDSIZE]);
+                                CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint386(mrm,sib,disp,1,addr32),sizespec[COREWORDSIZE]);
 #endif
                             break;
                         case 0xBF: // MOVSX reg,r/m    word -> word
                             // FIXME: What does the Intel 80386 do when this instruction is used in the 16-bit mode? The obvious intent
                             //        of this instruction is for use from 32-bit code (or 16-bit code with 32-bit override) to expand
-                            //        16-bit to 32-bit i.e. MOVSX EAX,AX.
-                            mrm.set(IPFB());
-                            disp = IPFmrmdisplace16(/*&*/mrm);
+                            //        16-bit to 32-bit i.e. MOVZX EAX,AX.
+                            IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"MOVSX%s %s,%s ; word -> %s",sizesuffix[COREWORDSIZE],
-                                CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint16(mrm,disp,2),sizespec[COREWORDSIZE]);
+                                CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint386(mrm,sib,disp,2,addr32),sizespec[COREWORDSIZE]);
 #endif
                             break;
 

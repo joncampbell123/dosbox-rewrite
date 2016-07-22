@@ -53,6 +53,14 @@ public:
     static inline uint8_t mod(const uint8_t byte) {
         return byte >> 6;
     }
+
+    // for 386 emulation: whether or not a SIB byte would follow when addr32 == true
+    static inline bool has_a32_SIB(const uint8_t byte) {
+        return (byte < 0xC0) && ((byte & 0x07) == 0x04); // mod != 3 and r/m == 4
+    }
+    inline bool has_a32_SIB(void) {
+        return has_a32_SIB(byte);
+    }
 };
 
 #endif //DOSBOXXR_LIB_CPU_X86MODREGRM_H

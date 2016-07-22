@@ -1,6 +1,7 @@
 
 #include "dosboxxr/lib/cpu/memreftypes.h"
 #include "dosboxxr/lib/cpu/x86ModRegRm.h"
+#include "dosboxxr/lib/cpu/x86ScaleIndexBase.h"
 
 enum IPDecRegClass {
     RC_REG=0,
@@ -35,4 +36,5 @@ static inline uint8_t IPDec8abs(uint8_t v) {
 }
 
 const char *IPDecPrint16(const x86ModRegRm &mrm,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass=RC_REG);
+const char *IPDecPrint386(const x86ModRegRm &mrm,const x86ScaleIndexBase &sib,const x86_offset_t ofs,const unsigned int sz,const bool addr32,const IPDecRegClass regclass=RC_REG);
 
