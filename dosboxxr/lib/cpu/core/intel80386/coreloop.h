@@ -439,14 +439,16 @@
 #endif
                     break;
                 case 0x62: // BOUND reg,r/m
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
+                    if (mrm.mod() != 3) {
 #ifdef DECOMPILEMODE
-                    if (mrm.mod() != 3)
-                        w += snprintf(w,(size_t)(wf-w),"BOUNDw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
-                    else
-                        goto invalidopcode;
+                        w += snprintf(w,(size_t)(wf-w),"BOUND%s %s,%s",sizesuffix[COREWORDSIZE],
+                            IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32),CPUregsN[COREWORDSIZE][mrm.reg()]);
 #endif
+                    }
+                    else {
+                        goto invalidopcode;
+                    }
                     break;
                 case 0x63: // ARPL r/m,reg
                     mrm.set(IPFB());

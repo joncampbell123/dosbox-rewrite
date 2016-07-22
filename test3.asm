@@ -3945,6 +3945,10 @@ calltest1:
     bound   bx,word [bx+di]
     bound   cx,word [bx+di+0x1234]
     bound   dx,word [0x1234]
+    bound   eax,dword [esi]
+    bound   ebx,dword [ebx+edi]
+    bound   ecx,dword [ebx+edi+0x1234]
+    a32 bound edx,dword [0x12345678]
     clts
 ; 0x0F 0x01 group
     sgdt    word [bx]               ; 0x0F 0x01 MRM   MOD != 3  REG == 0  R/M == location
