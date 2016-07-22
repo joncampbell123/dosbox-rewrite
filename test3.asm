@@ -1934,6 +1934,8 @@ jmp1:
     xor     al,0xEF
     xor     ax,0x1234
     xor     ax,0xFEDC
+    xor     eax,0x12345678
+    xor     eax,0xFEDCBA98
 
 ;--------------byte
     cmp     byte [bx+si],bl ; 00 m/r/m mod=0
@@ -2100,6 +2102,8 @@ jmp1:
     cmp     al,0xEF
     cmp     ax,0x1234
     cmp     ax,0xFEDC
+    cmp     eax,0x12345678
+    cmp     eax,0xFEDCBA98
 
 ; GRP1 80h
     add     byte [bx+si],0x12
