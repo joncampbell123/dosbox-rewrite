@@ -1098,7 +1098,7 @@
                     goto after_prefix_COREMODE;
                 case 0xF1:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"(undefined opcode F1h)"); /* "Does not Generate #UD" according to X86 Opcode on x86asm geek.html */
+                    w += snprintf(w,(size_t)(wf-w),"INT1/ICEBP");
 #endif
                     break;
                 case 0xF2:
