@@ -533,59 +533,59 @@
 #endif
                     break;
                 case 0x84: // TEST r/m,reg byte size
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"TESTb %s,%s",IPDecPrint16(mrm,disp,1),CPUregs8[mrm.reg()]);
+                    w += snprintf(w,(size_t)(wf-w),"TEST%s %s,%s",sizesuffix[1],
+                        IPDecPrint386(mrm,sib,disp,1,addr32),CPUregsN[1][mrm.reg()]);
 #endif
                     break;
                 case 0x85: // TEST r/m,reg word size
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"TESTw %s,%s",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()]);
+                    w += snprintf(w,(size_t)(wf-w),"TEST%s %s,%s",sizesuffix[COREWORDSIZE],
+                        IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32),CPUregsN[COREWORDSIZE][mrm.reg()]);
 #endif
                     break;
                 case 0x86: // XCHG r/m,reg byte size
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"XCHGb %s,%s",CPUregs8[mrm.reg()],IPDecPrint16(mrm,disp,1));
+                    w += snprintf(w,(size_t)(wf-w),"XCHG%s %s,%s",sizesuffix[1],
+                        CPUregsN[1][mrm.reg()],IPDecPrint386(mrm,sib,disp,1,addr32));
 #endif
                     break;
                 case 0x87: // XCHG r/m,reg word size
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"XCHGw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+                    w += snprintf(w,(size_t)(wf-w),"XCHG%s %s,%s",sizesuffix[COREWORDSIZE],
+                        CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32));
 #endif
                     break;
                 case 0x88: // MOV r/m,reg byte size
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"MOVb %s,%s",IPDecPrint16(mrm,disp,1),CPUregs8[mrm.reg()]);
+                    w += snprintf(w,(size_t)(wf-w),"MOV%s %s,%s",sizesuffix[1],
+                        IPDecPrint386(mrm,sib,disp,1,addr32),CPUregsN[1][mrm.reg()]);
 #endif
                     break;
                 case 0x89: // MOV r/m,reg word size
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"MOVw %s,%s",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()]);
+                    w += snprintf(w,(size_t)(wf-w),"MOV%s %s,%s",sizesuffix[COREWORDSIZE],
+                        IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32),CPUregsN[COREWORDSIZE][mrm.reg()]);
 #endif
                     break;
                 case 0x8A: // MOV reg,r/m byte size
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"MOVb %s,%s",CPUregs8[mrm.reg()],IPDecPrint16(mrm,disp,1));
+                    w += snprintf(w,(size_t)(wf-w),"MOV%s %s,%s",sizesuffix[1],
+                        CPUregsN[1][mrm.reg()],IPDecPrint386(mrm,sib,disp,1,addr32));
 #endif
                     break;
                 case 0x8B: // MOV reg,r/m word size
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"MOVw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+                    w += snprintf(w,(size_t)(wf-w),"MOV%s %s,%s",sizesuffix[COREWORDSIZE],
+                        CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32));
 #endif
                     break;
                 case 0x8C: // MOV r/m,sreg word size
@@ -596,10 +596,10 @@
 #endif
                     break;
                 case 0x8D: // LEA reg,r/m word size
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"LEAw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+                    w += snprintf(w,(size_t)(wf-w),"LEA%s %s,%s",sizesuffix[COREWORDSIZE],
+                        CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32));
 #endif
                     break;
                 case 0x8E: // MOV sreg,r/m word size
@@ -623,7 +623,8 @@
                     break;
                 case 0x91: case 0x92: case 0x93: case 0x94: case 0x95: case 0x96: case 0x97:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"XCHGw %s,AX",CPUregs16[op1&7]);
+                    w += snprintf(w,(size_t)(wf-w),"XCHG%s %s,%s",sizesuffix[COREWORDSIZE],
+                        CPUregsN[COREWORDSIZE][op1&7],CPUregsN[COREWORDSIZE][0/*AX*/]);
 #endif
                     break;
                 case 0x98:

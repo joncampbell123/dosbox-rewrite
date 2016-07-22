@@ -244,6 +244,14 @@
     xchg    si,ax
     xchg    di,ax
 
+    xchg    ecx,eax
+    xchg    edx,eax
+    xchg    ebx,eax
+    xchg    esp,eax
+    xchg    ebp,eax
+    xchg    esi,eax
+    xchg    edi,eax
+
     wait
     sahf
     lahf
@@ -1918,6 +1926,11 @@ jmp1:
     test    cx,dx
     test    dx,ax
 
+    test    ebx,ecx
+    test    ebx,edx
+    test    ecx,edx
+    test    edx,eax
+
     test    byte [bx+si],cl
     test    byte [bx+di],dl
     test    byte [0x1234],dl
@@ -1936,6 +1949,24 @@ jmp1:
     test    word [bp+0x1234],dx
     test    word [bx+0x1234],dx
 
+    test    dword [bx+si],ecx
+    test    dword [bx+di],edx
+    test    dword [0x1234],edx
+    test    dword [bx],edx
+    test    dword [bx+si+0x1234],ecx
+    test    dword [bx+di+0x1234],edx
+    test    dword [bp+0x1234],edx
+    test    dword [bx+0x1234],edx
+
+    test    dword [ebx+esi],ecx
+    test    dword [ebx+edi],edx
+    a32 test dword [0x12345678],edx
+    test    dword [ebx],edx
+    test    dword [ebx+esi+0x1234],ecx
+    test    dword [ebx+edi+0x1234],edx
+    test    dword [ebp+0x1234],edx
+    test    dword [ebx+0x1234],edx
+
 ; XOR 86h-87h
     xchg    bl,cl           ; 86h
     xchg    bl,dl           ; 86h
@@ -1946,6 +1977,11 @@ jmp1:
     xchg    bx,dx
     xchg    cx,dx
     xchg    dx,ax
+
+    xchg    ebx,ecx
+    xchg    ebx,edx
+    xchg    ecx,edx
+    xchg    edx,eax
 
     xchg    byte [bx+si],cl
     xchg    byte [bx+di],dl
@@ -1965,6 +2001,24 @@ jmp1:
     xchg    word [bp+0x1234],dx
     xchg    word [bx+0x1234],dx
 
+    xchg    dword [bx+si],ecx
+    xchg    dword [bx+di],edx
+    xchg    dword [0x1234],edx
+    xchg    dword [bx],edx
+    xchg    dword [bx+si+0x1234],ecx
+    xchg    dword [bx+di+0x1234],edx
+    xchg    dword [bp+0x1234],edx
+    xchg    dword [bx+0x1234],edx
+
+    xchg    dword [ebx+esi],ecx
+    xchg    dword [ebx+edi],edx
+    a32 xchg dword [0x12345678],edx
+    xchg    dword [ebx],edx
+    xchg    dword [ebx+esi+0x1234],ecx
+    xchg    dword [ebx+edi+0x1234],edx
+    xchg    dword [ebp+0x1234],edx
+    xchg    dword [ebx+0x1234],edx
+
 ; MOV 88-8B
     mov     bl,cl
     mov     bl,dl
@@ -1975,6 +2029,11 @@ jmp1:
     mov     bx,dx
     mov     cx,dx
     mov     dx,ax
+
+    mov     ebx,ecx
+    mov     ebx,edx
+    mov     ecx,edx
+    mov     edx,eax
 
     mov     byte [bx+si],cl
     mov     byte [bx+di],dl
@@ -1994,6 +2053,24 @@ jmp1:
     mov     word [bp+0x1234],dx
     mov     word [bx+0x1234],dx
 
+    mov     dword [bx+si],ecx
+    mov     dword [bx+di],edx
+    mov     dword [0x1234],edx
+    mov     dword [bx],edx
+    mov     dword [bx+si+0x1234],ecx
+    mov     dword [bx+di+0x1234],edx
+    mov     dword [bp+0x1234],edx
+    mov     dword [bx+0x1234],edx
+
+    mov     dword [ebx+esi],ecx
+    mov     dword [ebx+edi],edx
+    a32 mov dword [0x12345678],edx
+    mov     dword [ebx],edx
+    mov     dword [ebx+esi+0x1234],ecx
+    mov     dword [ebx+edi+0x1234],edx
+    mov     dword [ebp+0x1234],edx
+    mov     dword [ebx+0x1234],edx
+
     mov     cl,byte [bx+si]
     mov     dl,byte [bx+di]
     mov     dl,byte [0x1234]
@@ -2011,6 +2088,24 @@ jmp1:
     mov     dx,word [bx+di+0x1234]
     mov     dx,word [bp+0x1234]
     mov     dx,word [bx+0x1234]
+
+    mov     ecx,dword [bx+si]
+    mov     edx,dword [bx+di]
+    mov     edx,dword [0x1234]
+    mov     edx,dword [bx]
+    mov     ecx,dword [bx+si+0x1234]
+    mov     edx,dword [bx+di+0x1234]
+    mov     edx,dword [bp+0x1234]
+    mov     edx,dword [bx+0x1234]
+
+    mov     ecx,dword [ebx+esi]
+    mov     edx,dword [ebx+edi]
+    a32 mov edx,dword [0x12345678]
+    mov     edx,dword [ebx]
+    mov     ecx,dword [ebx+esi+0x1234]
+    mov     edx,dword [ebx+edi+0x1234]
+    mov     edx,dword [ebp+0x1234]
+    mov     edx,dword [ebx+0x1234]
 
 ; mov r/m,sreg
     mov     ax,cs
@@ -2045,6 +2140,19 @@ jmp1:
     db      0x8D,0xC0       ; LEA AX,AX (illegal, YASM won't encode it)
     db      0x8D,0xC1       ; LEA AX,CX
     db      0x8D,0xC8       ; LEA CX,AX
+
+; FIXME: What does the 80386 do with LEA if opcodesize == 32 and addrsize == 16?
+    lea     eax,[si]
+    lea     eax,[bx+si]
+    lea     eax,[0x1234]
+    lea     eax,[bx+si+0x1234]
+    lea     ebx,[bx+di-0x44]
+
+    lea     eax,[esi]
+    lea     eax,[ebx+esi]
+    a32 lea eax,[0x12345678]
+    lea     eax,[ebx+esi+0x12345678]
+    lea     ebx,[ebx+edi-0x44]
 
 ; pop 8Fh
     pop     word [si]
