@@ -259,11 +259,6 @@
     push    es
     pop     es
     push    cs
-
-    db      0x0F    ; pop cs. make sure it DOESN'T decode to POP CS
-    nop
-    nop
-
     push    ss
     pop     ss
     push    ds
