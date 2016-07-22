@@ -2484,6 +2484,184 @@ jmp1:
     cmp     cx,-0x56
     cmp     dx,-0x56
 
+; GRP1 81h 32-bit
+    add     dword [ebx+esi],0x12345678
+    add     dword [ebx+edi],0x12345678
+    add     dword [ebp+esi],0x12345678
+    add     dword [ebp+edi],0x12345678
+    add     dword [esi],0x12345678
+    add     dword [edi],0x12345678
+    a32 add dword [0x12345678],0x12345678
+    add     dword [ebx],0x12345678
+    add     ecx,0x12345678
+    add     edx,0x12345678
+
+    or      dword [ebx+esi],0x12345678
+    or      dword [ebx+edi],0x12345678
+    or      dword [ebp+esi],0x12345678
+    or      dword [ebp+edi],0x12345678
+    or      dword [esi],0x12345678
+    or      dword [edi],0x12345678
+    a32 or  dword [0x12345678],0x12345678
+    or      dword [ebx],0x12345678
+    or      ecx,0x12345678
+    or      edx,0x12345678
+
+    adc     dword [ebx+esi],0x12345678
+    adc     dword [ebx+edi],0x12345678
+    adc     dword [ebp+esi],0x12345678
+    adc     dword [ebp+edi],0x12345678
+    adc     dword [esi],0x12345678
+    adc     dword [edi],0x12345678
+    a32 adc dword [0x12345678],0x12345678
+    adc     dword [ebx],0x12345678
+    adc     ecx,0x12345678
+    adc     edx,0x12345678
+
+    sbb     dword [ebx+esi],0x12345678
+    sbb     dword [ebx+edi],0x12345678
+    sbb     dword [ebp+esi],0x12345678
+    sbb     dword [ebp+edi],0x12345678
+    sbb     dword [esi],0x12345678
+    sbb     dword [edi],0x12345678
+    a32 sbb dword [0x12345678],0x12345678
+    sbb     dword [ebx],0x12345678
+    sbb     ecx,0x12345678
+    sbb     edx,0x12345678
+
+    and     dword [ebx+esi],0x12345678
+    and     dword [ebx+edi],0x12345678
+    and     dword [ebp+esi],0x12345678
+    and     dword [ebp+edi],0x12345678
+    and     dword [esi],0x12345678
+    and     dword [edi],0x12345678
+    a32 and dword [0x12345678],0x12345678
+    and     dword [ebx],0x12345678
+    and     ecx,0x12345678
+    and     edx,0x12345678
+
+    sub     dword [ebx+esi],0x12345678
+    sub     dword [ebx+edi],0x12345678
+    sub     dword [ebp+esi],0x12345678
+    sub     dword [ebp+edi],0x12345678
+    sub     dword [esi],0x12345678
+    sub     dword [edi],0x12345678
+    a32 sub dword [0x12345678],0x12345678
+    sub     dword [ebx],0x12345678
+    sub     ecx,0x12345678
+    sub     edx,0x12345678
+
+    xor     dword [ebx+esi],0x12345678
+    xor     dword [ebx+edi],0x12345678
+    xor     dword [ebp+esi],0x12345678
+    xor     dword [ebp+edi],0x12345678
+    xor     dword [esi],0x12345678
+    xor     dword [edi],0x12345678
+    a32 xor dword [0x12345678],0x12345678
+    xor     dword [ebx],0x12345678
+    xor     ecx,0x12345678
+    xor     edx,0x12345678
+
+    cmp     dword [ebx+esi],0x12345678
+    cmp     dword [ebx+edi],0x12345678
+    cmp     dword [ebp+esi],0x12345678
+    cmp     dword [ebp+edi],0x12345678
+    cmp     dword [esi],0x12345678
+    cmp     dword [edi],0x12345678
+    a32 cmp dword [0x12345678],0x12345678
+    cmp     dword [ebx],0x12345678
+    cmp     ecx,0x12345678
+    cmp     edx,0x12345678
+
+; GRP1 83h 32-bit
+    add     dword [ebx+esi],-0x56
+    add     dword [ebx+edi],-0x56
+    add     dword [ebp+esi],-0x56
+    add     dword [ebp+edi],-0x56
+    add     dword [esi],-0x56
+    add     dword [edi],-0x56
+    a32 add dword [0x12345678],-0x56
+    add     dword [ebx],-0x56
+    add     ecx,-0x56
+    add     edx,-0x56
+
+    or      dword [ebx+esi],-0x56
+    or      dword [ebx+edi],-0x56
+    or      dword [ebp+esi],-0x56
+    or      dword [ebp+edi],-0x56
+    or      dword [esi],-0x56
+    or      dword [edi],-0x56
+    a32 or  dword [0x12345678],-0x56
+    or      dword [ebx],-0x56
+    or      ecx,-0x56
+    or      edx,-0x56
+
+    adc     dword [ebx+esi],-0x56
+    adc     dword [ebx+edi],-0x56
+    adc     dword [ebp+esi],-0x56
+    adc     dword [ebp+edi],-0x56
+    adc     dword [esi],-0x56
+    adc     dword [edi],-0x56
+    a32 adc dword [0x12345678],-0x56
+    adc     dword [ebx],-0x56
+    adc     ecx,-0x56
+    adc     edx,-0x56
+
+    sbb     dword [ebx+esi],-0x56
+    sbb     dword [ebx+edi],-0x56
+    sbb     dword [ebp+esi],-0x56
+    sbb     dword [ebp+edi],-0x56
+    sbb     dword [esi],-0x56
+    sbb     dword [edi],-0x56
+    a32 sbb dword [0x12345678],-0x56
+    sbb     dword [ebx],-0x56
+    sbb     ecx,-0x56
+    sbb     edx,-0x56
+
+    and     dword [ebx+esi],-0x56
+    and     dword [ebx+edi],-0x56
+    and     dword [ebp+esi],-0x56
+    and     dword [ebp+edi],-0x56
+    and     dword [esi],-0x56
+    and     dword [edi],-0x56
+    a32 and dword [0x12345678],-0x56
+    and     dword [ebx],-0x56
+    and     ecx,-0x56
+    and     edx,-0x56
+
+    sub     dword [ebx+esi],-0x56
+    sub     dword [ebx+edi],-0x56
+    sub     dword [ebp+esi],-0x56
+    sub     dword [ebp+edi],-0x56
+    sub     dword [esi],-0x56
+    sub     dword [edi],-0x56
+    a32 sub dword [0x12345678],-0x56
+    sub     dword [ebx],-0x56
+    sub     ecx,-0x56
+    sub     edx,-0x56
+
+    xor     dword [ebx+esi],-0x56
+    xor     dword [ebx+edi],-0x56
+    xor     dword [ebp+esi],-0x56
+    xor     dword [ebp+edi],-0x56
+    xor     dword [esi],-0x56
+    xor     dword [edi],-0x56
+    a32 xor dword [0x12345678],-0x56
+    xor     dword [ebx],-0x56
+    xor     ecx,-0x56
+    xor     edx,-0x56
+
+    cmp     dword [ebx+esi],-0x56
+    cmp     dword [ebx+edi],-0x56
+    cmp     dword [ebp+esi],-0x56
+    cmp     dword [ebp+edi],-0x56
+    cmp     dword [esi],-0x56
+    cmp     dword [edi],-0x56
+    a32 cmp dword [0x12345678],-0x56
+    cmp     dword [ebx],-0x56
+    cmp     ecx,-0x56
+    cmp     edx,-0x56
+
 ; TEST 84h-85h
     test    bl,cl           ; 84h
     test    bl,dl           ; 84h
