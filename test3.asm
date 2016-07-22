@@ -2145,6 +2145,8 @@ jmp1:
     or      byte [di],0x12
     or      byte [0x1234],0x12
     or      byte [bx],0x12
+    or      cl,0x12
+    or      dl,0x12
 
     adc     byte [bx+si],0x12
     adc     byte [bx+di],0x12
@@ -2154,6 +2156,8 @@ jmp1:
     adc     byte [di],0x12
     adc     byte [0x1234],0x12
     adc     byte [bx],0x12
+    adc     cl,0x12
+    adc     dl,0x12
 
     sbb     byte [bx+si],0x12
     sbb     byte [bx+di],0x12
@@ -2163,6 +2167,8 @@ jmp1:
     sbb     byte [di],0x12
     sbb     byte [0x1234],0x12
     sbb     byte [bx],0x12
+    sbb     cl,0x12
+    sbb     dl,0x12
 
     and     byte [bx+si],0x12
     and     byte [bx+di],0x12
@@ -2172,6 +2178,8 @@ jmp1:
     and     byte [di],0x12
     and     byte [0x1234],0x12
     and     byte [bx],0x12
+    and     cl,0x12
+    and     dl,0x12
 
     sub     byte [bx+si],0x12
     sub     byte [bx+di],0x12
@@ -2181,6 +2189,8 @@ jmp1:
     sub     byte [di],0x12
     sub     byte [0x1234],0x12
     sub     byte [bx],0x12
+    sub     cl,0x12
+    sub     dl,0x12
 
     xor     byte [bx+si],0x12
     xor     byte [bx+di],0x12
@@ -2190,6 +2200,8 @@ jmp1:
     xor     byte [di],0x12
     xor     byte [0x1234],0x12
     xor     byte [bx],0x12
+    xor     cl,0x12
+    xor     dl,0x12
 
     cmp     byte [bx+si],0x12
     cmp     byte [bx+di],0x12
@@ -2199,6 +2211,8 @@ jmp1:
     cmp     byte [di],0x12
     cmp     byte [0x1234],0x12
     cmp     byte [bx],0x12
+    cmp     cl,0x12
+    cmp     dl,0x12
 
 ; GRP1 81h
     add     word [bx+si],0x1234
@@ -2220,6 +2234,8 @@ jmp1:
     or      word [di],0x1234
     or      word [0x1234],0x1234
     or      word [bx],0x1234
+    or      cx,0x1234
+    or      dx,0x1234
 
     adc     word [bx+si],0x1234
     adc     word [bx+di],0x1234
@@ -2229,6 +2245,8 @@ jmp1:
     adc     word [di],0x1234
     adc     word [0x1234],0x1234
     adc     word [bx],0x1234
+    adc     cx,0x1234
+    adc     dx,0x1234
 
     sbb     word [bx+si],0x1234
     sbb     word [bx+di],0x1234
@@ -2238,6 +2256,8 @@ jmp1:
     sbb     word [di],0x1234
     sbb     word [0x1234],0x1234
     sbb     word [bx],0x1234
+    sbb     cx,0x1234
+    sbb     dx,0x1234
 
     and     word [bx+si],0x1234
     and     word [bx+di],0x1234
@@ -2247,6 +2267,8 @@ jmp1:
     and     word [di],0x1234
     and     word [0x1234],0x1234
     and     word [bx],0x1234
+    and     cx,0x1234
+    and     dx,0x1234
 
     sub     word [bx+si],0x1234
     sub     word [bx+di],0x1234
@@ -2256,6 +2278,8 @@ jmp1:
     sub     word [di],0x1234
     sub     word [0x1234],0x1234
     sub     word [bx],0x1234
+    sub     cx,0x1234
+    sub     dx,0x1234
 
     xor     word [bx+si],0x1234
     xor     word [bx+di],0x1234
@@ -2265,6 +2289,8 @@ jmp1:
     xor     word [di],0x1234
     xor     word [0x1234],0x1234
     xor     word [bx],0x1234
+    xor     cx,0x1234
+    xor     dx,0x1234
 
     cmp     word [bx+si],0x1234
     cmp     word [bx+di],0x1234
@@ -2274,6 +2300,8 @@ jmp1:
     cmp     word [di],0x1234
     cmp     word [0x1234],0x1234
     cmp     word [bx],0x1234
+    cmp     cx,0x1234
+    cmp     dx,0x1234
 
 ; GRP1 82h alias
     db      0x82,0x00,0x12
@@ -2298,6 +2326,8 @@ jmp1:
     or      word [di],0x5E
     or      word [0x1234],0x5E
     or      word [bx],0x5E
+    or      cx,0x5E
+    or      dx,0x5E
 
     adc     word [bx+si],0x5E
     adc     word [bx+di],0x5E
@@ -2307,6 +2337,8 @@ jmp1:
     adc     word [di],0x5E
     adc     word [0x1234],0x5E
     adc     word [bx],0x5E
+    adc     cx,0x5E
+    adc     dx,0x5E
 
     sbb     word [bx+si],0x5E
     sbb     word [bx+di],0x5E
@@ -2316,6 +2348,8 @@ jmp1:
     sbb     word [di],0x5E
     sbb     word [0x1234],0x5E
     sbb     word [bx],0x5E
+    sbb     cx,0x5E
+    sbb     dx,0x5E
 
     and     word [bx+si],0x5E
     and     word [bx+di],0x5E
@@ -2325,6 +2359,8 @@ jmp1:
     and     word [di],0x5E
     and     word [0x1234],0x5E
     and     word [bx],0x5E
+    and     cx,0x5E
+    and     dx,0x5E
 
     sub     word [bx+si],0x5E
     sub     word [bx+di],0x5E
@@ -2334,6 +2370,8 @@ jmp1:
     sub     word [di],0x5E
     sub     word [0x1234],0x5E
     sub     word [bx],0x5E
+    sub     cx,0x5E
+    sub     dx,0x5E
 
     xor     word [bx+si],0x5E
     xor     word [bx+di],0x5E
@@ -2343,6 +2381,8 @@ jmp1:
     xor     word [di],0x5E
     xor     word [0x1234],0x5E
     xor     word [bx],0x5E
+    xor     cx,0x5E
+    xor     dx,0x5E
 
     cmp     word [bx+si],0x5E
     cmp     word [bx+di],0x5E
@@ -2352,6 +2392,8 @@ jmp1:
     cmp     word [di],0x5E
     cmp     word [0x1234],0x5E
     cmp     word [bx],0x5E
+    cmp     cx,0x5E
+    cmp     dx,0x5E
 
 ; GRP1 83h
     add     word [bx+si],-0x56
@@ -2373,6 +2415,8 @@ jmp1:
     or      word [di],-0x56
     or      word [0x1234],-0x56
     or      word [bx],-0x56
+    or      cx,-0x56
+    or      dx,-0x56
 
     adc     word [bx+si],-0x56
     adc     word [bx+di],-0x56
@@ -2382,6 +2426,8 @@ jmp1:
     adc     word [di],-0x56
     adc     word [0x1234],-0x56
     adc     word [bx],-0x56
+    adc     cx,-0x56
+    adc     dx,-0x56
 
     sbb     word [bx+si],-0x56
     sbb     word [bx+di],-0x56
@@ -2391,6 +2437,8 @@ jmp1:
     sbb     word [di],-0x56
     sbb     word [0x1234],-0x56
     sbb     word [bx],-0x56
+    sbb     cx,-0x56
+    sbb     dx,-0x56
 
     and     word [bx+si],-0x56
     and     word [bx+di],-0x56
@@ -2400,6 +2448,8 @@ jmp1:
     and     word [di],-0x56
     and     word [0x1234],-0x56
     and     word [bx],-0x56
+    and     cx,-0x56
+    and     dx,-0x56
 
     sub     word [bx+si],-0x56
     sub     word [bx+di],-0x56
@@ -2409,6 +2459,8 @@ jmp1:
     sub     word [di],-0x56
     sub     word [0x1234],-0x56
     sub     word [bx],-0x56
+    sub     cx,-0x56
+    sub     dx,-0x56
 
     xor     word [bx+si],-0x56
     xor     word [bx+di],-0x56
@@ -2418,6 +2470,8 @@ jmp1:
     xor     word [di],-0x56
     xor     word [0x1234],-0x56
     xor     word [bx],-0x56
+    xor     cx,-0x56
+    xor     dx,-0x56
 
     cmp     word [bx+si],-0x56
     cmp     word [bx+di],-0x56
@@ -2427,6 +2481,8 @@ jmp1:
     cmp     word [di],-0x56
     cmp     word [0x1234],-0x56
     cmp     word [bx],-0x56
+    cmp     cx,-0x56
+    cmp     dx,-0x56
 
 ; TEST 84h-85h
     test    bl,cl           ; 84h
