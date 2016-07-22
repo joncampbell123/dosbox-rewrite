@@ -30,6 +30,21 @@ const char *sizesuffix[12] = {
     "q","", "t",""          // 8-11
 };
 
+const char *sizespec[12] = {
+    "",                     // 0
+    "byte",                 // 1
+    "word",                 // 2
+    "",
+    "dword",                // 4
+    "",
+    "",
+    "",
+    "qword",                // 8
+    "",
+    "tword",                // 10
+    "",
+};
+
 const char **CPUregsN[5] = {
     CPUregsZ,                       // sz=0
     CPUregs8,                       // sz=1
