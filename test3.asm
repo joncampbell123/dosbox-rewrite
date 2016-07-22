@@ -2685,6 +2685,14 @@ jmp1:
     db      0x8F,0xC0       ; POP AX
     db      0x8F,0xC1       ; POP CX
 
+    pop     dword [esi]
+    pop     dword [edi]
+    pop     dword [ebx+esi]
+    pop     dword [ebx+edi]
+    a32 pop dword [0x12345678]
+    db      0x66,0x8F,0xC0       ; POP EAX
+    db      0x66,0x8F,0xC1       ; POP ECX
+
 ; call Ap (0x9A)
     call    0x1234:0x5678
     call    0xABCD:0x1234

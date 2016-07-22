@@ -624,10 +624,10 @@
 #endif
                     break;
                 case 0x8F: // POP r/m word size
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"POPw %s",IPDecPrint16(mrm,disp,2));
+                    w += snprintf(w,(size_t)(wf-w),"POP%s %s",sizesuffix[COREWORDSIZE],
+                        IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32));
 #endif
                     break;
                 case 0x90:
