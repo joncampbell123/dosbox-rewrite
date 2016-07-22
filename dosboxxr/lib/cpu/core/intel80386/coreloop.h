@@ -450,7 +450,7 @@
                         goto invalidopcode;
                     }
                     break;
-                case 0x63: // ARPL r/m,reg
+                case 0x63: // ARPL r/m,reg. reg and memory ref are 16-bit only.
                     mrm.set(IPFB());
                     disp = IPFmrmdisplace16(/*&*/mrm);
 #ifdef DECOMPILEMODE
