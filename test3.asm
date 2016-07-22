@@ -287,6 +287,24 @@ jmp1:
     jg      short jmp1
     jmp     short jmp1
 
+    o32 jo  short jmp1
+    o32 jno short jmp1
+    o32 jb  short jmp1
+    o32 jnb short jmp1
+    o32 jz  short jmp1
+    o32 jnz short jmp1
+    o32 jbe short jmp1
+    o32 ja  short jmp1
+    o32 js  short jmp1
+    o32 jns short jmp1
+    o32 jpe short jmp1
+    o32 jpo short jmp1
+    o32 jl  short jmp1
+    o32 jge short jmp1
+    o32 jle short jmp1
+    o32 jg  short jmp1
+    o32 jmp short jmp1
+
 ;--------------byte
     add     byte [bx+si],bl ; 00 m/r/m mod=0
     add     byte [bx+di],bl ; 00 m/r/m mod=0
