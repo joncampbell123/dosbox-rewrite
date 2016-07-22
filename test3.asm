@@ -3374,6 +3374,21 @@ calltest1:
     bsf     cx,[bx+si+0x1234]
     bsf     dx,[0x1234]
     bsf     si,[si-6]
+; BSF
+    bsf     eax,ebx
+    bsf     ebx,ecx
+    bsf     ecx,edx
+    bsf     eax,[si]
+    bsf     ebx,[bx+di]
+    bsf     ecx,[bx+si+0x1234]
+    bsf     edx,[0x1234]
+    bsf     esi,[si-6]
+; BSF
+    bsf     eax,[esi]
+    bsf     ebx,[ebx+edi]
+    bsf     ecx,[ebx+esi+0x12345678]
+    a32 bsf edx,[0x12345678]
+    bsf     esi,[esi-6]
 ; BSR
     bsr     ax,bx
     bsr     bx,cx
@@ -3383,6 +3398,21 @@ calltest1:
     bsr     cx,[bx+si+0x1234]
     bsr     dx,[0x1234]
     bsr     si,[si-6]
+; BSR 32-bit
+    bsr     eax,ebx
+    bsr     ebx,ecx
+    bsr     ecx,edx
+    bsr     eax,[si]
+    bsr     ebx,[bx+di]
+    bsr     ecx,[bx+si+0x1234]
+    bsr     edx,[0x1234]
+    bsr     esi,[si-6]
+; BSR 32-bit
+    bsr     eax,[esi]
+    bsr     ebx,[ebx+edi]
+    bsr     ecx,[ebx+esi+0x12345678]
+    a32 bsr edx,[0x12345678]
+    bsr     esi,[esi-6]
 ; BT
     bt      ax,bx
     bt      bx,cx
@@ -3535,7 +3565,7 @@ jmp2:
     movsx   ax,byte [edx]
     movsx   bx,byte [esi]
     movsx   cx,byte [edi]
-    a32 movsx   dx,byte [0x12345678]
+    a32 movsx dx,byte [0x12345678]
     movsx   ax,byte [ebx+4]
     movsx   bx,byte [ecx-8]
     movsx   cx,byte [edx+0x12345678]

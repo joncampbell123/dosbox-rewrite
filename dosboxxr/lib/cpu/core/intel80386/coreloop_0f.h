@@ -205,7 +205,7 @@
                             IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"MOVZX%s %s,%s ; word -> %s",sizesuffix[COREWORDSIZE],
-                                CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint386(mrm,sib,disp,2,addr32),sizespec[COREWORDSIZE]);
+                                CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32),sizespec[COREWORDSIZE]);
 #endif
                             break;
 
@@ -239,14 +239,18 @@
                             w += snprintf(w,(size_t)(wf-w),"BTCw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
                             break;
                         case 0xBC: // BSF
-                            mrm.set(IPFB());
-                            disp = IPFmrmdisplace16(/*&*/mrm);
-                            w += snprintf(w,(size_t)(wf-w),"BSFw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+                            IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"BSF%s %s,%s",sizesuffix[COREWORDSIZE],
+                                CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32));
+#endif
                             break;
                         case 0xBD: // BSR
-                            mrm.set(IPFB());
-                            disp = IPFmrmdisplace16(/*&*/mrm);
-                            w += snprintf(w,(size_t)(wf-w),"BSRw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+                            IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
+#ifdef DECOMPILEMODE
+                            w += snprintf(w,(size_t)(wf-w),"BSR%s %s,%s",sizesuffix[COREWORDSIZE],
+                                CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32));
+#endif
                             break;
                         case 0xBE: // MOVSX reg,r/m    byte -> word
                             IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
@@ -262,7 +266,7 @@
                             IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"MOVSX%s %s,%s ; word -> %s",sizesuffix[COREWORDSIZE],
-                                CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint386(mrm,sib,disp,2,addr32),sizespec[COREWORDSIZE]);
+                                CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32),sizespec[COREWORDSIZE]);
 #endif
                             break;
 
