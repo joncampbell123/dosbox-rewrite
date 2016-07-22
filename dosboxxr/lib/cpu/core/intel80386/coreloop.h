@@ -53,31 +53,31 @@
 #endif
                     break;
                 case 0x08: // OR r/m,reg byte size
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"ORb %s,%s",IPDecPrint16(mrm,disp,1),CPUregs8[mrm.reg()]);
+                    w += snprintf(w,(size_t)(wf-w),"OR%s %s,%s",sizesuffix[1],
+                        IPDecPrint386(mrm,sib,disp,1,addr32),CPUregsN[1][mrm.reg()]);
 #endif
                     break;
                 case 0x09: // OR r/m,reg word size
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"ORw %s,%s",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()]);
+                    w += snprintf(w,(size_t)(wf-w),"OR%s %s,%s",sizesuffix[COREWORDSIZE],
+                        IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32),CPUregsN[COREWORDSIZE][mrm.reg()]);
 #endif
                     break;
                 case 0x0A: // OR reg,r/m byte size
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"ORb %s,%s",CPUregs8[mrm.reg()],IPDecPrint16(mrm,disp,1));
+                    w += snprintf(w,(size_t)(wf-w),"OR%s %s,%s",sizesuffix[1],
+                        CPUregsN[1][mrm.reg()],IPDecPrint386(mrm,sib,disp,1,addr32));
 #endif
                     break;
                 case 0x0B: // OR reg,r/m word size
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"ORw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+                    w += snprintf(w,(size_t)(wf-w),"OR%s %s,%s",sizesuffix[COREWORDSIZE],
+                        CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32));
 #endif
                     break;
                 case 0x0C: // OR AL,imm8
@@ -86,10 +86,10 @@
                     w += snprintf(w,(size_t)(wf-w),"ORb AL,%02Xh",v8);
 #endif
                     break;
-                case 0x0D: // OR AX,imm16
-                    v16 = IPFW();
+                case 0x0D: // OR AX,immword
+                    v32 = COREWORDSIZE == 4 ? IPFDW() : IPFW();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"ORw AX,%04Xh",v16);
+                    w += snprintf(w,(size_t)(wf-w),"OR%c AX,%08lXh",COREWORDSIZE == 4 ? 'd' : 'w',(unsigned long)v32);
 #endif
                     break;
                 case 0x0E:
