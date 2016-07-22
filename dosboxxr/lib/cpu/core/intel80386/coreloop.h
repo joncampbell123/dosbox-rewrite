@@ -522,27 +522,28 @@
                     break;
                 case 0x80: // GRP1 byte r/m, imm8
                 case 0x82: // GRP1 byte r/m, imm8 alias
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
                     v8 = IPFB();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"%sb %s,%02Xh",CPUGRP1[mrm.reg()],IPDecPrint16(mrm,disp,1),v8);
+                    w += snprintf(w,(size_t)(wf-w),"%s%s %s,%s,%02Xh",CPUGRP1[mrm.reg()],sizesuffix[1],
+                        CPUregsN[1][mrm.reg()],IPDecPrint386(mrm,sib,disp,1,addr32),v8);
 #endif
                     break;
-                case 0x81: // GRP1 word r/m, imm16
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
-                    v16 = IPFW();
+                case 0x81: // GRP1 word r/m, imm<word>
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
+                    v32 = COREWORDSIZE == 4 ? IPFDW() : IPFW();//offset
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"%sw %s,%04Xh",CPUGRP1[mrm.reg()],IPDecPrint16(mrm,disp,2),v16);
+                    w += snprintf(w,(size_t)(wf-w),"%s%s %s,%s,%08Xh",CPUGRP1[mrm.reg()],sizesuffix[COREWORDSIZE],
+                        CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32),v32);
 #endif
                     break;
                 case 0x83: // GRP1 word r/m, imm8 sign extended
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
-                    v16 = (uint16_t)IPFBsigned();
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
+                    v8 = IPFB();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"%sw %s,%04Xh",CPUGRP1[mrm.reg()],IPDecPrint16(mrm,disp,2),v16);
+                    w += snprintf(w,(size_t)(wf-w),"%s%s %s,%s,%c%02Xh",CPUGRP1[mrm.reg()],sizesuffix[COREWORDSIZE],
+                        CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32),
+                        v8&0x80?'-':'+',IPDec8abs(v8));
 #endif
                     break;
                 case 0x84: // TEST r/m,reg byte size
