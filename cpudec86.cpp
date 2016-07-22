@@ -13,6 +13,7 @@
 
 #include "dosboxxr/lib/cpu/ipdec.h"
 #include "dosboxxr/lib/cpu/x86ModRegRm.h"
+#include "dosboxxr/lib/cpu/x86ScaleIndexBase.h"
 #include "dosboxxr/lib/cpu/memreftypes.h"
 #include "dosboxxr/lib/util/case_groups.h"
 
