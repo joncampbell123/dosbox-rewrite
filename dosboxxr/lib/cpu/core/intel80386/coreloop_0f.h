@@ -92,10 +92,10 @@
                             break;
 
                         case_span_16(0x80): // 0x80-0x8F
-                            v16 = (uint16_t)IPFWsigned();
-                            v16 = (v16 + IPval()) & 0xFFFFU;
+                            v32 = COREWORDSIZE == 4 ? IPFDWsigned() : IPFWsigned();
+                            v32 = (v32 + (uint32_t)IPval()) & (uint32_t)COREOPMASK;
 #ifdef DECOMPILEMODE
-                            w += snprintf(w,(size_t)(wf-w),"%sw %04Xh",CPUjcc0F8x[op0F&15],v16);
+                            w += snprintf(w,(size_t)(wf-w),"%s%s %08lXh",CPUjcc0F8x[op0F&15],sizesuffix[COREWORDSIZE],(unsigned long)v32);
 #endif
                             break;
                         case_span_16(0x90): // 0x90-0x9F
