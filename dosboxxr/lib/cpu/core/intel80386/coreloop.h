@@ -398,22 +398,22 @@
                     break;
                 case_span_8(0x40): // 0x40-0x47
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"INCw %s",CPUregs16[op1&7]);
+                    w += snprintf(w,(size_t)(wf-w),"INC%s %s",sizesuffix[COREWORDSIZE],CPUregsN[COREWORDSIZE][op1&7]);
 #endif
                     break;
                 case_span_8(0x48): // 0x48-0x4F
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"DECw %s",CPUregs16[op1&7]);
+                    w += snprintf(w,(size_t)(wf-w),"DEC%s %s",sizesuffix[COREWORDSIZE],CPUregsN[COREWORDSIZE][op1&7]);
 #endif
                     break;
                 case_span_8(0x50): // 0x50-0x57
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"PUSHw %s",CPUregs16[op1&7]);
+                    w += snprintf(w,(size_t)(wf-w),"PUSH%s %s",sizesuffix[COREWORDSIZE],CPUregsN[COREWORDSIZE][op1&7]);
 #endif
                     break;
                 case_span_8(0x58): // 0x58-0x5F
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"POPw %s",CPUregs16[op1&7]);
+                    w += snprintf(w,(size_t)(wf-w),"POP%s %s",sizesuffix[COREWORDSIZE],CPUregsN[COREWORDSIZE][op1&7]);
 #endif
                     break;
                 case 0x60: // PUSHA

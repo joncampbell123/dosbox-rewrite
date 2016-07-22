@@ -62,6 +62,24 @@
     dec     si
     dec     di
 
+    inc     eax
+    inc     ecx
+    inc     edx
+    inc     ebx
+    inc     esp
+    inc     ebp
+    inc     esi
+    inc     edi
+
+    dec     eax
+    dec     ecx
+    dec     edx
+    dec     ebx
+    dec     esp
+    dec     ebp
+    dec     esi
+    dec     edi
+
     push    ax
     push    cx
     push    dx
@@ -79,6 +97,24 @@
     pop     bp
     pop     si
     pop     di
+
+    push    eax
+    push    ecx
+    push    edx
+    push    ebx
+    push    esp
+    push    ebp
+    push    esi
+    push    edi
+
+    pop     eax
+    pop     ecx
+    pop     edx
+    pop     ebx
+    pop     esp
+    pop     ebp
+    pop     esi
+    pop     edi
 
     cs
     nop
