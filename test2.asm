@@ -1535,6 +1535,8 @@ jmp1:
     add     byte [di],0x12
     add     byte [0x1234],0x12
     add     byte [bx],0x12
+    add     cl,0x12
+    add     dl,0x12
 
     or      byte [bx+si],0x12
     or      byte [bx+di],0x12
@@ -1608,6 +1610,8 @@ jmp1:
     add     word [di],0x1234
     add     word [0x1234],0x1234
     add     word [bx],0x1234
+    add     cx,0x1234
+    add     dx,0x1234
 
     or      word [bx+si],0x1234
     or      word [bx+di],0x1234
@@ -1684,6 +1688,8 @@ jmp1:
     add     word [di],0x5E
     add     word [0x1234],0x5E
     add     word [bx],0x5E
+    add     cx,0x5E
+    add     dx,0x5E
 
     or      word [bx+si],0x5E
     or      word [bx+di],0x5E
@@ -1757,6 +1763,8 @@ jmp1:
     add     word [di],-0x56
     add     word [0x1234],-0x56
     add     word [bx],-0x56
+    add     cx,-0x56
+    add     dx,-0x56
 
     or      word [bx+si],-0x56
     or      word [bx+di],-0x56

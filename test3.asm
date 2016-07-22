@@ -2287,8 +2287,8 @@ jmp1:
     add     word [di],0x5E
     add     word [0x1234],0x5E
     add     word [bx],0x5E
-    add     cx,0x12
-    add     dx,0x12
+    add     cx,0x5E
+    add     dx,0x5E
 
     or      word [bx+si],0x5E
     or      word [bx+di],0x5E
