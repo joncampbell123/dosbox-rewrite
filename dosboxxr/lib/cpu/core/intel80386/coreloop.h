@@ -869,18 +869,18 @@
                     break;
                 case 0xCC:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"INT3w");
+                    w += snprintf(w,(size_t)(wf-w),"INT3");
 #endif
                     break;
                 case 0xCD:
                     v8 = IPFB();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"INTw %02Xh",v8);
+                    w += snprintf(w,(size_t)(wf-w),"INT %02Xh",v8);
 #endif
                     break;
                 case 0xCE:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"INTOw");
+                    w += snprintf(w,(size_t)(wf-w),"INTO");
 #endif
                     break;
                 case 0xCF:
