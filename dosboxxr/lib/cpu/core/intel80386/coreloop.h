@@ -773,36 +773,30 @@
 #endif
                     break;
                 case 0xC0: // GRP2 r/m,imm8  NTS: undocumented reg==6 could be called "SAL", acts like "SHL"
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
                     v8 = IPFB();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"%sb %s,%02Xh",CPUGRP2[mrm.reg()],IPDecPrint16(mrm,disp,1),v8);
+                    w += snprintf(w,(size_t)(wf-w),"%s%s %s,%02Xh",CPUGRP2[mrm.reg()],sizesuffix[1],
+                        IPDecPrint386(mrm,sib,disp,1,addr32),v8);
 #endif
                     break;
                 case 0xC1: // GRP2 r/m,imm8  NTS: undocumented reg==6 could be called "SAL", acts like "SHL"
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
                     v8 = IPFB();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"%sw %s,%02Xh",CPUGRP2[mrm.reg()],IPDecPrint16(mrm,disp,2),v8);
+                    w += snprintf(w,(size_t)(wf-w),"%s%s %s,%02Xh",CPUGRP2[mrm.reg()],sizesuffix[COREWORDSIZE],
+                        IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32),v8);
 #endif
                     break;
                 case 0xC2:
                     v16 = IPFW();
 #ifdef DECOMPILEMODE
-                    if (COREWORDSIZE == 4)
-                        w += snprintf(w,(size_t)(wf-w),"RETd %04Xh",v16);
-                    else
-                        w += snprintf(w,(size_t)(wf-w),"RETw %04Xh",v16);
+                    w += snprintf(w,(size_t)(wf-w),"RET%s %04Xh",sizesuffix[COREWORDSIZE],v16);
 #endif
                     break;
                 case 0xC3:
 #ifdef DECOMPILEMODE
-                    if (COREWORDSIZE == 4)
-                        w += snprintf(w,(size_t)(wf-w),"RETd");
-                    else
-                        w += snprintf(w,(size_t)(wf-w),"RETw");
+                    w += snprintf(w,(size_t)(wf-w),"RET%s",sizesuffix[COREWORDSIZE]);
 #endif
                     break;
                 case 0xC4: // LES reg,r/m word size
@@ -850,18 +844,12 @@
                 case 0xCA:
                     v16 = IPFW();
 #ifdef DECOMPILEMODE
-                    if (COREWORDSIZE == 4)
-                        w += snprintf(w,(size_t)(wf-w),"RETFd %04Xh",v16);
-                    else
-                        w += snprintf(w,(size_t)(wf-w),"RETFw %04Xh",v16);
+                    w += snprintf(w,(size_t)(wf-w),"RETF%s %04Xh",sizesuffix[COREWORDSIZE],v16);
 #endif
                     break;
                 case 0xCB:
 #ifdef DECOMPILEMODE
-                    if (COREWORDSIZE == 4)
-                        w += snprintf(w,(size_t)(wf-w),"RETFd");
-                    else
-                        w += snprintf(w,(size_t)(wf-w),"RETFw");
+                    w += snprintf(w,(size_t)(wf-w),"RETF%s",sizesuffix[COREWORDSIZE]);
 #endif
                     break;
                 case 0xCC:
@@ -882,10 +870,7 @@
                     break;
                 case 0xCF:
 #ifdef DECOMPILEMODE
-                    if (COREWORDSIZE == 4)
-                        w += snprintf(w,(size_t)(wf-w),"IRETd");
-                    else
-                        w += snprintf(w,(size_t)(wf-w),"IRETw");
+                    w += snprintf(w,(size_t)(wf-w),"IRET%s",sizesuffix[COREWORDSIZE]);
 #endif
                     break;
                 case 0xD0: // GRP2 r/m,1  NTS: undocumented reg==6 could be called "SAL", acts like "SHL"
