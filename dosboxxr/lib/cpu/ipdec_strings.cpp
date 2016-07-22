@@ -215,8 +215,17 @@ const char *IPDecPrint386(const x86ModRegRm &mrm,const x86ScaleIndexBase &sib,co
             }
 
             if (ofs != 0) {
-                if (ex) *w++ = '+';
-                w += snprintf(w,(size_t)(wf-w),"%08lxh",(unsigned long)ofs);
+                if (mrm.mod() != 1) {
+                    if (ex) *w++ = '+';
+                    ex=true;
+                    w += snprintf(w,(size_t)(wf-w),"%08lxh",(unsigned long)ofs);
+                }
+                else {
+                    // disp8 mode, ofs then is assumed to be 8-bit sign extended
+                    if (ex) *w++ = (ofs&0x80000000)?'-':'+';
+                    ex=true;
+                    w += snprintf(w,(size_t)(wf-w),"%02lxh",(unsigned long)IPDec8abs((uint8_t)ofs));
+                }
             }
 
             *w++ = ']';
