@@ -35,8 +35,6 @@
 #endif
                     break;
                 case 0x05: // ADD AX,immword
-                    // Your C++ compiler is smart enough to optimize out the conditional here, right?
-                    // COREWORDSIZE is a #define and therefore the ternary statements are predictable and can be reduced to one or the other for 16/32-bit modes.
                     v32 = COREWORDSIZE == 4 ? IPFDW() : IPFW();
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"ADD%c %s,%08lXh",COREWORDSIZE == 4 ? 'd' : 'w',CPUregsN[COREWORDSIZE][/*AX*/0],(unsigned long)v32);
@@ -133,8 +131,6 @@
 #endif
                     break;
                 case 0x15: // ADC AX,immword
-                    // Your C++ compiler is smart enough to optimize out the conditional here, right?
-                    // COREWORDSIZE is a #define and therefore the ternary statements are predictable and can be reduced to one or the other for 16/32-bit modes.
                     v32 = COREWORDSIZE == 4 ? IPFDW() : IPFW();
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"ADC%c %s,%08lXh",COREWORDSIZE == 4 ? 'd' : 'w',CPUregsN[COREWORDSIZE][/*AX*/0],(unsigned long)v32);
@@ -235,8 +231,6 @@
 #endif
                     break;
                 case 0x25: // AND AX,immword
-                    // Your C++ compiler is smart enough to optimize out the conditional here, right?
-                    // COREWORDSIZE is a #define and therefore the ternary statements are predictable and can be reduced to one or the other for 16/32-bit modes.
                     v32 = COREWORDSIZE == 4 ? IPFDW() : IPFW();
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"AND%c %s,%08lXh",COREWORDSIZE == 4 ? 'd' : 'w',CPUregsN[COREWORDSIZE][/*AX*/0],(unsigned long)v32);
@@ -287,8 +281,6 @@
 #endif
                     break;
                 case 0x2D: // SUB AX,immword
-                    // Your C++ compiler is smart enough to optimize out the conditional here, right?
-                    // COREWORDSIZE is a #define and therefore the ternary statements are predictable and can be reduced to one or the other for 16/32-bit modes.
                     v32 = COREWORDSIZE == 4 ? IPFDW() : IPFW();
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"SUB%c %s,%08lXh",COREWORDSIZE == 4 ? 'd' : 'w',CPUregsN[COREWORDSIZE][/*AX*/0],(unsigned long)v32);
@@ -339,8 +331,6 @@
 #endif
                     break;
                 case 0x35: // XOR AX,immword
-                    // Your C++ compiler is smart enough to optimize out the conditional here, right?
-                    // COREWORDSIZE is a #define and therefore the ternary statements are predictable and can be reduced to one or the other for 16/32-bit modes.
                     v32 = COREWORDSIZE == 4 ? IPFDW() : IPFW();
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"XOR%c %s,%08lXh",COREWORDSIZE == 4 ? 'd' : 'w',CPUregsN[COREWORDSIZE][/*AX*/0],(unsigned long)v32);
@@ -391,8 +381,6 @@
 #endif
                     break;
                 case 0x3D: // CMP AX,immword
-                    // Your C++ compiler is smart enough to optimize out the conditional here, right?
-                    // COREWORDSIZE is a #define and therefore the ternary statements are predictable and can be reduced to one or the other for 16/32-bit modes.
                     v32 = COREWORDSIZE == 4 ? IPFDW() : IPFW();
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"CMP%c %s,%08lXh",COREWORDSIZE == 4 ? 'd' : 'w',CPUregsN[COREWORDSIZE][/*AX*/0],(unsigned long)v32);
