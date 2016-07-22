@@ -151,31 +151,31 @@
 #endif
                     break;
                 case 0x18: // SBB r/m,reg byte size
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"SBBb %s,%s",IPDecPrint16(mrm,disp,1),CPUregs8[mrm.reg()]);
+                    w += snprintf(w,(size_t)(wf-w),"SBB%s %s,%s",sizesuffix[1],
+                        IPDecPrint386(mrm,sib,disp,1,addr32),CPUregsN[1][mrm.reg()]);
 #endif
                     break;
                 case 0x19: // SBB r/m,reg word size
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"SBBw %s,%s",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()]);
+                    w += snprintf(w,(size_t)(wf-w),"SBB%s %s,%s",sizesuffix[COREWORDSIZE],
+                        IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32),CPUregsN[COREWORDSIZE][mrm.reg()]);
 #endif
                     break;
                 case 0x1A: // SBB reg,r/m byte size
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"SBBb %s,%s",CPUregs8[mrm.reg()],IPDecPrint16(mrm,disp,1));
+                    w += snprintf(w,(size_t)(wf-w),"SBB%s %s,%s",sizesuffix[1],
+                        CPUregsN[1][mrm.reg()],IPDecPrint386(mrm,sib,disp,1,addr32));
 #endif
                     break;
                 case 0x1B: // SBB reg,r/m word size
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"SBBw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+                    w += snprintf(w,(size_t)(wf-w),"SBB%s %s,%s",sizesuffix[COREWORDSIZE],
+                        CPUregsN[COREWORDSIZE][mrm.reg()],IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32));
 #endif
                     break;
                 case 0x1C: // SBB AL,imm8
@@ -184,10 +184,10 @@
                     w += snprintf(w,(size_t)(wf-w),"SBBb AL,%02Xh",v8);
 #endif
                     break;
-                case 0x1D: // SBB AX,imm16
-                    v16 = IPFW();
+                case 0x1D: // SBB AX,immword
+                    v32 = COREWORDSIZE == 4 ? IPFDW() : IPFW();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"SBBw AX,%04Xh",v16);
+                    w += snprintf(w,(size_t)(wf-w),"SBB%c AX,%08lXh",COREWORDSIZE == 4 ? 'd' : 'w',(unsigned long)v32);
 #endif
                     break;
                 case 0x1E:
