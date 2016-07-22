@@ -515,8 +515,7 @@
 #endif
                     break;
                 case_span_16(0x70): // 0x70-0x7F
-                    v32 = (uint32_t)IPFBsigned();
-                    v32 = (v32 + IPval()) & COREOPMASK;
+                    v32 = ((uint32_t)IPFBsigned() + (uint32_t)IPval()) & (uint32_t)COREOPMASK;
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"%sd %08lXh",CPUjcc7x[op1&15],(unsigned long)v32);
 #endif
