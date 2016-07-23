@@ -814,19 +814,19 @@
 #endif
                     break;
                 case 0xC6: // MOV r/m,imm8
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
                     v8 = IPFB();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"MOVb %s,%02Xh",IPDecPrint16(mrm,disp,1),v8);
+                    w += snprintf(w,(size_t)(wf-w),"MOV%s %s,%02Xh",sizesuffix[1],
+                        IPDecPrint386(mrm,sib,disp,1,addr32),v8);
 #endif
                     break;
-                case 0xC7: // MOV r/m,imm16
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
-                    v16 = IPFW();
+                case 0xC7: // MOV r/m,imm<word>
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
+                    v32 = COREWORDSIZE == 4 ? IPFDW() : IPFW();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"MOVw %s,%04Xh",IPDecPrint16(mrm,disp,2),v16);
+                    w += snprintf(w,(size_t)(wf-w),"MOV%s %s,%08Xh",sizesuffix[COREWORDSIZE],
+                        IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32),v32);
 #endif
                     break;
                 case 0xC8:
