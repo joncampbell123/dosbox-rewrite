@@ -4947,6 +4947,24 @@ calltest1:
     bt      word [bx+si+0x1234],3
     bt      word [0x1234],4
     bt      word [si-6],5
+; BT 32-bit
+    bt      eax,ebx
+    bt      ebx,ecx
+    bt      ecx,edx
+    bt      [esi],eax
+    bt      [ebx+edi],ebx
+    bt      [ebx+esi+0x1234],ecx
+    a32 bt  [0x12345678],edx
+    bt      [esi-6],esi
+    bt      eax,1
+    bt      ebx,2
+    bt      ecx,3
+    bt      edx,4
+    bt      dword [esi],1
+    bt      dword [ebx+edi],2
+    bt      dword [ebx+esi+0x1234],3
+    a32 bt  dword [0x12345678],4
+    bt      dword [esi-6],5
 ; BTC
     btc     ax,bx
     btc     bx,cx
@@ -4965,6 +4983,24 @@ calltest1:
     btc     word [bx+si+0x1234],3
     btc     word [0x1234],4
     btc     word [si-6],5
+; BTC 32-bit
+    btc     eax,ebx
+    btc     ebx,ecx
+    btc     ecx,edx
+    btc     [esi],eax
+    btc     [ebx+edi],ebx
+    btc     [ebx+esi+0x1234],ecx
+    a32 btc [0x12345678],dx
+    btc     [esi-6],esi
+    btc     eax,1
+    btc     ebx,2
+    btc     ecx,3
+    btc     edx,4
+    btc     dword [esi],1
+    btc     dword [ebx+edi],2
+    btc     dword [ebx+esi+0x1234],3
+    a32 btc dword [0x12345678],4
+    btc     dword [esi-6],5
 ; BTR
     btr     ax,bx
     btr     bx,cx
@@ -5250,12 +5286,26 @@ jmp2:
     shld    [0x1234],cx,4
     shld    [si-6],dx,4
 ; SHLD
+    shld    eax,ebx,1
+    shld    ebx,ecx,6
+    shld    [esi],eax,8
+    shld    [ebx+edi],ebx,4
+    a32 shld [0x12345678],ecx,4
+    shld    [esi-6],edx,4
+; SHLD
     shld    ax,bx,cl
     shld    bx,cx,cl
     shld    [si],ax,cl
     shld    [bx+di],bx,cl
     shld    [0x1234],cx,cl
     shld    [si-6],dx,cl
+; SHLD
+    shld    eax,ebx,cl
+    shld    ebx,ecx,cl
+    shld    [esi],eax,cl
+    shld    [ebx+edi],ebx,cl
+    a32 shld [0x12345678],ecx,cl
+    shld    [esi-6],edx,cl
 ; SHRD
     shrd    ax,bx,1
     shrd    bx,cx,6
@@ -5264,12 +5314,26 @@ jmp2:
     shrd    [0x1234],cx,4
     shrd    [si-6],dx,4
 ; SHRD
+    shrd    eax,ebx,1
+    shrd    ebx,ecx,6
+    shrd    [esi],eax,8
+    shrd    [ebx+edi],ebx,4
+    a32 shrd [0x12345678],ecx,4
+    shrd    [esi-6],edx,4
+; SHRD
     shrd    ax,bx,cl
     shrd    bx,cx,cl
     shrd    [si],ax,cl
     shrd    [bx+di],bx,cl
-    shrd    [0x1234],cx,cl
+    a32 shrd [0x12345678],cx,cl
     shrd    [si-6],dx,cl
+; SHRD
+    shrd    eax,ebx,cl
+    shrd    ebx,ecx,cl
+    shrd    [esi],eax,cl
+    shrd    [ebx+edi],ebx,cl
+    a32 shrd [0x12345678],ecx,cl
+    shrd    [esi-6],edx,cl
 
 ; FUCOM   | ESCAPE 1 0 1 | 1 1 1 0 0 R/M
     fucom   st0

@@ -116,20 +116,20 @@
                             break;
 
                         case 0xA3: // BT r/m,reg
-                            mrm.set(IPFB());
-                            disp = IPFmrmdisplace16(/*&*/mrm);
-                            w += snprintf(w,(size_t)(wf-w),"BTw %s,%s",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()]);
+                            IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
+                            w += snprintf(w,(size_t)(wf-w),"BT%s %s,%s",sizesuffix[COREWORDSIZE],
+                                IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32),CPUregsN[COREWORDSIZE][mrm.reg()]);
                             break;
                         case 0xA4: // SHLD r/m,reg,imm8
-                            mrm.set(IPFB());
-                            disp = IPFmrmdisplace16(/*&*/mrm);
+                            IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
                             v8 = IPFB();
-                            w += snprintf(w,(size_t)(wf-w),"SHLDw %s,%s,%02Xh",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()],v8);
+                            w += snprintf(w,(size_t)(wf-w),"SHLD%s %s,%s,%02Xh",sizesuffix[COREWORDSIZE],
+                                IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32),CPUregsN[COREWORDSIZE][mrm.reg()],v8);
                             break;
                         case 0xA5: // SHLD r/m,reg,CL
-                            mrm.set(IPFB());
-                            disp = IPFmrmdisplace16(/*&*/mrm);
-                            w += snprintf(w,(size_t)(wf-w),"SHLDw %s,%s,CL",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()]);
+                            IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
+                            w += snprintf(w,(size_t)(wf-w),"SHLD%s %s,%s,CL",sizesuffix[COREWORDSIZE],
+                                IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32),CPUregsN[COREWORDSIZE][mrm.reg()]);
                             break;
 
                         case 0xA8:
@@ -144,20 +144,20 @@
                             break;
 
                         case 0xAB: // BTS r/m,reg
-                            mrm.set(IPFB());
-                            disp = IPFmrmdisplace16(/*&*/mrm);
-                            w += snprintf(w,(size_t)(wf-w),"BTSw %s,%s",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()]);
+                            IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
+                            w += snprintf(w,(size_t)(wf-w),"BTS%s %s,%s",sizesuffix[COREWORDSIZE],
+                                IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32),CPUregsN[COREWORDSIZE][mrm.reg()]);
                             break;
                         case 0xAC: // SHRD r/m,reg,imm8
-                            mrm.set(IPFB());
-                            disp = IPFmrmdisplace16(/*&*/mrm);
+                            IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
                             v8 = IPFB();
-                            w += snprintf(w,(size_t)(wf-w),"SHRDw %s,%s,%02Xh",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()],v8);
+                            w += snprintf(w,(size_t)(wf-w),"SHRD%s %s,%s,%02Xh",sizesuffix[COREWORDSIZE],
+                                IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32),CPUregsN[COREWORDSIZE][mrm.reg()],v8);
                             break;
                         case 0xAD: // SHRD r/m,reg,CL
-                            mrm.set(IPFB());
-                            disp = IPFmrmdisplace16(/*&*/mrm);
-                            w += snprintf(w,(size_t)(wf-w),"SHRDw %s,%s,CL",IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()]);
+                            IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
+                            w += snprintf(w,(size_t)(wf-w),"SHRD%s %s,%s,CL",sizesuffix[COREWORDSIZE],
+                                IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32),CPUregsN[COREWORDSIZE][mrm.reg()]);
                             break;
 
                         case 0xAF: // IMUL reg,r/m
@@ -176,9 +176,9 @@
 #endif
                             break;
                         case 0xB3: // BTR
-                            mrm.set(IPFB());
-                            disp = IPFmrmdisplace16(/*&*/mrm);
-                            w += snprintf(w,(size_t)(wf-w),"BTRw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+                            IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
+                            w += snprintf(w,(size_t)(wf-w),"BTR%s %s,%s",sizesuffix[COREWORDSIZE],
+                                IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32),CPUregsN[COREWORDSIZE][mrm.reg()]);
                             break;
                         case 0xB4: // LFS reg,r/m word size
                             IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
@@ -213,33 +213,36 @@
                             break;
 
                         case 0xBA: // 0x0F 0xBA group
-                            mrm.set(IPFB());
-                            disp = IPFmrmdisplace16(/*&*/mrm);
+                            IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
                             switch (mrm.reg()) {
                                 case 4: // BT r/m,imm8
                                     v8 = IPFB();
-                                    w += snprintf(w,(size_t)(wf-w),"BTw %s,%02Xh",IPDecPrint16(mrm,disp,2),v8);
+                                    w += snprintf(w,(size_t)(wf-w),"BT%s %s,%02Xh",sizesuffix[COREWORDSIZE],
+                                        IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32),v8);
                                     break;
                                 case 5: // BTS r/m,imm8
                                     v8 = IPFB();
-                                    w += snprintf(w,(size_t)(wf-w),"BTSw %s,%02Xh",IPDecPrint16(mrm,disp,2),v8);
+                                    w += snprintf(w,(size_t)(wf-w),"BTS%s %s,%02Xh",sizesuffix[COREWORDSIZE],
+                                        IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32),v8);
                                     break;
                                 case 6: // BTR r/m,imm8
                                     v8 = IPFB();
-                                    w += snprintf(w,(size_t)(wf-w),"BTRw %s,%02Xh",IPDecPrint16(mrm,disp,2),v8);
+                                    w += snprintf(w,(size_t)(wf-w),"BTR%s %s,%02Xh",sizesuffix[COREWORDSIZE],
+                                        IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32),v8);
                                     break;
                                 case 7: // BTC r/m,imm8
                                     v8 = IPFB();
-                                    w += snprintf(w,(size_t)(wf-w),"BTCw %s,%02Xh",IPDecPrint16(mrm,disp,2),v8);
+                                    w += snprintf(w,(size_t)(wf-w),"BTC%s %s,%02Xh",sizesuffix[COREWORDSIZE],
+                                        IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32),v8);
                                     break;
                                 default:
                                     goto invalidopcode;
                             };
                             break;
                         case 0xBB: // BTC
-                            mrm.set(IPFB());
-                            disp = IPFmrmdisplace16(/*&*/mrm);
-                            w += snprintf(w,(size_t)(wf-w),"BTCw %s,%s",CPUregs16[mrm.reg()],IPDecPrint16(mrm,disp,2));
+                            IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
+                            w += snprintf(w,(size_t)(wf-w),"BTC%s %s,%s",sizesuffix[COREWORDSIZE],
+                                IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32),CPUregsN[COREWORDSIZE][mrm.reg()]);
                             break;
                         case 0xBC: // BSF
                             IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
