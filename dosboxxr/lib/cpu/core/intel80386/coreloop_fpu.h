@@ -109,10 +109,8 @@
                         default:
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"(invalid FPU opcode %02Xh %02Xh)",op1,mrm.byte);
-                            break;
-#else
-                            goto invalidopcode;
 #endif
+                            goto invalidopcode;
                     };
                     break;
                 case 0xD9: // FPU ESCAPE + 0x1
@@ -333,10 +331,8 @@
                         default:
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"(invalid FPU opcode %02Xh %02Xh)",op1,mrm.byte);
-                            break;
-#else
-                            goto invalidopcode;
 #endif
+                            goto invalidopcode;
                     };
                     break;
 
@@ -448,10 +444,8 @@
                         default:
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"(invalid FPU opcode %02Xh %02Xh)",op1,mrm.byte);
-                            break;
-#else
-                            goto invalidopcode;
 #endif
+                            goto invalidopcode;
                     };
                     break;
                 case 0xDB: // FPU ESCAPE + 0x3
@@ -525,10 +519,8 @@
                         default:
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"(invalid FPU opcode %02Xh %02Xh)",op1,mrm.byte);
-                            break;
-#else
-                            goto invalidopcode;
 #endif
+                            goto invalidopcode;
                     };
                     break;
                 case 0xDC: // FPU ESCAPE + 0x4
@@ -631,10 +623,8 @@
                         default:
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"(invalid FPU opcode %02Xh %02Xh)",op1,mrm.byte);
-                            break;
-#else
-                            goto invalidopcode;
 #endif
+                            goto invalidopcode;
                     };
                     break;
                 case 0xDD: // FPU ESCAPE + 0x5
@@ -718,10 +708,8 @@
                         default:
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"(invalid FPU opcode %02Xh %02Xh)",op1,mrm.byte);
-                            break;
-#else
-                            goto invalidopcode;
 #endif
+                            goto invalidopcode;
                     };
                     break;
                 case 0xDE: // FPU ESCAPE + 0x6
@@ -830,10 +818,8 @@
                         default:
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"(invalid FPU opcode %02Xh %02Xh)",op1,mrm.byte);
-                            break;
-#else
-                            goto invalidopcode;
 #endif
+                            goto invalidopcode;
                     };
                     break;
                 case 0xDF: // FPU ESCAPE + 0x7
@@ -899,10 +885,8 @@
                         default:
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"(invalid FPU opcode %02Xh %02Xh)",op1,mrm.byte);
-                            break;
-#else
-                            goto invalidopcode;
 #endif
+                            goto invalidopcode;
                     };
                     break;
 

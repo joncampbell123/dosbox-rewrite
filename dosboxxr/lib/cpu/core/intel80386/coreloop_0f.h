@@ -279,10 +279,8 @@
                         default:
 #ifdef DECOMPILEMODE
                             w += snprintf(w,(size_t)(wf-w),"(invalid opcode %02Xh %02Xh)",op1,op0F);
-                            break;
-#else
-                            goto invalidopcode;
 #endif
+                            goto invalidopcode;
                     };
                     break;
 
