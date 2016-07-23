@@ -651,9 +651,9 @@
                     break;
                 case 0x9B:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"WAIT");
+                    w += snprintf(w,(size_t)(wf-w),"WAIT ");
 #endif
-                    break;
+                    goto after_prefix_COREMODE;
                 case 0x9C:
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"PUSHF%s",sizesuffix[COREWORDSIZE]);
