@@ -888,17 +888,17 @@
 #endif
                     break;
                 case 0xD2: // GRP2 r/m,CL  NTS: undocumented reg==6 could be called "SAL", acts like "SHL"
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"%sb %s,CL",CPUGRP2[mrm.reg()],IPDecPrint16(mrm,disp,1));
+                    w += snprintf(w,(size_t)(wf-w),"%s%s %s,CL",CPUGRP2[mrm.reg()],sizesuffix[1],
+                        IPDecPrint386(mrm,sib,disp,1,addr32));
 #endif
                     break;
                 case 0xD3: // GRP2 r/m,CL  NTS: undocumented reg==6 could be called "SAL", acts like "SHL"
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"%sw %s,CL",CPUGRP2[mrm.reg()],IPDecPrint16(mrm,disp,2));
+                    w += snprintf(w,(size_t)(wf-w),"%s%s %s,CL",CPUGRP2[mrm.reg()],sizesuffix[COREWORDSIZE],
+                        IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32));
 #endif
                     break;
                 case 0xD4:
