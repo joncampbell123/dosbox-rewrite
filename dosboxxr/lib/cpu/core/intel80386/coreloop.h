@@ -931,68 +931,58 @@
                     break;
 #include "dosboxxr/lib/cpu/core/intel80386/coreloop_fpu.h"
                 case 0xE0:
-                    v16 = (uint16_t)IPFBsigned();
-                    v16 = (v16 + IPval()) & 0xFFFFU;
+                    v32 = ((uint32_t)IPFBsigned() + (uint32_t)IPval()) & (uint32_t)COREOPMASK;
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"LOOPNZw %04Xh",v16);
+                    w += snprintf(w,(size_t)(wf-w),"LOOPNZ%s %08lXh",sizesuffix[COREWORDSIZE],(unsigned long)v32);
 #endif
                     break;
                 case 0xE1:
-                    v16 = (uint16_t)IPFBsigned();
-                    v16 = (v16 + IPval()) & 0xFFFFU;
+                    v32 = ((uint32_t)IPFBsigned() + (uint32_t)IPval()) & (uint32_t)COREOPMASK;
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"LOOPZw %04Xh",v16);
+                    w += snprintf(w,(size_t)(wf-w),"LOOPZ%s %08lXh",sizesuffix[COREWORDSIZE],(unsigned long)v32);
 #endif
                     break;
                 case 0xE2:
-                    v16 = (uint16_t)IPFBsigned();
-                    v16 = (v16 + IPval()) & 0xFFFFU;
+                    v32 = ((uint32_t)IPFBsigned() + (uint32_t)IPval()) & (uint32_t)COREOPMASK;
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"LOOPw %04Xh",v16);
+                    w += snprintf(w,(size_t)(wf-w),"LOOP%s %08lXh",sizesuffix[COREWORDSIZE],(unsigned long)v32);
 #endif
                     break;
                 case 0xE3:
-                    v16 = (uint16_t)IPFBsigned();
-                    v16 = (v16 + IPval()) & 0xFFFFU;
+                    v32 = ((uint32_t)IPFBsigned() + (uint32_t)IPval()) & (uint32_t)COREOPMASK;
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"JCXZw %04Xh",v16);
+                    w += snprintf(w,(size_t)(wf-w),"JCXZ%s %08lXh",sizesuffix[COREWORDSIZE],(unsigned long)v32);
 #endif
                     break;
                 case 0xE4:
                     v8 = IPFB(); // immediate port number
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"INb AL,%02Xh",v8);
+                    w += snprintf(w,(size_t)(wf-w),"IN%s %s,%02Xh",sizesuffix[1],CPUregsN[1][/*AX*/0],v8);
 #endif
                     break;
                 case 0xE5:
                     v8 = IPFB(); // immediate port number
 #ifdef DECOMPILEMODE
-                    if (COREWORDSIZE == 4)
-                        w += snprintf(w,(size_t)(wf-w),"INd EAX,%02Xh",v8);
-                    else
-                        w += snprintf(w,(size_t)(wf-w),"INw AX,%02Xh",v8);
+                    w += snprintf(w,(size_t)(wf-w),"IN%s %s,%02Xh",sizesuffix[COREWORDSIZE],CPUregsN[COREWORDSIZE][/*AX*/0],v8);
 #endif
                     break;
                 case 0xE6:
                     v8 = IPFB(); // immediate port number
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"OUTb %02Xh,AL",v8);
+                    w += snprintf(w,(size_t)(wf-w),"OUT%s %02Xh,%s",sizesuffix[1],v8,CPUregsN[1][/*AX*/0]);
 #endif
                     break;
                 case 0xE7:
                     v8 = IPFB(); // immediate port number
 #ifdef DECOMPILEMODE
-                    if (COREWORDSIZE == 4)
-                        w += snprintf(w,(size_t)(wf-w),"OUTd %02Xh,EAX",v8);
-                    else
-                        w += snprintf(w,(size_t)(wf-w),"OUTw %02Xh,AX",v8);
+                    w += snprintf(w,(size_t)(wf-w),"OUT%s %02Xh,%s",sizesuffix[COREWORDSIZE],v8,CPUregsN[COREWORDSIZE][/*AX*/0]);
 #endif
                     break;
                 case 0xE8:
                     v32 = COREWORDSIZE == 4 ? IPFDWsigned() : IPFWsigned();
                     v32 = (v32 + (uint32_t)IPval()) & (uint32_t)COREOPMASK;
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"CALL%s %04Xh",sizesuffix[COREWORDSIZE],(unsigned long)v32);
+                    w += snprintf(w,(size_t)(wf-w),"CALL%s %08Xh",sizesuffix[COREWORDSIZE],(unsigned long)v32);
 #endif
                     break;
                 case 0xE9:
@@ -1017,28 +1007,22 @@
                     break;
                 case 0xEC:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"INb AL,DX");
+                    w += snprintf(w,(size_t)(wf-w),"IN%s %s,%s",sizesuffix[1],CPUregsN[1][/*AL*/0],CPUregsN[2][/*DX*/2]);
 #endif
                     break;
                 case 0xED:
 #ifdef DECOMPILEMODE
-                    if (COREWORDSIZE == 4)
-                        w += snprintf(w,(size_t)(wf-w),"INd EAX,DX");
-                    else
-                        w += snprintf(w,(size_t)(wf-w),"INw AX,DX");
+                    w += snprintf(w,(size_t)(wf-w),"IN%s %s,%s",sizesuffix[COREWORDSIZE],CPUregsN[COREWORDSIZE][/*AX*/0],CPUregsN[2][/*DX*/2]);
 #endif
                     break;
                 case 0xEE:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"OUTb DX,AL");
+                    w += snprintf(w,(size_t)(wf-w),"OUT%s %s,%s",sizesuffix[1],CPUregsN[2][/*DX*/2],CPUregsN[1][/*AL*/0]);
 #endif
                     break;
                 case 0xEF:
 #ifdef DECOMPILEMODE
-                    if (COREWORDSIZE == 4)
-                        w += snprintf(w,(size_t)(wf-w),"OUTd DX,EAX");
-                    else
-                        w += snprintf(w,(size_t)(wf-w),"OUTw DX,AX");
+                    w += snprintf(w,(size_t)(wf-w),"OUT%s %s,%s",sizesuffix[COREWORDSIZE],CPUregsN[2][/*DX*/2],CPUregsN[COREWORDSIZE][/*AX*/0]);
 #endif
                     break;
                 case 0xF0:
