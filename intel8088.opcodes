@@ -1,0 +1,141 @@
+; Intel 8088/8086 decompiler/core
+
+; AAA/AAS
+opcode 0x37:                                    "AAA"b
+opcode 0x3F:                                    "AAS"b
+
+; ADC byte,byte
+opcode 0x10 mod/reg/rm:                         "ADC"b b(r/m),b(reg)
+opcode 0x12 mod/reg/rm:                         "ADC"b b(reg),b(r/m)
+opcode 0x14 ib:                                 "ADC"b b(a),i
+opcode 0x80 mod/reg/rm /2 ib:                   "ADC"b b(r/m),i
+opcode 0x82 mod/reg/rm /2 ib:                   "ADC"b b(r/m),i
+; ADC word,word
+opcode 0x11 mod/reg/rm:                         "ADC"w w(r/m),w(reg)
+opcode 0x13 mod/reg/rm:                         "ADC"w w(reg),w(r/m)
+opcode 0x15 iw:                                 "ADC"w w(a),i
+opcode 0x81 mod/reg/rm /2 iw:                   "ADC"w w(r/m),i
+opcode 0x83 mod/reg/rm /2 ibs:                  "ADC"w w(r/m),i
+
+; ADD byte,byte
+opcode 0x00 mod/reg/rm:                         "ADD"b b(r/m),b(reg)
+opcode 0x02 mod/reg/rm:                         "ADD"b b(reg),b(r/m)
+opcode 0x04 ib:                                 "ADD"b b(a),i
+opcode 0x80 mod/reg/rm /0 ib:                   "ADD"b b(r/m),i
+opcode 0x82 mod/reg/rm /0 ib:                   "ADD"b b(r/m),i
+; ADD word,word
+opcode 0x01 mod/reg/rm:                         "ADD"w w(r/m),w(reg)
+opcode 0x03 mod/reg/rm:                         "ADD"w w(reg),w(r/m)
+opcode 0x05 iw:                                 "ADD"w w(a),i
+opcode 0x81 mod/reg/rm /0 iw:                   "ADD"w w(r/m),i
+opcode 0x83 mod/reg/rm /0 ibs:                  "ADD"w w(r/m),i
+
+; AND byte,byte
+opcode 0x20 mod/reg/rm:                         "AND"b b(r/m),b(reg)
+opcode 0x22 mod/reg/rm:                         "AND"b b(reg),b(r/m)
+opcode 0x24 ib:                                 "AND"b b(a),i
+opcode 0x80 mod/reg/rm /4 ib:                   "AND"b b(r/m),i
+opcode 0x82 mod/reg/rm /4 ib:                   "AND"b b(r/m),i
+; AND word,word
+opcode 0x21 mod/reg/rm:                         "AND"w w(r/m),w(reg)
+opcode 0x23 mod/reg/rm:                         "AND"w w(reg),w(r/m)
+opcode 0x25 iw:                                 "AND"w w(a),i
+opcode 0x81 mod/reg/rm /4 iw:                   "AND"w w(r/m),i
+opcode 0x83 mod/reg/rm /4 ibs:                  "AND"w w(r/m),i
+
+; CMP byte,byte
+opcode 0x38 mod/reg/rm:                         "CMP"b b(r/m),b(reg)
+opcode 0x3A mod/reg/rm:                         "CMP"b b(reg),b(r/m)
+opcode 0x3C ib:                                 "CMP"b b(a),i
+opcode 0x80 mod/reg/rm /7 ib:                   "CMP"b b(r/m),i
+opcode 0x82 mod/reg/rm /7 ib:                   "CMP"b b(r/m),i
+; CMP word,word
+opcode 0x39 mod/reg/rm:                         "CMP"w w(r/m),w(reg)
+opcode 0x3B mod/reg/rm:                         "CMP"w w(reg),w(r/m)
+opcode 0x3D iw:                                 "CMP"w w(a),i
+opcode 0x81 mod/reg/rm /7 iw:                   "CMP"w w(r/m),i
+opcode 0x83 mod/reg/rm /7 ibs:                  "CMP"w w(r/m),i
+
+; DAA/DAS
+opcode 0x27:                                    "DAA"b
+opcode 0x2F:                                    "DAS"b
+
+; DEC
+opcode range(0x48,0x4F) reg=op02:               "DEC"w w(reg)
+opcode 0xFE mod/reg/rm /1:                      "DEC"b b(r/m)
+opcode 0xFF mod/reg/rm /1:                      "DEC"w w(r/m)
+
+; INC
+opcode range(0x40,0x47) reg=op02:               "INC"w w(reg)
+opcode 0xFE mod/reg/rm /0:                      "INC"b b(r/m)
+opcode 0xFF mod/reg/rm /0:                      "INC"w w(r/m)
+
+; OR byte,byte
+opcode 0x08 mod/reg/rm:                         "OR"b b(r/m),b(reg)
+opcode 0x0A mod/reg/rm:                         "OR"b b(reg),b(r/m)
+opcode 0x0C ib:                                 "OR"b b(a),i
+opcode 0x80 mod/reg/rm /1 ib:                   "OR"b b(r/m),i
+opcode 0x82 mod/reg/rm /1 ib:                   "OR"b b(r/m),i
+; OR word,word
+opcode 0x09 mod/reg/rm:                         "OR"w w(r/m),w(reg)
+opcode 0x0B mod/reg/rm:                         "OR"w w(reg),w(r/m)
+opcode 0x0D iw:                                 "OR"w w(a),i
+opcode 0x81 mod/reg/rm /1 iw:                   "OR"w w(r/m),i
+opcode 0x83 mod/reg/rm /1 ibs:                  "OR"w w(r/m),i
+
+; PUSH sreg
+opcode 0x06:                                    "PUSH"w w(es)
+opcode 0x0E:                                    "PUSH"w w(cs)
+opcode 0x16:                                    "PUSH"w w(ss)
+opcode 0x1E:                                    "PUSH"w w(ds)
+; POP sreg
+opcode 0x07:                                    "POP"w w(es)
+opcode 0x0F:                                    "POP"w w(cs)
+opcode 0x17:                                    "POP"w w(ss)
+opcode 0x1F:                                    "POP"w w(ds)
+
+; segment overrides
+opcode prefix 0x26 segoverride(es):             "ES:"
+opcode prefix 0x2E segoverride(cs):             "CS:"
+opcode prefix 0x36 segoverride(ss):             "SS:"
+opcode prefix 0x3E segoverride(ds):             "DS:"
+
+; SBB byte,byte
+opcode 0x18 mod/reg/rm:                         "SBB"b b(r/m),b(reg)
+opcode 0x1A mod/reg/rm:                         "SBB"b b(reg),b(r/m)
+opcode 0x1C ib:                                 "SBB"b b(a),i
+opcode 0x80 mod/reg/rm /3 ib:                   "SBB"b b(r/m),i
+opcode 0x82 mod/reg/rm /3 ib:                   "SBB"b b(r/m),i
+; SBB word,word
+opcode 0x19 mod/reg/rm:                         "SBB"w w(r/m),w(reg)
+opcode 0x1B mod/reg/rm:                         "SBB"w w(reg),w(r/m)
+opcode 0x1D iw:                                 "SBB"w w(a),i
+opcode 0x81 mod/reg/rm /3 iw:                   "SBB"w w(r/m),i
+opcode 0x83 mod/reg/rm /3 ibs:                  "SBB"w w(r/m),i
+
+; SUB byte,byte
+opcode 0x28 mod/reg/rm:                         "SUB"b b(r/m),b(reg)
+opcode 0x2A mod/reg/rm:                         "SUB"b b(reg),b(r/m)
+opcode 0x2C ib:                                 "SUB"b b(a),i
+opcode 0x80 mod/reg/rm /5 ib:                   "SUB"b b(r/m),i
+opcode 0x82 mod/reg/rm /5 ib:                   "SUB"b b(r/m),i
+; SUB word,word
+opcode 0x29 mod/reg/rm:                         "SUB"w w(r/m),w(reg)
+opcode 0x2B mod/reg/rm:                         "SUB"w w(reg),w(r/m)
+opcode 0x2D iw:                                 "SUB"w w(a),i
+opcode 0x81 mod/reg/rm /5 iw:                   "SUB"w w(r/m),i
+opcode 0x83 mod/reg/rm /5 ibs:                  "SUB"w w(r/m),i
+
+; XOR byte,byte
+opcode 0x30 mod/reg/rm:                         "XOR"b b(r/m),b(reg)
+opcode 0x32 mod/reg/rm:                         "XOR"b b(reg),b(r/m)
+opcode 0x34 ib:                                 "XOR"b b(a),i
+opcode 0x80 mod/reg/rm /6 ib:                   "XOR"b b(r/m),i
+opcode 0x82 mod/reg/rm /6 ib:                   "XOR"b b(r/m),i
+; XOR word,word
+opcode 0x31 mod/reg/rm:                         "XOR"w w(r/m),w(reg)
+opcode 0x33 mod/reg/rm:                         "XOR"w w(reg),w(r/m)
+opcode 0x35 iw:                                 "XOR"w w(a),i
+opcode 0x81 mod/reg/rm /6 iw:                   "XOR"w w(r/m),i
+opcode 0x83 mod/reg/rm /6 ibs:                  "XOR"w w(r/m),i
+
