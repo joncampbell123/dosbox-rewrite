@@ -6,6 +6,21 @@ AC_PROG_CXX
 AC_CONFIG_HEADER([config.h])
 AC_PREFIX_DEFAULT(/usr/local)
 
+if test $host != $build; then
+    AC_CHECK_PROGS(BUILD_CXX, g++ c++)
+    AC_CHECK_PROGS(BUILD_CC, gcc cc)
+    AC_CHECK_PROGS(BUILD_CPP, cpp)
+else
+    BUILD_CXX=$CXX
+    AC_SUBST(BUILD_CXX)
+
+    BUILD_CPP=$CPP
+    AC_SUBST(BUILD_CPP)
+
+    BUILD_CC=$CC
+    AC_SUBST(BUILD_CC)
+fi
+
 # largefile support.
 # NTS: creation of config.h means you must include config.h to get _FILE_OFFSET_BITS=64 or whatever your platform needs.
 #      Failure to do so will prevent that code from accessing files larger than 2GB on 32-bit systems (where off_t is 32-bit wide)
