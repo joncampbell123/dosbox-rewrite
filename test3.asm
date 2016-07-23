@@ -5225,6 +5225,23 @@ jmp2:
     setle   byte [bx+si]
     setg    byte [bx+si]
 
+    seto    byte [ebx+esi]
+    setno   byte [ebx+esi]
+    setb    byte [ebx+esi]
+    setnb   byte [ebx+esi]
+    setz    byte [ebx+esi]
+    setnz   byte [ebx+esi]
+    setbe   byte [ebx+esi]
+    seta    byte [ebx+esi]
+    sets    byte [ebx+esi]
+    setns   byte [ebx+esi]
+    setpe   byte [ebx+esi]
+    setpo   byte [ebx+esi]
+    setl    byte [ebx+esi]
+    setge   byte [ebx+esi]
+    setle   byte [ebx+esi]
+    setg    byte [ebx+esi]
+
 ; SHLD
     shld    ax,bx,1
     shld    bx,cx,6

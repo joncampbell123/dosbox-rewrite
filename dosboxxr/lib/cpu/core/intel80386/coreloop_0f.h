@@ -101,9 +101,8 @@
 #endif
                             break;
                         case_span_16(0x90): // 0x90-0x9F
-                            mrm.set(IPFB());
-                            disp = IPFmrmdisplace16(/*&*/mrm);
-                            w += snprintf(w,(size_t)(wf-w),"%sb %s",CPUsetcc0F9x[op0F&15],IPDecPrint16(mrm,disp,1));
+                            IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
+                            w += snprintf(w,(size_t)(wf-w),"%sb %s",CPUsetcc0F9x[op0F&15],IPDecPrint386(mrm,sib,disp,1,addr32));
                             break;
                         case 0xA0:
 #ifdef DECOMPILEMODE
