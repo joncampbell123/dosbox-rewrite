@@ -1104,23 +1104,27 @@
 #endif
                     break;
                 case 0xFE:
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    if (mrm.reg() <= 1)
-                        w += snprintf(w,(size_t)(wf-w),"%sb %s",CPUGRP4[mrm.reg()],IPDecPrint16(mrm,disp,1));
-                    else
+                    if (mrm.reg() <= 1) {
+                        w += snprintf(w,(size_t)(wf-w),"%s%s %s",CPUGRP4[mrm.reg()],sizesuffix[1],
+                            IPDecPrint386(mrm,sib,disp,1,addr32));
+                    }
+                    else {
                         goto invalidopcode;
+                    }
 #endif
                     break;
                 case 0xFF:
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
-                    if (mrm.reg() != 7)
-                        w += snprintf(w,(size_t)(wf-w),"%sw %s",CPUGRP4[mrm.reg()],IPDecPrint16(mrm,disp,2));
-                    else
+                    if (mrm.reg() != 7) {
+                        w += snprintf(w,(size_t)(wf-w),"%s%s %s",CPUGRP4[mrm.reg()],sizesuffix[COREWORDSIZE],
+                            IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32));
+                    }
+                    else {
                         goto invalidopcode;
+                    }
 #endif
                     break;
                 default:

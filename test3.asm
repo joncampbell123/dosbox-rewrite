@@ -3508,6 +3508,10 @@ calltest1:
     inc     word [bx+di]
     inc     word [0x1234]
     inc     word [bx]
+    inc     dword [ebx+esi]
+    inc     dword [ebx+edi]
+    a32 inc dword [0x12345678]
+    inc     dword [ebx]
 
     db      0xFF,0xC8       ; dec     ax
     db      0xFF,0xCB       ; dec     bx
@@ -3517,6 +3521,10 @@ calltest1:
     dec     word [bx+di]
     dec     word [0x1234]
     dec     word [bx]
+    dec     dword [ebx+esi]
+    dec     dword [ebx+edi]
+    a32 dec dword [0x12345678]
+    dec     dword [ebx]
 
     call    ax
     call    word [bx]
@@ -3525,6 +3533,13 @@ calltest1:
     call    word [0x1234]
     call    bx
 
+    call    eax
+    call    dword [ebx]
+    call    dword [ebx+esi]
+    call    dword [ebx+edi]
+    a32 call dword [0x12345678]
+    call    ebx
+
     jmp     ax
     jmp     word [bx]
     jmp     word [bx+si]
@@ -3532,15 +3547,32 @@ calltest1:
     jmp     word [0x1234]
     jmp     bx
 
+    jmp     eax
+    jmp     dword [ebx]
+    jmp     dword [ebx+esi]
+    jmp     dword [ebx+edi]
+    a32 jmp dword [0x12345678]
+    jmp     ebx
+
     call far word [bx]
     call far word [bx+si]
     call far word [bx+di]
     call far word [0x1234]
 
+    call far dword [ebx]
+    call far dword [ebx+esi]
+    call far dword [ebx+edi]
+    a32 call far dword [0x12345678]
+
     jmp far word [bx]
     jmp far word [bx+si]
     jmp far word [bx+di]
     jmp far word [0x1234]
+
+    jmp far word [ebx]
+    jmp far word [ebx+esi]
+    jmp far word [ebx+edi]
+    a32 jmp far word [0x12345678]
 
     push    word [bx]
     push    word [bx+si]
@@ -3550,6 +3582,11 @@ calltest1:
     db      0xFF,0xF1       ; PUSH CX
     db      0xFF,0xF2       ; PUSH DX
     db      0xFF,0xF3       ; PUSH BX
+
+    push    dword [ebx]
+    push    dword [ebx+esi]
+    push    dword [ebx+edi]
+    a32 push dword [0x12345678]
 
     db      0xFE,0x10       ; illegal FE (byte CALL!)
     db      0xFE,0x18       ; illegal FE (byte CALL FAR)
