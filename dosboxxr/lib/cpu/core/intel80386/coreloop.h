@@ -838,7 +838,7 @@
                     break;
                 case 0xC9:
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"LEAVEw");
+                    w += snprintf(w,(size_t)(wf-w),"LEAVE%s",sizesuffix[COREWORDSIZE]);
 #endif
                     break;
                 case 0xCA:

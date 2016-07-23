@@ -4321,6 +4321,9 @@ calltest1:
     leave
     leave
     leave
+    o32 leave
+    o32 leave
+    o32 leave
     bound   ax,word [si]
     bound   bx,word [bx+di]
     bound   cx,word [bx+di+0x1234]
