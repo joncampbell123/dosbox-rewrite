@@ -3659,6 +3659,23 @@ calltest1:
     fild    word [bx+di+0x1234]
     fild    word [si-6]
 
+    fld     dword [ebx]                      ; MF=0 op 0xD9
+    fld     dword [ebx+esi]
+    fld     dword [ebx+edi+0x1234]
+    fld     dword [esi-6]
+    fild    dword [ebx]                      ; MF=1 op 0xDB
+    fild    dword [ebx+esi]
+    fild    dword [ebx+edi+0x1234]
+    fild    dword [esi-6]
+    fld     qword [ebx]                      ; MF=2 op 0xDD
+    fld     qword [ebx+esi]
+    fld     qword [ebx+edi+0x1234]
+    fld     qword [esi-6]
+    fild    word [ebx]                       ; MF=3 op 0xDF
+    fild    word [ebx+esi]
+    fild    word [ebx+edi+0x1234]
+    fild    word [esi-6]
+
 ; FLD     | ESCAPE 1 1 1 | MOD 1 0 1 R/M |     long integer memory to ST(0)
 ; assemblers refer to this by "FILD" and a 64-bit datatype
     fild    qword [bx]
@@ -3666,11 +3683,21 @@ calltest1:
     fild    qword [bx+di+0x1234]
     fild    qword [si-6]
 
+    fild    qword [ebx]
+    fild    qword [ebx+esi]
+    fild    qword [ebx+edi+0x1234]
+    fild    qword [esi-6]
+
 ; FLD     | ESCAPE 0 1 1 | MOD 1 0 1 R/M |     temporary real memory to ST(0)
     fld     tword [bx]
     fld     tword [bx+si]
     fld     tword [bx+di+0x1234]
     fld     tword [si-6]
+
+    fld     tword [ebx]
+    fld     tword [ebx+esi]
+    fld     tword [ebx+edi+0x1234]
+    fld     tword [esi-6]
 
 ; FLD     | ESCAPE 1 1 1 | MOD 1 0 0 R/M |     packed BCD memory to ST(0)
 ; assemblers refer to this by "FBLD" and a 80-bit datatype
@@ -3678,6 +3705,11 @@ calltest1:
     fbld    tword [bx+si]
     fbld    tword [bx+di+0x1234]
     fbld    tword [si-6]
+
+    fbld    tword [ebx]
+    fbld    tword [ebx+esi]
+    fbld    tword [ebx+edi+0x1234]
+    fbld    tword [esi-6]
 
 ; FLD     | ESCAPE 0 0 1 | 1 1 0 0 0 R/M |     ST(i) to ST(0) where in R/M, MOD == 3, REG == 0, RM == FPU register index
     fld     st0
@@ -3708,6 +3740,23 @@ calltest1:
     fist    word [bx+di+0x1234]
     fist    word [si-6]
 
+    fst     dword [ebx]                      ; MF=0 op 0xD9
+    fst     dword [ebx+esi]
+    fst     dword [ebx+edi+0x1234]
+    fst     dword [esi-6]
+    fist    dword [ebx]                      ; MF=1 op 0xDB
+    fist    dword [ebx+esi]
+    fist    dword [ebx+edi+0x1234]
+    fist    dword [esi-6]
+    fst     qword [ebx]                      ; MF=2 op 0xDD
+    fst     qword [ebx+esi]
+    fst     qword [ebx+edi+0x1234]
+    fst     qword [esi-6]
+    fist    word [ebx]                       ; MF=3 op 0xDF
+    fist    word [ebx+esi]
+    fist    word [ebx+edi+0x1234]
+    fist    word [esi-6]
+
 ; FST     | ESCAPE 1 0 1 | 1 1 0 1 0 R/M |     ST(0) to ST(i) where in R/M, MOD == 3, REG == 2, RM == FPU register index
     fst     st0
     fst     st1
@@ -3737,6 +3786,23 @@ calltest1:
     fistp   word [bx+di+0x1234]
     fistp   word [si-6]
 
+    fstp    dword [ebx]                      ; MF=0 op 0xD9
+    fstp    dword [ebx+esi]
+    fstp    dword [ebx+edi+0x1234]
+    fstp    dword [esi-6]
+    fistp   dword [ebx]                      ; MF=1 op 0xDB
+    fistp   dword [ebx+esi]
+    fistp   dword [ebx+edi+0x1234]
+    fistp   dword [esi-6]
+    fstp    qword [ebx]                      ; MF=2 op 0xDD
+    fstp    qword [ebx+esi]
+    fstp    qword [ebx+edi+0x1234]
+    fstp    qword [esi-6]
+    fistp   word [ebx]                       ; MF=3 op 0xDF
+    fistp   word [ebx+esi]
+    fistp   word [ebx+edi+0x1234]
+    fistp   word [esi-6]
+
 ; FSTP    | ESCAPE 1 1 1 | MOD 1 1 1 R/M |     ST(0) to long integer memory
 ; assemblers refer to this by "FISTP" and a 64-bit datatype
     fistp   qword [bx]
@@ -3744,11 +3810,21 @@ calltest1:
     fistp   qword [bx+di+0x1234]
     fistp   qword [si-6]
 
+    fistp   qword [ebx]
+    fistp   qword [ebx+esi]
+    fistp   qword [ebx+edi+0x1234]
+    fistp   qword [esi-6]
+
 ; FSTP    | ESCAPE 0 1 1 | MOD 1 1 1 R/M |     ST(0) to temporary real memory
     fstp    tword [bx]
     fstp    tword [bx+si]
     fstp    tword [bx+di+0x1234]
     fstp    tword [si-6]
+
+    fstp    tword [ebx]
+    fstp    tword [ebx+esi]
+    fstp    tword [ebx+edi+0x1234]
+    fstp    tword [esi-6]
 
 ; FSTP    | ESCAPE 1 1 1 | MOD 1 1 0 R/M |     ST(0) to packed BCD memory
 ; assemblers refer to this by "FBSTP" and a 80-bit datatype
@@ -3756,6 +3832,11 @@ calltest1:
     fbstp   tword [bx+si]
     fbstp   tword [bx+di+0x1234]
     fbstp   tword [si-6]
+
+    fbstp   tword [ebx]
+    fbstp   tword [ebx+esi]
+    fbstp   tword [ebx+edi+0x1234]
+    fbstp   tword [esi-6]
 
 ; FSTP    | ESCAPE 1 0 1 | 1 1 0 1 1 R/M |     ST(0) to ST(i) where in R/M, MOD == 3, REG == 3, RM == FPU register index
     fstp    st0
@@ -3796,6 +3877,23 @@ calltest1:
     ficom   word [bx+di+0x1234]
     ficom   word [si-6]
 
+    fcom    dword [ebx]                      ; MF=0 op 0xD8
+    fcom    dword [ebx+esi]
+    fcom    dword [ebx+edi+0x1234]
+    fcom    dword [esi-6]
+    ficom   dword [ebx]                      ; MF=1 op 0xDA
+    ficom   dword [ebx+esi]
+    ficom   dword [ebx+edi+0x1234]
+    ficom   dword [esi-6]
+    fcom    qword [ebx]                      ; MF=2 op 0xDC
+    fcom    qword [ebx+esi]
+    fcom    qword [ebx+edi+0x1234]
+    fcom    qword [esi-6]
+    ficom   word [ebx]                       ; MF=3 op 0xDE
+    ficom   word [ebx+esi]
+    ficom   word [ebx+edi+0x1234]
+    ficom   word [esi-6]
+
 ; FCOM    | ESCAPE 0 0 0 | 1 1 0 1 0 R/M |     Compare ST(i) to ST(0)
     fcom    st0
     fcom    st1
@@ -3824,6 +3922,23 @@ calltest1:
     ficomp  word [bx+si]
     ficomp  word [bx+di+0x1234]
     ficomp  word [si-6]
+
+    fcomp   dword [ebx]                      ; MF=0 op 0xD8
+    fcomp   dword [ebx+esi]
+    fcomp   dword [ebx+edi+0x1234]
+    fcomp   dword [esi-6]
+    ficomp  dword [ebx]                      ; MF=1 op 0xDA
+    ficomp  dword [ebx+esi]
+    ficomp  dword [ebx+edi+0x1234]
+    ficomp  dword [esi-6]
+    fcomp   qword [ebx]                      ; MF=2 op 0xDC
+    fcomp   qword [ebx+esi]
+    fcomp   qword [ebx+edi+0x1234]
+    fcomp   qword [esi-6]
+    ficomp  word [ebx]                       ; MF=3 op 0xDE
+    ficomp  word [ebx+esi]
+    ficomp  word [ebx+edi+0x1234]
+    ficomp  word [esi-6]
 
 ; FCOMP   | ESCAPE 0 0 0 | 1 1 0 1 0 R/M |     Compare ST(i) to ST(0) and pop
     fcomp   st0
@@ -3856,6 +3971,23 @@ calltest1:
     fiadd   word [bx+si]
     fiadd   word [bx+di+0x1234]
     fiadd   word [si-6]
+
+    fadd    dword [ebx]                      ; MF=0 op 0xD8
+    fadd    dword [ebx+esi]
+    fadd    dword [ebx+edi+0x1234]
+    fadd    dword [esi-6]
+    fiadd   dword [ebx]                      ; MF=1 op 0xDA
+    fiadd   dword [ebx+esi]
+    fiadd   dword [ebx+edi+0x1234]
+    fiadd   dword [esi-6]
+    fadd    qword [ebx]                      ; MF=2 op 0xDC
+    fadd    qword [ebx+esi]
+    fadd    qword [ebx+edi+0x1234]
+    fadd    qword [esi-6]
+    fiadd   word [ebx]                       ; MF=3 op 0xDE
+    fiadd   word [ebx+esi]
+    fiadd   word [ebx+edi+0x1234]
+    fiadd   word [esi-6]
 
 ; FADD    | ESCAPE d P 0 | 1 1 0 0 0 R/M |     Add ST(i) to ST(0) d=0 (destination is ST(0)) P=0 don't pop after add
     fadd    st0,st0
@@ -3922,6 +4054,23 @@ calltest1:
     fisub   word [bx+di+0x1234]
     fisub   word [si-6]
 
+    fsub    dword [ebx]                      ; MF=0 op 0xD8
+    fsub    dword [ebx+esi]
+    fsub    dword [ebx+edi+0x1234]
+    fsub    dword [esi-6]
+    fisub   dword [ebx]                      ; MF=1 op 0xDA
+    fisub   dword [ebx+esi]
+    fisub   dword [ebx+edi+0x1234]
+    fisub   dword [esi-6]
+    fsub    qword [ebx]                      ; MF=2 op 0xDC
+    fsub    qword [ebx+esi]
+    fsub    qword [ebx+edi+0x1234]
+    fsub    qword [esi-6]
+    fisub   word [ebx]                       ; MF=3 op 0xDE
+    fisub   word [ebx+esi]
+    fisub   word [ebx+edi+0x1234]
+    fisub   word [esi-6]
+
 ; FSUB    | ESCAPE d P 0 | 1 1 1 0 R R/M |     Subtract ST(i) from ST(0) d=0 (destination is ST(0)) P=0 don't pop after add R=0 dest OP src
     fsub    st0,st0
     fsub    st0,st1
@@ -3987,6 +4136,23 @@ calltest1:
     fisubr  word [bx+di+0x1234]
     fisubr  word [si-6]
 
+    fsubr   dword [ebx]                      ; MF=0 op 0xD8
+    fsubr   dword [ebx+esi]
+    fsubr   dword [ebx+edi+0x1234]
+    fsubr   dword [esi-6]
+    fisubr  dword [ebx]                      ; MF=1 op 0xDA
+    fisubr  dword [ebx+esi]
+    fisubr  dword [ebx+edi+0x1234]
+    fisubr  dword [esi-6]
+    fsubr   qword [ebx]                      ; MF=2 op 0xDC
+    fsubr   qword [ebx+esi]
+    fsubr   qword [ebx+edi+0x1234]
+    fsubr   qword [esi-6]
+    fisubr  word [ebx]                       ; MF=3 op 0xDE
+    fisubr  word [ebx+esi]
+    fisubr  word [ebx+edi+0x1234]
+    fisubr  word [esi-6]
+
 ; FSUB    | ESCAPE d P 0 | 1 1 1 0 R R/M |     Subtract ST(i) from ST(0) d=0 (destination is ST(0)) P=0 don't pop after add R=1 src OP dest
     fsubr   st0,st0
     fsubr   st0,st1
@@ -4045,6 +4211,23 @@ calltest1:
     fimul   word [bx+si]
     fimul   word [bx+di+0x1234]
     fimul   word [si-6]
+
+    fmul    dword [ebx]                      ; MF=0 op 0xD8
+    fmul    dword [ebx+esi]
+    fmul    dword [ebx+edi+0x1234]
+    fmul    dword [esi-6]
+    fimul   dword [ebx]                      ; MF=1 op 0xDA
+    fimul   dword [ebx+esi]
+    fimul   dword [ebx+edi+0x1234]
+    fimul   dword [esi-6]
+    fmul    qword [ebx]                      ; MF=2 op 0xDC
+    fmul    qword [ebx+esi]
+    fmul    qword [ebx+edi+0x1234]
+    fmul    qword [esi-6]
+    fimul   word [ebx]                       ; MF=3 op 0xDE
+    fimul   word [ebx+esi]
+    fimul   word [ebx+edi+0x1234]
+    fimul   word [esi-6]
 
 ; FMUL    | ESCAPE d P 0 | 1 1 0 0 1 R/M |     Multiply ST(i) to ST(0) d=0 (destination is ST(0)) P=0 don't pop after add
     fmul    st0,st0
@@ -4105,6 +4288,23 @@ calltest1:
     fidiv   word [bx+di+0x1234]
     fidiv   word [si-6]
 
+    fdiv    dword [ebx]                      ; MF=0 op 0xD8
+    fdiv    dword [ebx+esi]
+    fdiv    dword [ebx+edi+0x1234]
+    fdiv    dword [esi-6]
+    fidiv   dword [ebx]                      ; MF=1 op 0xDA
+    fidiv   dword [ebx+esi]
+    fidiv   dword [ebx+edi+0x1234]
+    fidiv   dword [esi-6]
+    fdiv    qword [ebx]                      ; MF=2 op 0xDC
+    fdiv    qword [ebx+esi]
+    fdiv    qword [ebx+edi+0x1234]
+    fdiv    qword [esi-6]
+    fidiv   word [ebx]                       ; MF=3 op 0xDE
+    fidiv   word [ebx+esi]
+    fidiv   word [ebx+edi+0x1234]
+    fidiv   word [esi-6]
+
 ; FDIV    | ESCAPE d P 0 | 1 1 1 1 R R/M |     Divide ST(i) from ST(0) d=0 (destination is ST(0)) P=0 don't pop after add R=0 dest OP src
     fdiv    st0,st0
     fdiv    st0,st1
@@ -4163,6 +4363,23 @@ calltest1:
     fidivr  word [bx+si]
     fidivr  word [bx+di+0x1234]
     fidivr  word [si-6]
+
+    fdivr   dword [ebx]                      ; MF=0 op 0xD8
+    fdivr   dword [ebx+esi]
+    fdivr   dword [ebx+edi+0x1234]
+    fdivr   dword [esi-6]
+    fidivr  dword [ebx]                      ; MF=1 op 0xDA
+    fidivr  dword [ebx+esi]
+    fidivr  dword [ebx+edi+0x1234]
+    fidivr  dword [esi-6]
+    fdivr   qword [ebx]                      ; MF=2 op 0xDC
+    fdivr   qword [ebx+esi]
+    fdivr   qword [ebx+edi+0x1234]
+    fdivr   qword [esi-6]
+    fidivr  word [ebx]                       ; MF=3 op 0xDE
+    fidivr  word [ebx+esi]
+    fidivr  word [ebx+edi+0x1234]
+    fidivr  word [esi-6]
 
 ; FDIV    | ESCAPE d P 0 | 1 1 1 1 R R/M |     Subtract ST(i) from ST(0) d=0 (destination is ST(0)) P=0 don't pop after add R=1 src OP dest
     fdivr   st0,st0
@@ -4223,12 +4440,24 @@ calltest1:
     fldcw   [0x1234]
     fldcw   [si-6]
 
+    fldcw   [ebx]
+    fldcw   [ebx+esi]
+    fldcw   [ebx+esi+0x1234]
+    a32 fldcw [0x12345678]
+    fldcw   [esi-6]
+
 ; FSTCW   | ESCAPE 0 0 1 | MOD 1 1 1 R/M
     fstcw   [bx]
     fstcw   [bx+si]
     fstcw   [bx+si+0x1234]
     fstcw   [0x1234]
     fstcw   [si-6]
+
+    fstcw   [ebx]
+    fstcw   [ebx+esi]
+    fstcw   [ebx+esi+0x1234]
+    a32 fstcw [0x12345678]
+    fstcw   [esi-6]
 
 ; FSTSW   | ESCAPE 1 0 1 | MOD 1 1 1 R/M
     fstsw   [bx]
@@ -4238,6 +4467,10 @@ calltest1:
     fstsw   [si-6]
 ; NTS: The "FSTSW AX" instruction does not appear until Intel's 80287 datasheet,
 ;      therefore I am assuming that the 8087 does not have that instruction.
+    fstsw   [ebx]
+    fstsw   [ebx+esi]
+    fstsw   [ebx+esi+0x1234]
+    fstsw   [esi-6]
 
 ; FCLEX   | ESCAPE 0 1 1 | 1 1 1 0 0 0 1 0
     fclex
