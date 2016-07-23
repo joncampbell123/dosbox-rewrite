@@ -3456,6 +3456,31 @@ calltest1:
     div     word [bx+si]
     idiv    word [bx+si]
 
+    test    dword [ebx+esi],0x12345678
+    test    dword [ebx+edi],0x12345678
+    a32 test dword [0x12345678],0x12345678
+    db      0x66,0x67,0xF7,0x0C,0x33,0x78,0x56,0x32,0x12      ; TEST WORD [EBX+ESI],0x12345678   reg == 1 undocumented alias
+    not     eax
+    not     ebx
+    not     ecx
+    not     edx
+    neg     eax
+    neg     ebx
+    mul     eax
+    mul     ebx
+    imul    eax
+    imul    ebx
+    div     eax
+    div     ebx
+    idiv    eax
+    idiv    ebx
+    not     dword [ebx+esi]
+    neg     dword [ebx+esi]
+    mul     dword [ebx+esi]
+    imul    dword [ebx+esi]
+    div     dword [ebx+esi]
+    idiv    dword [ebx+esi]
+
 ; GRP4 FE-FF
     inc     al
     inc     ah

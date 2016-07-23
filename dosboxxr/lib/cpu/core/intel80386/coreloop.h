@@ -1056,29 +1056,21 @@
 #endif
                     break;
                 case 0xF6: // GRP3 r/m reg > 1  or GRP3 r/m,imm8 reg <= 1  reg == 1 is not defined, but x86 opcode map geek edition lists it as alias of reg == 0
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
+                    if (mrm.reg() <= 1) v8 = IPFB();
 #ifdef DECOMPILEMODE
-                    if (mrm.reg() <= 1) {
-                        v8 = IPFB();
-                        w += snprintf(w,(size_t)(wf-w),"%sb %s,%02Xh",CPUGRP3[mrm.reg()],IPDecPrint16(mrm,disp,1),v8);
-                    }
-                    else {
-                        w += snprintf(w,(size_t)(wf-w),"%sb %s",CPUGRP3[mrm.reg()],IPDecPrint16(mrm,disp,1));
-                    }
+                    w += snprintf(w,(size_t)(wf-w),"%s%s %s",CPUGRP3[mrm.reg()],sizesuffix[1],
+                        IPDecPrint386(mrm,sib,disp,1,addr32));
+                    if (mrm.reg() <= 1) w += snprintf(w,(size_t)(wf-w),",%02Xh",v8);
 #endif
                     break;
                 case 0xF7: // GRP3 r/m reg > 1  or GRP3 r/m,imm16 reg <= 1  reg == 1 is not defined, but x86 opcode map geek edition lists it as alias of reg == 0
-                    mrm.set(IPFB());
-                    disp = IPFmrmdisplace16(/*&*/mrm);
+                    IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
+                    if (mrm.reg() <= 1) v32 = COREWORDSIZE == 4 ? IPFDW() : IPFW();
 #ifdef DECOMPILEMODE
-                    if (mrm.reg() <= 1) {
-                        v16 = IPFW();
-                        w += snprintf(w,(size_t)(wf-w),"%sb %s,%04Xh",CPUGRP3[mrm.reg()],IPDecPrint16(mrm,disp,2),v16);
-                    }
-                    else {
-                        w += snprintf(w,(size_t)(wf-w),"%sb %s",CPUGRP3[mrm.reg()],IPDecPrint16(mrm,disp,2));
-                    }
+                    w += snprintf(w,(size_t)(wf-w),"%s%s %s",CPUGRP3[mrm.reg()],sizesuffix[COREWORDSIZE],
+                        IPDecPrint386(mrm,sib,disp,COREWORDSIZE,addr32));
+                    if (mrm.reg() <= 1) w += snprintf(w,(size_t)(wf-w),",%08Xh",v32);
 #endif
                     break;
                 case 0xF8:
