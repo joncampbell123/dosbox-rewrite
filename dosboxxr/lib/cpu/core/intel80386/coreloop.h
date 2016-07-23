@@ -442,7 +442,7 @@
                     IPDec386Load_MRM_SIB(/*&*/mrm,/*&*/sib,/*&*/disp,addr32);
 #ifdef DECOMPILEMODE
                     w += snprintf(w,(size_t)(wf-w),"ARPL%s %s,%s",sizesuffix[COREWORDSIZE],
-                        IPDecPrint16(mrm,disp,2),CPUregs16[mrm.reg()]);
+                        IPDecPrint386(mrm,sib,disp,2,addr32),CPUregs16[mrm.reg()]);
 #endif
                     break;
 

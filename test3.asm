@@ -4758,6 +4758,31 @@ calltest1:
     lmsw    word [bx+di]
     lmsw    word [bx+di+0x1234]
     lmsw    word [0x1234]
+; 0x0F 0x01 group 32-bit
+    sgdt    dword [ebx]               ; 0x0F 0x01 MRM   MOD != 3  REG == 0  R/M == location
+    sgdt    dword [ebx+edi]
+    sgdt    dword [ebx+edi+0x1234]
+    a32 sgdt dword [0x12345678]
+
+    sidt    dword [ebx]               ; 0x0F 0x01 MRM   MOD != 3  REG == 1  R/M == location
+    sidt    dword [ebx+edi]
+    sidt    dword [ebx+edi+0x1234]
+    a32 sidt dword [0x12345678]
+
+    lgdt    dword [ebx]               ; 0x0F 0x01 MRM   MOD != 3  REG == 2  R/M == location
+    lgdt    dword [ebx+edi]
+    lgdt    dword [ebx+edi+0x1234]
+    a32 lgdt dword [0x12345678]
+
+    lidt    dword [ebx]               ; 0x0F 0x01 MRM   MOD != 3  REG == 3  R/M == location
+    lidt    dword [ebx+edi]
+    lidt    dword [ebx+edi+0x1234]
+    a32 lidt dword [0x12345678]
+
+    smsw    dword [ebx]               ; 0x0F 0x01 MRM   MOD != 3  REG == 4  R/M == location
+    smsw    dword [ebx+edi]
+    smsw    dword [ebx+edi+0x1234]
+    a32 smsw dword [0x12345678]
 ; 0x0F 0x00 group
     sldt    word [bx]               ; 0x0F 0x00 MRM   MOD != 3  REG == 0  R/M == location
     sldt    word [bx+di]
@@ -4788,6 +4813,11 @@ calltest1:
     verw    word [bx+di]
     verw    word [bx+di+0x1234]
     verw    word [0x1234]
+; 0x0F 0x00 group 32-bit
+    sldt    dword [ebx]               ; 0x0F 0x00 MRM   MOD != 3  REG == 0  R/M == location
+    sldt    dword [ebx+edi]
+    sldt    dword [ebx+edi+0x1234]
+    a32 sldt dword [0x12345678]
 ; LAR/LSL
     lar     ax,bx
     lar     bx,cx
@@ -4806,6 +4836,24 @@ calltest1:
     lsl     cx,[bx+di+0x1234]
     lsl     dx,[0x1234]
     lsl     si,[si-6]
+; LAR/LSL 32-bit
+    lar     eax,ebx
+    lar     ebx,ecx
+    lar     ecx,edx
+    lar     eax,[esi]
+    lar     ebx,[ebx]
+    lar     ecx,[ebx+edi+0x1234]
+    a32 lar edx,[0x12345678]
+    lar     esi,[esi-6]
+
+    lsl     eax,ebx
+    lsl     ebx,ecx
+    lsl     ecx,edx
+    lsl     eax,[esi]
+    lsl     ebx,[ebx]
+    lsl     ecx,[ebx+edi+0x1234]
+    a32 lsl edx,[0x12345678]
+    lsl     esi,[esi-6]
 ; ARPL
     arpl    ax,bx
     arpl    bx,cx
@@ -4815,6 +4863,12 @@ calltest1:
     arpl    [bx+di+0x1234],cx
     arpl    [0x1234],dx
     arpl    [si-6],cx
+; ARPL 32-bit
+    arpl    [esi],ax
+    arpl    [ebx],bx
+    arpl    [ebx+edi+0x1234],cx
+    a32 arpl [0x12345678],dx
+    arpl    [esi-6],cx
 
 ; FSETPM  | ESCAPE 0 1 1 | 1 1 1 0 0 1 0 0
     fsetpm
