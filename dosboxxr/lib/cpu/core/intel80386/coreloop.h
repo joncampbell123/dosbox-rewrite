@@ -833,7 +833,7 @@
                     v16 = IPFW();
                     v8 = IPFB();
 #ifdef DECOMPILEMODE
-                    w += snprintf(w,(size_t)(wf-w),"ENTERw %04Xh,%02Xh",v16,v8);
+                    w += snprintf(w,(size_t)(wf-w),"ENTER%s %04Xh,%02Xh",sizesuffix[COREWORDSIZE],v16,v8);
 #endif
                     break;
                 case 0xC9:

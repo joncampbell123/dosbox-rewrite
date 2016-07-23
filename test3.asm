@@ -4315,6 +4315,9 @@ calltest1:
     enter   0,0
     enter   0x1234,1
     enter   0x1234,0x12
+    o32 enter   0,0 
+    o32 enter   0x1234,1
+    o32 enter   0x1234,0x12
     leave
     leave
     leave
