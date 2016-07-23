@@ -3205,6 +3205,56 @@ calltest1:
     sar     word [bx+di],1
     sar     word [0x1234],1
 
+; GRP2 D1 32-bit
+    rol     eax,1
+    rol     ebx,1
+    rol     dword [ebx+esi],1
+    rol     dword [ebx+edi],1
+    a32 rol dword [0x12345678],1
+
+    ror     eax,1
+    ror     ebx,1
+    ror     dword [ebx+esi],1
+    ror     dword [ebx+edi],1
+    a32 ror dword [0x12345678],1
+
+    rcl     eax,1
+    rcl     ebx,1
+    rcl     dword [ebx+esi],1
+    rcl     dword [ebx+edi],1
+    a32 rcl dword [0x12345678],1
+
+    rcr     eax,1
+    rcr     ebx,1
+    rcr     dword [ebx+esi],1
+    rcr     dword [ebx+edi],1
+    a32 rcr dword [0x12345678],1
+
+    shl     eax,1
+    shl     ebx,1
+    shl     dword [ebx+esi],1
+    shl     dword [ebx+edi],1
+    a32 shl dword [0x12345678],1
+
+    shr     eax,1
+    shr     ebx,1
+    shr     dword [ebx+esi],1
+    shr     dword [ebx+edi],1
+    a32 shr dword [0x12345678],1
+
+; nasm/yasm won't encode SAL as SAL but as an alias of SHL
+    db      0x66,0xD1,0xF0                  ; sal     eax,1
+    db      0x66,0xD1,0xF3                  ; sal     ebx,1
+    db      0x66,0x67,0xD1,0x34,0x33        ; sal     dword [ebx+esi],1
+    db      0x66,0x67,0xD1,0x34,0x3B        ; sal     dword [ebx+edi],1
+    db      0x66,0x67,0xD1,0x35,0x78,0x56,0x34,0x12 ; a32 sal dword [0x12345678],1
+
+    sar     eax,1
+    sar     ebx,1
+    sar     dword [ebx+esi],1
+    sar     dword [ebx+edi],1
+    a32 sar dword [0x12345678],1
+
 ; GRP2 D2
     rol     al,cl
     rol     bl,cl
