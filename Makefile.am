@@ -11,6 +11,7 @@ dosboxxr_lib_cpu_libcpu_a_SOURCES = dosboxxr/lib/cpu/ipdec_strings.cpp
 dosboxxr_lib_text_libtext_a_SOURCES = dosboxxr/lib/text/chomp.c
 
 noinst_PROGRAMS = \
+	opcc$(EXEEXT) \
 	empty \
 	cpudetect \
 	cpumodregrm \
@@ -55,4 +56,7 @@ test3.bin: test3.asm
 	yasm -o $@ -f bin $<
 
 test-bins: test1.bin test2.bin test3.bin
+
+opcc$(EXEEXT): opcc.cpp
+	$(BUILD_CXX) -o $@ $<
 

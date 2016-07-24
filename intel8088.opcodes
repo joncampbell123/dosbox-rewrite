@@ -70,6 +70,14 @@ opcode range(0x40,0x47) reg=op02:               "INC"w w(reg)
 opcode 0xFE mod/reg/rm /0:                      "INC"b b(r/m)
 opcode 0xFF mod/reg/rm /0:                      "INC"w w(r/m)
 
+; JMP
+opcode 0xE9 iws:                                "JMP"w w(i+ip)
+opcode 0xEB ibs:                                "JMP"w w(i+ip)
+opcode 0xFF mod/reg/rm /4:                      "JMP"w w(r/m)
+; JMP FAR
+opcode 0xEA iw iw16:                            "JMP"w w(i2,i)
+opcode 0xFF mod/reg/rm /5:                      "JMC"w w(i2,i)
+
 ; OR byte,byte
 opcode 0x08 mod/reg/rm:                         "OR"b b(r/m),b(reg)
 opcode 0x0A mod/reg/rm:                         "OR"b b(reg),b(r/m)
@@ -88,11 +96,13 @@ opcode 0x06:                                    "PUSH"w w(es)
 opcode 0x0E:                                    "PUSH"w w(cs)
 opcode 0x16:                                    "PUSH"w w(ss)
 opcode 0x1E:                                    "PUSH"w w(ds)
+opcode range(0x50,0x57) reg=op02:               "PUSH"w w(reg)
 ; POP sreg
 opcode 0x07:                                    "POP"w w(es)
 opcode 0x0F:                                    "POP"w w(cs)
 opcode 0x17:                                    "POP"w w(ss)
 opcode 0x1F:                                    "POP"w w(ds)
+opcode range(0x58,0x5F) reg=op02:               "POP"w w(reg)
 
 ; segment overrides
 opcode prefix 0x26 segoverride(es):             "ES:"
