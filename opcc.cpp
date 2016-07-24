@@ -28,6 +28,40 @@ enum opccSeg {
     OPSEG_SS
 };
 
+enum opccReg {
+    OPREG_NONE=-1,
+
+    // 8-bit
+    OPREG_AL=0,
+    OPREG_CL,
+    OPREG_DL,
+    OPREG_BL,
+    OPREG_AH,
+    OPREG_CH,
+    OPREG_DH,
+    OPREG_BH,
+
+    // 16-bit
+    OPREG_AX=0,
+    OPREG_CX,
+    OPREG_DX,
+    OPREG_BX,
+    OPREG_SP,
+    OPREG_BP,
+    OPREG_SI,
+    OPREG_DI,
+
+    // 32-bit
+    OPREG_EAX=0,
+    OPREG_ECX,
+    OPREG_EDX,
+    OPREG_EBX,
+    OPREG_ESP,
+    OPREG_EBP,
+    OPREG_ESI,
+    OPREG_EDI
+};
+
 enum opccSuffix {
     OPSUFFIX_NONE=0,
     OPSUFFIX_BYTE,
@@ -57,15 +91,27 @@ enum opccDispArg {
 
 enum opccDispArgType {
     OPDARGTYPE_NONE=0,
-    OPDARGTYPE_BYTE,
-    OPDARGTYPE_WORD,
-    OPDARGTYPE_WORD16,
-    OPDARGTYPE_WORD32,
+    OPDARGTYPE_BYTE,        // 8-bit byte
+    OPDARGTYPE_WORD,        // 16-bit (if 16-bit code),  32-bit (if 32-bit code)
+    OPDARGTYPE_WORD16,      // 16-bit
+    OPDARGTYPE_WORD32,      // 32-bit
     OPDARGTYPE_FPU,         // FPU st(i)
     OPDARGTYPE_FPU32,       // 32-bit float
     OPDARGTYPE_FPU64,       // 64-bit float
     OPDARGTYPE_FPU80,       // 80-bit float
-    OPDARGTYPE_FPUBCD       // floating point packed BCD
+    OPDARGTYPE_FPUBCD,      // floating point packed BCD
+    OPDARGTYPE_SREG         // segment register (word size)
+};
+
+class OpCodeDisplayArg {
+public:
+    OpCodeDisplayArg() : arg(OPDARG_NONE), argtype(OPDARGTYPE_NONE), argreg(OPREG_NONE), suffix(OPSUFFIX_NONE), imm(0) { }
+public:
+    enum opccDispArg        arg;
+    enum opccDispArgType    argtype;
+    enum opccReg            argreg;
+    enum opccSuffix         suffix;
+    uint64_t                imm;
 };
 
 FILE *in_fp = NULL;
