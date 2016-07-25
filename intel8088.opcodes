@@ -462,3 +462,20 @@ opcode 0xDC mod/reg/rm /7 mod==3:               "FDIVR" st(r/m),st(0)   ; FDIVR 
 opcode 0xDE mod/reg/rm /7 mod!=3:               "FDIVR"w16 w16(r/m)     ; FDIVR [mem]    ST(0) /= *((uint16_t*)mem)
 opcode 0xDE mod/reg/rm /7 mod==3:               "FDIVRP" st(r/m),st(0)  ; FDIVRP ST(r/m) ST(r/m) /= ST(0), POP from top of stack.
 
+; FLD
+opcode 0xD9 mod/reg/rm /0 mod!=3:               "FLD"f32 f32(r/m)       ; FLD [mem]    ST(0) = *((float*)mem)
+opcode 0xD9 mod/reg/rm /0 mod==3:               "FLD" st(0),st(r/m)     ; FLD ST(r/m)  ST(0) = ST(r/m)     mod == 3 therefore r/m is register
+opcode 0xD9 0xE8:                               "FLD1"
+opcode 0xD9 0xE9:                               "FLD2L2T"
+opcode 0xD9 0xEA:                               "FLD2L2E"
+opcode 0xD9 0xEB:                               "FLDPI"
+opcode 0xD9 0xEC:                               "FLDLG2"
+opcode 0xD9 0xED:                               "FLDLN2"
+opcode 0xD9 0xEE:                               "FLDZ"
+opcode 0xDB mod/reg/rm /0 mod!=3:               "FLD"w32 w32(r/m)       ; FLD [mem]    ST(0) = *((uint32_t*)mem)
+opcode 0xDB mod/reg/rm /5 mod!=3:               "FLD"f80 f80(r/m)       ; FLD [mem]    ST(0) = *((long double*)mem)
+opcode 0xDD mod/reg/rm /0 mod!=3:               "FLD"f64 f64(r/m)       ; FLD [mem]    ST(0) = *((double*)mem)
+opcode 0xDF mod/reg/rm /0 mod!=3:               "FLD"w16 w16(r/m)       ; FLD [mem]    ST(0) = *((uint16_t*)mem)
+opcode 0xDF mod/reg/rm /4 mod!=3:               "FLD"fbcd fbcd(r/m)     ; FLD [mem]    ST(0) = ... um, what would you call it?
+opcode 0xDF mod/reg/rm /5 mod!=3:               "FLV"w64 w64(r/m)       ; FLD [mem]    ST(0) = *((uint64_t*)mem)
+
