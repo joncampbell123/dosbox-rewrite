@@ -477,5 +477,22 @@ opcode 0xDB mod/reg/rm /5 mod!=3:               "FLD"f80 f80(r/m)       ; FLD [m
 opcode 0xDD mod/reg/rm /0 mod!=3:               "FLD"f64 f64(r/m)       ; FLD [mem]    ST(0) = *((double*)mem)
 opcode 0xDF mod/reg/rm /0 mod!=3:               "FLD"w16 w16(r/m)       ; FLD [mem]    ST(0) = *((uint16_t*)mem)
 opcode 0xDF mod/reg/rm /4 mod!=3:               "FLD"fbcd fbcd(r/m)     ; FLD [mem]    ST(0) = ... um, what would you call it?
-opcode 0xDF mod/reg/rm /5 mod!=3:               "FLV"w64 w64(r/m)       ; FLD [mem]    ST(0) = *((uint64_t*)mem)
+opcode 0xDF mod/reg/rm /5 mod!=3:               "FLD"w64 w64(r/m)       ; FLD [mem]    ST(0) = *((uint64_t*)mem)
+
+; FST
+opcode 0xD9 mod/reg/rm /2 mod!=3:               "FST"f32 f32(r/m)       ; FST [mem]     *((float*)mem) = ST(0)
+opcode 0xDB mod/reg/rm /2 mod!=3:               "FST"w32 w32(r/m)       ; FST [mem]     *((uint32_t*)mem) = ST(0)
+opcode 0xDD mod/reg/rm /2 mod!=3:               "FST"f64 f64(r/m)       ; FST [mem]     *((double*)mem) = ST(0)
+opcode 0xDD mod/reg/rm /2 mod==3:               "FST" st(r/m)           ; FST ST(r/m)   ST(r/m) = ST(0)
+opcode 0xDF mod/reg/rm /2 mod!=3:               "FST"w16 w16(r/m)       ; FST [mem]     *((uint16_t*)mem) = ST(0)
+
+; FSTP
+opcode 0xD9 mod/reg/rm /3 mod!=3:               "FSTP"f32 f32(r/m)      ; FSTP [mem]    *((float*)mem) = ST(0), POP
+opcode 0xDB mod/reg/rm /3 mod!=3:               "FSTP"w32 w32(r/m)      ; FSTP [mem]    *((uint32_t*)mem) = ST(0), POP
+opcode 0xDB mod/reg/rm /7 mod!=3:               "FSTP"f80 f80(r/m)      ; FSTP [mem]    *((long double*)mem) = ST(0), POP
+opcode 0xDD mod/reg/rm /3 mod!=3:               "FSTP"f64 f64(r/m)      ; FSTP [mem]    *((double*)mem) = ST(0), POP
+opcode 0xDD mod/reg/rm /3 mod==3:               "FSTP" st(r/m)          ; FSTP ST(r/m)  ST(r/m) = ST(0), POP
+opcode 0xDF mod/reg/rm /3 mod!=3:               "FSTP"w16 w16(r/m)      ; FSTP [mem]    *((uint16_t*)mem) = ST(0), POP
+opcode 0xDF mod/reg/rm /6 mod!=3:               "FSTP"fbcd fbcd(r/m)    ; FSTP [mem]    *mem = ST(0), POP
+opcode 0xDF mod/reg/rm /7 mod!=3:               "FSTP"w64 w64(r/m)      ; FSTP [mem]    *((uint64_t)mem) = ST(0), POP
 
