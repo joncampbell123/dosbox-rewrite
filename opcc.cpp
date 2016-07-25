@@ -218,7 +218,7 @@ static bool parse(int argc,char **argv) {
 class OpByte {
 public:
     OpByte() : isprefix(false), segoverride(OPSEG_NONE), modregrm(false), reg_from_opcode(false),
-        suffix(OPSUFFIX_NONE), opmap_valid(false) {
+        already(false), suffix(OPSUFFIX_NONE), opmap_valid(false) {
     }
     ~OpByte() {
         free_opmap();
@@ -264,6 +264,25 @@ public:
         if (suffix != r.suffix) return false;
         if (immarg != r.immarg) return false;
         if (disparg != r.disparg) return false;
+        if (opmap_valid != r.opmap_valid) return false;
+
+        if (opmap_valid) {
+            assert(r.opmap_valid);
+            for (unsigned int i=0;i < 256;i++) {
+                OpByte *a = opmap[i];
+                OpByte *b = r.opmap[i];
+
+                if ((a != NULL) != (b != NULL))
+                    return false;
+
+                if (a != NULL) {
+                    assert(b != NULL);
+                    if (!(*a == *b))
+                        return false;
+                }
+            }
+        }
+
         return true;
     }
 public:
@@ -278,6 +297,7 @@ public:
                                 // In some cases (FPU 8087 opcodes) mod/reg/rm both determines the memory address or FPU register and in other cases
                                 // the mod/reg/rm byte IS the second byte of the opcode (when mod == 3).
     bool            reg_from_opcode; // reg from opcode, reg = (opcode >> 3) & 7
+    bool            already;
     enum opccSuffix suffix;     // suffix to name
     vector<enum opccArgs> immarg;
     vector<OpCodeDisplayArg> disparg;
@@ -727,7 +747,7 @@ bool parse_opcodelist(void) {
 }
 
 void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const uint8_t *opbase,const size_t opbaselen,OpByte &map,const unsigned int indent=0) {
-    OpByte *submap;
+    OpByte *submap,*submap2;
     string indent_str;
 
     for (unsigned int ind=0;ind < indent;ind++)
@@ -767,16 +787,23 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
 
     for (unsigned int op=0;op < 0x100;op++) {
         submap = map.opmap[op];
-        if (submap != NULL) {
-            unsigned int immc = 0;
+        if (submap != NULL && !submap->already) {
+            for (unsigned int op2=op;op2 < 0x100;op2++) {
+                submap2 = map.opmap[op2];
 
-            fprintf(out_fp,"%s    case 0x%02X: /* ",indent_str.c_str(),op);
-            for (size_t i=0;i < opbaselen;i++) fprintf(out_fp,"%02Xh ",opbase[i]);
-            fprintf(out_fp,"%02Xh ",op);
-            fprintf(out_fp,"%s%s %s */\n",submap->name.c_str(),suffix_str(submap->suffix,codewidth),submap->format_str.c_str());
+                if (submap2 != NULL && !submap2->already && (op == op2 || *submap == *submap2)) {
+                    fprintf(out_fp,"%s    case 0x%02X: /* ",indent_str.c_str(),op2);
+                    for (size_t i=0;i < opbaselen;i++) fprintf(out_fp,"%02Xh ",opbase[i]);
+                    fprintf(out_fp,"%02Xh ",op2);
+                    fprintf(out_fp,"%s%s %s */\n",submap2->name.c_str(),suffix_str(submap2->suffix,codewidth),submap2->format_str.c_str());
+                    submap2->already = true;
+                }
+            }
 
             if (submap->modregrm)
                 fprintf(out_fp,"%s        IPFB_mrm_sib_disp_c%u_a%u_read(mrm,sib,disp);\n",indent_str.c_str(),codewidth,addrwidth);
+
+            unsigned int immc = 0;
 
             /* then fetch other args */
             for (size_t i=0;i < submap->immarg.size();i++) {
@@ -850,6 +877,11 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
         fprintf(out_fp,"/* End of opcodes starting with ");
         for (size_t i=0;i < opbaselen;i++) fprintf(out_fp,"%02Xh ",opbase[i]);
         fprintf(out_fp,"*/\n");
+    }
+
+    for (unsigned int op=0;op < 0x100;op++) {
+        submap = map.opmap[op];
+        if (submap != NULL) submap->already = false;
     }
 }
 
