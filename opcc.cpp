@@ -955,6 +955,10 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
 
                 opcode_gen_case_statement(codewidth,addrwidth,opbase,opbaselen,map,indent,indent_str,submap,op,0);
             }
+
+            if (submap == NULL) {
+                fprintf(out_fp,"%s    /* reg %u not defined */\n",indent_str.c_str(),op >> 3);
+            }
         }
     }
     else {
@@ -978,6 +982,13 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
                 }
 
                 opcode_gen_case_statement(codewidth,addrwidth,opbase,opbaselen,map,indent,indent_str,submap,op,/*flags*/0);
+            }
+
+            if (submap == NULL) {
+                fprintf(out_fp,"%s    /* opcode ",indent_str.c_str(),op);
+                for (size_t i=0;i < opbaselen;i++) fprintf(out_fp,"%02Xh ",opbase[i]);
+                fprintf(out_fp,"%02Xh ",op);
+                fprintf(out_fp," not defined */\n");
             }
         }
     }
