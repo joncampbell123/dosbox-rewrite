@@ -43,6 +43,13 @@ opcode 0x25 iw:                                 "AND"w w(a),i
 opcode 0x81 mod/reg/rm /4 iw:                   "AND"w w(r/m),i
 opcode 0x83 mod/reg/rm /4 ibs:                  "AND"w w(r/m),i
 
+; CALL
+opcode 0xE8 iws:                                "CALL"w w(i+ip)
+opcode 0xFF mod/reg/rm /2:                      "CALL"w w(r/m)
+; CALL FAR
+opcode 0x9A iw iw16:                            "CALLF"w w(i2,i)
+opcode 0xFF mod/reg/rm /3:                      "CALLF"w w(r/m)
+
 ; CMP byte,byte
 opcode 0x38 mod/reg/rm:                         "CMP"b b(r/m),b(reg)
 opcode 0x3A mod/reg/rm:                         "CMP"b b(reg),b(r/m)
@@ -75,8 +82,8 @@ opcode 0xE9 iws:                                "JMP"w w(i+ip)
 opcode 0xEB ibs:                                "JMP"w w(i+ip)
 opcode 0xFF mod/reg/rm /4:                      "JMP"w w(r/m)
 ; JMP FAR
-opcode 0xEA iw iw16:                            "JMP"w w(i2,i)
-opcode 0xFF mod/reg/rm /5:                      "JMC"w w(i2,i)
+opcode 0xEA iw iw16:                            "JMPF"w w(i2,i)
+opcode 0xFF mod/reg/rm /5:                      "JMPF"w w(r/m)
 
 ; OR byte,byte
 opcode 0x08 mod/reg/rm:                         "OR"b b(r/m),b(reg)

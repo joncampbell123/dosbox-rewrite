@@ -114,6 +114,22 @@ public:
     uint64_t                imm;
 };
 
+const char *suffix_str(enum opccSuffix c,const unsigned int opsize) {
+    switch (c) {
+        case OPSUFFIX_BYTE:
+            return "b";
+        case OPSUFFIX_WORD:
+            if (opsize >= 32) return "d";
+            else return "w";
+        case OPSUFFIX_WORD16:
+            return "w";
+        case OPSUFFIX_WORD32:
+            return "d";
+    }
+
+    return "";
+}
+
 FILE *in_fp = NULL;
 string in_path;
 
@@ -228,6 +244,7 @@ public:
     }
 public:
     // opbyte [mod/reg/rm [sib] [disp]] [immediate]
+    string          format_str;
     string          name;       // JMP, etc.
     opccSeg         segoverride;// segment override
     bool            isprefix;   // opcode is prefix
@@ -275,6 +292,7 @@ public:
     enum opccSeg            segoverride;
     enum opccSuffix         suffix;     // suffix to name
 public:
+    string                  format_str;
     string                  name;
     vector<enum opccArgs>   immarg;
     unsigned char           ops[16];
@@ -303,6 +321,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
                     assert(submap != NULL);
 
                     submap->modregrm = false;
+                    submap->format_str = st.format_str;
                     submap->segoverride = st.segoverride;
                     submap->isprefix = st.is_prefix;
                     submap->immarg = st.immarg;
@@ -313,11 +332,20 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
         }
         else {
             map->segoverride = st.segoverride;
+            map->format_str = st.format_str;
             map->isprefix = st.is_prefix;
             map->immarg = st.immarg;
             map->suffix = st.suffix;
             map->name = st.name;
         }
+    }
+    else {
+        map->segoverride = st.segoverride;
+        map->format_str = st.format_str;
+        map->isprefix = st.is_prefix;
+        map->immarg = st.immarg;
+        map->suffix = st.suffix;
+        map->name = st.name;
     }
 
     return true;
@@ -328,6 +356,7 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
     bool allow_modregrm = true;
     bool allow_op = true; // once set to false, can't define more opcode bytes
     char *next = NULL;
+    int argc = 0;
 
     next = strchr(s,':');
     if (next != NULL) *next++ = 0;
@@ -390,7 +419,7 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
             }
 
             /* use long parsing to catch overlarge values */
-            unsigned long b = strtoul(s,&s,0);
+            unsigned long b = strtoul(s+1,&s,0);
 
             if (b > 7) {
                 fprintf(stderr,"/REG match out of range\n");
@@ -528,6 +557,71 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
         return false;
     }
 
+    if (next == NULL) {
+        fprintf(stderr,"Opcode does not define anything\n");
+        return false;
+    }
+    while (isblank(*next)) next++;
+
+    argc = 0;
+    s = next;
+    while (*s != 0) {
+        if (isblank(*s)) {
+            s++;
+            continue;
+        }
+
+        // ASCII chop next space
+        char *ns = strchr(s,' ');
+        if (ns != NULL) *ns++ = 0;
+
+        if (argc == 0) { // "NAME"b
+            if (!st.name.empty()) {
+                fprintf(stderr,"Syntax error: %s\n",s);
+                return false;
+            }
+
+            if (*s != '\"') {
+                fprintf(stderr,"Name must be kept in quotes\n");
+                return false;
+            }
+            s++;
+            while (*s != 0 && *s != '\"') st.name += *s++;
+            if (*s != '\"') {
+                fprintf(stderr,"Name must be kept in quotes\n");
+                return false;
+            }
+            s++;
+
+            if (!strcmp(s,"b"))
+                st.suffix = OPSUFFIX_BYTE;
+            else if (!strcmp(s,"w"))
+                st.suffix = OPSUFFIX_WORD;
+            else if (!strcmp(s,"w16"))
+                st.suffix = OPSUFFIX_WORD16;
+            else if (!strcmp(s,"w32"))
+                st.suffix = OPSUFFIX_WORD32;
+            else if (*s == 0)
+                st.suffix = OPSUFFIX_NONE;
+            else {
+                fprintf(stderr,"Name has unknown suffix\n");
+                return false;
+            }
+        }
+        else if (argc == 1) { /* b(r/m),b(reg) */
+            st.format_str = s;
+        }
+        else {
+            fprintf(stderr,"Unexpected arg\n");
+            return false;
+        }
+
+        if (ns != NULL) s = ns;
+        else break;
+
+        argc++;
+    }
+
     if (st.oprange_min < 0) {
         if (true/*16-bit*/ && !parse_opcode_def_gen1(/*&*/st,/*&*/opmap16))
             return false;
@@ -553,8 +647,10 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
 
 bool parse_opcodelist(void) {
     char line[1024],*s;
+    char parse_line[1024];
     unsigned long lineno = 0;
 
+    memset(line,0,sizeof(line));
     while (!feof(in_fp)) {
         if (ferror(in_fp)) {
             fprintf(stderr,"File I/O error on stdin\n");
@@ -578,18 +674,19 @@ bool parse_opcodelist(void) {
         /* skip blank lines */
         if (*s == 0) continue;
 
+        strcpy(parse_line,line);
         if (!strncmp(s,"opcode ",7)) {
             s += 7;
             while (isblank(*s)) s++;
 
             if (!parse_opcode_def(line,lineno,s)) {
-                fprintf(stderr," (%u): %s\n",lineno,line);
+                fprintf(stderr," (%u): %s\n",lineno,parse_line);
                 return false;
             }
         }
         else {
             fprintf(stderr,"Unknown input:\n");
-            fprintf(stderr," (%u): %s\n",lineno,line);
+            fprintf(stderr," (%u): %s\n",lineno,parse_line);
             return false;
         }
     }
@@ -597,7 +694,80 @@ bool parse_opcodelist(void) {
     return true;
 }
 
+void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const uint8_t *opbase,const size_t opbaselen,OpByte &map) {
+    OpByte *submap;
+
+    if (opbaselen == 0) {
+        fprintf(out_fp,"/* BEGIN AUTOGENERATED CODE */\n");
+        fprintf(out_fp,"/* code width = %u     addr width = %u */\n",codewidth,addrwidth);
+        fprintf(out_fp,"/* expect host code to provide: */\n");
+        fprintf(out_fp,"/*   uint8_t op;               opcode byte */\n");
+        fprintf(out_fp,"/*   struct x86ModRegRm mrm;   mod/reg/rm byte */\n");
+        fprintf(out_fp,"/*   struct x86ScaleIndexBase sib; scalar/index/base byte */\n");
+        fprintf(out_fp,"/*   uint%u_t disp;            displacement */\n",addrwidth);
+        fprintf(out_fp,"/* expect host code to provide: */\n");
+        fprintf(out_fp,"/*   uint8_t IPFB();           fetch byte at instruction pointer */\n");
+        fprintf(out_fp,"/*   uint16_t IPFW();          fetch word at instruction pointer */\n");
+        fprintf(out_fp,"/*   uint32_t IPFDW();         fetch dword at instruction pointer */\n");
+        fprintf(out_fp,"/*   uint%u_t IPFcodeW();      fetch %u-bit word at instruction pointer */\n",codewidth,codewidth);
+        fprintf(out_fp,"/*   void IPFB_mrm_sib_disp_c%u_a%u_read(mrm,sib,disp);   read mod/reg/rm, sib, displacement */\n",codewidth,addrwidth);
+        fprintf(out_fp,"_x86decode_begin_code%u_addr%u:\n",codewidth,addrwidth);
+        fprintf(out_fp,"_x86decode_after_prefix_code%u_addr%u:\n",codewidth,addrwidth);
+    }
+    else {
+        fprintf(out_fp,"/* Opcodes starting with ");
+        for (size_t i=0;i < opbaselen;i++) fprintf(out_fp,"%02Xh ",opbase[i]);
+        fprintf(out_fp,"*/\n");
+    }
+
+    /* TODO: If modregrm opcode byte and opcodes in this level have a consistent reg == /X pattern
+     *       then generate a switch statement by mrm.reg instead of byte value. */
+
+    if (map.modregrm)
+        fprintf(out_fp,"switch (op=mrm.byte) {\n");
+    else
+        fprintf(out_fp,"switch (op=IPFB()) {\n");
+
+    for (unsigned int op=0;op < 0x100;op++) {
+        submap = map.opmap[op];
+        if (submap != NULL) {
+            fprintf(out_fp,"case 0x%02X: /* ",op);
+            for (size_t i=0;i < opbaselen;i++) fprintf(out_fp,"%02Xh ",opbase[i]);
+            fprintf(out_fp,"%02Xh ",op);
+            fprintf(out_fp,"%s%s %s */\n",submap->name.c_str(),suffix_str(submap->suffix,codewidth),submap->format_str.c_str());
+
+            if (submap->modregrm)
+                fprintf(out_fp,"IPFB_mrm_sib_disp_c%u_a%u_read(mrm,sib,disp);\n",codewidth,addrwidth);
+
+            if (submap->opmap_valid) {
+                uint8_t tmp[16];
+
+                assert(opbaselen < 15);
+                if (opbaselen != 0) memcpy(tmp,opbase,opbaselen);
+                tmp[opbaselen] = op;
+                
+                outcode_gen(codewidth,addrwidth,tmp,opbaselen+1,*submap);
+            }
+
+            if (submap->isprefix)
+                fprintf(out_fp,"goto _x86decode_after_prefix_code%u_addr%u;\n",codewidth,addrwidth);
+            else
+                fprintf(out_fp,"break;\n");
+        }
+    }
+    fprintf(out_fp,"default:\n");
+    fprintf(out_fp,"goto _x86decode_illegal_opcode;\n");
+    fprintf(out_fp,"};\n");
+
+    if (opbaselen != 0) {
+        fprintf(out_fp,"/* End of opcodes starting with ");
+        for (size_t i=0;i < opbaselen;i++) fprintf(out_fp,"%02Xh ",opbase[i]);
+        fprintf(out_fp,"*/\n");
+    }
+}
+
 int main(int argc,char **argv) {
+    static const uint8_t empty_opcode[1] = {0};
     bool res;
 
     if (!parse(argc,argv))
@@ -612,6 +782,23 @@ int main(int argc,char **argv) {
     fclose(in_fp);
     if (!res) return 1;
 
+    if (out_path == "-")
+        out_fp = fdopen(dup(1/*STDOUT*/),"w");
+    else
+        out_fp = fopen(out_path.c_str(),"w");
+
+    /* TODO: 16-bit and 32-bit modes if opcode list says the CPU supports the 32-bit operand overrides.
+     *       If that is the case, we generate 16-bit and 32-bit cases in a "figure 8" goto configuration,
+     *       so that there is one while() loop for executing 16-bit code and one while() loop for executing 32-bit code,
+     *       and opcode prefixes jump from one loop to another. Another plan is to have 4 while loops, one for each
+     *       permutation of 16-bit/32-bit code and 16-bit/32-bit addressing.
+     *
+     *       Sound stupid? Maybe, but the idea is that most code runs in the CPU mode it's designed for and that
+     *       the operator overrides are uncommon, therefore the opcode decoding could gain a speedup by not having
+     *       conditional jumps per instruction with regard to opcode size and address size decoding. */
+    outcode_gen(16/*-bit code*/,16/*-bit addressing*/,empty_opcode/*opcode base*/,0/*opcode base len*/,/*&*/opmap16);
+
+    fclose(out_fp);
     return 0;
 }
 
