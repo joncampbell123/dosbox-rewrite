@@ -113,6 +113,16 @@ public:
     enum opccSuffix         suffix;
     uint8_t                 index;
     uint64_t                imm;
+public:
+    inline bool operator==(const OpCodeDisplayArg &r) const {
+        if (arg != r.arg) return false;
+        if (argtype != r.argtype) return false;
+        if (argreg != r.argreg) return false;
+        if (suffix != r.suffix) return false;
+        if (index != r.index) return false;
+        if (imm != r.imm) return false;
+        return true;
+    }
 };
 
 const char *suffix_str(enum opccSuffix c,const unsigned int opsize) {
@@ -207,7 +217,7 @@ static bool parse(int argc,char **argv) {
 
 class OpByte {
 public:
-    OpByte() : isprefix(false), segoverride(OPSEG_NONE), modregrm(false),
+    OpByte() : isprefix(false), segoverride(OPSEG_NONE), modregrm(false), reg_from_opcode(false),
         suffix(OPSUFFIX_NONE), opmap_valid(false) {
     }
     ~OpByte() {
@@ -244,6 +254,19 @@ public:
         return (opmap[op] != NULL)?true:false;
     }
 public:
+    inline bool operator==(const OpByte &r) const {
+        if (format_str != r.format_str) return false;
+        if (name != r.name) return false;
+        if (segoverride != r.segoverride) return false;
+        if (isprefix != r.isprefix) return false;
+        if (modregrm != r.modregrm) return false;
+        if (reg_from_opcode != r.reg_from_opcode) return false;
+        if (suffix != r.suffix) return false;
+        if (immarg != r.immarg) return false;
+        if (disparg != r.disparg) return false;
+        return true;
+    }
+public:
     // opbyte [mod/reg/rm [sib] [disp]] [immediate]
     string          format_str;
     string          name;       // JMP, etc.
@@ -254,6 +277,7 @@ public:
                                 // if more == true, this byte is NOT final and the next byte is the mod/reg/rm byte where REG determines the opcode.
                                 // In some cases (FPU 8087 opcodes) mod/reg/rm both determines the memory address or FPU register and in other cases
                                 // the mod/reg/rm byte IS the second byte of the opcode (when mod == 3).
+    bool            reg_from_opcode; // reg from opcode, reg = (opcode >> 3) & 7
     enum opccSuffix suffix;     // suffix to name
     vector<enum opccArgs> immarg;
     vector<OpCodeDisplayArg> disparg;
@@ -345,6 +369,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
         }
     }
     else {
+        map->reg_from_opcode = st.reg_from_opcode;
         map->segoverride = st.segoverride;
         map->format_str = st.format_str;
         map->isprefix = st.is_prefix;
