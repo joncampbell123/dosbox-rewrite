@@ -67,7 +67,12 @@ enum opccSuffix {
     OPSUFFIX_BYTE,
     OPSUFFIX_WORD,
     OPSUFFIX_WORD16,
-    OPSUFFIX_WORD32
+    OPSUFFIX_WORD32,
+    OPSUFFIX_WORD64,
+    OPSUFFIX_FLOAT32,       // aka float
+    OPSUFFIX_FLOAT64,       // aka double
+    OPSUFFIX_FLOAT80,       // aka long double
+    OPSUFFIX_FLOATBCD
 };
 
 enum opccArgs {
@@ -136,6 +141,16 @@ const char *suffix_str(enum opccSuffix c,const unsigned int opsize) {
             return "w";
         case OPSUFFIX_WORD32:
             return "d";
+        case OPSUFFIX_WORD64:
+            return "q";
+        case OPSUFFIX_FLOAT32:
+            return "f32";
+        case OPSUFFIX_FLOAT64:
+            return "f64";
+        case OPSUFFIX_FLOAT80:
+            return "f80";
+        case OPSUFFIX_FLOATBCD:
+            return "fbcd";
     }
 
     return "";
@@ -326,6 +341,8 @@ public:
         segoverride = OPSEG_NONE;
         suffix = OPSUFFIX_NONE;
         is_prefix = false; // opcode is prefix, changes decode state then starts another opcode
+        mod_not_3 = false;
+        mod_is_3 = false;
         modregrm = false;
         op = 0;
     }
@@ -333,6 +350,8 @@ public:
     bool                    reg_from_opcode; // if set, lowest 3 bits of opcode define REG field
     bool                    is_prefix; // opcode is prefix, changes decode state then starts another opcode
     bool                    modregrm;
+    bool                    mod_not_3;      // some opcodes are not valid if mod != 3
+    bool                    mod_is_3;
     int                     oprange_min;
     int                     oprange_max; // last byte of opcode takes the range (min,max) inclusive
     int                     mrm_reg_match; // /X style, to say that opcode is specified by REG field of mod/reg/rm
@@ -364,6 +383,11 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
             for (unsigned int mod=0;mod < 4;mod++) {//TODO: mod value conditionals
                 for (unsigned int rm=0;rm < 8;rm++) {
                     const uint8_t mrm = (mod << 6) + (st.mrm_reg_match << 3) + rm;
+
+                    if (mod == 3 && st.mod_not_3)
+                        continue;
+                    else if (mod != 3 && st.mod_is_3)
+                        continue;
 
                     map->init_opcode(mrm);
                     submap = map->opmap[mrm];
@@ -528,6 +552,12 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
         else if (!strcmp(s,"prefix")) {
             st.is_prefix = true;
         }
+        else if (!strcmp(s,"mod!=3")) {
+            st.mod_not_3 = true;
+        }
+        else if (!strcmp(s,"mod==3")) {
+            st.mod_is_3 = true;
+        }
         else if (!strncmp(s,"segoverride(",12)) {
             s += 12;
             while (isblank(*s)) s++;
@@ -658,10 +688,20 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
                 st.suffix = OPSUFFIX_WORD16;
             else if (!strcmp(s,"w32"))
                 st.suffix = OPSUFFIX_WORD32;
+            else if (!strcmp(s,"w64"))
+                st.suffix = OPSUFFIX_WORD64;
+            else if (!strcmp(s,"f32"))
+                st.suffix = OPSUFFIX_FLOAT32;
+            else if (!strcmp(s,"f64"))
+                st.suffix = OPSUFFIX_FLOAT64;
+            else if (!strcmp(s,"f80"))
+                st.suffix = OPSUFFIX_FLOAT80;
+            else if (!strcmp(s,"fbcd"))
+                st.suffix = OPSUFFIX_FLOATBCD;
             else if (*s == 0)
                 st.suffix = OPSUFFIX_NONE;
             else {
-                fprintf(stderr,"Name has unknown suffix\n");
+                fprintf(stderr,"Name has unknown suffix %s\n",s);
                 return false;
             }
         }
@@ -904,16 +944,16 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
                 for (unsigned int mod=0x40;mod < 0x100;mod += 0x40) {
                     bool match = false;
 
-                    if (map.opmap[reg] == NULL && map.opmap[reg+mod]) {
+                    if (map.opmap[reg] == NULL && map.opmap[reg+mod] == NULL) {
                         match = true;
                     }
                     else if (map.opmap[reg] != NULL && map.opmap[reg+mod] != NULL) {
                         if (*(map.opmap[reg]) == *(map.opmap[reg+mod]))
                             match = true;
-
-                        if (!match)
-                            is_reg_pattern = false;
                     }
+
+                    if (!match)
+                        is_reg_pattern = false;
                 }
             }
         }

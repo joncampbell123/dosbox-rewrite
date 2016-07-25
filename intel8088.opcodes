@@ -387,3 +387,13 @@ opcode 0x35 iw:                                 "XOR"w w(a),i
 opcode 0x81 mod/reg/rm /6 iw:                   "XOR"w w(r/m),i
 opcode 0x83 mod/reg/rm /6 ibs:                  "XOR"w w(r/m),i
 
+; FADD
+opcode 0xD8 mod/reg/rm /0 mod!=3:               "FADD"f32 f32(r/m)      ; FADD [mem]    ST(0) += *((float*)mem)
+opcode 0xD8 mod/reg/rm /0 mod==3:               "FADD" st(0),st(r/m)    ; FADD ST(r/m)  ST(0) += ST(r/m)     mod == 3 therefore r/m is register
+opcode 0xDA mod/reg/rm /0 mod!=3:               "FADD"w32 w32(r/m)      ; FADD [mem]    ST(0) += *((uint32_t*)mem)
+opcode 0xDA mod/reg/rm /0 mod==3:               "FADDP" st(0),st(r/m)   ; FADDP ST(r/m) ST(0) += ST(r/m), POP from top of stack. Useless, replaced in 80387.
+opcode 0xDC mod/reg/rm /0 mod!=3:               "FADD"f64 f64(r/m)      ; FADD [mem]    ST(0) += *((double*)mem)
+opcode 0xDC mod/reg/rm /0 mod==3:               "FADD" st(r/m),st(0)    ; FADD ST(r/m)  ST(r/m) += ST(0)
+opcode 0xDE mod/reg/rm /0 mod!=3:               "FADD"w16 w16(r/m)      ; FADD [mem]    ST(0) += *((uint16_t*)mem)
+opcode 0xDE mod/reg/rm /0 mod==3:               "FADDP" st(r/m),st(0)   ; FADD ST(r/m)  ST(r/m) += ST(0), POP from top of stack.
+
