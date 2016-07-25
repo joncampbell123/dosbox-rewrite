@@ -190,23 +190,52 @@ static bool parse(int argc,char **argv) {
 
 class OpByte {
 public:
-    OpByte() : isprefix(false), segoverride(OPSEG_NONE), more(false), modregrm(false), regswitch(false),
+    OpByte() : isprefix(false), segoverride(OPSEG_NONE), modregrm(false),
         suffix(OPSUFFIX_NONE), opmap_valid(false) {
     }
     ~OpByte() {
+        free_opmap();
+    }
+    void free_opmap(void) {
+        for (size_t i=0;i < 256;i++) free_opmap_code(i);
+    }
+    void free_opmap_code(size_t i) {
+        if (opmap[i] != NULL) {
+            delete opmap[i];
+            opmap[i] = NULL;
+        }
+    }
+    void init_opmap(void) {
+        if (!opmap_valid) {
+            opmap_valid = true;
+            for (size_t i=0;i < 256;i++) opmap[i] = NULL;
+        }
+    }
+    bool init_opcode(const uint8_t op) {
+        if (!opmap_valid)
+            init_opmap();
+
+        if (opmap[op] == NULL) {
+            opmap[op] = new OpByte();
+            return true;
+        }
+
+        return false;
+    }
+    bool exist_opcode(const uint8_t op) {
+        if (!opmap_valid) return false;
+        return (opmap[op] != NULL)?true:false;
     }
 public:
     // opbyte [mod/reg/rm [sib] [disp]] [immediate]
     string          name;       // JMP, etc.
     opccSeg         segoverride;// segment override
     bool            isprefix;   // opcode is prefix
-    bool            more;       // this byte is not the last byte of the opcode, see map
-    bool            modregrm;   // a MOD/REG/RM byte follows the opcode
-    bool            regswitch;  // this opcode is not final, MOD/REG/RM REG field determines opcode, see map.
-                                // if ALL opcodes in the map line up with matching REG field (byte & 0x38) then this code
-                                // should reduce it down to switch (mrm.reg), else switch (mrm.byte).
-                                // this is a signal to the opcc code below to emit code to load MOD/REG/RM then
-                                // a switch statement for the next byte.
+    bool            modregrm;   // a MOD/REG/RM byte follows the opcode.
+                                // if more == false, this byte is final and mod/reg/rm decode the instruction as normal.
+                                // if more == true, this byte is NOT final and the next byte is the mod/reg/rm byte where REG determines the opcode.
+                                // In some cases (FPU 8087 opcodes) mod/reg/rm both determines the memory address or FPU register and in other cases
+                                // the mod/reg/rm byte IS the second byte of the opcode (when mod == 3).
     enum opccSuffix suffix;     // suffix to name
     vector<enum opccArgs> immarg;
 public:
@@ -214,7 +243,7 @@ public:
     bool            opmap_valid;
 };
 
-OpByte*     opmap[256] = {NULL};
+OpByte      opmap16,opmap32;
 
 // C/C++ implementation of Perl's chomp function.
 // static copy to differentiate from target system vs build system.
@@ -223,19 +252,82 @@ static void opcc_chomp(char *s) {
     while (t >= s && (*t == '\n' || *t == '\r')) *t-- = 0;
 }
 
+class parse_opcode_state {
+public:
+    parse_opcode_state() {
+        oprange_min = -1;
+        oprange_max = -1; // last byte of opcode takes the range (min,max) inclusive
+        mrm_reg_match = -1; // /X style, to say that opcode is specified by REG field of mod/reg/rm
+        reg_from_opcode = false; // if set, lowest 3 bits of opcode define REG field
+        segoverride = OPSEG_NONE;
+        suffix = OPSUFFIX_NONE;
+        is_prefix = false; // opcode is prefix, changes decode state then starts another opcode
+        modregrm = false;
+        op = 0;
+    }
+public:
+    bool                    reg_from_opcode; // if set, lowest 3 bits of opcode define REG field
+    bool                    is_prefix; // opcode is prefix, changes decode state then starts another opcode
+    bool                    modregrm;
+    int                     oprange_min;
+    int                     oprange_max; // last byte of opcode takes the range (min,max) inclusive
+    int                     mrm_reg_match; // /X style, to say that opcode is specified by REG field of mod/reg/rm
+    enum opccSeg            segoverride;
+    enum opccSuffix         suffix;     // suffix to name
+public:
+    string                  name;
+    vector<enum opccArgs>   immarg;
+    unsigned char           ops[16];
+    uint8_t                 op;
+};
+
+bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
+    OpByte *map = &maproot,*submap;
+
+    for (unsigned int i=0;i < st.op;i++) {
+        const uint8_t opcode = st.ops[i];
+        map->init_opcode(opcode);
+        map = map->opmap[opcode];
+        assert(map != NULL);
+    }
+
+    if (st.modregrm) {
+        map->modregrm = st.modregrm;
+        if (st.mrm_reg_match >= 0) {
+            for (unsigned int mod=0;mod < 4;mod++) {//TODO: mod value conditionals
+                for (unsigned int rm=0;rm < 8;rm++) {
+                    const uint8_t mrm = (mod << 6) + (st.mrm_reg_match << 3) + rm;
+
+                    map->init_opcode(mrm);
+                    submap = map->opmap[mrm];
+                    assert(submap != NULL);
+
+                    submap->modregrm = false;
+                    submap->segoverride = st.segoverride;
+                    submap->isprefix = st.is_prefix;
+                    submap->immarg = st.immarg;
+                    submap->suffix = st.suffix;
+                    submap->name = st.name;
+                }
+            }
+        }
+        else {
+            map->segoverride = st.segoverride;
+            map->isprefix = st.is_prefix;
+            map->immarg = st.immarg;
+            map->suffix = st.suffix;
+            map->name = st.name;
+        }
+    }
+
+    return true;
+}
+
 bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
+    parse_opcode_state st;
     bool allow_modregrm = true;
-    vector<enum opccArgs> immarg;
-    int oprange_min = -1,oprange_max = -1; // last byte of opcode takes the range (min,max) inclusive
-    int mrm_reg_match = -1; // /X style, to say that opcode is specified by REG field of mod/reg/rm
-    bool reg_from_opcode = false; // if set, lowest 3 bits of opcode define REG field
-    enum opccSeg segoverride = OPSEG_NONE;
-    bool is_prefix=false; // opcode is prefix, changes decode state then starts another opcode
-    bool modregrm=false;
-    bool allow_op=true; // once set to false, can't define more opcode bytes
-    char *next=NULL;
-    unsigned char ops[16];
-    uint8_t op=0;
+    bool allow_op = true; // once set to false, can't define more opcode bytes
+    char *next = NULL;
 
     next = strchr(s,':');
     if (next != NULL) *next++ = 0;
@@ -267,15 +359,15 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
                 fprintf(stderr,"Excess char follows opcode byte: %s\n",s);
                 return false;
             }
-            else if (op >= sizeof(ops)) {
+            else if ((st.op+4) >= sizeof(st.ops)) {
                 fprintf(stderr,"Opcode byte string too long\n");
                 return false;
             }
 
-            ops[op++] = (unsigned char)b;
+            st.ops[st.op++] = (unsigned char)b;
         }
         else if (!strcmp(s,"mod/reg/rm")) {
-            if (modregrm) {
+            if (st.modregrm) {
                 fprintf(stderr,"Cannot define mod/reg/rm field twice\n");
                 return false;
             }
@@ -284,15 +376,15 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
                 return false;
             }
 
-            modregrm = true;
             allow_op = false;
+            st.modregrm = true;
         }
         else if (s[0] == '/' && isdigit(s[1])) { // /1, /3, etc. to match by REG value
-            if (!modregrm) {
+            if (!st.modregrm) {
                 fprintf(stderr,"Cannot use REG matching (/1 /3 etc) without mod/reg/rm\n");
                 return false;
             }
-            else if (mrm_reg_match >= 0) {
+            else if (st.mrm_reg_match >= 0) {
                 fprintf(stderr,"Cannot match more than one REG value\n");
                 return false;
             }
@@ -304,82 +396,84 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
                 fprintf(stderr,"/REG match out of range\n");
                 return false;
             }
+
+            st.mrm_reg_match = b;
         }
         else if (!strcmp(s,"ib")) {
-            immarg.push_back(OPARG_IB);
+            st.immarg.push_back(OPARG_IB);
             allow_modregrm = false;
             allow_op = false;
         }
         else if (!strcmp(s,"ibs")) {
-            immarg.push_back(OPARG_IBS);
+            st.immarg.push_back(OPARG_IBS);
             allow_modregrm = false;
             allow_op = false;
         }
         else if (!strcmp(s,"iw")) {
-            immarg.push_back(OPARG_IW);
+            st.immarg.push_back(OPARG_IW);
             allow_modregrm = false;
             allow_op = false;
         }
         else if (!strcmp(s,"iws")) {
-            immarg.push_back(OPARG_IWS);
+            st.immarg.push_back(OPARG_IWS);
             allow_modregrm = false;
             allow_op = false;
         }
         else if (!strcmp(s,"iw16")) {
-            immarg.push_back(OPARG_IW16);
+            st.immarg.push_back(OPARG_IW16);
             allow_modregrm = false;
             allow_op = false;
         }
         else if (!strcmp(s,"iw16s")) {
-            immarg.push_back(OPARG_IW16S);
+            st.immarg.push_back(OPARG_IW16S);
             allow_modregrm = false;
             allow_op = false;
         }
         else if (!strcmp(s,"iw32")) {
-            immarg.push_back(OPARG_IW32);
+            st.immarg.push_back(OPARG_IW32);
             allow_modregrm = false;
             allow_op = false;
         }
         else if (!strcmp(s,"iw32s")) {
-            immarg.push_back(OPARG_IW32S);
+            st.immarg.push_back(OPARG_IW32S);
             allow_modregrm = false;
             allow_op = false;
         }
         else if (!strcmp(s,"prefix")) {
-            is_prefix = true;
+            st.is_prefix = true;
         }
         else if (!strncmp(s,"segoverride(",12)) {
             s += 12;
             while (isblank(*s)) s++;
 
-            if (segoverride != OPSEG_NONE) {
+            if (st.segoverride != OPSEG_NONE) {
                 fprintf(stderr,"You already declared a segment override\n");
                 return false;
             }
-            else if (!is_prefix) {
+            else if (!st.is_prefix) {
                 fprintf(stderr,"Segment override must be declared a prefix\n");
                 return false;
             }
 
             if (!strncmp(s,"cs",2))
-                segoverride = OPSEG_CS;
+                st.segoverride = OPSEG_CS;
             else if (!strncmp(s,"ds",2))
-                segoverride = OPSEG_DS;
+                st.segoverride = OPSEG_DS;
             else if (!strncmp(s,"es",2))
-                segoverride = OPSEG_ES;
+                st.segoverride = OPSEG_ES;
             else if (!strncmp(s,"fs",2))
-                segoverride = OPSEG_FS;
+                st.segoverride = OPSEG_FS;
             else if (!strncmp(s,"gs",2))
-                segoverride = OPSEG_GS;
+                st.segoverride = OPSEG_GS;
             else if (!strncmp(s,"ss",2))
-                segoverride = OPSEG_SS;
+                st.segoverride = OPSEG_SS;
             else {
                 fprintf(stderr,"Unknown segment override\n");
                 return false;
             }
         }
         else if (!strncmp(s,"range(",6)) {
-            if (oprange_min >= 0 || oprange_max >= 0) {
+            if (st.oprange_min >= 0 || st.oprange_max >= 0) {
                 fprintf(stderr,"Cannot define more than one opcode range\n");
                 return false;
             }
@@ -390,7 +484,7 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
 
             s += 6;
             while (isblank(*s)) s++;
-            oprange_min = strtol(s,&s,0);
+            st.oprange_min = strtol(s,&s,0);
             while (isblank(*s)) s++;
             if (*s != ',') {
                 fprintf(stderr,"Syntax error in range()\n");
@@ -398,27 +492,27 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
             }
             s++;
             while (isblank(*s)) s++;
-            oprange_max = strtol(s,&s,0);
+            st.oprange_max = strtol(s,&s,0);
             while (isblank(*s)) s++;
             if (*s != ')') {
                 fprintf(stderr,"Syntax error in range(), no closing parenthesis\n");
                 return false;
             }
 
-            if (oprange_min < 0 || oprange_min > 0xFF || oprange_max < 0 || oprange_max > 0xFF || oprange_min > oprange_max) {
-                fprintf(stderr,"Opcode range error. min=%d max=%d\n",oprange_min,oprange_max);
+            if (st.oprange_min < 0 || st.oprange_min > 0xFF || st.oprange_max < 0 || st.oprange_max > 0xFF || st.oprange_min > st.oprange_max) {
+                fprintf(stderr,"Opcode range error. min=%d max=%d\n",st.oprange_min,st.oprange_max);
                 return false;
             }
 
             allow_op = false;
         }
         else if (!strcmp(s,"reg=op02")) {
-            if (modregrm) {
+            if (st.modregrm) {
                 fprintf(stderr,"Cannot declare reg = opcode[0:2] when reg already comes from mod/reg/rm\n");
                 return false;
             }
 
-            reg_from_opcode = true;
+            st.reg_from_opcode = true;
         }
         else {
             fprintf(stderr,"Syntax error: %s\n",s);
@@ -427,6 +521,31 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
 
         if (ns != NULL) s = ns;
         else break;
+    }
+
+    if (st.op == 0 && st.oprange_min < 0) {
+        fprintf(stderr,"Opcode bytes not defined\n");
+        return false;
+    }
+
+    if (st.oprange_min < 0) {
+        if (true/*16-bit*/ && !parse_opcode_def_gen1(/*&*/st,/*&*/opmap16))
+            return false;
+        if (true/*32-bit*/ && !parse_opcode_def_gen1(/*&*/st,/*&*/opmap32))
+            return false;
+    }
+    else {
+        for (unsigned int i=st.oprange_min;i <= st.oprange_max;i++) {
+            assert((st.op+1) < sizeof(st.ops));
+            st.ops[st.op++] = i;
+
+            if (true/*16-bit*/ && !parse_opcode_def_gen1(/*&*/st,/*&*/opmap16))
+                return false;
+            if (true/*32-bit*/ && !parse_opcode_def_gen1(/*&*/st,/*&*/opmap32))
+                return false;
+
+            st.op--;
+        }
     }
 
     return true;
