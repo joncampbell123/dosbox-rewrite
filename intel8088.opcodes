@@ -255,6 +255,25 @@ opcode 0xCB:                                    "RETF"w
 ; SALC
 opcode 0xD6:                                    "SALCb"
 
+; 8086 alias
+opcode 0xF6 mod/reg/rm /1 ib:                   "TEST"b b(r/m),i
+opcode 0xF7 mod/reg/rm /1 iw:                   "TEST"w w(r/m),i
+; misc group (GRP3). some have immediate bytes, some not
+opcode 0xF6 mod/reg/rm /0 ib:                   "TEST"b b(r/m),i
+opcode 0xF7 mod/reg/rm /0 iw:                   "TEST"w w(r/m),i
+opcode 0xF6 mod/reg/rm /2:                      "NOT"b b(r/m)
+opcode 0xF7 mod/reg/rm /2:                      "NOT"w w(r/m)
+opcode 0xF6 mod/reg/rm /3:                      "NEG"b b(r/m)
+opcode 0xF7 mod/reg/rm /3:                      "NEG"w w(r/m)
+opcode 0xF6 mod/reg/rm /4:                      "MUL"b b(r/m)
+opcode 0xF7 mod/reg/rm /4:                      "MUL"w w(r/m)
+opcode 0xF6 mod/reg/rm /5:                      "IMUL"b b(r/m)
+opcode 0xF7 mod/reg/rm /5:                      "IMUL"w w(r/m)
+opcode 0xF6 mod/reg/rm /6:                      "DIV"b b(r/m)
+opcode 0xF7 mod/reg/rm /6:                      "DIV"w w(r/m)
+opcode 0xF6 mod/reg/rm /7:                      "IDIV"b b(r/m)
+opcode 0xF7 mod/reg/rm /7:                      "IDIV"w w(r/m)
+
 ; shift group (GRP2) by 1
 opcode 0xD0 mod/reg/rm /0:                      "ROL"b b(r/m),1
 opcode 0xD0 mod/reg/rm /1:                      "ROR"b b(r/m),1
