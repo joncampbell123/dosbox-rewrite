@@ -772,6 +772,9 @@ bool parse_opcodelist(void) {
         /* skip blank lines */
         if (*s == 0) continue;
 
+        /* skip CPP preprocessor directives */
+        if (*s == '#') continue;
+
         strcpy(parse_line,line);
         if (!strncmp(s,"opcode ",7)) {
             s += 7;

@@ -23,7 +23,7 @@ empty_SOURCES = empty.cpp
 cpudec86_SOURCES = cpudec86.cpp
 cpudec86_CXXFLAGS = $(AM_CXXFLAGS)
 cpudec86_DEPENDENCIES = \
-	dosboxxr/lib/cpu/libcpu.a
+	dosboxxr/lib/cpu/libcpu.a dosboxxr/lib/cpu/core/intel8088.h
 cpudec86_LDADD = \
 	dosboxxr/lib/cpu/libcpu.a
 
@@ -59,4 +59,9 @@ test-bins: test1.bin test2.bin test3.bin
 
 opcc$(EXEEXT): opcc.cpp
 	$(BUILD_CXX) -o $@ $<
+
+dosboxxr/lib/cpu/core/intel8088.opcodes.p: opcodes/intel8088.opcodes
+	$(BUILD_CPP) opcodes/intel8088.opcodes >$@
+dosboxxr/lib/cpu/core/intel8088.h: dosboxxr/lib/cpu/core/intel8088.opcodes.p opcc$(EXEEXT)
+	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intel8088.opcodes.p -o $@
 
