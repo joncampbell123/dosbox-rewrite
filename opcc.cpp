@@ -767,7 +767,7 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
         fprintf(out_fp,"/*   uint16_t IPFW();          fetch word at instruction pointer */\n");
         fprintf(out_fp,"/*   uint32_t IPFDW();         fetch dword at instruction pointer */\n");
         fprintf(out_fp,"/*   uint%u_t IPFcodeW();      fetch %u-bit word at instruction pointer */\n",codewidth,codewidth);
-        fprintf(out_fp,"/*   void IPFB_mrm_sib_disp_c%u_a%u_read(mrm,sib,disp);   read mod/reg/rm, sib, displacement */\n",codewidth,addrwidth);
+        fprintf(out_fp,"/*   void IPFB_mrm_sib_disp_a%u_read(mrm,sib,disp);   read mod/reg/rm, sib, displacement */\n",codewidth,addrwidth);
         fprintf(out_fp,"_x86decode_begin_code%u_addr%u:\n",codewidth,addrwidth);
         fprintf(out_fp,"_x86decode_after_prefix_code%u_addr%u:\n",codewidth,addrwidth);
     }
@@ -795,13 +795,16 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
                     fprintf(out_fp,"%s    case 0x%02X: /* ",indent_str.c_str(),op2);
                     for (size_t i=0;i < opbaselen;i++) fprintf(out_fp,"%02Xh ",opbase[i]);
                     fprintf(out_fp,"%02Xh ",op2);
-                    fprintf(out_fp,"%s%s %s */\n",submap2->name.c_str(),suffix_str(submap2->suffix,codewidth),submap2->format_str.c_str());
+                    fprintf(out_fp,"%s%s %s ",submap2->name.c_str(),suffix_str(submap2->suffix,codewidth),submap2->format_str.c_str());
+                    if (map.modregrm) fprintf(out_fp,"mod=%u reg=%u rm=%u ",op2>>6,(op2>>3)&7,op2&7);
+                    else if (submap2->reg_from_opcode) fprintf(out_fp,"reg=%u ",op2&7);
+                    fprintf(out_fp,"*/\n");
                     submap2->already = true;
                 }
             }
 
             if (submap->modregrm)
-                fprintf(out_fp,"%s        IPFB_mrm_sib_disp_c%u_a%u_read(mrm,sib,disp);\n",indent_str.c_str(),codewidth,addrwidth);
+                fprintf(out_fp,"%s        IPFB_mrm_sib_disp_a%u_read(mrm,sib,disp);\n",indent_str.c_str(),addrwidth);
 
             unsigned int immc = 0;
 
