@@ -105,12 +105,13 @@ enum opccDispArgType {
 
 class OpCodeDisplayArg {
 public:
-    OpCodeDisplayArg() : arg(OPDARG_NONE), argtype(OPDARGTYPE_NONE), argreg(OPREG_NONE), suffix(OPSUFFIX_NONE), imm(0) { }
+    OpCodeDisplayArg() : arg(OPDARG_NONE), argtype(OPDARGTYPE_NONE), argreg(OPREG_NONE), suffix(OPSUFFIX_NONE), index(0), imm(0) { }
 public:
     enum opccDispArg        arg;
     enum opccDispArgType    argtype;
     enum opccReg            argreg;
     enum opccSuffix         suffix;
+    uint8_t                 index;
     uint64_t                imm;
 };
 
@@ -255,6 +256,7 @@ public:
                                 // the mod/reg/rm byte IS the second byte of the opcode (when mod == 3).
     enum opccSuffix suffix;     // suffix to name
     vector<enum opccArgs> immarg;
+    vector<OpCodeDisplayArg> disparg;
 public:
     OpByte*         opmap[256];
     bool            opmap_valid;
@@ -295,6 +297,7 @@ public:
     string                  format_str;
     string                  name;
     vector<enum opccArgs>   immarg;
+    vector<OpCodeDisplayArg> disparg;
     unsigned char           ops[16];
     uint8_t                 op;
 };
@@ -321,6 +324,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
                     assert(submap != NULL);
 
                     submap->modregrm = false;
+                    submap->disparg = st.disparg;
                     submap->format_str = st.format_str;
                     submap->segoverride = st.segoverride;
                     submap->isprefix = st.is_prefix;
@@ -334,6 +338,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
             map->segoverride = st.segoverride;
             map->format_str = st.format_str;
             map->isprefix = st.is_prefix;
+            map->disparg = st.disparg;
             map->immarg = st.immarg;
             map->suffix = st.suffix;
             map->name = st.name;
@@ -343,6 +348,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
         map->segoverride = st.segoverride;
         map->format_str = st.format_str;
         map->isprefix = st.is_prefix;
+        map->disparg = st.disparg;
         map->immarg = st.immarg;
         map->suffix = st.suffix;
         map->name = st.name;
@@ -610,6 +616,7 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
         }
         else if (argc == 1) { /* b(r/m),b(reg) */
             st.format_str = s;
+            // TODO
         }
         else {
             fprintf(stderr,"Unexpected arg\n");
@@ -702,6 +709,7 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
         fprintf(out_fp,"/* code width = %u     addr width = %u */\n",codewidth,addrwidth);
         fprintf(out_fp,"/* expect host code to provide: */\n");
         fprintf(out_fp,"/*   uint8_t op;               opcode byte */\n");
+        fprintf(out_fp,"/*   uint%u_t imm,imm2,imm3,imm4; immediate %u-bit */\n",codewidth,codewidth);
         fprintf(out_fp,"/*   struct x86ModRegRm mrm;   mod/reg/rm byte */\n");
         fprintf(out_fp,"/*   struct x86ScaleIndexBase sib; scalar/index/base byte */\n");
         fprintf(out_fp,"/*   uint%u_t disp;            displacement */\n",addrwidth);
@@ -724,13 +732,15 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
      *       then generate a switch statement by mrm.reg instead of byte value. */
 
     if (map.modregrm)
-        fprintf(out_fp,"switch (op=mrm.byte) {\n");
+        fprintf(out_fp,"switch (mrm.byte) {\n");
     else
         fprintf(out_fp,"switch (op=IPFB()) {\n");
 
     for (unsigned int op=0;op < 0x100;op++) {
         submap = map.opmap[op];
         if (submap != NULL) {
+            unsigned int immc = 0;
+
             fprintf(out_fp,"case 0x%02X: /* ",op);
             for (size_t i=0;i < opbaselen;i++) fprintf(out_fp,"%02Xh ",opbase[i]);
             fprintf(out_fp,"%02Xh ",op);
@@ -738,6 +748,54 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
 
             if (submap->modregrm)
                 fprintf(out_fp,"IPFB_mrm_sib_disp_c%u_a%u_read(mrm,sib,disp);\n",codewidth,addrwidth);
+
+            /* then fetch other args */
+            for (size_t i=0;i < submap->immarg.size();i++) {
+                enum opccArgs a = submap->immarg[i];
+
+                switch (a) {
+                    case OPARG_IB:
+                        if (immc != 0)  fprintf(out_fp,"imm%u=IPFB();\n",immc+1);
+                        else            fprintf(out_fp,"imm=IPFB();\n");
+                        immc++;
+                        break;
+                    case OPARG_IBS:
+                        if (immc != 0)  fprintf(out_fp,"imm%u=IPFBsigned();\n",immc+1);
+                        else            fprintf(out_fp,"imm=IPFBsigned();\n");
+                        immc++;
+                        break;
+                    case OPARG_IW:
+                        if (immc != 0)  fprintf(out_fp,"imm%u=IPFcodeW();\n",immc+1);
+                        else            fprintf(out_fp,"imm=IPFcodeW();\n");
+                        immc++;
+                        break;
+                    case OPARG_IWS:
+                        if (immc != 0)  fprintf(out_fp,"imm%u=IPFcodeWsigned();\n",immc+1);
+                        else            fprintf(out_fp,"imm=IPFcodeWsigned();\n");
+                        immc++;
+                        break;
+                    case OPARG_IW16:
+                        if (immc != 0)  fprintf(out_fp,"imm%u=IPFW();\n",immc+1);
+                        else            fprintf(out_fp,"imm=IPFW();\n");
+                        immc++;
+                        break;
+                    case OPARG_IW16S:
+                        if (immc != 0)  fprintf(out_fp,"imm%u=IPFWsigned();\n",immc+1);
+                        else            fprintf(out_fp,"imm=IPFWsigned();\n");
+                        immc++;
+                        break;
+                    case OPARG_IW32:
+                        if (immc != 0)  fprintf(out_fp,"imm%u=IPFDW();\n",immc+1);
+                        else            fprintf(out_fp,"imm=IPFDW();\n");
+                        immc++;
+                        break;
+                    case OPARG_IW32S:
+                        if (immc != 0)  fprintf(out_fp,"imm%u=IPFDWsigned();\n",immc+1);
+                        else            fprintf(out_fp,"imm=IPFDWsigned();\n");
+                        immc++;
+                        break;
+                };
+            }
 
             if (submap->opmap_valid) {
                 uint8_t tmp[16];
