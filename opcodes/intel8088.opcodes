@@ -176,10 +176,10 @@ opcode 0x88 mod/reg/rm:                         "MOV"b b(r/m),b(reg)
 opcode 0x89 mod/reg/rm:                         "MOV"w w(r/m),w(reg)
 opcode 0x8A mod/reg/rm:                         "MOV"b b(reg),b(r/m)
 opcode 0x8B mod/reg/rm:                         "MOV"w w(reg),w(r/m)
-opcode 0xA0 iw:                                 "MOV"b b(a),memb(i)
-opcode 0xA1 iw:                                 "MOV"w w(a),memw(i)
-opcode 0xA2 iw:                                 "MOV"b memb(i),b(a)
-opcode 0xA3 iw:                                 "MOV"w memw(i),w(a)
+opcode 0xA0 iw:                                 "MOV"b b(a),b(mem[i])
+opcode 0xA1 iw:                                 "MOV"w w(a),w(mem[i])
+opcode 0xA2 iw:                                 "MOV"b b(mem[i]),b(a)
+opcode 0xA3 iw:                                 "MOV"w b(mem[i]),w(a)
 opcode range(0xB0,0xB7) ib reg=op02:            "MOV"b b(reg),i
 opcode range(0xB8,0xBF) iw reg=op02:            "MOV"w w(reg),i
 opcode 0xC6 ib:                                 "MOV"b b(r/m),i
