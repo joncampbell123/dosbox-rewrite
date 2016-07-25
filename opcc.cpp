@@ -748,7 +748,7 @@ bool parse_opcodelist(void) {
 
 void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const uint8_t *opbase,const size_t opbaselen,OpByte &map,const unsigned int indent=0);
 
-void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int addrwidth,const uint8_t *opbase,const size_t opbaselen,OpByte &map,const unsigned int indent,const string &indent_str,OpByte *submap,const uint8_t op) {
+void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int addrwidth,const uint8_t *opbase,const size_t opbaselen,OpByte &map,const unsigned int indent,const string &indent_str,OpByte *submap,const uint8_t op,uint32_t flags) {
     unsigned int immc = 0;
 
     if (submap->modregrm)
@@ -821,6 +821,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
 void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const uint8_t *opbase,const size_t opbaselen,OpByte &map,const unsigned int indent) {
     OpByte *submap,*submap2;
     string indent_str;
+    bool reg_enum=false;
 
     for (unsigned int ind=0;ind < indent;ind++)
         indent_str += "    ";
@@ -849,33 +850,127 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
         fprintf(out_fp,"*/\n");
     }
 
-    /* TODO: If modregrm opcode byte and opcodes in this level have a consistent reg == /X pattern
-     *       then generate a switch statement by mrm.reg instead of byte value. */
+    if (map.modregrm) {
+        bool is_modreg_pattern = true;
 
-    if (map.modregrm)
-        fprintf(out_fp,"%sswitch (mrm.byte) {\n",indent_str.c_str());
-    else
-        fprintf(out_fp,"%sswitch (op=IPFB()) {\n",indent_str.c_str());
+        /* first scan: is the opcode pattern such we can encode it as a switch (mrm.reg) for Intel's /X syntax? */
+        for (unsigned int i=0;i < 0x100;i += 8) {
+            bool is_reg_block = false;
 
-    for (unsigned int op=0;op < 0x100;op++) {
-        submap = map.opmap[op];
-        if (submap != NULL && !submap->already) {
-            for (unsigned int op2=op;op2 < 0x100;op2++) {
-                submap2 = map.opmap[op2];
-
-                if (submap2 != NULL && !submap2->already && (op == op2 || *submap == *submap2)) {
-                    fprintf(out_fp,"%s    case 0x%02X: /* ",indent_str.c_str(),op2);
-                    for (size_t i=0;i < opbaselen;i++) fprintf(out_fp,"%02Xh ",opbase[i]);
-                    fprintf(out_fp,"%02Xh ",op2);
-                    fprintf(out_fp,"%s%s %s ",submap2->name.c_str(),suffix_str(submap2->suffix,codewidth),submap2->format_str.c_str());
-                    if (map.modregrm) fprintf(out_fp,"mod=%u reg=%u rm=%u ",op2>>6,(op2>>3)&7,op2&7);
-                    else if (submap2->reg_from_opcode) fprintf(out_fp,"reg=%u ",op2&7);
-                    fprintf(out_fp,"*/\n");
-                    submap2->already = true;
+            if (map.opmap[i+0] == NULL &&
+                map.opmap[i+1] == NULL &&
+                map.opmap[i+2] == NULL &&
+                map.opmap[i+3] == NULL &&
+                map.opmap[i+4] == NULL &&
+                map.opmap[i+5] == NULL &&
+                map.opmap[i+6] == NULL &&
+                map.opmap[i+7] == NULL) {
+                is_reg_block = true;
+            }
+            else if (
+                map.opmap[i+0] != NULL &&
+                map.opmap[i+1] != NULL &&
+                map.opmap[i+2] != NULL &&
+                map.opmap[i+3] != NULL &&
+                map.opmap[i+4] != NULL &&
+                map.opmap[i+5] != NULL &&
+                map.opmap[i+6] != NULL &&
+                map.opmap[i+7] != NULL) {
+                if (*(map.opmap[i+0]) == *(map.opmap[i+1]) &&
+                    *(map.opmap[i+0]) == *(map.opmap[i+2]) &&
+                    *(map.opmap[i+0]) == *(map.opmap[i+3]) &&
+                    *(map.opmap[i+0]) == *(map.opmap[i+4]) &&
+                    *(map.opmap[i+0]) == *(map.opmap[i+5]) &&
+                    *(map.opmap[i+0]) == *(map.opmap[i+6]) &&
+                    *(map.opmap[i+0]) == *(map.opmap[i+7])) {
+                    is_reg_block = true;
                 }
             }
 
-            opcode_gen_case_statement(codewidth,addrwidth,opbase,opbaselen,map,indent,indent_str,submap,op);
+            if (!is_reg_block)
+                is_modreg_pattern = false;
+        }
+
+        bool is_reg_pattern = true;
+
+        if (is_modreg_pattern) {
+            for (unsigned int reg=0;reg < 0x40;reg += 8) {
+                for (unsigned int mod=0x40;mod < 0x100;mod += 0x40) {
+                    bool match = false;
+
+                    if (map.opmap[reg] == NULL && map.opmap[reg+mod]) {
+                        match = true;
+                    }
+                    else if (map.opmap[reg] != NULL && map.opmap[reg+mod] != NULL) {
+                        if (*(map.opmap[reg]) == *(map.opmap[reg+mod]))
+                            match = true;
+
+                        if (!match)
+                            is_reg_pattern = false;
+                    }
+                }
+            }
+        }
+
+        if (is_reg_pattern) {
+            fprintf(out_fp,"%sswitch (mrm.reg) {\n",indent_str.c_str());
+            reg_enum = true;
+        }
+        else {
+            fprintf(out_fp,"%sswitch (mrm.byte) {\n",indent_str.c_str());
+        }
+    }
+    else {
+        fprintf(out_fp,"%sswitch (op=IPFB()) {\n",indent_str.c_str());
+    }
+
+    if (reg_enum) {
+        // we can enumerate using only the REG field of mod/reg/rm
+        assert(map.modregrm == true);
+
+        for (unsigned int op=0;op < 0x40;op += 8) { // reg 0...7
+            submap = map.opmap[op];
+            if (submap != NULL && !submap->already) {
+                for (unsigned int op2=op;op2 < 0x40;op2 += 8) {
+                    submap2 = map.opmap[op2];
+
+                    if (submap2 != NULL && !submap2->already && (op == op2 || *submap == *submap2)) {
+                        fprintf(out_fp,"%s    case %u: /* ",indent_str.c_str(),op2 >> 3);
+                        for (size_t i=0;i < opbaselen;i++) fprintf(out_fp,"%02Xh ",opbase[i]);
+                        fprintf(out_fp,"%02Xh ",op2);
+                        fprintf(out_fp,"%s%s %s ",submap2->name.c_str(),suffix_str(submap2->suffix,codewidth),submap2->format_str.c_str());
+                        if (map.modregrm) fprintf(out_fp,"reg=%u ",(op2>>3)&7);
+                        else if (submap2->reg_from_opcode) fprintf(out_fp,"reg=%u ",op2&7);
+                        fprintf(out_fp,"*/\n");
+                        submap2->already = true;
+                    }
+                }
+
+                opcode_gen_case_statement(codewidth,addrwidth,opbase,opbaselen,map,indent,indent_str,submap,op,0);
+            }
+        }
+    }
+    else {
+        for (unsigned int op=0;op < 0x100;op++) {
+            submap = map.opmap[op];
+            if (submap != NULL && !submap->already) {
+                for (unsigned int op2=op;op2 < 0x100;op2++) {
+                    submap2 = map.opmap[op2];
+
+                    if (submap2 != NULL && !submap2->already && (op == op2 || *submap == *submap2)) {
+                        fprintf(out_fp,"%s    case 0x%02X: /* ",indent_str.c_str(),op2);
+                        for (size_t i=0;i < opbaselen;i++) fprintf(out_fp,"%02Xh ",opbase[i]);
+                        fprintf(out_fp,"%02Xh ",op2);
+                        fprintf(out_fp,"%s%s %s ",submap2->name.c_str(),suffix_str(submap2->suffix,codewidth),submap2->format_str.c_str());
+                        if (map.modregrm) fprintf(out_fp,"mod=%u reg=%u rm=%u ",op2>>6,(op2>>3)&7,op2&7);
+                        else if (submap2->reg_from_opcode) fprintf(out_fp,"reg=%u ",op2&7);
+                        fprintf(out_fp,"*/\n");
+                        submap2->already = true;
+                    }
+                }
+
+                opcode_gen_case_statement(codewidth,addrwidth,opbase,opbaselen,map,indent,indent_str,submap,op,/*flags*/0);
+            }
         }
     }
     fprintf(out_fp,"%s    default:\n",indent_str.c_str());
