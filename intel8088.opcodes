@@ -255,6 +255,42 @@ opcode 0xCB:                                    "RETF"w
 ; SALC
 opcode 0xD6:                                    "SALCb"
 
+; shift group (GRP2) by 1
+opcode 0xD0 mod/reg/rm /0:                      "ROL"b b(r/m),1
+opcode 0xD0 mod/reg/rm /1:                      "ROR"b b(r/m),1
+opcode 0xD0 mod/reg/rm /2:                      "RCL"b b(r/m),1
+opcode 0xD0 mod/reg/rm /3:                      "RCR"b b(r/m),1
+opcode 0xD0 mod/reg/rm /4:                      "SHL"b b(r/m),1
+opcode 0xD0 mod/reg/rm /5:                      "SHR"b b(r/m),1
+opcode 0xD0 mod/reg/rm /6:                      "SAL"b b(r/m),1
+opcode 0xD0 mod/reg/rm /7:                      "SAR"b b(r/m),1
+opcode 0xD1 mod/reg/rm /0:                      "ROL"w w(r/m),1
+opcode 0xD1 mod/reg/rm /1:                      "ROR"w w(r/m),1
+opcode 0xD1 mod/reg/rm /2:                      "RCL"w w(r/m),1
+opcode 0xD1 mod/reg/rm /3:                      "RCR"w w(r/m),1
+opcode 0xD1 mod/reg/rm /4:                      "SHL"w w(r/m),1
+opcode 0xD1 mod/reg/rm /5:                      "SHR"w w(r/m),1
+opcode 0xD1 mod/reg/rm /6:                      "SAL"w w(r/m),1
+opcode 0xD1 mod/reg/rm /7:                      "SAR"w w(r/m),1
+
+; shift group (GRP2) by CL
+opcode 0xD2 mod/reg/rm /0:                      "ROL"b b(r/m),b(c)
+opcode 0xD2 mod/reg/rm /1:                      "ROR"b b(r/m),b(c)
+opcode 0xD2 mod/reg/rm /2:                      "RCL"b b(r/m),b(c)
+opcode 0xD2 mod/reg/rm /3:                      "RCR"b b(r/m),b(c)
+opcode 0xD2 mod/reg/rm /4:                      "SHL"b b(r/m),b(c)
+opcode 0xD2 mod/reg/rm /5:                      "SHR"b b(r/m),b(c)
+opcode 0xD2 mod/reg/rm /6:                      "SAL"b b(r/m),b(c)
+opcode 0xD2 mod/reg/rm /7:                      "SAR"b b(r/m),b(c)
+opcode 0xD3 mod/reg/rm /0:                      "ROL"w w(r/m),b(c)
+opcode 0xD3 mod/reg/rm /1:                      "ROR"w w(r/m),b(c)
+opcode 0xD3 mod/reg/rm /2:                      "RCL"w w(r/m),b(c)
+opcode 0xD3 mod/reg/rm /3:                      "RCR"w w(r/m),b(c)
+opcode 0xD3 mod/reg/rm /4:                      "SHL"w w(r/m),b(c)
+opcode 0xD3 mod/reg/rm /5:                      "SHR"w w(r/m),b(c)
+opcode 0xD3 mod/reg/rm /6:                      "SAL"w w(r/m),b(c)
+opcode 0xD3 mod/reg/rm /7:                      "SAR"w w(r/m),b(c)
+
 ; segment overrides
 opcode prefix 0x26 segoverride(es):             "ES:"
 opcode prefix 0x2E segoverride(cs):             "CS:"
