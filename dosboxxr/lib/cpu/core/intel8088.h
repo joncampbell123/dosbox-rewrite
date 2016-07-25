@@ -441,7 +441,7 @@ switch (op=IPFB()) {
         break;
     case 0x99: /* 99h CWDw       spec: 0x99 */
         break;
-    case 0x9A: /* 9Ah CALLFw w(i2,i)      spec: 0x9A iw iw16 */
+    case 0x9A: /* 9Ah CALLFw w(i2),w(i)      spec: 0x9A iw iw16 */
         imm=IPFcodeW();
         imm2=IPFW();
         break;
@@ -2925,7 +2925,7 @@ switch (op=IPFB()) {
     case 0xE9: /* E9h JMPw w(i+ip)      spec: 0xE9 iws */
         imm=IPFcodeWsigned();
         break;
-    case 0xEA: /* EAh JMPFw w(i2,i)      spec: 0xEA iw iw16 */
+    case 0xEA: /* EAh JMPFw w(i2),w(i)      spec: 0xEA iw iw16 */
         imm=IPFcodeW();
         imm2=IPFW();
         break;
