@@ -397,3 +397,13 @@ opcode 0xDC mod/reg/rm /0 mod==3:               "FADD" st(r/m),st(0)    ; FADD S
 opcode 0xDE mod/reg/rm /0 mod!=3:               "FADD"w16 w16(r/m)      ; FADD [mem]    ST(0) += *((uint16_t*)mem)
 opcode 0xDE mod/reg/rm /0 mod==3:               "FADDP" st(r/m),st(0)   ; FADD ST(r/m)  ST(r/m) += ST(0), POP from top of stack.
 
+; FMUL
+opcode 0xD8 mod/reg/rm /1 mod!=3:               "FMUL"f32 f32(r/m)      ; FMUL [mem]    ST(0) *= *((float*)mem)
+opcode 0xD8 mod/reg/rm /1 mod==3:               "FMUL" st(0),st(r/m)    ; FMUL ST(r/m)  ST(0) *= ST(r/m)     mod == 3 therefore r/m is register
+opcode 0xDA mod/reg/rm /1 mod!=3:               "FMUL"w32 w32(r/m)      ; FMUL [mem]    ST(0) *= *((uint32_t*)mem)
+opcode 0xDA mod/reg/rm /1 mod==3:               "FMULP" st(0),st(r/m)   ; FMULP ST(r/m) ST(0) *= ST(r/m), POP from top of stack. Useless, replaced in 80387.
+opcode 0xDC mod/reg/rm /1 mod!=3:               "FMUL"f64 f64(r/m)      ; FMUL [mem]    ST(0) *= *((double*)mem)
+opcode 0xDC mod/reg/rm /1 mod==3:               "FMUL" st(r/m),st(0)    ; FMUL ST(r/m)  ST(r/m) *= ST(0)
+opcode 0xDE mod/reg/rm /1 mod!=3:               "FMUL"w16 w16(r/m)      ; FMUL [mem]    ST(0) *= *((uint16_t*)mem)
+opcode 0xDE mod/reg/rm /1 mod==3:               "FMULP" st(r/m),st(0)   ; FMUL ST(r/m)  ST(r/m) *= ST(0), POP from top of stack.
+
