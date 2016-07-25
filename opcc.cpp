@@ -746,7 +746,79 @@ bool parse_opcodelist(void) {
     return true;
 }
 
-void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const uint8_t *opbase,const size_t opbaselen,OpByte &map,const unsigned int indent=0) {
+void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const uint8_t *opbase,const size_t opbaselen,OpByte &map,const unsigned int indent=0);
+
+void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int addrwidth,const uint8_t *opbase,const size_t opbaselen,OpByte &map,const unsigned int indent,const string &indent_str,OpByte *submap,const uint8_t op) {
+    unsigned int immc = 0;
+
+    if (submap->modregrm)
+        fprintf(out_fp,"%s        IPFB_mrm_sib_disp_a%u_read(mrm,sib,disp);\n",indent_str.c_str(),addrwidth);
+
+    /* then fetch other args */
+    for (size_t i=0;i < submap->immarg.size();i++) {
+        enum opccArgs a = submap->immarg[i];
+
+        switch (a) {
+            case OPARG_IB:
+                if (immc != 0)  fprintf(out_fp,"%s        imm%u=IPFB();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%s        imm=IPFB();\n",indent_str.c_str());
+                immc++;
+                break;
+            case OPARG_IBS:
+                if (immc != 0)  fprintf(out_fp,"%s        imm%u=IPFBsigned();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%s        imm=IPFBsigned();\n",indent_str.c_str());
+                immc++;
+                break;
+            case OPARG_IW:
+                if (immc != 0)  fprintf(out_fp,"%s        imm%u=IPFcodeW();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%s        imm=IPFcodeW();\n",indent_str.c_str());
+                immc++;
+                break;
+            case OPARG_IWS:
+                if (immc != 0)  fprintf(out_fp,"%s        imm%u=IPFcodeWsigned();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%s        imm=IPFcodeWsigned();\n",indent_str.c_str());
+                immc++;
+                break;
+            case OPARG_IW16:
+                if (immc != 0)  fprintf(out_fp,"%s        imm%u=IPFW();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%s        imm=IPFW();\n",indent_str.c_str());
+                immc++;
+                break;
+            case OPARG_IW16S:
+                if (immc != 0)  fprintf(out_fp,"%s        imm%u=IPFWsigned();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%s        imm=IPFWsigned();\n",indent_str.c_str());
+                immc++;
+                break;
+            case OPARG_IW32:
+                if (immc != 0)  fprintf(out_fp,"%s        imm%u=IPFDW();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%s        imm=IPFDW();\n",indent_str.c_str());
+                immc++;
+                break;
+            case OPARG_IW32S:
+                if (immc != 0)  fprintf(out_fp,"%s        imm%u=IPFDWsigned();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%s        imm=IPFDWsigned();\n",indent_str.c_str());
+                immc++;
+                break;
+        };
+    }
+
+    if (submap->opmap_valid) {
+        uint8_t tmp[16];
+
+        assert(opbaselen < 15);
+        if (opbaselen != 0) memcpy(tmp,opbase,opbaselen);
+        tmp[opbaselen] = op;
+
+        outcode_gen(codewidth,addrwidth,tmp,opbaselen+1,*submap,indent+2U);
+    }
+
+    if (submap->isprefix)
+        fprintf(out_fp,"%s        goto _x86decode_after_prefix_code%u_addr%u;\n",indent_str.c_str(),codewidth,addrwidth);
+    else
+        fprintf(out_fp,"%s        break;\n",indent_str.c_str());
+}
+
+void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const uint8_t *opbase,const size_t opbaselen,OpByte &map,const unsigned int indent) {
     OpByte *submap,*submap2;
     string indent_str;
 
@@ -803,73 +875,7 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
                 }
             }
 
-            if (submap->modregrm)
-                fprintf(out_fp,"%s        IPFB_mrm_sib_disp_a%u_read(mrm,sib,disp);\n",indent_str.c_str(),addrwidth);
-
-            unsigned int immc = 0;
-
-            /* then fetch other args */
-            for (size_t i=0;i < submap->immarg.size();i++) {
-                enum opccArgs a = submap->immarg[i];
-
-                switch (a) {
-                    case OPARG_IB:
-                        if (immc != 0)  fprintf(out_fp,"%s        imm%u=IPFB();\n",indent_str.c_str(),immc+1);
-                        else            fprintf(out_fp,"%s        imm=IPFB();\n",indent_str.c_str());
-                        immc++;
-                        break;
-                    case OPARG_IBS:
-                        if (immc != 0)  fprintf(out_fp,"%s        imm%u=IPFBsigned();\n",indent_str.c_str(),immc+1);
-                        else            fprintf(out_fp,"%s        imm=IPFBsigned();\n",indent_str.c_str());
-                        immc++;
-                        break;
-                    case OPARG_IW:
-                        if (immc != 0)  fprintf(out_fp,"%s        imm%u=IPFcodeW();\n",indent_str.c_str(),immc+1);
-                        else            fprintf(out_fp,"%s        imm=IPFcodeW();\n",indent_str.c_str());
-                        immc++;
-                        break;
-                    case OPARG_IWS:
-                        if (immc != 0)  fprintf(out_fp,"%s        imm%u=IPFcodeWsigned();\n",indent_str.c_str(),immc+1);
-                        else            fprintf(out_fp,"%s        imm=IPFcodeWsigned();\n",indent_str.c_str());
-                        immc++;
-                        break;
-                    case OPARG_IW16:
-                        if (immc != 0)  fprintf(out_fp,"%s        imm%u=IPFW();\n",indent_str.c_str(),immc+1);
-                        else            fprintf(out_fp,"%s        imm=IPFW();\n",indent_str.c_str());
-                        immc++;
-                        break;
-                    case OPARG_IW16S:
-                        if (immc != 0)  fprintf(out_fp,"%s        imm%u=IPFWsigned();\n",indent_str.c_str(),immc+1);
-                        else            fprintf(out_fp,"%s        imm=IPFWsigned();\n",indent_str.c_str());
-                        immc++;
-                        break;
-                    case OPARG_IW32:
-                        if (immc != 0)  fprintf(out_fp,"%s        imm%u=IPFDW();\n",indent_str.c_str(),immc+1);
-                        else            fprintf(out_fp,"%s        imm=IPFDW();\n",indent_str.c_str());
-                        immc++;
-                        break;
-                    case OPARG_IW32S:
-                        if (immc != 0)  fprintf(out_fp,"%s        imm%u=IPFDWsigned();\n",indent_str.c_str(),immc+1);
-                        else            fprintf(out_fp,"%s        imm=IPFDWsigned();\n",indent_str.c_str());
-                        immc++;
-                        break;
-                };
-            }
-
-            if (submap->opmap_valid) {
-                uint8_t tmp[16];
-
-                assert(opbaselen < 15);
-                if (opbaselen != 0) memcpy(tmp,opbase,opbaselen);
-                tmp[opbaselen] = op;
-                
-                outcode_gen(codewidth,addrwidth,tmp,opbaselen+1,*submap,indent+2U);
-            }
-
-            if (submap->isprefix)
-                fprintf(out_fp,"%s        goto _x86decode_after_prefix_code%u_addr%u;\n",indent_str.c_str(),codewidth,addrwidth);
-            else
-                fprintf(out_fp,"%s        break;\n",indent_str.c_str());
+            opcode_gen_case_statement(codewidth,addrwidth,opbase,opbaselen,map,indent,indent_str,submap,op);
         }
     }
     fprintf(out_fp,"%s    default:\n",indent_str.c_str());
