@@ -496,3 +496,39 @@ opcode 0xDF mod/reg/rm /3 mod!=3:               "FSTP"w16 w16(r/m)      ; FSTP [
 opcode 0xDF mod/reg/rm /6 mod!=3:               "FSTP"fbcd fbcd(r/m)    ; FSTP [mem]    *mem = ST(0), POP
 opcode 0xDF mod/reg/rm /7 mod!=3:               "FSTP"w64 w64(r/m)      ; FSTP [mem]    *((uint64_t)mem) = ST(0), POP
 
+; FPU env
+opcode 0xD9 mod/reg/rm /7 mod!=3:               "FSTCW"w w16(r/m)       ; FSTCW [mem]
+opcode 0xD9 mod/reg/rm /6 mod!=3:               "FSTENV" fenv(r/m)      ; FSTENV [mem]
+opcode 0xD9 mod/reg/rm /5 mod!=3:               "FLDCW" w16(r/m)        ; FLDCW [mem]
+opcode 0xD9 mod/reg/rm /4 mod!=3:               "FLDENV" fenv(r/m)      ; FLDENV [mem]
+opcode 0xDD mod/reg/rm /4 mod!=3:               "FRSTOR" fstate(r/m)    ; FRSTOR [mem]
+opcode 0xDD mod/reg/rm /6 mod!=3:               "FSAVE" fstate(r/m)     ; FSAVE [mem]
+opcode 0xDD mod/reg/rm /7 mod!=3:               "FSTSW" w16(r/m)        ; FSTSW [mem]
+
+; FXCH
+opcode 0xD9 mod/reg/rm /1 mod==3:               "FXCH" st(r/m)          ; FXCH ST(r/m)
+
+; Other FPU opcodes
+opcode 0xDD mod/reg/rm /0 mod==3:               "FFREE" st(r/m)         ; FFREE ST(r/m)
+opcode 0xDB 0xE3:                               "FINIT"
+opcode 0xDB 0xE2:                               "FCLEX"
+opcode 0xDB 0xE1:                               "FDISI"
+opcode 0xDB 0xE0:                               "FENI"
+opcode 0xD9 0xFD:                               "FSCALE"
+opcode 0xD9 0xFC:                               "FRNDINT"
+opcode 0xD9 0xFA:                               "FSQRT"
+opcode 0xD9 0xF9:                               "FYL2XP1"
+opcode 0xD9 0xF8:                               "FPREM"
+opcode 0xD9 0xF7:                               "FINCSTP"
+opcode 0xD9 0xF6:                               "FDECSTP"
+opcode 0xD9 0xF4:                               "FXTRACT"
+opcode 0xD9 0xF3:                               "FPATAN"
+opcode 0xD9 0xF2:                               "FPTAN"
+opcode 0xD9 0xF1:                               "FYL2X"
+opcode 0xD9 0xF0:                               "F2XM1"
+opcode 0xD9 0xE5:                               "FXAM"
+opcode 0xD9 0xE4:                               "FTST"
+opcode 0xD9 0xE1:                               "FABS"
+opcode 0xD9 0xE0:                               "FCHS"
+opcode 0xD9 0xD0:                               "FNOP"
+
