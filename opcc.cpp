@@ -289,6 +289,7 @@ public:
     // opbyte [mod/reg/rm [sib] [disp]] [immediate]
     string          format_str;
     string          name;       // JMP, etc.
+    string          opspec;
     opccSeg         segoverride;// segment override
     bool            isprefix;   // opcode is prefix
     bool            modregrm;   // a MOD/REG/RM byte follows the opcode.
@@ -340,6 +341,7 @@ public:
 public:
     string                  format_str;
     string                  name;
+    string                  opspec;
     vector<enum opccArgs>   immarg;
     vector<OpCodeDisplayArg> disparg;
     unsigned char           ops[16];
@@ -372,6 +374,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
                     submap->format_str = st.format_str;
                     submap->segoverride = st.segoverride;
                     submap->isprefix = st.is_prefix;
+                    submap->opspec = st.opspec;
                     submap->immarg = st.immarg;
                     submap->suffix = st.suffix;
                     submap->name = st.name;
@@ -383,6 +386,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
             map->format_str = st.format_str;
             map->isprefix = st.is_prefix;
             map->disparg = st.disparg;
+            map->opspec = st.opspec;
             map->immarg = st.immarg;
             map->suffix = st.suffix;
             map->name = st.name;
@@ -394,6 +398,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
         map->format_str = st.format_str;
         map->isprefix = st.is_prefix;
         map->disparg = st.disparg;
+        map->opspec = st.opspec;
         map->immarg = st.immarg;
         map->suffix = st.suffix;
         map->name = st.name;
@@ -412,6 +417,7 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
     next = strchr(s,':');
     if (next != NULL) *next++ = 0;
 
+    st.opspec = s;
     while (*s != 0) {
         if (isblank(*s)) {
             s++;
@@ -941,6 +947,7 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
                         fprintf(out_fp,"%s%s %s ",submap2->name.c_str(),suffix_str(submap2->suffix,codewidth),submap2->format_str.c_str());
                         if (map.modregrm) fprintf(out_fp,"reg=%u ",(op2>>3)&7);
                         else if (submap2->reg_from_opcode) fprintf(out_fp,"reg=%u ",op2&7);
+                        fprintf(out_fp,"     spec: %s ",submap2->opspec.c_str());
                         fprintf(out_fp,"*/\n");
                         submap2->already = true;
                     }
@@ -964,6 +971,7 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
                         fprintf(out_fp,"%s%s %s ",submap2->name.c_str(),suffix_str(submap2->suffix,codewidth),submap2->format_str.c_str());
                         if (map.modregrm) fprintf(out_fp,"mod=%u reg=%u rm=%u ",op2>>6,(op2>>3)&7,op2&7);
                         else if (submap2->reg_from_opcode) fprintf(out_fp,"reg=%u ",op2&7);
+                        fprintf(out_fp,"     spec: %s ",submap2->opspec.c_str());
                         fprintf(out_fp,"*/\n");
                         submap2->already = true;
                     }
