@@ -103,13 +103,19 @@ opcode 0x06:                                    "PUSH"w w(es)
 opcode 0x0E:                                    "PUSH"w w(cs)
 opcode 0x16:                                    "PUSH"w w(ss)
 opcode 0x1E:                                    "PUSH"w w(ds)
+; PUSH
 opcode range(0x50,0x57) reg=op02:               "PUSH"w w(reg)
+opcode 0x9C:                                    "PUSHF"w
+opcode 0xFF mod/reg/rm /6:                      "PUSH"w w(r/m)
 ; POP sreg
 opcode 0x07:                                    "POP"w w(es)
 opcode 0x0F:                                    "POP"w w(cs)
 opcode 0x17:                                    "POP"w w(ss)
 opcode 0x1F:                                    "POP"w w(ds)
+; POP
 opcode range(0x58,0x5F) reg=op02:               "POP"w w(reg)
+opcode 0x8F mod/reg/rm:                         "POP"w w(r/m)
+opcode 0x9D:                                    "POPF"w
 
 ; segment overrides
 opcode prefix 0x26 segoverride(es):             "ES:"
