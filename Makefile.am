@@ -66,7 +66,7 @@ opcc$(EXEEXT): opcc.cpp
 dosboxxr/lib/cpu/core/intel8088.opcodes.p: opcodes/intel8088.opcodes
 	$(BUILD_CPP) opcodes/intel8088.opcodes >$@
 dosboxxr/lib/cpu/core/intel8088.c16.a16.decom.h: dosboxxr/lib/cpu/core/intel8088.opcodes.p opcc$(EXEEXT)
-	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intel8088.opcodes.p -o $@
+	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intel8088.opcodes.p -o $@ -m decompile
 
 # grrr how do I get automake to run opcc first before compiling other parts?
 opcodes: $(OPCC_H)

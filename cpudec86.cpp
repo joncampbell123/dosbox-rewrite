@@ -60,17 +60,20 @@ static inline uint32_t IPFDW(void) {
 #include "dosboxxr/lib/cpu/ipdec_pre_core.h"
 
 static void IPDec_8086(x86_offset_t ip) {
-    char *w = IPDecStr,*wf = IPDecStr+sizeof(IPDecStr)-1;
     x86ScaleIndexBase sib;
     x86_offset_t disp;
     uint16_t imm,imm2;
+    char *ipw,*ipwf;
     x86ModRegRm mrm;
     uint8_t op;
 
     /* one instruction only */
+    ipwf = IPDecStr+sizeof(IPDecStr);
+    ipw = IPDecStr;
     IPDecStr[0] = 0;
     IPDecIP = ip;
 
+    /* decode */
 _x86decode_begin_code16_addr16:
 _x86decode_after_prefix_code16_addr16:
 #include "dosboxxr/lib/cpu/core/intel8088.c16.a16.decom.h"
