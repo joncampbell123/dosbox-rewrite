@@ -898,6 +898,7 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
 
     if (map.modregrm) {
         bool is_modreg_pattern = true;
+        bool is_reg_pattern = false;
 
         /* first scan: is the opcode pattern such we can encode it as a switch (mrm.reg) for Intel's /X syntax? */
         for (unsigned int i=0;i < 0x100;i += 8) {
@@ -937,9 +938,8 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
                 is_modreg_pattern = false;
         }
 
-        bool is_reg_pattern = true;
-
         if (is_modreg_pattern) {
+            is_reg_pattern = true;
             for (unsigned int reg=0;reg < 0x40;reg += 8) {
                 for (unsigned int mod=0x40;mod < 0x100;mod += 0x40) {
                     bool match = false;
