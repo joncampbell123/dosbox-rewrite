@@ -59,106 +59,33 @@ static inline uint32_t IPFDW(void) {
 
 #include "dosboxxr/lib/cpu/ipdec_pre_core.h"
 
-//// CPU CORE
-#define DECOMPILEMODE
-
 static void IPDec_8086(x86_offset_t ip) {
     char *w = IPDecStr,*wf = IPDecStr+sizeof(IPDecStr)-1;
-    x86_offset_t disp;
-    x86ModRegRm mrm;
-    uint8_t op1,v8;
-    uint16_t v16b;
-    uint16_t v16;
-
-    {
-        /* one instruction only */
-        IPDecStr[0] = 0;
-        IPDecIP = ip;
-after_prefix:
-#include "dosboxxr/lib/cpu/core/intel8086/coreloop.h"
-        goto done;
-invalidopcode:
-done:
-        { }
-    }
-}
-//// END CORE
-
-static void IPDec_80286(x86_offset_t ip) {
-    char *w = IPDecStr,*wf = IPDecStr+sizeof(IPDecStr)-1;
-    uint8_t op1,v8,op0F;
-    x86_offset_t disp;
-    x86ModRegRm mrm;
-    uint16_t v16b;
-    uint16_t v16;
-
-    {
-        /* one instruction only */
-        IPDecStr[0] = 0;
-        IPDecIP = ip;
-after_prefix:
-#include "dosboxxr/lib/cpu/core/intel80286/coreloop.h"
-        goto done;
-invalidopcode:
-done:
-        { }
-    }
-}
-//// END CORE
-
-static void IPDec_80386(x86_offset_t ip) {
-    char *w = IPDecStr,*wf = IPDecStr+sizeof(IPDecStr)-1;
-    bool opcode32=exe_code32;
-    bool addr32=exe_code32;
     x86ScaleIndexBase sib;
-    uint8_t op1,v8,op0F;
     x86_offset_t disp;
-    bool pre66=false;
-    bool pre67=false;
+    uint16_t imm,imm2;
     x86ModRegRm mrm;
-    uint16_t v16b;
-    uint32_t v32;
-    uint16_t v16;
+    uint8_t op;
 
     /* one instruction only */
     IPDecStr[0] = 0;
     IPDecIP = ip;
 
-    /* the path we take depends on whether the CPU is running 16-bit or 32-bit code.
-     * if the opcode size prefix is encountered we hop to the OTHER opcode condition. */
-    if (opcode32) {
-#define COREMODE 32
-#define COREWORDSIZE 4
-#define COREOPMASK 0xFFFFFFFFUL
-#define after_prefix_COREMODE after_prefix_32
-#define after_prefix_COREMODE_opsizechg after_prefix_16
-after_prefix_32:
-#include "dosboxxr/lib/cpu/core/intel80386/coreloop.h"
-        goto done;
-#undef after_prefix_COREMODE_opsizechg
-#undef after_prefix_COREMODE
-#undef COREWORDSIZE
-#undef COREOPMASK
-#undef COREMODE
-    }
-    else {
-#define COREMODE 16
-#define COREWORDSIZE 2
-#define COREOPMASK 0xFFFFUL
-#define after_prefix_COREMODE after_prefix_16
-#define after_prefix_COREMODE_opsizechg after_prefix_32
-after_prefix_16:
-#include "dosboxxr/lib/cpu/core/intel80386/coreloop.h"
-        goto done;
-#undef after_prefix_COREMODE_opsizechg
-#undef after_prefix_COREMODE
-#undef COREWORDSIZE
-#undef COREOPMASK
-#undef COREMODE
-    }
-invalidopcode:
-done:
-    { }
+_x86decode_begin_code16_addr16:
+_x86decode_after_prefix_code16_addr16:
+#include "dosboxxr/lib/cpu/core/intel8088.h"
+    goto _x86done;
+_x86decode_illegal_opcode:
+_x86done:
+    { } /* shut up GCC */
+}
+//// END CORE
+
+static void IPDec_80286(x86_offset_t ip) {
+}
+//// END CORE
+
+static void IPDec_80386(x86_offset_t ip) {
 }
 //// END CORE
 

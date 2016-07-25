@@ -23,7 +23,7 @@ empty_SOURCES = empty.cpp
 cpudec86_SOURCES = cpudec86.cpp
 cpudec86_CXXFLAGS = $(AM_CXXFLAGS)
 cpudec86_DEPENDENCIES = \
-	dosboxxr/lib/cpu/libcpu.a dosboxxr/lib/cpu/core/intel8088.h
+	dosboxxr/lib/cpu/libcpu.a
 cpudec86_LDADD = \
 	dosboxxr/lib/cpu/libcpu.a
 
