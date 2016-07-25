@@ -46,6 +46,9 @@ cpumemreftypes_CXXFLAGS = $(AM_CXXFLAGS)
 cpumemreftypes_DEPENDENCIES =
 cpumemreftypes_LDADD =
 
+OPCC_H = \
+	dosboxxr/lib/cpu/core/intel8088.c16.a16.decom.h
+
 test1.bin: test1.asm
 	yasm -o $@ -f bin $<
 
@@ -62,6 +65,9 @@ opcc$(EXEEXT): opcc.cpp
 
 dosboxxr/lib/cpu/core/intel8088.opcodes.p: opcodes/intel8088.opcodes
 	$(BUILD_CPP) opcodes/intel8088.opcodes >$@
-dosboxxr/lib/cpu/core/intel8088.h: dosboxxr/lib/cpu/core/intel8088.opcodes.p opcc$(EXEEXT)
+dosboxxr/lib/cpu/core/intel8088.c16.a16.decom.h: dosboxxr/lib/cpu/core/intel8088.opcodes.p opcc$(EXEEXT)
 	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intel8088.opcodes.p -o $@
+
+# grrr how do I get automake to run opcc first before compiling other parts?
+opcodes: $(OPCC_H)
 
