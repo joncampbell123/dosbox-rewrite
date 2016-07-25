@@ -422,3 +422,43 @@ opcode 0xDC mod/reg/rm /3 mod!=3:               "FCOMP"f64 f64(r/m)     ; FCOMP 
 opcode 0xDE mod/reg/rm /3 mod!=3:               "FCOMP"w16 w16(r/m)     ; FCOMP [mem]   ST(0) == *((uint16_t*)mem)
 opcode 0xDE 0xD9:                               "FCOMPP"                ; FCOMPP        ST(0) == ST(1), POP from top of stack
 
+; FSUB
+opcode 0xD8 mod/reg/rm /4 mod!=3:               "FSUB"f32 f32(r/m)      ; FSUB [mem]    ST(0) -= *((float*)mem)
+opcode 0xD8 mod/reg/rm /4 mod==3:               "FSUB" st(0),st(r/m)    ; FSUB ST(r/m)  ST(0) -= ST(r/m)     mod == 3 therefore r/m is register
+opcode 0xDA mod/reg/rm /4 mod!=3:               "FSUB"w32 w32(r/m)      ; FSUB [mem]    ST(0) -= *((uint32_t*)mem)
+opcode 0xDA mod/reg/rm /4 mod==3:               "FSUBP" st(0),st(r/m)   ; FSUBP ST(r/m) ST(0) -= ST(r/m), POP from top of stack. Useless, replaced in 80387.
+opcode 0xDC mod/reg/rm /4 mod!=3:               "FSUB"f64 f64(r/m)      ; FSUB [mem]    ST(0) -= *((double*)mem)
+opcode 0xDC mod/reg/rm /4 mod==3:               "FSUB" st(r/m),st(0)    ; FSUB ST(r/m)  ST(r/m) -= ST(0)
+opcode 0xDE mod/reg/rm /4 mod!=3:               "FSUB"w16 w16(r/m)      ; FSUB [mem]    ST(0) -= *((uint16_t*)mem)
+opcode 0xDE mod/reg/rm /4 mod==3:               "FSUBP" st(r/m),st(0)   ; FSUBP ST(r/m) ST(r/m) -= ST(0), POP from top of stack.
+
+; FSUBR
+opcode 0xD8 mod/reg/rm /5 mod!=3:               "FSUBR"f32 f32(r/m)     ; FSUBR [mem]    ST(0) -= *((float*)mem)
+opcode 0xD8 mod/reg/rm /5 mod==3:               "FSUBR" st(0),st(r/m)   ; FSUBR ST(r/m)  ST(0) -= ST(r/m)     mod == 3 therefore r/m is register
+opcode 0xDA mod/reg/rm /5 mod!=3:               "FSUBR"w32 w32(r/m)     ; FSUBR [mem]    ST(0) -= *((uint32_t*)mem)
+opcode 0xDA mod/reg/rm /5 mod==3:               "FSUBRP" st(0),st(r/m)  ; FSUBRP ST(r/m) ST(0) -= ST(r/m), POP from top of stack. Useless, replaced in 80387.
+opcode 0xDC mod/reg/rm /5 mod!=3:               "FSUBR"f64 f64(r/m)     ; FSUBR [mem]    ST(0) -= *((double*)mem)
+opcode 0xDC mod/reg/rm /5 mod==3:               "FSUBR" st(r/m),st(0)   ; FSUBR ST(r/m)  ST(r/m) -= ST(0)
+opcode 0xDE mod/reg/rm /5 mod!=3:               "FSUBR"w16 w16(r/m)     ; FSUBR [mem]    ST(0) -= *((uint16_t*)mem)
+opcode 0xDE mod/reg/rm /5 mod==3:               "FSUBRP" st(r/m),st(0)  ; FSUBRP ST(r/m) ST(r/m) -= ST(0), POP from top of stack.
+
+; FDIV
+opcode 0xD8 mod/reg/rm /6 mod!=3:               "FDIV"f32 f32(r/m)      ; FDIV [mem]    ST(0) /= *((float*)mem)
+opcode 0xD8 mod/reg/rm /6 mod==3:               "FDIV" st(0),st(r/m)    ; FDIV ST(r/m)  ST(0) /= ST(r/m)     mod == 3 therefore r/m is register
+opcode 0xDA mod/reg/rm /6 mod!=3:               "FDIV"w32 w32(r/m)      ; FDIV [mem]    ST(0) /= *((uint32_t*)mem)
+opcode 0xDA mod/reg/rm /6 mod==3:               "FDIVP" st(0),st(r/m)   ; FDIVP ST(r/m) ST(0) /= ST(r/m), POP from top of stack. Useless, replaced in 80387.
+opcode 0xDC mod/reg/rm /6 mod!=3:               "FDIV"f64 f64(r/m)      ; FDIV [mem]    ST(0) /= *((double*)mem)
+opcode 0xDC mod/reg/rm /6 mod==3:               "FDIV" st(r/m),st(0)    ; FDIV ST(r/m)  ST(r/m) /= ST(0)
+opcode 0xDE mod/reg/rm /6 mod!=3:               "FDIV"w16 w16(r/m)      ; FDIV [mem]    ST(0) /= *((uint16_t*)mem)
+opcode 0xDE mod/reg/rm /6 mod==3:               "FDIVP" st(r/m),st(0)   ; FDIVP ST(r/m) ST(r/m) /= ST(0), POP from top of stack.
+
+; FDIVR
+opcode 0xD8 mod/reg/rm /7 mod!=3:               "FDIVR"f32 f32(r/m)     ; FDIVR [mem]    ST(0) /= *((float*)mem)
+opcode 0xD8 mod/reg/rm /7 mod==3:               "FDIVR" st(0),st(r/m)   ; FDIVR ST(r/m)  ST(0) /= ST(r/m)     mod == 3 therefore r/m is register
+opcode 0xDA mod/reg/rm /7 mod!=3:               "FDIVR"w32 w32(r/m)     ; FDIVR [mem]    ST(0) /= *((uint32_t*)mem)
+opcode 0xDA mod/reg/rm /7 mod==3:               "FDIVRP" st(0),st(r/m)  ; FDIVRP ST(r/m) ST(0) /= ST(r/m), POP from top of stack. Useless, replaced in 80387.
+opcode 0xDC mod/reg/rm /7 mod!=3:               "FDIVR"f64 f64(r/m)     ; FDIVR [mem]    ST(0) /= *((double*)mem)
+opcode 0xDC mod/reg/rm /7 mod==3:               "FDIVR" st(r/m),st(0)   ; FDIVR ST(r/m)  ST(r/m) /= ST(0)
+opcode 0xDE mod/reg/rm /7 mod!=3:               "FDIVR"w16 w16(r/m)     ; FDIVR [mem]    ST(0) /= *((uint16_t*)mem)
+opcode 0xDE mod/reg/rm /7 mod==3:               "FDIVRP" st(r/m),st(0)  ; FDIVRP ST(r/m) ST(r/m) /= ST(0), POP from top of stack.
+
