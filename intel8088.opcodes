@@ -395,7 +395,7 @@ opcode 0xDA mod/reg/rm /0 mod==3:               "FADDP" st(0),st(r/m)   ; FADDP 
 opcode 0xDC mod/reg/rm /0 mod!=3:               "FADD"f64 f64(r/m)      ; FADD [mem]    ST(0) += *((double*)mem)
 opcode 0xDC mod/reg/rm /0 mod==3:               "FADD" st(r/m),st(0)    ; FADD ST(r/m)  ST(r/m) += ST(0)
 opcode 0xDE mod/reg/rm /0 mod!=3:               "FADD"w16 w16(r/m)      ; FADD [mem]    ST(0) += *((uint16_t*)mem)
-opcode 0xDE mod/reg/rm /0 mod==3:               "FADDP" st(r/m),st(0)   ; FADD ST(r/m)  ST(r/m) += ST(0), POP from top of stack.
+opcode 0xDE mod/reg/rm /0 mod==3:               "FADDP" st(r/m),st(0)   ; FADDP ST(r/m) ST(r/m) += ST(0), POP from top of stack.
 
 ; FMUL
 opcode 0xD8 mod/reg/rm /1 mod!=3:               "FMUL"f32 f32(r/m)      ; FMUL [mem]    ST(0) *= *((float*)mem)
@@ -405,5 +405,20 @@ opcode 0xDA mod/reg/rm /1 mod==3:               "FMULP" st(0),st(r/m)   ; FMULP 
 opcode 0xDC mod/reg/rm /1 mod!=3:               "FMUL"f64 f64(r/m)      ; FMUL [mem]    ST(0) *= *((double*)mem)
 opcode 0xDC mod/reg/rm /1 mod==3:               "FMUL" st(r/m),st(0)    ; FMUL ST(r/m)  ST(r/m) *= ST(0)
 opcode 0xDE mod/reg/rm /1 mod!=3:               "FMUL"w16 w16(r/m)      ; FMUL [mem]    ST(0) *= *((uint16_t*)mem)
-opcode 0xDE mod/reg/rm /1 mod==3:               "FMULP" st(r/m),st(0)   ; FMUL ST(r/m)  ST(r/m) *= ST(0), POP from top of stack.
+opcode 0xDE mod/reg/rm /1 mod==3:               "FMULP" st(r/m),st(0)   ; FMULP ST(r/m) ST(r/m) *= ST(0), POP from top of stack.
+
+; FCOM
+opcode 0xD8 mod/reg/rm /2 mod!=3:               "FCOM"f32 f32(r/m)      ; FCOM [mem]    ST(0) == *((float*)mem)
+opcode 0xD8 mod/reg/rm /2 mod==3:               "FCOM" st(0),st(r/m)    ; FCOM ST(r/m)  ST(0) == ST(r/m)     mod == 3 therefore r/m is register
+opcode 0xDA mod/reg/rm /2 mod!=3:               "FCOM"w32 w32(r/m)      ; FCOM [mem]    ST(0) == *((uint32_t*)mem)
+opcode 0xDC mod/reg/rm /2 mod!=3:               "FCOM"f64 f64(r/m)      ; FCOM [mem]    ST(0) == *((double*)mem)
+opcode 0xDE mod/reg/rm /2 mod!=3:               "FCOM"w16 w16(r/m)      ; FCOM [mem]    ST(0) == *((uint16_t*)mem)
+
+; FCOMP
+opcode 0xD8 mod/reg/rm /3 mod!=3:               "FCOMP"f32 f32(r/m)     ; FCOMP [mem]   ST(0) == *((float*)mem)
+opcode 0xD8 mod/reg/rm /3 mod==3:               "FCOMP" st(0),st(r/m)   ; FCOMP ST(r/m) ST(0) == ST(r/m)     mod == 3 therefore r/m is register
+opcode 0xDA mod/reg/rm /3 mod!=3:               "FCOMP"w32 w32(r/m)     ; FCOMP [mem]   ST(0) == *((uint32_t*)mem)
+opcode 0xDC mod/reg/rm /3 mod!=3:               "FCOMP"f64 f64(r/m)     ; FCOMP [mem]   ST(0) == *((double*)mem)
+opcode 0xDE mod/reg/rm /3 mod!=3:               "FCOMP"w16 w16(r/m)     ; FCOMP [mem]   ST(0) == *((uint16_t*)mem)
+opcode 0xDE 0xD9:                               "FCOMPP"                ; FCOMPP        ST(0) == ST(1), POP from top of stack
 
