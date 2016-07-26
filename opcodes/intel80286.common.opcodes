@@ -45,3 +45,29 @@ opcode 0x6D:                                    "INS"w
 opcode 0x6E:                                    "OUTS"b
 opcode 0x6F:                                    "OUTS"w
 
+; 0Fh 00h protected mode instruction set 1
+opcode 0x0F 0x00 mod/reg/rm /0 mod!=3:          "SLDT"w w(r/m)
+opcode 0x0F 0x00 mod/reg/rm /1 mod!=3:          "STR"w w(r/m)
+opcode 0x0F 0x00 mod/reg/rm /2 mod!=3:          "LLDT"w w(r/m)
+opcode 0x0F 0x00 mod/reg/rm /3 mod!=3:          "LTR"w w(r/m)
+opcode 0x0F 0x00 mod/reg/rm /4 mod!=3:          "VERR"w w(r/m)
+opcode 0x0F 0x00 mod/reg/rm /5 mod!=3:          "VERW"w w(r/m)
+
+; 0Fh 01h protected mode instruction set 2
+opcode 0x0F 0x01 mod/reg/rm /0 mod!=3:          "SGDT"w w(r/m)
+opcode 0x0F 0x01 mod/reg/rm /1 mod!=3:          "SIDT"w w(r/m)
+opcode 0x0F 0x01 mod/reg/rm /2 mod!=3:          "LGDT"w w(r/m)
+opcode 0x0F 0x01 mod/reg/rm /3 mod!=3:          "LIDT"w w(r/m)
+opcode 0x0F 0x01 mod/reg/rm /4 mod!=3:          "SMSW"w w(r/m)
+opcode 0x0F 0x01 mod/reg/rm /6 mod!=3:          "LMSW"w w(r/m)
+
+; more protected mode stuff
+opcode 0x0F 0x02 mod/reg/rm:                    "LAR"w w(reg),w(r/m)
+opcode 0x0F 0x03 mod/reg/rm:                    "LSL"w w(reg),w(r/m)
+opcode 0x0F 0x06:                               "CLTS"w
+
+; 286-specific
+#ifdef CORE_286_LOADALL
+opcode 0x0F 0x05:                               "LOADALL286"
+#endif
+
