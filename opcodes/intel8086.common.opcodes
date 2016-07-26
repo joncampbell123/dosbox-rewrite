@@ -46,11 +46,10 @@ opcode 0x82 mod/reg/rm /4 ib:                   "AND"b b(r/m),i             ; Im
 opcode 0x83 mod/reg/rm /4 ibs:                  "AND"w w(r/m),i             ; Immediate to Register/Memory              100000sw s=1 w=1
 
 ; CALL
-opcode 0xE8 iws:                                "CALL"w w(i+ip)
-opcode 0xFF mod/reg/rm /2:                      "CALL"w w(r/m)
-; CALL FAR
-opcode 0x9A iw iw16:                            "CALLF"w w(i2),w(i)
-opcode 0xFF mod/reg/rm /3:                      "CALLF"w w(r/m)
+opcode 0xE8 iws:                                "CALL"w w(i+ip)             ; Direct Within Segment                     11101000
+opcode 0xFF mod/reg/rm /2:                      "CALL"w w(r/m)              ; Indirect Within Segment                   11111111 reg=2
+opcode 0x9A iw iw16:                            "CALLF"w w(i2),w(i)         ; Direct Intersegment                       10011010
+opcode 0xFF mod/reg/rm /3:                      "CALLF"w w(r/m)             ; Indirect Intersegment                     11111111 reg=3
 
 ; CBW
 opcode 0x98:                                    "CBW"b                      ; Convert Byte to Word                      10011000
@@ -80,14 +79,14 @@ opcode 0xFE mod/reg/rm /1:                      "DEC"b b(r/m)               ; Re
 opcode 0xFF mod/reg/rm /1:                      "DEC"w w(r/m)               ; Register/Memory                           1111111w w=1
 
 ; OTHER
-opcode 0xF4:                                    "HLT"
-opcode 0xF5:                                    "CMC"
-opcode 0xF8:                                    "CLC"
-opcode 0xF9:                                    "STC"
-opcode 0xFA:                                    "CLI"
-opcode 0xFB:                                    "STI"
-opcode 0xFC:                                    "CLD"
-opcode 0xFD:                                    "STD"
+opcode 0xF4:                                    "HLT"                       ; Halt                                      11110100
+opcode 0xF5:                                    "CMC"                       ; Complement Carry                          11110101
+opcode 0xF8:                                    "CLC"                       ; Clear Carry                               11111000
+opcode 0xF9:                                    "STC"                       ; Set Carry                                 11111001
+opcode 0xFA:                                    "CLI"                       ; Clear Interrupt                           11111010
+opcode 0xFB:                                    "STI"                       ; Set Interrupt                             11111011
+opcode 0xFC:                                    "CLD"                       ; Clear Direction                           11111100
+opcode 0xFD:                                    "STD"                       ; Set Direction                             11111101
 
 ; INC
 opcode range(0x40,0x47) reg=op02:               "INC"w w(reg)               ; Register                                  01000<reg> reg=0-7
@@ -95,12 +94,10 @@ opcode 0xFE mod/reg/rm /0:                      "INC"b b(r/m)               ; Re
 opcode 0xFF mod/reg/rm /0:                      "INC"w w(r/m)               ; Register/Memory                           1111111w w=1
 
 ; INT and interrupts
-opcode 0xCC:                                    "INT3"w
-opcode 0xCD ib:                                 "INT"w i
-opcode 0xCE:                                    "INTO"w
-
-; IRET
-opcode 0xCF:                                    "IRET"w
+opcode 0xCC:                                    "INT3"w                     ; Type 3 (DEBUG)                            11001100
+opcode 0xCD ib:                                 "INT"w i                    ; Type Specified                            11001101
+opcode 0xCE:                                    "INTO"w                     ; Interrupt on Overflow                     11001110
+opcode 0xCF:                                    "IRET"w                     ; Interrupt Return                          11001111
 
 #ifdef CORE_8086_JMP_ALIAS
 ; JMP conditional (8088 only known alias of 0x70-0x7F)
@@ -123,31 +120,33 @@ opcode 0x6F ibs:                                "JG" w(i+ip)
 #endif
 
 ; JMP conditional
-opcode 0x70 ibs:                                "JO" w(i+ip)
-opcode 0x71 ibs:                                "JNO" w(i+ip)
-opcode 0x72 ibs:                                "JB" w(i+ip)
-opcode 0x73 ibs:                                "JNB" w(i+ip)
-opcode 0x74 ibs:                                "JZ" w(i+ip)
-opcode 0x75 ibs:                                "JNZ" w(i+ip)
-opcode 0x76 ibs:                                "JBE" w(i+ip)
-opcode 0x77 ibs:                                "JA" w(i+ip)
-opcode 0x78 ibs:                                "JS" w(i+ip)
-opcode 0x79 ibs:                                "JNS" w(i+ip)
-opcode 0x7A ibs:                                "JPE" w(i+ip)
-opcode 0x7B ibs:                                "JPO" w(i+ip)
-opcode 0x7C ibs:                                "JL" w(i+ip)
-opcode 0x7D ibs:                                "JGE" w(i+ip)
-opcode 0x7E ibs:                                "JLE" w(i+ip)
-opcode 0x7F ibs:                                "JG" w(i+ip)
-opcode 0xE3 ibs:                                "JCXZ"w w(i+ip)
+opcode 0x70 ibs:                                "JO" w(i+ip)                ; Jump on Overflow                          01110000
+opcode 0x71 ibs:                                "JNO" w(i+ip)               ; Jump on Not Overflow                      01110001
+opcode 0x72 ibs:                                "JB" w(i+ip)                ; Jump on Below, Not (Above or Equal)       01110010
+opcode 0x73 ibs:                                "JNB" w(i+ip)               ; Jump on Not Below (Above or Equal)        01110011
+opcode 0x74 ibs:                                "JZ" w(i+ip)                ; Jump on Zero/Equal                        01110100
+opcode 0x75 ibs:                                "JNZ" w(i+ip)               ; Jump on Not Zero/Equal                    01110101
+opcode 0x76 ibs:                                "JBE" w(i+ip)               ; Jump on Below or Equal                    01110110
+opcode 0x77 ibs:                                "JA" w(i+ip)                ; Jump on Above                             01110111
+opcode 0x78 ibs:                                "JS" w(i+ip)                ; Jump on Sign                              01111000
+opcode 0x79 ibs:                                "JNS" w(i+ip)               ; Jump on Not Sign                          01111001
+opcode 0x7A ibs:                                "JPE" w(i+ip)               ; Jump on Parity/Parity Even                01111010
+opcode 0x7B ibs:                                "JPO" w(i+ip)               ; Jump on Not Parity/Parity Odd             01111011
+opcode 0x7C ibs:                                "JL" w(i+ip)                ; Jump on Less than                         01111100
+opcode 0x7D ibs:                                "JGE" w(i+ip)               ; Jump on Greater Than                      01111101
+opcode 0x7E ibs:                                "JLE" w(i+ip)               ; Jump on Less Than or Equal                01111110
+opcode 0x7F ibs:                                "JG" w(i+ip)                ; Jump on Greater Than                      01111111
+opcode 0xE0 ibs:                                "LOOPNZ"w w(i+ip)           ; Loop CX times                             11100000
+opcode 0xE1 ibs:                                "LOOPZ"w w(i+ip)            ; Loop while Zero/Equal (ZF=1)              11100001
+opcode 0xE2 ibs:                                "LOOP"w w(i+ip)             ; Loop while Not Zero/Not Equal (ZF=0)      11100010
+opcode 0xE3 ibs:                                "JCXZ"w w(i+ip)             ; Jump on CX == 0                           11100011
 
-; JMP
-opcode 0xE9 iws:                                "JMP"w w(i+ip)
-opcode 0xEB ibs:                                "JMP"w w(i+ip)
-opcode 0xFF mod/reg/rm /4:                      "JMP"w w(r/m)
-; JMP FAR
-opcode 0xEA iw iw16:                            "JMPF"w w(i2),w(i)
-opcode 0xFF mod/reg/rm /5:                      "JMPF"w w(r/m)
+; JMP unconditional
+opcode 0xE9 iws:                                "JMP"w w(i+ip)              ; Direct Within Segment                     11101001
+opcode 0xEB ibs:                                "JMP"w w(i+ip)              ; Direct Within Segment - Short             11101011
+opcode 0xFF mod/reg/rm /4:                      "JMP"w w(r/m)               ; Indirect Within Segment                   11111111 reg=4
+opcode 0xEA iw iw16:                            "JMPF"w w(i2),w(i)          ; Direct Intersegment                       11101010
+opcode 0xFF mod/reg/rm /5:                      "JMPF"w w(r/m)              ; Indirect Intersegment                     11111111 reg=5
 
 ; LAHF
 opcode 0x9F:                                    "LAHF"b                     ; Load AH with Flags                        10011111
@@ -160,17 +159,12 @@ opcode 0x8D mod/reg/rm:                         "LEA"w w(reg),w(r/m)        ; Lo
 opcode 0xC4 mod/reg/rm:                         "LES"w w(reg),w(r/m)        ; Load Pointer to ES                        11000100
 opcode 0xC5 mod/reg/rm:                         "LDS"w w(reg),w(r/m)        ; Load Pointer to DS                        11000101
 
-; LOOP
-opcode 0xE0 ibs:                                "LOOPNZ"w w(i+ip)
-opcode 0xE1 ibs:                                "LOOPZ"w w(i+ip)
-opcode 0xE2 ibs:                                "LOOP"w w(i+ip)
-
 #ifdef CORE_8086_LOCK_ALIAS
 ; LOCK (8086 alias)
 opcode 0xF1 prefix:                             "LOCK"
 #endif
 ; LOCK
-opcode 0xF0 prefix:                             "LOCK"
+opcode 0xF0 prefix:                             "LOCK"                      ; Bus Lock Prefix                           11110000
 
 ; MOV
 opcode 0x88 mod/reg/rm:                         "MOV"b b(r/m),b(reg)        ; Register to Register/Memory               100010dw d=0 w=0
@@ -233,17 +227,17 @@ opcode 0x9C:                                    "PUSHF"w                    ; Pu
 opcode 0x9D:                                    "POPF"w                     ; Pop Flags                                 10011101
 
 ; REPxxx
-opcode 0xF2 prefix:                             "REPNZ"
-opcode 0xF3 prefix:                             "REPZ"
+opcode 0xF2 prefix:                             "REPNZ"                     ; Repeat (while ZF=0)                       1111001z z=0
+opcode 0xF3 prefix:                             "REPZ"                      ; Repeat (while ZF=1)                       1111001z z=1
 
 #ifdef CORE_8086_RET_ALIAS
 ; RET (8086 alias of C2-C3)
 opcode 0xC0 iw:                                 "RET"w i
 opcode 0xC1:                                    "RET"w
 #endif
-; RET
-opcode 0xC2 iw:                                 "RET"w i
-opcode 0xC3:                                    "RET"w
+; RET Return from Call
+opcode 0xC2 iw:                                 "RET"w i                    ; Within Segment Adding Immed to SP         11000010
+opcode 0xC3:                                    "RET"w                      ; Within Segment                            11000011
 
 #ifdef CORE_8086_RET_ALIAS
 ; RETF (8086 alias of CA-CB)
@@ -251,8 +245,8 @@ opcode 0xC8 iw:                                 "RETF"w i
 opcode 0xC9:                                    "RETF"w
 #endif
 ; RETF
-opcode 0xCA iw:                                 "RETF"w i
-opcode 0xCB:                                    "RETF"w
+opcode 0xCA iw:                                 "RETF"w i                   ; Intersegment Adding Immediate to SP       11001010
+opcode 0xCB:                                    "RETF"w                     ; Intersegment                              11001011
 
 ; SALC
 opcode 0xD6:                                    "SALCb"
@@ -313,16 +307,16 @@ opcode prefix 0x36 segoverride(ss):             "SS:"
 opcode prefix 0x3E segoverride(ds):             "DS:"
 
 ; string ops
-opcode 0xA4:                                    "MOVS"b
-opcode 0xA5:                                    "MOVS"w
-opcode 0xA6:                                    "CMPS"b
-opcode 0xA7:                                    "CMPS"w
-opcode 0xAA:                                    "STOS"b
-opcode 0xAB:                                    "STOS"w
-opcode 0xAC:                                    "LODS"b
-opcode 0xAD:                                    "LODS"w
-opcode 0xAE:                                    "SCAS"b
-opcode 0xAF:                                    "SCAS"w
+opcode 0xA4:                                    "MOVS"b                     ; Move Byte                                 1010010w w=0
+opcode 0xA5:                                    "MOVS"w                     ; Move Word                                 1010010w w=1
+opcode 0xA6:                                    "CMPS"b                     ; Compare Byte                              1010011w w=0
+opcode 0xA7:                                    "CMPS"w                     ; Compare Word                              1010011w w=1
+opcode 0xAA:                                    "STOS"b                     ; Store Byte from AL                        1010101w w=0
+opcode 0xAB:                                    "STOS"w                     ; Store Word from AX                        1010101w w=1
+opcode 0xAC:                                    "LODS"b                     ; Load Byte to AL                           1010110w w=0
+opcode 0xAD:                                    "LODS"w                     ; Load Word to AX                           1010110w w=1
+opcode 0xAE:                                    "SCAS"b                     ; Scan Byte                                 1010111w w=0
+opcode 0xAF:                                    "SCAS"w                     ; Scan Word                                 1010111w w=1
 
 ; SBB
 opcode 0x18 mod/reg/rm:                         "SBB"b b(r/m),b(reg)        ; Reg/Memory with Register to Either        000110dw d=0 w=0
