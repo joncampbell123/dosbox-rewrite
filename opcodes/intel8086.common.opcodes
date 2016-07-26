@@ -1,3 +1,5 @@
+; References:
+;    Intel 8088 datasheet, 8086/8088 Instruction Set Summary
 
 ; AAA/AAS
 opcode 0x37:                                    "AAA"b
@@ -174,22 +176,21 @@ opcode 0xF1 prefix:                             "LOCK"
 opcode 0xF0 prefix:                             "LOCK"
 
 ; MOV
-opcode 0x88 mod/reg/rm:                         "MOV"b b(r/m),b(reg)
-opcode 0x89 mod/reg/rm:                         "MOV"w w(r/m),w(reg)
-opcode 0x8A mod/reg/rm:                         "MOV"b b(reg),b(r/m)
-opcode 0x8B mod/reg/rm:                         "MOV"w w(reg),w(r/m)
-opcode 0xA0 iw:                                 "MOV"b b(a),b(mem[i])
-opcode 0xA1 iw:                                 "MOV"w w(a),w(mem[i])
-opcode 0xA2 iw:                                 "MOV"b b(mem[i]),b(a)
-opcode 0xA3 iw:                                 "MOV"w b(mem[i]),w(a)
-opcode range(0xB0,0xB7) ib reg=op02:            "MOV"b b(reg),i
-opcode range(0xB8,0xBF) iw reg=op02:            "MOV"w w(reg),i
-opcode 0xC6 mod/reg/rm ib:                      "MOV"b b(r/m),i
-opcode 0xC7 mod/reg/rm iw:                      "MOV"w w(r/m),i
-
+opcode 0x88 mod/reg/rm:                         "MOV"b b(r/m),b(reg)        ; Register to Register/Memory               100010dw d=0 w=0
+opcode 0x89 mod/reg/rm:                         "MOV"w w(r/m),w(reg)        ; Register to Register/Memory               100010dw d=0 w=1
+opcode 0x8A mod/reg/rm:                         "MOV"b b(reg),b(r/m)        ; Register/Memory to Register               100010dw d=1 w=0
+opcode 0x8B mod/reg/rm:                         "MOV"w w(reg),w(r/m)        ; Register/Memory to Register               100010dw d=1 w=1
+opcode 0xA0 iw:                                 "MOV"b b(a),b(mem[i])       ; Memory to Accumulator                     1010000w w=0
+opcode 0xA1 iw:                                 "MOV"w w(a),w(mem[i])       ; Memory to Accumulator                     1010000w w=1
+opcode 0xA2 iw:                                 "MOV"b b(mem[i]),b(a)       ; Accumulator to Memory                     1010001w w=0
+opcode 0xA3 iw:                                 "MOV"w b(mem[i]),w(a)       ; Accumulator to Memory                     1010001w w=1
+opcode range(0xB0,0xB7) ib reg=op02:            "MOV"b b(reg),i             ; Immediate to Register                     1011wreg w=0 reg=0-7
+opcode range(0xB8,0xBF) iw reg=op02:            "MOV"w w(reg),i             ; Immediate to Register                     1011wreg w=1 reg=0-7
+opcode 0xC6 mod/reg/rm /0 ib:                   "MOV"b b(r/m),i             ; Immediate to Register/Memory              1100011w w=0 reg=0
+opcode 0xC7 mod/reg/rm /0 iw:                   "MOV"w w(r/m),i             ; Immediate to Register/Memory              1100011w w=1 reg=0
 ; MOV sreg
-opcode 0x8C mod/reg/rm:                         "MOV"w w(r/m),seg(reg)
-opcode 0x8E mod/reg/rm:                         "MOV"w seg(reg),w(r/m)
+opcode 0x8C mod/reg/rm:                         "MOV"w w(r/m),seg(reg)      ; Segment Register to Register/Memory       10001100
+opcode 0x8E mod/reg/rm:                         "MOV"w seg(reg),w(r/m)      ; Register/Memory to Segment Register       10001110
 
 ; NOP
 opcode 0x90:                                    "NOP"

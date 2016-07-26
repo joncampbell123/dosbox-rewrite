@@ -686,15 +686,45 @@ switch (op=IPFB()) {
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
         ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LDSw %s,%s",CPUregsN[2][mrm.reg()],IPDecPrint16(mrm,disp,2,RC_REG,"w"));
         break;
-    case 0xC6: /* C6h MOVb b(r/m),i      spec: 0xC6 mod/reg/rm ib */
+    case 0xC6: /* C6h        spec:  */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
-        imm=IPFB();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVb %s,0x%02lX",IPDecPrint16(mrm,disp,1,RC_REG,"b"),(unsigned long)((uint16_t)imm));
+/* Opcodes starting with C6h */
+        switch (mrm.reg()) {
+            case 0: /* C6h 00h MOVb b(r/m),i reg=0      spec: 0xC6 mod/reg/rm /0 ib */
+                imm=IPFB();
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVb %s,0x%02lX",IPDecPrint16(mrm,disp,1,RC_REG,"b"),(unsigned long)((uint16_t)imm));
+                break;
+            /* reg 1 not defined */
+            /* reg 2 not defined */
+            /* reg 3 not defined */
+            /* reg 4 not defined */
+            /* reg 5 not defined */
+            /* reg 6 not defined */
+            /* reg 7 not defined */
+            default:
+                goto _x86decode_illegal_opcode;
+        };
+/* End of opcodes starting with C6h */
         break;
-    case 0xC7: /* C7h MOVw w(r/m),i      spec: 0xC7 mod/reg/rm iw */
+    case 0xC7: /* C7h        spec:  */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
-        imm=IPFcodeW();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVw %s,0x%04lX",IPDecPrint16(mrm,disp,2,RC_REG,"w"),(unsigned long)((uint16_t)imm));
+/* Opcodes starting with C7h */
+        switch (mrm.reg()) {
+            case 0: /* C7h 00h MOVw w(r/m),i reg=0      spec: 0xC7 mod/reg/rm /0 iw */
+                imm=IPFcodeW();
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVw %s,0x%04lX",IPDecPrint16(mrm,disp,2,RC_REG,"w"),(unsigned long)((uint16_t)imm));
+                break;
+            /* reg 1 not defined */
+            /* reg 2 not defined */
+            /* reg 3 not defined */
+            /* reg 4 not defined */
+            /* reg 5 not defined */
+            /* reg 6 not defined */
+            /* reg 7 not defined */
+            default:
+                goto _x86decode_illegal_opcode;
+        };
+/* End of opcodes starting with C7h */
         break;
     case 0xC8: /* C8h RETFw i      spec: 0xC8 iw */
     case 0xCA: /* CAh RETFw i      spec: 0xCA iw */
