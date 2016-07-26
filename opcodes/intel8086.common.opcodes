@@ -257,14 +257,6 @@ opcode 0xCB:                                    "RETF"w
 ; SALC
 opcode 0xD6:                                    "SALCb"
 
-#ifdef CORE_8086_F6_TEST_ALIAS
-; 8086 alias
-opcode 0xF6 mod/reg/rm /1 ib:                   "TEST"b b(r/m),i
-opcode 0xF7 mod/reg/rm /1 iw:                   "TEST"w w(r/m),i
-#endif
-; misc group (GRP3). some have immediate bytes, some not
-opcode 0xF6 mod/reg/rm /0 ib:                   "TEST"b b(r/m),i
-opcode 0xF7 mod/reg/rm /0 iw:                   "TEST"w w(r/m),i
 opcode 0xF6 mod/reg/rm /2:                      "NOT"b b(r/m)               ; Invert                                    1111011w w=0
 opcode 0xF7 mod/reg/rm /2:                      "NOT"w w(r/m)               ; Invert                                    1111011w w=1
 opcode 0xF6 mod/reg/rm /3:                      "NEG"b b(r/m)               ; Change Sign                               1111011w w=0
@@ -357,10 +349,18 @@ opcode 0x82 mod/reg/rm /5 ib:                   "SUB"b b(r/m),i             ; Im
 opcode 0x83 mod/reg/rm /5 ibs:                  "SUB"w w(r/m),i             ; Immediate to Register/Memory              100000sw s=1 w=1
 
 ; TEST
-opcode 0x84 mod/reg/rm:                         "TEST"b b(r/m),b(reg)
-opcode 0x85 mod/reg/rm:                         "TEST"w w(r/m),w(reg)
-opcode 0xA8 ib:                                 "TEST"b b(a),i
-opcode 0xA9 iw:                                 "TEST"w w(a),i
+opcode 0x84 mod/reg/rm:                         "TEST"b b(r/m),b(reg)       ; Register/Memory and Register              1000010w w=0
+opcode 0x85 mod/reg/rm:                         "TEST"w w(r/m),w(reg)       ; Register/Memory and Register              1000010w w=1
+opcode 0xA8 ib:                                 "TEST"b b(a),i              ; Immediate Data and Accumulator            1010100w w=0
+opcode 0xA9 iw:                                 "TEST"w w(a),i              ; Immediate Data and Accumulator            1010100w w=1
+#ifdef CORE_8086_F6_TEST_ALIAS
+; 8086 alias
+opcode 0xF6 mod/reg/rm /1 ib:                   "TEST"b b(r/m),i            ; Immediate Data and Register/Memory        1111011w w=0
+opcode 0xF7 mod/reg/rm /1 iw:                   "TEST"w w(r/m),i            ; Immediate Data and Register/Memory        1111011w w=1
+#endif
+; misc group (GRP3). some have immediate bytes, some not
+opcode 0xF6 mod/reg/rm /0 ib:                   "TEST"b b(r/m),i            ; Immediate Data and Register/Memory        1111011w w=0
+opcode 0xF7 mod/reg/rm /0 iw:                   "TEST"w w(r/m),i            ; Immediate Data and Register/Memory        1111011w w=1
 
 ; WAIT
 opcode 0x9B prefix:                             "WAIT"
@@ -374,17 +374,15 @@ opcode 0x90:                                    "NOP"                       ; Re
 ; XLAT
 opcode 0xD7:                                    "XLAT"b                     ; Translate Byte to AL                      11010111
 
-; XOR byte,byte
-opcode 0x30 mod/reg/rm:                         "XOR"b b(r/m),b(reg)
-opcode 0x32 mod/reg/rm:                         "XOR"b b(reg),b(r/m)
-opcode 0x34 ib:                                 "XOR"b b(a),i
-opcode 0x80 mod/reg/rm /6 ib:                   "XOR"b b(r/m),i
-opcode 0x82 mod/reg/rm /6 ib:                   "XOR"b b(r/m),i
-; XOR word,word
-opcode 0x31 mod/reg/rm:                         "XOR"w w(r/m),w(reg)
-opcode 0x33 mod/reg/rm:                         "XOR"w w(reg),w(r/m)
-opcode 0x35 iw:                                 "XOR"w w(a),i
-opcode 0x81 mod/reg/rm /6 iw:                   "XOR"w w(r/m),i
-opcode 0x83 mod/reg/rm /6 ibs:                  "XOR"w w(r/m),i
-
+; XOR
+opcode 0x30 mod/reg/rm:                         "XOR"b b(r/m),b(reg)        ; Reg/Memory with Register to Either        001100dw d=0 w=0
+opcode 0x31 mod/reg/rm:                         "XOR"w w(r/m),w(reg)        ; Reg/Memory with Register to Either        001100dw d=0 w=1
+opcode 0x32 mod/reg/rm:                         "XOR"b b(reg),b(r/m)        ; Reg/Memory with Register to Either        001100dw d=1 w=0
+opcode 0x33 mod/reg/rm:                         "XOR"w w(reg),w(r/m)        ; Reg/Memory with Register to Either        001100dw d=1 w=1
+opcode 0x34 ib:                                 "XOR"b b(a),i               ; Immediate to Accumulator                  0011010w w=0
+opcode 0x35 iw:                                 "XOR"w w(a),i               ; Immediate to Accumulator                  0011010w w=1
+opcode 0x80 mod/reg/rm /6 ib:                   "XOR"b b(r/m),i             ; Immediate to Register/Memory              100000sw s=0 w=0
+opcode 0x81 mod/reg/rm /6 iw:                   "XOR"w w(r/m),i             ; Immediate to Register/Memory              100000sw s=0 w=1
+opcode 0x82 mod/reg/rm /6 ib:                   "XOR"b b(r/m),i             ; Immediate to Register/Memory              100000sw s=1 w=0
+opcode 0x83 mod/reg/rm /6 ibs:                  "XOR"w w(r/m),i             ; Immediate to Register/Memory              100000sw s=1 w=1
 
