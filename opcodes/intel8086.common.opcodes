@@ -218,26 +218,25 @@ opcode 0xED:                                    "IN"w w(a),w16(d)
 opcode 0xEE:                                    "OUT"b w16(d),b(a)
 opcode 0xEF:                                    "OUT"w w16(d),w(a)
 
-; PUSH sreg
-opcode 0x06:                                    "PUSH"w w(es)
-opcode 0x0E:                                    "PUSH"w w(cs)
-opcode 0x16:                                    "PUSH"w w(ss)
-opcode 0x1E:                                    "PUSH"w w(ds)
 ; PUSH
-opcode range(0x50,0x57) reg=op02:               "PUSH"w w(reg)
-opcode 0x9C:                                    "PUSHF"w
-opcode 0xFF mod/reg/rm /6:                      "PUSH"w w(r/m)
-; POP sreg
-opcode 0x07:                                    "POP"w w(es)
-#ifdef CORE_8086_POP_CS
-opcode 0x0F:                                    "POP"w w(cs)
-#endif
-opcode 0x17:                                    "POP"w w(ss)
-opcode 0x1F:                                    "POP"w w(ds)
+opcode 0x06:                                    "PUSH"w w(es)               ; Segment Register                          000<reg>110 reg=0
+opcode 0x0E:                                    "PUSH"w w(cs)               ; Segment Register                          000<reg>110 reg=1
+opcode 0x16:                                    "PUSH"w w(ss)               ; Segment Register                          000<reg>110 reg=2
+opcode 0x1E:                                    "PUSH"w w(ds)               ; Segment Register                          000<reg>110 reg=3
+opcode range(0x50,0x57) reg=op02:               "PUSH"w w(reg)              ; Register                                  01010<reg> reg=0-7
+opcode 0xFF mod/reg/rm /6:                      "PUSH"w w(r/m)              ; Register/Memory                           11111111 <mod/reg/rm> reg=110
 ; POP
-opcode range(0x58,0x5F) reg=op02:               "POP"w w(reg)
-opcode 0x8F mod/reg/rm:                         "POP"w w(r/m)
-opcode 0x9D:                                    "POPF"w
+opcode 0x07:                                    "POP"w w(es)                ; Segment Register                          000<reg>111 reg=0
+#ifdef CORE_8086_POP_CS
+opcode 0x0F:                                    "POP"w w(cs)                ; Segment Register                          000<reg>111 reg=1
+#endif
+opcode 0x17:                                    "POP"w w(ss)                ; Segment Register                          000<reg>111 reg=2
+opcode 0x1F:                                    "POP"w w(ds)                ; Segment Register                          000<reg>111 reg=3
+opcode range(0x58,0x5F) reg=op02:               "POP"w w(reg)               ; Register                                  01011<reg> reg=0-7
+opcode 0x8F mod/reg/rm:                         "POP"w w(r/m)               ; Register/Memory                           10001111 <mod/reg/rm> reg=000
+; push/pop flags
+opcode 0x9C:                                    "PUSHF"w                    ; Push Flags                                10011100
+opcode 0x9D:                                    "POPF"w                     ; Pop Flags                                 10011101
 
 ; REPxxx
 opcode 0xF2 prefix:                             "REPNZ"
