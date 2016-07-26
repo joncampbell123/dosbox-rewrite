@@ -1,0 +1,398 @@
+
+; AAA/AAS
+opcode 0x37:                                    "AAA"b
+opcode 0x3F:                                    "AAS"b
+
+; AAM/AAD
+opcode 0xD4 ib:                                 "AAM"b i
+opcode 0xD5 ib:                                 "AAD"b i
+
+; ADC byte,byte
+opcode 0x10 mod/reg/rm:                         "ADC"b b(r/m),b(reg)
+opcode 0x12 mod/reg/rm:                         "ADC"b b(reg),b(r/m)
+opcode 0x14 ib:                                 "ADC"b b(a),i
+opcode 0x80 mod/reg/rm /2 ib:                   "ADC"b b(r/m),i
+opcode 0x82 mod/reg/rm /2 ib:                   "ADC"b b(r/m),i
+; ADC word,word
+opcode 0x11 mod/reg/rm:                         "ADC"w w(r/m),w(reg)
+opcode 0x13 mod/reg/rm:                         "ADC"w w(reg),w(r/m)
+opcode 0x15 iw:                                 "ADC"w w(a),i
+opcode 0x81 mod/reg/rm /2 iw:                   "ADC"w w(r/m),i
+opcode 0x83 mod/reg/rm /2 ibs:                  "ADC"w w(r/m),i
+
+; ADD byte,byte
+opcode 0x00 mod/reg/rm:                         "ADD"b b(r/m),b(reg)
+opcode 0x02 mod/reg/rm:                         "ADD"b b(reg),b(r/m)
+opcode 0x04 ib:                                 "ADD"b b(a),i
+opcode 0x80 mod/reg/rm /0 ib:                   "ADD"b b(r/m),i
+opcode 0x82 mod/reg/rm /0 ib:                   "ADD"b b(r/m),i
+; ADD word,word
+opcode 0x01 mod/reg/rm:                         "ADD"w w(r/m),w(reg)
+opcode 0x03 mod/reg/rm:                         "ADD"w w(reg),w(r/m)
+opcode 0x05 iw:                                 "ADD"w w(a),i
+opcode 0x81 mod/reg/rm /0 iw:                   "ADD"w w(r/m),i
+opcode 0x83 mod/reg/rm /0 ibs:                  "ADD"w w(r/m),i
+
+; AND byte,byte
+opcode 0x20 mod/reg/rm:                         "AND"b b(r/m),b(reg)
+opcode 0x22 mod/reg/rm:                         "AND"b b(reg),b(r/m)
+opcode 0x24 ib:                                 "AND"b b(a),i
+opcode 0x80 mod/reg/rm /4 ib:                   "AND"b b(r/m),i
+opcode 0x82 mod/reg/rm /4 ib:                   "AND"b b(r/m),i
+; AND word,word
+opcode 0x21 mod/reg/rm:                         "AND"w w(r/m),w(reg)
+opcode 0x23 mod/reg/rm:                         "AND"w w(reg),w(r/m)
+opcode 0x25 iw:                                 "AND"w w(a),i
+opcode 0x81 mod/reg/rm /4 iw:                   "AND"w w(r/m),i
+opcode 0x83 mod/reg/rm /4 ibs:                  "AND"w w(r/m),i
+
+; CALL
+opcode 0xE8 iws:                                "CALL"w w(i+ip)
+opcode 0xFF mod/reg/rm /2:                      "CALL"w w(r/m)
+; CALL FAR
+opcode 0x9A iw iw16:                            "CALLF"w w(i2),w(i)
+opcode 0xFF mod/reg/rm /3:                      "CALLF"w w(r/m)
+
+; CBW
+opcode 0x98:                                    "CBW"b
+
+; CWD
+opcode 0x99:                                    "CWD"w
+
+; CMP byte,byte
+opcode 0x38 mod/reg/rm:                         "CMP"b b(r/m),b(reg)
+opcode 0x3A mod/reg/rm:                         "CMP"b b(reg),b(r/m)
+opcode 0x3C ib:                                 "CMP"b b(a),i
+opcode 0x80 mod/reg/rm /7 ib:                   "CMP"b b(r/m),i
+opcode 0x82 mod/reg/rm /7 ib:                   "CMP"b b(r/m),i
+; CMP word,word
+opcode 0x39 mod/reg/rm:                         "CMP"w w(r/m),w(reg)
+opcode 0x3B mod/reg/rm:                         "CMP"w w(reg),w(r/m)
+opcode 0x3D iw:                                 "CMP"w w(a),i
+opcode 0x81 mod/reg/rm /7 iw:                   "CMP"w w(r/m),i
+opcode 0x83 mod/reg/rm /7 ibs:                  "CMP"w w(r/m),i
+
+; DAA/DAS
+opcode 0x27:                                    "DAA"b
+opcode 0x2F:                                    "DAS"b
+
+; DEC
+opcode range(0x48,0x4F) reg=op02:               "DEC"w w(reg)
+opcode 0xFE mod/reg/rm /1:                      "DEC"b b(r/m)
+opcode 0xFF mod/reg/rm /1:                      "DEC"w w(r/m)
+
+; OTHER
+opcode 0xF4:                                    "HLT"
+opcode 0xF5:                                    "CMC"
+opcode 0xF8:                                    "CLC"
+opcode 0xF9:                                    "STC"
+opcode 0xFA:                                    "CLI"
+opcode 0xFB:                                    "STI"
+opcode 0xFC:                                    "CLD"
+opcode 0xFD:                                    "STD"
+
+; INC
+opcode range(0x40,0x47) reg=op02:               "INC"w w(reg)
+opcode 0xFE mod/reg/rm /0:                      "INC"b b(r/m)
+opcode 0xFF mod/reg/rm /0:                      "INC"w w(r/m)
+
+; INT and interrupts
+opcode 0xCC:                                    "INT3"w
+opcode 0xCD ib:                                 "INT"w i
+opcode 0xCE:                                    "INTO"w
+
+; IRET
+opcode 0xCF:                                    "IRET"w
+
+#ifdef CORE_8086_JMP_ALIAS
+; JMP conditional (8088 only known alias of 0x70-0x7F)
+opcode 0x60 ibs:                                "JO" w(i+ip)
+opcode 0x61 ibs:                                "JNO" w(i+ip)
+opcode 0x62 ibs:                                "JB" w(i+ip)
+opcode 0x63 ibs:                                "JNB" w(i+ip)
+opcode 0x64 ibs:                                "JZ" w(i+ip)
+opcode 0x65 ibs:                                "JNZ" w(i+ip)
+opcode 0x66 ibs:                                "JBE" w(i+ip)
+opcode 0x67 ibs:                                "JA" w(i+ip)
+opcode 0x68 ibs:                                "JS" w(i+ip)
+opcode 0x69 ibs:                                "JNS" w(i+ip)
+opcode 0x6A ibs:                                "JPE" w(i+ip)
+opcode 0x6B ibs:                                "JPO" w(i+ip)
+opcode 0x6C ibs:                                "JL" w(i+ip)
+opcode 0x6D ibs:                                "JGE" w(i+ip)
+opcode 0x6E ibs:                                "JLE" w(i+ip)
+opcode 0x6F ibs:                                "JG" w(i+ip)
+#endif
+
+; JMP conditional
+opcode 0x70 ibs:                                "JO" w(i+ip)
+opcode 0x71 ibs:                                "JNO" w(i+ip)
+opcode 0x72 ibs:                                "JB" w(i+ip)
+opcode 0x73 ibs:                                "JNB" w(i+ip)
+opcode 0x74 ibs:                                "JZ" w(i+ip)
+opcode 0x75 ibs:                                "JNZ" w(i+ip)
+opcode 0x76 ibs:                                "JBE" w(i+ip)
+opcode 0x77 ibs:                                "JA" w(i+ip)
+opcode 0x78 ibs:                                "JS" w(i+ip)
+opcode 0x79 ibs:                                "JNS" w(i+ip)
+opcode 0x7A ibs:                                "JPE" w(i+ip)
+opcode 0x7B ibs:                                "JPO" w(i+ip)
+opcode 0x7C ibs:                                "JL" w(i+ip)
+opcode 0x7D ibs:                                "JGE" w(i+ip)
+opcode 0x7E ibs:                                "JLE" w(i+ip)
+opcode 0x7F ibs:                                "JG" w(i+ip)
+opcode 0xE3 ibs:                                "JCXZ"w w(i+ip)
+
+; JMP
+opcode 0xE9 iws:                                "JMP"w w(i+ip)
+opcode 0xEB ibs:                                "JMP"w w(i+ip)
+opcode 0xFF mod/reg/rm /4:                      "JMP"w w(r/m)
+; JMP FAR
+opcode 0xEA iw iw16:                            "JMPF"w w(i2),w(i)
+opcode 0xFF mod/reg/rm /5:                      "JMPF"w w(r/m)
+
+; LAHF
+opcode 0x9F:                                    "LAHFb"
+
+; LEA
+opcode 0x8D mod/reg/rm:                         "LEA"w w(reg),w(r/m)
+
+; LDS/LES/etc
+opcode 0xC4 mod/reg/rm:                         "LES"w w(reg),w(r/m)
+opcode 0xC5 mod/reg/rm:                         "LDS"w w(reg),w(r/m)
+
+; LOOP
+opcode 0xE0 ibs:                                "LOOPNZ"w w(i+ip)
+opcode 0xE1 ibs:                                "LOOPZ"w w(i+ip)
+opcode 0xE2 ibs:                                "LOOP"w w(i+ip)
+
+#ifdef CORE_8086_LOCK_ALIAS
+; LOCK (8086 alias)
+opcode 0xF1 prefix:                             "LOCK"
+#endif
+; LOCK
+opcode 0xF0 prefix:                             "LOCK"
+
+; MOV
+opcode 0x88 mod/reg/rm:                         "MOV"b b(r/m),b(reg)
+opcode 0x89 mod/reg/rm:                         "MOV"w w(r/m),w(reg)
+opcode 0x8A mod/reg/rm:                         "MOV"b b(reg),b(r/m)
+opcode 0x8B mod/reg/rm:                         "MOV"w w(reg),w(r/m)
+opcode 0xA0 iw:                                 "MOV"b b(a),b(mem[i])
+opcode 0xA1 iw:                                 "MOV"w w(a),w(mem[i])
+opcode 0xA2 iw:                                 "MOV"b b(mem[i]),b(a)
+opcode 0xA3 iw:                                 "MOV"w b(mem[i]),w(a)
+opcode range(0xB0,0xB7) ib reg=op02:            "MOV"b b(reg),i
+opcode range(0xB8,0xBF) iw reg=op02:            "MOV"w w(reg),i
+opcode 0xC6 mod/reg/rm ib:                      "MOV"b b(r/m),i
+opcode 0xC7 mod/reg/rm iw:                      "MOV"w w(r/m),i
+
+; MOV sreg
+opcode 0x8C mod/reg/rm:                         "MOV"w w(r/m),seg(reg)
+opcode 0x8E mod/reg/rm:                         "MOV"w seg(reg),w(r/m)
+
+; NOP
+opcode 0x90:                                    "NOP"
+
+; OR byte,byte
+opcode 0x08 mod/reg/rm:                         "OR"b b(r/m),b(reg)
+opcode 0x0A mod/reg/rm:                         "OR"b b(reg),b(r/m)
+opcode 0x0C ib:                                 "OR"b b(a),i
+opcode 0x80 mod/reg/rm /1 ib:                   "OR"b b(r/m),i
+opcode 0x82 mod/reg/rm /1 ib:                   "OR"b b(r/m),i
+; OR word,word
+opcode 0x09 mod/reg/rm:                         "OR"w w(r/m),w(reg)
+opcode 0x0B mod/reg/rm:                         "OR"w w(reg),w(r/m)
+opcode 0x0D iw:                                 "OR"w w(a),i
+opcode 0x81 mod/reg/rm /1 iw:                   "OR"w w(r/m),i
+opcode 0x83 mod/reg/rm /1 ibs:                  "OR"w w(r/m),i
+
+; I/O
+opcode 0xE4 ib:                                 "IN"b b(a),i
+opcode 0xE5 ib:                                 "IN"w w(a),i
+opcode 0xE6 ib:                                 "OUT"b i,b(a)
+opcode 0xE7 ib:                                 "OUT"w i,w(a)
+opcode 0xEC:                                    "IN"b b(a),w16(d)
+opcode 0xED:                                    "IN"w w(a),w16(d)
+opcode 0xEE:                                    "OUT"b w16(d),b(a)
+opcode 0xEF:                                    "OUT"w w16(d),w(a)
+
+; PUSH sreg
+opcode 0x06:                                    "PUSH"w w(es)
+opcode 0x0E:                                    "PUSH"w w(cs)
+opcode 0x16:                                    "PUSH"w w(ss)
+opcode 0x1E:                                    "PUSH"w w(ds)
+; PUSH
+opcode range(0x50,0x57) reg=op02:               "PUSH"w w(reg)
+opcode 0x9C:                                    "PUSHF"w
+opcode 0xFF mod/reg/rm /6:                      "PUSH"w w(r/m)
+; POP sreg
+opcode 0x07:                                    "POP"w w(es)
+opcode 0x0F:                                    "POP"w w(cs)
+opcode 0x17:                                    "POP"w w(ss)
+opcode 0x1F:                                    "POP"w w(ds)
+; POP
+opcode range(0x58,0x5F) reg=op02:               "POP"w w(reg)
+opcode 0x8F mod/reg/rm:                         "POP"w w(r/m)
+opcode 0x9D:                                    "POPF"w
+
+; REPxxx
+opcode 0xF2 prefix:                             "REPNZ"
+opcode 0xF3 prefix:                             "REPZ"
+
+#ifdef CORE_8086_RET_ALIAS
+; RET (8086 alias of C2-C3)
+opcode 0xC0 iw:                                 "RET"w i
+opcode 0xC1:                                    "RET"w
+#endif
+; RET
+opcode 0xC2 iw:                                 "RET"w i
+opcode 0xC3:                                    "RET"w
+
+#ifdef CORE_8086_RET_ALIAS
+; RETF (8086 alias of CA-CB)
+opcode 0xC8 iw:                                 "RETF"w i
+opcode 0xC9:                                    "RETF"w
+#endif
+; RETF
+opcode 0xCA iw:                                 "RETF"w i
+opcode 0xCB:                                    "RETF"w
+
+; SALC
+opcode 0xD6:                                    "SALCb"
+
+#ifdef CORE_8086_F6_TEST_ALIAS
+; 8086 alias
+opcode 0xF6 mod/reg/rm /1 ib:                   "TEST"b b(r/m),i
+opcode 0xF7 mod/reg/rm /1 iw:                   "TEST"w w(r/m),i
+#endif
+; misc group (GRP3). some have immediate bytes, some not
+opcode 0xF6 mod/reg/rm /0 ib:                   "TEST"b b(r/m),i
+opcode 0xF7 mod/reg/rm /0 iw:                   "TEST"w w(r/m),i
+opcode 0xF6 mod/reg/rm /2:                      "NOT"b b(r/m)
+opcode 0xF7 mod/reg/rm /2:                      "NOT"w w(r/m)
+opcode 0xF6 mod/reg/rm /3:                      "NEG"b b(r/m)
+opcode 0xF7 mod/reg/rm /3:                      "NEG"w w(r/m)
+opcode 0xF6 mod/reg/rm /4:                      "MUL"b b(r/m)
+opcode 0xF7 mod/reg/rm /4:                      "MUL"w w(r/m)
+opcode 0xF6 mod/reg/rm /5:                      "IMUL"b b(r/m)
+opcode 0xF7 mod/reg/rm /5:                      "IMUL"w w(r/m)
+opcode 0xF6 mod/reg/rm /6:                      "DIV"b b(r/m)
+opcode 0xF7 mod/reg/rm /6:                      "DIV"w w(r/m)
+opcode 0xF6 mod/reg/rm /7:                      "IDIV"b b(r/m)
+opcode 0xF7 mod/reg/rm /7:                      "IDIV"w w(r/m)
+
+; shift group (GRP2) by 1
+opcode 0xD0 mod/reg/rm /0:                      "ROL"b b(r/m),1
+opcode 0xD0 mod/reg/rm /1:                      "ROR"b b(r/m),1
+opcode 0xD0 mod/reg/rm /2:                      "RCL"b b(r/m),1
+opcode 0xD0 mod/reg/rm /3:                      "RCR"b b(r/m),1
+opcode 0xD0 mod/reg/rm /4:                      "SHL"b b(r/m),1
+opcode 0xD0 mod/reg/rm /5:                      "SHR"b b(r/m),1
+opcode 0xD0 mod/reg/rm /6:                      "SAL"b b(r/m),1
+opcode 0xD0 mod/reg/rm /7:                      "SAR"b b(r/m),1
+opcode 0xD1 mod/reg/rm /0:                      "ROL"w w(r/m),1
+opcode 0xD1 mod/reg/rm /1:                      "ROR"w w(r/m),1
+opcode 0xD1 mod/reg/rm /2:                      "RCL"w w(r/m),1
+opcode 0xD1 mod/reg/rm /3:                      "RCR"w w(r/m),1
+opcode 0xD1 mod/reg/rm /4:                      "SHL"w w(r/m),1
+opcode 0xD1 mod/reg/rm /5:                      "SHR"w w(r/m),1
+opcode 0xD1 mod/reg/rm /6:                      "SAL"w w(r/m),1
+opcode 0xD1 mod/reg/rm /7:                      "SAR"w w(r/m),1
+
+; shift group (GRP2) by CL
+opcode 0xD2 mod/reg/rm /0:                      "ROL"b b(r/m),b(c)
+opcode 0xD2 mod/reg/rm /1:                      "ROR"b b(r/m),b(c)
+opcode 0xD2 mod/reg/rm /2:                      "RCL"b b(r/m),b(c)
+opcode 0xD2 mod/reg/rm /3:                      "RCR"b b(r/m),b(c)
+opcode 0xD2 mod/reg/rm /4:                      "SHL"b b(r/m),b(c)
+opcode 0xD2 mod/reg/rm /5:                      "SHR"b b(r/m),b(c)
+opcode 0xD2 mod/reg/rm /6:                      "SAL"b b(r/m),b(c)
+opcode 0xD2 mod/reg/rm /7:                      "SAR"b b(r/m),b(c)
+opcode 0xD3 mod/reg/rm /0:                      "ROL"w w(r/m),b(c)
+opcode 0xD3 mod/reg/rm /1:                      "ROR"w w(r/m),b(c)
+opcode 0xD3 mod/reg/rm /2:                      "RCL"w w(r/m),b(c)
+opcode 0xD3 mod/reg/rm /3:                      "RCR"w w(r/m),b(c)
+opcode 0xD3 mod/reg/rm /4:                      "SHL"w w(r/m),b(c)
+opcode 0xD3 mod/reg/rm /5:                      "SHR"w w(r/m),b(c)
+opcode 0xD3 mod/reg/rm /6:                      "SAL"w w(r/m),b(c)
+opcode 0xD3 mod/reg/rm /7:                      "SAR"w w(r/m),b(c)
+
+; segment overrides
+opcode prefix 0x26 segoverride(es):             "ES:"
+opcode prefix 0x2E segoverride(cs):             "CS:"
+opcode prefix 0x36 segoverride(ss):             "SS:"
+opcode prefix 0x3E segoverride(ds):             "DS:"
+
+; string ops
+opcode 0xA4:                                    "MOVS"b
+opcode 0xA5:                                    "MOVS"w
+opcode 0xA6:                                    "CMPS"b
+opcode 0xA7:                                    "CMPS"w
+opcode 0xAA:                                    "STOS"b
+opcode 0xAB:                                    "STOS"w
+opcode 0xAC:                                    "LODS"b
+opcode 0xAD:                                    "LODS"w
+opcode 0xAE:                                    "SCAS"b
+opcode 0xAF:                                    "SCAS"w
+
+; SAHF
+opcode 0x9E:                                    "SAHF"b
+
+; SBB byte,byte
+opcode 0x18 mod/reg/rm:                         "SBB"b b(r/m),b(reg)
+opcode 0x1A mod/reg/rm:                         "SBB"b b(reg),b(r/m)
+opcode 0x1C ib:                                 "SBB"b b(a),i
+opcode 0x80 mod/reg/rm /3 ib:                   "SBB"b b(r/m),i
+opcode 0x82 mod/reg/rm /3 ib:                   "SBB"b b(r/m),i
+; SBB word,word
+opcode 0x19 mod/reg/rm:                         "SBB"w w(r/m),w(reg)
+opcode 0x1B mod/reg/rm:                         "SBB"w w(reg),w(r/m)
+opcode 0x1D iw:                                 "SBB"w w(a),i
+opcode 0x81 mod/reg/rm /3 iw:                   "SBB"w w(r/m),i
+opcode 0x83 mod/reg/rm /3 ibs:                  "SBB"w w(r/m),i
+
+; SUB byte,byte
+opcode 0x28 mod/reg/rm:                         "SUB"b b(r/m),b(reg)
+opcode 0x2A mod/reg/rm:                         "SUB"b b(reg),b(r/m)
+opcode 0x2C ib:                                 "SUB"b b(a),i
+opcode 0x80 mod/reg/rm /5 ib:                   "SUB"b b(r/m),i
+opcode 0x82 mod/reg/rm /5 ib:                   "SUB"b b(r/m),i
+; SUB word,word
+opcode 0x29 mod/reg/rm:                         "SUB"w w(r/m),w(reg)
+opcode 0x2B mod/reg/rm:                         "SUB"w w(reg),w(r/m)
+opcode 0x2D iw:                                 "SUB"w w(a),i
+opcode 0x81 mod/reg/rm /5 iw:                   "SUB"w w(r/m),i
+opcode 0x83 mod/reg/rm /5 ibs:                  "SUB"w w(r/m),i
+
+; TEST
+opcode 0x84 mod/reg/rm:                         "TEST"b b(r/m),b(reg)
+opcode 0x85 mod/reg/rm:                         "TEST"w w(r/m),w(reg)
+opcode 0xA8 ib:                                 "TEST"b b(a),i
+opcode 0xA9 iw:                                 "TEST"w w(a),i
+
+; WAIT
+opcode 0x9B prefix:                             "WAIT"
+
+; XCHG
+opcode 0x86 mod/reg/rm:                         "XCHG"b b(r/m),b(reg)
+opcode 0x87 mod/reg/rm:                         "XCHG"w w(r/m),w(reg)
+opcode range(0x91,0x97) reg=op02:               "XCHG"w w(reg),w(a)
+
+; XLAT
+opcode 0xD7:                                    "XLAT"b
+
+; XOR byte,byte
+opcode 0x30 mod/reg/rm:                         "XOR"b b(r/m),b(reg)
+opcode 0x32 mod/reg/rm:                         "XOR"b b(reg),b(r/m)
+opcode 0x34 ib:                                 "XOR"b b(a),i
+opcode 0x80 mod/reg/rm /6 ib:                   "XOR"b b(r/m),i
+opcode 0x82 mod/reg/rm /6 ib:                   "XOR"b b(r/m),i
+; XOR word,word
+opcode 0x31 mod/reg/rm:                         "XOR"w w(r/m),w(reg)
+opcode 0x33 mod/reg/rm:                         "XOR"w w(reg),w(r/m)
+opcode 0x35 iw:                                 "XOR"w w(a),i
+opcode 0x81 mod/reg/rm /6 iw:                   "XOR"w w(r/m),i
+opcode 0x83 mod/reg/rm /6 ibs:                  "XOR"w w(r/m),i
+
+
