@@ -1,73 +1,73 @@
 
 ; shift group (GRP2) by imm8
-opcode 0xC0 mod/reg/rm /0 ib:                   "ROL"b b(r/m),b(i)
-opcode 0xC0 mod/reg/rm /1 ib:                   "ROR"b b(r/m),b(i)
-opcode 0xC0 mod/reg/rm /2 ib:                   "RCL"b b(r/m),b(i)
-opcode 0xC0 mod/reg/rm /3 ib:                   "RCR"b b(r/m),b(i)
-opcode 0xC0 mod/reg/rm /4 ib:                   "SHL"b b(r/m),b(i)
-opcode 0xC0 mod/reg/rm /5 ib:                   "SHR"b b(r/m),b(i)
-opcode 0xC0 mod/reg/rm /6 ib:                   "SAL"b b(r/m),b(i)
-opcode 0xC0 mod/reg/rm /7 ib:                   "SAR"b b(r/m),b(i)
-opcode 0xC1 mod/reg/rm /0 ib:                   "ROL"w w(r/m),b(i)
-opcode 0xC1 mod/reg/rm /1 ib:                   "ROR"w w(r/m),b(i)
-opcode 0xC1 mod/reg/rm /2 ib:                   "RCL"w w(r/m),b(i)
-opcode 0xC1 mod/reg/rm /3 ib:                   "RCR"w w(r/m),b(i)
-opcode 0xC1 mod/reg/rm /4 ib:                   "SHL"w w(r/m),b(i)
-opcode 0xC1 mod/reg/rm /5 ib:                   "SHR"w w(r/m),b(i)
-opcode 0xC1 mod/reg/rm /6 ib:                   "SAL"w w(r/m),b(i)
-opcode 0xC1 mod/reg/rm /7 ib:                   "SAR"w w(r/m),b(i)
+opcode 0xC0 mod/reg/rm /0 ib:                   "ROL"b b(r/m),b(i)          ; Rotate Left                               1100000w w=0
+opcode 0xC0 mod/reg/rm /1 ib:                   "ROR"b b(r/m),b(i)          ; Rotate Right                              1100000w w=0
+opcode 0xC0 mod/reg/rm /2 ib:                   "RCL"b b(r/m),b(i)          ; Rotate Through Carry Flag Left            1100000w w=0
+opcode 0xC0 mod/reg/rm /3 ib:                   "RCR"b b(r/m),b(i)          ; Rotate Through Carry Flag Right           1100000w w=0
+opcode 0xC0 mod/reg/rm /4 ib:                   "SHL"b b(r/m),b(i)          ; Shift Logical Left                        1100000w w=0
+opcode 0xC0 mod/reg/rm /5 ib:                   "SHR"b b(r/m),b(i)          ; Shift Logical Right                       1100000w w=0
+opcode 0xC0 mod/reg/rm /6 ib:                   "SAL"b b(r/m),b(i)          ; Shift Arithmetic Left                     1100000w w=0
+opcode 0xC0 mod/reg/rm /7 ib:                   "SAR"b b(r/m),b(i)          ; Shift Arithmetic Right                    1100000w w=0
+opcode 0xC1 mod/reg/rm /0 ib:                   "ROL"w w(r/m),b(i)          ; Rotate Left                               1100000w w=1
+opcode 0xC1 mod/reg/rm /1 ib:                   "ROR"w w(r/m),b(i)          ; Rotate Right                              1100000w w=1
+opcode 0xC1 mod/reg/rm /2 ib:                   "RCL"w w(r/m),b(i)          ; Rotate Through Carry Flag Left            1100000w w=1
+opcode 0xC1 mod/reg/rm /3 ib:                   "RCR"w w(r/m),b(i)          ; Rotate Through Carry Flag Right           1100000w w=1
+opcode 0xC1 mod/reg/rm /4 ib:                   "SHL"w w(r/m),b(i)          ; Shift Logical Left                        1100000w w=1
+opcode 0xC1 mod/reg/rm /5 ib:                   "SHR"w w(r/m),b(i)          ; Shift Logical Right                       1100000w w=1
+opcode 0xC1 mod/reg/rm /6 ib:                   "SAL"w w(r/m),b(i)          ; Shift Arithmetic Left                     1100000w w=1
+opcode 0xC1 mod/reg/rm /7 ib:                   "SAR"w w(r/m),b(i)          ; Shift Arithmetic Right                    1100000w w=1
 
 ; ENTER/LEAVE
-opcode 0xC8 iw ib:                              "ENTER"w w(i),b(i2)
-opcode 0xC9:                                    "LEAVE"w
+opcode 0xC8 iw ib:                              "ENTER"w w(i),b(i2)         ; Enter Procedure                           11001000
+opcode 0xC9:                                    "LEAVE"w                    ; Leave Procedure                           11001001
 
 ; PUSHA
-opcode 0x60:                                    "PUSHA"w
-opcode 0x61:                                    "POPA"w
+opcode 0x60:                                    "PUSHA"w                    ; Push All                                  01100000
+opcode 0x61:                                    "POPA"w                     ; Pop All                                   01100001
 
 ; BOUND
-opcode 0x62 mod/reg/rm mod!=3:                  "BOUND"w w(reg),w(r/m)
+opcode 0x62 mod/reg/rm mod!=3:                  "BOUND"w w(reg),w(r/m)      ; Detect Value out of Range                 01100010
 
 ; ARPL
-opcode 0x63 mod/reg/rm:                         "ARPL"w w(r/m),w(reg)
+opcode 0x63 mod/reg/rm:                         "ARPL"w w(r/m),w(reg)       ; Adjust requested priv level from reg/mem  01100011
 
 ; PUSH imm
-opcode 0x68 iw:                                 "PUSH"w w(i)
-opcode 0x6A ibs:                                "PUSH"w w(i)
+opcode 0x68 iw:                                 "PUSH"w w(i)                ; Push immediate                            011010a0 a=0
+opcode 0x6A ibs:                                "PUSH"w w(i)                ; Push immediate                            011010a0 a=1
 
 ; IMUL reg = r/m * imm
-opcode 0x69 mod/reg/rm iw:                      "IMUL"w w(reg),w(r/m),w(i)
-opcode 0x6B mod/reg/rm ib:                      "IMUL"b w(reg),w(r/m),b(i)
+opcode 0x69 mod/reg/rm iw:                      "IMUL"w w(reg),w(r/m),w(i)  ; Integer multiply (signed)                 011010a1 a=0
+opcode 0x6B mod/reg/rm ib:                      "IMUL"b w(reg),w(r/m),b(i)  ; Integer multiply (signed)                 011010a1 a=1
 
 ; INS/OUTS
-opcode 0x6C:                                    "INS"b
-opcode 0x6D:                                    "INS"w
-opcode 0x6E:                                    "OUTS"b
-opcode 0x6F:                                    "OUTS"w
+opcode 0x6C:                                    "INS"b                      ; Input Byte from port DX                   0110110w w=0
+opcode 0x6D:                                    "INS"w                      ; Input Word from port DX                   0110110w w=1
+opcode 0x6E:                                    "OUTS"b                     ; Output Byte to port DX                    0110111w w=0
+opcode 0x6F:                                    "OUTS"w                     ; Output Word to port DX                    0110111w w=1
 
 ; 0Fh 00h protected mode instruction set 1
-opcode 0x0F 0x00 mod/reg/rm /0 mod!=3:          "SLDT"w w(r/m)
-opcode 0x0F 0x00 mod/reg/rm /1 mod!=3:          "STR"w w(r/m)
-opcode 0x0F 0x00 mod/reg/rm /2 mod!=3:          "LLDT"w w(r/m)
-opcode 0x0F 0x00 mod/reg/rm /3 mod!=3:          "LTR"w w(r/m)
-opcode 0x0F 0x00 mod/reg/rm /4 mod!=3:          "VERR"w w(r/m)
-opcode 0x0F 0x00 mod/reg/rm /5 mod!=3:          "VERW"w w(r/m)
+opcode 0x0F 0x00 mod/reg/rm /0 mod!=3:          "SLDT"w w(r/m)              ; Store local descriptor table register     00001111 00000000
+opcode 0x0F 0x00 mod/reg/rm /1 mod!=3:          "STR"w w(r/m)               ; Store Task Register                       00001111 00000000
+opcode 0x0F 0x00 mod/reg/rm /2 mod!=3:          "LLDT"w w(r/m)              ; Load local descriptor table register      00001111 00000000
+opcode 0x0F 0x00 mod/reg/rm /3 mod!=3:          "LTR"w w(r/m)               ; Load Task Register                        00001111 00000000
+opcode 0x0F 0x00 mod/reg/rm /4 mod!=3:          "VERR"w w(r/m)              ; Verify read access                        00001111 00000000
+opcode 0x0F 0x00 mod/reg/rm /5 mod!=3:          "VERW"w w(r/m)              ; Verify write access                       00001111 00000000
 
 ; 0Fh 01h protected mode instruction set 2
-opcode 0x0F 0x01 mod/reg/rm /0 mod!=3:          "SGDT"w w(r/m)
-opcode 0x0F 0x01 mod/reg/rm /1 mod!=3:          "SIDT"w w(r/m)
-opcode 0x0F 0x01 mod/reg/rm /2 mod!=3:          "LGDT"w w(r/m)
-opcode 0x0F 0x01 mod/reg/rm /3 mod!=3:          "LIDT"w w(r/m)
-opcode 0x0F 0x01 mod/reg/rm /4 mod!=3:          "SMSW"w w(r/m)
-opcode 0x0F 0x01 mod/reg/rm /6 mod!=3:          "LMSW"w w(r/m)
+opcode 0x0F 0x01 mod/reg/rm /0 mod!=3:          "SGDT"w w(r/m)              ; Store Global Descriptor table register    00001111 00000001
+opcode 0x0F 0x01 mod/reg/rm /1 mod!=3:          "SIDT"w w(r/m)              ; Store Interrupt Descriptor table reg      00001111 00000001
+opcode 0x0F 0x01 mod/reg/rm /2 mod!=3:          "LGDT"w w(r/m)              ; Load Global Descriptor table register     00001111 00000001
+opcode 0x0F 0x01 mod/reg/rm /3 mod!=3:          "LIDT"w w(r/m)              ; Load Interrupt Descriptor table reg       00001111 00000001
+opcode 0x0F 0x01 mod/reg/rm /4 mod!=3:          "SMSW"w w(r/m)              ; Store Machine Status Word                 00001111 00000001
+opcode 0x0F 0x01 mod/reg/rm /6 mod!=3:          "LMSW"w w(r/m)              ; Load Machine Status Word                  00001111 00000001
 
 ; more protected mode stuff
-opcode 0x0F 0x02 mod/reg/rm:                    "LAR"w w(reg),w(r/m)
-opcode 0x0F 0x03 mod/reg/rm:                    "LSL"w w(reg),w(r/m)
-opcode 0x0F 0x06:                               "CLTS"w
+opcode 0x0F 0x02 mod/reg/rm:                    "LAR"w w(reg),w(r/m)        ; Load access rights                        00001111 00000010
+opcode 0x0F 0x03 mod/reg/rm:                    "LSL"w w(reg),w(r/m)        ; Load segment limit                        00001111 00000011
+opcode 0x0F 0x06:                               "CLTS"w                     ; Clear Task Switched Flag                  00001111 00000110
 
 ; 286-specific
 #ifdef CORE_286_LOADALL
-opcode 0x0F 0x05:                               "LOADALL286"
+opcode 0x0F 0x05:                               "LOADALL286"                ; Undocumented 286 "LOADALL" instruction
 #endif
 
