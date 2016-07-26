@@ -747,6 +747,15 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
                     arg.arg = OPDARG_imm;
                     arg.index = 1;
                 }
+                else if (!strcmp(s,"b(i)")) {
+                    arg.argtype = OPDARGTYPE_BYTE;
+                    arg.arg = OPDARG_imm;
+                }
+                else if (!strcmp(s,"b(i2)")) {
+                    arg.argtype = OPDARGTYPE_BYTE;
+                    arg.arg = OPDARG_imm;
+                    arg.index = 1;
+                }
                 else if (!strcmp(s,"w(i+ip)")) {
                     arg.argtype = OPDARGTYPE_WORD;
                     arg.arg = OPDARG_imm;

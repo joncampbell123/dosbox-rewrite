@@ -1,0 +1,13 @@
+; Intel 80286 decompiler/core
+
+#define CORE86 2
+#define CORE_8086_F6_TEST_ALIAS
+
+#include "opcodes/intel8086.common.opcodes"
+#include "opcodes/intel80286.common.opcodes"
+
+#define CORE87 2
+#define CORE_8087_ALIASES
+
+#include "opcodes/intel8087.common.opcodes"
+

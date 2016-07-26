@@ -1,0 +1,47 @@
+
+; shift group (GRP2) by imm8
+opcode 0xC0 mod/reg/rm /0 ib:                   "ROL"b b(r/m),b(i)
+opcode 0xC0 mod/reg/rm /1 ib:                   "ROR"b b(r/m),b(i)
+opcode 0xC0 mod/reg/rm /2 ib:                   "RCL"b b(r/m),b(i)
+opcode 0xC0 mod/reg/rm /3 ib:                   "RCR"b b(r/m),b(i)
+opcode 0xC0 mod/reg/rm /4 ib:                   "SHL"b b(r/m),b(i)
+opcode 0xC0 mod/reg/rm /5 ib:                   "SHR"b b(r/m),b(i)
+opcode 0xC0 mod/reg/rm /6 ib:                   "SAL"b b(r/m),b(i)
+opcode 0xC0 mod/reg/rm /7 ib:                   "SAR"b b(r/m),b(i)
+opcode 0xC1 mod/reg/rm /0 ib:                   "ROL"w w(r/m),b(i)
+opcode 0xC1 mod/reg/rm /1 ib:                   "ROR"w w(r/m),b(i)
+opcode 0xC1 mod/reg/rm /2 ib:                   "RCL"w w(r/m),b(i)
+opcode 0xC1 mod/reg/rm /3 ib:                   "RCR"w w(r/m),b(i)
+opcode 0xC1 mod/reg/rm /4 ib:                   "SHL"w w(r/m),b(i)
+opcode 0xC1 mod/reg/rm /5 ib:                   "SHR"w w(r/m),b(i)
+opcode 0xC1 mod/reg/rm /6 ib:                   "SAL"w w(r/m),b(i)
+opcode 0xC1 mod/reg/rm /7 ib:                   "SAR"w w(r/m),b(i)
+
+; ENTER/LEAVE
+opcode 0xC8 iw ib:                              "ENTER"w w(i),b(i2)
+opcode 0xC9:                                    "LEAVE"w
+
+; PUSHA
+opcode 0x60:                                    "PUSHA"w
+opcode 0x61:                                    "POPA"w
+
+; BOUND
+opcode 0x62 mod/reg/rm mod!=3:                  "BOUND"w w(reg),w(r/m)
+
+; ARPL
+opcode 0x63 mod/reg/rm:                         "ARPL"w w(r/m),w(reg)
+
+; PUSH imm
+opcode 0x68 iw:                                 "PUSH"w w(i)
+opcode 0x6A ibs:                                "PUSH"w w(i)
+
+; IMUL reg = r/m * imm
+opcode 0x69 mod/reg/rm iw:                      "IMUL"w w(reg),w(r/m),w(i)
+opcode 0x6B mod/reg/rm ib:                      "IMUL"b w(reg),w(r/m),b(i)
+
+; INS/OUTS
+opcode 0x6C:                                    "INS"b
+opcode 0x6D:                                    "INS"w
+opcode 0x6E:                                    "OUTS"b
+opcode 0x6F:                                    "OUTS"w
+
