@@ -142,22 +142,22 @@ const char *CPU0F01ops[8] = {
 };
 
 // print 16-bit code form of mod/reg/rm with displacement
-const char *IPDecPrint16(const x86ModRegRm &mrm,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass) {
+const char *IPDecPrint16(const x86ModRegRm &mrm,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass,const char *suffix) {
     static char tmp[64];
     char *w=tmp,*wf=tmp+sizeof(tmp)-1;
 
     switch (mrm.mod()) {
         case 0: // [indirect] or [displacement]
             if (mrm.rm() == 6)
-                w += snprintf(w,(size_t)(wf-w),"[%04lxh]",(unsigned long)ofs);
+                w += snprintf(w,(size_t)(wf-w),"[%04lxh]%s",(unsigned long)ofs,suffix);
             else
-                w += snprintf(w,(size_t)(wf-w),"[%s]",CPUmod0displacement16[mrm.rm()]);
+                w += snprintf(w,(size_t)(wf-w),"[%s]%s",CPUmod0displacement16[mrm.rm()],suffix);
             break;
         case 1: // [indirect+disp8]
-            w += snprintf(w,(size_t)(wf-w),"[%s%c%02Xh]",CPUmod0displacement16[mrm.rm()],ofs&0x80?'-':'+',IPDec8abs((uint8_t)ofs));
+            w += snprintf(w,(size_t)(wf-w),"[%s%c%02Xh]%s",CPUmod0displacement16[mrm.rm()],ofs&0x80?'-':'+',IPDec8abs((uint8_t)ofs),suffix);
             break;
         case 2: // [indirect+disp16]
-            w += snprintf(w,(size_t)(wf-w),"[%s+%04Xh]",CPUmod0displacement16[mrm.rm()],(uint16_t)ofs);
+            w += snprintf(w,(size_t)(wf-w),"[%s+%04Xh]%s",CPUmod0displacement16[mrm.rm()],(uint16_t)ofs,suffix);
             break;
         case 3: // register
             switch (regclass) {

@@ -182,8 +182,8 @@ opcode 0xA2 iw:                                 "MOV"b b(mem[i]),b(a)
 opcode 0xA3 iw:                                 "MOV"w b(mem[i]),w(a)
 opcode range(0xB0,0xB7) ib reg=op02:            "MOV"b b(reg),i
 opcode range(0xB8,0xBF) iw reg=op02:            "MOV"w w(reg),i
-opcode 0xC6 ib:                                 "MOV"b b(r/m),i
-opcode 0xC7 iw:                                 "MOV"w w(r/m),i
+opcode 0xC6 mod/reg/rm ib:                      "MOV"b b(r/m),i
+opcode 0xC7 mod/reg/rm iw:                      "MOV"w w(r/m),i
 
 ; MOV sreg
 opcode 0x8C mod/reg/rm:                         "MOV"w w(r/m),seg(reg)

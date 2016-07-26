@@ -59,7 +59,18 @@ enum opccReg {
     OPREG_ESP,
     OPREG_EBP,
     OPREG_ESI,
-    OPREG_EDI
+    OPREG_EDI,
+
+    // segment register
+    OPREG_ES=0,
+    OPREG_CS,
+    OPREG_SS,
+    OPREG_DS,
+    OPREG_FS,
+    OPREG_GS,
+
+    // FPU
+    OPDARG_ST0=0
 };
 
 enum opccSuffix {
@@ -89,9 +100,11 @@ enum opccArgs {
 
 enum opccDispArg {
     OPDARG_NONE=0,
-    OPDARG_rm,
-    OPDARG_reg,
-    OPDARG_imm
+    OPDARG_rm,          // (rm)
+    OPDARG_reg,         // (reg)
+    OPDARG_imm,         // (i)
+    OPDARG_mem_imm,     // (mem[i])
+    OPDARG_immval       // (some immediate value)
 };
 
 enum opccDispArgType {
@@ -100,24 +113,28 @@ enum opccDispArgType {
     OPDARGTYPE_WORD,        // 16-bit (if 16-bit code),  32-bit (if 32-bit code)
     OPDARGTYPE_WORD16,      // 16-bit
     OPDARGTYPE_WORD32,      // 32-bit
-    OPDARGTYPE_FPU,         // FPU st(i)
+    OPDARGTYPE_WORD64,      // 64-bit
     OPDARGTYPE_FPU32,       // 32-bit float
     OPDARGTYPE_FPU64,       // 64-bit float
     OPDARGTYPE_FPU80,       // 80-bit float
     OPDARGTYPE_FPUBCD,      // floating point packed BCD
+    OPDARGTYPE_FPUENV,      // floating point environment
+    OPDARGTYPE_FPUSTATE,    // floating point state
+    OPDARGTYPE_FPUREG,      // FPU st(i)
     OPDARGTYPE_SREG         // segment register (word size)
 };
 
 class OpCodeDisplayArg {
 public:
-    OpCodeDisplayArg() : arg(OPDARG_NONE), argtype(OPDARGTYPE_NONE), argreg(OPREG_NONE), suffix(OPSUFFIX_NONE), index(0), imm(0) { }
+    OpCodeDisplayArg() : arg(OPDARG_NONE), argtype(OPDARGTYPE_NONE), argreg(OPREG_NONE), suffix(OPSUFFIX_NONE), ip_relative(false), index(0), immval(0) { }
 public:
     enum opccDispArg        arg;
     enum opccDispArgType    argtype;
     enum opccReg            argreg;
     enum opccSuffix         suffix;
+    bool                    ip_relative; // NTS: relative to the value of IP after decoding instruction
     uint8_t                 index;
-    uint64_t                imm;
+    uint64_t                immval;
 public:
     inline bool operator==(const OpCodeDisplayArg &r) const {
         if (arg != r.arg) return false;
@@ -125,7 +142,7 @@ public:
         if (argreg != r.argreg) return false;
         if (suffix != r.suffix) return false;
         if (index != r.index) return false;
-        if (imm != r.imm) return false;
+        if (immval != r.immval) return false;
         return true;
     }
 };
@@ -707,7 +724,213 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
         }
         else if (argc == 1) { /* b(r/m),b(reg) */
             st.format_str = s;
-            // TODO
+
+            char *fn;
+
+            while (*s != 0) {
+                if (isblank(*s)) {
+                    s++;
+                    continue;
+                }
+
+                fn = strchr(s,',');
+                if (fn != NULL) *fn++ = 0;
+
+                OpCodeDisplayArg arg;
+
+                if (!strcmp(s,"i") || !strcmp(s,"w(i)")) {
+                    arg.argtype = OPDARGTYPE_WORD;
+                    arg.arg = OPDARG_imm;
+                }
+                else if (!strcmp(s,"i2") || !strcmp(s,"w(i2)")) {
+                    arg.argtype = OPDARGTYPE_WORD;
+                    arg.arg = OPDARG_imm;
+                    arg.index = 1;
+                }
+                else if (!strcmp(s,"w(i+ip)")) {
+                    arg.argtype = OPDARGTYPE_WORD;
+                    arg.arg = OPDARG_imm;
+                    arg.ip_relative = true;
+                }
+                else if (!strcmp(s,"b(reg)")) {
+                    arg.argtype = OPDARGTYPE_BYTE;
+                    arg.arg = OPDARG_reg;
+                }
+                else if (!strcmp(s,"b(r/m)")) {
+                    arg.argtype = OPDARGTYPE_BYTE;
+                    arg.arg = OPDARG_rm;
+                }
+                else if (!strcmp(s,"w(reg)")) {
+                    arg.argtype = OPDARGTYPE_WORD;
+                    arg.arg = OPDARG_reg;
+                }
+                else if (!strcmp(s,"w(r/m)")) {
+                    arg.argtype = OPDARGTYPE_WORD;
+                    arg.arg = OPDARG_rm;
+                }
+                else if (!strcmp(s,"w16(reg)")) {
+                    arg.argtype = OPDARGTYPE_WORD16;
+                    arg.arg = OPDARG_reg;
+                }
+                else if (!strcmp(s,"w16(r/m)")) {
+                    arg.argtype = OPDARGTYPE_WORD16;
+                    arg.arg = OPDARG_rm;
+                }
+                else if (!strcmp(s,"w32(reg)")) {
+                    arg.argtype = OPDARGTYPE_WORD32;
+                    arg.arg = OPDARG_reg;
+                }
+                else if (!strcmp(s,"w32(r/m)")) {
+                    arg.argtype = OPDARGTYPE_WORD32;
+                    arg.arg = OPDARG_rm;
+                }
+                else if (!strcmp(s,"w64(reg)")) {
+                    arg.argtype = OPDARGTYPE_WORD64;
+                    arg.arg = OPDARG_reg;
+                }
+                else if (!strcmp(s,"w64(r/m)")) {
+                    arg.argtype = OPDARGTYPE_WORD64;
+                    arg.arg = OPDARG_rm;
+                }
+                else if (!strcmp(s,"b(a)")) { // AL/AX/EAX
+                    arg.argtype = OPDARGTYPE_BYTE;
+                    arg.argreg = OPREG_AL;
+                    arg.arg = OPDARG_reg;
+                }
+                else if (!strcmp(s,"b(b)")) { // BL/BX/EBX
+                    arg.argtype = OPDARGTYPE_BYTE;
+                    arg.argreg = OPREG_BL;
+                    arg.arg = OPDARG_reg;
+                }
+                else if (!strcmp(s,"b(c)")) { // CL/CX/ECX
+                    arg.argtype = OPDARGTYPE_BYTE;
+                    arg.argreg = OPREG_CL;
+                    arg.arg = OPDARG_reg;
+                }
+                else if (!strcmp(s,"b(d)")) { // DL/DX/EDX
+                    arg.argtype = OPDARGTYPE_BYTE;
+                    arg.argreg = OPREG_DL;
+                    arg.arg = OPDARG_reg;
+                }
+                else if (!strcmp(s,"w(a)")) { // AL/AX/EAX
+                    arg.argtype = OPDARGTYPE_WORD;
+                    arg.argreg = OPREG_AX;
+                    arg.arg = OPDARG_reg;
+                }
+                else if (!strcmp(s,"w(b)")) { // BL/BX/EBX
+                    arg.argtype = OPDARGTYPE_WORD;
+                    arg.argreg = OPREG_BX;
+                    arg.arg = OPDARG_reg;
+                }
+                else if (!strcmp(s,"w(c)")) { // CL/CX/ECX
+                    arg.argtype = OPDARGTYPE_WORD;
+                    arg.argreg = OPREG_CX;
+                    arg.arg = OPDARG_reg;
+                }
+                else if (!strcmp(s,"w(d)")) { // DL/DX/EDX
+                    arg.argtype = OPDARGTYPE_WORD;
+                    arg.argreg = OPREG_DX;
+                    arg.arg = OPDARG_reg;
+                }
+                else if (!strcmp(s,"w16(d)")) { // DL/DX/EDX
+                    arg.argtype = OPDARGTYPE_WORD16;
+                    arg.argreg = OPREG_DX;
+                    arg.arg = OPDARG_reg;
+                }
+                else if (!strcmp(s,"b(mem[i])")) {
+                    arg.argtype = OPDARGTYPE_BYTE;
+                    arg.arg = OPDARG_mem_imm;
+                }
+                else if (!strcmp(s,"w(mem[i])")) {
+                    arg.argtype = OPDARGTYPE_WORD;
+                    arg.arg = OPDARG_mem_imm;
+                }
+                else if (!strcmp(s,"seg(reg)")) {
+                    arg.argtype = OPDARGTYPE_SREG;
+                    arg.arg = OPDARG_reg;
+                }
+                else if (!strcmp(s,"seg(r/m)")) {
+                    arg.argtype = OPDARGTYPE_SREG;
+                    arg.arg = OPDARG_rm;
+                }
+                else if (!strcmp(s,"w(es)")) {
+                    arg.argtype = OPDARGTYPE_SREG;
+                    arg.argreg = OPREG_ES;
+                    arg.arg = OPDARG_reg;
+                }
+                else if (!strcmp(s,"w(cs)")) {
+                    arg.argtype = OPDARGTYPE_SREG;
+                    arg.argreg = OPREG_CS;
+                    arg.arg = OPDARG_reg;
+                }
+                else if (!strcmp(s,"w(ss)")) {
+                    arg.argtype = OPDARGTYPE_SREG;
+                    arg.argreg = OPREG_SS;
+                    arg.arg = OPDARG_reg;
+                }
+                else if (!strcmp(s,"w(ds)")) {
+                    arg.argtype = OPDARGTYPE_SREG;
+                    arg.argreg = OPREG_DS;
+                    arg.arg = OPDARG_reg;
+                }
+                else if (!strcmp(s,"w(fs)")) {
+                    arg.argtype = OPDARGTYPE_SREG;
+                    arg.argreg = OPREG_FS;
+                    arg.arg = OPDARG_reg;
+                }
+                else if (!strcmp(s,"w(gs)")) {
+                    arg.argtype = OPDARGTYPE_SREG;
+                    arg.argreg = OPREG_GS;
+                    arg.arg = OPDARG_reg;
+                }
+                else if (isdigit(*s)) {
+                    arg.argtype = OPDARGTYPE_WORD;
+                    arg.arg = OPDARG_immval;
+                    arg.immval = strtoul(s,&s,0);
+                }
+                else if (!strcmp(s,"f32(r/m)")) {
+                    arg.argtype = OPDARGTYPE_FPU32;
+                    arg.arg = OPDARG_rm;
+                }
+                else if (!strcmp(s,"f64(r/m)")) {
+                    arg.argtype = OPDARGTYPE_FPU64;
+                    arg.arg = OPDARG_rm;
+                }
+                else if (!strcmp(s,"f80(r/m)")) {
+                    arg.argtype = OPDARGTYPE_FPU80;
+                    arg.arg = OPDARG_rm;
+                }
+                else if (!strcmp(s,"fbcd(r/m)")) {
+                    arg.argtype = OPDARGTYPE_FPUBCD;
+                    arg.arg = OPDARG_rm;
+                }
+                else if (!strcmp(s,"fenv(r/m)")) {
+                    arg.argtype = OPDARGTYPE_FPUENV;
+                    arg.arg = OPDARG_rm;
+                }
+                else if (!strcmp(s,"fstate(r/m)")) {
+                    arg.argtype = OPDARGTYPE_FPUSTATE;
+                    arg.arg = OPDARG_rm;
+                }
+                else if (!strcmp(s,"st(0)")) {
+                    arg.argtype = OPDARGTYPE_FPUREG;
+                    arg.arg = OPDARG_reg;
+                    arg.argreg = OPDARG_ST0; // ST(0)
+                }
+                else if (!strcmp(s,"st(r/m)")) {
+                    arg.argtype = OPDARGTYPE_FPUREG;
+                    arg.arg = OPDARG_rm;
+                }
+                else {
+                    fprintf(stderr,"Unknown format spec %s\n",s);
+                    return false;
+                }
+
+                st.disparg.push_back(arg);
+
+                if (fn != NULL) s = fn;
+                else break;
+            }
         }
         else {
             fprintf(stderr,"Unexpected arg\n");
@@ -797,6 +1020,9 @@ bool parse_opcodelist(void) {
 
 void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const uint8_t *opbase,const size_t opbaselen,OpByte &map,const unsigned int indent=0);
 
+static const char *immnames[4] = {"imm","imm2","imm3","imm4"};
+static const char *immnames_rip[4] = {"(imm+IPval())","(imm2+IPval())","(imm3+IPval())","(imm4+IPval())"};
+
 void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int addrwidth,const uint8_t *opbase,const size_t opbaselen,OpByte &map,const unsigned int indent,const string &indent_str,OpByte *submap,const uint8_t op,uint32_t flags) {
     unsigned int immc = 0;
 
@@ -862,10 +1088,264 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
     }
     else {
         if (cc_mode == MOD_DECOMPILE) {
+            string fmtargs;
+            char tmp[128];
+
             fprintf(out_fp,"%s        ipw += snprintf(ipw,(size_t)(ipwf-ipw),\"",indent_str.c_str());
             fprintf(out_fp,"%s%s",submap->name.c_str(),suffix_str(submap->suffix,codewidth));
             if (submap->isprefix) fprintf(out_fp," ");
-            fprintf(out_fp,"\");\n");
+            else if (submap->disparg.size() != 0) fprintf(out_fp," ");
+
+            /* then display arguments as directed by format string */
+            for (size_t i=0;i < submap->disparg.size();i++) {
+                OpCodeDisplayArg &arg = submap->disparg[i];
+
+                if (arg.arg == OPDARG_immval) {
+                    if (arg.immval > 9)
+                        fprintf(out_fp,"0x%lX",(unsigned long)arg.immval);
+                    else
+                        fprintf(out_fp,"%u",(unsigned long)arg.immval);
+                }
+                else if (arg.arg == OPDARG_mem_imm) {
+                    enum opccArgs argt = OPARG_NONE;
+                    const char **imn = immnames;
+
+                    if (arg.ip_relative) imn = immnames_rip;
+
+                    if (arg.index < submap->immarg.size())
+                        argt = submap->immarg[arg.index];
+
+                    switch (argt) {
+                        case OPARG_IB:
+                        case OPARG_IBS:
+                            fprintf(out_fp,"[0x%%02lX]");
+                            sprintf(tmp,",(unsigned long)((uint%u_t)%s)",addrwidth,imn[arg.index]);
+                            fmtargs += tmp;
+                            break;
+                        case OPARG_IW:
+                        case OPARG_IWS:
+                            if (addrwidth == 32)
+                                fprintf(out_fp,"[0x%%08lX]");
+                            else
+                                fprintf(out_fp,"[0x%%04lX]");
+                            sprintf(tmp,",(unsigned long)((uint%u_t)%s)",addrwidth,imn[arg.index]);
+                            fmtargs += tmp;
+                            break;
+                        case OPARG_IW16:
+                        case OPARG_IW16S:
+                            fprintf(out_fp,"[0x%%04lX]");
+                            sprintf(tmp,",(unsigned long)((uint%u_t)%s)",addrwidth,imn[arg.index]);
+                            fmtargs += tmp;
+                            break;
+                        case OPARG_IW32:
+                        case OPARG_IW32S:
+                            fprintf(out_fp,"[0x%%08lX]");
+                            sprintf(tmp,",(unsigned long)((uint%u_t)%s)",addrwidth,imn[arg.index]);
+                            fmtargs += tmp;
+                            break;
+                    };
+
+                    switch (arg.argtype) {
+                        case OPDARGTYPE_BYTE:
+                            fprintf(out_fp,"b");
+                            break;
+                        case OPDARGTYPE_WORD:
+                            fprintf(out_fp,"w");
+                            break;
+                        case OPDARGTYPE_WORD16:
+                            fprintf(out_fp,"w16");
+                            break;
+                        case OPDARGTYPE_WORD32:
+                            fprintf(out_fp,"w32");
+                            break;
+                        case OPDARGTYPE_WORD64:
+                            fprintf(out_fp,"w64");
+                            break;
+                        case OPDARGTYPE_FPU32:
+                            fprintf(out_fp,"f32");
+                            break;
+                        case OPDARGTYPE_FPU64:
+                            fprintf(out_fp,"f64");
+                            break;
+                        case OPDARGTYPE_FPU80:
+                            fprintf(out_fp,"f80");
+                            break;
+                        case OPDARGTYPE_FPUBCD:
+                            fprintf(out_fp,"fbcd");
+                            break;
+                        case OPDARGTYPE_FPUENV:
+                            fprintf(out_fp,"fenv");
+                            break;
+                        case OPDARGTYPE_FPUSTATE:
+                            fprintf(out_fp,"fstate");
+                            break;
+                    }
+                }
+                else if (arg.arg == OPDARG_rm) {
+                    const char *szp = codewidth == 32 ? "4" : "2";
+                    const char *rc = "RC_REG";
+                    const char *suffix = "w";
+
+                    switch (arg.argtype) {
+                        case OPDARGTYPE_BYTE:
+                            szp = "1";
+                            suffix = "b";
+                            break;
+                        case OPDARGTYPE_WORD:
+                            // already default
+                            break;
+                        case OPDARGTYPE_WORD16:
+                            szp = "2";
+                            suffix = "w16";
+                            break;
+                        case OPDARGTYPE_WORD32:
+                            szp = "4";
+                            suffix = "w32";
+                            break;
+                        case OPDARGTYPE_WORD64:
+                            szp = "8";
+                            suffix = "w64";
+                            break;
+                        case OPDARGTYPE_FPUREG:
+                            szp = "8";
+                            rc = "RC_FPUREG";
+                            suffix = "";
+                            break;
+                        case OPDARGTYPE_FPU32:
+                            szp = "4";
+                            rc = "RC_FPUREG";
+                            suffix = "f32";
+                            break;
+                        case OPDARGTYPE_FPU64:
+                            szp = "8";
+                            rc = "RC_FPUREG";
+                            suffix = "f64";
+                            break;
+                        case OPDARGTYPE_FPU80:
+                            szp = "10";
+                            rc = "RC_FPUREG";
+                            suffix = "f80";
+                            break;
+                        case OPDARGTYPE_FPUBCD:
+                            szp = "10";
+                            rc = "RC_FPUREG";
+                            suffix = "fbcd";
+                            break;
+                    }
+
+                    fprintf(out_fp,"%%s",suffix);
+                    fmtargs += ",IPDecPrint16(mrm,disp,";
+                    fmtargs += szp;
+                    fmtargs += ",";
+                    fmtargs += rc;
+                    fmtargs += ",\"";
+                    fmtargs += suffix;
+                    fmtargs += "\")";
+                }
+                else if (arg.arg == OPDARG_reg) {
+                    const char *regname = "mrm.reg()";
+                    char regn[32];
+
+                    if (!submap->modregrm) {
+                        if (submap->reg_from_opcode)
+                            regname = "op&7";
+                    }
+
+                    if (arg.argreg != OPREG_NONE) {
+                        sprintf(regn,"%u",arg.argreg);
+                        regname = regn;
+                    }
+
+                    switch (arg.argtype) {
+                        case OPDARGTYPE_BYTE:
+                            fprintf(out_fp,"%%s");
+                            fmtargs += ",CPUregsN[1][";
+                            fmtargs += regname;
+                            fmtargs += "]";
+                            break;
+                        case OPDARGTYPE_WORD:
+                            fprintf(out_fp,"%%s");
+                            if (codewidth == 32)
+                                fmtargs += ",CPUregsN[4][";
+                            else
+                                fmtargs += ",CPUregsN[2][";
+                            fmtargs += regname;
+                            fmtargs += "]";
+                            break;
+                        case OPDARGTYPE_WORD16:
+                            fprintf(out_fp,"%%s");
+                            fmtargs += ",CPUregsN[2][";
+                            fmtargs += regname;
+                            fmtargs += "]";
+                            break;
+                        case OPDARGTYPE_WORD32:
+                            fprintf(out_fp,"%%s");
+                            fmtargs += ",CPUregsN[4][";
+                            fmtargs += regname;
+                            fmtargs += "]";
+                            break;
+                        case OPDARGTYPE_FPUREG:
+                            fprintf(out_fp,"ST(%%u)");
+                            fmtargs += ",";
+                            fmtargs += regname;
+                            break;
+                        case OPDARGTYPE_SREG:
+                            // todo: use CPUsregs_80386[] if 386 or higher
+                            //       else use CPUsregs_8086[]
+                            fprintf(out_fp,"%%s");
+                            fmtargs += ",CPUsregs_80386[";
+                            fmtargs += regname;
+                            fmtargs += "]";
+                            break;
+
+                    }
+                }
+                else if (arg.arg == OPDARG_imm) {
+                    enum opccArgs argt = OPARG_NONE;
+                    const char **imn = immnames;
+
+                    if (arg.ip_relative) imn = immnames_rip;
+
+                    if (arg.index < submap->immarg.size())
+                        argt = submap->immarg[arg.index];
+
+                    switch (argt) {
+                        case OPARG_IB:
+                        case OPARG_IBS:
+                            fprintf(out_fp,"0x%%02lX");
+                            sprintf(tmp,",(unsigned long)((uint%u_t)%s)",codewidth,imn[arg.index]);
+                            fmtargs += tmp;
+                            break;
+                        case OPARG_IW:
+                        case OPARG_IWS:
+                            if (codewidth == 32)
+                                fprintf(out_fp,"0x%%08lX");
+                            else
+                                fprintf(out_fp,"0x%%04lX");
+                            sprintf(tmp,",(unsigned long)((uint%u_t)%s)",codewidth,imn[arg.index]);
+                            fmtargs += tmp;
+                            break;
+                        case OPARG_IW16:
+                        case OPARG_IW16S:
+                            fprintf(out_fp,"0x%%04lX");
+                            sprintf(tmp,",(unsigned long)((uint%u_t)%s)",codewidth,imn[arg.index]);
+                            fmtargs += tmp;
+                            break;
+                        case OPARG_IW32:
+                        case OPARG_IW32S:
+                            fprintf(out_fp,"0x%%08lX");
+                            sprintf(tmp,",(unsigned long)((uint%u_t)%s)",codewidth,imn[arg.index]);
+                            fmtargs += tmp;
+                            break;
+                    };
+                }
+
+                if ((i+1) < submap->disparg.size()) fprintf(out_fp,",");
+            }
+
+            fprintf(out_fp,"\"");
+            if (!fmtargs.empty()) fprintf(out_fp,"%s",fmtargs.c_str());
+            fprintf(out_fp,");\n");
         }
     }
 

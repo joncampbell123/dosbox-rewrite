@@ -36,6 +36,16 @@ static inline uint8_t IPDec8abs(uint8_t v) {
     return v;
 }
 
-const char *IPDecPrint16(const x86ModRegRm &mrm,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass=RC_REG);
+static inline uint16_t IPDec16abs(uint16_t v) {
+    if (v & 0x8000UL) return 0x10000UL - v;
+    return v;
+}
+
+static inline uint32_t IPDec32abs(uint32_t v) {
+    if (v & 0x80000000ULL) return 0x100000000ULL - v;
+    return v;
+}
+
+const char *IPDecPrint16(const x86ModRegRm &mrm,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass,const char *suffix);
 const char *IPDecPrint386(const x86ModRegRm &mrm,const x86ScaleIndexBase &sib,const x86_offset_t ofs,const unsigned int sz,const bool addr32,const IPDecRegClass regclass=RC_REG);
 
