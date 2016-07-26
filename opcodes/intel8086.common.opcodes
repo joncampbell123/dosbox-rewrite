@@ -228,7 +228,9 @@ opcode 0x9C:                                    "PUSHF"w
 opcode 0xFF mod/reg/rm /6:                      "PUSH"w w(r/m)
 ; POP sreg
 opcode 0x07:                                    "POP"w w(es)
+#ifdef CORE_8086_POP_CS
 opcode 0x0F:                                    "POP"w w(cs)
+#endif
 opcode 0x17:                                    "POP"w w(ss)
 opcode 0x1F:                                    "POP"w w(ds)
 ; POP

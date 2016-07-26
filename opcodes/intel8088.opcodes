@@ -5,6 +5,7 @@
 #define CORE_8086_LOCK_ALIAS
 #define CORE_8086_RET_ALIAS
 #define CORE_8086_F6_TEST_ALIAS
+#define CORE_8086_POP_CS
 
 #include "opcodes/intel8086.common.opcodes"
 
