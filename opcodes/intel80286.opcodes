@@ -10,4 +10,5 @@
 #define CORE_8087_ALIASES
 
 #include "opcodes/intel8087.common.opcodes"
+#include "opcodes/intel80287.common.opcodes"
 

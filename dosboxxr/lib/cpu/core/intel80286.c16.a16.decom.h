@@ -2151,7 +2151,9 @@ switch (op=IPFB()) {
             case 0xE3: /* DBh E3h FINIT  mod=3 reg=4 rm=3      spec: 0xDB 0xE3 */
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FINIT");
                 break;
-            /* opcode DBh E4h  not defined */
+            case 0xE4: /* DBh E4h FSETPM  mod=3 reg=4 rm=4      spec: 0xDB 0xE4 */
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSETPM");
+                break;
             /* opcode DBh E5h  not defined */
             /* opcode DBh E6h  not defined */
             /* opcode DBh E7h  not defined */
@@ -3297,7 +3299,9 @@ switch (op=IPFB()) {
             /* opcode DFh DDh  not defined */
             /* opcode DFh DEh  not defined */
             /* opcode DFh DFh  not defined */
-            /* opcode DFh E0h  not defined */
+            case 0xE0: /* DFh E0h FSTSWw w(a) mod=3 reg=4 rm=0      spec: 0xDF 0xE0 */
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTSWw %s",CPUregsN[2][0]);
+                break;
             /* opcode DFh E1h  not defined */
             /* opcode DFh E2h  not defined */
             /* opcode DFh E3h  not defined */
