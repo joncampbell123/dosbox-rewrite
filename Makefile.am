@@ -23,7 +23,7 @@ empty_SOURCES = empty.cpp
 cpudec86_SOURCES = cpudec86.cpp
 cpudec86_CXXFLAGS = $(AM_CXXFLAGS)
 cpudec86_DEPENDENCIES = \
-	dosboxxr/lib/cpu/libcpu.a
+	dosboxxr/lib/cpu/libcpu.a $(OPCC_H)
 cpudec86_LDADD = \
 	dosboxxr/lib/cpu/libcpu.a
 
@@ -48,10 +48,16 @@ cpumemreftypes_LDADD =
 
 OPCC_H = \
 	dosboxxr/lib/cpu/core/intel8088.c16.a16.decom.h \
+	\
 	dosboxxr/lib/cpu/core/intel80286.c16.a16.decom.h \
+	\
 	dosboxxr/lib/cpu/core/intel80386.c16.a16.decom.h \
 	dosboxxr/lib/cpu/core/intel80386.cxx.axx.decom.h \
-	dosboxxr/lib/cpu/core/intel80386.c32.a32.decom.h
+	dosboxxr/lib/cpu/core/intel80386.c32.a32.decom.h \
+	\
+	dosboxxr/lib/cpu/core/intel80486.c16.a16.decom.h \
+	dosboxxr/lib/cpu/core/intel80486.cxx.axx.decom.h \
+	dosboxxr/lib/cpu/core/intel80486.c32.a32.decom.h
 
 test1.bin: test1.asm
 	yasm -o $@ -f bin $<
@@ -62,7 +68,9 @@ test2.bin: test2.asm
 test3.bin: test3.asm
 	yasm -o $@ -f bin $<
 
-test-bins: test1.bin test2.bin test3.bin
+test4.bin: test4.asm
+	yasm -o $@ -f bin $<
+test-bins: test1.bin test2.bin test3.bin test4.bin
 
 opcc$(EXEEXT): opcc.cpp
 	$(BUILD_CXX) -o $@ $<
@@ -85,6 +93,15 @@ dosboxxr/lib/cpu/core/intel80386.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intel803
 	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80386.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
 dosboxxr/lib/cpu/core/intel80386.c32.a32.decom.h: dosboxxr/lib/cpu/core/intel80386.opcodes.p opcc$(EXEEXT)
 	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80386.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars
+
+dosboxxr/lib/cpu/core/intel80486.opcodes.p: opcodes/intel80486.opcodes
+	$(BUILD_CPP) -I. opcodes/intel80486.opcodes -o $@
+dosboxxr/lib/cpu/core/intel80486.c16.a16.decom.h: dosboxxr/lib/cpu/core/intel80486.opcodes.p opcc$(EXEEXT)
+	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80486.opcodes.p -o $@ -m decompile -c 16 -a 16 -c32vars
+dosboxxr/lib/cpu/core/intel80486.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intel80486.opcodes.p opcc$(EXEEXT)
+	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80486.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
+dosboxxr/lib/cpu/core/intel80486.c32.a32.decom.h: dosboxxr/lib/cpu/core/intel80486.opcodes.p opcc$(EXEEXT)
+	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80486.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars
 
 # grrr how do I get automake to run opcc first before compiling other parts?
 opcodes: $(OPCC_H)
