@@ -1220,7 +1220,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                         case OPARG_IWA:
                         case OPARG_IWS:
                             if (generic1632) {
-                                fprintf(out_fp,"0x%%0*lX");
+                                fprintf(out_fp,"[0x%%0*lX]");
                                 fmtargs += ",addr32?8:4";
                             }
                             else {

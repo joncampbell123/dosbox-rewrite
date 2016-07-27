@@ -1808,19 +1808,19 @@ switch (op=IPFB()) {
         break;
     case 0xA0: /* A0h MOVb b(a),b(mem[i])      spec: 0xA0 iwa */
         imm=IPFaddrW();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVb %s,0x%0*lXb",CPUregsN[1][0],addr32?8:4,(unsigned long)((uint32_t)imm)&(addr32?0xFFFFFFFFUL:0xFFFFUL));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVb %s,[0x%0*lX]b",CPUregsN[1][0],addr32?8:4,(unsigned long)((uint32_t)imm)&(addr32?0xFFFFFFFFUL:0xFFFFUL));
         break;
     case 0xA1: /* A1h MOVd w(a),w(mem[i])      spec: 0xA1 iwa */
         imm=IPFaddrW();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOV%s %s,0x%0*lXw",code32?"d":"w",CPUregsN[code32?4:2][0],addr32?8:4,(unsigned long)((uint32_t)imm)&(addr32?0xFFFFFFFFUL:0xFFFFUL));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOV%s %s,[0x%0*lX]w",code32?"d":"w",CPUregsN[code32?4:2][0],addr32?8:4,(unsigned long)((uint32_t)imm)&(addr32?0xFFFFFFFFUL:0xFFFFUL));
         break;
     case 0xA2: /* A2h MOVb b(mem[i]),b(a)      spec: 0xA2 iwa */
         imm=IPFaddrW();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVb 0x%0*lXb,%s",addr32?8:4,(unsigned long)((uint32_t)imm)&(addr32?0xFFFFFFFFUL:0xFFFFUL),CPUregsN[1][0]);
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVb [0x%0*lX]b,%s",addr32?8:4,(unsigned long)((uint32_t)imm)&(addr32?0xFFFFFFFFUL:0xFFFFUL),CPUregsN[1][0]);
         break;
     case 0xA3: /* A3h MOVd b(mem[i]),w(a)      spec: 0xA3 iwa */
         imm=IPFaddrW();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOV%s 0x%0*lXb,%s",code32?"d":"w",addr32?8:4,(unsigned long)((uint32_t)imm)&(addr32?0xFFFFFFFFUL:0xFFFFUL),CPUregsN[code32?4:2][0]);
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOV%s [0x%0*lX]b,%s",code32?"d":"w",addr32?8:4,(unsigned long)((uint32_t)imm)&(addr32?0xFFFFFFFFUL:0xFFFFUL),CPUregsN[code32?4:2][0]);
         break;
     case 0xA4: /* A4h MOVSb       spec: 0xA4 */
         ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVSb");
