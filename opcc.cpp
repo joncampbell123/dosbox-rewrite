@@ -1341,7 +1341,6 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                         fmtargs += ",IPDecPrint1632(addr32,mrm,sib,disp,";
                     }
                     else {
-                        fprintf(out_fp,"%%s",suffix);
                         if (addrwidth == 32)
                             fmtargs += ",IPDecPrint32(mrm,sib,disp,";
                         else

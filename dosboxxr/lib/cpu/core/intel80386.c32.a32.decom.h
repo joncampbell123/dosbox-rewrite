@@ -28,19 +28,19 @@
 switch (op=IPFB()) {
     case 0x00: /* 00h ADDb b(r/m),b(reg)      spec: 0x00 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADDb %s%s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][mrm.reg()]);
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADDb %s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][mrm.reg()]);
         break;
     case 0x01: /* 01h ADDd w(r/m),w(reg)      spec: 0x01 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADDd %s%s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[4][mrm.reg()]);
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADDd %s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[4][mrm.reg()]);
         break;
     case 0x02: /* 02h ADDb b(reg),b(r/m)      spec: 0x02 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADDb %s,%s%s",CPUregsN[1][mrm.reg()],IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADDb %s,%s",CPUregsN[1][mrm.reg()],IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
         break;
     case 0x03: /* 03h ADDd w(reg),w(r/m)      spec: 0x03 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADDd %s,%s%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADDd %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
         break;
     case 0x04: /* 04h ADDb b(a),i      spec: 0x04 ib */
         imm=IPFB();
@@ -58,19 +58,19 @@ switch (op=IPFB()) {
         break;
     case 0x08: /* 08h ORb b(r/m),b(reg)      spec: 0x08 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ORb %s%s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][mrm.reg()]);
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ORb %s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][mrm.reg()]);
         break;
     case 0x09: /* 09h ORd w(r/m),w(reg)      spec: 0x09 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ORd %s%s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[4][mrm.reg()]);
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ORd %s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[4][mrm.reg()]);
         break;
     case 0x0A: /* 0Ah ORb b(reg),b(r/m)      spec: 0x0A mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ORb %s,%s%s",CPUregsN[1][mrm.reg()],IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ORb %s,%s",CPUregsN[1][mrm.reg()],IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
         break;
     case 0x0B: /* 0Bh ORd w(reg),w(r/m)      spec: 0x0B mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ORd %s,%s%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ORd %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
         break;
     case 0x0C: /* 0Ch ORb b(a),i      spec: 0x0C ib */
         imm=IPFB();
@@ -114,7 +114,7 @@ switch (op=IPFB()) {
                     case 0x85: /* 0Fh 00h 85h SLDTd w(r/m) mod=2 reg=0 rm=5      spec: 0x0F 0x00 mod/reg/rm /0 mod!=3 */
                     case 0x86: /* 0Fh 00h 86h SLDTd w(r/m) mod=2 reg=0 rm=6      spec: 0x0F 0x00 mod/reg/rm /0 mod!=3 */
                     case 0x87: /* 0Fh 00h 87h SLDTd w(r/m) mod=2 reg=0 rm=7      spec: 0x0F 0x00 mod/reg/rm /0 mod!=3 */
-                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SLDTd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SLDTd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                         break;
                     case 0x08: /* 0Fh 00h 08h STRd w(r/m) mod=0 reg=1 rm=0      spec: 0x0F 0x00 mod/reg/rm /1 mod!=3 */
                     case 0x09: /* 0Fh 00h 09h STRd w(r/m) mod=0 reg=1 rm=1      spec: 0x0F 0x00 mod/reg/rm /1 mod!=3 */
@@ -140,7 +140,7 @@ switch (op=IPFB()) {
                     case 0x8D: /* 0Fh 00h 8Dh STRd w(r/m) mod=2 reg=1 rm=5      spec: 0x0F 0x00 mod/reg/rm /1 mod!=3 */
                     case 0x8E: /* 0Fh 00h 8Eh STRd w(r/m) mod=2 reg=1 rm=6      spec: 0x0F 0x00 mod/reg/rm /1 mod!=3 */
                     case 0x8F: /* 0Fh 00h 8Fh STRd w(r/m) mod=2 reg=1 rm=7      spec: 0x0F 0x00 mod/reg/rm /1 mod!=3 */
-                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"STRd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"STRd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                         break;
                     case 0x10: /* 0Fh 00h 10h LLDTd w(r/m) mod=0 reg=2 rm=0      spec: 0x0F 0x00 mod/reg/rm /2 mod!=3 */
                     case 0x11: /* 0Fh 00h 11h LLDTd w(r/m) mod=0 reg=2 rm=1      spec: 0x0F 0x00 mod/reg/rm /2 mod!=3 */
@@ -166,7 +166,7 @@ switch (op=IPFB()) {
                     case 0x95: /* 0Fh 00h 95h LLDTd w(r/m) mod=2 reg=2 rm=5      spec: 0x0F 0x00 mod/reg/rm /2 mod!=3 */
                     case 0x96: /* 0Fh 00h 96h LLDTd w(r/m) mod=2 reg=2 rm=6      spec: 0x0F 0x00 mod/reg/rm /2 mod!=3 */
                     case 0x97: /* 0Fh 00h 97h LLDTd w(r/m) mod=2 reg=2 rm=7      spec: 0x0F 0x00 mod/reg/rm /2 mod!=3 */
-                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LLDTd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LLDTd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                         break;
                     case 0x18: /* 0Fh 00h 18h LTRd w(r/m) mod=0 reg=3 rm=0      spec: 0x0F 0x00 mod/reg/rm /3 mod!=3 */
                     case 0x19: /* 0Fh 00h 19h LTRd w(r/m) mod=0 reg=3 rm=1      spec: 0x0F 0x00 mod/reg/rm /3 mod!=3 */
@@ -192,7 +192,7 @@ switch (op=IPFB()) {
                     case 0x9D: /* 0Fh 00h 9Dh LTRd w(r/m) mod=2 reg=3 rm=5      spec: 0x0F 0x00 mod/reg/rm /3 mod!=3 */
                     case 0x9E: /* 0Fh 00h 9Eh LTRd w(r/m) mod=2 reg=3 rm=6      spec: 0x0F 0x00 mod/reg/rm /3 mod!=3 */
                     case 0x9F: /* 0Fh 00h 9Fh LTRd w(r/m) mod=2 reg=3 rm=7      spec: 0x0F 0x00 mod/reg/rm /3 mod!=3 */
-                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LTRd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LTRd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                         break;
                     case 0x20: /* 0Fh 00h 20h VERRd w(r/m) mod=0 reg=4 rm=0      spec: 0x0F 0x00 mod/reg/rm /4 mod!=3 */
                     case 0x21: /* 0Fh 00h 21h VERRd w(r/m) mod=0 reg=4 rm=1      spec: 0x0F 0x00 mod/reg/rm /4 mod!=3 */
@@ -218,7 +218,7 @@ switch (op=IPFB()) {
                     case 0xA5: /* 0Fh 00h A5h VERRd w(r/m) mod=2 reg=4 rm=5      spec: 0x0F 0x00 mod/reg/rm /4 mod!=3 */
                     case 0xA6: /* 0Fh 00h A6h VERRd w(r/m) mod=2 reg=4 rm=6      spec: 0x0F 0x00 mod/reg/rm /4 mod!=3 */
                     case 0xA7: /* 0Fh 00h A7h VERRd w(r/m) mod=2 reg=4 rm=7      spec: 0x0F 0x00 mod/reg/rm /4 mod!=3 */
-                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VERRd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VERRd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                         break;
                     case 0x28: /* 0Fh 00h 28h VERWd w(r/m) mod=0 reg=5 rm=0      spec: 0x0F 0x00 mod/reg/rm /5 mod!=3 */
                     case 0x29: /* 0Fh 00h 29h VERWd w(r/m) mod=0 reg=5 rm=1      spec: 0x0F 0x00 mod/reg/rm /5 mod!=3 */
@@ -244,7 +244,7 @@ switch (op=IPFB()) {
                     case 0xAD: /* 0Fh 00h ADh VERWd w(r/m) mod=2 reg=5 rm=5      spec: 0x0F 0x00 mod/reg/rm /5 mod!=3 */
                     case 0xAE: /* 0Fh 00h AEh VERWd w(r/m) mod=2 reg=5 rm=6      spec: 0x0F 0x00 mod/reg/rm /5 mod!=3 */
                     case 0xAF: /* 0Fh 00h AFh VERWd w(r/m) mod=2 reg=5 rm=7      spec: 0x0F 0x00 mod/reg/rm /5 mod!=3 */
-                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VERWd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VERWd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                         break;
                     /* opcode 0Fh 00h 30h  not defined */
                     /* opcode 0Fh 00h 31h  not defined */
@@ -391,7 +391,7 @@ switch (op=IPFB()) {
                     case 0x85: /* 0Fh 01h 85h SGDTd w(r/m) mod=2 reg=0 rm=5      spec: 0x0F 0x01 mod/reg/rm /0 mod!=3 */
                     case 0x86: /* 0Fh 01h 86h SGDTd w(r/m) mod=2 reg=0 rm=6      spec: 0x0F 0x01 mod/reg/rm /0 mod!=3 */
                     case 0x87: /* 0Fh 01h 87h SGDTd w(r/m) mod=2 reg=0 rm=7      spec: 0x0F 0x01 mod/reg/rm /0 mod!=3 */
-                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SGDTd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SGDTd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                         break;
                     case 0x08: /* 0Fh 01h 08h SIDTd w(r/m) mod=0 reg=1 rm=0      spec: 0x0F 0x01 mod/reg/rm /1 mod!=3 */
                     case 0x09: /* 0Fh 01h 09h SIDTd w(r/m) mod=0 reg=1 rm=1      spec: 0x0F 0x01 mod/reg/rm /1 mod!=3 */
@@ -417,7 +417,7 @@ switch (op=IPFB()) {
                     case 0x8D: /* 0Fh 01h 8Dh SIDTd w(r/m) mod=2 reg=1 rm=5      spec: 0x0F 0x01 mod/reg/rm /1 mod!=3 */
                     case 0x8E: /* 0Fh 01h 8Eh SIDTd w(r/m) mod=2 reg=1 rm=6      spec: 0x0F 0x01 mod/reg/rm /1 mod!=3 */
                     case 0x8F: /* 0Fh 01h 8Fh SIDTd w(r/m) mod=2 reg=1 rm=7      spec: 0x0F 0x01 mod/reg/rm /1 mod!=3 */
-                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SIDTd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SIDTd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                         break;
                     case 0x10: /* 0Fh 01h 10h LGDTd w(r/m) mod=0 reg=2 rm=0      spec: 0x0F 0x01 mod/reg/rm /2 mod!=3 */
                     case 0x11: /* 0Fh 01h 11h LGDTd w(r/m) mod=0 reg=2 rm=1      spec: 0x0F 0x01 mod/reg/rm /2 mod!=3 */
@@ -443,7 +443,7 @@ switch (op=IPFB()) {
                     case 0x95: /* 0Fh 01h 95h LGDTd w(r/m) mod=2 reg=2 rm=5      spec: 0x0F 0x01 mod/reg/rm /2 mod!=3 */
                     case 0x96: /* 0Fh 01h 96h LGDTd w(r/m) mod=2 reg=2 rm=6      spec: 0x0F 0x01 mod/reg/rm /2 mod!=3 */
                     case 0x97: /* 0Fh 01h 97h LGDTd w(r/m) mod=2 reg=2 rm=7      spec: 0x0F 0x01 mod/reg/rm /2 mod!=3 */
-                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LGDTd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LGDTd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                         break;
                     case 0x18: /* 0Fh 01h 18h LIDTd w(r/m) mod=0 reg=3 rm=0      spec: 0x0F 0x01 mod/reg/rm /3 mod!=3 */
                     case 0x19: /* 0Fh 01h 19h LIDTd w(r/m) mod=0 reg=3 rm=1      spec: 0x0F 0x01 mod/reg/rm /3 mod!=3 */
@@ -469,7 +469,7 @@ switch (op=IPFB()) {
                     case 0x9D: /* 0Fh 01h 9Dh LIDTd w(r/m) mod=2 reg=3 rm=5      spec: 0x0F 0x01 mod/reg/rm /3 mod!=3 */
                     case 0x9E: /* 0Fh 01h 9Eh LIDTd w(r/m) mod=2 reg=3 rm=6      spec: 0x0F 0x01 mod/reg/rm /3 mod!=3 */
                     case 0x9F: /* 0Fh 01h 9Fh LIDTd w(r/m) mod=2 reg=3 rm=7      spec: 0x0F 0x01 mod/reg/rm /3 mod!=3 */
-                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LIDTd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LIDTd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                         break;
                     case 0x20: /* 0Fh 01h 20h SMSWd w(r/m) mod=0 reg=4 rm=0      spec: 0x0F 0x01 mod/reg/rm /4 mod!=3 */
                     case 0x21: /* 0Fh 01h 21h SMSWd w(r/m) mod=0 reg=4 rm=1      spec: 0x0F 0x01 mod/reg/rm /4 mod!=3 */
@@ -495,7 +495,7 @@ switch (op=IPFB()) {
                     case 0xA5: /* 0Fh 01h A5h SMSWd w(r/m) mod=2 reg=4 rm=5      spec: 0x0F 0x01 mod/reg/rm /4 mod!=3 */
                     case 0xA6: /* 0Fh 01h A6h SMSWd w(r/m) mod=2 reg=4 rm=6      spec: 0x0F 0x01 mod/reg/rm /4 mod!=3 */
                     case 0xA7: /* 0Fh 01h A7h SMSWd w(r/m) mod=2 reg=4 rm=7      spec: 0x0F 0x01 mod/reg/rm /4 mod!=3 */
-                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SMSWd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SMSWd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                         break;
                     /* opcode 0Fh 01h 28h  not defined */
                     /* opcode 0Fh 01h 29h  not defined */
@@ -529,7 +529,7 @@ switch (op=IPFB()) {
                     case 0xB5: /* 0Fh 01h B5h LMSWd w(r/m) mod=2 reg=6 rm=5      spec: 0x0F 0x01 mod/reg/rm /6 mod!=3 */
                     case 0xB6: /* 0Fh 01h B6h LMSWd w(r/m) mod=2 reg=6 rm=6      spec: 0x0F 0x01 mod/reg/rm /6 mod!=3 */
                     case 0xB7: /* 0Fh 01h B7h LMSWd w(r/m) mod=2 reg=6 rm=7      spec: 0x0F 0x01 mod/reg/rm /6 mod!=3 */
-                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LMSWd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LMSWd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                         break;
                     /* opcode 0Fh 01h 38h  not defined */
                     /* opcode 0Fh 01h 39h  not defined */
@@ -642,11 +642,11 @@ switch (op=IPFB()) {
                 break;
             case 0x02: /* 0Fh 02h LARd w(reg),w(r/m)      spec: 0x0F 0x02 mod/reg/rm */
                 IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LARd %s,%s%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LARd %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             case 0x03: /* 0Fh 03h LSLd w(reg),w(r/m)      spec: 0x0F 0x03 mod/reg/rm */
                 IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LSLd %s,%s%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LSLd %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             /* opcode 0Fh 04h  not defined */
             /* opcode 0Fh 05h  not defined */
@@ -834,24 +834,24 @@ switch (op=IPFB()) {
             /* opcode 0Fh B1h  not defined */
             case 0xB2: /* 0Fh B2h LSSd w(reg),w(r/m)      spec: 0x0F 0xB2 mod/reg/rm */
                 IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LSSd %s,%s%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LSSd %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             /* opcode 0Fh B3h  not defined */
             case 0xB4: /* 0Fh B4h LFSd w(reg),w(r/m)      spec: 0x0F 0xB4 mod/reg/rm */
                 IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LFSd %s,%s%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LFSd %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             case 0xB5: /* 0Fh B5h LGSd w(reg),w(r/m)      spec: 0x0F 0xB5 mod/reg/rm */
                 IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LGSd %s,%s%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LGSd %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             case 0xB6: /* 0Fh B6h MOVZXb w(reg),b(r/m)      spec: 0x0F 0xB6 mod/reg/rm */
                 IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVZXb %s,%s%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVZXb %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
                 break;
             case 0xB7: /* 0Fh B7h MOVZXd w(reg),w16(r/m)      spec: 0x0F 0xB7 mod/reg/rm */
                 IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVZXd %s,%s%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVZXd %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
                 break;
             /* opcode 0Fh B8h  not defined */
             /* opcode 0Fh B9h  not defined */
@@ -861,11 +861,11 @@ switch (op=IPFB()) {
             /* opcode 0Fh BDh  not defined */
             case 0xBE: /* 0Fh BEh MOVSXb w(reg),b(r/m)      spec: 0x0F 0xBE mod/reg/rm */
                 IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVSXb %s,%s%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVSXb %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
                 break;
             case 0xBF: /* 0Fh BFh MOVSXd w(reg),w16(r/m)      spec: 0x0F 0xBF mod/reg/rm */
                 IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVSXd %s,%s%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVSXd %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
                 break;
             /* opcode 0Fh C0h  not defined */
             /* opcode 0Fh C1h  not defined */
@@ -938,19 +938,19 @@ switch (op=IPFB()) {
         break;
     case 0x10: /* 10h ADCb b(r/m),b(reg)      spec: 0x10 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADCb %s%s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][mrm.reg()]);
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADCb %s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][mrm.reg()]);
         break;
     case 0x11: /* 11h ADCd w(r/m),w(reg)      spec: 0x11 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADCd %s%s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[4][mrm.reg()]);
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADCd %s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[4][mrm.reg()]);
         break;
     case 0x12: /* 12h ADCb b(reg),b(r/m)      spec: 0x12 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADCb %s,%s%s",CPUregsN[1][mrm.reg()],IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADCb %s,%s",CPUregsN[1][mrm.reg()],IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
         break;
     case 0x13: /* 13h ADCd w(reg),w(r/m)      spec: 0x13 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADCd %s,%s%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADCd %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
         break;
     case 0x14: /* 14h ADCb b(a),i      spec: 0x14 ib */
         imm=IPFB();
@@ -968,19 +968,19 @@ switch (op=IPFB()) {
         break;
     case 0x18: /* 18h SBBb b(r/m),b(reg)      spec: 0x18 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SBBb %s%s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][mrm.reg()]);
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SBBb %s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][mrm.reg()]);
         break;
     case 0x19: /* 19h SBBd w(r/m),w(reg)      spec: 0x19 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SBBd %s%s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[4][mrm.reg()]);
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SBBd %s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[4][mrm.reg()]);
         break;
     case 0x1A: /* 1Ah SBBb b(reg),b(r/m)      spec: 0x1A mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SBBb %s,%s%s",CPUregsN[1][mrm.reg()],IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SBBb %s,%s",CPUregsN[1][mrm.reg()],IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
         break;
     case 0x1B: /* 1Bh SBBd w(reg),w(r/m)      spec: 0x1B mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SBBd %s,%s%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SBBd %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
         break;
     case 0x1C: /* 1Ch SBBb b(a),i      spec: 0x1C ib */
         imm=IPFB();
@@ -998,19 +998,19 @@ switch (op=IPFB()) {
         break;
     case 0x20: /* 20h ANDb b(r/m),b(reg)      spec: 0x20 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ANDb %s%s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][mrm.reg()]);
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ANDb %s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][mrm.reg()]);
         break;
     case 0x21: /* 21h ANDd w(r/m),w(reg)      spec: 0x21 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ANDd %s%s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[4][mrm.reg()]);
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ANDd %s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[4][mrm.reg()]);
         break;
     case 0x22: /* 22h ANDb b(reg),b(r/m)      spec: 0x22 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ANDb %s,%s%s",CPUregsN[1][mrm.reg()],IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ANDb %s,%s",CPUregsN[1][mrm.reg()],IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
         break;
     case 0x23: /* 23h ANDd w(reg),w(r/m)      spec: 0x23 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ANDd %s,%s%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ANDd %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
         break;
     case 0x24: /* 24h ANDb b(a),i      spec: 0x24 ib */
         imm=IPFB();
@@ -1028,19 +1028,19 @@ switch (op=IPFB()) {
         break;
     case 0x28: /* 28h SUBb b(r/m),b(reg)      spec: 0x28 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SUBb %s%s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][mrm.reg()]);
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SUBb %s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][mrm.reg()]);
         break;
     case 0x29: /* 29h SUBd w(r/m),w(reg)      spec: 0x29 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SUBd %s%s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[4][mrm.reg()]);
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SUBd %s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[4][mrm.reg()]);
         break;
     case 0x2A: /* 2Ah SUBb b(reg),b(r/m)      spec: 0x2A mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SUBb %s,%s%s",CPUregsN[1][mrm.reg()],IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SUBb %s,%s",CPUregsN[1][mrm.reg()],IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
         break;
     case 0x2B: /* 2Bh SUBd w(reg),w(r/m)      spec: 0x2B mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SUBd %s,%s%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SUBd %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
         break;
     case 0x2C: /* 2Ch SUBb b(a),i      spec: 0x2C ib */
         imm=IPFB();
@@ -1058,19 +1058,19 @@ switch (op=IPFB()) {
         break;
     case 0x30: /* 30h XORb b(r/m),b(reg)      spec: 0x30 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"XORb %s%s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][mrm.reg()]);
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"XORb %s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][mrm.reg()]);
         break;
     case 0x31: /* 31h XORd w(r/m),w(reg)      spec: 0x31 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"XORd %s%s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[4][mrm.reg()]);
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"XORd %s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[4][mrm.reg()]);
         break;
     case 0x32: /* 32h XORb b(reg),b(r/m)      spec: 0x32 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"XORb %s,%s%s",CPUregsN[1][mrm.reg()],IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"XORb %s,%s",CPUregsN[1][mrm.reg()],IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
         break;
     case 0x33: /* 33h XORd w(reg),w(r/m)      spec: 0x33 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"XORd %s,%s%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"XORd %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
         break;
     case 0x34: /* 34h XORb b(a),i      spec: 0x34 ib */
         imm=IPFB();
@@ -1088,19 +1088,19 @@ switch (op=IPFB()) {
         break;
     case 0x38: /* 38h CMPb b(r/m),b(reg)      spec: 0x38 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CMPb %s%s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][mrm.reg()]);
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CMPb %s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][mrm.reg()]);
         break;
     case 0x39: /* 39h CMPd w(r/m),w(reg)      spec: 0x39 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CMPd %s%s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[4][mrm.reg()]);
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CMPd %s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[4][mrm.reg()]);
         break;
     case 0x3A: /* 3Ah CMPb b(reg),b(r/m)      spec: 0x3A mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CMPb %s,%s%s",CPUregsN[1][mrm.reg()],IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CMPb %s,%s",CPUregsN[1][mrm.reg()],IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
         break;
     case 0x3B: /* 3Bh CMPd w(reg),w(r/m)      spec: 0x3B mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CMPd %s,%s%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CMPd %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
         break;
     case 0x3C: /* 3Ch CMPb b(a),i      spec: 0x3C ib */
         imm=IPFB();
@@ -1164,11 +1164,11 @@ switch (op=IPFB()) {
         break;
     case 0x62: /* 62h BOUNDd w(reg),w(r/m)      spec: 0x62 mod/reg/rm mod!=3 */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"BOUNDd %s,%s%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"BOUNDd %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
         break;
     case 0x63: /* 63h ARPLd w(r/m),w(reg)      spec: 0x63 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ARPLd %s%s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[4][mrm.reg()]);
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ARPLd %s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[4][mrm.reg()]);
         break;
     /* opcode 64h  not defined */
     /* opcode 65h  not defined */
@@ -1189,7 +1189,7 @@ switch (op=IPFB()) {
     case 0x69: /* 69h IMULd w(reg),w(r/m),w(i)      spec: 0x69 mod/reg/rm iw */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
         imm=IPFcodeW();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"IMULd %s,%s%s,0x%08lX",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"IMULd %s,%s,0x%08lX",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
         break;
     case 0x6A: /* 6Ah PUSHd w(i)      spec: 0x6A ibs */
         imm=IPFBsigned();
@@ -1198,7 +1198,7 @@ switch (op=IPFB()) {
     case 0x6B: /* 6Bh IMULb w(reg),w(r/m),b(i)      spec: 0x6B mod/reg/rm ib */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
         imm=IPFB();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"IMULb %s,%s%s,0x%02lX",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"IMULb %s,%s,0x%02lX",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
         break;
     case 0x6C: /* 6Ch INSb       spec: 0x6C */
         ipw += snprintf(ipw,(size_t)(ipwf-ipw),"INSb");
@@ -1283,35 +1283,35 @@ switch (op=IPFB()) {
         switch (mrm.reg()) {
             case 0: /* 80h 00h ADDb b(r/m),i reg=0      spec: 0x80 mod/reg/rm /0 ib */
                 imm=IPFB();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADDb %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADDb %s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
                 break;
             case 1: /* 80h 08h ORb b(r/m),i reg=1      spec: 0x80 mod/reg/rm /1 ib */
                 imm=IPFB();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ORb %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ORb %s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
                 break;
             case 2: /* 80h 10h ADCb b(r/m),i reg=2      spec: 0x80 mod/reg/rm /2 ib */
                 imm=IPFB();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADCb %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADCb %s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
                 break;
             case 3: /* 80h 18h SBBb b(r/m),i reg=3      spec: 0x80 mod/reg/rm /3 ib */
                 imm=IPFB();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SBBb %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SBBb %s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
                 break;
             case 4: /* 80h 20h ANDb b(r/m),i reg=4      spec: 0x80 mod/reg/rm /4 ib */
                 imm=IPFB();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ANDb %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ANDb %s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
                 break;
             case 5: /* 80h 28h SUBb b(r/m),i reg=5      spec: 0x80 mod/reg/rm /5 ib */
                 imm=IPFB();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SUBb %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SUBb %s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
                 break;
             case 6: /* 80h 30h XORb b(r/m),i reg=6      spec: 0x80 mod/reg/rm /6 ib */
                 imm=IPFB();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"XORb %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"XORb %s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
                 break;
             case 7: /* 80h 38h CMPb b(r/m),i reg=7      spec: 0x80 mod/reg/rm /7 ib */
                 imm=IPFB();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CMPb %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CMPb %s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
                 break;
             default:
                 goto _x86decode_illegal_opcode;
@@ -1324,35 +1324,35 @@ switch (op=IPFB()) {
         switch (mrm.reg()) {
             case 0: /* 81h 00h ADDd w(r/m),i reg=0      spec: 0x81 mod/reg/rm /0 iw */
                 imm=IPFcodeW();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADDd %s%s,0x%08lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADDd %s,0x%08lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
                 break;
             case 1: /* 81h 08h ORd w(r/m),i reg=1      spec: 0x81 mod/reg/rm /1 iw */
                 imm=IPFcodeW();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ORd %s%s,0x%08lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ORd %s,0x%08lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
                 break;
             case 2: /* 81h 10h ADCd w(r/m),i reg=2      spec: 0x81 mod/reg/rm /2 iw */
                 imm=IPFcodeW();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADCd %s%s,0x%08lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADCd %s,0x%08lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
                 break;
             case 3: /* 81h 18h SBBd w(r/m),i reg=3      spec: 0x81 mod/reg/rm /3 iw */
                 imm=IPFcodeW();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SBBd %s%s,0x%08lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SBBd %s,0x%08lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
                 break;
             case 4: /* 81h 20h ANDd w(r/m),i reg=4      spec: 0x81 mod/reg/rm /4 iw */
                 imm=IPFcodeW();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ANDd %s%s,0x%08lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ANDd %s,0x%08lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
                 break;
             case 5: /* 81h 28h SUBd w(r/m),i reg=5      spec: 0x81 mod/reg/rm /5 iw */
                 imm=IPFcodeW();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SUBd %s%s,0x%08lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SUBd %s,0x%08lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
                 break;
             case 6: /* 81h 30h XORd w(r/m),i reg=6      spec: 0x81 mod/reg/rm /6 iw */
                 imm=IPFcodeW();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"XORd %s%s,0x%08lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"XORd %s,0x%08lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
                 break;
             case 7: /* 81h 38h CMPd w(r/m),i reg=7      spec: 0x81 mod/reg/rm /7 iw */
                 imm=IPFcodeW();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CMPd %s%s,0x%08lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CMPd %s,0x%08lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
                 break;
             default:
                 goto _x86decode_illegal_opcode;
@@ -1365,35 +1365,35 @@ switch (op=IPFB()) {
         switch (mrm.reg()) {
             case 0: /* 83h 00h ADDd w(r/m),i reg=0      spec: 0x83 mod/reg/rm /0 ibs */
                 imm=IPFBsigned();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADDd %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADDd %s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
                 break;
             case 1: /* 83h 08h ORd w(r/m),i reg=1      spec: 0x83 mod/reg/rm /1 ibs */
                 imm=IPFBsigned();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ORd %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ORd %s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
                 break;
             case 2: /* 83h 10h ADCd w(r/m),i reg=2      spec: 0x83 mod/reg/rm /2 ibs */
                 imm=IPFBsigned();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADCd %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADCd %s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
                 break;
             case 3: /* 83h 18h SBBd w(r/m),i reg=3      spec: 0x83 mod/reg/rm /3 ibs */
                 imm=IPFBsigned();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SBBd %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SBBd %s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
                 break;
             case 4: /* 83h 20h ANDd w(r/m),i reg=4      spec: 0x83 mod/reg/rm /4 ibs */
                 imm=IPFBsigned();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ANDd %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ANDd %s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
                 break;
             case 5: /* 83h 28h SUBd w(r/m),i reg=5      spec: 0x83 mod/reg/rm /5 ibs */
                 imm=IPFBsigned();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SUBd %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SUBd %s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
                 break;
             case 6: /* 83h 30h XORd w(r/m),i reg=6      spec: 0x83 mod/reg/rm /6 ibs */
                 imm=IPFBsigned();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"XORd %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"XORd %s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
                 break;
             case 7: /* 83h 38h CMPd w(r/m),i reg=7      spec: 0x83 mod/reg/rm /7 ibs */
                 imm=IPFBsigned();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CMPd %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CMPd %s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
                 break;
             default:
                 goto _x86decode_illegal_opcode;
@@ -1402,51 +1402,51 @@ switch (op=IPFB()) {
         break;
     case 0x84: /* 84h TESTb b(r/m),b(reg)      spec: 0x84 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"TESTb %s%s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][mrm.reg()]);
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"TESTb %s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][mrm.reg()]);
         break;
     case 0x85: /* 85h TESTd w(r/m),w(reg)      spec: 0x85 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"TESTd %s%s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[4][mrm.reg()]);
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"TESTd %s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[4][mrm.reg()]);
         break;
     case 0x86: /* 86h XCHGb b(r/m),b(reg)      spec: 0x86 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"XCHGb %s%s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][mrm.reg()]);
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"XCHGb %s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][mrm.reg()]);
         break;
     case 0x87: /* 87h XCHGd w(r/m),w(reg)      spec: 0x87 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"XCHGd %s%s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[4][mrm.reg()]);
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"XCHGd %s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[4][mrm.reg()]);
         break;
     case 0x88: /* 88h MOVb b(r/m),b(reg)      spec: 0x88 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVb %s%s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][mrm.reg()]);
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVb %s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][mrm.reg()]);
         break;
     case 0x89: /* 89h MOVd w(r/m),w(reg)      spec: 0x89 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVd %s%s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[4][mrm.reg()]);
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVd %s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[4][mrm.reg()]);
         break;
     case 0x8A: /* 8Ah MOVb b(reg),b(r/m)      spec: 0x8A mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVb %s,%s%s",CPUregsN[1][mrm.reg()],IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVb %s,%s",CPUregsN[1][mrm.reg()],IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
         break;
     case 0x8B: /* 8Bh MOVd w(reg),w(r/m)      spec: 0x8B mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVd %s,%s%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVd %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
         break;
     case 0x8C: /* 8Ch MOVd w(r/m),seg(reg)      spec: 0x8C mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVd %s%s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUsregs_80386[mrm.reg()]);
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVd %s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUsregs_80386[mrm.reg()]);
         break;
     case 0x8D: /* 8Dh LEAd w(reg),w(r/m)      spec: 0x8D mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LEAd %s,%s%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LEAd %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
         break;
     case 0x8E: /* 8Eh MOVd seg(reg),w(r/m)      spec: 0x8E mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVd %s,%s%s",CPUsregs_80386[mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVd %s,%s",CPUsregs_80386[mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
         break;
     case 0x8F: /* 8Fh POPd w(r/m)      spec: 0x8F mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"POPd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"POPd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
         break;
     case 0x90: /* 90h NOP       spec: 0x90 */
         ipw += snprintf(ipw,(size_t)(ipwf-ipw),"NOP");
@@ -1568,35 +1568,35 @@ switch (op=IPFB()) {
         switch (mrm.reg()) {
             case 0: /* C0h 00h ROLb b(r/m),b(i) reg=0      spec: 0xC0 mod/reg/rm /0 ib */
                 imm=IPFB();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ROLb %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ROLb %s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
                 break;
             case 1: /* C0h 08h RORb b(r/m),b(i) reg=1      spec: 0xC0 mod/reg/rm /1 ib */
                 imm=IPFB();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RORb %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RORb %s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
                 break;
             case 2: /* C0h 10h RCLb b(r/m),b(i) reg=2      spec: 0xC0 mod/reg/rm /2 ib */
                 imm=IPFB();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RCLb %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RCLb %s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
                 break;
             case 3: /* C0h 18h RCRb b(r/m),b(i) reg=3      spec: 0xC0 mod/reg/rm /3 ib */
                 imm=IPFB();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RCRb %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RCRb %s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
                 break;
             case 4: /* C0h 20h SHLb b(r/m),b(i) reg=4      spec: 0xC0 mod/reg/rm /4 ib */
                 imm=IPFB();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHLb %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHLb %s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
                 break;
             case 5: /* C0h 28h SHRb b(r/m),b(i) reg=5      spec: 0xC0 mod/reg/rm /5 ib */
                 imm=IPFB();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHRb %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHRb %s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
                 break;
             case 6: /* C0h 30h SALb b(r/m),b(i) reg=6      spec: 0xC0 mod/reg/rm /6 ib */
                 imm=IPFB();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SALb %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SALb %s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
                 break;
             case 7: /* C0h 38h SARb b(r/m),b(i) reg=7      spec: 0xC0 mod/reg/rm /7 ib */
                 imm=IPFB();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SARb %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SARb %s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
                 break;
             default:
                 goto _x86decode_illegal_opcode;
@@ -1609,35 +1609,35 @@ switch (op=IPFB()) {
         switch (mrm.reg()) {
             case 0: /* C1h 00h ROLd w(r/m),b(i) reg=0      spec: 0xC1 mod/reg/rm /0 ib */
                 imm=IPFB();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ROLd %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ROLd %s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
                 break;
             case 1: /* C1h 08h RORd w(r/m),b(i) reg=1      spec: 0xC1 mod/reg/rm /1 ib */
                 imm=IPFB();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RORd %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RORd %s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
                 break;
             case 2: /* C1h 10h RCLd w(r/m),b(i) reg=2      spec: 0xC1 mod/reg/rm /2 ib */
                 imm=IPFB();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RCLd %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RCLd %s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
                 break;
             case 3: /* C1h 18h RCRd w(r/m),b(i) reg=3      spec: 0xC1 mod/reg/rm /3 ib */
                 imm=IPFB();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RCRd %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RCRd %s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
                 break;
             case 4: /* C1h 20h SHLd w(r/m),b(i) reg=4      spec: 0xC1 mod/reg/rm /4 ib */
                 imm=IPFB();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHLd %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHLd %s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
                 break;
             case 5: /* C1h 28h SHRd w(r/m),b(i) reg=5      spec: 0xC1 mod/reg/rm /5 ib */
                 imm=IPFB();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHRd %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHRd %s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
                 break;
             case 6: /* C1h 30h SALd w(r/m),b(i) reg=6      spec: 0xC1 mod/reg/rm /6 ib */
                 imm=IPFB();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SALd %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SALd %s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
                 break;
             case 7: /* C1h 38h SARd w(r/m),b(i) reg=7      spec: 0xC1 mod/reg/rm /7 ib */
                 imm=IPFB();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SARd %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SARd %s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
                 break;
             default:
                 goto _x86decode_illegal_opcode;
@@ -1653,11 +1653,11 @@ switch (op=IPFB()) {
         break;
     case 0xC4: /* C4h LESd w(reg),w(r/m)      spec: 0xC4 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LESd %s,%s%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LESd %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
         break;
     case 0xC5: /* C5h LDSd w(reg),w(r/m)      spec: 0xC5 mod/reg/rm */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LDSd %s,%s%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LDSd %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
         break;
     case 0xC6: /* C6h        spec:  */
         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
@@ -1665,7 +1665,7 @@ switch (op=IPFB()) {
         switch (mrm.reg()) {
             case 0: /* C6h 00h MOVb b(r/m),i reg=0      spec: 0xC6 mod/reg/rm /0 ib */
                 imm=IPFB();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVb %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVb %s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
                 break;
             /* reg 1 not defined */
             /* reg 2 not defined */
@@ -1685,7 +1685,7 @@ switch (op=IPFB()) {
         switch (mrm.reg()) {
             case 0: /* C7h 00h MOVd w(r/m),i reg=0      spec: 0xC7 mod/reg/rm /0 iw */
                 imm=IPFcodeW();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVd %s%s,0x%08lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVd %s,0x%08lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
                 break;
             /* reg 1 not defined */
             /* reg 2 not defined */
@@ -1732,28 +1732,28 @@ switch (op=IPFB()) {
 /* Opcodes starting with D0h */
         switch (mrm.reg()) {
             case 0: /* D0h 00h ROLb b(r/m),1 reg=0      spec: 0xD0 mod/reg/rm /0 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ROLb %s%s,1",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ROLb %s,1",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
                 break;
             case 1: /* D0h 08h RORb b(r/m),1 reg=1      spec: 0xD0 mod/reg/rm /1 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RORb %s%s,1",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RORb %s,1",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
                 break;
             case 2: /* D0h 10h RCLb b(r/m),1 reg=2      spec: 0xD0 mod/reg/rm /2 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RCLb %s%s,1",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RCLb %s,1",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
                 break;
             case 3: /* D0h 18h RCRb b(r/m),1 reg=3      spec: 0xD0 mod/reg/rm /3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RCRb %s%s,1",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RCRb %s,1",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
                 break;
             case 4: /* D0h 20h SHLb b(r/m),1 reg=4      spec: 0xD0 mod/reg/rm /4 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHLb %s%s,1",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHLb %s,1",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
                 break;
             case 5: /* D0h 28h SHRb b(r/m),1 reg=5      spec: 0xD0 mod/reg/rm /5 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHRb %s%s,1",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHRb %s,1",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
                 break;
             case 6: /* D0h 30h SALb b(r/m),1 reg=6      spec: 0xD0 mod/reg/rm /6 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SALb %s%s,1",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SALb %s,1",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
                 break;
             case 7: /* D0h 38h SARb b(r/m),1 reg=7      spec: 0xD0 mod/reg/rm /7 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SARb %s%s,1",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SARb %s,1",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
                 break;
             default:
                 goto _x86decode_illegal_opcode;
@@ -1765,28 +1765,28 @@ switch (op=IPFB()) {
 /* Opcodes starting with D1h */
         switch (mrm.reg()) {
             case 0: /* D1h 00h ROLd w(r/m),1 reg=0      spec: 0xD1 mod/reg/rm /0 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ROLd %s%s,1",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ROLd %s,1",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             case 1: /* D1h 08h RORd w(r/m),1 reg=1      spec: 0xD1 mod/reg/rm /1 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RORd %s%s,1",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RORd %s,1",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             case 2: /* D1h 10h RCLd w(r/m),1 reg=2      spec: 0xD1 mod/reg/rm /2 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RCLd %s%s,1",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RCLd %s,1",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             case 3: /* D1h 18h RCRd w(r/m),1 reg=3      spec: 0xD1 mod/reg/rm /3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RCRd %s%s,1",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RCRd %s,1",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             case 4: /* D1h 20h SHLd w(r/m),1 reg=4      spec: 0xD1 mod/reg/rm /4 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHLd %s%s,1",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHLd %s,1",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             case 5: /* D1h 28h SHRd w(r/m),1 reg=5      spec: 0xD1 mod/reg/rm /5 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHRd %s%s,1",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHRd %s,1",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             case 6: /* D1h 30h SALd w(r/m),1 reg=6      spec: 0xD1 mod/reg/rm /6 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SALd %s%s,1",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SALd %s,1",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             case 7: /* D1h 38h SARd w(r/m),1 reg=7      spec: 0xD1 mod/reg/rm /7 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SARd %s%s,1",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SARd %s,1",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             default:
                 goto _x86decode_illegal_opcode;
@@ -1798,28 +1798,28 @@ switch (op=IPFB()) {
 /* Opcodes starting with D2h */
         switch (mrm.reg()) {
             case 0: /* D2h 00h ROLb b(r/m),b(c) reg=0      spec: 0xD2 mod/reg/rm /0 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ROLb %s%s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][1]);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ROLb %s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][1]);
                 break;
             case 1: /* D2h 08h RORb b(r/m),b(c) reg=1      spec: 0xD2 mod/reg/rm /1 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RORb %s%s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][1]);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RORb %s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][1]);
                 break;
             case 2: /* D2h 10h RCLb b(r/m),b(c) reg=2      spec: 0xD2 mod/reg/rm /2 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RCLb %s%s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][1]);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RCLb %s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][1]);
                 break;
             case 3: /* D2h 18h RCRb b(r/m),b(c) reg=3      spec: 0xD2 mod/reg/rm /3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RCRb %s%s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][1]);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RCRb %s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][1]);
                 break;
             case 4: /* D2h 20h SHLb b(r/m),b(c) reg=4      spec: 0xD2 mod/reg/rm /4 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHLb %s%s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][1]);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHLb %s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][1]);
                 break;
             case 5: /* D2h 28h SHRb b(r/m),b(c) reg=5      spec: 0xD2 mod/reg/rm /5 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHRb %s%s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][1]);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHRb %s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][1]);
                 break;
             case 6: /* D2h 30h SALb b(r/m),b(c) reg=6      spec: 0xD2 mod/reg/rm /6 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SALb %s%s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][1]);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SALb %s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][1]);
                 break;
             case 7: /* D2h 38h SARb b(r/m),b(c) reg=7      spec: 0xD2 mod/reg/rm /7 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SARb %s%s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][1]);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SARb %s,%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),CPUregsN[1][1]);
                 break;
             default:
                 goto _x86decode_illegal_opcode;
@@ -1831,28 +1831,28 @@ switch (op=IPFB()) {
 /* Opcodes starting with D3h */
         switch (mrm.reg()) {
             case 0: /* D3h 00h ROLd w(r/m),b(c) reg=0      spec: 0xD3 mod/reg/rm /0 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ROLd %s%s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[1][1]);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ROLd %s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[1][1]);
                 break;
             case 1: /* D3h 08h RORd w(r/m),b(c) reg=1      spec: 0xD3 mod/reg/rm /1 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RORd %s%s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[1][1]);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RORd %s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[1][1]);
                 break;
             case 2: /* D3h 10h RCLd w(r/m),b(c) reg=2      spec: 0xD3 mod/reg/rm /2 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RCLd %s%s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[1][1]);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RCLd %s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[1][1]);
                 break;
             case 3: /* D3h 18h RCRd w(r/m),b(c) reg=3      spec: 0xD3 mod/reg/rm /3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RCRd %s%s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[1][1]);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RCRd %s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[1][1]);
                 break;
             case 4: /* D3h 20h SHLd w(r/m),b(c) reg=4      spec: 0xD3 mod/reg/rm /4 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHLd %s%s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[1][1]);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHLd %s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[1][1]);
                 break;
             case 5: /* D3h 28h SHRd w(r/m),b(c) reg=5      spec: 0xD3 mod/reg/rm /5 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHRd %s%s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[1][1]);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHRd %s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[1][1]);
                 break;
             case 6: /* D3h 30h SALd w(r/m),b(c) reg=6      spec: 0xD3 mod/reg/rm /6 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SALd %s%s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[1][1]);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SALd %s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[1][1]);
                 break;
             case 7: /* D3h 38h SARd w(r/m),b(c) reg=7      spec: 0xD3 mod/reg/rm /7 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SARd %s%s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[1][1]);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SARd %s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),CPUregsN[1][1]);
                 break;
             default:
                 goto _x86decode_illegal_opcode;
@@ -1901,7 +1901,7 @@ switch (op=IPFB()) {
             case 0x85: /* D8h 85h FADDf32 f32(r/m) mod=2 reg=0 rm=5      spec: 0xD8 mod/reg/rm /0 mod!=3 */
             case 0x86: /* D8h 86h FADDf32 f32(r/m) mod=2 reg=0 rm=6      spec: 0xD8 mod/reg/rm /0 mod!=3 */
             case 0x87: /* D8h 87h FADDf32 f32(r/m) mod=2 reg=0 rm=7      spec: 0xD8 mod/reg/rm /0 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FADDf32 %s%s",IPDecPrint32(mrm,sib,disp,4,RC_FPUREG,"f32"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FADDf32 %s",IPDecPrint32(mrm,sib,disp,4,RC_FPUREG,"f32"));
                 break;
             case 0x08: /* D8h 08h FMULf32 f32(r/m) mod=0 reg=1 rm=0      spec: 0xD8 mod/reg/rm /1 mod!=3 */
             case 0x09: /* D8h 09h FMULf32 f32(r/m) mod=0 reg=1 rm=1      spec: 0xD8 mod/reg/rm /1 mod!=3 */
@@ -1927,7 +1927,7 @@ switch (op=IPFB()) {
             case 0x8D: /* D8h 8Dh FMULf32 f32(r/m) mod=2 reg=1 rm=5      spec: 0xD8 mod/reg/rm /1 mod!=3 */
             case 0x8E: /* D8h 8Eh FMULf32 f32(r/m) mod=2 reg=1 rm=6      spec: 0xD8 mod/reg/rm /1 mod!=3 */
             case 0x8F: /* D8h 8Fh FMULf32 f32(r/m) mod=2 reg=1 rm=7      spec: 0xD8 mod/reg/rm /1 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FMULf32 %s%s",IPDecPrint32(mrm,sib,disp,4,RC_FPUREG,"f32"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FMULf32 %s",IPDecPrint32(mrm,sib,disp,4,RC_FPUREG,"f32"));
                 break;
             case 0x10: /* D8h 10h FCOMf32 f32(r/m) mod=0 reg=2 rm=0      spec: 0xD8 mod/reg/rm /2 mod!=3 */
             case 0x11: /* D8h 11h FCOMf32 f32(r/m) mod=0 reg=2 rm=1      spec: 0xD8 mod/reg/rm /2 mod!=3 */
@@ -1953,7 +1953,7 @@ switch (op=IPFB()) {
             case 0x95: /* D8h 95h FCOMf32 f32(r/m) mod=2 reg=2 rm=5      spec: 0xD8 mod/reg/rm /2 mod!=3 */
             case 0x96: /* D8h 96h FCOMf32 f32(r/m) mod=2 reg=2 rm=6      spec: 0xD8 mod/reg/rm /2 mod!=3 */
             case 0x97: /* D8h 97h FCOMf32 f32(r/m) mod=2 reg=2 rm=7      spec: 0xD8 mod/reg/rm /2 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FCOMf32 %s%s",IPDecPrint32(mrm,sib,disp,4,RC_FPUREG,"f32"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FCOMf32 %s",IPDecPrint32(mrm,sib,disp,4,RC_FPUREG,"f32"));
                 break;
             case 0x18: /* D8h 18h FCOMPf32 f32(r/m) mod=0 reg=3 rm=0      spec: 0xD8 mod/reg/rm /3 mod!=3 */
             case 0x19: /* D8h 19h FCOMPf32 f32(r/m) mod=0 reg=3 rm=1      spec: 0xD8 mod/reg/rm /3 mod!=3 */
@@ -1979,7 +1979,7 @@ switch (op=IPFB()) {
             case 0x9D: /* D8h 9Dh FCOMPf32 f32(r/m) mod=2 reg=3 rm=5      spec: 0xD8 mod/reg/rm /3 mod!=3 */
             case 0x9E: /* D8h 9Eh FCOMPf32 f32(r/m) mod=2 reg=3 rm=6      spec: 0xD8 mod/reg/rm /3 mod!=3 */
             case 0x9F: /* D8h 9Fh FCOMPf32 f32(r/m) mod=2 reg=3 rm=7      spec: 0xD8 mod/reg/rm /3 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FCOMPf32 %s%s",IPDecPrint32(mrm,sib,disp,4,RC_FPUREG,"f32"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FCOMPf32 %s",IPDecPrint32(mrm,sib,disp,4,RC_FPUREG,"f32"));
                 break;
             case 0x20: /* D8h 20h FSUBf32 f32(r/m) mod=0 reg=4 rm=0      spec: 0xD8 mod/reg/rm /4 mod!=3 */
             case 0x21: /* D8h 21h FSUBf32 f32(r/m) mod=0 reg=4 rm=1      spec: 0xD8 mod/reg/rm /4 mod!=3 */
@@ -2005,7 +2005,7 @@ switch (op=IPFB()) {
             case 0xA5: /* D8h A5h FSUBf32 f32(r/m) mod=2 reg=4 rm=5      spec: 0xD8 mod/reg/rm /4 mod!=3 */
             case 0xA6: /* D8h A6h FSUBf32 f32(r/m) mod=2 reg=4 rm=6      spec: 0xD8 mod/reg/rm /4 mod!=3 */
             case 0xA7: /* D8h A7h FSUBf32 f32(r/m) mod=2 reg=4 rm=7      spec: 0xD8 mod/reg/rm /4 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSUBf32 %s%s",IPDecPrint32(mrm,sib,disp,4,RC_FPUREG,"f32"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSUBf32 %s",IPDecPrint32(mrm,sib,disp,4,RC_FPUREG,"f32"));
                 break;
             case 0x28: /* D8h 28h FSUBRf32 f32(r/m) mod=0 reg=5 rm=0      spec: 0xD8 mod/reg/rm /5 mod!=3 */
             case 0x29: /* D8h 29h FSUBRf32 f32(r/m) mod=0 reg=5 rm=1      spec: 0xD8 mod/reg/rm /5 mod!=3 */
@@ -2031,7 +2031,7 @@ switch (op=IPFB()) {
             case 0xAD: /* D8h ADh FSUBRf32 f32(r/m) mod=2 reg=5 rm=5      spec: 0xD8 mod/reg/rm /5 mod!=3 */
             case 0xAE: /* D8h AEh FSUBRf32 f32(r/m) mod=2 reg=5 rm=6      spec: 0xD8 mod/reg/rm /5 mod!=3 */
             case 0xAF: /* D8h AFh FSUBRf32 f32(r/m) mod=2 reg=5 rm=7      spec: 0xD8 mod/reg/rm /5 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSUBRf32 %s%s",IPDecPrint32(mrm,sib,disp,4,RC_FPUREG,"f32"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSUBRf32 %s",IPDecPrint32(mrm,sib,disp,4,RC_FPUREG,"f32"));
                 break;
             case 0x30: /* D8h 30h FDIVf32 f32(r/m) mod=0 reg=6 rm=0      spec: 0xD8 mod/reg/rm /6 mod!=3 */
             case 0x31: /* D8h 31h FDIVf32 f32(r/m) mod=0 reg=6 rm=1      spec: 0xD8 mod/reg/rm /6 mod!=3 */
@@ -2057,7 +2057,7 @@ switch (op=IPFB()) {
             case 0xB5: /* D8h B5h FDIVf32 f32(r/m) mod=2 reg=6 rm=5      spec: 0xD8 mod/reg/rm /6 mod!=3 */
             case 0xB6: /* D8h B6h FDIVf32 f32(r/m) mod=2 reg=6 rm=6      spec: 0xD8 mod/reg/rm /6 mod!=3 */
             case 0xB7: /* D8h B7h FDIVf32 f32(r/m) mod=2 reg=6 rm=7      spec: 0xD8 mod/reg/rm /6 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FDIVf32 %s%s",IPDecPrint32(mrm,sib,disp,4,RC_FPUREG,"f32"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FDIVf32 %s",IPDecPrint32(mrm,sib,disp,4,RC_FPUREG,"f32"));
                 break;
             case 0x38: /* D8h 38h FDIVRf32 f32(r/m) mod=0 reg=7 rm=0      spec: 0xD8 mod/reg/rm /7 mod!=3 */
             case 0x39: /* D8h 39h FDIVRf32 f32(r/m) mod=0 reg=7 rm=1      spec: 0xD8 mod/reg/rm /7 mod!=3 */
@@ -2083,7 +2083,7 @@ switch (op=IPFB()) {
             case 0xBD: /* D8h BDh FDIVRf32 f32(r/m) mod=2 reg=7 rm=5      spec: 0xD8 mod/reg/rm /7 mod!=3 */
             case 0xBE: /* D8h BEh FDIVRf32 f32(r/m) mod=2 reg=7 rm=6      spec: 0xD8 mod/reg/rm /7 mod!=3 */
             case 0xBF: /* D8h BFh FDIVRf32 f32(r/m) mod=2 reg=7 rm=7      spec: 0xD8 mod/reg/rm /7 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FDIVRf32 %s%s",IPDecPrint32(mrm,sib,disp,4,RC_FPUREG,"f32"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FDIVRf32 %s",IPDecPrint32(mrm,sib,disp,4,RC_FPUREG,"f32"));
                 break;
             case 0xC0: /* D8h C0h FADD st(0),st(r/m) mod=3 reg=0 rm=0      spec: 0xD8 mod/reg/rm /0 mod==3 */
             case 0xC1: /* D8h C1h FADD st(0),st(r/m) mod=3 reg=0 rm=1      spec: 0xD8 mod/reg/rm /0 mod==3 */
@@ -2093,7 +2093,7 @@ switch (op=IPFB()) {
             case 0xC5: /* D8h C5h FADD st(0),st(r/m) mod=3 reg=0 rm=5      spec: 0xD8 mod/reg/rm /0 mod==3 */
             case 0xC6: /* D8h C6h FADD st(0),st(r/m) mod=3 reg=0 rm=6      spec: 0xD8 mod/reg/rm /0 mod==3 */
             case 0xC7: /* D8h C7h FADD st(0),st(r/m) mod=3 reg=0 rm=7      spec: 0xD8 mod/reg/rm /0 mod==3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FADD ST(%u),%s%s",0,IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FADD ST(%u),%s",0,IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
                 break;
             case 0xC8: /* D8h C8h FMUL st(0),st(r/m) mod=3 reg=1 rm=0      spec: 0xD8 mod/reg/rm /1 mod==3 */
             case 0xC9: /* D8h C9h FMUL st(0),st(r/m) mod=3 reg=1 rm=1      spec: 0xD8 mod/reg/rm /1 mod==3 */
@@ -2103,7 +2103,7 @@ switch (op=IPFB()) {
             case 0xCD: /* D8h CDh FMUL st(0),st(r/m) mod=3 reg=1 rm=5      spec: 0xD8 mod/reg/rm /1 mod==3 */
             case 0xCE: /* D8h CEh FMUL st(0),st(r/m) mod=3 reg=1 rm=6      spec: 0xD8 mod/reg/rm /1 mod==3 */
             case 0xCF: /* D8h CFh FMUL st(0),st(r/m) mod=3 reg=1 rm=7      spec: 0xD8 mod/reg/rm /1 mod==3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FMUL ST(%u),%s%s",0,IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FMUL ST(%u),%s",0,IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
                 break;
             case 0xD0: /* D8h D0h FCOM st(0),st(r/m) mod=3 reg=2 rm=0      spec: 0xD8 mod/reg/rm /2 mod==3 */
             case 0xD1: /* D8h D1h FCOM st(0),st(r/m) mod=3 reg=2 rm=1      spec: 0xD8 mod/reg/rm /2 mod==3 */
@@ -2113,7 +2113,7 @@ switch (op=IPFB()) {
             case 0xD5: /* D8h D5h FCOM st(0),st(r/m) mod=3 reg=2 rm=5      spec: 0xD8 mod/reg/rm /2 mod==3 */
             case 0xD6: /* D8h D6h FCOM st(0),st(r/m) mod=3 reg=2 rm=6      spec: 0xD8 mod/reg/rm /2 mod==3 */
             case 0xD7: /* D8h D7h FCOM st(0),st(r/m) mod=3 reg=2 rm=7      spec: 0xD8 mod/reg/rm /2 mod==3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FCOM ST(%u),%s%s",0,IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FCOM ST(%u),%s",0,IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
                 break;
             case 0xD8: /* D8h D8h FCOMP st(0),st(r/m) mod=3 reg=3 rm=0      spec: 0xD8 mod/reg/rm /3 mod==3 */
             case 0xD9: /* D8h D9h FCOMP st(0),st(r/m) mod=3 reg=3 rm=1      spec: 0xD8 mod/reg/rm /3 mod==3 */
@@ -2123,7 +2123,7 @@ switch (op=IPFB()) {
             case 0xDD: /* D8h DDh FCOMP st(0),st(r/m) mod=3 reg=3 rm=5      spec: 0xD8 mod/reg/rm /3 mod==3 */
             case 0xDE: /* D8h DEh FCOMP st(0),st(r/m) mod=3 reg=3 rm=6      spec: 0xD8 mod/reg/rm /3 mod==3 */
             case 0xDF: /* D8h DFh FCOMP st(0),st(r/m) mod=3 reg=3 rm=7      spec: 0xD8 mod/reg/rm /3 mod==3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FCOMP ST(%u),%s%s",0,IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FCOMP ST(%u),%s",0,IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
                 break;
             case 0xE0: /* D8h E0h FSUB st(0),st(r/m) mod=3 reg=4 rm=0      spec: 0xD8 mod/reg/rm /4 mod==3 */
             case 0xE1: /* D8h E1h FSUB st(0),st(r/m) mod=3 reg=4 rm=1      spec: 0xD8 mod/reg/rm /4 mod==3 */
@@ -2133,7 +2133,7 @@ switch (op=IPFB()) {
             case 0xE5: /* D8h E5h FSUB st(0),st(r/m) mod=3 reg=4 rm=5      spec: 0xD8 mod/reg/rm /4 mod==3 */
             case 0xE6: /* D8h E6h FSUB st(0),st(r/m) mod=3 reg=4 rm=6      spec: 0xD8 mod/reg/rm /4 mod==3 */
             case 0xE7: /* D8h E7h FSUB st(0),st(r/m) mod=3 reg=4 rm=7      spec: 0xD8 mod/reg/rm /4 mod==3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSUB ST(%u),%s%s",0,IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSUB ST(%u),%s",0,IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
                 break;
             case 0xE8: /* D8h E8h FSUBR st(0),st(r/m) mod=3 reg=5 rm=0      spec: 0xD8 mod/reg/rm /5 mod==3 */
             case 0xE9: /* D8h E9h FSUBR st(0),st(r/m) mod=3 reg=5 rm=1      spec: 0xD8 mod/reg/rm /5 mod==3 */
@@ -2143,7 +2143,7 @@ switch (op=IPFB()) {
             case 0xED: /* D8h EDh FSUBR st(0),st(r/m) mod=3 reg=5 rm=5      spec: 0xD8 mod/reg/rm /5 mod==3 */
             case 0xEE: /* D8h EEh FSUBR st(0),st(r/m) mod=3 reg=5 rm=6      spec: 0xD8 mod/reg/rm /5 mod==3 */
             case 0xEF: /* D8h EFh FSUBR st(0),st(r/m) mod=3 reg=5 rm=7      spec: 0xD8 mod/reg/rm /5 mod==3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSUBR ST(%u),%s%s",0,IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSUBR ST(%u),%s",0,IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
                 break;
             case 0xF0: /* D8h F0h FDIV st(0),st(r/m) mod=3 reg=6 rm=0      spec: 0xD8 mod/reg/rm /6 mod==3 */
             case 0xF1: /* D8h F1h FDIV st(0),st(r/m) mod=3 reg=6 rm=1      spec: 0xD8 mod/reg/rm /6 mod==3 */
@@ -2153,7 +2153,7 @@ switch (op=IPFB()) {
             case 0xF5: /* D8h F5h FDIV st(0),st(r/m) mod=3 reg=6 rm=5      spec: 0xD8 mod/reg/rm /6 mod==3 */
             case 0xF6: /* D8h F6h FDIV st(0),st(r/m) mod=3 reg=6 rm=6      spec: 0xD8 mod/reg/rm /6 mod==3 */
             case 0xF7: /* D8h F7h FDIV st(0),st(r/m) mod=3 reg=6 rm=7      spec: 0xD8 mod/reg/rm /6 mod==3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FDIV ST(%u),%s%s",0,IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FDIV ST(%u),%s",0,IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
                 break;
             case 0xF8: /* D8h F8h FDIVR st(0),st(r/m) mod=3 reg=7 rm=0      spec: 0xD8 mod/reg/rm /7 mod==3 */
             case 0xF9: /* D8h F9h FDIVR st(0),st(r/m) mod=3 reg=7 rm=1      spec: 0xD8 mod/reg/rm /7 mod==3 */
@@ -2163,7 +2163,7 @@ switch (op=IPFB()) {
             case 0xFD: /* D8h FDh FDIVR st(0),st(r/m) mod=3 reg=7 rm=5      spec: 0xD8 mod/reg/rm /7 mod==3 */
             case 0xFE: /* D8h FEh FDIVR st(0),st(r/m) mod=3 reg=7 rm=6      spec: 0xD8 mod/reg/rm /7 mod==3 */
             case 0xFF: /* D8h FFh FDIVR st(0),st(r/m) mod=3 reg=7 rm=7      spec: 0xD8 mod/reg/rm /7 mod==3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FDIVR ST(%u),%s%s",0,IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FDIVR ST(%u),%s",0,IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
                 break;
             default:
                 goto _x86decode_illegal_opcode;
@@ -2198,7 +2198,7 @@ switch (op=IPFB()) {
             case 0x85: /* D9h 85h FLDf32 f32(r/m) mod=2 reg=0 rm=5      spec: 0xD9 mod/reg/rm /0 mod!=3 */
             case 0x86: /* D9h 86h FLDf32 f32(r/m) mod=2 reg=0 rm=6      spec: 0xD9 mod/reg/rm /0 mod!=3 */
             case 0x87: /* D9h 87h FLDf32 f32(r/m) mod=2 reg=0 rm=7      spec: 0xD9 mod/reg/rm /0 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FLDf32 %s%s",IPDecPrint32(mrm,sib,disp,4,RC_FPUREG,"f32"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FLDf32 %s",IPDecPrint32(mrm,sib,disp,4,RC_FPUREG,"f32"));
                 break;
             /* opcode D9h 08h  not defined */
             /* opcode D9h 09h  not defined */
@@ -2232,7 +2232,7 @@ switch (op=IPFB()) {
             case 0x95: /* D9h 95h FSTf32 f32(r/m) mod=2 reg=2 rm=5      spec: 0xD9 mod/reg/rm /2 mod!=3 */
             case 0x96: /* D9h 96h FSTf32 f32(r/m) mod=2 reg=2 rm=6      spec: 0xD9 mod/reg/rm /2 mod!=3 */
             case 0x97: /* D9h 97h FSTf32 f32(r/m) mod=2 reg=2 rm=7      spec: 0xD9 mod/reg/rm /2 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTf32 %s%s",IPDecPrint32(mrm,sib,disp,4,RC_FPUREG,"f32"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTf32 %s",IPDecPrint32(mrm,sib,disp,4,RC_FPUREG,"f32"));
                 break;
             case 0x18: /* D9h 18h FSTPf32 f32(r/m) mod=0 reg=3 rm=0      spec: 0xD9 mod/reg/rm /3 mod!=3 */
             case 0x19: /* D9h 19h FSTPf32 f32(r/m) mod=0 reg=3 rm=1      spec: 0xD9 mod/reg/rm /3 mod!=3 */
@@ -2258,7 +2258,7 @@ switch (op=IPFB()) {
             case 0x9D: /* D9h 9Dh FSTPf32 f32(r/m) mod=2 reg=3 rm=5      spec: 0xD9 mod/reg/rm /3 mod!=3 */
             case 0x9E: /* D9h 9Eh FSTPf32 f32(r/m) mod=2 reg=3 rm=6      spec: 0xD9 mod/reg/rm /3 mod!=3 */
             case 0x9F: /* D9h 9Fh FSTPf32 f32(r/m) mod=2 reg=3 rm=7      spec: 0xD9 mod/reg/rm /3 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTPf32 %s%s",IPDecPrint32(mrm,sib,disp,4,RC_FPUREG,"f32"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTPf32 %s",IPDecPrint32(mrm,sib,disp,4,RC_FPUREG,"f32"));
                 break;
             case 0x20: /* D9h 20h FLDENV fenv(r/m) mod=0 reg=4 rm=0      spec: 0xD9 mod/reg/rm /4 mod!=3 */
             case 0x21: /* D9h 21h FLDENV fenv(r/m) mod=0 reg=4 rm=1      spec: 0xD9 mod/reg/rm /4 mod!=3 */
@@ -2284,7 +2284,7 @@ switch (op=IPFB()) {
             case 0xA5: /* D9h A5h FLDENV fenv(r/m) mod=2 reg=4 rm=5      spec: 0xD9 mod/reg/rm /4 mod!=3 */
             case 0xA6: /* D9h A6h FLDENV fenv(r/m) mod=2 reg=4 rm=6      spec: 0xD9 mod/reg/rm /4 mod!=3 */
             case 0xA7: /* D9h A7h FLDENV fenv(r/m) mod=2 reg=4 rm=7      spec: 0xD9 mod/reg/rm /4 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FLDENV %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FLDENV %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             case 0x28: /* D9h 28h FLDCW w16(r/m) mod=0 reg=5 rm=0      spec: 0xD9 mod/reg/rm /5 mod!=3 */
             case 0x29: /* D9h 29h FLDCW w16(r/m) mod=0 reg=5 rm=1      spec: 0xD9 mod/reg/rm /5 mod!=3 */
@@ -2310,7 +2310,7 @@ switch (op=IPFB()) {
             case 0xAD: /* D9h ADh FLDCW w16(r/m) mod=2 reg=5 rm=5      spec: 0xD9 mod/reg/rm /5 mod!=3 */
             case 0xAE: /* D9h AEh FLDCW w16(r/m) mod=2 reg=5 rm=6      spec: 0xD9 mod/reg/rm /5 mod!=3 */
             case 0xAF: /* D9h AFh FLDCW w16(r/m) mod=2 reg=5 rm=7      spec: 0xD9 mod/reg/rm /5 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FLDCW %s%s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FLDCW %s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
                 break;
             case 0x30: /* D9h 30h FSTENV fenv(r/m) mod=0 reg=6 rm=0      spec: 0xD9 mod/reg/rm /6 mod!=3 */
             case 0x31: /* D9h 31h FSTENV fenv(r/m) mod=0 reg=6 rm=1      spec: 0xD9 mod/reg/rm /6 mod!=3 */
@@ -2336,7 +2336,7 @@ switch (op=IPFB()) {
             case 0xB5: /* D9h B5h FSTENV fenv(r/m) mod=2 reg=6 rm=5      spec: 0xD9 mod/reg/rm /6 mod!=3 */
             case 0xB6: /* D9h B6h FSTENV fenv(r/m) mod=2 reg=6 rm=6      spec: 0xD9 mod/reg/rm /6 mod!=3 */
             case 0xB7: /* D9h B7h FSTENV fenv(r/m) mod=2 reg=6 rm=7      spec: 0xD9 mod/reg/rm /6 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTENV %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTENV %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             case 0x38: /* D9h 38h FSTCWd w16(r/m) mod=0 reg=7 rm=0      spec: 0xD9 mod/reg/rm /7 mod!=3 */
             case 0x39: /* D9h 39h FSTCWd w16(r/m) mod=0 reg=7 rm=1      spec: 0xD9 mod/reg/rm /7 mod!=3 */
@@ -2362,7 +2362,7 @@ switch (op=IPFB()) {
             case 0xBD: /* D9h BDh FSTCWd w16(r/m) mod=2 reg=7 rm=5      spec: 0xD9 mod/reg/rm /7 mod!=3 */
             case 0xBE: /* D9h BEh FSTCWd w16(r/m) mod=2 reg=7 rm=6      spec: 0xD9 mod/reg/rm /7 mod!=3 */
             case 0xBF: /* D9h BFh FSTCWd w16(r/m) mod=2 reg=7 rm=7      spec: 0xD9 mod/reg/rm /7 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTCWd %s%s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTCWd %s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
                 break;
             /* opcode D9h 48h  not defined */
             /* opcode D9h 49h  not defined */
@@ -2388,7 +2388,7 @@ switch (op=IPFB()) {
             case 0xC5: /* D9h C5h FLD st(0),st(r/m) mod=3 reg=0 rm=5      spec: 0xD9 mod/reg/rm /0 mod==3 */
             case 0xC6: /* D9h C6h FLD st(0),st(r/m) mod=3 reg=0 rm=6      spec: 0xD9 mod/reg/rm /0 mod==3 */
             case 0xC7: /* D9h C7h FLD st(0),st(r/m) mod=3 reg=0 rm=7      spec: 0xD9 mod/reg/rm /0 mod==3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FLD ST(%u),%s%s",0,IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FLD ST(%u),%s",0,IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
                 break;
             case 0xC8: /* D9h C8h FXCH st(r/m) mod=3 reg=1 rm=0      spec: 0xD9 mod/reg/rm /1 mod==3 */
             case 0xC9: /* D9h C9h FXCH st(r/m) mod=3 reg=1 rm=1      spec: 0xD9 mod/reg/rm /1 mod==3 */
@@ -2398,7 +2398,7 @@ switch (op=IPFB()) {
             case 0xCD: /* D9h CDh FXCH st(r/m) mod=3 reg=1 rm=5      spec: 0xD9 mod/reg/rm /1 mod==3 */
             case 0xCE: /* D9h CEh FXCH st(r/m) mod=3 reg=1 rm=6      spec: 0xD9 mod/reg/rm /1 mod==3 */
             case 0xCF: /* D9h CFh FXCH st(r/m) mod=3 reg=1 rm=7      spec: 0xD9 mod/reg/rm /1 mod==3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FXCH %s%s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FXCH %s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
                 break;
             case 0xD0: /* D9h D0h FNOP  mod=3 reg=2 rm=0      spec: 0xD9 0xD0 */
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FNOP");
@@ -2531,7 +2531,7 @@ switch (op=IPFB()) {
             case 0x85: /* DAh 85h FADDd w32(r/m) mod=2 reg=0 rm=5      spec: 0xDA mod/reg/rm /0 mod!=3 */
             case 0x86: /* DAh 86h FADDd w32(r/m) mod=2 reg=0 rm=6      spec: 0xDA mod/reg/rm /0 mod!=3 */
             case 0x87: /* DAh 87h FADDd w32(r/m) mod=2 reg=0 rm=7      spec: 0xDA mod/reg/rm /0 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FADDd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w32"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FADDd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w32"));
                 break;
             case 0x08: /* DAh 08h FMULd w32(r/m) mod=0 reg=1 rm=0      spec: 0xDA mod/reg/rm /1 mod!=3 */
             case 0x09: /* DAh 09h FMULd w32(r/m) mod=0 reg=1 rm=1      spec: 0xDA mod/reg/rm /1 mod!=3 */
@@ -2557,7 +2557,7 @@ switch (op=IPFB()) {
             case 0x8D: /* DAh 8Dh FMULd w32(r/m) mod=2 reg=1 rm=5      spec: 0xDA mod/reg/rm /1 mod!=3 */
             case 0x8E: /* DAh 8Eh FMULd w32(r/m) mod=2 reg=1 rm=6      spec: 0xDA mod/reg/rm /1 mod!=3 */
             case 0x8F: /* DAh 8Fh FMULd w32(r/m) mod=2 reg=1 rm=7      spec: 0xDA mod/reg/rm /1 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FMULd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w32"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FMULd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w32"));
                 break;
             case 0x10: /* DAh 10h FCOMd w32(r/m) mod=0 reg=2 rm=0      spec: 0xDA mod/reg/rm /2 mod!=3 */
             case 0x11: /* DAh 11h FCOMd w32(r/m) mod=0 reg=2 rm=1      spec: 0xDA mod/reg/rm /2 mod!=3 */
@@ -2583,7 +2583,7 @@ switch (op=IPFB()) {
             case 0x95: /* DAh 95h FCOMd w32(r/m) mod=2 reg=2 rm=5      spec: 0xDA mod/reg/rm /2 mod!=3 */
             case 0x96: /* DAh 96h FCOMd w32(r/m) mod=2 reg=2 rm=6      spec: 0xDA mod/reg/rm /2 mod!=3 */
             case 0x97: /* DAh 97h FCOMd w32(r/m) mod=2 reg=2 rm=7      spec: 0xDA mod/reg/rm /2 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FCOMd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w32"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FCOMd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w32"));
                 break;
             case 0x18: /* DAh 18h FCOMPd w32(r/m) mod=0 reg=3 rm=0      spec: 0xDA mod/reg/rm /3 mod!=3 */
             case 0x19: /* DAh 19h FCOMPd w32(r/m) mod=0 reg=3 rm=1      spec: 0xDA mod/reg/rm /3 mod!=3 */
@@ -2609,7 +2609,7 @@ switch (op=IPFB()) {
             case 0x9D: /* DAh 9Dh FCOMPd w32(r/m) mod=2 reg=3 rm=5      spec: 0xDA mod/reg/rm /3 mod!=3 */
             case 0x9E: /* DAh 9Eh FCOMPd w32(r/m) mod=2 reg=3 rm=6      spec: 0xDA mod/reg/rm /3 mod!=3 */
             case 0x9F: /* DAh 9Fh FCOMPd w32(r/m) mod=2 reg=3 rm=7      spec: 0xDA mod/reg/rm /3 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FCOMPd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w32"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FCOMPd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w32"));
                 break;
             case 0x20: /* DAh 20h FSUBd w32(r/m) mod=0 reg=4 rm=0      spec: 0xDA mod/reg/rm /4 mod!=3 */
             case 0x21: /* DAh 21h FSUBd w32(r/m) mod=0 reg=4 rm=1      spec: 0xDA mod/reg/rm /4 mod!=3 */
@@ -2635,7 +2635,7 @@ switch (op=IPFB()) {
             case 0xA5: /* DAh A5h FSUBd w32(r/m) mod=2 reg=4 rm=5      spec: 0xDA mod/reg/rm /4 mod!=3 */
             case 0xA6: /* DAh A6h FSUBd w32(r/m) mod=2 reg=4 rm=6      spec: 0xDA mod/reg/rm /4 mod!=3 */
             case 0xA7: /* DAh A7h FSUBd w32(r/m) mod=2 reg=4 rm=7      spec: 0xDA mod/reg/rm /4 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSUBd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w32"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSUBd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w32"));
                 break;
             case 0x28: /* DAh 28h FSUBRd w32(r/m) mod=0 reg=5 rm=0      spec: 0xDA mod/reg/rm /5 mod!=3 */
             case 0x29: /* DAh 29h FSUBRd w32(r/m) mod=0 reg=5 rm=1      spec: 0xDA mod/reg/rm /5 mod!=3 */
@@ -2661,7 +2661,7 @@ switch (op=IPFB()) {
             case 0xAD: /* DAh ADh FSUBRd w32(r/m) mod=2 reg=5 rm=5      spec: 0xDA mod/reg/rm /5 mod!=3 */
             case 0xAE: /* DAh AEh FSUBRd w32(r/m) mod=2 reg=5 rm=6      spec: 0xDA mod/reg/rm /5 mod!=3 */
             case 0xAF: /* DAh AFh FSUBRd w32(r/m) mod=2 reg=5 rm=7      spec: 0xDA mod/reg/rm /5 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSUBRd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w32"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSUBRd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w32"));
                 break;
             case 0x30: /* DAh 30h FDIVd w32(r/m) mod=0 reg=6 rm=0      spec: 0xDA mod/reg/rm /6 mod!=3 */
             case 0x31: /* DAh 31h FDIVd w32(r/m) mod=0 reg=6 rm=1      spec: 0xDA mod/reg/rm /6 mod!=3 */
@@ -2687,7 +2687,7 @@ switch (op=IPFB()) {
             case 0xB5: /* DAh B5h FDIVd w32(r/m) mod=2 reg=6 rm=5      spec: 0xDA mod/reg/rm /6 mod!=3 */
             case 0xB6: /* DAh B6h FDIVd w32(r/m) mod=2 reg=6 rm=6      spec: 0xDA mod/reg/rm /6 mod!=3 */
             case 0xB7: /* DAh B7h FDIVd w32(r/m) mod=2 reg=6 rm=7      spec: 0xDA mod/reg/rm /6 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FDIVd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w32"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FDIVd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w32"));
                 break;
             case 0x38: /* DAh 38h FDIVRd w32(r/m) mod=0 reg=7 rm=0      spec: 0xDA mod/reg/rm /7 mod!=3 */
             case 0x39: /* DAh 39h FDIVRd w32(r/m) mod=0 reg=7 rm=1      spec: 0xDA mod/reg/rm /7 mod!=3 */
@@ -2713,7 +2713,7 @@ switch (op=IPFB()) {
             case 0xBD: /* DAh BDh FDIVRd w32(r/m) mod=2 reg=7 rm=5      spec: 0xDA mod/reg/rm /7 mod!=3 */
             case 0xBE: /* DAh BEh FDIVRd w32(r/m) mod=2 reg=7 rm=6      spec: 0xDA mod/reg/rm /7 mod!=3 */
             case 0xBF: /* DAh BFh FDIVRd w32(r/m) mod=2 reg=7 rm=7      spec: 0xDA mod/reg/rm /7 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FDIVRd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w32"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FDIVRd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w32"));
                 break;
             /* opcode DAh C0h  not defined */
             /* opcode DAh C1h  not defined */
@@ -2812,7 +2812,7 @@ switch (op=IPFB()) {
             case 0x85: /* DBh 85h FLDd w32(r/m) mod=2 reg=0 rm=5      spec: 0xDB mod/reg/rm /0 mod!=3 */
             case 0x86: /* DBh 86h FLDd w32(r/m) mod=2 reg=0 rm=6      spec: 0xDB mod/reg/rm /0 mod!=3 */
             case 0x87: /* DBh 87h FLDd w32(r/m) mod=2 reg=0 rm=7      spec: 0xDB mod/reg/rm /0 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FLDd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w32"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FLDd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w32"));
                 break;
             /* opcode DBh 08h  not defined */
             /* opcode DBh 09h  not defined */
@@ -2846,7 +2846,7 @@ switch (op=IPFB()) {
             case 0x95: /* DBh 95h FSTd w32(r/m) mod=2 reg=2 rm=5      spec: 0xDB mod/reg/rm /2 mod!=3 */
             case 0x96: /* DBh 96h FSTd w32(r/m) mod=2 reg=2 rm=6      spec: 0xDB mod/reg/rm /2 mod!=3 */
             case 0x97: /* DBh 97h FSTd w32(r/m) mod=2 reg=2 rm=7      spec: 0xDB mod/reg/rm /2 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w32"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w32"));
                 break;
             case 0x18: /* DBh 18h FSTPd w32(r/m) mod=0 reg=3 rm=0      spec: 0xDB mod/reg/rm /3 mod!=3 */
             case 0x19: /* DBh 19h FSTPd w32(r/m) mod=0 reg=3 rm=1      spec: 0xDB mod/reg/rm /3 mod!=3 */
@@ -2872,7 +2872,7 @@ switch (op=IPFB()) {
             case 0x9D: /* DBh 9Dh FSTPd w32(r/m) mod=2 reg=3 rm=5      spec: 0xDB mod/reg/rm /3 mod!=3 */
             case 0x9E: /* DBh 9Eh FSTPd w32(r/m) mod=2 reg=3 rm=6      spec: 0xDB mod/reg/rm /3 mod!=3 */
             case 0x9F: /* DBh 9Fh FSTPd w32(r/m) mod=2 reg=3 rm=7      spec: 0xDB mod/reg/rm /3 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTPd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w32"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTPd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w32"));
                 break;
             /* opcode DBh 20h  not defined */
             /* opcode DBh 21h  not defined */
@@ -2906,7 +2906,7 @@ switch (op=IPFB()) {
             case 0xAD: /* DBh ADh FLDf80 f80(r/m) mod=2 reg=5 rm=5      spec: 0xDB mod/reg/rm /5 mod!=3 */
             case 0xAE: /* DBh AEh FLDf80 f80(r/m) mod=2 reg=5 rm=6      spec: 0xDB mod/reg/rm /5 mod!=3 */
             case 0xAF: /* DBh AFh FLDf80 f80(r/m) mod=2 reg=5 rm=7      spec: 0xDB mod/reg/rm /5 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FLDf80 %s%s",IPDecPrint32(mrm,sib,disp,10,RC_FPUREG,"f80"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FLDf80 %s",IPDecPrint32(mrm,sib,disp,10,RC_FPUREG,"f80"));
                 break;
             /* opcode DBh 30h  not defined */
             /* opcode DBh 31h  not defined */
@@ -2940,7 +2940,7 @@ switch (op=IPFB()) {
             case 0xBD: /* DBh BDh FSTPf80 f80(r/m) mod=2 reg=7 rm=5      spec: 0xDB mod/reg/rm /7 mod!=3 */
             case 0xBE: /* DBh BEh FSTPf80 f80(r/m) mod=2 reg=7 rm=6      spec: 0xDB mod/reg/rm /7 mod!=3 */
             case 0xBF: /* DBh BFh FSTPf80 f80(r/m) mod=2 reg=7 rm=7      spec: 0xDB mod/reg/rm /7 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTPf80 %s%s",IPDecPrint32(mrm,sib,disp,10,RC_FPUREG,"f80"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTPf80 %s",IPDecPrint32(mrm,sib,disp,10,RC_FPUREG,"f80"));
                 break;
             /* opcode DBh 48h  not defined */
             /* opcode DBh 49h  not defined */
@@ -3097,7 +3097,7 @@ switch (op=IPFB()) {
             case 0x85: /* DCh 85h FADDf64 f64(r/m) mod=2 reg=0 rm=5      spec: 0xDC mod/reg/rm /0 mod!=3 */
             case 0x86: /* DCh 86h FADDf64 f64(r/m) mod=2 reg=0 rm=6      spec: 0xDC mod/reg/rm /0 mod!=3 */
             case 0x87: /* DCh 87h FADDf64 f64(r/m) mod=2 reg=0 rm=7      spec: 0xDC mod/reg/rm /0 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FADDf64 %s%s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,"f64"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FADDf64 %s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,"f64"));
                 break;
             case 0x08: /* DCh 08h FMULf64 f64(r/m) mod=0 reg=1 rm=0      spec: 0xDC mod/reg/rm /1 mod!=3 */
             case 0x09: /* DCh 09h FMULf64 f64(r/m) mod=0 reg=1 rm=1      spec: 0xDC mod/reg/rm /1 mod!=3 */
@@ -3123,7 +3123,7 @@ switch (op=IPFB()) {
             case 0x8D: /* DCh 8Dh FMULf64 f64(r/m) mod=2 reg=1 rm=5      spec: 0xDC mod/reg/rm /1 mod!=3 */
             case 0x8E: /* DCh 8Eh FMULf64 f64(r/m) mod=2 reg=1 rm=6      spec: 0xDC mod/reg/rm /1 mod!=3 */
             case 0x8F: /* DCh 8Fh FMULf64 f64(r/m) mod=2 reg=1 rm=7      spec: 0xDC mod/reg/rm /1 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FMULf64 %s%s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,"f64"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FMULf64 %s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,"f64"));
                 break;
             case 0x10: /* DCh 10h FCOMf64 f64(r/m) mod=0 reg=2 rm=0      spec: 0xDC mod/reg/rm /2 mod!=3 */
             case 0x11: /* DCh 11h FCOMf64 f64(r/m) mod=0 reg=2 rm=1      spec: 0xDC mod/reg/rm /2 mod!=3 */
@@ -3149,7 +3149,7 @@ switch (op=IPFB()) {
             case 0x95: /* DCh 95h FCOMf64 f64(r/m) mod=2 reg=2 rm=5      spec: 0xDC mod/reg/rm /2 mod!=3 */
             case 0x96: /* DCh 96h FCOMf64 f64(r/m) mod=2 reg=2 rm=6      spec: 0xDC mod/reg/rm /2 mod!=3 */
             case 0x97: /* DCh 97h FCOMf64 f64(r/m) mod=2 reg=2 rm=7      spec: 0xDC mod/reg/rm /2 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FCOMf64 %s%s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,"f64"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FCOMf64 %s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,"f64"));
                 break;
             case 0x18: /* DCh 18h FCOMPf64 f64(r/m) mod=0 reg=3 rm=0      spec: 0xDC mod/reg/rm /3 mod!=3 */
             case 0x19: /* DCh 19h FCOMPf64 f64(r/m) mod=0 reg=3 rm=1      spec: 0xDC mod/reg/rm /3 mod!=3 */
@@ -3175,7 +3175,7 @@ switch (op=IPFB()) {
             case 0x9D: /* DCh 9Dh FCOMPf64 f64(r/m) mod=2 reg=3 rm=5      spec: 0xDC mod/reg/rm /3 mod!=3 */
             case 0x9E: /* DCh 9Eh FCOMPf64 f64(r/m) mod=2 reg=3 rm=6      spec: 0xDC mod/reg/rm /3 mod!=3 */
             case 0x9F: /* DCh 9Fh FCOMPf64 f64(r/m) mod=2 reg=3 rm=7      spec: 0xDC mod/reg/rm /3 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FCOMPf64 %s%s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,"f64"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FCOMPf64 %s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,"f64"));
                 break;
             case 0x20: /* DCh 20h FSUBf64 f64(r/m) mod=0 reg=4 rm=0      spec: 0xDC mod/reg/rm /4 mod!=3 */
             case 0x21: /* DCh 21h FSUBf64 f64(r/m) mod=0 reg=4 rm=1      spec: 0xDC mod/reg/rm /4 mod!=3 */
@@ -3201,7 +3201,7 @@ switch (op=IPFB()) {
             case 0xA5: /* DCh A5h FSUBf64 f64(r/m) mod=2 reg=4 rm=5      spec: 0xDC mod/reg/rm /4 mod!=3 */
             case 0xA6: /* DCh A6h FSUBf64 f64(r/m) mod=2 reg=4 rm=6      spec: 0xDC mod/reg/rm /4 mod!=3 */
             case 0xA7: /* DCh A7h FSUBf64 f64(r/m) mod=2 reg=4 rm=7      spec: 0xDC mod/reg/rm /4 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSUBf64 %s%s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,"f64"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSUBf64 %s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,"f64"));
                 break;
             case 0x28: /* DCh 28h FSUBRf64 f64(r/m) mod=0 reg=5 rm=0      spec: 0xDC mod/reg/rm /5 mod!=3 */
             case 0x29: /* DCh 29h FSUBRf64 f64(r/m) mod=0 reg=5 rm=1      spec: 0xDC mod/reg/rm /5 mod!=3 */
@@ -3227,7 +3227,7 @@ switch (op=IPFB()) {
             case 0xAD: /* DCh ADh FSUBRf64 f64(r/m) mod=2 reg=5 rm=5      spec: 0xDC mod/reg/rm /5 mod!=3 */
             case 0xAE: /* DCh AEh FSUBRf64 f64(r/m) mod=2 reg=5 rm=6      spec: 0xDC mod/reg/rm /5 mod!=3 */
             case 0xAF: /* DCh AFh FSUBRf64 f64(r/m) mod=2 reg=5 rm=7      spec: 0xDC mod/reg/rm /5 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSUBRf64 %s%s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,"f64"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSUBRf64 %s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,"f64"));
                 break;
             case 0x30: /* DCh 30h FDIVf64 f64(r/m) mod=0 reg=6 rm=0      spec: 0xDC mod/reg/rm /6 mod!=3 */
             case 0x31: /* DCh 31h FDIVf64 f64(r/m) mod=0 reg=6 rm=1      spec: 0xDC mod/reg/rm /6 mod!=3 */
@@ -3253,7 +3253,7 @@ switch (op=IPFB()) {
             case 0xB5: /* DCh B5h FDIVf64 f64(r/m) mod=2 reg=6 rm=5      spec: 0xDC mod/reg/rm /6 mod!=3 */
             case 0xB6: /* DCh B6h FDIVf64 f64(r/m) mod=2 reg=6 rm=6      spec: 0xDC mod/reg/rm /6 mod!=3 */
             case 0xB7: /* DCh B7h FDIVf64 f64(r/m) mod=2 reg=6 rm=7      spec: 0xDC mod/reg/rm /6 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FDIVf64 %s%s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,"f64"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FDIVf64 %s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,"f64"));
                 break;
             case 0x38: /* DCh 38h FDIVRf64 f64(r/m) mod=0 reg=7 rm=0      spec: 0xDC mod/reg/rm /7 mod!=3 */
             case 0x39: /* DCh 39h FDIVRf64 f64(r/m) mod=0 reg=7 rm=1      spec: 0xDC mod/reg/rm /7 mod!=3 */
@@ -3279,7 +3279,7 @@ switch (op=IPFB()) {
             case 0xBD: /* DCh BDh FDIVRf64 f64(r/m) mod=2 reg=7 rm=5      spec: 0xDC mod/reg/rm /7 mod!=3 */
             case 0xBE: /* DCh BEh FDIVRf64 f64(r/m) mod=2 reg=7 rm=6      spec: 0xDC mod/reg/rm /7 mod!=3 */
             case 0xBF: /* DCh BFh FDIVRf64 f64(r/m) mod=2 reg=7 rm=7      spec: 0xDC mod/reg/rm /7 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FDIVRf64 %s%s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,"f64"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FDIVRf64 %s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,"f64"));
                 break;
             case 0xC0: /* DCh C0h FADD st(r/m),st(0) mod=3 reg=0 rm=0      spec: 0xDC mod/reg/rm /0 mod==3 */
             case 0xC1: /* DCh C1h FADD st(r/m),st(0) mod=3 reg=0 rm=1      spec: 0xDC mod/reg/rm /0 mod==3 */
@@ -3289,7 +3289,7 @@ switch (op=IPFB()) {
             case 0xC5: /* DCh C5h FADD st(r/m),st(0) mod=3 reg=0 rm=5      spec: 0xDC mod/reg/rm /0 mod==3 */
             case 0xC6: /* DCh C6h FADD st(r/m),st(0) mod=3 reg=0 rm=6      spec: 0xDC mod/reg/rm /0 mod==3 */
             case 0xC7: /* DCh C7h FADD st(r/m),st(0) mod=3 reg=0 rm=7      spec: 0xDC mod/reg/rm /0 mod==3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FADD %s%s,ST(%u)",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""),0);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FADD %s,ST(%u)",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""),0);
                 break;
             case 0xC8: /* DCh C8h FMUL st(r/m),st(0) mod=3 reg=1 rm=0      spec: 0xDC mod/reg/rm /1 mod==3 */
             case 0xC9: /* DCh C9h FMUL st(r/m),st(0) mod=3 reg=1 rm=1      spec: 0xDC mod/reg/rm /1 mod==3 */
@@ -3299,7 +3299,7 @@ switch (op=IPFB()) {
             case 0xCD: /* DCh CDh FMUL st(r/m),st(0) mod=3 reg=1 rm=5      spec: 0xDC mod/reg/rm /1 mod==3 */
             case 0xCE: /* DCh CEh FMUL st(r/m),st(0) mod=3 reg=1 rm=6      spec: 0xDC mod/reg/rm /1 mod==3 */
             case 0xCF: /* DCh CFh FMUL st(r/m),st(0) mod=3 reg=1 rm=7      spec: 0xDC mod/reg/rm /1 mod==3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FMUL %s%s,ST(%u)",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""),0);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FMUL %s,ST(%u)",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""),0);
                 break;
             /* opcode DCh D0h  not defined */
             /* opcode DCh D1h  not defined */
@@ -3325,7 +3325,7 @@ switch (op=IPFB()) {
             case 0xE5: /* DCh E5h FSUB st(r/m),st(0) mod=3 reg=4 rm=5      spec: 0xDC mod/reg/rm /4 mod==3 */
             case 0xE6: /* DCh E6h FSUB st(r/m),st(0) mod=3 reg=4 rm=6      spec: 0xDC mod/reg/rm /4 mod==3 */
             case 0xE7: /* DCh E7h FSUB st(r/m),st(0) mod=3 reg=4 rm=7      spec: 0xDC mod/reg/rm /4 mod==3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSUB %s%s,ST(%u)",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""),0);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSUB %s,ST(%u)",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""),0);
                 break;
             case 0xE8: /* DCh E8h FSUBR st(r/m),st(0) mod=3 reg=5 rm=0      spec: 0xDC mod/reg/rm /5 mod==3 */
             case 0xE9: /* DCh E9h FSUBR st(r/m),st(0) mod=3 reg=5 rm=1      spec: 0xDC mod/reg/rm /5 mod==3 */
@@ -3335,7 +3335,7 @@ switch (op=IPFB()) {
             case 0xED: /* DCh EDh FSUBR st(r/m),st(0) mod=3 reg=5 rm=5      spec: 0xDC mod/reg/rm /5 mod==3 */
             case 0xEE: /* DCh EEh FSUBR st(r/m),st(0) mod=3 reg=5 rm=6      spec: 0xDC mod/reg/rm /5 mod==3 */
             case 0xEF: /* DCh EFh FSUBR st(r/m),st(0) mod=3 reg=5 rm=7      spec: 0xDC mod/reg/rm /5 mod==3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSUBR %s%s,ST(%u)",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""),0);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSUBR %s,ST(%u)",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""),0);
                 break;
             case 0xF0: /* DCh F0h FDIV st(r/m),st(0) mod=3 reg=6 rm=0      spec: 0xDC mod/reg/rm /6 mod==3 */
             case 0xF1: /* DCh F1h FDIV st(r/m),st(0) mod=3 reg=6 rm=1      spec: 0xDC mod/reg/rm /6 mod==3 */
@@ -3345,7 +3345,7 @@ switch (op=IPFB()) {
             case 0xF5: /* DCh F5h FDIV st(r/m),st(0) mod=3 reg=6 rm=5      spec: 0xDC mod/reg/rm /6 mod==3 */
             case 0xF6: /* DCh F6h FDIV st(r/m),st(0) mod=3 reg=6 rm=6      spec: 0xDC mod/reg/rm /6 mod==3 */
             case 0xF7: /* DCh F7h FDIV st(r/m),st(0) mod=3 reg=6 rm=7      spec: 0xDC mod/reg/rm /6 mod==3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FDIV %s%s,ST(%u)",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""),0);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FDIV %s,ST(%u)",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""),0);
                 break;
             case 0xF8: /* DCh F8h FDIVR st(r/m),st(0) mod=3 reg=7 rm=0      spec: 0xDC mod/reg/rm /7 mod==3 */
             case 0xF9: /* DCh F9h FDIVR st(r/m),st(0) mod=3 reg=7 rm=1      spec: 0xDC mod/reg/rm /7 mod==3 */
@@ -3355,7 +3355,7 @@ switch (op=IPFB()) {
             case 0xFD: /* DCh FDh FDIVR st(r/m),st(0) mod=3 reg=7 rm=5      spec: 0xDC mod/reg/rm /7 mod==3 */
             case 0xFE: /* DCh FEh FDIVR st(r/m),st(0) mod=3 reg=7 rm=6      spec: 0xDC mod/reg/rm /7 mod==3 */
             case 0xFF: /* DCh FFh FDIVR st(r/m),st(0) mod=3 reg=7 rm=7      spec: 0xDC mod/reg/rm /7 mod==3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FDIVR %s%s,ST(%u)",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""),0);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FDIVR %s,ST(%u)",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""),0);
                 break;
             default:
                 goto _x86decode_illegal_opcode;
@@ -3390,7 +3390,7 @@ switch (op=IPFB()) {
             case 0x85: /* DDh 85h FLDf64 f64(r/m) mod=2 reg=0 rm=5      spec: 0xDD mod/reg/rm /0 mod!=3 */
             case 0x86: /* DDh 86h FLDf64 f64(r/m) mod=2 reg=0 rm=6      spec: 0xDD mod/reg/rm /0 mod!=3 */
             case 0x87: /* DDh 87h FLDf64 f64(r/m) mod=2 reg=0 rm=7      spec: 0xDD mod/reg/rm /0 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FLDf64 %s%s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,"f64"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FLDf64 %s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,"f64"));
                 break;
             /* opcode DDh 08h  not defined */
             /* opcode DDh 09h  not defined */
@@ -3424,7 +3424,7 @@ switch (op=IPFB()) {
             case 0x95: /* DDh 95h FSTf64 f64(r/m) mod=2 reg=2 rm=5      spec: 0xDD mod/reg/rm /2 mod!=3 */
             case 0x96: /* DDh 96h FSTf64 f64(r/m) mod=2 reg=2 rm=6      spec: 0xDD mod/reg/rm /2 mod!=3 */
             case 0x97: /* DDh 97h FSTf64 f64(r/m) mod=2 reg=2 rm=7      spec: 0xDD mod/reg/rm /2 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTf64 %s%s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,"f64"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTf64 %s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,"f64"));
                 break;
             case 0x18: /* DDh 18h FSTPf64 f64(r/m) mod=0 reg=3 rm=0      spec: 0xDD mod/reg/rm /3 mod!=3 */
             case 0x19: /* DDh 19h FSTPf64 f64(r/m) mod=0 reg=3 rm=1      spec: 0xDD mod/reg/rm /3 mod!=3 */
@@ -3450,7 +3450,7 @@ switch (op=IPFB()) {
             case 0x9D: /* DDh 9Dh FSTPf64 f64(r/m) mod=2 reg=3 rm=5      spec: 0xDD mod/reg/rm /3 mod!=3 */
             case 0x9E: /* DDh 9Eh FSTPf64 f64(r/m) mod=2 reg=3 rm=6      spec: 0xDD mod/reg/rm /3 mod!=3 */
             case 0x9F: /* DDh 9Fh FSTPf64 f64(r/m) mod=2 reg=3 rm=7      spec: 0xDD mod/reg/rm /3 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTPf64 %s%s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,"f64"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTPf64 %s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,"f64"));
                 break;
             case 0x20: /* DDh 20h FRSTOR fstate(r/m) mod=0 reg=4 rm=0      spec: 0xDD mod/reg/rm /4 mod!=3 */
             case 0x21: /* DDh 21h FRSTOR fstate(r/m) mod=0 reg=4 rm=1      spec: 0xDD mod/reg/rm /4 mod!=3 */
@@ -3476,7 +3476,7 @@ switch (op=IPFB()) {
             case 0xA5: /* DDh A5h FRSTOR fstate(r/m) mod=2 reg=4 rm=5      spec: 0xDD mod/reg/rm /4 mod!=3 */
             case 0xA6: /* DDh A6h FRSTOR fstate(r/m) mod=2 reg=4 rm=6      spec: 0xDD mod/reg/rm /4 mod!=3 */
             case 0xA7: /* DDh A7h FRSTOR fstate(r/m) mod=2 reg=4 rm=7      spec: 0xDD mod/reg/rm /4 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FRSTOR %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FRSTOR %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             /* opcode DDh 28h  not defined */
             /* opcode DDh 29h  not defined */
@@ -3510,7 +3510,7 @@ switch (op=IPFB()) {
             case 0xB5: /* DDh B5h FSAVE fstate(r/m) mod=2 reg=6 rm=5      spec: 0xDD mod/reg/rm /6 mod!=3 */
             case 0xB6: /* DDh B6h FSAVE fstate(r/m) mod=2 reg=6 rm=6      spec: 0xDD mod/reg/rm /6 mod!=3 */
             case 0xB7: /* DDh B7h FSAVE fstate(r/m) mod=2 reg=6 rm=7      spec: 0xDD mod/reg/rm /6 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSAVE %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSAVE %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             case 0x38: /* DDh 38h FSTSW w16(r/m) mod=0 reg=7 rm=0      spec: 0xDD mod/reg/rm /7 mod!=3 */
             case 0x39: /* DDh 39h FSTSW w16(r/m) mod=0 reg=7 rm=1      spec: 0xDD mod/reg/rm /7 mod!=3 */
@@ -3536,7 +3536,7 @@ switch (op=IPFB()) {
             case 0xBD: /* DDh BDh FSTSW w16(r/m) mod=2 reg=7 rm=5      spec: 0xDD mod/reg/rm /7 mod!=3 */
             case 0xBE: /* DDh BEh FSTSW w16(r/m) mod=2 reg=7 rm=6      spec: 0xDD mod/reg/rm /7 mod!=3 */
             case 0xBF: /* DDh BFh FSTSW w16(r/m) mod=2 reg=7 rm=7      spec: 0xDD mod/reg/rm /7 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTSW %s%s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTSW %s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
                 break;
             /* opcode DDh 48h  not defined */
             /* opcode DDh 49h  not defined */
@@ -3578,7 +3578,7 @@ switch (op=IPFB()) {
             case 0xC5: /* DDh C5h FFREE st(r/m) mod=3 reg=0 rm=5      spec: 0xDD mod/reg/rm /0 mod==3 */
             case 0xC6: /* DDh C6h FFREE st(r/m) mod=3 reg=0 rm=6      spec: 0xDD mod/reg/rm /0 mod==3 */
             case 0xC7: /* DDh C7h FFREE st(r/m) mod=3 reg=0 rm=7      spec: 0xDD mod/reg/rm /0 mod==3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FFREE %s%s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FFREE %s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
                 break;
             /* opcode DDh C8h  not defined */
             /* opcode DDh C9h  not defined */
@@ -3596,7 +3596,7 @@ switch (op=IPFB()) {
             case 0xD5: /* DDh D5h FST st(r/m) mod=3 reg=2 rm=5      spec: 0xDD mod/reg/rm /2 mod==3 */
             case 0xD6: /* DDh D6h FST st(r/m) mod=3 reg=2 rm=6      spec: 0xDD mod/reg/rm /2 mod==3 */
             case 0xD7: /* DDh D7h FST st(r/m) mod=3 reg=2 rm=7      spec: 0xDD mod/reg/rm /2 mod==3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FST %s%s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FST %s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
                 break;
             case 0xD8: /* DDh D8h FSTP st(r/m) mod=3 reg=3 rm=0      spec: 0xDD mod/reg/rm /3 mod==3 */
             case 0xD9: /* DDh D9h FSTP st(r/m) mod=3 reg=3 rm=1      spec: 0xDD mod/reg/rm /3 mod==3 */
@@ -3606,7 +3606,7 @@ switch (op=IPFB()) {
             case 0xDD: /* DDh DDh FSTP st(r/m) mod=3 reg=3 rm=5      spec: 0xDD mod/reg/rm /3 mod==3 */
             case 0xDE: /* DDh DEh FSTP st(r/m) mod=3 reg=3 rm=6      spec: 0xDD mod/reg/rm /3 mod==3 */
             case 0xDF: /* DDh DFh FSTP st(r/m) mod=3 reg=3 rm=7      spec: 0xDD mod/reg/rm /3 mod==3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTP %s%s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTP %s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
                 break;
             /* opcode DDh E0h  not defined */
             /* opcode DDh E1h  not defined */
@@ -3673,7 +3673,7 @@ switch (op=IPFB()) {
             case 0x85: /* DEh 85h FADDw w16(r/m) mod=2 reg=0 rm=5      spec: 0xDE mod/reg/rm /0 mod!=3 */
             case 0x86: /* DEh 86h FADDw w16(r/m) mod=2 reg=0 rm=6      spec: 0xDE mod/reg/rm /0 mod!=3 */
             case 0x87: /* DEh 87h FADDw w16(r/m) mod=2 reg=0 rm=7      spec: 0xDE mod/reg/rm /0 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FADDw %s%s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FADDw %s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
                 break;
             case 0x08: /* DEh 08h FMULw w16(r/m) mod=0 reg=1 rm=0      spec: 0xDE mod/reg/rm /1 mod!=3 */
             case 0x09: /* DEh 09h FMULw w16(r/m) mod=0 reg=1 rm=1      spec: 0xDE mod/reg/rm /1 mod!=3 */
@@ -3699,7 +3699,7 @@ switch (op=IPFB()) {
             case 0x8D: /* DEh 8Dh FMULw w16(r/m) mod=2 reg=1 rm=5      spec: 0xDE mod/reg/rm /1 mod!=3 */
             case 0x8E: /* DEh 8Eh FMULw w16(r/m) mod=2 reg=1 rm=6      spec: 0xDE mod/reg/rm /1 mod!=3 */
             case 0x8F: /* DEh 8Fh FMULw w16(r/m) mod=2 reg=1 rm=7      spec: 0xDE mod/reg/rm /1 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FMULw %s%s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FMULw %s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
                 break;
             case 0x10: /* DEh 10h FCOMw w16(r/m) mod=0 reg=2 rm=0      spec: 0xDE mod/reg/rm /2 mod!=3 */
             case 0x11: /* DEh 11h FCOMw w16(r/m) mod=0 reg=2 rm=1      spec: 0xDE mod/reg/rm /2 mod!=3 */
@@ -3725,7 +3725,7 @@ switch (op=IPFB()) {
             case 0x95: /* DEh 95h FCOMw w16(r/m) mod=2 reg=2 rm=5      spec: 0xDE mod/reg/rm /2 mod!=3 */
             case 0x96: /* DEh 96h FCOMw w16(r/m) mod=2 reg=2 rm=6      spec: 0xDE mod/reg/rm /2 mod!=3 */
             case 0x97: /* DEh 97h FCOMw w16(r/m) mod=2 reg=2 rm=7      spec: 0xDE mod/reg/rm /2 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FCOMw %s%s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FCOMw %s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
                 break;
             case 0x18: /* DEh 18h FCOMPw w16(r/m) mod=0 reg=3 rm=0      spec: 0xDE mod/reg/rm /3 mod!=3 */
             case 0x19: /* DEh 19h FCOMPw w16(r/m) mod=0 reg=3 rm=1      spec: 0xDE mod/reg/rm /3 mod!=3 */
@@ -3751,7 +3751,7 @@ switch (op=IPFB()) {
             case 0x9D: /* DEh 9Dh FCOMPw w16(r/m) mod=2 reg=3 rm=5      spec: 0xDE mod/reg/rm /3 mod!=3 */
             case 0x9E: /* DEh 9Eh FCOMPw w16(r/m) mod=2 reg=3 rm=6      spec: 0xDE mod/reg/rm /3 mod!=3 */
             case 0x9F: /* DEh 9Fh FCOMPw w16(r/m) mod=2 reg=3 rm=7      spec: 0xDE mod/reg/rm /3 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FCOMPw %s%s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FCOMPw %s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
                 break;
             case 0x20: /* DEh 20h FSUBw w16(r/m) mod=0 reg=4 rm=0      spec: 0xDE mod/reg/rm /4 mod!=3 */
             case 0x21: /* DEh 21h FSUBw w16(r/m) mod=0 reg=4 rm=1      spec: 0xDE mod/reg/rm /4 mod!=3 */
@@ -3777,7 +3777,7 @@ switch (op=IPFB()) {
             case 0xA5: /* DEh A5h FSUBw w16(r/m) mod=2 reg=4 rm=5      spec: 0xDE mod/reg/rm /4 mod!=3 */
             case 0xA6: /* DEh A6h FSUBw w16(r/m) mod=2 reg=4 rm=6      spec: 0xDE mod/reg/rm /4 mod!=3 */
             case 0xA7: /* DEh A7h FSUBw w16(r/m) mod=2 reg=4 rm=7      spec: 0xDE mod/reg/rm /4 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSUBw %s%s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSUBw %s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
                 break;
             case 0x28: /* DEh 28h FSUBRw w16(r/m) mod=0 reg=5 rm=0      spec: 0xDE mod/reg/rm /5 mod!=3 */
             case 0x29: /* DEh 29h FSUBRw w16(r/m) mod=0 reg=5 rm=1      spec: 0xDE mod/reg/rm /5 mod!=3 */
@@ -3803,7 +3803,7 @@ switch (op=IPFB()) {
             case 0xAD: /* DEh ADh FSUBRw w16(r/m) mod=2 reg=5 rm=5      spec: 0xDE mod/reg/rm /5 mod!=3 */
             case 0xAE: /* DEh AEh FSUBRw w16(r/m) mod=2 reg=5 rm=6      spec: 0xDE mod/reg/rm /5 mod!=3 */
             case 0xAF: /* DEh AFh FSUBRw w16(r/m) mod=2 reg=5 rm=7      spec: 0xDE mod/reg/rm /5 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSUBRw %s%s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSUBRw %s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
                 break;
             case 0x30: /* DEh 30h FDIVw w16(r/m) mod=0 reg=6 rm=0      spec: 0xDE mod/reg/rm /6 mod!=3 */
             case 0x31: /* DEh 31h FDIVw w16(r/m) mod=0 reg=6 rm=1      spec: 0xDE mod/reg/rm /6 mod!=3 */
@@ -3829,7 +3829,7 @@ switch (op=IPFB()) {
             case 0xB5: /* DEh B5h FDIVw w16(r/m) mod=2 reg=6 rm=5      spec: 0xDE mod/reg/rm /6 mod!=3 */
             case 0xB6: /* DEh B6h FDIVw w16(r/m) mod=2 reg=6 rm=6      spec: 0xDE mod/reg/rm /6 mod!=3 */
             case 0xB7: /* DEh B7h FDIVw w16(r/m) mod=2 reg=6 rm=7      spec: 0xDE mod/reg/rm /6 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FDIVw %s%s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FDIVw %s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
                 break;
             case 0x38: /* DEh 38h FDIVRw w16(r/m) mod=0 reg=7 rm=0      spec: 0xDE mod/reg/rm /7 mod!=3 */
             case 0x39: /* DEh 39h FDIVRw w16(r/m) mod=0 reg=7 rm=1      spec: 0xDE mod/reg/rm /7 mod!=3 */
@@ -3855,7 +3855,7 @@ switch (op=IPFB()) {
             case 0xBD: /* DEh BDh FDIVRw w16(r/m) mod=2 reg=7 rm=5      spec: 0xDE mod/reg/rm /7 mod!=3 */
             case 0xBE: /* DEh BEh FDIVRw w16(r/m) mod=2 reg=7 rm=6      spec: 0xDE mod/reg/rm /7 mod!=3 */
             case 0xBF: /* DEh BFh FDIVRw w16(r/m) mod=2 reg=7 rm=7      spec: 0xDE mod/reg/rm /7 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FDIVRw %s%s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FDIVRw %s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
                 break;
             case 0xC0: /* DEh C0h FADDP st(r/m),st(0) mod=3 reg=0 rm=0      spec: 0xDE mod/reg/rm /0 mod==3 */
             case 0xC1: /* DEh C1h FADDP st(r/m),st(0) mod=3 reg=0 rm=1      spec: 0xDE mod/reg/rm /0 mod==3 */
@@ -3865,7 +3865,7 @@ switch (op=IPFB()) {
             case 0xC5: /* DEh C5h FADDP st(r/m),st(0) mod=3 reg=0 rm=5      spec: 0xDE mod/reg/rm /0 mod==3 */
             case 0xC6: /* DEh C6h FADDP st(r/m),st(0) mod=3 reg=0 rm=6      spec: 0xDE mod/reg/rm /0 mod==3 */
             case 0xC7: /* DEh C7h FADDP st(r/m),st(0) mod=3 reg=0 rm=7      spec: 0xDE mod/reg/rm /0 mod==3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FADDP %s%s,ST(%u)",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""),0);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FADDP %s,ST(%u)",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""),0);
                 break;
             case 0xC8: /* DEh C8h FMULP st(r/m),st(0) mod=3 reg=1 rm=0      spec: 0xDE mod/reg/rm /1 mod==3 */
             case 0xC9: /* DEh C9h FMULP st(r/m),st(0) mod=3 reg=1 rm=1      spec: 0xDE mod/reg/rm /1 mod==3 */
@@ -3875,7 +3875,7 @@ switch (op=IPFB()) {
             case 0xCD: /* DEh CDh FMULP st(r/m),st(0) mod=3 reg=1 rm=5      spec: 0xDE mod/reg/rm /1 mod==3 */
             case 0xCE: /* DEh CEh FMULP st(r/m),st(0) mod=3 reg=1 rm=6      spec: 0xDE mod/reg/rm /1 mod==3 */
             case 0xCF: /* DEh CFh FMULP st(r/m),st(0) mod=3 reg=1 rm=7      spec: 0xDE mod/reg/rm /1 mod==3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FMULP %s%s,ST(%u)",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""),0);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FMULP %s,ST(%u)",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""),0);
                 break;
             /* opcode DEh D0h  not defined */
             /* opcode DEh D1h  not defined */
@@ -3903,7 +3903,7 @@ switch (op=IPFB()) {
             case 0xE5: /* DEh E5h FSUBP st(r/m),st(0) mod=3 reg=4 rm=5      spec: 0xDE mod/reg/rm /4 mod==3 */
             case 0xE6: /* DEh E6h FSUBP st(r/m),st(0) mod=3 reg=4 rm=6      spec: 0xDE mod/reg/rm /4 mod==3 */
             case 0xE7: /* DEh E7h FSUBP st(r/m),st(0) mod=3 reg=4 rm=7      spec: 0xDE mod/reg/rm /4 mod==3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSUBP %s%s,ST(%u)",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""),0);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSUBP %s,ST(%u)",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""),0);
                 break;
             case 0xE8: /* DEh E8h FSUBRP st(r/m),st(0) mod=3 reg=5 rm=0      spec: 0xDE mod/reg/rm /5 mod==3 */
             case 0xE9: /* DEh E9h FSUBRP st(r/m),st(0) mod=3 reg=5 rm=1      spec: 0xDE mod/reg/rm /5 mod==3 */
@@ -3913,7 +3913,7 @@ switch (op=IPFB()) {
             case 0xED: /* DEh EDh FSUBRP st(r/m),st(0) mod=3 reg=5 rm=5      spec: 0xDE mod/reg/rm /5 mod==3 */
             case 0xEE: /* DEh EEh FSUBRP st(r/m),st(0) mod=3 reg=5 rm=6      spec: 0xDE mod/reg/rm /5 mod==3 */
             case 0xEF: /* DEh EFh FSUBRP st(r/m),st(0) mod=3 reg=5 rm=7      spec: 0xDE mod/reg/rm /5 mod==3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSUBRP %s%s,ST(%u)",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""),0);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSUBRP %s,ST(%u)",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""),0);
                 break;
             case 0xF0: /* DEh F0h FDIVP st(r/m),st(0) mod=3 reg=6 rm=0      spec: 0xDE mod/reg/rm /6 mod==3 */
             case 0xF1: /* DEh F1h FDIVP st(r/m),st(0) mod=3 reg=6 rm=1      spec: 0xDE mod/reg/rm /6 mod==3 */
@@ -3923,7 +3923,7 @@ switch (op=IPFB()) {
             case 0xF5: /* DEh F5h FDIVP st(r/m),st(0) mod=3 reg=6 rm=5      spec: 0xDE mod/reg/rm /6 mod==3 */
             case 0xF6: /* DEh F6h FDIVP st(r/m),st(0) mod=3 reg=6 rm=6      spec: 0xDE mod/reg/rm /6 mod==3 */
             case 0xF7: /* DEh F7h FDIVP st(r/m),st(0) mod=3 reg=6 rm=7      spec: 0xDE mod/reg/rm /6 mod==3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FDIVP %s%s,ST(%u)",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""),0);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FDIVP %s,ST(%u)",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""),0);
                 break;
             case 0xF8: /* DEh F8h FDIVRP st(r/m),st(0) mod=3 reg=7 rm=0      spec: 0xDE mod/reg/rm /7 mod==3 */
             case 0xF9: /* DEh F9h FDIVRP st(r/m),st(0) mod=3 reg=7 rm=1      spec: 0xDE mod/reg/rm /7 mod==3 */
@@ -3933,7 +3933,7 @@ switch (op=IPFB()) {
             case 0xFD: /* DEh FDh FDIVRP st(r/m),st(0) mod=3 reg=7 rm=5      spec: 0xDE mod/reg/rm /7 mod==3 */
             case 0xFE: /* DEh FEh FDIVRP st(r/m),st(0) mod=3 reg=7 rm=6      spec: 0xDE mod/reg/rm /7 mod==3 */
             case 0xFF: /* DEh FFh FDIVRP st(r/m),st(0) mod=3 reg=7 rm=7      spec: 0xDE mod/reg/rm /7 mod==3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FDIVRP %s%s,ST(%u)",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""),0);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FDIVRP %s,ST(%u)",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""),0);
                 break;
             default:
                 goto _x86decode_illegal_opcode;
@@ -3968,7 +3968,7 @@ switch (op=IPFB()) {
             case 0x85: /* DFh 85h FLDw w16(r/m) mod=2 reg=0 rm=5      spec: 0xDF mod/reg/rm /0 mod!=3 */
             case 0x86: /* DFh 86h FLDw w16(r/m) mod=2 reg=0 rm=6      spec: 0xDF mod/reg/rm /0 mod!=3 */
             case 0x87: /* DFh 87h FLDw w16(r/m) mod=2 reg=0 rm=7      spec: 0xDF mod/reg/rm /0 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FLDw %s%s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FLDw %s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
                 break;
             /* opcode DFh 08h  not defined */
             /* opcode DFh 09h  not defined */
@@ -4002,7 +4002,7 @@ switch (op=IPFB()) {
             case 0x95: /* DFh 95h FSTw w16(r/m) mod=2 reg=2 rm=5      spec: 0xDF mod/reg/rm /2 mod!=3 */
             case 0x96: /* DFh 96h FSTw w16(r/m) mod=2 reg=2 rm=6      spec: 0xDF mod/reg/rm /2 mod!=3 */
             case 0x97: /* DFh 97h FSTw w16(r/m) mod=2 reg=2 rm=7      spec: 0xDF mod/reg/rm /2 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTw %s%s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTw %s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
                 break;
             case 0x18: /* DFh 18h FSTPw w16(r/m) mod=0 reg=3 rm=0      spec: 0xDF mod/reg/rm /3 mod!=3 */
             case 0x19: /* DFh 19h FSTPw w16(r/m) mod=0 reg=3 rm=1      spec: 0xDF mod/reg/rm /3 mod!=3 */
@@ -4028,7 +4028,7 @@ switch (op=IPFB()) {
             case 0x9D: /* DFh 9Dh FSTPw w16(r/m) mod=2 reg=3 rm=5      spec: 0xDF mod/reg/rm /3 mod!=3 */
             case 0x9E: /* DFh 9Eh FSTPw w16(r/m) mod=2 reg=3 rm=6      spec: 0xDF mod/reg/rm /3 mod!=3 */
             case 0x9F: /* DFh 9Fh FSTPw w16(r/m) mod=2 reg=3 rm=7      spec: 0xDF mod/reg/rm /3 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTPw %s%s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTPw %s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
                 break;
             case 0x20: /* DFh 20h FLDfbcd fbcd(r/m) mod=0 reg=4 rm=0      spec: 0xDF mod/reg/rm /4 mod!=3 */
             case 0x21: /* DFh 21h FLDfbcd fbcd(r/m) mod=0 reg=4 rm=1      spec: 0xDF mod/reg/rm /4 mod!=3 */
@@ -4054,7 +4054,7 @@ switch (op=IPFB()) {
             case 0xA5: /* DFh A5h FLDfbcd fbcd(r/m) mod=2 reg=4 rm=5      spec: 0xDF mod/reg/rm /4 mod!=3 */
             case 0xA6: /* DFh A6h FLDfbcd fbcd(r/m) mod=2 reg=4 rm=6      spec: 0xDF mod/reg/rm /4 mod!=3 */
             case 0xA7: /* DFh A7h FLDfbcd fbcd(r/m) mod=2 reg=4 rm=7      spec: 0xDF mod/reg/rm /4 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FLDfbcd %s%s",IPDecPrint32(mrm,sib,disp,10,RC_FPUREG,"fbcd"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FLDfbcd %s",IPDecPrint32(mrm,sib,disp,10,RC_FPUREG,"fbcd"));
                 break;
             case 0x28: /* DFh 28h FLDq w64(r/m) mod=0 reg=5 rm=0      spec: 0xDF mod/reg/rm /5 mod!=3 */
             case 0x29: /* DFh 29h FLDq w64(r/m) mod=0 reg=5 rm=1      spec: 0xDF mod/reg/rm /5 mod!=3 */
@@ -4080,7 +4080,7 @@ switch (op=IPFB()) {
             case 0xAD: /* DFh ADh FLDq w64(r/m) mod=2 reg=5 rm=5      spec: 0xDF mod/reg/rm /5 mod!=3 */
             case 0xAE: /* DFh AEh FLDq w64(r/m) mod=2 reg=5 rm=6      spec: 0xDF mod/reg/rm /5 mod!=3 */
             case 0xAF: /* DFh AFh FLDq w64(r/m) mod=2 reg=5 rm=7      spec: 0xDF mod/reg/rm /5 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FLDq %s%s",IPDecPrint32(mrm,sib,disp,8,RC_REG,"w64"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FLDq %s",IPDecPrint32(mrm,sib,disp,8,RC_REG,"w64"));
                 break;
             case 0x30: /* DFh 30h FSTPfbcd fbcd(r/m) mod=0 reg=6 rm=0      spec: 0xDF mod/reg/rm /6 mod!=3 */
             case 0x31: /* DFh 31h FSTPfbcd fbcd(r/m) mod=0 reg=6 rm=1      spec: 0xDF mod/reg/rm /6 mod!=3 */
@@ -4106,7 +4106,7 @@ switch (op=IPFB()) {
             case 0xB5: /* DFh B5h FSTPfbcd fbcd(r/m) mod=2 reg=6 rm=5      spec: 0xDF mod/reg/rm /6 mod!=3 */
             case 0xB6: /* DFh B6h FSTPfbcd fbcd(r/m) mod=2 reg=6 rm=6      spec: 0xDF mod/reg/rm /6 mod!=3 */
             case 0xB7: /* DFh B7h FSTPfbcd fbcd(r/m) mod=2 reg=6 rm=7      spec: 0xDF mod/reg/rm /6 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTPfbcd %s%s",IPDecPrint32(mrm,sib,disp,10,RC_FPUREG,"fbcd"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTPfbcd %s",IPDecPrint32(mrm,sib,disp,10,RC_FPUREG,"fbcd"));
                 break;
             case 0x38: /* DFh 38h FSTPq w64(r/m) mod=0 reg=7 rm=0      spec: 0xDF mod/reg/rm /7 mod!=3 */
             case 0x39: /* DFh 39h FSTPq w64(r/m) mod=0 reg=7 rm=1      spec: 0xDF mod/reg/rm /7 mod!=3 */
@@ -4132,7 +4132,7 @@ switch (op=IPFB()) {
             case 0xBD: /* DFh BDh FSTPq w64(r/m) mod=2 reg=7 rm=5      spec: 0xDF mod/reg/rm /7 mod!=3 */
             case 0xBE: /* DFh BEh FSTPq w64(r/m) mod=2 reg=7 rm=6      spec: 0xDF mod/reg/rm /7 mod!=3 */
             case 0xBF: /* DFh BFh FSTPq w64(r/m) mod=2 reg=7 rm=7      spec: 0xDF mod/reg/rm /7 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTPq %s%s",IPDecPrint32(mrm,sib,disp,8,RC_REG,"w64"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTPq %s",IPDecPrint32(mrm,sib,disp,8,RC_REG,"w64"));
                 break;
             /* opcode DFh 48h  not defined */
             /* opcode DFh 49h  not defined */
@@ -4307,25 +4307,25 @@ switch (op=IPFB()) {
             case 0: /* F6h 00h TESTb b(r/m),i reg=0      spec: 0xF6 mod/reg/rm /0 ib */
             case 1: /* F6h 08h TESTb b(r/m),i reg=1      spec: 0xF6 mod/reg/rm /1 ib */
                 imm=IPFB();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"TESTb %s%s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"TESTb %s,0x%02lX",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"),(unsigned long)((uint32_t)imm));
                 break;
             case 2: /* F6h 10h NOTb b(r/m) reg=2      spec: 0xF6 mod/reg/rm /2 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"NOTb %s%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"NOTb %s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
                 break;
             case 3: /* F6h 18h NEGb b(r/m) reg=3      spec: 0xF6 mod/reg/rm /3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"NEGb %s%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"NEGb %s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
                 break;
             case 4: /* F6h 20h MULb b(r/m) reg=4      spec: 0xF6 mod/reg/rm /4 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MULb %s%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MULb %s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
                 break;
             case 5: /* F6h 28h IMULb b(r/m) reg=5      spec: 0xF6 mod/reg/rm /5 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"IMULb %s%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"IMULb %s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
                 break;
             case 6: /* F6h 30h DIVb b(r/m) reg=6      spec: 0xF6 mod/reg/rm /6 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"DIVb %s%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"DIVb %s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
                 break;
             case 7: /* F6h 38h IDIVb b(r/m) reg=7      spec: 0xF6 mod/reg/rm /7 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"IDIVb %s%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"IDIVb %s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
                 break;
             default:
                 goto _x86decode_illegal_opcode;
@@ -4339,25 +4339,25 @@ switch (op=IPFB()) {
             case 0: /* F7h 00h TESTd w(r/m),i reg=0      spec: 0xF7 mod/reg/rm /0 iw */
             case 1: /* F7h 08h TESTd w(r/m),i reg=1      spec: 0xF7 mod/reg/rm /1 iw */
                 imm=IPFcodeW();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"TESTd %s%s,0x%08lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"TESTd %s,0x%08lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"),(unsigned long)((uint32_t)imm));
                 break;
             case 2: /* F7h 10h NOTd w(r/m) reg=2      spec: 0xF7 mod/reg/rm /2 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"NOTd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"NOTd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             case 3: /* F7h 18h NEGd w(r/m) reg=3      spec: 0xF7 mod/reg/rm /3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"NEGd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"NEGd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             case 4: /* F7h 20h MULd w(r/m) reg=4      spec: 0xF7 mod/reg/rm /4 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MULd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MULd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             case 5: /* F7h 28h IMULd w(r/m) reg=5      spec: 0xF7 mod/reg/rm /5 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"IMULd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"IMULd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             case 6: /* F7h 30h DIVd w(r/m) reg=6      spec: 0xF7 mod/reg/rm /6 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"DIVd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"DIVd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             case 7: /* F7h 38h IDIVd w(r/m) reg=7      spec: 0xF7 mod/reg/rm /7 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"IDIVd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"IDIVd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             default:
                 goto _x86decode_illegal_opcode;
@@ -4387,10 +4387,10 @@ switch (op=IPFB()) {
 /* Opcodes starting with FEh */
         switch (mrm.reg()) {
             case 0: /* FEh 00h INCb b(r/m) reg=0      spec: 0xFE mod/reg/rm /0 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"INCb %s%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"INCb %s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
                 break;
             case 1: /* FEh 08h DECb b(r/m) reg=1      spec: 0xFE mod/reg/rm /1 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"DECb %s%s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"DECb %s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
                 break;
             /* reg 2 not defined */
             /* reg 3 not defined */
@@ -4408,25 +4408,25 @@ switch (op=IPFB()) {
 /* Opcodes starting with FFh */
         switch (mrm.reg()) {
             case 0: /* FFh 00h INCd w(r/m) reg=0      spec: 0xFF mod/reg/rm /0 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"INCd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"INCd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             case 1: /* FFh 08h DECd w(r/m) reg=1      spec: 0xFF mod/reg/rm /1 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"DECd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"DECd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             case 2: /* FFh 10h CALLd w(r/m) reg=2      spec: 0xFF mod/reg/rm /2 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CALLd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CALLd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             case 3: /* FFh 18h CALLFd w(r/m) reg=3      spec: 0xFF mod/reg/rm /3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CALLFd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CALLFd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             case 4: /* FFh 20h JMPd w(r/m) reg=4      spec: 0xFF mod/reg/rm /4 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JMPd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JMPd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             case 5: /* FFh 28h JMPFd w(r/m) reg=5      spec: 0xFF mod/reg/rm /5 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JMPFd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JMPFd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             case 6: /* FFh 30h PUSHd w(r/m) reg=6      spec: 0xFF mod/reg/rm /6 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PUSHd %s%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PUSHd %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
                 break;
             /* reg 7 not defined */
             default:

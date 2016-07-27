@@ -50,8 +50,7 @@ OPCC_H = \
 	dosboxxr/lib/cpu/core/intel8088.c16.a16.decom.h \
 	dosboxxr/lib/cpu/core/intel80286.c16.a16.decom.h \
 	dosboxxr/lib/cpu/core/intel80386.c16.a16.decom.h \
-	dosboxxr/lib/cpu/core/intel80386.c16.a32.decom.h \
-	dosboxxr/lib/cpu/core/intel80386.c32.a16.decom.h \
+	dosboxxr/lib/cpu/core/intel80386.cxx.axx.decom.h \
 	dosboxxr/lib/cpu/core/intel80386.c32.a32.decom.h
 
 test1.bin: test1.asm
@@ -82,9 +81,7 @@ dosboxxr/lib/cpu/core/intel80386.opcodes.p: opcodes/intel80386.opcodes
 	$(BUILD_CPP) -I. opcodes/intel80386.opcodes -o $@
 dosboxxr/lib/cpu/core/intel80386.c16.a16.decom.h: dosboxxr/lib/cpu/core/intel80386.opcodes.p opcc$(EXEEXT)
 	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80386.opcodes.p -o $@ -m decompile -c 16 -a 16 -c32vars
-dosboxxr/lib/cpu/core/intel80386.c16.a32.decom.h: dosboxxr/lib/cpu/core/intel80386.opcodes.p opcc$(EXEEXT)
-	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80386.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
-dosboxxr/lib/cpu/core/intel80386.c32.a16.decom.h: dosboxxr/lib/cpu/core/intel80386.opcodes.p opcc$(EXEEXT)
+dosboxxr/lib/cpu/core/intel80386.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intel80386.opcodes.p opcc$(EXEEXT)
 	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80386.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
 dosboxxr/lib/cpu/core/intel80386.c32.a32.decom.h: dosboxxr/lib/cpu/core/intel80386.opcodes.p opcc$(EXEEXT)
 	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80386.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars
