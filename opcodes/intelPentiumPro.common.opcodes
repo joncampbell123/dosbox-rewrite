@@ -1,0 +1,41 @@
+
+; Pentium Pro
+opcode 0x0F 0x0D:                               "NOP"                       ; No Operation                              00001111 00001011
+opcode 0x0F 0x1F mod/reg/rm /0:                 "NOP" b(r/m)                ; No Operation                              00001111 00011111
+; ^ NOTE: This is the official opcode. There are opcode maps that suggest 0x0F 0x18 through 0x0F 0x1E and 0x0F 0x1F /1-/7 are aliases of this instruction.
+;         If that proves true, I will add them here.
+
+; Conditional Move
+opcode 0x0F 0x40 mod/reg/rm:                    "CMOVO" w(reg),w(r/m)       ; Conditional Move                          00001111 01000000
+opcode 0x0F 0x41 mod/reg/rm:                    "CMOVNO" w(reg),w(r/m)      ; Conditional Move                          00001111 01000001
+opcode 0x0F 0x42 mod/reg/rm:                    "CMOVB" w(reg),w(r/m)       ; Conditional Move                          00001111 01000010
+opcode 0x0F 0x43 mod/reg/rm:                    "CMOVNB" w(reg),w(r/m)      ; Conditional Move                          00001111 01000011
+opcode 0x0F 0x44 mod/reg/rm:                    "CMOVZ" w(reg),w(r/m)       ; Conditional Move                          00001111 01000100
+opcode 0x0F 0x45 mod/reg/rm:                    "CMOVNZ" w(reg),w(r/m)      ; Conditional Move                          00001111 01000101
+opcode 0x0F 0x46 mod/reg/rm:                    "CMOVBE" w(reg),w(r/m)      ; Conditional Move                          00001111 01000110
+opcode 0x0F 0x47 mod/reg/rm:                    "CMOVNBE" w(reg),w(r/m)     ; Conditional Move                          00001111 01000111
+opcode 0x0F 0x48 mod/reg/rm:                    "CMOVS" w(reg),w(r/m)       ; Conditional Move                          00001111 01001000
+opcode 0x0F 0x49 mod/reg/rm:                    "CMOVNS" w(reg),w(r/m)      ; Conditional Move                          00001111 01001001
+opcode 0x0F 0x4A mod/reg/rm:                    "CMOVP" w(reg),w(r/m)       ; Conditional Move                          00001111 01001010
+opcode 0x0F 0x4B mod/reg/rm:                    "CMOVNP" w(reg),w(r/m)      ; Conditional Move                          00001111 01001011
+opcode 0x0F 0x4C mod/reg/rm:                    "CMOVL" w(reg),w(r/m)       ; Conditional Move                          00001111 01001100
+opcode 0x0F 0x4D mod/reg/rm:                    "CMOVNL" w(reg),w(r/m)      ; Conditional Move                          00001111 01001101
+opcode 0x0F 0x4E mod/reg/rm:                    "CMOVLE" w(reg),w(r/m)      ; Conditional Move                          00001111 01001110
+opcode 0x0F 0x4F mod/reg/rm:                    "CMOVNLE" w(reg),w(r/m)     ; Conditional Move                          00001111 01001111
+
+; FPU conditional move. Note they fill in the unused mod==3 case of 8087 FPU instructions.
+opcode 0xDA mod/reg/rm /0 mod==3:               "FCMOVB" st(0),st(r/m)      ; Conditional Move                          10111010
+opcode 0xDA mod/reg/rm /1 mod==3:               "FCMOVE" st(0),st(r/m)      ; Conditional Move                          10111010
+opcode 0xDA mod/reg/rm /2 mod==3:               "FCMOVBE" st(0),st(r/m)     ; Conditional Move                          10111010
+opcode 0xDA mod/reg/rm /3 mod==3:               "FCMOVU" st(0),st(r/m)      ; Conditional Move, unordered (what?)       10111010
+opcode 0xDB mod/reg/rm /0 mod==3:               "FCMOVNB" st(0),st(r/m)     ; Conditional Move                          10111010
+opcode 0xDB mod/reg/rm /1 mod==3:               "FCMOVNE" st(0),st(r/m)     ; Conditional Move                          10111010
+opcode 0xDB mod/reg/rm /2 mod==3:               "FCMOVNBE" st(0),st(r/m)    ; Conditional Move                          10111010
+opcode 0xDB mod/reg/rm /3 mod==3:               "FCMOVNU" st(0),st(r/m)     ; Conditional Move, not unordered (what?)   10111010
+
+; FPU compare
+opcode 0xDB mod/reg/rm /5 mod==3:               "FUCOMI" st(0),st(r/m)      ; Unordered float compare and set EFLAGS    10111011
+opcode 0xDB mod/reg/rm /6 mod==3:               "FCOMI" st(0),st(r/m)       ; Compare floating point and set EFLAGS     10111011
+opcode 0xDF mod/reg/rm /5 mod==3:               "FUCOMIP" st(0),st(r/m)     ; Unordered float compare, set EFLAGS, pop  10111111
+opcode 0xDF mod/reg/rm /6 mod==3:               "FCOMIP" st(0),st(r/m)      ; Compare floating point, EFLAGS, pop       10111111
+

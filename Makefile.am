@@ -61,7 +61,11 @@ OPCC_H = \
 	\
 	dosboxxr/lib/cpu/core/intelPentium.c16.a16.decom.h \
 	dosboxxr/lib/cpu/core/intelPentium.cxx.axx.decom.h \
-	dosboxxr/lib/cpu/core/intelPentium.c32.a32.decom.h
+	dosboxxr/lib/cpu/core/intelPentium.c32.a32.decom.h \
+	\
+	dosboxxr/lib/cpu/core/intelPentiumPro.c16.a16.decom.h \
+	dosboxxr/lib/cpu/core/intelPentiumPro.cxx.axx.decom.h \
+	dosboxxr/lib/cpu/core/intelPentiumPro.c32.a32.decom.h
 
 test1.bin: test1.asm
 	yasm -o $@ -f bin $<
@@ -78,7 +82,10 @@ test4.bin: test4.asm
 test5.bin: test5.asm
 	yasm -o $@ -f bin $<
 
-test-bins: test1.bin test2.bin test3.bin test4.bin test5.bin
+test5pro.bin: test5pro.asm
+	yasm -o $@ -f bin $<
+
+test-bins: test1.bin test2.bin test3.bin test4.bin test5.bin test5pro.bin
 
 opcc$(EXEEXT): opcc.cpp
 	$(BUILD_CXX) -o $@ $<
@@ -119,6 +126,15 @@ dosboxxr/lib/cpu/core/intelPentium.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intelP
 	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentium.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
 dosboxxr/lib/cpu/core/intelPentium.c32.a32.decom.h: dosboxxr/lib/cpu/core/intelPentium.opcodes.p opcc$(EXEEXT)
 	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentium.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars
+
+dosboxxr/lib/cpu/core/intelPentiumPro.opcodes.p: opcodes/intelPentiumPro.opcodes
+	$(BUILD_CPP) -I. opcodes/intelPentiumPro.opcodes -o $@
+dosboxxr/lib/cpu/core/intelPentiumPro.c16.a16.decom.h: dosboxxr/lib/cpu/core/intelPentiumPro.opcodes.p opcc$(EXEEXT)
+	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentiumPro.opcodes.p -o $@ -m decompile -c 16 -a 16 -c32vars
+dosboxxr/lib/cpu/core/intelPentiumPro.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intelPentiumPro.opcodes.p opcc$(EXEEXT)
+	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentiumPro.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
+dosboxxr/lib/cpu/core/intelPentiumPro.c32.a32.decom.h: dosboxxr/lib/cpu/core/intelPentiumPro.opcodes.p opcc$(EXEEXT)
+	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentiumPro.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars
 
 # grrr how do I get automake to run opcc first before compiling other parts?
 opcodes: $(OPCC_H)
