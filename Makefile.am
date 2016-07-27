@@ -20,7 +20,19 @@ noinst_PROGRAMS = \
 
 empty_SOURCES = empty.cpp
 
-cpudec86_SOURCES = cpudec86.cpp
+cpudec86_SOURCES = cpudec86.cpp \
+	cpudec86_8086.cpp \
+	cpudec86_80286.cpp \
+	cpudec86_80386.cpp \
+	cpudec86_80386_generic.cpp \
+	cpudec86_80486.cpp \
+	cpudec86_80486_generic.cpp \
+	cpudec86_pentium.cpp \
+	cpudec86_pentium_generic.cpp \
+	cpudec86_pentiumpro.cpp \
+	cpudec86_pentiumpro_generic.cpp \
+	cpudec86_pentiummmx.cpp \
+	cpudec86_pentiummmx_generic.cpp
 cpudec86_CXXFLAGS = $(AM_CXXFLAGS)
 cpudec86_DEPENDENCIES = \
 	dosboxxr/lib/cpu/libcpu.a $(OPCC_H)
