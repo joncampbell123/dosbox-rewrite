@@ -1341,6 +1341,14 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                             rc = "RC_FPUREG";
                             suffix = "fbcd";
                             break;
+                        case OPDARGTYPE_FPUENV:
+                            szp = "0";
+                            suffix = "fenv";
+                            break;
+                        case OPDARGTYPE_FPUSTATE:
+                            szp = "0";
+                            suffix = "fstate";
+                            break;
                     }
 
                     fprintf(out_fp,"%%s");

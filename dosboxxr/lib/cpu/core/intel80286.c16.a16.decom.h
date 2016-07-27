@@ -2249,7 +2249,7 @@ switch (op=IPFB()) {
             case 0xA5: /* D9h A5h FLDENV fenv(r/m) mod=2 reg=4 rm=5      spec: 0xD9 mod/reg/rm /4 mod!=3 */
             case 0xA6: /* D9h A6h FLDENV fenv(r/m) mod=2 reg=4 rm=6      spec: 0xD9 mod/reg/rm /4 mod!=3 */
             case 0xA7: /* D9h A7h FLDENV fenv(r/m) mod=2 reg=4 rm=7      spec: 0xD9 mod/reg/rm /4 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FLDENV %s",IPDecPrint16(mrm,disp,2,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FLDENV %s",IPDecPrint16(mrm,disp,0,RC_REG,"fenv"));
                 break;
             case 0x28: /* D9h 28h FLDCW w16(r/m) mod=0 reg=5 rm=0      spec: 0xD9 mod/reg/rm /5 mod!=3 */
             case 0x29: /* D9h 29h FLDCW w16(r/m) mod=0 reg=5 rm=1      spec: 0xD9 mod/reg/rm /5 mod!=3 */
@@ -2301,7 +2301,7 @@ switch (op=IPFB()) {
             case 0xB5: /* D9h B5h FSTENV fenv(r/m) mod=2 reg=6 rm=5      spec: 0xD9 mod/reg/rm /6 mod!=3 */
             case 0xB6: /* D9h B6h FSTENV fenv(r/m) mod=2 reg=6 rm=6      spec: 0xD9 mod/reg/rm /6 mod!=3 */
             case 0xB7: /* D9h B7h FSTENV fenv(r/m) mod=2 reg=6 rm=7      spec: 0xD9 mod/reg/rm /6 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTENV %s",IPDecPrint16(mrm,disp,2,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTENV %s",IPDecPrint16(mrm,disp,0,RC_REG,"fenv"));
                 break;
             case 0x38: /* D9h 38h FSTCW w16(r/m) mod=0 reg=7 rm=0      spec: 0xD9 mod/reg/rm /7 mod!=3 */
             case 0x39: /* D9h 39h FSTCW w16(r/m) mod=0 reg=7 rm=1      spec: 0xD9 mod/reg/rm /7 mod!=3 */
@@ -3451,7 +3451,7 @@ switch (op=IPFB()) {
             case 0xA5: /* DDh A5h FRSTOR fstate(r/m) mod=2 reg=4 rm=5      spec: 0xDD mod/reg/rm /4 mod!=3 */
             case 0xA6: /* DDh A6h FRSTOR fstate(r/m) mod=2 reg=4 rm=6      spec: 0xDD mod/reg/rm /4 mod!=3 */
             case 0xA7: /* DDh A7h FRSTOR fstate(r/m) mod=2 reg=4 rm=7      spec: 0xDD mod/reg/rm /4 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FRSTOR %s",IPDecPrint16(mrm,disp,2,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FRSTOR %s",IPDecPrint16(mrm,disp,0,RC_REG,"fstate"));
                 break;
             /* opcode DDh 28h  not defined */
             /* opcode DDh 29h  not defined */
@@ -3485,7 +3485,7 @@ switch (op=IPFB()) {
             case 0xB5: /* DDh B5h FSAVE fstate(r/m) mod=2 reg=6 rm=5      spec: 0xDD mod/reg/rm /6 mod!=3 */
             case 0xB6: /* DDh B6h FSAVE fstate(r/m) mod=2 reg=6 rm=6      spec: 0xDD mod/reg/rm /6 mod!=3 */
             case 0xB7: /* DDh B7h FSAVE fstate(r/m) mod=2 reg=6 rm=7      spec: 0xDD mod/reg/rm /6 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSAVE %s",IPDecPrint16(mrm,disp,2,RC_REG,"w"));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSAVE %s",IPDecPrint16(mrm,disp,0,RC_REG,"fstate"));
                 break;
             case 0x38: /* DDh 38h FSTSW w16(r/m) mod=0 reg=7 rm=0      spec: 0xDD mod/reg/rm /7 mod!=3 */
             case 0x39: /* DDh 39h FSTSW w16(r/m) mod=0 reg=7 rm=1      spec: 0xDD mod/reg/rm /7 mod!=3 */
