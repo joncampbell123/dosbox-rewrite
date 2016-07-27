@@ -11,3 +11,13 @@ opcode 0x0F 0xBF mod/reg/rm:                    "MOVSX"w w(reg),w16(r/m)    ; Mo
 opcode 0x0F 0xB6 mod/reg/rm:                    "MOVZX"b w(reg),b(r/m)      ; Move With Zero Extension                  00001111 1011011w w=0
 opcode 0x0F 0xB7 mod/reg/rm:                    "MOVZX"w w(reg),w16(r/m)    ; Move With Zero Extension                  00001111 1011011w w=1
 
+; PUSH/POP FS/GS
+opcode 0x0F 0xA0:                               "PUSH"w w(fs)               ; Push                                      00001111 10<reg>000 reg=4
+opcode 0x0F 0xA1:                               "POP"w w(fs)                ; Pop                                       00001111 10<reg>001 reg=4
+opcode 0x0F 0xA8:                               "PUSH"w w(gs)               ; Push                                      00001111 10<reg>000 reg=5
+opcode 0x0F 0xA9:                               "POP"w w(gs)                ; Pop                                       00001111 10<reg>001 reg=5
+
+; LFS/LGS
+opcode 0x0F 0xB4 mod/reg/rm:                    "LFS"w w(reg),w(r/m)        ; Load Pointer to FS                        00001111 10110100
+opcode 0x0F 0xB5 mod/reg/rm:                    "LGS"w w(reg),w(r/m)        ; Load Pointer to FS                        00001111 10110101
+

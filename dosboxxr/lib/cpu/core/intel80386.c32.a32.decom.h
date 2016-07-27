@@ -803,16 +803,24 @@ switch (op=IPFB()) {
             /* opcode 0Fh 9Dh  not defined */
             /* opcode 0Fh 9Eh  not defined */
             /* opcode 0Fh 9Fh  not defined */
-            /* opcode 0Fh A0h  not defined */
-            /* opcode 0Fh A1h  not defined */
+            case 0xA0: /* 0Fh A0h PUSHd w(fs)      spec: 0x0F 0xA0 */
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PUSHd %s",CPUsregs_80386[4]);
+                break;
+            case 0xA1: /* 0Fh A1h POPd w(fs)      spec: 0x0F 0xA1 */
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"POPd %s",CPUsregs_80386[4]);
+                break;
             /* opcode 0Fh A2h  not defined */
             /* opcode 0Fh A3h  not defined */
             /* opcode 0Fh A4h  not defined */
             /* opcode 0Fh A5h  not defined */
             /* opcode 0Fh A6h  not defined */
             /* opcode 0Fh A7h  not defined */
-            /* opcode 0Fh A8h  not defined */
-            /* opcode 0Fh A9h  not defined */
+            case 0xA8: /* 0Fh A8h PUSHd w(gs)      spec: 0x0F 0xA8 */
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PUSHd %s",CPUsregs_80386[5]);
+                break;
+            case 0xA9: /* 0Fh A9h POPd w(gs)      spec: 0x0F 0xA9 */
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"POPd %s",CPUsregs_80386[5]);
+                break;
             /* opcode 0Fh AAh  not defined */
             /* opcode 0Fh ABh  not defined */
             /* opcode 0Fh ACh  not defined */
@@ -823,8 +831,14 @@ switch (op=IPFB()) {
             /* opcode 0Fh B1h  not defined */
             /* opcode 0Fh B2h  not defined */
             /* opcode 0Fh B3h  not defined */
-            /* opcode 0Fh B4h  not defined */
-            /* opcode 0Fh B5h  not defined */
+            case 0xB4: /* 0Fh B4h LFSd w(reg),w(r/m)      spec: 0x0F 0xB4 mod/reg/rm */
+                IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LFSd %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                break;
+            case 0xB5: /* 0Fh B5h LGSd w(reg),w(r/m)      spec: 0x0F 0xB5 mod/reg/rm */
+                IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LGSd %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"w"));
+                break;
             case 0xB6: /* 0Fh B6h MOVZXb w(reg),b(r/m)      spec: 0x0F 0xB6 mod/reg/rm */
                 IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVZXb %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
