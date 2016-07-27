@@ -5543,6 +5543,12 @@ jmp2:
     movd        mm1,edx
     movd        mm0,[bx+si]
     movd        mm0,[ebx+edi+0x12345678]
+    movd        eax,mm0
+    movd        ebx,mm0
+    movd        eax,mm1
+    movd        ebx,mm1
+    movd        [bx+si],mm0
+    movd        [ebx+edi+0x12345678],mm0
 
     movq        mm0,mm0
     movq        mm1,mm0
@@ -5551,4 +5557,59 @@ jmp2:
     movq        mm0,[si]
     movq        mm0,[bx+si]
     movq        mm0,[ebx+edi+0x12345678]
+    movq        [bx+si],mm0
+    movq        [ebx+edi+0x12345678],mm0
+
+    psrlw       mm0,[si]
+    psrlw       mm0,1
+
+    psraw       mm0,[si]
+    psraw       mm0,1
+
+    psllw       mm0,[si]
+    psllw       mm0,1
+
+    psrld       mm0,[si]
+    psrld       mm0,1
+
+    psrad       mm0,[si]
+    psrad       mm0,1
+
+    pslld       mm0,[si]
+    pslld       mm0,1
+
+    psrlq       mm0,[si]
+    psrlq       mm0,1
+
+    psllq       mm0,[si]
+    psllq       mm0,1
+
+    pcmpeqb     mm0,[si]
+    pcmpeqw     mm0,[si]
+    pcmpeqd     mm0,[si]
+
+    emms
+
+    paddq       mm0,[si]
+    pmullw      mm0,[si]
+    psubusb     mm0,[si]
+    psubusw     mm0,[si]
+    pand        mm0,[si]
+    paddusb     mm0,[si]
+    paddusw     mm0,[si]
+    pandn       mm0,[si]
+    pmulhw      mm0,[si]
+    psubsb      mm0,[si]
+    psubsw      mm0,[si]
+    por         mm0,[si]
+    paddsb      mm0,[si]
+    paddsw      mm0,[si]
+    pxor        mm0,[si]
+    pmaddwd     mm0,[si]
+    psubb       mm0,[si]
+    psubw       mm0,[si]
+    psubd       mm0,[si]
+    paddb       mm0,[si]
+    paddw       mm0,[si]
+    paddd       mm0,[si]
 

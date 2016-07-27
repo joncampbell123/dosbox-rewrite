@@ -833,21 +833,110 @@ switch (op=IPFB()) {
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVQ MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
                 break;
             /* opcode 0Fh 70h  not defined */
-            /* opcode 0Fh 71h  not defined */
-            /* opcode 0Fh 72h  not defined */
-            /* opcode 0Fh 73h  not defined */
-            /* opcode 0Fh 74h  not defined */
-            /* opcode 0Fh 75h  not defined */
-            /* opcode 0Fh 76h  not defined */
-            /* opcode 0Fh 77h  not defined */
+            case 0x71: /* 0Fh 71h        spec:  */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+/* Opcodes starting with 0Fh 71h */
+                switch (mrm.reg()) {
+                    /* reg 0 not defined */
+                    /* reg 1 not defined */
+                    case 2: /* 0Fh 71h 10h PSRLW mmx(r/m),i reg=2      spec: 0x0F 0x71 mod/reg/rm /2 ib */
+                        imm=IPFB();
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PSRLW %s,0x%02lX",IPDecPrint16(mrm,disp,8,RC_MMXREG,""),(unsigned long)((uint16_t)imm));
+                        break;
+                    /* reg 3 not defined */
+                    case 4: /* 0Fh 71h 20h PSRAW mmx(r/m),i reg=4      spec: 0x0F 0x71 mod/reg/rm /4 ib */
+                        imm=IPFB();
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PSRAW %s,0x%02lX",IPDecPrint16(mrm,disp,8,RC_MMXREG,""),(unsigned long)((uint16_t)imm));
+                        break;
+                    /* reg 5 not defined */
+                    case 6: /* 0Fh 71h 30h PSLLW mmx(r/m),i reg=6      spec: 0x0F 0x71 mod/reg/rm /6 ib */
+                        imm=IPFB();
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PSLLW %s,0x%02lX",IPDecPrint16(mrm,disp,8,RC_MMXREG,""),(unsigned long)((uint16_t)imm));
+                        break;
+                    /* reg 7 not defined */
+                    default:
+                        goto _x86decode_illegal_opcode;
+                };
+/* End of opcodes starting with 0Fh 71h */
+                break;
+            case 0x72: /* 0Fh 72h        spec:  */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+/* Opcodes starting with 0Fh 72h */
+                switch (mrm.reg()) {
+                    /* reg 0 not defined */
+                    /* reg 1 not defined */
+                    case 2: /* 0Fh 72h 10h PSRLD mmx(r/m),i reg=2      spec: 0x0F 0x72 mod/reg/rm /2 ib */
+                        imm=IPFB();
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PSRLD %s,0x%02lX",IPDecPrint16(mrm,disp,8,RC_MMXREG,""),(unsigned long)((uint16_t)imm));
+                        break;
+                    /* reg 3 not defined */
+                    case 4: /* 0Fh 72h 20h PSRAD mmx(r/m),i reg=4      spec: 0x0F 0x72 mod/reg/rm /4 ib */
+                        imm=IPFB();
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PSRAD %s,0x%02lX",IPDecPrint16(mrm,disp,8,RC_MMXREG,""),(unsigned long)((uint16_t)imm));
+                        break;
+                    /* reg 5 not defined */
+                    case 6: /* 0Fh 72h 30h PSLLD mmx(r/m),i reg=6      spec: 0x0F 0x72 mod/reg/rm /6 ib */
+                        imm=IPFB();
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PSLLD %s,0x%02lX",IPDecPrint16(mrm,disp,8,RC_MMXREG,""),(unsigned long)((uint16_t)imm));
+                        break;
+                    /* reg 7 not defined */
+                    default:
+                        goto _x86decode_illegal_opcode;
+                };
+/* End of opcodes starting with 0Fh 72h */
+                break;
+            case 0x73: /* 0Fh 73h        spec:  */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+/* Opcodes starting with 0Fh 73h */
+                switch (mrm.reg()) {
+                    /* reg 0 not defined */
+                    /* reg 1 not defined */
+                    case 2: /* 0Fh 73h 10h PSRLQ mmx(r/m),i reg=2      spec: 0x0F 0x73 mod/reg/rm /2 ib */
+                        imm=IPFB();
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PSRLQ %s,0x%02lX",IPDecPrint16(mrm,disp,8,RC_MMXREG,""),(unsigned long)((uint16_t)imm));
+                        break;
+                    /* reg 3 not defined */
+                    /* reg 4 not defined */
+                    /* reg 5 not defined */
+                    case 6: /* 0Fh 73h 30h PSLLQ mmx(r/m),i reg=6      spec: 0x0F 0x73 mod/reg/rm /6 ib */
+                        imm=IPFB();
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PSLLQ %s,0x%02lX",IPDecPrint16(mrm,disp,8,RC_MMXREG,""),(unsigned long)((uint16_t)imm));
+                        break;
+                    /* reg 7 not defined */
+                    default:
+                        goto _x86decode_illegal_opcode;
+                };
+/* End of opcodes starting with 0Fh 73h */
+                break;
+            case 0x74: /* 0Fh 74h PCMPEQB mmx(reg),mmx(r/m)      spec: 0x0F 0x74 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PCMPEQB MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
+            case 0x75: /* 0Fh 75h PCMPEQW mmx(reg),mmx(r/m)      spec: 0x0F 0x75 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PCMPEQW MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
+            case 0x76: /* 0Fh 76h PCMPEQD mmx(reg),mmx(r/m)      spec: 0x0F 0x76 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PCMPEQD MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
+            case 0x77: /* 0Fh 77h EMMS       spec: 0x0F 0x77 */
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"EMMS");
+                break;
             /* opcode 0Fh 78h  not defined */
             /* opcode 0Fh 79h  not defined */
             /* opcode 0Fh 7Ah  not defined */
             /* opcode 0Fh 7Bh  not defined */
             /* opcode 0Fh 7Ch  not defined */
             /* opcode 0Fh 7Dh  not defined */
-            /* opcode 0Fh 7Eh  not defined */
-            /* opcode 0Fh 7Fh  not defined */
+            case 0x7E: /* 0Fh 7Eh MOVD w32(r/m),mmx(reg)      spec: 0x0F 0x7E mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVD %s,MM%u",IPDecPrint16(mrm,disp,4,RC_REG,"w32"),mrm.reg());
+                break;
+            case 0x7F: /* 0Fh 7Fh MOVQ mmx(r/m),mmx(reg)      spec: 0x0F 0x7F mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVQ %s,MM%u",IPDecPrint16(mrm,disp,8,RC_MMXREG,""),mrm.reg());
+                break;
             case 0x80: /* 0Fh 80h JO w(i+ip)      spec: 0x0F 0x80 iws */
                 imm=IPFcodeWsigned();
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JO 0x%04lX",(unsigned long)((uint16_t)(imm+IPval())));
@@ -1399,52 +1488,142 @@ switch (op=IPFB()) {
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"BSWAPw %s",CPUregsN[2][op&7]);
                 break;
             /* opcode 0Fh D0h  not defined */
-            /* opcode 0Fh D1h  not defined */
-            /* opcode 0Fh D2h  not defined */
-            /* opcode 0Fh D3h  not defined */
-            /* opcode 0Fh D4h  not defined */
-            /* opcode 0Fh D5h  not defined */
+            case 0xD1: /* 0Fh D1h PSRLW mmx(reg),mmx(r/m)      spec: 0x0F 0xD1 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PSRLW MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
+            case 0xD2: /* 0Fh D2h PSRLD mmx(reg),mmx(r/m)      spec: 0x0F 0xD2 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PSRLD MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
+            case 0xD3: /* 0Fh D3h PSRLQ mmx(reg),mmx(r/m)      spec: 0x0F 0xD3 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PSRLQ MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
+            case 0xD4: /* 0Fh D4h PADDQ mmx(reg),mmx(r/m)      spec: 0x0F 0xD4 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PADDQ MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
+            case 0xD5: /* 0Fh D5h PMULLW mmx(reg),mmx(r/m)      spec: 0x0F 0xD5 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PMULLW MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
             /* opcode 0Fh D6h  not defined */
             /* opcode 0Fh D7h  not defined */
-            /* opcode 0Fh D8h  not defined */
-            /* opcode 0Fh D9h  not defined */
+            case 0xD8: /* 0Fh D8h PSUBUSB mmx(reg),mmx(r/m)      spec: 0x0F 0xD8 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PSUBUSB MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
+            case 0xD9: /* 0Fh D9h PSUBUSW mmx(reg),mmx(r/m)      spec: 0x0F 0xD9 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PSUBUSW MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
             /* opcode 0Fh DAh  not defined */
-            /* opcode 0Fh DBh  not defined */
-            /* opcode 0Fh DCh  not defined */
-            /* opcode 0Fh DDh  not defined */
+            case 0xDB: /* 0Fh DBh PAND mmx(reg),mmx(r/m)      spec: 0x0F 0xDB mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PAND MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
+            case 0xDC: /* 0Fh DCh PADDUSB mmx(reg),mmx(r/m)      spec: 0x0F 0xDC mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PADDUSB MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
+            case 0xDD: /* 0Fh DDh PADDUSW mmx(reg),mmx(r/m)      spec: 0x0F 0xDD mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PADDUSW MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
             /* opcode 0Fh DEh  not defined */
-            /* opcode 0Fh DFh  not defined */
+            case 0xDF: /* 0Fh DFh PANDN mmx(reg),mmx(r/m)      spec: 0x0F 0xDF mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PANDN MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
             /* opcode 0Fh E0h  not defined */
-            /* opcode 0Fh E1h  not defined */
-            /* opcode 0Fh E2h  not defined */
+            case 0xE1: /* 0Fh E1h PSRAW mmx(reg),mmx(r/m)      spec: 0x0F 0xE1 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PSRAW MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
+            case 0xE2: /* 0Fh E2h PSRAD mmx(reg),mmx(r/m)      spec: 0x0F 0xE2 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PSRAD MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
             /* opcode 0Fh E3h  not defined */
             /* opcode 0Fh E4h  not defined */
-            /* opcode 0Fh E5h  not defined */
+            case 0xE5: /* 0Fh E5h PMULHW mmx(reg),mmx(r/m)      spec: 0x0F 0xE5 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PMULHW MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
             /* opcode 0Fh E6h  not defined */
             /* opcode 0Fh E7h  not defined */
-            /* opcode 0Fh E8h  not defined */
-            /* opcode 0Fh E9h  not defined */
+            case 0xE8: /* 0Fh E8h PSUBSB mmx(reg),mmx(r/m)      spec: 0x0F 0xE8 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PSUBSB MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
+            case 0xE9: /* 0Fh E9h PSUBSW mmx(reg),mmx(r/m)      spec: 0x0F 0xE9 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PSUBSW MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
             /* opcode 0Fh EAh  not defined */
-            /* opcode 0Fh EBh  not defined */
-            /* opcode 0Fh ECh  not defined */
-            /* opcode 0Fh EDh  not defined */
+            case 0xEB: /* 0Fh EBh POR mmx(reg),mmx(r/m)      spec: 0x0F 0xEB mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"POR MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
+            case 0xEC: /* 0Fh ECh PADDSB mmx(reg),mmx(r/m)      spec: 0x0F 0xEC mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PADDSB MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
+            case 0xED: /* 0Fh EDh PADDSW mmx(reg),mmx(r/m)      spec: 0x0F 0xED mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PADDSW MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
             /* opcode 0Fh EEh  not defined */
-            /* opcode 0Fh EFh  not defined */
+            case 0xEF: /* 0Fh EFh PXOR mmx(reg),mmx(r/m)      spec: 0x0F 0xEF mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PXOR MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
             /* opcode 0Fh F0h  not defined */
-            /* opcode 0Fh F1h  not defined */
-            /* opcode 0Fh F2h  not defined */
-            /* opcode 0Fh F3h  not defined */
+            case 0xF1: /* 0Fh F1h PSLLW mmx(reg),mmx(r/m)      spec: 0x0F 0xF1 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PSLLW MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
+            case 0xF2: /* 0Fh F2h PSLLD mmx(reg),mmx(r/m)      spec: 0x0F 0xF2 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PSLLD MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
+            case 0xF3: /* 0Fh F3h PSLLQ mmx(reg),mmx(r/m)      spec: 0x0F 0xF3 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PSLLQ MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
             /* opcode 0Fh F4h  not defined */
-            /* opcode 0Fh F5h  not defined */
+            case 0xF5: /* 0Fh F5h PMADDWD mmx(reg),mmx(r/m)      spec: 0x0F 0xF5 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PMADDWD MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
             /* opcode 0Fh F6h  not defined */
             /* opcode 0Fh F7h  not defined */
-            /* opcode 0Fh F8h  not defined */
-            /* opcode 0Fh F9h  not defined */
-            /* opcode 0Fh FAh  not defined */
+            case 0xF8: /* 0Fh F8h PSUBB mmx(reg),mmx(r/m)      spec: 0x0F 0xF8 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PSUBB MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
+            case 0xF9: /* 0Fh F9h PSUBW mmx(reg),mmx(r/m)      spec: 0x0F 0xF9 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PSUBW MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
+            case 0xFA: /* 0Fh FAh PSUBD mmx(reg),mmx(r/m)      spec: 0x0F 0xFA mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PSUBD MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
             /* opcode 0Fh FBh  not defined */
-            /* opcode 0Fh FCh  not defined */
-            /* opcode 0Fh FDh  not defined */
-            /* opcode 0Fh FEh  not defined */
+            case 0xFC: /* 0Fh FCh PADDB mmx(reg),mmx(r/m)      spec: 0x0F 0xFC mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PADDB MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
+            case 0xFD: /* 0Fh FDh PADDW mmx(reg),mmx(r/m)      spec: 0x0F 0xFD mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PADDW MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
+            case 0xFE: /* 0Fh FEh PADDD mmx(reg),mmx(r/m)      spec: 0x0F 0xFE mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PADDD MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
             /* opcode 0Fh FFh  not defined */
             default:
                 goto _x86decode_illegal_opcode;
