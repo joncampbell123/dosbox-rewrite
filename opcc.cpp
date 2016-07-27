@@ -1282,7 +1282,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                 else if (arg.arg == OPDARG_rm) {
                     const char *szp;
                     const char *rc = "RC_REG";
-                    const char *suffix = "w";
+                    const char *suffix = codewidth == 32 ? "d" : "w";
 
                     if (generic1632)
                         szp = "code32?4:2";

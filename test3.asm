@@ -411,6 +411,8 @@ jmp1:
     add     bx,sp
 
 ;--------------dword
+    add     byte [ebx+esi],bl
+    add     word [ebx+esi],bx
     add     dword [bx+si],ebx
     add     dword [ebx+esi],ebx ; 00 m/r/m mod=0
     add     dword [ebx+edi],ebx ; 00 m/r/m mod=0
