@@ -2668,15 +2668,21 @@ switch (op=IPFB()) {
             case 0xFA: /* D9h FAh FSQRT  mod=3 reg=7 rm=2      spec: 0xD9 0xFA */
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSQRT");
                 break;
-            /* opcode D9h FBh  not defined */
+            case 0xFB: /* D9h FBh FSINCOS  mod=3 reg=7 rm=3      spec: 0xD9 0xFB */
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSINCOS");
+                break;
             case 0xFC: /* D9h FCh FRNDINT  mod=3 reg=7 rm=4      spec: 0xD9 0xFC */
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FRNDINT");
                 break;
             case 0xFD: /* D9h FDh FSCALE  mod=3 reg=7 rm=5      spec: 0xD9 0xFD */
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSCALE");
                 break;
-            /* opcode D9h FEh  not defined */
-            /* opcode D9h FFh  not defined */
+            case 0xFE: /* D9h FEh FSIN  mod=3 reg=7 rm=6      spec: 0xD9 0xFE */
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSIN");
+                break;
+            case 0xFF: /* D9h FFh FCOS  mod=3 reg=7 rm=7      spec: 0xD9 0xFF */
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FCOS");
+                break;
             default:
                 goto _x86decode_illegal_opcode;
         };
@@ -2935,7 +2941,9 @@ switch (op=IPFB()) {
             /* opcode DAh E6h  not defined */
             /* opcode DAh E7h  not defined */
             /* opcode DAh E8h  not defined */
-            /* opcode DAh E9h  not defined */
+            case 0xE9: /* DAh E9h FUCOMPP  mod=3 reg=5 rm=1      spec: 0xDA 0xE9 */
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FUCOMPP");
+                break;
             /* opcode DAh EAh  not defined */
             /* opcode DAh EBh  not defined */
             /* opcode DAh ECh  not defined */
@@ -3787,22 +3795,26 @@ switch (op=IPFB()) {
             case 0xDF: /* DDh DFh FSTP st(r/m) mod=3 reg=3 rm=7      spec: 0xDD mod/reg/rm /3 mod==3 */
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTP %s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
                 break;
-            /* opcode DDh E0h  not defined */
-            /* opcode DDh E1h  not defined */
-            /* opcode DDh E2h  not defined */
-            /* opcode DDh E3h  not defined */
-            /* opcode DDh E4h  not defined */
-            /* opcode DDh E5h  not defined */
-            /* opcode DDh E6h  not defined */
-            /* opcode DDh E7h  not defined */
-            /* opcode DDh E8h  not defined */
-            /* opcode DDh E9h  not defined */
-            /* opcode DDh EAh  not defined */
-            /* opcode DDh EBh  not defined */
-            /* opcode DDh ECh  not defined */
-            /* opcode DDh EDh  not defined */
-            /* opcode DDh EEh  not defined */
-            /* opcode DDh EFh  not defined */
+            case 0xE0: /* DDh E0h FUCOM st(r/m) mod=3 reg=4 rm=0      spec: 0xDD mod/reg/rm mod==3 /4 */
+            case 0xE1: /* DDh E1h FUCOM st(r/m) mod=3 reg=4 rm=1      spec: 0xDD mod/reg/rm mod==3 /4 */
+            case 0xE2: /* DDh E2h FUCOM st(r/m) mod=3 reg=4 rm=2      spec: 0xDD mod/reg/rm mod==3 /4 */
+            case 0xE3: /* DDh E3h FUCOM st(r/m) mod=3 reg=4 rm=3      spec: 0xDD mod/reg/rm mod==3 /4 */
+            case 0xE4: /* DDh E4h FUCOM st(r/m) mod=3 reg=4 rm=4      spec: 0xDD mod/reg/rm mod==3 /4 */
+            case 0xE5: /* DDh E5h FUCOM st(r/m) mod=3 reg=4 rm=5      spec: 0xDD mod/reg/rm mod==3 /4 */
+            case 0xE6: /* DDh E6h FUCOM st(r/m) mod=3 reg=4 rm=6      spec: 0xDD mod/reg/rm mod==3 /4 */
+            case 0xE7: /* DDh E7h FUCOM st(r/m) mod=3 reg=4 rm=7      spec: 0xDD mod/reg/rm mod==3 /4 */
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FUCOM %s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
+                break;
+            case 0xE8: /* DDh E8h FUCOMP st(r/m) mod=3 reg=5 rm=0      spec: 0xDD mod/reg/rm mod==3 /5 */
+            case 0xE9: /* DDh E9h FUCOMP st(r/m) mod=3 reg=5 rm=1      spec: 0xDD mod/reg/rm mod==3 /5 */
+            case 0xEA: /* DDh EAh FUCOMP st(r/m) mod=3 reg=5 rm=2      spec: 0xDD mod/reg/rm mod==3 /5 */
+            case 0xEB: /* DDh EBh FUCOMP st(r/m) mod=3 reg=5 rm=3      spec: 0xDD mod/reg/rm mod==3 /5 */
+            case 0xEC: /* DDh ECh FUCOMP st(r/m) mod=3 reg=5 rm=4      spec: 0xDD mod/reg/rm mod==3 /5 */
+            case 0xED: /* DDh EDh FUCOMP st(r/m) mod=3 reg=5 rm=5      spec: 0xDD mod/reg/rm mod==3 /5 */
+            case 0xEE: /* DDh EEh FUCOMP st(r/m) mod=3 reg=5 rm=6      spec: 0xDD mod/reg/rm mod==3 /5 */
+            case 0xEF: /* DDh EFh FUCOMP st(r/m) mod=3 reg=5 rm=7      spec: 0xDD mod/reg/rm mod==3 /5 */
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FUCOMP %s",IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
+                break;
             /* opcode DDh F0h  not defined */
             /* opcode DDh F1h  not defined */
             /* opcode DDh F2h  not defined */
