@@ -48,7 +48,8 @@ cpumemreftypes_LDADD =
 
 OPCC_H = \
 	dosboxxr/lib/cpu/core/intel8088.c16.a16.decom.h \
-	dosboxxr/lib/cpu/core/intel80286.c16.a16.decom.h
+	dosboxxr/lib/cpu/core/intel80286.c16.a16.decom.h \
+	dosboxxr/lib/cpu/core/intel80386.c16.a16.decom.h
 
 test1.bin: test1.asm
 	yasm -o $@ -f bin $<
@@ -73,6 +74,11 @@ dosboxxr/lib/cpu/core/intel80286.opcodes.p: opcodes/intel80286.opcodes
 	$(BUILD_CPP) -I. opcodes/intel80286.opcodes -o $@
 dosboxxr/lib/cpu/core/intel80286.c16.a16.decom.h: dosboxxr/lib/cpu/core/intel80286.opcodes.p opcc$(EXEEXT)
 	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80286.opcodes.p -o $@ -m decompile
+
+dosboxxr/lib/cpu/core/intel80386.opcodes.p: opcodes/intel80386.opcodes
+	$(BUILD_CPP) -I. opcodes/intel80386.opcodes -o $@
+dosboxxr/lib/cpu/core/intel80386.c16.a16.decom.h: dosboxxr/lib/cpu/core/intel80386.opcodes.p opcc$(EXEEXT)
+	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80386.opcodes.p -o $@ -m decompile
 
 # grrr how do I get automake to run opcc first before compiling other parts?
 opcodes: $(OPCC_H)

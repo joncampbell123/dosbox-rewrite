@@ -1,0 +1,16 @@
+; Intel 80386 decompiler/core
+
+#define CORE86 3
+#define CORE_8086_F6_TEST_ALIAS
+#define CORE_386_LOADALL
+
+#include "opcodes/intel8086.common.opcodes"
+#include "opcodes/intel80286.common.opcodes"
+#include "opcodes/intel80386.common.opcodes"
+
+#define CORE87 3
+
+#include "opcodes/intel8087.common.opcodes"
+#include "opcodes/intel80287.common.opcodes"
+#include "opcodes/intel80387.common.opcodes"
+
