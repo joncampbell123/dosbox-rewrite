@@ -110,6 +110,8 @@ _x86done:
 //// END CORE
 
 static void IPDec_80386(x86_offset_t ip) {
+    bool code32=exe_code32;
+    bool addr32=exe_code32;
     x86ScaleIndexBase sib;
     bool prefix66=false;
     bool prefix67=false;
@@ -137,21 +139,26 @@ static void IPDec_80386(x86_offset_t ip) {
      *       x86 decoding for common cases (code=16 and addr=16 OR code=32 and addr=32),
      *       and leave generic decoding for uncommon cases including use of op/addr overrides
      *       to execute 32-bit code in 16-bit real mode. */
+
+// COMMON CASE
 _x86decode_begin_code16_addr16:
 _x86decode_after_prefix_code16_addr16:
 _x86decode_after_prefix_386override_code16_addr16:
 #include "dosboxxr/lib/cpu/core/intel80386.c16.a16.decom.h"
     goto _x86done;
+// UNCOMMON CASE
 _x86decode_begin_code16_addr32:
 _x86decode_after_prefix_code16_addr32:
 _x86decode_after_prefix_386override_code16_addr32:
 #include "dosboxxr/lib/cpu/core/intel80386.c16.a32.decom.h"
     goto _x86done;
+// UNCOMMON CASE
 _x86decode_begin_code32_addr16:
 _x86decode_after_prefix_code32_addr16:
 _x86decode_after_prefix_386override_code32_addr16:
 #include "dosboxxr/lib/cpu/core/intel80386.c32.a16.decom.h"
     goto _x86done;
+// COMMON CASE
 _x86decode_begin_code32_addr32:
 _x86decode_after_prefix_code32_addr32:
 _x86decode_after_prefix_386override_code32_addr32:

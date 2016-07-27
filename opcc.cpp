@@ -185,6 +185,9 @@ enum opccMode cc_mode = MOD_DECOMPILE;
 int     sel_code_width = 16;
 int     sel_addr_width = 16;
 
+bool    generic1632 = false;
+bool    c32vars = false;
+ 
 static void help() {
     fprintf(stderr,"opcc [options]\n");
     fprintf(stderr,"Take a DOSBox-XR opcode sheet and generate C++ code to handle it.\n");
@@ -196,6 +199,8 @@ static void help() {
     fprintf(stderr,"        execute          Generate code to execute instructions\n");
     fprintf(stderr,"   -c <width>          Code width (16 or 32)\n");
     fprintf(stderr,"   -a <width>          Address width (16 or 32)\n");
+    fprintf(stderr,"   -g                  Generic 16/32-bit decode\n");
+    fprintf(stderr,"   -c32vars            Variables code32/addr32 exist\n");
 }
 
 static bool parse(int argc,char **argv) {
@@ -211,6 +216,12 @@ static bool parse(int argc,char **argv) {
             if (!strcmp(a,"h") || !strcmp(a,"help")) {
                 help();
                 return false;
+            }
+            else if (!strcmp(a,"g")) {
+                generic1632 = true;
+            }
+            else if (!strcmp(a,"c32vars")) {
+                c32vars = true;
             }
             else if (!strcmp(a,"c")) {
                 a = argv[i++];
@@ -1440,12 +1451,18 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
             else if (jaw == 16) jaw = 32;
         }
 
-        if (submap->opsz32 || submap->addrsz32)
+        if (submap->opsz32 || submap->addrsz32) {
+            if (c32vars)
+                fprintf(out_fp,"%s        code32=%u; addr32=%u;\n",
+                        indent_str.c_str(),jcw==32?1:0,jaw==32?1:0);
+
             fprintf(out_fp,"%s        goto _x86decode_after_prefix_386override_code%u_addr%u;\n",
                 indent_str.c_str(),jcw,jaw);
-        else
+        }
+        else {
             fprintf(out_fp,"%s        goto _x86decode_after_prefix_code%u_addr%u;\n",
                 indent_str.c_str(),jcw,jaw);
+        }
     }
     else {
         fprintf(out_fp,"%s        break;\n",indent_str.c_str());

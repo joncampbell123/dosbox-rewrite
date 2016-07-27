@@ -81,13 +81,13 @@ dosboxxr/lib/cpu/core/intel80286.c16.a16.decom.h: dosboxxr/lib/cpu/core/intel802
 dosboxxr/lib/cpu/core/intel80386.opcodes.p: opcodes/intel80386.opcodes
 	$(BUILD_CPP) -I. opcodes/intel80386.opcodes -o $@
 dosboxxr/lib/cpu/core/intel80386.c16.a16.decom.h: dosboxxr/lib/cpu/core/intel80386.opcodes.p opcc$(EXEEXT)
-	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80386.opcodes.p -o $@ -m decompile -c 16 -a 16
+	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80386.opcodes.p -o $@ -m decompile -c 16 -a 16 -c32vars
 dosboxxr/lib/cpu/core/intel80386.c16.a32.decom.h: dosboxxr/lib/cpu/core/intel80386.opcodes.p opcc$(EXEEXT)
-	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80386.opcodes.p -o $@ -m decompile -c 16 -a 32
+	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80386.opcodes.p -o $@ -m decompile -c 16 -a 32 -c32vars -g
 dosboxxr/lib/cpu/core/intel80386.c32.a16.decom.h: dosboxxr/lib/cpu/core/intel80386.opcodes.p opcc$(EXEEXT)
-	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80386.opcodes.p -o $@ -m decompile -c 32 -a 16
+	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80386.opcodes.p -o $@ -m decompile -c 32 -a 16 -c32vars -g
 dosboxxr/lib/cpu/core/intel80386.c32.a32.decom.h: dosboxxr/lib/cpu/core/intel80386.opcodes.p opcc$(EXEEXT)
-	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80386.opcodes.p -o $@ -m decompile -c 32 -a 32
+	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80386.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars
 
 # grrr how do I get automake to run opcc first before compiling other parts?
 opcodes: $(OPCC_H)
