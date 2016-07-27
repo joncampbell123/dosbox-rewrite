@@ -25,3 +25,41 @@ opcode 0x0F 0xB5 mod/reg/rm:                    "LGS"w w(reg),w(r/m)        ; Lo
 ; ICEBP/INT1
 opcode 0xF1:                                    "INT1"                      ; Call interrupt procedure                  11110001
 
+; IMUL
+opcode 0x0F 0xAF mod/reg/rm:                    "IMUL"w w(reg),w(r/m)       ; Signed Multiply                           00001111 10101111
+
+; 386-specific
+#ifdef CORE_386_LOADALL
+opcode 0x0F 0x07:                               "LOADALL386"                ; Undocumented 386 "LOADALL" instruction
+#endif
+
+; bit scan/test
+opcode 0x0F 0xA3 mod/reg/rm:                    "BT"w w(r/m),w(reg)         ; Bit Test                                  00001111 10100011
+opcode 0x0F 0xBA mod/reg/rm /4 ib:              "BT"w w(r/m),i              ; Bit Test                                  00001111 10111010
+opcode 0x0F 0xAB mod/reg/rm:                    "BTS"w w(r/m),w(reg)        ; Bit Test and Set                          00001111 10101011
+opcode 0x0F 0xBA mod/reg/rm /5 ib:              "BTS"w w(r/m),i             ; Bit Test and Set                          00001111 10111010
+opcode 0x0F 0xB3 mod/reg/rm:                    "BTR"w w(r/m),w(reg)        ; Bit Test and Reset                        00001111 10110011
+opcode 0x0F 0xBA mod/reg/rm /6 ib:              "BTR"w w(r/m),i             ; Bit Test and Reset                        00001111 10111010
+opcode 0x0F 0xBB mod/reg/rm:                    "BTC"w w(r/m),w(reg)        ; Bit Test and Complement                   00001111 10111011
+opcode 0x0F 0xBA mod/reg/rm /7 ib:              "BTC"w w(r/m),i             ; Bit Test and Complement                   00001111 10111010
+opcode 0x0F 0xBC mod/reg/rm:                    "BSF"w w(reg),w(r/m)        ; Bit Scan Forward                          00001111 10111100
+opcode 0x0F 0xBD mod/reg/rm:                    "BSR"w w(reg),w(r/m)        ; Bit Scan Reverse                          00001111 10111101
+
+; JMP conditional (near)
+opcode 0x0F 0x80 iws:                           "JO" w(i+ip)                ; Jump on Overflow                          01110000
+opcode 0x0F 0x81 iws:                           "JNO" w(i+ip)               ; Jump on Not Overflow                      01110001
+opcode 0x0F 0x82 iws:                           "JB" w(i+ip)                ; Jump on Below, Not (Above or Equal)       01110010
+opcode 0x0F 0x83 iws:                           "JNB" w(i+ip)               ; Jump on Not Below (Above or Equal)        01110011
+opcode 0x0F 0x84 iws:                           "JZ" w(i+ip)                ; Jump on Zero/Equal                        01110100
+opcode 0x0F 0x85 iws:                           "JNZ" w(i+ip)               ; Jump on Not Zero/Equal                    01110101
+opcode 0x0F 0x86 iws:                           "JBE" w(i+ip)               ; Jump on Below or Equal                    01110110
+opcode 0x0F 0x87 iws:                           "JA" w(i+ip)                ; Jump on Above                             01110111
+opcode 0x0F 0x88 iws:                           "JS" w(i+ip)                ; Jump on Sign                              01111000
+opcode 0x0F 0x89 iws:                           "JNS" w(i+ip)               ; Jump on Not Sign                          01111001
+opcode 0x0F 0x8A iws:                           "JPE" w(i+ip)               ; Jump on Parity/Parity Even                01111010
+opcode 0x0F 0x8B iws:                           "JPO" w(i+ip)               ; Jump on Not Parity/Parity Odd             01111011
+opcode 0x0F 0x8C iws:                           "JL" w(i+ip)                ; Jump on Less than                         01111100
+opcode 0x0F 0x8D iws:                           "JGE" w(i+ip)               ; Jump on Greater Than                      01111101
+opcode 0x0F 0x8E iws:                           "JLE" w(i+ip)               ; Jump on Less Than or Equal                01111110
+opcode 0x0F 0x8F iws:                           "JG" w(i+ip)                ; Jump on Greater Than                      01111111
+
