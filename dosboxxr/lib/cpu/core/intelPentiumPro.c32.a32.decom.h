@@ -3268,14 +3268,6 @@ switch (op=IPFB()) {
             case 0xC5: /* DAh C5h FCMOVB st(0),st(r/m) mod=3 reg=0 rm=5      spec: 0xDA mod/reg/rm /0 mod==3 */
             case 0xC6: /* DAh C6h FCMOVB st(0),st(r/m) mod=3 reg=0 rm=6      spec: 0xDA mod/reg/rm /0 mod==3 */
             case 0xC7: /* DAh C7h FCMOVB st(0),st(r/m) mod=3 reg=0 rm=7      spec: 0xDA mod/reg/rm /0 mod==3 */
-            case 0xD0: /* DAh D0h FCMOVB st(0),st(r/m) mod=3 reg=2 rm=0      spec: 0xDA mod/reg/rm /2 mod==3 */
-            case 0xD1: /* DAh D1h FCMOVB st(0),st(r/m) mod=3 reg=2 rm=1      spec: 0xDA mod/reg/rm /2 mod==3 */
-            case 0xD2: /* DAh D2h FCMOVB st(0),st(r/m) mod=3 reg=2 rm=2      spec: 0xDA mod/reg/rm /2 mod==3 */
-            case 0xD3: /* DAh D3h FCMOVB st(0),st(r/m) mod=3 reg=2 rm=3      spec: 0xDA mod/reg/rm /2 mod==3 */
-            case 0xD4: /* DAh D4h FCMOVB st(0),st(r/m) mod=3 reg=2 rm=4      spec: 0xDA mod/reg/rm /2 mod==3 */
-            case 0xD5: /* DAh D5h FCMOVB st(0),st(r/m) mod=3 reg=2 rm=5      spec: 0xDA mod/reg/rm /2 mod==3 */
-            case 0xD6: /* DAh D6h FCMOVB st(0),st(r/m) mod=3 reg=2 rm=6      spec: 0xDA mod/reg/rm /2 mod==3 */
-            case 0xD7: /* DAh D7h FCMOVB st(0),st(r/m) mod=3 reg=2 rm=7      spec: 0xDA mod/reg/rm /2 mod==3 */
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FCMOVB ST(%u),%s",0,IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
                 break;
             case 0xC8: /* DAh C8h FCMOVE st(0),st(r/m) mod=3 reg=1 rm=0      spec: 0xDA mod/reg/rm /1 mod==3 */
@@ -3287,6 +3279,16 @@ switch (op=IPFB()) {
             case 0xCE: /* DAh CEh FCMOVE st(0),st(r/m) mod=3 reg=1 rm=6      spec: 0xDA mod/reg/rm /1 mod==3 */
             case 0xCF: /* DAh CFh FCMOVE st(0),st(r/m) mod=3 reg=1 rm=7      spec: 0xDA mod/reg/rm /1 mod==3 */
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FCMOVE ST(%u),%s",0,IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
+                break;
+            case 0xD0: /* DAh D0h FCMOVBE st(0),st(r/m) mod=3 reg=2 rm=0      spec: 0xDA mod/reg/rm /2 mod==3 */
+            case 0xD1: /* DAh D1h FCMOVBE st(0),st(r/m) mod=3 reg=2 rm=1      spec: 0xDA mod/reg/rm /2 mod==3 */
+            case 0xD2: /* DAh D2h FCMOVBE st(0),st(r/m) mod=3 reg=2 rm=2      spec: 0xDA mod/reg/rm /2 mod==3 */
+            case 0xD3: /* DAh D3h FCMOVBE st(0),st(r/m) mod=3 reg=2 rm=3      spec: 0xDA mod/reg/rm /2 mod==3 */
+            case 0xD4: /* DAh D4h FCMOVBE st(0),st(r/m) mod=3 reg=2 rm=4      spec: 0xDA mod/reg/rm /2 mod==3 */
+            case 0xD5: /* DAh D5h FCMOVBE st(0),st(r/m) mod=3 reg=2 rm=5      spec: 0xDA mod/reg/rm /2 mod==3 */
+            case 0xD6: /* DAh D6h FCMOVBE st(0),st(r/m) mod=3 reg=2 rm=6      spec: 0xDA mod/reg/rm /2 mod==3 */
+            case 0xD7: /* DAh D7h FCMOVBE st(0),st(r/m) mod=3 reg=2 rm=7      spec: 0xDA mod/reg/rm /2 mod==3 */
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FCMOVBE ST(%u),%s",0,IPDecPrint32(mrm,sib,disp,8,RC_FPUREG,""));
                 break;
             case 0xD8: /* DAh D8h FCMOVU st(0),st(r/m) mod=3 reg=3 rm=0      spec: 0xDA mod/reg/rm /3 mod==3 */
             case 0xD9: /* DAh D9h FCMOVU st(0),st(r/m) mod=3 reg=3 rm=1      spec: 0xDA mod/reg/rm /3 mod==3 */
