@@ -48,4 +48,5 @@ static inline uint32_t IPDec32abs(uint32_t v) {
 
 const char *IPDecPrint16(const x86ModRegRm &mrm,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass,const char *suffix);
 const char *IPDecPrint32(const x86ModRegRm &mrm,const x86ScaleIndexBase &sib,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass,const char *suffix);
+const char *IPDecPrint1632(const bool addr32,const x86ModRegRm &mrm,const x86ScaleIndexBase &sib,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass,const char *suffix);
 

@@ -235,3 +235,10 @@ const char *IPDecPrint32(const x86ModRegRm &mrm,const x86ScaleIndexBase &sib,con
     return tmp;
 }
 
+const char *IPDecPrint1632(const bool addr32,const x86ModRegRm &mrm,const x86ScaleIndexBase &sib,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass,const char *suffix) {
+    if (addr32)
+        return IPDecPrint32(mrm,sib,ofs,sz,regclass,suffix);
+    else
+        return IPDecPrint16(mrm,ofs,sz,regclass,suffix);
+}
+

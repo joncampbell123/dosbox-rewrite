@@ -140,6 +140,22 @@ static void IPDec_80386(x86_offset_t ip) {
      *       and leave generic decoding for uncommon cases including use of op/addr overrides
      *       to execute 32-bit code in 16-bit real mode. */
 
+#if 1
+_x86decode_begin_code16_addr16:
+_x86decode_after_prefix_code16_addr16:
+_x86decode_after_prefix_386override_code16_addr16:
+_x86decode_begin_code16_addr32:
+_x86decode_after_prefix_code16_addr32:
+_x86decode_after_prefix_386override_code16_addr32:
+_x86decode_begin_code32_addr16:
+_x86decode_after_prefix_code32_addr16:
+_x86decode_after_prefix_386override_code32_addr16:
+_x86decode_begin_code32_addr32:
+_x86decode_after_prefix_code32_addr32:
+_x86decode_after_prefix_386override_code32_addr32:
+#include "dosboxxr/lib/cpu/core/intel80386.c16.a32.decom.h"
+    goto _x86done;
+#else
 // COMMON CASE
 _x86decode_begin_code16_addr16:
 _x86decode_after_prefix_code16_addr16:
@@ -164,6 +180,7 @@ _x86decode_after_prefix_code32_addr32:
 _x86decode_after_prefix_386override_code32_addr32:
 #include "dosboxxr/lib/cpu/core/intel80386.c32.a32.decom.h"
     goto _x86done;
+#endif
 _x86decode_illegal_opcode:
 _x86done:
     { } /* shut up GCC */
