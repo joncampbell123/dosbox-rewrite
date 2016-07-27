@@ -4410,6 +4410,10 @@ switch (op=IPFB()) {
     default:
         goto _x86decode_illegal_opcode;
 };
+/* reminder: if your code allows 32-bit code/addr, and this code is decoding in a loop, you need to add this after this header: */
+/* if (prefix66 && prefix67) { prefix66=prefix67=0; goto _x86decode_after_prefix_code32_addr32; } */
+/* else if (prefix66) { prefix66=0; goto _x86decode_after_prefix_code32_addr16; } */
+/* else if (prefix67) { prefix67=0; goto _x86decode_after_prefix_code16_addr32; } */
 #undef IPFaddrW
 #undef IPFaddrWsigned
 #undef IPFcodeW

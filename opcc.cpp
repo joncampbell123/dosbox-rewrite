@@ -1082,6 +1082,10 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
 
     if (submap->modregrm)
         fprintf(out_fp,"%s        IPFB_mrm_sib_disp_a%u_read(mrm,sib,disp);\n",indent_str.c_str(),addrwidth);
+    if (submap->opsz32)
+        fprintf(out_fp,"%s        prefix66 ^= 1;\n");
+    if (submap->addrsz32)
+        fprintf(out_fp,"%s        prefix67 ^= 1;\n");
 
     /* then fetch other args */
     for (size_t i=0;i < submap->immarg.size();i++) {
@@ -1635,6 +1639,20 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
     for (unsigned int op=0;op < 0x100;op++) {
         submap = map.opmap[op];
         if (submap != NULL) submap->already = false;
+    }
+
+    if (opbaselen == 0) {
+        unsigned int jcw=codewidth,jaw=addrwidth;
+
+        if (jcw == 32) jcw = 16;
+        else if (jcw == 16) jcw = 32;
+        if (jaw == 32) jaw = 16;
+        else if (jaw == 16) jaw = 32;
+
+        fprintf(out_fp,"/* reminder: if your code allows 32-bit code/addr, and this code is decoding in a loop, you need to add this after this header: */\n");
+        fprintf(out_fp,"/* if (prefix66 && prefix67) { prefix66=prefix67=0; goto _x86decode_after_prefix_code%u_addr%u; } */\n",jcw,jaw);
+        fprintf(out_fp,"/* else if (prefix66) { prefix66=0; goto _x86decode_after_prefix_code%u_addr%u; } */\n",jcw,addrwidth);
+        fprintf(out_fp,"/* else if (prefix67) { prefix67=0; goto _x86decode_after_prefix_code%u_addr%u; } */\n",codewidth,jaw);
     }
 }
 

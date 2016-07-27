@@ -1,0 +1,4 @@
+
+; 386 FPU instructions
+opcode 0xD9 0xF5:                       "FPREM1"                            ; Partial Remainder (IEEE compliant)        11011001 11110101
+

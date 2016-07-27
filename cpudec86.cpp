@@ -111,6 +111,8 @@ _x86done:
 
 static void IPDec_80386(x86_offset_t ip) {
     x86ScaleIndexBase sib;
+    bool prefix66=false;
+    bool prefix67=false;
     x86_offset_t disp;
     uint32_t imm,imm2;
     char *ipw,*ipwf;
@@ -122,6 +124,10 @@ static void IPDec_80386(x86_offset_t ip) {
     ipw = IPDecStr;
     IPDecStr[0] = 0;
     IPDecIP = ip;
+
+    /* jump to 32-bit code entry if that's the CPU mode */
+    if (exe_code32)
+        goto _x86decode_begin_code32_addr32;
 
     /* decode */
 _x86decode_begin_code16_addr16:
