@@ -1175,11 +1175,11 @@ switch (op=IPFB()) {
     case 0x66: /* 66h        spec: 0x66 prefix opsz32 */
         prefix66 ^= 1;
         ipw += snprintf(ipw,(size_t)(ipwf-ipw),"");
-        goto _x86decode_after_prefix_code32_addr16;
+        goto _x86decode_after_prefix_386override_code32_addr16;
     case 0x67: /* 67h        spec: 0x67 prefix addrsz32 */
         prefix67 ^= 1;
         ipw += snprintf(ipw,(size_t)(ipwf-ipw),"");
-        goto _x86decode_after_prefix_code16_addr32;
+        goto _x86decode_after_prefix_386override_code16_addr32;
     case 0x68: /* 68h PUSHw w(i)      spec: 0x68 iw */
         imm=IPFcodeW();
         ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PUSHw 0x%04lX",(unsigned long)((uint16_t)imm));
@@ -4435,10 +4435,6 @@ switch (op=IPFB()) {
     default:
         goto _x86decode_illegal_opcode;
 };
-/* reminder: if your code allows 32-bit code/addr, and this code is decoding in a loop, you need to add this after this header: */
-/* if (prefix66 && prefix67) { prefix66=prefix67=0; goto _x86decode_after_prefix_code32_addr32; } */
-/* else if (prefix66) { prefix66=0; goto _x86decode_after_prefix_code32_addr16; } */
-/* else if (prefix67) { prefix67=0; goto _x86decode_after_prefix_code16_addr32; } */
 #undef IPFaddrW
 #undef IPFaddrWsigned
 #undef IPFcodeW

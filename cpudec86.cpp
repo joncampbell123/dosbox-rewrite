@@ -130,20 +130,31 @@ static void IPDec_80386(x86_offset_t ip) {
         goto _x86decode_begin_code32_addr32;
 
     /* decode */
+    /* TODO: Maybe it would be wiser to next have the opcode compiler generate
+     *       a "generic" decompiler mode (with conditional branches) for
+     *       less common cases (code=16 and addr=32 or code=32 and addr=16).
+     *       the purpose of this specialization of decoding is to optimize
+     *       x86 decoding for common cases (code=16 and addr=16 OR code=32 and addr=32),
+     *       and leave generic decoding for uncommon cases including use of op/addr overrides
+     *       to execute 32-bit code in 16-bit real mode. */
 _x86decode_begin_code16_addr16:
 _x86decode_after_prefix_code16_addr16:
+_x86decode_after_prefix_386override_code16_addr16:
 #include "dosboxxr/lib/cpu/core/intel80386.c16.a16.decom.h"
     goto _x86done;
 _x86decode_begin_code16_addr32:
 _x86decode_after_prefix_code16_addr32:
+_x86decode_after_prefix_386override_code16_addr32:
 #include "dosboxxr/lib/cpu/core/intel80386.c16.a32.decom.h"
     goto _x86done;
 _x86decode_begin_code32_addr16:
 _x86decode_after_prefix_code32_addr16:
+_x86decode_after_prefix_386override_code32_addr16:
 #include "dosboxxr/lib/cpu/core/intel80386.c32.a16.decom.h"
     goto _x86done;
 _x86decode_begin_code32_addr32:
 _x86decode_after_prefix_code32_addr32:
+_x86decode_after_prefix_386override_code32_addr32:
 #include "dosboxxr/lib/cpu/core/intel80386.c32.a32.decom.h"
     goto _x86done;
 _x86decode_illegal_opcode:
