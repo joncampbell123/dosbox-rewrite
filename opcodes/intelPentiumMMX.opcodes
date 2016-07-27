@@ -1,0 +1,20 @@
+; Intel Pentium MMX decompiler/core
+
+#define CORE86 5
+#define CORE87 5
+#define CORE_PENTIUM_MMX
+#define CORE_PENTIUM_RDMPC
+#define CORE_8086_F6_TEST_ALIAS
+
+#include "opcodes/intel8086.common.opcodes"
+#include "opcodes/intel80286.common.opcodes"
+#include "opcodes/intel80386.common.opcodes"
+#include "opcodes/intel80486.common.opcodes"
+#include "opcodes/intelPentium.common.opcodes"
+#include "opcodes/intelPentiumMMX.common.opcodes"
+
+#include "opcodes/intel8087.common.opcodes"
+#include "opcodes/intel80287.common.opcodes"
+#include "opcodes/intel80387.common.opcodes"
+#include "opcodes/intel80487.common.opcodes"
+

@@ -489,6 +489,101 @@ _x86done:
 }
 //// END CORE
 
+static void IPDec_PentiumMMX(x86_offset_t ip) {
+    bool code32=exe_code32;
+    bool addr32=exe_code32;
+    x86ScaleIndexBase sib;
+    bool prefix66=false;
+    bool prefix67=false;
+    x86_offset_t disp;
+    uint32_t imm,imm2;
+    char *ipw,*ipwf;
+    x86ModRegRm mrm;
+    uint8_t op;
+
+    /* one instruction only */
+    ipwf = IPDecStr+sizeof(IPDecStr);
+    ipw = IPDecStr;
+    IPDecStr[0] = 0;
+    IPDecIP = ip;
+
+    /* jump to 32-bit code entry if that's the CPU mode */
+    if (exe_code32)
+        goto _x86decode_begin_code32_addr32;
+
+    /* decode */
+// COMMON CASE
+_x86decode_begin_code16_addr16:
+    code32=addr32=0;
+_x86decode_after_prefix_code16_addr16:
+_x86decode_after_prefix_386override_code16_addr16:
+#include "dosboxxr/lib/cpu/core/intelPentiumMMX.c16.a16.decom.h"
+    goto _x86done;
+// UNCOMMON CASES
+_x86decode_begin_code16_addr32:
+_x86decode_after_prefix_code16_addr32:
+_x86decode_after_prefix_386override_code16_addr32:
+_x86decode_begin_code32_addr16:
+_x86decode_after_prefix_code32_addr16:
+_x86decode_after_prefix_386override_code32_addr16:
+#include "dosboxxr/lib/cpu/core/intelPentiumMMX.cxx.axx.decom.h"
+    goto _x86done;
+// COMMON CASE
+_x86decode_begin_code32_addr32:
+    code32=addr32=1;
+_x86decode_after_prefix_code32_addr32:
+_x86decode_after_prefix_386override_code32_addr32:
+#include "dosboxxr/lib/cpu/core/intelPentiumMMX.c32.a32.decom.h"
+    goto _x86done;
+_x86decode_illegal_opcode:
+_x86done:
+    { } /* shut up GCC */
+}
+//// END CORE
+
+static void IPDec_PentiumMMX_generic(x86_offset_t ip) {
+    bool code32=exe_code32;
+    bool addr32=exe_code32;
+    x86ScaleIndexBase sib;
+    bool prefix66=false;
+    bool prefix67=false;
+    x86_offset_t disp;
+    uint32_t imm,imm2;
+    char *ipw,*ipwf;
+    x86ModRegRm mrm;
+    uint8_t op;
+
+    /* one instruction only */
+    ipwf = IPDecStr+sizeof(IPDecStr);
+    ipw = IPDecStr;
+    IPDecStr[0] = 0;
+    IPDecIP = ip;
+
+    /* jump to 32-bit code entry if that's the CPU mode */
+    if (exe_code32)
+        goto _x86decode_begin_code32_addr32;
+
+    /* decode */
+_x86decode_begin_code16_addr16:
+_x86decode_after_prefix_code16_addr16:
+_x86decode_after_prefix_386override_code16_addr16:
+_x86decode_begin_code16_addr32:
+_x86decode_after_prefix_code16_addr32:
+_x86decode_after_prefix_386override_code16_addr32:
+_x86decode_begin_code32_addr16:
+_x86decode_after_prefix_code32_addr16:
+_x86decode_after_prefix_386override_code32_addr16:
+_x86decode_begin_code32_addr32:
+_x86decode_after_prefix_code32_addr32:
+_x86decode_after_prefix_386override_code32_addr32:
+#include "dosboxxr/lib/cpu/core/intelPentiumMMX.cxx.axx.decom.h"
+    goto _x86done;
+_x86decode_illegal_opcode:
+_x86done:
+    { } /* shut up GCC */
+}
+//// END CORE
+
 static void (*IPDec)(x86_offset_t ip) = IPDec_8086;
 
 int main(int argc,char **argv) {
@@ -532,6 +627,10 @@ int main(int argc,char **argv) {
                     IPDec = IPDec_PentiumPro;
                 else if (!strcmp(a,"intelpentiumprog") || !strcmp(a,"intel586prog") || !strcmp(a,"586prog"))
                     IPDec = IPDec_PentiumPro_generic;
+                else if (!strcmp(a,"intelpentiummmx") || !strcmp(a,"intel586mmx") || !strcmp(a,"586mmx"))
+                    IPDec = IPDec_PentiumMMX;
+                else if (!strcmp(a,"intelpentiummmxg") || !strcmp(a,"intel586mmxg") || !strcmp(a,"586mmxg"))
+                    IPDec = IPDec_PentiumMMX_generic;
                 else {
                     fprintf(stderr,"Unknown CPU\n");
                     return 1;

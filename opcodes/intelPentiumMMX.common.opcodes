@@ -1,0 +1,17 @@
+
+; Pentium MMX
+opcode 0x0F 0x60 mod/reg/rm:                    "PUNPCKLBW" mmx(reg),mmx(r/m)               ; Unpack Low Data                           00001111 01100000
+opcode 0x0F 0x61 mod/reg/rm:                    "PUNPCKLWD" mmx(reg),mmx(r/m)               ; Unpack Low Data                           00001111 01100001
+opcode 0x0F 0x62 mod/reg/rm:                    "PUNPCKLWQ" mmx(reg),mmx(r/m)               ; Unpack Low Data                           00001111 01100010
+opcode 0x0F 0x63 mod/reg/rm:                    "PACKSSWB" mmx(reg),mmx(r/m)                ; Pack with Signed Saturation               00001111 01100011
+opcode 0x0F 0x64 mod/reg/rm:                    "PCMPGTB" mmx(reg),mmx(r/m)                 ; Compare Packed Signed Ints for Greater Than
+opcode 0x0F 0x65 mod/reg/rm:                    "PCMPGTW" mmx(reg),mmx(r/m)                 ; Compare Packed Signed Ints for Greater Than
+opcode 0x0F 0x66 mod/reg/rm:                    "PCMPGTD" mmx(reg),mmx(r/m)                 ; Compare Packed Signed Ints for Greater Than
+opcode 0x0F 0x67 mod/reg/rm:                    "PACKUSWB" mmx(reg),mmx(r/m)                ; Pack with Unsigned Saturation
+opcode 0x0F 0x68 mod/reg/rm:                    "PUNPCKHBW" mmx(reg),mmx(r/m)               ; Unpack High Data
+opcode 0x0F 0x69 mod/reg/rm:                    "PUNPCKHWD" mmx(reg),mmx(r/m)               ; Unpack High Data
+opcode 0x0F 0x6A mod/reg/rm:                    "PUNPCKHDQ" mmx(reg),mmx(r/m)               ; Unpack High Data
+opcode 0x0F 0x6B mod/reg/rm:                    "PACKSSDW" mmx(reg),mmx(r/m)                ; Pack with Signed Saturation
+opcode 0x0F 0x6E mod/reg/rm:                    "MOVD" mmx(reg),w32(r/m)                    ; Move Doubleword
+opcode 0x0F 0x6F mod/reg/rm:                    "MOVQ" mmx(reg),mmx(r/m)                    ; Move Quadword
+

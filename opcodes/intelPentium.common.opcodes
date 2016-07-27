@@ -5,3 +5,7 @@ opcode 0x0F 0x31:                               "RDTSC"                     ; Re
 opcode 0x0F 0x32:                               "RDMSR"                     ; Read from Model Specific Register         00001111 00110010
 opcode 0x0F 0xC7 mod/reg/rm /1 mod!=3:          "CMPXCHG8B"b b(r/m)         ; Compare and Exchange Bytes                00001111 11000111
 
+#ifdef CORE_PENTIUM_RDMPC
+opcode 0x0F 0x33:                               "RDPMC"                     ; Read Performance-Monitoring Counters      00001111 00110011
+#endif
+
