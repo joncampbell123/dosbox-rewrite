@@ -122,7 +122,10 @@ enum opccDispArgType {
     OPDARGTYPE_FPUENV,      // floating point environment
     OPDARGTYPE_FPUSTATE,    // floating point state
     OPDARGTYPE_FPUREG,      // FPU st(i)
-    OPDARGTYPE_SREG         // segment register (word size)
+    OPDARGTYPE_SREG,        // segment register (word size)
+    OPDARGTYPE_CREG,        // control register (CR0...CR7)
+    OPDARGTYPE_DREG,        // debug register (DR0...DR7)
+    OPDARGTYPE_TREG         // test register (TR0...TR7)
 };
 
 class OpCodeDisplayArg {
@@ -857,6 +860,30 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
                     arg.argtype = OPDARGTYPE_WORD64;
                     arg.arg = OPDARG_rm;
                 }
+                else if (!strcmp(s,"cr(reg)")) {
+                    arg.argtype = OPDARGTYPE_CREG;
+                    arg.arg = OPDARG_reg;
+                }
+                else if (!strcmp(s,"cr(r/m)")) {
+                    arg.argtype = OPDARGTYPE_CREG;
+                    arg.arg = OPDARG_rm;
+                }
+                else if (!strcmp(s,"dr(reg)")) {
+                    arg.argtype = OPDARGTYPE_DREG;
+                    arg.arg = OPDARG_reg;
+                }
+                else if (!strcmp(s,"dr(r/m)")) {
+                    arg.argtype = OPDARGTYPE_DREG;
+                    arg.arg = OPDARG_rm;
+                }
+                else if (!strcmp(s,"tr(reg)")) {
+                    arg.argtype = OPDARGTYPE_TREG;
+                    arg.arg = OPDARG_reg;
+                }
+                else if (!strcmp(s,"tr(r/m)")) {
+                    arg.argtype = OPDARGTYPE_TREG;
+                    arg.arg = OPDARG_rm;
+                }
                 else if (!strcmp(s,"b(a)")) { // AL/AX/EAX
                     arg.argtype = OPDARGTYPE_BYTE;
                     arg.argreg = OPREG_AL;
@@ -946,6 +973,21 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
                 else if (!strcmp(s,"w(gs)")) {
                     arg.argtype = OPDARGTYPE_SREG;
                     arg.argreg = OPREG_GS;
+                    arg.arg = OPDARG_reg;
+                }
+                else if (!strncmp(s,"cr(",3) && isdigit(s[3])) {
+                    arg.argtype = OPDARGTYPE_CREG;
+                    arg.argreg = (opccReg)atoi(s+3);
+                    arg.arg = OPDARG_reg;
+                }
+                else if (!strncmp(s,"dr(",3) && isdigit(s[3])) {
+                    arg.argtype = OPDARGTYPE_DREG;
+                    arg.argreg = (opccReg)atoi(s+3);
+                    arg.arg = OPDARG_reg;
+                }
+                else if (!strncmp(s,"tr(",3) && isdigit(s[3])) {
+                    arg.argtype = OPDARGTYPE_TREG;
+                    arg.argreg = (opccReg)atoi(s+3);
                     arg.arg = OPDARG_reg;
                 }
                 else if (isdigit(*s)) {
@@ -1435,7 +1477,21 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                             fmtargs += regname;
                             fmtargs += "]";
                             break;
-
+                        case OPDARGTYPE_CREG:
+                            fprintf(out_fp,"CR%%u");
+                            fmtargs += ",";
+                            fmtargs += regname;
+                            break;
+                        case OPDARGTYPE_DREG:
+                            fprintf(out_fp,"DR%%u");
+                            fmtargs += ",";
+                            fmtargs += regname;
+                            break;
+                         case OPDARGTYPE_TREG:
+                            fprintf(out_fp,"TR%%u");
+                            fmtargs += ",";
+                            fmtargs += regname;
+                            break;
                     }
                 }
                 else if (arg.arg == OPDARG_imm) {

@@ -713,13 +713,49 @@ switch (op=IPFB()) {
             /* opcode 0Fh 1Dh  not defined */
             /* opcode 0Fh 1Eh  not defined */
             /* opcode 0Fh 1Fh  not defined */
-            /* opcode 0Fh 20h  not defined */
-            /* opcode 0Fh 21h  not defined */
-            /* opcode 0Fh 22h  not defined */
-            /* opcode 0Fh 23h  not defined */
-            /* opcode 0Fh 24h  not defined */
+            case 0x20: /* 0Fh 20h MOVd w32(r/m),cr(reg)      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                if (addr32)
+                    IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                else
+                    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOV%s %s,CR%u",code32?"d":"w",IPDecPrint1632(addr32,mrm,sib,disp,4,RC_REG,"w32"),mrm.reg());
+                break;
+            case 0x21: /* 0Fh 21h MOVd w32(r/m),dr(reg)      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                if (addr32)
+                    IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                else
+                    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOV%s %s,DR%u",code32?"d":"w",IPDecPrint1632(addr32,mrm,sib,disp,4,RC_REG,"w32"),mrm.reg());
+                break;
+            case 0x22: /* 0Fh 22h MOVd cr(reg),w32(r/m)      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                if (addr32)
+                    IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                else
+                    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOV%s CR%u,%s",code32?"d":"w",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,4,RC_REG,"w32"));
+                break;
+            case 0x23: /* 0Fh 23h MOVd dr(reg),w32(r/m)      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                if (addr32)
+                    IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                else
+                    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOV%s DR%u,%s",code32?"d":"w",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,4,RC_REG,"w32"));
+                break;
+            case 0x24: /* 0Fh 24h MOVd w32(r/m),tr(reg)      spec: 0x0F 0x24 mod/reg/rm mod==3 */
+                if (addr32)
+                    IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                else
+                    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOV%s %s,TR%u",code32?"d":"w",IPDecPrint1632(addr32,mrm,sib,disp,4,RC_REG,"w32"),mrm.reg());
+                break;
             /* opcode 0Fh 25h  not defined */
-            /* opcode 0Fh 26h  not defined */
+            case 0x26: /* 0Fh 26h MOVd tr(reg),w32(r/m)      spec: 0x0F 0x26 mod/reg/rm mod==3 */
+                if (addr32)
+                    IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                else
+                    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOV%s TR%u,%s",code32?"d":"w",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,4,RC_REG,"w32"));
+                break;
             /* opcode 0Fh 27h  not defined */
             /* opcode 0Fh 28h  not defined */
             /* opcode 0Fh 29h  not defined */

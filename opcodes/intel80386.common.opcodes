@@ -63,3 +63,11 @@ opcode 0x0F 0x8D iws:                           "JGE" w(i+ip)               ; Ju
 opcode 0x0F 0x8E iws:                           "JLE" w(i+ip)               ; Jump on Less Than or Equal                01111110
 opcode 0x0F 0x8F iws:                           "JG" w(i+ip)                ; Jump on Greater Than                      01111111
 
+; MOV control registers
+opcode 0x0F 0x20 mod/reg/rm mod==3:             "MOV"w w32(r/m),cr(reg)     ; Move to Control Register                  00001111 00100000
+opcode 0x0F 0x22 mod/reg/rm mod==3:             "MOV"w cr(reg),w32(r/m)     ; Move from Control Register                00001111 00100010
+opcode 0x0F 0x21 mod/reg/rm mod==3:             "MOV"w w32(r/m),dr(reg)     ; Move to Debug Register                    00001111 00100001
+opcode 0x0F 0x23 mod/reg/rm mod==3:             "MOV"w dr(reg),w32(r/m)     ; Move from Debug Register                  00001111 00100011
+opcode 0x0F 0x24 mod/reg/rm mod==3:             "MOV"w w32(r/m),tr(reg)     ; Move to Test Register                     00001111 00100100
+opcode 0x0F 0x26 mod/reg/rm mod==3:             "MOV"w tr(reg),w32(r/m)     ; Move from Test Register                   00001111 00100110
+

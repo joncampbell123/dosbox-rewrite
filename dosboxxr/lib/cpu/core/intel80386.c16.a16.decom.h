@@ -680,13 +680,31 @@ switch (op=IPFB()) {
             /* opcode 0Fh 1Dh  not defined */
             /* opcode 0Fh 1Eh  not defined */
             /* opcode 0Fh 1Fh  not defined */
-            /* opcode 0Fh 20h  not defined */
-            /* opcode 0Fh 21h  not defined */
-            /* opcode 0Fh 22h  not defined */
-            /* opcode 0Fh 23h  not defined */
-            /* opcode 0Fh 24h  not defined */
+            case 0x20: /* 0Fh 20h MOVw w32(r/m),cr(reg)      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVw %s,CR%u",IPDecPrint16(mrm,disp,4,RC_REG,"w32"),mrm.reg());
+                break;
+            case 0x21: /* 0Fh 21h MOVw w32(r/m),dr(reg)      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVw %s,DR%u",IPDecPrint16(mrm,disp,4,RC_REG,"w32"),mrm.reg());
+                break;
+            case 0x22: /* 0Fh 22h MOVw cr(reg),w32(r/m)      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVw CR%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,4,RC_REG,"w32"));
+                break;
+            case 0x23: /* 0Fh 23h MOVw dr(reg),w32(r/m)      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVw DR%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,4,RC_REG,"w32"));
+                break;
+            case 0x24: /* 0Fh 24h MOVw w32(r/m),tr(reg)      spec: 0x0F 0x24 mod/reg/rm mod==3 */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVw %s,TR%u",IPDecPrint16(mrm,disp,4,RC_REG,"w32"),mrm.reg());
+                break;
             /* opcode 0Fh 25h  not defined */
-            /* opcode 0Fh 26h  not defined */
+            case 0x26: /* 0Fh 26h MOVw tr(reg),w32(r/m)      spec: 0x0F 0x26 mod/reg/rm mod==3 */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVw TR%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,4,RC_REG,"w32"));
+                break;
             /* opcode 0Fh 27h  not defined */
             /* opcode 0Fh 28h  not defined */
             /* opcode 0Fh 29h  not defined */
