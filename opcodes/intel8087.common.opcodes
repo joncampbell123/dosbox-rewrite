@@ -121,7 +121,7 @@ opcode 0xDF mod/reg/rm /6 mod!=3:               "FSTP"fbcd fbcd(r/m)    ; FSTP [
 opcode 0xDF mod/reg/rm /7 mod!=3:               "FSTP"w64 w64(r/m)      ; FSTP [mem]    *((uint64_t)mem) = ST(0), POP
 
 ; FPU env
-opcode 0xD9 mod/reg/rm /7 mod!=3:               "FSTCW"w w16(r/m)       ; FSTCW [mem]
+opcode 0xD9 mod/reg/rm /7 mod!=3:               "FSTCW" w16(r/m)        ; FSTCW [mem]
 opcode 0xD9 mod/reg/rm /6 mod!=3:               "FSTENV" fenv(r/m)      ; FSTENV [mem]
 opcode 0xD9 mod/reg/rm /5 mod!=3:               "FLDCW" w16(r/m)        ; FLDCW [mem]
 opcode 0xD9 mod/reg/rm /4 mod!=3:               "FLDENV" fenv(r/m)      ; FLDENV [mem]

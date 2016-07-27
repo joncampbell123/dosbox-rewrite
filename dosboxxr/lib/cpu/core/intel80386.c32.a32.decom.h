@@ -2437,31 +2437,31 @@ switch (op=IPFB()) {
             case 0xB7: /* D9h B7h FSTENV fenv(r/m) mod=2 reg=6 rm=7      spec: 0xD9 mod/reg/rm /6 mod!=3 */
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTENV %s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"d"));
                 break;
-            case 0x38: /* D9h 38h FSTCWd w16(r/m) mod=0 reg=7 rm=0      spec: 0xD9 mod/reg/rm /7 mod!=3 */
-            case 0x39: /* D9h 39h FSTCWd w16(r/m) mod=0 reg=7 rm=1      spec: 0xD9 mod/reg/rm /7 mod!=3 */
-            case 0x3A: /* D9h 3Ah FSTCWd w16(r/m) mod=0 reg=7 rm=2      spec: 0xD9 mod/reg/rm /7 mod!=3 */
-            case 0x3B: /* D9h 3Bh FSTCWd w16(r/m) mod=0 reg=7 rm=3      spec: 0xD9 mod/reg/rm /7 mod!=3 */
-            case 0x3C: /* D9h 3Ch FSTCWd w16(r/m) mod=0 reg=7 rm=4      spec: 0xD9 mod/reg/rm /7 mod!=3 */
-            case 0x3D: /* D9h 3Dh FSTCWd w16(r/m) mod=0 reg=7 rm=5      spec: 0xD9 mod/reg/rm /7 mod!=3 */
-            case 0x3E: /* D9h 3Eh FSTCWd w16(r/m) mod=0 reg=7 rm=6      spec: 0xD9 mod/reg/rm /7 mod!=3 */
-            case 0x3F: /* D9h 3Fh FSTCWd w16(r/m) mod=0 reg=7 rm=7      spec: 0xD9 mod/reg/rm /7 mod!=3 */
-            case 0x78: /* D9h 78h FSTCWd w16(r/m) mod=1 reg=7 rm=0      spec: 0xD9 mod/reg/rm /7 mod!=3 */
-            case 0x79: /* D9h 79h FSTCWd w16(r/m) mod=1 reg=7 rm=1      spec: 0xD9 mod/reg/rm /7 mod!=3 */
-            case 0x7A: /* D9h 7Ah FSTCWd w16(r/m) mod=1 reg=7 rm=2      spec: 0xD9 mod/reg/rm /7 mod!=3 */
-            case 0x7B: /* D9h 7Bh FSTCWd w16(r/m) mod=1 reg=7 rm=3      spec: 0xD9 mod/reg/rm /7 mod!=3 */
-            case 0x7C: /* D9h 7Ch FSTCWd w16(r/m) mod=1 reg=7 rm=4      spec: 0xD9 mod/reg/rm /7 mod!=3 */
-            case 0x7D: /* D9h 7Dh FSTCWd w16(r/m) mod=1 reg=7 rm=5      spec: 0xD9 mod/reg/rm /7 mod!=3 */
-            case 0x7E: /* D9h 7Eh FSTCWd w16(r/m) mod=1 reg=7 rm=6      spec: 0xD9 mod/reg/rm /7 mod!=3 */
-            case 0x7F: /* D9h 7Fh FSTCWd w16(r/m) mod=1 reg=7 rm=7      spec: 0xD9 mod/reg/rm /7 mod!=3 */
-            case 0xB8: /* D9h B8h FSTCWd w16(r/m) mod=2 reg=7 rm=0      spec: 0xD9 mod/reg/rm /7 mod!=3 */
-            case 0xB9: /* D9h B9h FSTCWd w16(r/m) mod=2 reg=7 rm=1      spec: 0xD9 mod/reg/rm /7 mod!=3 */
-            case 0xBA: /* D9h BAh FSTCWd w16(r/m) mod=2 reg=7 rm=2      spec: 0xD9 mod/reg/rm /7 mod!=3 */
-            case 0xBB: /* D9h BBh FSTCWd w16(r/m) mod=2 reg=7 rm=3      spec: 0xD9 mod/reg/rm /7 mod!=3 */
-            case 0xBC: /* D9h BCh FSTCWd w16(r/m) mod=2 reg=7 rm=4      spec: 0xD9 mod/reg/rm /7 mod!=3 */
-            case 0xBD: /* D9h BDh FSTCWd w16(r/m) mod=2 reg=7 rm=5      spec: 0xD9 mod/reg/rm /7 mod!=3 */
-            case 0xBE: /* D9h BEh FSTCWd w16(r/m) mod=2 reg=7 rm=6      spec: 0xD9 mod/reg/rm /7 mod!=3 */
-            case 0xBF: /* D9h BFh FSTCWd w16(r/m) mod=2 reg=7 rm=7      spec: 0xD9 mod/reg/rm /7 mod!=3 */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTCWd %s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
+            case 0x38: /* D9h 38h FSTCW w16(r/m) mod=0 reg=7 rm=0      spec: 0xD9 mod/reg/rm /7 mod!=3 */
+            case 0x39: /* D9h 39h FSTCW w16(r/m) mod=0 reg=7 rm=1      spec: 0xD9 mod/reg/rm /7 mod!=3 */
+            case 0x3A: /* D9h 3Ah FSTCW w16(r/m) mod=0 reg=7 rm=2      spec: 0xD9 mod/reg/rm /7 mod!=3 */
+            case 0x3B: /* D9h 3Bh FSTCW w16(r/m) mod=0 reg=7 rm=3      spec: 0xD9 mod/reg/rm /7 mod!=3 */
+            case 0x3C: /* D9h 3Ch FSTCW w16(r/m) mod=0 reg=7 rm=4      spec: 0xD9 mod/reg/rm /7 mod!=3 */
+            case 0x3D: /* D9h 3Dh FSTCW w16(r/m) mod=0 reg=7 rm=5      spec: 0xD9 mod/reg/rm /7 mod!=3 */
+            case 0x3E: /* D9h 3Eh FSTCW w16(r/m) mod=0 reg=7 rm=6      spec: 0xD9 mod/reg/rm /7 mod!=3 */
+            case 0x3F: /* D9h 3Fh FSTCW w16(r/m) mod=0 reg=7 rm=7      spec: 0xD9 mod/reg/rm /7 mod!=3 */
+            case 0x78: /* D9h 78h FSTCW w16(r/m) mod=1 reg=7 rm=0      spec: 0xD9 mod/reg/rm /7 mod!=3 */
+            case 0x79: /* D9h 79h FSTCW w16(r/m) mod=1 reg=7 rm=1      spec: 0xD9 mod/reg/rm /7 mod!=3 */
+            case 0x7A: /* D9h 7Ah FSTCW w16(r/m) mod=1 reg=7 rm=2      spec: 0xD9 mod/reg/rm /7 mod!=3 */
+            case 0x7B: /* D9h 7Bh FSTCW w16(r/m) mod=1 reg=7 rm=3      spec: 0xD9 mod/reg/rm /7 mod!=3 */
+            case 0x7C: /* D9h 7Ch FSTCW w16(r/m) mod=1 reg=7 rm=4      spec: 0xD9 mod/reg/rm /7 mod!=3 */
+            case 0x7D: /* D9h 7Dh FSTCW w16(r/m) mod=1 reg=7 rm=5      spec: 0xD9 mod/reg/rm /7 mod!=3 */
+            case 0x7E: /* D9h 7Eh FSTCW w16(r/m) mod=1 reg=7 rm=6      spec: 0xD9 mod/reg/rm /7 mod!=3 */
+            case 0x7F: /* D9h 7Fh FSTCW w16(r/m) mod=1 reg=7 rm=7      spec: 0xD9 mod/reg/rm /7 mod!=3 */
+            case 0xB8: /* D9h B8h FSTCW w16(r/m) mod=2 reg=7 rm=0      spec: 0xD9 mod/reg/rm /7 mod!=3 */
+            case 0xB9: /* D9h B9h FSTCW w16(r/m) mod=2 reg=7 rm=1      spec: 0xD9 mod/reg/rm /7 mod!=3 */
+            case 0xBA: /* D9h BAh FSTCW w16(r/m) mod=2 reg=7 rm=2      spec: 0xD9 mod/reg/rm /7 mod!=3 */
+            case 0xBB: /* D9h BBh FSTCW w16(r/m) mod=2 reg=7 rm=3      spec: 0xD9 mod/reg/rm /7 mod!=3 */
+            case 0xBC: /* D9h BCh FSTCW w16(r/m) mod=2 reg=7 rm=4      spec: 0xD9 mod/reg/rm /7 mod!=3 */
+            case 0xBD: /* D9h BDh FSTCW w16(r/m) mod=2 reg=7 rm=5      spec: 0xD9 mod/reg/rm /7 mod!=3 */
+            case 0xBE: /* D9h BEh FSTCW w16(r/m) mod=2 reg=7 rm=6      spec: 0xD9 mod/reg/rm /7 mod!=3 */
+            case 0xBF: /* D9h BFh FSTCW w16(r/m) mod=2 reg=7 rm=7      spec: 0xD9 mod/reg/rm /7 mod!=3 */
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"FSTCW %s",IPDecPrint32(mrm,sib,disp,2,RC_REG,"w16"));
                 break;
             /* opcode D9h 48h  not defined */
             /* opcode D9h 49h  not defined */
