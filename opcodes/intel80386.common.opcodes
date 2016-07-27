@@ -18,6 +18,10 @@ opcode 0x0F 0xA8:                               "PUSH"w w(gs)               ; Pu
 opcode 0x0F 0xA9:                               "POP"w w(gs)                ; Pop                                       00001111 10<reg>001 reg=5
 
 ; LFS/LGS
+opcode 0x0F 0xB2 mod/reg/rm:                    "LSS"w w(reg),w(r/m)        ; Load Pointer to SS                        00001111 10110010
 opcode 0x0F 0xB4 mod/reg/rm:                    "LFS"w w(reg),w(r/m)        ; Load Pointer to FS                        00001111 10110100
 opcode 0x0F 0xB5 mod/reg/rm:                    "LGS"w w(reg),w(r/m)        ; Load Pointer to FS                        00001111 10110101
+
+; ICEBP/INT1
+opcode 0xF1:                                    "INT1"                      ; Call interrupt procedure                  11110001
 

@@ -832,7 +832,10 @@ switch (op=IPFB()) {
             /* opcode 0Fh AFh  not defined */
             /* opcode 0Fh B0h  not defined */
             /* opcode 0Fh B1h  not defined */
-            /* opcode 0Fh B2h  not defined */
+            case 0xB2: /* 0Fh B2h LSSw w(reg),w(r/m)      spec: 0x0F 0xB2 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LSSw %s,%s",CPUregsN[2][mrm.reg()],IPDecPrint16(mrm,disp,2,RC_REG,"w"));
+                break;
             /* opcode 0Fh B3h  not defined */
             case 0xB4: /* 0Fh B4h LFSw w(reg),w(r/m)      spec: 0x0F 0xB4 mod/reg/rm */
                 IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
@@ -4276,7 +4279,9 @@ switch (op=IPFB()) {
     case 0xF0: /* F0h LOCK       spec: 0xF0 prefix */
         ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LOCK ");
         goto _x86decode_after_prefix_code16_addr16;
-    /* opcode F1h  not defined */
+    case 0xF1: /* F1h INT1       spec: 0xF1 */
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"INT1");
+        break;
     case 0xF2: /* F2h REPNZ       spec: 0xF2 prefix */
         ipw += snprintf(ipw,(size_t)(ipwf-ipw),"REPNZ ");
         goto _x86decode_after_prefix_code16_addr16;
