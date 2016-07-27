@@ -112,7 +112,7 @@ _x86done:
 static void IPDec_80386(x86_offset_t ip) {
     x86ScaleIndexBase sib;
     x86_offset_t disp;
-    uint16_t imm,imm2;
+    uint32_t imm,imm2;
     char *ipw,*ipwf;
     x86ModRegRm mrm;
     uint8_t op;
