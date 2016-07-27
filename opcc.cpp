@@ -95,7 +95,8 @@ enum opccArgs {
     OPARG_IW16,         // imm16
     OPARG_IW16S,        // imm16 sign extended
     OPARG_IW32,         // imm32
-    OPARG_IW32S         // imm32 sign extended
+    OPARG_IW32S,        // imm32 sign extended
+    OPARG_IWA           // imm<address size>
 };
 
 enum opccDispArg {
@@ -566,6 +567,11 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
         }
         else if (!strcmp(s,"ibs")) {
             st.immarg.push_back(OPARG_IBS);
+            allow_modregrm = false;
+            allow_op = false;
+        }
+        else if (!strcmp(s,"iwa")) {
+            st.immarg.push_back(OPARG_IWA);
             allow_modregrm = false;
             allow_op = false;
         }
@@ -1097,6 +1103,11 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                 else            fprintf(out_fp,"%s        imm=IPFcodeW();\n",indent_str.c_str());
                 immc++;
                 break;
+            case OPARG_IWA:
+                if (immc != 0)  fprintf(out_fp,"%s        imm%u=IPFaddrW();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%s        imm=IPFaddrW();\n",indent_str.c_str());
+                immc++;
+                break;
             case OPARG_IWS:
                 if (immc != 0)  fprintf(out_fp,"%s        imm%u=IPFcodeWsigned();\n",indent_str.c_str(),immc+1);
                 else            fprintf(out_fp,"%s        imm=IPFcodeWsigned();\n",indent_str.c_str());
@@ -1174,6 +1185,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                             fmtargs += tmp;
                             break;
                         case OPARG_IW:
+                        case OPARG_IWA:
                         case OPARG_IWS:
                             if (addrwidth == 32)
                                 fprintf(out_fp,"[0x%%08lX]");
@@ -1371,6 +1383,14 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                             sprintf(tmp,",(unsigned long)((uint%u_t)%s)",codewidth,imn[arg.index]);
                             fmtargs += tmp;
                             break;
+                        case OPARG_IWA:
+                            if (addrwidth == 32)
+                                fprintf(out_fp,"0x%%08lX");
+                            else
+                                fprintf(out_fp,"0x%%04lX");
+                            sprintf(tmp,",(unsigned long)((uint%u_t)%s)",codewidth,imn[arg.index]);
+                            fmtargs += tmp;
+                            break;
                         case OPARG_IW:
                         case OPARG_IWS:
                             if (codewidth == 32)
@@ -1449,6 +1469,7 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
         fprintf(out_fp,"/*   uint16_t IPFW();          fetch word at instruction pointer */\n");
         fprintf(out_fp,"/*   uint32_t IPFDW();         fetch dword at instruction pointer */\n");
         fprintf(out_fp,"/*   uint%u_t IPFcodeW();      fetch %u-bit word at instruction pointer */\n",codewidth,codewidth);
+        fprintf(out_fp,"/*   uint%u_t IPFaddrW();      fetch %u-bit word at instruction pointer */\n",addrwidth,addrwidth);
         fprintf(out_fp,"/*   void IPFB_mrm_sib_disp_a%u_read(mrm,sib,disp);   read mod/reg/rm, sib, displacement */\n",codewidth,addrwidth);
 
         if (cc_mode == MOD_DECOMPILE) {
@@ -1647,6 +1668,15 @@ int main(int argc,char **argv) {
         fprintf(out_fp,"#define IPFcodeWsigned() IPFWsigned()\n");
     }
 
+    if (sel_addr_width == 32) {
+        fprintf(out_fp,"#define IPFaddrW() IPFDW()\n");
+        fprintf(out_fp,"#define IPFaddrWsigned() IPFDWsigned()\n");
+    }
+    else {
+        fprintf(out_fp,"#define IPFaddrW() IPFW()\n");
+        fprintf(out_fp,"#define IPFaddrWsigned() IPFWsigned()\n");
+    }
+
     /* TODO: 16-bit and 32-bit modes if opcode list says the CPU supports the 32-bit operand overrides.
      *       If that is the case, we generate 16-bit and 32-bit cases in a "figure 8" goto configuration,
      *       so that there is one while() loop for executing 16-bit code and one while() loop for executing 32-bit code,
@@ -1658,6 +1688,8 @@ int main(int argc,char **argv) {
      *       conditional jumps per instruction with regard to opcode size and address size decoding. */
     outcode_gen(sel_code_width,sel_addr_width,empty_opcode/*opcode base*/,0/*opcode base len*/,sel_code_width == 32 ? opmap32 : opmap16);
 
+    fprintf(out_fp,"#undef IPFaddrW\n");
+    fprintf(out_fp,"#undef IPFaddrWsigned\n");
     fprintf(out_fp,"#undef IPFcodeW\n");
     fprintf(out_fp,"#undef IPFcodeWsigned\n");
 

@@ -17,14 +17,19 @@
     popfd
     ret
     o32 ret
+    a32 ret
     ret     4
     o32 ret 4
+    a32 ret 4
     retf
     o32 retf
+    a32 retf
     retf    4
     o32 retf 4
+    a32 retf 4
     iret
     o32 iret
+    a32 iret
     int     1
     int     3
     int3
