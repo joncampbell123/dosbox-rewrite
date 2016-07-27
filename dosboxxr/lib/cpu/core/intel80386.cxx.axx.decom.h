@@ -57,7 +57,7 @@ switch (op=IPFB()) {
         break;
     case 0x05: /* 05h ADDd w(a),i      spec: 0x05 iw */
         imm=IPFcodeW();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADD%s %s,0x%08lX",code32?"d":"w",CPUregsN[code32?4:2][0],(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADD%s %s,0x%0*lX",code32?"d":"w",CPUregsN[code32?4:2][0],code32?8:4,(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
         break;
     case 0x06: /* 06h PUSHd w(es)      spec: 0x06 */
         ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PUSH%s %s",code32?"d":"w",CPUsregs_80386[0]);
@@ -99,7 +99,7 @@ switch (op=IPFB()) {
         break;
     case 0x0D: /* 0Dh ORd w(a),i      spec: 0x0D iw */
         imm=IPFcodeW();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"OR%s %s,0x%08lX",code32?"d":"w",CPUregsN[code32?4:2][0],(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"OR%s %s,0x%0*lX",code32?"d":"w",CPUregsN[code32?4:2][0],code32?8:4,(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
         break;
     case 0x0E: /* 0Eh PUSHd w(cs)      spec: 0x0E */
         ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PUSH%s %s",code32?"d":"w",CPUsregs_80386[1]);
@@ -811,67 +811,67 @@ switch (op=IPFB()) {
             /* opcode 0Fh 7Fh  not defined */
             case 0x80: /* 0Fh 80h JO w(i+ip)      spec: 0x0F 0x80 iws */
                 imm=IPFcodeWsigned();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JO 0x%08lX",(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JO 0x%0*lX",code32?8:4,(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
                 break;
             case 0x81: /* 0Fh 81h JNO w(i+ip)      spec: 0x0F 0x81 iws */
                 imm=IPFcodeWsigned();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JNO 0x%08lX",(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JNO 0x%0*lX",code32?8:4,(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
                 break;
             case 0x82: /* 0Fh 82h JB w(i+ip)      spec: 0x0F 0x82 iws */
                 imm=IPFcodeWsigned();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JB 0x%08lX",(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JB 0x%0*lX",code32?8:4,(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
                 break;
             case 0x83: /* 0Fh 83h JNB w(i+ip)      spec: 0x0F 0x83 iws */
                 imm=IPFcodeWsigned();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JNB 0x%08lX",(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JNB 0x%0*lX",code32?8:4,(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
                 break;
             case 0x84: /* 0Fh 84h JZ w(i+ip)      spec: 0x0F 0x84 iws */
                 imm=IPFcodeWsigned();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JZ 0x%08lX",(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JZ 0x%0*lX",code32?8:4,(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
                 break;
             case 0x85: /* 0Fh 85h JNZ w(i+ip)      spec: 0x0F 0x85 iws */
                 imm=IPFcodeWsigned();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JNZ 0x%08lX",(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JNZ 0x%0*lX",code32?8:4,(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
                 break;
             case 0x86: /* 0Fh 86h JBE w(i+ip)      spec: 0x0F 0x86 iws */
                 imm=IPFcodeWsigned();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JBE 0x%08lX",(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JBE 0x%0*lX",code32?8:4,(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
                 break;
             case 0x87: /* 0Fh 87h JA w(i+ip)      spec: 0x0F 0x87 iws */
                 imm=IPFcodeWsigned();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JA 0x%08lX",(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JA 0x%0*lX",code32?8:4,(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
                 break;
             case 0x88: /* 0Fh 88h JS w(i+ip)      spec: 0x0F 0x88 iws */
                 imm=IPFcodeWsigned();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JS 0x%08lX",(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JS 0x%0*lX",code32?8:4,(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
                 break;
             case 0x89: /* 0Fh 89h JNS w(i+ip)      spec: 0x0F 0x89 iws */
                 imm=IPFcodeWsigned();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JNS 0x%08lX",(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JNS 0x%0*lX",code32?8:4,(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
                 break;
             case 0x8A: /* 0Fh 8Ah JPE w(i+ip)      spec: 0x0F 0x8A iws */
                 imm=IPFcodeWsigned();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JPE 0x%08lX",(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JPE 0x%0*lX",code32?8:4,(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
                 break;
             case 0x8B: /* 0Fh 8Bh JPO w(i+ip)      spec: 0x0F 0x8B iws */
                 imm=IPFcodeWsigned();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JPO 0x%08lX",(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JPO 0x%0*lX",code32?8:4,(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
                 break;
             case 0x8C: /* 0Fh 8Ch JL w(i+ip)      spec: 0x0F 0x8C iws */
                 imm=IPFcodeWsigned();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JL 0x%08lX",(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JL 0x%0*lX",code32?8:4,(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
                 break;
             case 0x8D: /* 0Fh 8Dh JGE w(i+ip)      spec: 0x0F 0x8D iws */
                 imm=IPFcodeWsigned();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JGE 0x%08lX",(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JGE 0x%0*lX",code32?8:4,(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
                 break;
             case 0x8E: /* 0Fh 8Eh JLE w(i+ip)      spec: 0x0F 0x8E iws */
                 imm=IPFcodeWsigned();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JLE 0x%08lX",(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JLE 0x%0*lX",code32?8:4,(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
                 break;
             case 0x8F: /* 0Fh 8Fh JG w(i+ip)      spec: 0x0F 0x8F iws */
                 imm=IPFcodeWsigned();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JG 0x%08lX",(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JG 0x%0*lX",code32?8:4,(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
                 break;
             /* opcode 0Fh 90h  not defined */
             /* opcode 0Fh 91h  not defined */
@@ -1147,7 +1147,7 @@ switch (op=IPFB()) {
         break;
     case 0x15: /* 15h ADCd w(a),i      spec: 0x15 iw */
         imm=IPFcodeW();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADC%s %s,0x%08lX",code32?"d":"w",CPUregsN[code32?4:2][0],(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADC%s %s,0x%0*lX",code32?"d":"w",CPUregsN[code32?4:2][0],code32?8:4,(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
         break;
     case 0x16: /* 16h PUSHd w(ss)      spec: 0x16 */
         ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PUSH%s %s",code32?"d":"w",CPUsregs_80386[2]);
@@ -1189,7 +1189,7 @@ switch (op=IPFB()) {
         break;
     case 0x1D: /* 1Dh SBBd w(a),i      spec: 0x1D iw */
         imm=IPFcodeW();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SBB%s %s,0x%08lX",code32?"d":"w",CPUregsN[code32?4:2][0],(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SBB%s %s,0x%0*lX",code32?"d":"w",CPUregsN[code32?4:2][0],code32?8:4,(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
         break;
     case 0x1E: /* 1Eh PUSHd w(ds)      spec: 0x1E */
         ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PUSH%s %s",code32?"d":"w",CPUsregs_80386[3]);
@@ -1231,7 +1231,7 @@ switch (op=IPFB()) {
         break;
     case 0x25: /* 25h ANDd w(a),i      spec: 0x25 iw */
         imm=IPFcodeW();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"AND%s %s,0x%08lX",code32?"d":"w",CPUregsN[code32?4:2][0],(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"AND%s %s,0x%0*lX",code32?"d":"w",CPUregsN[code32?4:2][0],code32?8:4,(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
         break;
     case 0x26: /* 26h ES:       spec: prefix 0x26 segoverride(es) */
         ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ES: ");
@@ -1273,7 +1273,7 @@ switch (op=IPFB()) {
         break;
     case 0x2D: /* 2Dh SUBd w(a),i      spec: 0x2D iw */
         imm=IPFcodeW();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SUB%s %s,0x%08lX",code32?"d":"w",CPUregsN[code32?4:2][0],(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SUB%s %s,0x%0*lX",code32?"d":"w",CPUregsN[code32?4:2][0],code32?8:4,(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
         break;
     case 0x2E: /* 2Eh CS:       spec: prefix 0x2E segoverride(cs) */
         ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CS: ");
@@ -1315,7 +1315,7 @@ switch (op=IPFB()) {
         break;
     case 0x35: /* 35h XORd w(a),i      spec: 0x35 iw */
         imm=IPFcodeW();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"XOR%s %s,0x%08lX",code32?"d":"w",CPUregsN[code32?4:2][0],(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"XOR%s %s,0x%0*lX",code32?"d":"w",CPUregsN[code32?4:2][0],code32?8:4,(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
         break;
     case 0x36: /* 36h SS:       spec: prefix 0x36 segoverride(ss) */
         ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SS: ");
@@ -1357,7 +1357,7 @@ switch (op=IPFB()) {
         break;
     case 0x3D: /* 3Dh CMPd w(a),i      spec: 0x3D iw */
         imm=IPFcodeW();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CMP%s %s,0x%08lX",code32?"d":"w",CPUregsN[code32?4:2][0],(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CMP%s %s,0x%0*lX",code32?"d":"w",CPUregsN[code32?4:2][0],code32?8:4,(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
         break;
     case 0x3E: /* 3Eh DS:       spec: prefix 0x3E segoverride(ds) */
         ipw += snprintf(ipw,(size_t)(ipwf-ipw),"DS: ");
@@ -1453,7 +1453,7 @@ switch (op=IPFB()) {
             goto _x86decode_after_prefix_386override_code16_addr16;
     case 0x68: /* 68h PUSHd w(i)      spec: 0x68 iw */
         imm=IPFcodeW();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PUSH%s 0x%08lX",code32?"d":"w",(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PUSH%s 0x%0*lX",code32?"d":"w",code32?8:4,(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
         break;
     case 0x69: /* 69h IMULd w(reg),w(r/m),w(i)      spec: 0x69 mod/reg/rm iw */
         if (addr32)
@@ -1461,7 +1461,7 @@ switch (op=IPFB()) {
         else
             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
         imm=IPFcodeW();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"IMUL%s %s,%s,0x%08lX",code32?"d":"w",CPUregsN[code32?4:2][mrm.reg()],IPDecPrint1632(addr32,mrm,sib,disp,code32?4:2,RC_REG,code32?"d":"w"),(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"IMUL%s %s,%s,0x%0*lX",code32?"d":"w",CPUregsN[code32?4:2][mrm.reg()],IPDecPrint1632(addr32,mrm,sib,disp,code32?4:2,RC_REG,code32?"d":"w"),code32?8:4,(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
         break;
     case 0x6A: /* 6Ah PUSHd w(i)      spec: 0x6A ibs */
         imm=IPFBsigned();
@@ -1605,35 +1605,35 @@ switch (op=IPFB()) {
         switch (mrm.reg()) {
             case 0: /* 81h 00h ADDd w(r/m),i reg=0      spec: 0x81 mod/reg/rm /0 iw */
                 imm=IPFcodeW();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADD%s %s,0x%08lX",code32?"d":"w",IPDecPrint1632(addr32,mrm,sib,disp,code32?4:2,RC_REG,code32?"d":"w"),(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADD%s %s,0x%0*lX",code32?"d":"w",IPDecPrint1632(addr32,mrm,sib,disp,code32?4:2,RC_REG,code32?"d":"w"),code32?8:4,(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
                 break;
             case 1: /* 81h 08h ORd w(r/m),i reg=1      spec: 0x81 mod/reg/rm /1 iw */
                 imm=IPFcodeW();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"OR%s %s,0x%08lX",code32?"d":"w",IPDecPrint1632(addr32,mrm,sib,disp,code32?4:2,RC_REG,code32?"d":"w"),(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"OR%s %s,0x%0*lX",code32?"d":"w",IPDecPrint1632(addr32,mrm,sib,disp,code32?4:2,RC_REG,code32?"d":"w"),code32?8:4,(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
                 break;
             case 2: /* 81h 10h ADCd w(r/m),i reg=2      spec: 0x81 mod/reg/rm /2 iw */
                 imm=IPFcodeW();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADC%s %s,0x%08lX",code32?"d":"w",IPDecPrint1632(addr32,mrm,sib,disp,code32?4:2,RC_REG,code32?"d":"w"),(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADC%s %s,0x%0*lX",code32?"d":"w",IPDecPrint1632(addr32,mrm,sib,disp,code32?4:2,RC_REG,code32?"d":"w"),code32?8:4,(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
                 break;
             case 3: /* 81h 18h SBBd w(r/m),i reg=3      spec: 0x81 mod/reg/rm /3 iw */
                 imm=IPFcodeW();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SBB%s %s,0x%08lX",code32?"d":"w",IPDecPrint1632(addr32,mrm,sib,disp,code32?4:2,RC_REG,code32?"d":"w"),(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SBB%s %s,0x%0*lX",code32?"d":"w",IPDecPrint1632(addr32,mrm,sib,disp,code32?4:2,RC_REG,code32?"d":"w"),code32?8:4,(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
                 break;
             case 4: /* 81h 20h ANDd w(r/m),i reg=4      spec: 0x81 mod/reg/rm /4 iw */
                 imm=IPFcodeW();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"AND%s %s,0x%08lX",code32?"d":"w",IPDecPrint1632(addr32,mrm,sib,disp,code32?4:2,RC_REG,code32?"d":"w"),(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"AND%s %s,0x%0*lX",code32?"d":"w",IPDecPrint1632(addr32,mrm,sib,disp,code32?4:2,RC_REG,code32?"d":"w"),code32?8:4,(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
                 break;
             case 5: /* 81h 28h SUBd w(r/m),i reg=5      spec: 0x81 mod/reg/rm /5 iw */
                 imm=IPFcodeW();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SUB%s %s,0x%08lX",code32?"d":"w",IPDecPrint1632(addr32,mrm,sib,disp,code32?4:2,RC_REG,code32?"d":"w"),(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SUB%s %s,0x%0*lX",code32?"d":"w",IPDecPrint1632(addr32,mrm,sib,disp,code32?4:2,RC_REG,code32?"d":"w"),code32?8:4,(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
                 break;
             case 6: /* 81h 30h XORd w(r/m),i reg=6      spec: 0x81 mod/reg/rm /6 iw */
                 imm=IPFcodeW();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"XOR%s %s,0x%08lX",code32?"d":"w",IPDecPrint1632(addr32,mrm,sib,disp,code32?4:2,RC_REG,code32?"d":"w"),(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"XOR%s %s,0x%0*lX",code32?"d":"w",IPDecPrint1632(addr32,mrm,sib,disp,code32?4:2,RC_REG,code32?"d":"w"),code32?8:4,(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
                 break;
             case 7: /* 81h 38h CMPd w(r/m),i reg=7      spec: 0x81 mod/reg/rm /7 iw */
                 imm=IPFcodeW();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CMP%s %s,0x%08lX",code32?"d":"w",IPDecPrint1632(addr32,mrm,sib,disp,code32?4:2,RC_REG,code32?"d":"w"),(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CMP%s %s,0x%0*lX",code32?"d":"w",IPDecPrint1632(addr32,mrm,sib,disp,code32?4:2,RC_REG,code32?"d":"w"),code32?8:4,(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
                 break;
             default:
                 goto _x86decode_illegal_opcode;
@@ -1789,7 +1789,7 @@ switch (op=IPFB()) {
     case 0x9A: /* 9Ah CALLFd w(i2),w(i)      spec: 0x9A iw iw16 */
         imm=IPFcodeW();
         imm2=IPFW();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CALLF%s 0x%04lX,0x%08lX",code32?"d":"w",(unsigned long)((uint32_t)imm2)&(code32?0xFFFFFFFFUL:0xFFFFUL),(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CALLF%s 0x%04lX,0x%0*lX",code32?"d":"w",(unsigned long)((uint32_t)imm2)&0xFFFFUL,code32?8:4,(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
         break;
     case 0x9B: /* 9Bh WAIT       spec: 0x9B prefix */
         ipw += snprintf(ipw,(size_t)(ipwf-ipw),"WAIT ");
@@ -1808,19 +1808,19 @@ switch (op=IPFB()) {
         break;
     case 0xA0: /* A0h MOVb b(a),b(mem[i])      spec: 0xA0 iwa */
         imm=IPFaddrW();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVb %s,[0x%08lX]b",CPUregsN[1][0],(unsigned long)((uint32_t)imm)&(addr32?0xFFFFFFFFUL:0xFFFFUL));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVb %s,0x%0*lXb",CPUregsN[1][0],addr32?8:4,(unsigned long)((uint32_t)imm)&(addr32?0xFFFFFFFFUL:0xFFFFUL));
         break;
     case 0xA1: /* A1h MOVd w(a),w(mem[i])      spec: 0xA1 iwa */
         imm=IPFaddrW();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOV%s %s,[0x%08lX]w",code32?"d":"w",CPUregsN[code32?4:2][0],(unsigned long)((uint32_t)imm)&(addr32?0xFFFFFFFFUL:0xFFFFUL));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOV%s %s,0x%0*lXw",code32?"d":"w",CPUregsN[code32?4:2][0],addr32?8:4,(unsigned long)((uint32_t)imm)&(addr32?0xFFFFFFFFUL:0xFFFFUL));
         break;
     case 0xA2: /* A2h MOVb b(mem[i]),b(a)      spec: 0xA2 iwa */
         imm=IPFaddrW();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVb [0x%08lX]b,%s",(unsigned long)((uint32_t)imm)&(addr32?0xFFFFFFFFUL:0xFFFFUL),CPUregsN[1][0]);
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVb 0x%0*lXb,%s",addr32?8:4,(unsigned long)((uint32_t)imm)&(addr32?0xFFFFFFFFUL:0xFFFFUL),CPUregsN[1][0]);
         break;
     case 0xA3: /* A3h MOVd b(mem[i]),w(a)      spec: 0xA3 iwa */
         imm=IPFaddrW();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOV%s [0x%08lX]b,%s",code32?"d":"w",(unsigned long)((uint32_t)imm)&(addr32?0xFFFFFFFFUL:0xFFFFUL),CPUregsN[code32?4:2][0]);
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOV%s 0x%0*lXb,%s",code32?"d":"w",addr32?8:4,(unsigned long)((uint32_t)imm)&(addr32?0xFFFFFFFFUL:0xFFFFUL),CPUregsN[code32?4:2][0]);
         break;
     case 0xA4: /* A4h MOVSb       spec: 0xA4 */
         ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVSb");
@@ -1840,7 +1840,7 @@ switch (op=IPFB()) {
         break;
     case 0xA9: /* A9h TESTd w(a),i      spec: 0xA9 iw */
         imm=IPFcodeW();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"TEST%s %s,0x%08lX",code32?"d":"w",CPUregsN[code32?4:2][0],(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"TEST%s %s,0x%0*lX",code32?"d":"w",CPUregsN[code32?4:2][0],code32?8:4,(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
         break;
     case 0xAA: /* AAh STOSb       spec: 0xAA */
         ipw += snprintf(ipw,(size_t)(ipwf-ipw),"STOSb");
@@ -1880,7 +1880,7 @@ switch (op=IPFB()) {
     case 0xBE: /* BEh MOVd w(reg),i reg=6      spec: range(0xB8,0xBF) iw reg=op02 */
     case 0xBF: /* BFh MOVd w(reg),i reg=7      spec: range(0xB8,0xBF) iw reg=op02 */
         imm=IPFcodeW();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOV%s %s,0x%08lX",code32?"d":"w",CPUregsN[code32?4:2][op&7],(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOV%s %s,0x%0*lX",code32?"d":"w",CPUregsN[code32?4:2][op&7],code32?8:4,(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
         break;
     case 0xC0: /* C0h        spec:  */
         if (addr32)
@@ -1972,7 +1972,7 @@ switch (op=IPFB()) {
         break;
     case 0xC2: /* C2h RETd i      spec: 0xC2 iw16 */
         imm=IPFW();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RET%s 0x%04lX",code32?"d":"w",(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RET%s 0x%04lX",code32?"d":"w",(unsigned long)((uint32_t)imm)&0xFFFFUL);
         break;
     case 0xC3: /* C3h RETd       spec: 0xC3 */
         ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RET%s",code32?"d":"w");
@@ -2023,7 +2023,7 @@ switch (op=IPFB()) {
         switch (mrm.reg()) {
             case 0: /* C7h 00h MOVd w(r/m),i reg=0      spec: 0xC7 mod/reg/rm /0 iw */
                 imm=IPFcodeW();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOV%s %s,0x%08lX",code32?"d":"w",IPDecPrint1632(addr32,mrm,sib,disp,code32?4:2,RC_REG,code32?"d":"w"),(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOV%s %s,0x%0*lX",code32?"d":"w",IPDecPrint1632(addr32,mrm,sib,disp,code32?4:2,RC_REG,code32?"d":"w"),code32?8:4,(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
                 break;
             /* reg 1 not defined */
             /* reg 2 not defined */
@@ -2040,14 +2040,14 @@ switch (op=IPFB()) {
     case 0xC8: /* C8h ENTERd w(i),b(i2)      spec: 0xC8 iw ib */
         imm=IPFcodeW();
         imm2=IPFB();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ENTER%s 0x%08lX,0x%02lX",code32?"d":"w",(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL),(unsigned long)((uint32_t)imm2)&(code32?0xFFFFFFFFUL:0xFFFFUL));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ENTER%s 0x%0*lX,0x%02lX",code32?"d":"w",code32?8:4,(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL),(unsigned long)((uint32_t)imm2)&(code32?0xFFFFFFFFUL:0xFFFFUL));
         break;
     case 0xC9: /* C9h LEAVEd       spec: 0xC9 */
         ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LEAVE%s",code32?"d":"w");
         break;
     case 0xCA: /* CAh RETFd i      spec: 0xCA iw16 */
         imm=IPFW();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RETF%s 0x%04lX",code32?"d":"w",(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RETF%s 0x%04lX",code32?"d":"w",(unsigned long)((uint32_t)imm)&0xFFFFUL);
         break;
     case 0xCB: /* CBh RETFd       spec: 0xCB */
         ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RETF%s",code32?"d":"w");
@@ -4629,16 +4629,16 @@ switch (op=IPFB()) {
         break;
     case 0xE8: /* E8h CALLd w(i+ip)      spec: 0xE8 iws */
         imm=IPFcodeWsigned();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CALL%s 0x%08lX",code32?"d":"w",(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CALL%s 0x%0*lX",code32?"d":"w",code32?8:4,(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
         break;
     case 0xE9: /* E9h JMPd w(i+ip)      spec: 0xE9 iws */
         imm=IPFcodeWsigned();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JMP%s 0x%08lX",code32?"d":"w",(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JMP%s 0x%0*lX",code32?"d":"w",code32?8:4,(unsigned long)((uint32_t)(imm+IPval()))&(code32?0xFFFFFFFFUL:0xFFFFUL));
         break;
     case 0xEA: /* EAh JMPFd w(i2),w(i)      spec: 0xEA iw iw16 */
         imm=IPFcodeW();
         imm2=IPFW();
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JMPF%s 0x%04lX,0x%08lX",code32?"d":"w",(unsigned long)((uint32_t)imm2)&(code32?0xFFFFFFFFUL:0xFFFFUL),(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
+        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JMPF%s 0x%04lX,0x%0*lX",code32?"d":"w",(unsigned long)((uint32_t)imm2)&0xFFFFUL,code32?8:4,(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
         break;
     case 0xEB: /* EBh JMPd w(i+ip)      spec: 0xEB ibs */
         imm=IPFBsigned();
@@ -4719,7 +4719,7 @@ switch (op=IPFB()) {
             case 0: /* F7h 00h TESTd w(r/m),i reg=0      spec: 0xF7 mod/reg/rm /0 iw */
             case 1: /* F7h 08h TESTd w(r/m),i reg=1      spec: 0xF7 mod/reg/rm /1 iw */
                 imm=IPFcodeW();
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"TEST%s %s,0x%08lX",code32?"d":"w",IPDecPrint1632(addr32,mrm,sib,disp,code32?4:2,RC_REG,code32?"d":"w"),(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"TEST%s %s,0x%0*lX",code32?"d":"w",IPDecPrint1632(addr32,mrm,sib,disp,code32?4:2,RC_REG,code32?"d":"w"),code32?8:4,(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
                 break;
             case 2: /* F7h 10h NOTd w(r/m) reg=2      spec: 0xF7 mod/reg/rm /2 */
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"NOT%s %s",code32?"d":"w",IPDecPrint1632(addr32,mrm,sib,disp,code32?4:2,RC_REG,code32?"d":"w"));

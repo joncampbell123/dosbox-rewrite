@@ -1219,10 +1219,17 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                         case OPARG_IW:
                         case OPARG_IWA:
                         case OPARG_IWS:
-                            if (addrwidth == 32)
-                                fprintf(out_fp,"[0x%%08lX]");
-                            else
-                                fprintf(out_fp,"[0x%%04lX]");
+                            if (generic1632) {
+                                fprintf(out_fp,"0x%%0*lX");
+                                fmtargs += ",addr32?8:4";
+                            }
+                            else {
+                                if (addrwidth == 32)
+                                    fprintf(out_fp,"[0x%%08lX]");
+                                else
+                                    fprintf(out_fp,"[0x%%04lX]");
+                            }
+
                             sprintf(tmp,",(unsigned long)((uint%u_t)%s)",addrwidth,imn[arg.index]);
                             fmtargs += tmp;
                             if (generic1632) fmtargs += "&(addr32?0xFFFFFFFFUL:0xFFFFUL)";
@@ -1232,14 +1239,14 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                             fprintf(out_fp,"[0x%%04lX]");
                             sprintf(tmp,",(unsigned long)((uint%u_t)%s)",addrwidth,imn[arg.index]);
                             fmtargs += tmp;
-                            if (generic1632) fmtargs += "&(addr32?0xFFFFFFFFUL:0xFFFFUL)";
+                            if (generic1632) fmtargs += "&0xFFFFUL";
                             break;
                         case OPARG_IW32:
                         case OPARG_IW32S:
                             fprintf(out_fp,"[0x%%08lX]");
                             sprintf(tmp,",(unsigned long)((uint%u_t)%s)",addrwidth,imn[arg.index]);
                             fmtargs += tmp;
-                            if (generic1632) fmtargs += "&(addr32?0xFFFFFFFFUL:0xFFFFUL)";
+                            if (generic1632) fmtargs += "&0xFFFFFFFFUL";
                             break;
                     };
 
@@ -1441,20 +1448,34 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                             if (generic1632) fmtargs += "&(code32?0xFFFFFFFFUL:0xFFFFUL)";
                             break;
                         case OPARG_IWA:
-                            if (addrwidth == 32)
-                                fprintf(out_fp,"0x%%08lX");
-                            else
-                                fprintf(out_fp,"0x%%04lX");
+                            if (generic1632) {
+                                fprintf(out_fp,"0x%%0*lX");
+                                fmtargs += ",addr32?8:4";
+                            }
+                            else {
+                                if (addrwidth == 32)
+                                    fprintf(out_fp,"0x%%08lX");
+                                else
+                                    fprintf(out_fp,"0x%%04lX");
+                            }
+
                             sprintf(tmp,",(unsigned long)((uint%u_t)%s)",addrwidth,imn[arg.index]);
                             if (generic1632) fmtargs += "&(addr32?0xFFFFFFFFUL:0xFFFFUL)";
                             fmtargs += tmp;
                             break;
                         case OPARG_IW:
                         case OPARG_IWS:
-                            if (codewidth == 32)
-                                fprintf(out_fp,"0x%%08lX");
-                            else
-                                fprintf(out_fp,"0x%%04lX");
+                            if (generic1632) {
+                                fprintf(out_fp,"0x%%0*lX");
+                                fmtargs += ",code32?8:4";
+                            }
+                            else {
+                                if (codewidth == 32)
+                                    fprintf(out_fp,"0x%%08lX");
+                                else
+                                    fprintf(out_fp,"0x%%04lX");
+                            }
+
                             sprintf(tmp,",(unsigned long)((uint%u_t)%s)",codewidth,imn[arg.index]);
                             fmtargs += tmp;
                             if (generic1632) fmtargs += "&(code32?0xFFFFFFFFUL:0xFFFFUL)";
@@ -1464,14 +1485,14 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                             fprintf(out_fp,"0x%%04lX");
                             sprintf(tmp,",(unsigned long)((uint%u_t)%s)",codewidth,imn[arg.index]);
                             fmtargs += tmp;
-                            if (generic1632) fmtargs += "&(code32?0xFFFFFFFFUL:0xFFFFUL)";
+                            if (generic1632) fmtargs += "&0xFFFFUL";
                             break;
                         case OPARG_IW32:
                         case OPARG_IW32S:
                             fprintf(out_fp,"0x%%08lX");
                             sprintf(tmp,",(unsigned long)((uint%u_t)%s)",codewidth,imn[arg.index]);
                             fmtargs += tmp;
-                            if (generic1632) fmtargs += "&(code32?0xFFFFFFFFUL:0xFFFFUL)";
+                            if (generic1632) fmtargs += "&0xFFFFFFFFUL";
                             break;
                     };
                 }
