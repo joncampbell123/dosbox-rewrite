@@ -89,3 +89,9 @@ opcode 0x0F 0x9D mod/reg/rm:                    "SETGE" b(r/m)              ; Se
 opcode 0x0F 0x9E mod/reg/rm:                    "SETLE" b(r/m)              ; Set on Less Than or Equal                 00001111 10011110
 opcode 0x0F 0x9F mod/reg/rm:                    "SETG" b(r/m)               ; Set on Greater Than                       00001111 10011111
 
+; SHLD/SHRD
+opcode 0x0F 0xA4 mod/reg/rm ib:                 "SHLD"w w(r/m),w(reg),i     ; Double Precision Shift Left               00001111 10100100
+opcode 0x0F 0xA5 mod/reg/rm:                    "SHLD"w w(r/m),w(reg),b(c)  ; Double Precision Shift Left               00001111 10100101
+opcode 0x0F 0xAC mod/reg/rm ib:                 "SHRD"w w(r/m),w(reg),i     ; Double Precision Shift Right              00001111 10101100
+opcode 0x0F 0xAD mod/reg/rm:                    "SHRD"w w(r/m),w(reg),b(c)  ; Double Precision Shift Right              00001111 10101101
+

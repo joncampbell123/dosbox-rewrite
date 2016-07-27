@@ -933,8 +933,15 @@ switch (op=IPFB()) {
                 IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"BTw %s,%s",IPDecPrint16(mrm,disp,2,RC_REG,"w"),CPUregsN[2][mrm.reg()]);
                 break;
-            /* opcode 0Fh A4h  not defined */
-            /* opcode 0Fh A5h  not defined */
+            case 0xA4: /* 0Fh A4h SHLDw w(r/m),w(reg),i      spec: 0x0F 0xA4 mod/reg/rm ib */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                imm=IPFB();
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHLDw %s,%s,0x%02lX",IPDecPrint16(mrm,disp,2,RC_REG,"w"),CPUregsN[2][mrm.reg()],(unsigned long)((uint16_t)imm));
+                break;
+            case 0xA5: /* 0Fh A5h SHLDw w(r/m),w(reg),b(c)      spec: 0x0F 0xA5 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHLDw %s,%s,%s",IPDecPrint16(mrm,disp,2,RC_REG,"w"),CPUregsN[2][mrm.reg()],CPUregsN[1][1]);
+                break;
             /* opcode 0Fh A6h  not defined */
             /* opcode 0Fh A7h  not defined */
             case 0xA8: /* 0Fh A8h PUSHw w(gs)      spec: 0x0F 0xA8 */
@@ -948,8 +955,15 @@ switch (op=IPFB()) {
                 IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"BTSw %s,%s",IPDecPrint16(mrm,disp,2,RC_REG,"w"),CPUregsN[2][mrm.reg()]);
                 break;
-            /* opcode 0Fh ACh  not defined */
-            /* opcode 0Fh ADh  not defined */
+            case 0xAC: /* 0Fh ACh SHRDw w(r/m),w(reg),i      spec: 0x0F 0xAC mod/reg/rm ib */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                imm=IPFB();
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHRDw %s,%s,0x%02lX",IPDecPrint16(mrm,disp,2,RC_REG,"w"),CPUregsN[2][mrm.reg()],(unsigned long)((uint16_t)imm));
+                break;
+            case 0xAD: /* 0Fh ADh SHRDw w(r/m),w(reg),b(c)      spec: 0x0F 0xAD mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHRDw %s,%s,%s",IPDecPrint16(mrm,disp,2,RC_REG,"w"),CPUregsN[2][mrm.reg()],CPUregsN[1][1]);
+                break;
             /* opcode 0Fh AEh  not defined */
             case 0xAF: /* 0Fh AFh IMULw w(reg),w(r/m)      spec: 0x0F 0xAF mod/reg/rm */
                 IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);

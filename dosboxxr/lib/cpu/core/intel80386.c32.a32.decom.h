@@ -933,8 +933,15 @@ switch (op=IPFB()) {
                 IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"BTd %s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"d"),CPUregsN[4][mrm.reg()]);
                 break;
-            /* opcode 0Fh A4h  not defined */
-            /* opcode 0Fh A5h  not defined */
+            case 0xA4: /* 0Fh A4h SHLDd w(r/m),w(reg),i      spec: 0x0F 0xA4 mod/reg/rm ib */
+                IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                imm=IPFB();
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHLDd %s,%s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"d"),CPUregsN[4][mrm.reg()],(unsigned long)((uint32_t)imm));
+                break;
+            case 0xA5: /* 0Fh A5h SHLDd w(r/m),w(reg),b(c)      spec: 0x0F 0xA5 mod/reg/rm */
+                IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHLDd %s,%s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"d"),CPUregsN[4][mrm.reg()],CPUregsN[1][1]);
+                break;
             /* opcode 0Fh A6h  not defined */
             /* opcode 0Fh A7h  not defined */
             case 0xA8: /* 0Fh A8h PUSHd w(gs)      spec: 0x0F 0xA8 */
@@ -948,8 +955,15 @@ switch (op=IPFB()) {
                 IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"BTSd %s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"d"),CPUregsN[4][mrm.reg()]);
                 break;
-            /* opcode 0Fh ACh  not defined */
-            /* opcode 0Fh ADh  not defined */
+            case 0xAC: /* 0Fh ACh SHRDd w(r/m),w(reg),i      spec: 0x0F 0xAC mod/reg/rm ib */
+                IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                imm=IPFB();
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHRDd %s,%s,0x%02lX",IPDecPrint32(mrm,sib,disp,4,RC_REG,"d"),CPUregsN[4][mrm.reg()],(unsigned long)((uint32_t)imm));
+                break;
+            case 0xAD: /* 0Fh ADh SHRDd w(r/m),w(reg),b(c)      spec: 0x0F 0xAD mod/reg/rm */
+                IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHRDd %s,%s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"d"),CPUregsN[4][mrm.reg()],CPUregsN[1][1]);
+                break;
             /* opcode 0Fh AEh  not defined */
             case 0xAF: /* 0Fh AFh IMULd w(reg),w(r/m)      spec: 0x0F 0xAF mod/reg/rm */
                 IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
