@@ -858,22 +858,70 @@ switch (op=IPFB()) {
                 imm=IPFcodeWsigned();
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"JG 0x%04lX",(unsigned long)((uint16_t)(imm+IPval())));
                 break;
-            /* opcode 0Fh 90h  not defined */
-            /* opcode 0Fh 91h  not defined */
-            /* opcode 0Fh 92h  not defined */
-            /* opcode 0Fh 93h  not defined */
-            /* opcode 0Fh 94h  not defined */
-            /* opcode 0Fh 95h  not defined */
-            /* opcode 0Fh 96h  not defined */
-            /* opcode 0Fh 97h  not defined */
-            /* opcode 0Fh 98h  not defined */
-            /* opcode 0Fh 99h  not defined */
-            /* opcode 0Fh 9Ah  not defined */
-            /* opcode 0Fh 9Bh  not defined */
-            /* opcode 0Fh 9Ch  not defined */
-            /* opcode 0Fh 9Dh  not defined */
-            /* opcode 0Fh 9Eh  not defined */
-            /* opcode 0Fh 9Fh  not defined */
+            case 0x90: /* 0Fh 90h SETO b(r/m)      spec: 0x0F 0x90 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SETO %s",IPDecPrint16(mrm,disp,1,RC_REG,"b"));
+                break;
+            case 0x91: /* 0Fh 91h SETNO b(r/m)      spec: 0x0F 0x91 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SETNO %s",IPDecPrint16(mrm,disp,1,RC_REG,"b"));
+                break;
+            case 0x92: /* 0Fh 92h SETB b(r/m)      spec: 0x0F 0x92 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SETB %s",IPDecPrint16(mrm,disp,1,RC_REG,"b"));
+                break;
+            case 0x93: /* 0Fh 93h SETNB b(r/m)      spec: 0x0F 0x93 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SETNB %s",IPDecPrint16(mrm,disp,1,RC_REG,"b"));
+                break;
+            case 0x94: /* 0Fh 94h SETZ b(r/m)      spec: 0x0F 0x94 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SETZ %s",IPDecPrint16(mrm,disp,1,RC_REG,"b"));
+                break;
+            case 0x95: /* 0Fh 95h SETNZ b(r/m)      spec: 0x0F 0x95 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SETNZ %s",IPDecPrint16(mrm,disp,1,RC_REG,"b"));
+                break;
+            case 0x96: /* 0Fh 96h SETBE b(r/m)      spec: 0x0F 0x96 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SETBE %s",IPDecPrint16(mrm,disp,1,RC_REG,"b"));
+                break;
+            case 0x97: /* 0Fh 97h SETA b(r/m)      spec: 0x0F 0x97 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SETA %s",IPDecPrint16(mrm,disp,1,RC_REG,"b"));
+                break;
+            case 0x98: /* 0Fh 98h SETS b(r/m)      spec: 0x0F 0x98 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SETS %s",IPDecPrint16(mrm,disp,1,RC_REG,"b"));
+                break;
+            case 0x99: /* 0Fh 99h SETNS b(r/m)      spec: 0x0F 0x99 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SETNS %s",IPDecPrint16(mrm,disp,1,RC_REG,"b"));
+                break;
+            case 0x9A: /* 0Fh 9Ah SETPE b(r/m)      spec: 0x0F 0x9A mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SETPE %s",IPDecPrint16(mrm,disp,1,RC_REG,"b"));
+                break;
+            case 0x9B: /* 0Fh 9Bh SETPO b(r/m)      spec: 0x0F 0x9B mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SETPO %s",IPDecPrint16(mrm,disp,1,RC_REG,"b"));
+                break;
+            case 0x9C: /* 0Fh 9Ch SETL b(r/m)      spec: 0x0F 0x9C mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SETL %s",IPDecPrint16(mrm,disp,1,RC_REG,"b"));
+                break;
+            case 0x9D: /* 0Fh 9Dh SETGE b(r/m)      spec: 0x0F 0x9D mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SETGE %s",IPDecPrint16(mrm,disp,1,RC_REG,"b"));
+                break;
+            case 0x9E: /* 0Fh 9Eh SETLE b(r/m)      spec: 0x0F 0x9E mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SETLE %s",IPDecPrint16(mrm,disp,1,RC_REG,"b"));
+                break;
+            case 0x9F: /* 0Fh 9Fh SETG b(r/m)      spec: 0x0F 0x9F mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SETG %s",IPDecPrint16(mrm,disp,1,RC_REG,"b"));
+                break;
             case 0xA0: /* 0Fh A0h PUSHw w(fs)      spec: 0x0F 0xA0 */
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PUSHw %s",CPUsregs_80386[4]);
                 break;

@@ -46,22 +46,22 @@ opcode 0x0F 0xBC mod/reg/rm:                    "BSF"w w(reg),w(r/m)        ; Bi
 opcode 0x0F 0xBD mod/reg/rm:                    "BSR"w w(reg),w(r/m)        ; Bit Scan Reverse                          00001111 10111101
 
 ; JMP conditional (near)
-opcode 0x0F 0x80 iws:                           "JO" w(i+ip)                ; Jump on Overflow                          01110000
-opcode 0x0F 0x81 iws:                           "JNO" w(i+ip)               ; Jump on Not Overflow                      01110001
-opcode 0x0F 0x82 iws:                           "JB" w(i+ip)                ; Jump on Below, Not (Above or Equal)       01110010
-opcode 0x0F 0x83 iws:                           "JNB" w(i+ip)               ; Jump on Not Below (Above or Equal)        01110011
-opcode 0x0F 0x84 iws:                           "JZ" w(i+ip)                ; Jump on Zero/Equal                        01110100
-opcode 0x0F 0x85 iws:                           "JNZ" w(i+ip)               ; Jump on Not Zero/Equal                    01110101
-opcode 0x0F 0x86 iws:                           "JBE" w(i+ip)               ; Jump on Below or Equal                    01110110
-opcode 0x0F 0x87 iws:                           "JA" w(i+ip)                ; Jump on Above                             01110111
-opcode 0x0F 0x88 iws:                           "JS" w(i+ip)                ; Jump on Sign                              01111000
-opcode 0x0F 0x89 iws:                           "JNS" w(i+ip)               ; Jump on Not Sign                          01111001
-opcode 0x0F 0x8A iws:                           "JPE" w(i+ip)               ; Jump on Parity/Parity Even                01111010
-opcode 0x0F 0x8B iws:                           "JPO" w(i+ip)               ; Jump on Not Parity/Parity Odd             01111011
-opcode 0x0F 0x8C iws:                           "JL" w(i+ip)                ; Jump on Less than                         01111100
-opcode 0x0F 0x8D iws:                           "JGE" w(i+ip)               ; Jump on Greater Than                      01111101
-opcode 0x0F 0x8E iws:                           "JLE" w(i+ip)               ; Jump on Less Than or Equal                01111110
-opcode 0x0F 0x8F iws:                           "JG" w(i+ip)                ; Jump on Greater Than                      01111111
+opcode 0x0F 0x80 iws:                           "JO" w(i+ip)                ; Jump on Overflow                          00001111 10000000
+opcode 0x0F 0x81 iws:                           "JNO" w(i+ip)               ; Jump on Not Overflow                      00001111 10000001
+opcode 0x0F 0x82 iws:                           "JB" w(i+ip)                ; Jump on Below, Not (Above or Equal)       00001111 10000010
+opcode 0x0F 0x83 iws:                           "JNB" w(i+ip)               ; Jump on Not Below (Above or Equal)        00001111 10000011
+opcode 0x0F 0x84 iws:                           "JZ" w(i+ip)                ; Jump on Zero/Equal                        00001111 10000100
+opcode 0x0F 0x85 iws:                           "JNZ" w(i+ip)               ; Jump on Not Zero/Equal                    00001111 10000101
+opcode 0x0F 0x86 iws:                           "JBE" w(i+ip)               ; Jump on Below or Equal                    00001111 10000110
+opcode 0x0F 0x87 iws:                           "JA" w(i+ip)                ; Jump on Above                             00001111 10000111
+opcode 0x0F 0x88 iws:                           "JS" w(i+ip)                ; Jump on Sign                              00001111 10001000
+opcode 0x0F 0x89 iws:                           "JNS" w(i+ip)               ; Jump on Not Sign                          00001111 10001001
+opcode 0x0F 0x8A iws:                           "JPE" w(i+ip)               ; Jump on Parity/Parity Even                00001111 10001010
+opcode 0x0F 0x8B iws:                           "JPO" w(i+ip)               ; Jump on Not Parity/Parity Odd             00001111 10001011
+opcode 0x0F 0x8C iws:                           "JL" w(i+ip)                ; Jump on Less than                         00001111 10001100
+opcode 0x0F 0x8D iws:                           "JGE" w(i+ip)               ; Jump on Greater Than                      00001111 10001101
+opcode 0x0F 0x8E iws:                           "JLE" w(i+ip)               ; Jump on Less Than or Equal                00001111 10001110
+opcode 0x0F 0x8F iws:                           "JG" w(i+ip)                ; Jump on Greater Than                      00001111 10001111
 
 ; MOV control registers
 opcode 0x0F 0x20 mod/reg/rm mod==3:             "MOV"w w32(r/m),cr(reg)     ; Move to Control Register                  00001111 00100000
@@ -70,4 +70,22 @@ opcode 0x0F 0x21 mod/reg/rm mod==3:             "MOV"w w32(r/m),dr(reg)     ; Mo
 opcode 0x0F 0x23 mod/reg/rm mod==3:             "MOV"w dr(reg),w32(r/m)     ; Move from Debug Register                  00001111 00100011
 opcode 0x0F 0x24 mod/reg/rm mod==3:             "MOV"w w32(r/m),tr(reg)     ; Move to Test Register                     00001111 00100100
 opcode 0x0F 0x26 mod/reg/rm mod==3:             "MOV"w tr(reg),w32(r/m)     ; Move from Test Register                   00001111 00100110
+
+; SETcc
+opcode 0x0F 0x90 mod/reg/rm:                    "SETO" b(r/m)               ; Set on Overflow                           00001111 10010000
+opcode 0x0F 0x91 mod/reg/rm:                    "SETNO" b(r/m)              ; Set on Not Overflow                       00001111 10010001
+opcode 0x0F 0x92 mod/reg/rm:                    "SETB" b(r/m)               ; Set on Below, Not (Above or Equal)        00001111 10010010
+opcode 0x0F 0x93 mod/reg/rm:                    "SETNB" b(r/m)              ; Set on Not Below (Above or Equal)         00001111 10010011
+opcode 0x0F 0x94 mod/reg/rm:                    "SETZ" b(r/m)               ; Set on Zero/Equal                         00001111 10010100
+opcode 0x0F 0x95 mod/reg/rm:                    "SETNZ" b(r/m)              ; Set on Not Zero/Equal                     00001111 10010101
+opcode 0x0F 0x96 mod/reg/rm:                    "SETBE" b(r/m)              ; Set on Below or Equal                     00001111 10010110
+opcode 0x0F 0x97 mod/reg/rm:                    "SETA" b(r/m)               ; Set on Above                              00001111 10010111
+opcode 0x0F 0x98 mod/reg/rm:                    "SETS" b(r/m)               ; Set on Sign                               00001111 10011000
+opcode 0x0F 0x99 mod/reg/rm:                    "SETNS" b(r/m)              ; Set on Not Sign                           00001111 10011001
+opcode 0x0F 0x9A mod/reg/rm:                    "SETPE" b(r/m)              ; Set on Parity/Parity Even                 00001111 10011010
+opcode 0x0F 0x9B mod/reg/rm:                    "SETPO" b(r/m)              ; Set on Not Parity/Parity Odd              00001111 10011011
+opcode 0x0F 0x9C mod/reg/rm:                    "SETL" b(r/m)               ; Set on Less than                          00001111 10011100
+opcode 0x0F 0x9D mod/reg/rm:                    "SETGE" b(r/m)              ; Set on Greater Than                       00001111 10011101
+opcode 0x0F 0x9E mod/reg/rm:                    "SETLE" b(r/m)              ; Set on Less Than or Equal                 00001111 10011110
+opcode 0x0F 0x9F mod/reg/rm:                    "SETG" b(r/m)               ; Set on Greater Than                       00001111 10011111
 
