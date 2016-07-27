@@ -1,0 +1,7 @@
+
+; Pentium
+opcode 0x0F 0x30:                               "WRMSR"                     ; Write to Model Specific Register          00001111 00110000
+opcode 0x0F 0x31:                               "RDTSC"                     ; Read Time-Stamp Counter                   00001111 00110001
+opcode 0x0F 0x32:                               "RDMSR"                     ; Read from Model Specific Register         00001111 00110010
+opcode 0x0F 0xC7 mod/reg/rm /1 mod!=3:          "CMPXCHG8B"b b(r/m)         ; Compare and Exchange Bytes                00001111 11000111
+
