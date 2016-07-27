@@ -128,6 +128,18 @@ _x86decode_begin_code16_addr16:
 _x86decode_after_prefix_code16_addr16:
 #include "dosboxxr/lib/cpu/core/intel80386.c16.a16.decom.h"
     goto _x86done;
+_x86decode_begin_code16_addr32:
+_x86decode_after_prefix_code16_addr32:
+#include "dosboxxr/lib/cpu/core/intel80386.c16.a32.decom.h"
+    goto _x86done;
+_x86decode_begin_code32_addr16:
+_x86decode_after_prefix_code32_addr16:
+#include "dosboxxr/lib/cpu/core/intel80386.c32.a16.decom.h"
+    goto _x86done;
+_x86decode_begin_code32_addr32:
+_x86decode_after_prefix_code32_addr32:
+#include "dosboxxr/lib/cpu/core/intel80386.c32.a32.decom.h"
+    goto _x86done;
 _x86decode_illegal_opcode:
 _x86done:
     { } /* shut up GCC */

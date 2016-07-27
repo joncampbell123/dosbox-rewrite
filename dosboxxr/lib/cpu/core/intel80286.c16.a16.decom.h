@@ -1606,8 +1606,8 @@ switch (op=IPFB()) {
         };
 /* End of opcodes starting with C1h */
         break;
-    case 0xC2: /* C2h RETw i      spec: 0xC2 iw */
-        imm=IPFcodeW();
+    case 0xC2: /* C2h RETw i      spec: 0xC2 iw16 */
+        imm=IPFW();
         ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RETw 0x%04lX",(unsigned long)((uint16_t)imm));
         break;
     case 0xC3: /* C3h RETw       spec: 0xC3 */
@@ -1669,8 +1669,8 @@ switch (op=IPFB()) {
     case 0xC9: /* C9h LEAVEw       spec: 0xC9 */
         ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LEAVEw");
         break;
-    case 0xCA: /* CAh RETFw i      spec: 0xCA iw */
-        imm=IPFcodeW();
+    case 0xCA: /* CAh RETFw i      spec: 0xCA iw16 */
+        imm=IPFW();
         ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RETFw 0x%04lX",(unsigned long)((uint16_t)imm));
         break;
     case 0xCB: /* CBh RETFw       spec: 0xCB */

@@ -51,15 +51,9 @@ static inline void IPFB_mrm_sib_disp_a16_read(x86ModRegRm &mrm,x86ScaleIndexBase
     disp = IPFmrmdisplace16(mrm);
 }
 
-static inline void IPDec386Load_MRM_SIB(x86ModRegRm &mrm,x86ScaleIndexBase &sib,x86_offset_t &disp,const bool addr32) {
+static inline void IPFB_mrm_sib_disp_a32_read(x86ModRegRm &mrm,x86ScaleIndexBase &sib,x86_offset_t &disp) {
     IPFModRegRm(mrm);
-
-    if (addr32) {
-        if (mrm.has_a32_SIB()) sib.byte = IPFB();
-        disp = IPFmrmdisplace32(mrm);
-    }
-    else {
-        disp = IPFmrmdisplace16(mrm);
-    }
+    if (mrm.has_a32_SIB()) sib.byte = IPFB();
+    disp = IPFmrmdisplace32(mrm);
 }
 

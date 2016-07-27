@@ -5178,6 +5178,9 @@ jmp2:
     movsx   eax,word [ecx*4+ecx]
     movsx   ebx,word [edx*8+edx+0x12]
     movsx   ecx,word [esi*4+edi+0x12345678]
+    movsx   eax,al
+    movsx   eax,bl
+    movsx   ebx,al
 ; MOVZX
     movzx   ax,al
     movzx   ax,bl

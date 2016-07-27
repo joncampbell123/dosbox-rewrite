@@ -1,0 +1,13 @@
+
+; 32-bit overrides
+opcode 0x66 prefix opsz32:                      ""                          ; Opcode size override (toggle)             01100110
+opcode 0x67 prefix addrsz32:                    ""                          ; Address size override (toggle)            01100111
+
+; MOVSX
+opcode 0x0F 0xBE mod/reg/rm:                    "MOVSX"b w(reg),b(r/m)      ; Move With Sign Extension                  00001111 1011111w w=0
+opcode 0x0F 0xBF mod/reg/rm:                    "MOVSX"w w(reg),w16(r/m)    ; Move With Sign Extension                  00001111 1011111w w=1
+
+; MOVZX
+opcode 0x0F 0xB6 mod/reg/rm:                    "MOVZX"b w(reg),b(r/m)      ; Move With Zero Extension                  00001111 1011011w w=0
+opcode 0x0F 0xB7 mod/reg/rm:                    "MOVZX"w w(reg),w16(r/m)    ; Move With Zero Extension                  00001111 1011011w w=1
+

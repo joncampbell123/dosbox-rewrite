@@ -174,92 +174,64 @@ const char *IPDecPrint16(const x86ModRegRm &mrm,const x86_offset_t ofs,const uns
     return tmp;
 }
 
-const char *IPDecPrint386(const x86ModRegRm &mrm,const x86ScaleIndexBase &sib,const x86_offset_t ofs,const unsigned int sz,const bool addr32,const IPDecRegClass regclass) {
+const char *IPDecPrint32(const x86ModRegRm &mrm,const x86ScaleIndexBase &sib,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass,const char *suffix) {
     bool ex=false;
-    static char tmp[64];
+    static char tmp[128];
     char *w=tmp,*wf=tmp+sizeof(tmp)-1;
 
-    if (addr32) {
-        if (mrm.mod() == 3) {
-            switch (regclass) {
-                case RC_REG:
-                    w += snprintf(w,(size_t)(wf-w),"%s",CPUregsN[sz][mrm.rm()]);
-                    break;
-                case RC_FPUREG: // Floating point registers
-                    w += snprintf(w,(size_t)(wf-w),"ST(%u)",mrm.rm());
-                    break;
-            };
-        }
-        else {
-            *w++ = '[';
-
-            if (mrm.rm() == 4) { // Decode from SIB byte
-                if (sib.index() != 4) {
-                    if (ex) *w++ = '+';
-                    ex=true;
-                    w += snprintf(w,(size_t)(wf-w),"%s",CPUregs32[sib.index()]);
-                    if (sib.scale() != 0) w += snprintf(w,(size_t)(wf-w),"*%u",1U << sib.scale());
-                }
-
-                if (ex) *w++ = '+';
-                ex=true;
-                w += snprintf(w,(size_t)(wf-w),"%s",CPUregs32[sib.base()]);
-            }
-            else if (mrm.rm() == 5 && mrm.mod() == 0) { // direct offset
-                // do nothing, we have the offset already
-            }
-            else {
-                if (ex) *w++ = '+';
-                ex=true;
-                w += snprintf(w,(size_t)(wf-w),"%s",CPUregs32[mrm.rm()]);
-            }
-
-            if (ofs != 0) {
-                if (mrm.mod() != 1) {
-                    if (ex) *w++ = '+';
-                    ex=true;
-                    w += snprintf(w,(size_t)(wf-w),"%08lxh",(unsigned long)ofs);
-                }
-                else {
-                    // disp8 mode, ofs then is assumed to be 8-bit sign extended
-                    if (ex) *w++ = (ofs&0x80000000)?'-':'+';
-                    ex=true;
-                    w += snprintf(w,(size_t)(wf-w),"%02lxh",(unsigned long)IPDec8abs((uint8_t)ofs));
-                }
-            }
-
-            *w++ = ']';
-        }
-
-        *w = 0;
+    if (mrm.mod() == 3) {
+        switch (regclass) {
+            case RC_REG:
+                w += snprintf(w,(size_t)(wf-w),"%s",CPUregsN[sz][mrm.rm()]);
+                break;
+            case RC_FPUREG: // Floating point registers
+                w += snprintf(w,(size_t)(wf-w),"ST(%u)",mrm.rm());
+                break;
+        };
     }
     else {
-        switch (mrm.mod()) {
-            case 0: // [indirect] or [displacement]
-                if (mrm.rm() == 6)
-                    w += snprintf(w,(size_t)(wf-w),"[%04lxh]",(unsigned long)ofs);
-                else
-                    w += snprintf(w,(size_t)(wf-w),"[%s]",CPUmod0displacement16[mrm.rm()]);
-                break;
-            case 1: // [indirect+disp8]
-                w += snprintf(w,(size_t)(wf-w),"[%s%c%02Xh]",CPUmod0displacement16[mrm.rm()],ofs&0x80?'-':'+',IPDec8abs((uint8_t)ofs));
-                break;
-            case 2: // [indirect+disp16]
-                w += snprintf(w,(size_t)(wf-w),"[%s+%04Xh]",CPUmod0displacement16[mrm.rm()],(uint16_t)ofs);
-                break;
-            case 3: // register
-                switch (regclass) {
-                    case RC_REG:
-                        w += snprintf(w,(size_t)(wf-w),"%s",CPUregsN[sz][mrm.rm()]);
-                        break;
-                    case RC_FPUREG: // Floating point registers
-                        w += snprintf(w,(size_t)(wf-w),"ST(%u)",mrm.rm());
-                        break;
-                };
-                break;
+        *w++ = '[';
+
+        if (mrm.rm() == 4) { // Decode from SIB byte
+            if (sib.index() != 4) {
+                if (ex) *w++ = '+';
+                ex=true;
+                w += snprintf(w,(size_t)(wf-w),"%s",CPUregs32[sib.index()]);
+                if (sib.scale() != 0) w += snprintf(w,(size_t)(wf-w),"*%u",1U << sib.scale());
+            }
+
+            if (ex) *w++ = '+';
+            ex=true;
+            w += snprintf(w,(size_t)(wf-w),"%s",CPUregs32[sib.base()]);
         }
+        else if (mrm.rm() == 5 && mrm.mod() == 0) { // direct offset
+            // do nothing, we have the offset already
+        }
+        else {
+            if (ex) *w++ = '+';
+            ex=true;
+            w += snprintf(w,(size_t)(wf-w),"%s",CPUregs32[mrm.rm()]);
+        }
+
+        if (ofs != 0) {
+            if (mrm.mod() != 1) {
+                if (ex) *w++ = '+';
+                ex=true;
+                w += snprintf(w,(size_t)(wf-w),"%08lxh",(unsigned long)ofs);
+            }
+            else {
+                // disp8 mode, ofs then is assumed to be 8-bit sign extended
+                if (ex) *w++ = (ofs&0x80000000)?'-':'+';
+                ex=true;
+                w += snprintf(w,(size_t)(wf-w),"%02lxh",(unsigned long)IPDec8abs((uint8_t)ofs));
+            }
+        }
+
+        *w++ = ']';
+        w += sprintf(w,"%s",suffix);
     }
 
+    *w = 0;
     return tmp;
 }
 

@@ -181,6 +181,9 @@ string out_path;
 
 enum opccMode cc_mode = MOD_DECOMPILE;
 
+int     sel_code_width = 16;
+int     sel_addr_width = 16;
+
 static void help() {
     fprintf(stderr,"opcc [options]\n");
     fprintf(stderr,"Take a DOSBox-XR opcode sheet and generate C++ code to handle it.\n");
@@ -190,6 +193,8 @@ static void help() {
     fprintf(stderr,"   -m <mode>           Generation mode:\n");
     fprintf(stderr,"        decompile        Generate code to decompile/disassemble\n");
     fprintf(stderr,"        execute          Generate code to execute instructions\n");
+    fprintf(stderr,"   -c <width>          Code width (16 or 32)\n");
+    fprintf(stderr,"   -a <width>          Address width (16 or 32)\n");
 }
 
 static bool parse(int argc,char **argv) {
@@ -205,6 +210,20 @@ static bool parse(int argc,char **argv) {
             if (!strcmp(a,"h") || !strcmp(a,"help")) {
                 help();
                 return false;
+            }
+            else if (!strcmp(a,"c")) {
+                a = argv[i++];
+                if (a == NULL) return false;
+
+                sel_code_width = atoi(a);
+                if (!(sel_code_width == 16 || sel_code_width == 32)) return false;
+            }
+            else if (!strcmp(a,"a")) {
+                a = argv[i++];
+                if (a == NULL) return false;
+
+                sel_addr_width = atoi(a);
+                if (!(sel_addr_width == 16 || sel_addr_width == 32)) return false;
             }
             else if (!strcmp(a,"i")) {
                 a = argv[i++];
@@ -250,7 +269,7 @@ static bool parse(int argc,char **argv) {
 class OpByte {
 public:
     OpByte() : isprefix(false), segoverride(OPSEG_NONE), modregrm(false), reg_from_opcode(false),
-        already(false), suffix(OPSUFFIX_NONE), opmap_valid(false) {
+        already(false), addrsz32(false), opsz32(false), suffix(OPSUFFIX_NONE), opmap_valid(false) {
     }
     ~OpByte() {
         free_opmap();
@@ -297,6 +316,8 @@ public:
         if (immarg != r.immarg) return false;
         if (disparg != r.disparg) return false;
         if (opmap_valid != r.opmap_valid) return false;
+        if (addrsz32 != r.addrsz32) return false;
+        if (opsz32 != r.opsz32) return false;
 
         if (opmap_valid) {
             assert(r.opmap_valid);
@@ -331,6 +352,8 @@ public:
                                 // the mod/reg/rm byte IS the second byte of the opcode (when mod == 3).
     bool            reg_from_opcode; // reg from opcode, reg = (opcode >> 3) & 7
     bool            already;
+    bool            addrsz32;
+    bool            opsz32;
     enum opccSuffix suffix;     // suffix to name
     vector<enum opccArgs> immarg;
     vector<OpCodeDisplayArg> disparg;
@@ -361,6 +384,8 @@ public:
         mod_not_3 = false;
         mod_is_3 = false;
         modregrm = false;
+        addrsz32 = false;
+        opsz32 = false;
         op = 0;
     }
 public:
@@ -369,6 +394,8 @@ public:
     bool                    modregrm;
     bool                    mod_not_3;      // some opcodes are not valid if mod != 3
     bool                    mod_is_3;
+    bool                    addrsz32;
+    bool                    opsz32;
     int                     oprange_min;
     int                     oprange_max; // last byte of opcode takes the range (min,max) inclusive
     int                     mrm_reg_match; // /X style, to say that opcode is specified by REG field of mod/reg/rm
@@ -419,10 +446,14 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
                     submap->immarg = st.immarg;
                     submap->suffix = st.suffix;
                     submap->name = st.name;
+                    submap->opsz32 = st.opsz32;
+                    submap->addrsz32 = st.addrsz32;
                 }
             }
         }
         else {
+            map->opsz32 = st.opsz32;
+            map->addrsz32 = st.addrsz32;
             map->segoverride = st.segoverride;
             map->format_str = st.format_str;
             map->isprefix = st.is_prefix;
@@ -434,6 +465,8 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
         }
     }
     else {
+        map->opsz32 = st.opsz32;
+        map->addrsz32 = st.addrsz32;
         map->reg_from_opcode = st.reg_from_opcode;
         map->segoverride = st.segoverride;
         map->format_str = st.format_str;
@@ -574,6 +607,12 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
         }
         else if (!strcmp(s,"mod==3")) {
             st.mod_is_3 = true;
+        }
+        else if (!strcmp(s,"addrsz32")) {
+            st.addrsz32 = true;
+        }
+        else if (!strcmp(s,"opsz32")) {
+            st.opsz32 = true;
         }
         else if (!strncmp(s,"segoverride(",12)) {
             s += 12;
@@ -1102,8 +1141,11 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
 
             fprintf(out_fp,"%s        ipw += snprintf(ipw,(size_t)(ipwf-ipw),\"",indent_str.c_str());
             fprintf(out_fp,"%s%s",submap->name.c_str(),suffix_str(submap->suffix,codewidth));
-            if (submap->isprefix) fprintf(out_fp," ");
-            else if (submap->disparg.size() != 0) fprintf(out_fp," ");
+            if (submap->isprefix) {
+                if (!submap->name.empty()) fprintf(out_fp," ");
+            }
+            else if (submap->disparg.size() != 0)
+                fprintf(out_fp," ");
 
             /* then display arguments as directed by format string */
             for (size_t i=0;i < submap->disparg.size();i++) {
@@ -1243,7 +1285,11 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                     }
 
                     fprintf(out_fp,"%%s",suffix);
-                    fmtargs += ",IPDecPrint16(mrm,disp,";
+                    if (addrwidth == 32)
+                        fmtargs += ",IPDecPrint32(mrm,sib,disp,";
+                    else
+                        fmtargs += ",IPDecPrint16(mrm,disp,";
+
                     fmtargs += szp;
                     fmtargs += ",";
                     fmtargs += rc;
@@ -1358,10 +1404,24 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
         }
     }
 
-    if (submap->isprefix)
-        fprintf(out_fp,"%s        goto _x86decode_after_prefix_code%u_addr%u;\n",indent_str.c_str(),codewidth,addrwidth);
-    else
+    if (submap->isprefix) {
+        unsigned int jcw=codewidth,jaw=addrwidth;
+
+        if (submap->opsz32) {
+            if (jcw == 32) jcw = 16;
+            else if (jcw == 16) jcw = 32;
+        }
+        if (submap->addrsz32) {
+            if (jaw == 32) jaw = 16;
+            else if (jaw == 16) jaw = 32;
+        }
+
+        fprintf(out_fp,"%s        goto _x86decode_after_prefix_code%u_addr%u;\n",
+            indent_str.c_str(),jcw,jaw);
+    }
+    else {
         fprintf(out_fp,"%s        break;\n",indent_str.c_str());
+    }
 }
 
 void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const uint8_t *opbase,const size_t opbaselen,OpByte &map,const unsigned int indent) {
@@ -1578,8 +1638,14 @@ int main(int argc,char **argv) {
     else
         out_fp = fopen(out_path.c_str(),"w");
 
-    fprintf(out_fp,"#define IPFcodeW() IPFW()\n");
-    fprintf(out_fp,"#define IPFcodeWsigned() IPFWsigned()\n");
+    if (sel_code_width == 32) {
+        fprintf(out_fp,"#define IPFcodeW() IPFDW()\n");
+        fprintf(out_fp,"#define IPFcodeWsigned() IPFDWsigned()\n");
+    }
+    else {
+        fprintf(out_fp,"#define IPFcodeW() IPFW()\n");
+        fprintf(out_fp,"#define IPFcodeWsigned() IPFWsigned()\n");
+    }
 
     /* TODO: 16-bit and 32-bit modes if opcode list says the CPU supports the 32-bit operand overrides.
      *       If that is the case, we generate 16-bit and 32-bit cases in a "figure 8" goto configuration,
@@ -1590,7 +1656,7 @@ int main(int argc,char **argv) {
      *       Sound stupid? Maybe, but the idea is that most code runs in the CPU mode it's designed for and that
      *       the operator overrides are uncommon, therefore the opcode decoding could gain a speedup by not having
      *       conditional jumps per instruction with regard to opcode size and address size decoding. */
-    outcode_gen(16/*-bit code*/,16/*-bit addressing*/,empty_opcode/*opcode base*/,0/*opcode base len*/,/*&*/opmap16);
+    outcode_gen(sel_code_width,sel_addr_width,empty_opcode/*opcode base*/,0/*opcode base len*/,sel_code_width == 32 ? opmap32 : opmap16);
 
     fprintf(out_fp,"#undef IPFcodeW\n");
     fprintf(out_fp,"#undef IPFcodeWsigned\n");
