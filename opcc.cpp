@@ -464,7 +464,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
     if (st.modregrm) {
         map->modregrm = st.modregrm;
         if (st.mrm_reg_match >= 0) {
-            for (unsigned int mod=0;mod < 4;mod++) {//TODO: mod value conditionals
+            for (unsigned int mod=0;mod < 4;mod++) {
                 for (unsigned int rm=0;rm < 8;rm++) {
                     const uint8_t mrm = (mod << 6) + (st.mrm_reg_match << 3) + rm;
 
@@ -489,6 +489,37 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
                     submap->name = st.name;
                     submap->opsz32 = st.opsz32;
                     submap->addrsz32 = st.addrsz32;
+                }
+            }
+        }
+        else if (st.mod_not_3 || st.mod_is_3) {
+            for (unsigned int mod=0;mod < 4;mod++) {
+                for (unsigned int reg=0;reg < 8;reg++) {
+                    for (unsigned int rm=0;rm < 8;rm++) {
+                        const uint8_t mrm = (mod << 6) + (reg << 3) + rm;
+
+                        if (mod == 3 && st.mod_not_3)
+                            continue;
+                        else if (mod != 3 && st.mod_is_3)
+                            continue;
+
+                        map->init_opcode(mrm);
+                        submap = map->opmap[mrm];
+                        assert(submap != NULL);
+
+                        submap->modregrm = false;
+                        submap->disparg = st.disparg;
+                        submap->format_str = st.format_str;
+                        submap->segoverride = st.segoverride;
+                        submap->isprefix = st.is_prefix;
+                        submap->opspec = st.opspec;
+                        submap->immarg = st.immarg;
+                        submap->mprefix = st.mprefix;
+                        submap->suffix = st.suffix;
+                        submap->name = st.name;
+                        submap->opsz32 = st.opsz32;
+                        submap->addrsz32 = st.addrsz32;
+                    }
                 }
             }
         }
