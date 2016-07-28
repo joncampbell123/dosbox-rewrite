@@ -32,7 +32,9 @@ cpudec86_SOURCES = cpudec86.cpp \
 	cpudec86_pentiumpro.cpp \
 	cpudec86_pentiumpro_generic.cpp \
 	cpudec86_pentiummmx.cpp \
-	cpudec86_pentiummmx_generic.cpp
+	cpudec86_pentiummmx_generic.cpp \
+	cpudec86_pentiumprommx.cpp \
+	cpudec86_pentiumprommx_generic.cpp
 cpudec86_CXXFLAGS = $(AM_CXXFLAGS)
 cpudec86_DEPENDENCIES = \
 	dosboxxr/lib/cpu/libcpu.a $(OPCC_H)
@@ -81,7 +83,11 @@ OPCC_H = \
 	\
 	dosboxxr/lib/cpu/core/intelPentiumMMX.c16.a16.decom.h \
 	dosboxxr/lib/cpu/core/intelPentiumMMX.cxx.axx.decom.h \
-	dosboxxr/lib/cpu/core/intelPentiumMMX.c32.a32.decom.h
+	dosboxxr/lib/cpu/core/intelPentiumMMX.c32.a32.decom.h \
+	\
+	dosboxxr/lib/cpu/core/intelPentiumProMMX.c16.a16.decom.h \
+	dosboxxr/lib/cpu/core/intelPentiumProMMX.cxx.axx.decom.h \
+	dosboxxr/lib/cpu/core/intelPentiumProMMX.c32.a32.decom.h
 
 test1.bin: test1.asm
 	yasm -o $@ -f bin $<
@@ -163,6 +169,15 @@ dosboxxr/lib/cpu/core/intelPentiumMMX.cxx.axx.decom.h: dosboxxr/lib/cpu/core/int
 	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentiumMMX.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
 dosboxxr/lib/cpu/core/intelPentiumMMX.c32.a32.decom.h: dosboxxr/lib/cpu/core/intelPentiumMMX.opcodes.p opcc$(EXEEXT)
 	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentiumMMX.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars
+
+dosboxxr/lib/cpu/core/intelPentiumProMMX.opcodes.p: opcodes/intelPentiumProMMX.opcodes
+	$(BUILD_CPP) -I. opcodes/intelPentiumProMMX.opcodes -o $@
+dosboxxr/lib/cpu/core/intelPentiumProMMX.c16.a16.decom.h: dosboxxr/lib/cpu/core/intelPentiumProMMX.opcodes.p opcc$(EXEEXT)
+	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentiumProMMX.opcodes.p -o $@ -m decompile -c 16 -a 16 -c32vars
+dosboxxr/lib/cpu/core/intelPentiumProMMX.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intelPentiumProMMX.opcodes.p opcc$(EXEEXT)
+	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentiumProMMX.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
+dosboxxr/lib/cpu/core/intelPentiumProMMX.c32.a32.decom.h: dosboxxr/lib/cpu/core/intelPentiumProMMX.opcodes.p opcc$(EXEEXT)
+	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentiumProMMX.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars
 
 # grrr how do I get automake to run opcc first before compiling other parts?
 opcodes: $(OPCC_H)
