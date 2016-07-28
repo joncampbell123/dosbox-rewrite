@@ -5821,3 +5821,38 @@ jmp2:
     maxsd       xmm0,xmm1
     maxsd       xmm0,[si]
 
+    punpcklbw   xmm0,xmm1
+    punpcklbw   xmm0,[si]
+    punpcklwd   xmm0,xmm1
+    punpcklwd   xmm0,[si]
+    punpckldq   xmm0,xmm1
+    punpckldq   xmm0,[si]
+    packsswb    xmm0,xmm1
+    packsswb    xmm0,[si]
+    pcmpgtb     xmm0,xmm1
+    pcmpgtb     xmm0,[si]
+    pcmpgtw     xmm0,xmm1
+    pcmpgtw     xmm0,[si]
+    pcmpgtd     xmm0,xmm1
+    pcmpgtd     xmm0,[si]
+    packuswb    xmm0,xmm1
+    packuswb    xmm0,[si]
+    punpckhbw   xmm0,xmm1
+    punpckhbw   xmm0,[si]
+    punpckhwd   xmm0,xmm1
+    punpckhwd   xmm0,[si]
+    punpckhdq   xmm0,xmm1
+    punpckhdq   xmm0,[si]
+    packssdw    xmm0,xmm1
+    packssdw    xmm0,[si]
+    punpcklqdq  xmm0,xmm1
+    punpcklqdq  xmm0,[si]
+    punpckhqdq  xmm0,xmm1
+    punpckhqdq  xmm0,[si]
+    movd        xmm0,eax
+    movd        xmm0,[si]
+    movdqa      xmm0,xmm1
+    movdqa      xmm0,[si]
+    movdqu      xmm0,xmm1
+    movdqu      xmm0,[si]
+

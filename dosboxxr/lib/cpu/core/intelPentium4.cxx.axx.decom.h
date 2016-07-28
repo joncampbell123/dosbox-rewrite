@@ -7989,22 +7989,118 @@ switch (op) {
                         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
                     ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MAXPD XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
                     break;
-                /* opcode 66h 0Fh 60h  not defined */
-                /* opcode 66h 0Fh 61h  not defined */
-                /* opcode 66h 0Fh 62h  not defined */
-                /* opcode 66h 0Fh 63h  not defined */
-                /* opcode 66h 0Fh 64h  not defined */
-                /* opcode 66h 0Fh 65h  not defined */
-                /* opcode 66h 0Fh 66h  not defined */
-                /* opcode 66h 0Fh 67h  not defined */
-                /* opcode 66h 0Fh 68h  not defined */
-                /* opcode 66h 0Fh 69h  not defined */
-                /* opcode 66h 0Fh 6Ah  not defined */
-                /* opcode 66h 0Fh 6Bh  not defined */
-                /* opcode 66h 0Fh 6Ch  not defined */
-                /* opcode 66h 0Fh 6Dh  not defined */
-                /* opcode 66h 0Fh 6Eh  not defined */
-                /* opcode 66h 0Fh 6Fh  not defined */
+                case 0x60: /* 66h 0Fh 60h PUNPCKLBW sse(reg),sse(r/m)      spec: 0x0F 0x60 mod/reg/rm mprefix(0x66) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PUNPCKLBW XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x61: /* 66h 0Fh 61h PUNPCKLWD sse(reg),sse(r/m)      spec: 0x0F 0x61 mod/reg/rm mprefix(0x66) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PUNPCKLWD XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x62: /* 66h 0Fh 62h PUNPCKLDQ sse(reg),sse(r/m)      spec: 0x0F 0x62 mod/reg/rm mprefix(0x66) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PUNPCKLDQ XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x63: /* 66h 0Fh 63h PACKSSWB sse(reg),sse(r/m)      spec: 0x0F 0x63 mod/reg/rm mprefix(0x66) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PACKSSWB XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x64: /* 66h 0Fh 64h PCMPGTB sse(reg),sse(r/m)      spec: 0x0F 0x64 mod/reg/rm mprefix(0x66) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PCMPGTB XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x65: /* 66h 0Fh 65h PCMPGTW sse(reg),sse(r/m)      spec: 0x0F 0x65 mod/reg/rm mprefix(0x66) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PCMPGTW XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x66: /* 66h 0Fh 66h PCMPGTD sse(reg),sse(r/m)      spec: 0x0F 0x66 mod/reg/rm mprefix(0x66) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PCMPGTD XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x67: /* 66h 0Fh 67h PACKUSWB sse(reg),sse(r/m)      spec: 0x0F 0x67 mod/reg/rm mprefix(0x66) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PACKUSWB XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x68: /* 66h 0Fh 68h PUNPCKHBW sse(reg),sse(r/m)      spec: 0x0F 0x68 mod/reg/rm mprefix(0x66) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PUNPCKHBW XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x69: /* 66h 0Fh 69h PUNPCKHWD sse(reg),sse(r/m)      spec: 0x0F 0x69 mod/reg/rm mprefix(0x66) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PUNPCKHWD XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x6A: /* 66h 0Fh 6Ah PUNPCKHDQ sse(reg),sse(r/m)      spec: 0x0F 0x6A mod/reg/rm mprefix(0x66) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PUNPCKHDQ XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x6B: /* 66h 0Fh 6Bh PACKSSDW sse(reg),sse(r/m)      spec: 0x0F 0x6B mod/reg/rm mprefix(0x66) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PACKSSDW XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x6C: /* 66h 0Fh 6Ch PUNPCKLQDQ sse(reg),sse(r/m)      spec: 0x0F 0x6C mod/reg/rm mprefix(0x66) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PUNPCKLQDQ XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x6D: /* 66h 0Fh 6Dh PUNPCKHQDQ sse(reg),sse(r/m)      spec: 0x0F 0x6D mod/reg/rm mprefix(0x66) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PUNPCKHQDQ XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x6E: /* 66h 0Fh 6Eh MOVD sse(reg),w32(r/m)      spec: 0x0F 0x6E mod/reg/rm mprefix(0x66) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVD XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,4,RC_REG,"w32"));
+                    break;
+                case 0x6F: /* 66h 0Fh 6Fh MOVDQA sse(reg),sse(r/m)      spec: 0x0F 0x6F mod/reg/rm mprefix(0x66) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVDQA XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
                 /* opcode 66h 0Fh 70h  not defined */
                 /* opcode 66h 0Fh 71h  not defined */
                 /* opcode 66h 0Fh 72h  not defined */
@@ -12518,7 +12614,13 @@ switch (op) {
                 /* opcode F3h 0Fh 6Ch  not defined */
                 /* opcode F3h 0Fh 6Dh  not defined */
                 /* opcode F3h 0Fh 6Eh  not defined */
-                /* opcode F3h 0Fh 6Fh  not defined */
+                case 0x6F: /* F3h 0Fh 6Fh MOVDQU sse(reg),sse(r/m)      spec: 0x0F 0x6F mod/reg/rm mprefix(0xF3) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVDQU XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
                 /* opcode F3h 0Fh 70h  not defined */
                 /* opcode F3h 0Fh 71h  not defined */
                 /* opcode F3h 0Fh 72h  not defined */
