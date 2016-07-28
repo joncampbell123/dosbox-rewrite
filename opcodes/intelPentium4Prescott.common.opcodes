@@ -1,0 +1,20 @@
+
+; Pentium 4 Prescott with SSE3
+opcode 0xDB mod/reg/rm /1 mod!=3:                               "FISTTP" w32(r/m)
+opcode 0xDD mod/reg/rm /1 mod!=3:                               "FISTTP" w64(r/m)
+opcode 0xDF mod/reg/rm /1 mod!=3:                               "FISTTP" w16(r/m)
+
+opcode 0x0F 0x01 0xC8:                                          "MONITOR"
+opcode 0x0F 0x01 0xC9:                                          "MWAIT"
+
+opcode 0x0F 0x12 mod/reg/rm mprefix(0xF2):                      "MOVDDUP" sse(reg),sse(r/m)
+opcode 0x0F 0x12 mod/reg/rm mprefix(0xF3):                      "MOVSLDUP" sse(reg),sse(r/m)
+opcode 0x0F 0x16 mod/reg/rm mprefix(0xF3):                      "MOVSHDUP" sse(reg),sse(r/m)
+opcode 0x0F 0x7C mod/reg/rm mprefix(0x66):                      "HADDPD" sse(reg),sse(r/m)
+opcode 0x0F 0x7C mod/reg/rm mprefix(0xF2):                      "HADDPS" sse(reg),sse(r/m)
+opcode 0x0F 0x7D mod/reg/rm mprefix(0x66):                      "HSUBPD" sse(reg),sse(r/m)
+opcode 0x0F 0x7D mod/reg/rm mprefix(0xF2):                      "HSUBPS" sse(reg),sse(r/m)
+opcode 0x0F 0xD0 mod/reg/rm mprefix(0x66):                      "ADDSUBPD" sse(reg),sse(r/m)
+opcode 0x0F 0xD0 mod/reg/rm mprefix(0xF2):                      "ADDSUBPS" sse(reg),sse(r/m)
+opcode 0x0F 0xF0 mod/reg/rm mprefix(0xF2) mod!=3:               "LDDQU" sse(reg),sse(r/m)
+
