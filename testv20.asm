@@ -3088,3 +3088,94 @@ calltest1:
     db      0x64,0xA6           ; REPNC CMPSB
     db      0x64,0xA7           ; REPNC CMPSW
 
+    db      0x0F,0x31,0xC0      ; INS AL,CL     mod == 3
+    db      0x0F,0x31,0xC1      ; INS CL,CL
+    db      0x0F,0x39,0xC0,0x01 ; INS AL,1      mod == 3, reg == 0
+    db      0x0F,0x39,0xC1,0x01 ; INS CL,1      mod == 3, reg == 0
+
+    db      0x0F,0x33,0xC0      ; EXT AL,CL     mod == 3
+    db      0x0F,0x33,0xC1      ; EXT CL,CL
+    db      0x0F,0x3B,0xC0,0x01 ; EXT AL,1      mod == 3, reg == 0
+    db      0x0F,0x3B,0xC1,0x01 ; EXT CL,1      mod == 3, reg == 0
+
+    db      0x0F,0x20           ; ADD4S
+    db      0x0F,0x22           ; SUB4S
+    db      0x0F,0x26           ; CMP4S
+
+    db      0x0F,0x28,0xC1      ; ROL4 CL       mod == 3, reg == 0
+    db      0x0F,0x28,0x00      ; ROL4 [BX+SI]  mod != 0, reg == 0
+    db      0x0F,0x2A,0xC1      ; ROR4 CL       mod == 3, reg == 0
+    db      0x0F,0x2A,0x00      ; ROR4 [BX+SI]  mod != 3, reg == 0
+
+    db      0x0F,0x10,0xC0      ; TEST1 AL,CL   mod == 3, reg == 0
+    db      0x0F,0x10,0xC1      ; TEST1 CL,CL   mod == 3, reg == 0
+    db      0x0F,0x10,0x00      ; TEST1 [BX+SI],CL mod != 3, reg == 0
+
+    db      0x0F,0x11,0xC0      ; TEST1 AX,CL   mod == 3, reg == 0
+    db      0x0F,0x11,0xC1      ; TEST1 CX,CL   mod == 3, reg == 0
+    db      0x0F,0x11,0x00      ; TEST1 [BX+SI],CL mod != 3, reg == 0
+
+    db      0x0F,0x18,0xC0,1    ; TEST1 AL,1    mod == 3, reg == 0
+    db      0x0F,0x18,0xC1,1    ; TEST1 CL,1    mod == 3, reg == 0
+    db      0x0F,0x18,0x00,1    ; TEST1 [BX+SI],1 mod != 3, reg == 0
+
+    db      0x0F,0x19,0xC0,1    ; TEST1 AX,1    mod == 3, reg == 0
+    db      0x0F,0x19,0xC1,1    ; TEST1 CX,1    mod == 3, reg == 0
+    db      0x0F,0x19,0x00,1    ; TEST1 [BX+SI],1 mod != 3, reg == 0
+
+    db      0x0F,0x16,0xC0      ; NOT1 AL,CL   mod == 3, reg == 0
+    db      0x0F,0x16,0xC1      ; NOT1 CL,CL   mod == 3, reg == 0
+    db      0x0F,0x16,0x00      ; NOT1 [BX+SI],CL mod != 3, reg == 0
+
+    db      0x0F,0x17,0xC0      ; NOT1 AX,CL   mod == 3, reg == 0
+    db      0x0F,0x17,0xC1      ; NOT1 CX,CL   mod == 3, reg == 0
+    db      0x0F,0x17,0x00      ; NOT1 [BX+SI],CL mod != 3, reg == 0
+
+    db      0x0F,0x1E,0xC0,1    ; NOT1 AL,1    mod == 3, reg == 0
+    db      0x0F,0x1E,0xC1,1    ; NOT1 CL,1    mod == 3, reg == 0
+    db      0x0F,0x1E,0x00,1    ; NOT1 [BX+SI],1 mod != 3, reg == 0
+
+    db      0x0F,0x1F,0xC0,1    ; NOT1 AX,1    mod == 3, reg == 0
+    db      0x0F,0x1F,0xC1,1    ; NOT1 CX,1    mod == 3, reg == 0
+    db      0x0F,0x1F,0x00,1    ; NOT1 [BX+SI],1 mod != 3, reg == 0
+
+    db      0x0F,0x12,0xC0      ; CLR1 AL,CL   mod == 3, reg == 0
+    db      0x0F,0x12,0xC1      ; CLR1 CL,CL   mod == 3, reg == 0
+    db      0x0F,0x12,0x00      ; CLR1 [BX+SI],CL mod != 3, reg == 0
+
+    db      0x0F,0x13,0xC0      ; CLR1 AX,CL   mod == 3, reg == 0
+    db      0x0F,0x13,0xC1      ; CLR1 CX,CL   mod == 3, reg == 0
+    db      0x0F,0x13,0x00      ; CLR1 [BX+SI],CL mod != 3, reg == 0
+
+    db      0x0F,0x1A,0xC0,1    ; CLR1 AL,1    mod == 3, reg == 0
+    db      0x0F,0x1A,0xC1,1    ; CLR1 CL,1    mod == 3, reg == 0
+    db      0x0F,0x1A,0x00,1    ; CLR1 [BX+SI],1 mod != 3, reg == 0
+
+    db      0x0F,0x1B,0xC0,1    ; CLR1 AX,1    mod == 3, reg == 0
+    db      0x0F,0x1B,0xC1,1    ; CLR1 CX,1    mod == 3, reg == 0
+    db      0x0F,0x1B,0x00,1    ; CLR1 [BX+SI],1 mod != 3, reg == 0
+
+    db      0x0F,0x14,0xC0      ; SET1 AL,CL   mod == 3, reg == 0
+    db      0x0F,0x14,0xC1      ; SET1 CL,CL   mod == 3, reg == 0
+    db      0x0F,0x14,0x00      ; SET1 [BX+SI],CL mod != 3, reg == 0
+
+    db      0x0F,0x15,0xC0      ; SET1 AX,CL   mod == 3, reg == 0
+    db      0x0F,0x15,0xC1      ; SET1 CX,CL   mod == 3, reg == 0
+    db      0x0F,0x15,0x00      ; SET1 [BX+SI],CL mod != 3, reg == 0
+
+    db      0x0F,0x1C,0xC0,1    ; SET1 AL,1    mod == 3, reg == 0
+    db      0x0F,0x1C,0xC1,1    ; SET1 CL,1    mod == 3, reg == 0
+    db      0x0F,0x1C,0x00,1    ; SET1 [BX+SI],1 mod != 3, reg == 0
+
+    db      0x0F,0x1D,0xC0,1    ; SET1 AX,1    mod == 3, reg == 0
+    db      0x0F,0x1D,0xC1,1    ; SET1 CX,1    mod == 3, reg == 0
+    db      0x0F,0x1D,0x00,1    ; SET1 [BX+SI],1 mod != 3, reg == 0
+
+    db      0x0F,0xFF,0x00      ; BRKEM 0
+    db      0x0F,0xFF,0x01      ; BRKEM 1
+
+    db      0x66,0xC0           ; FP02          mod == 3 X=0
+    db      0x67,0xC0           ; FP02          mod == 3 X=1
+    db      0x66,0x00           ; FP02 [BX+SI]  mod != 3 reg == 0 X=0
+    db      0x67,0x00           ; FP02 [BX+SI]  mod != 3 reg == 0 X=0
+
