@@ -1,0 +1,5 @@
+
+; REPC
+opcode 0x65 prefix:                         "REPC"                          ; 
+opcode 0x64 prefix:                         "REPNC"                         ; 
+

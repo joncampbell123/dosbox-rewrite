@@ -22,6 +22,7 @@ empty_SOURCES = empty.cpp
 
 cpudec86_SOURCES = cpudec86.cpp \
 	cpudec86_8086.cpp \
+	cpudec86_necv20.cpp \
 	cpudec86_80186.cpp \
 	cpudec86_80286.cpp \
 	cpudec86_80386.cpp \
@@ -72,6 +73,8 @@ cpumemreftypes_LDADD =
 
 OPCC_H = \
 	dosboxxr/lib/cpu/core/intel8088.c16.a16.decom.h \
+	\
+	dosboxxr/lib/cpu/core/necv20.c16.a16.decom.h \
 	\
 	dosboxxr/lib/cpu/core/intel80186.c16.a16.decom.h \
 	\
@@ -150,10 +153,18 @@ testp4.bin: testp4.asm
 testp4p.bin: testp4p.asm
 	yasm -o $@ -f bin $<
 
-test-bins: test1.bin test2.bin test3.bin test4.bin test5.bin test5pro.bin test5mmx.bin testp2.bin testp3.bin testp4.bin testp4p.bin
+testv20.bin: testv20.asm
+	yasm -o $@ -f bin $<
+
+test-bins: test1.bin test2.bin test3.bin test4.bin test5.bin test5pro.bin test5mmx.bin testp2.bin testp3.bin testp4.bin testp4p.bin testv20.bin
 
 opcc$(EXEEXT): opcc.cpp
 	$(BUILD_CXX) -o $@ $<
+
+dosboxxr/lib/cpu/core/necv20.opcodes.p: opcodes/necv20.opcodes
+	$(BUILD_CPP) -I. opcodes/necv20.opcodes -o $@
+dosboxxr/lib/cpu/core/necv20.c16.a16.decom.h: dosboxxr/lib/cpu/core/necv20.opcodes.p opcc$(EXEEXT)
+	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/necv20.opcodes.p -o $@ -m decompile
 
 dosboxxr/lib/cpu/core/intel8088.opcodes.p: opcodes/intel8088.opcodes
 	$(BUILD_CPP) -I. opcodes/intel8088.opcodes -o $@

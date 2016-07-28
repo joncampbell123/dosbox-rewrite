@@ -18,6 +18,7 @@
 #include "dosboxxr/lib/util/case_groups.h"
 #include "cpudec86common.h"
 
+void IPDec_necv20(x86_offset_t ip);
 void IPDec_8086(x86_offset_t ip);
 void IPDec_80186(x86_offset_t ip);
 void IPDec_80286(x86_offset_t ip);
@@ -115,10 +116,12 @@ int main(int argc,char **argv) {
                     IPDec = IPDec_Pentium4;
                 else if (!strcmp(a,"intelpentium4g") || !strcmp(a,"intelp4g"))
                     IPDec = IPDec_Pentium4_generic;
-                 else if (!strcmp(a,"intelpentium4prescott") || !strcmp(a,"intelp4prescott"))
+                else if (!strcmp(a,"intelpentium4prescott") || !strcmp(a,"intelp4prescott"))
                     IPDec = IPDec_Pentium4Prescott;
                 else if (!strcmp(a,"intelpentium4prescottg") || !strcmp(a,"intelp4prescottg"))
                     IPDec = IPDec_Pentium4Prescott_generic;
+                else if (!strcmp(a,"necv20") || !strcmp(a,"v20"))
+                    IPDec = IPDec_necv20;
                 else {
                     fprintf(stderr,"Unknown CPU\n");
                     return 1;
