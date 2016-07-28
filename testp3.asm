@@ -5518,4 +5518,31 @@ jmp2:
     movss       [si],xmm0
     movss       [bx+si],xmm0
     movss       [ebx*4+edi+0x12345678],xmm0
+    movhlps     xmm0,xmm1
+    movhlps     xmm1,xmm2
+    movlps      xmm0,[si]
+    movlps      xmm0,[bx+si]
+    movlps      xmm0,[edx*4+eax+0x12345678]
+    movlps      [si],xmm0
+    movlps      [bx+si],xmm0
+    movlps      [edx*4+eax+0x12345678],xmm0
+    unpcklps    xmm0,xmm1
+    unpcklps    xmm0,xmm2
+    unpcklps    xmm0,[si]
+    unpcklps    xmm0,[bx+si]
+    unpcklps    xmm0,[edx*4+eax+0x12345678]
+    unpckhps    xmm0,xmm1
+    unpckhps    xmm0,xmm2
+    unpckhps    xmm0,[si]
+    unpckhps    xmm0,[bx+si]
+    unpckhps    xmm0,[edx*4+eax+0x12345678]
+    movlhps     xmm0,xmm1
+    movlhps     xmm1,xmm2
+    movlhps     xmm2,xmm3
+    movhps      xmm0,[si]
+    movhps      xmm0,[bx+si]
+    movhps      xmm0,[edx*4+eax+0x12345678]
+    movhps      [si],xmm0
+    movhps      [bx+si],xmm0
+    movhps      [edx*4+eax+0x12345678],xmm0
 

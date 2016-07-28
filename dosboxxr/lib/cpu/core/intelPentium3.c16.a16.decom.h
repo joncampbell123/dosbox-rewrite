@@ -682,12 +682,30 @@ switch (op) {
                 IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVUPS %s,XMM%u",IPDecPrint16(mrm,disp,16,RC_SSEREG,""),mrm.reg());
                 break;
-            /* opcode 0Fh 12h  not defined */
-            /* opcode 0Fh 13h  not defined */
-            /* opcode 0Fh 14h  not defined */
-            /* opcode 0Fh 15h  not defined */
-            /* opcode 0Fh 16h  not defined */
-            /* opcode 0Fh 17h  not defined */
+            case 0x12: /* 0Fh 12h MOVLPS sse(reg),sse(r/m)      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVLPS XMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                break;
+            case 0x13: /* 0Fh 13h MOVLPS sse(r/m),sse(reg)      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVLPS %s,XMM%u",IPDecPrint16(mrm,disp,16,RC_SSEREG,""),mrm.reg());
+                break;
+            case 0x14: /* 0Fh 14h UNPCKLPS sse(reg),sse(r/m)      spec: 0x0F 0x14 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"UNPCKLPS XMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                break;
+            case 0x15: /* 0Fh 15h UNPCKHPS sse(reg),sse(r/m)      spec: 0x0F 0x15 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"UNPCKHPS XMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                break;
+            case 0x16: /* 0Fh 16h MOVHPS sse(reg),sse(r/m)      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVHPS XMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                break;
+            case 0x17: /* 0Fh 17h MOVHPS sse(r/m),sse(reg)      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVHPS %s,XMM%u",IPDecPrint16(mrm,disp,16,RC_SSEREG,""),mrm.reg());
+                break;
             /* opcode 0Fh 18h  not defined */
             /* opcode 0Fh 19h  not defined */
             /* opcode 0Fh 1Ah  not defined */
