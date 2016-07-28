@@ -24,7 +24,7 @@ opcode 0x0F 0x13 mod/reg/rm mod!=3:             "MOVLPS" sse(r/m),sse(reg)  ; Mo
 ; UNPCKLPS
 opcode 0x0F 0x14 mod/reg/rm:                    "UNPCKLPS" sse(reg),sse(r/m); Unpack and Interleave Low Packed Single-FP Values
 opcode 0x0F 0x15 mod/reg/rm:                    "UNPCKHPS" sse(reg),sse(r/m); Unpack and Interleave High Packed Single-FP Values
-opcode 0x0F 0x16 mod/reg/rm mod==3:             "MOVLHPS" sse(reg),sse(r/m) ; Move Packed Single-FP Values Low to High
+opcode 0x0F 0x16 mod/reg/rm mod==3:             "MOVLHPS" sse(reg),sse(r/m) ; Move Packed Single-FP Values Low to High                        [OPCC FIXME!]
 opcode 0x0F 0x16 mod/reg/rm mod!=3:             "MOVHPS" sse(reg),sse(r/m)  ; Move High Packed Single-FP Values
 opcode 0x0F 0x17 mod/reg/rm mod!=3:             "MOVHPS" sse(r/m),sse(reg)  ; Move High Packed Single-FP Values
 
