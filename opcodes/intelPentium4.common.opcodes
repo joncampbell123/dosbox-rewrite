@@ -94,11 +94,11 @@ opcode 0x0F 0xAE mod/reg/rm /5:                 "LFENCE"
 opcode 0x0F 0xAE mod/reg/rm /6:                 "MFENCE"
 opcode 0x0F 0xAE mod/reg/rm /7 mod!=3:          "CLFLUSH" b(r/m)
 
-opcode 0x0F 0xC2 mod/reg/rm mprefix(0x66):      "CMPPD" sse(reg),sse(r/m)
-opcode 0x0F 0xC2 mod/reg/rm mprefix(0xF2):      "CMPSD" sse(reg),sse(r/m)
+opcode 0x0F 0xC2 mod/reg/rm ib mprefix(0x66):   "CMPPD" sse(reg),sse(r/m),i
+opcode 0x0F 0xC2 mod/reg/rm ib mprefix(0xF2):   "CMPSD" sse(reg),sse(r/m),i
 opcode 0x0F 0xC3 mod/reg/rm mod!=3:             "MOVNTI" w32(r/m),w32(reg)
 
-opcode 0x0F 0xC6 mod/reg/rm mprefix(0x66):      "SHUFPD" sse(reg),sse(r/m)
+opcode 0x0F 0xC6 mod/reg/rm ib mprefix(0x66):   "SHUFPD" sse(reg),sse(r/m),i
 
 opcode 0x0F 0xD1 mod/reg/rm mprefix(0x66):      "PSRLW" sse(reg),sse(r/m)
 opcode 0x0F 0xD2 mod/reg/rm mprefix(0x66):      "PSRLD" sse(reg),sse(r/m)
@@ -106,8 +106,8 @@ opcode 0x0F 0xD3 mod/reg/rm mprefix(0x66):      "PSRLQ" sse(reg),sse(r/m)
 opcode 0x0F 0xD4 mod/reg/rm mprefix(0x66):      "PADDQ" sse(reg),sse(r/m)
 opcode 0x0F 0xD5 mod/reg/rm mprefix(0x66):      "PMULLW" sse(reg),sse(r/m)
 opcode 0x0F 0xD6 mod/reg/rm mprefix(0x66):      "MOVQ" sse(r/m),sse(reg)
-opcode 0x0F 0xD6 mod/reg/rm mprefix(0xF3) mod==3:"MOVQ2DQ" sse(reg),mmx(r/m)        ; FIXME GUESS
-opcode 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3:"MOVDQ2Q" mmx(reg),sse(reg)        ; FIXME GUESS
+opcode 0x0F 0xD6 mod/reg/rm mprefix(0xF3) mod==3:"MOVQ2DQ" sse(reg),mmx(r/m)
+opcode 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3:"MOVDQ2Q" mmx(reg),sse(r/m)
 opcode 0x0F 0xD8 mod/reg/rm mprefix(0x66):      "PSUBUSB" sse(reg),sse(r/m)
 opcode 0x0F 0xDB mod/reg/rm mprefix(0x66):      "PAND" sse(reg),sse(r/m)
 

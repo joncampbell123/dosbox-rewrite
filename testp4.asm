@@ -5889,3 +5889,27 @@ jmp2:
     mfence
     clflush     [si]
 
+    cmppd       xmm0,xmm1,1
+    cmppd       xmm0,[si],1
+    cmpsd       xmm0,xmm1,1
+    cmpsd       xmm0,[si],1
+    movnti      [si],eax
+    shufpd      xmm0,xmm1,1
+    shufpd      xmm0,[si],1
+    psrlw       xmm0,xmm1
+    psrlw       xmm0,[si]
+    psrld       xmm0,xmm1
+    psrld       xmm0,[si]
+    psrlq       xmm0,xmm1
+    psrlq       xmm0,[si]
+    paddq       xmm0,xmm1
+    paddq       xmm0,[si]
+    pmullw      xmm0,xmm1
+    pmullw      xmm0,[si]
+    movq        xmm0,xmm1
+    movq        [si],xmm0
+    movq2dq     xmm0,mm1
+    movdq2q     mm0,xmm1
+    psubusb     xmm0,xmm1
+    pand        xmm0,xmm1
+

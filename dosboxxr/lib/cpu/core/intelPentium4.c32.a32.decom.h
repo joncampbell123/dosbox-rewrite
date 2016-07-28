@@ -8565,9 +8565,10 @@ switch (op) {
                 /* opcode 66h 0Fh BFh  not defined */
                 /* opcode 66h 0Fh C0h  not defined */
                 /* opcode 66h 0Fh C1h  not defined */
-                case 0xC2: /* 66h 0Fh C2h CMPPD sse(reg),sse(r/m)      spec: 0x0F 0xC2 mod/reg/rm mprefix(0x66) */
+                case 0xC2: /* 66h 0Fh C2h CMPPD sse(reg),sse(r/m),i      spec: 0x0F 0xC2 mod/reg/rm ib mprefix(0x66) */
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CMPPD XMM%u,%s",mrm.reg(),IPDecPrint32(mrm,sib,disp,16,RC_SSEREG,""));
+                    imm=IPFB();
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CMPPD XMM%u,%s,0x%02lX",mrm.reg(),IPDecPrint32(mrm,sib,disp,16,RC_SSEREG,""),(unsigned long)((uint32_t)imm));
                     break;
                 /* opcode 66h 0Fh C3h  not defined */
                 case 0xC4: /* 66h 0Fh C4h        spec:  */
@@ -9109,9 +9110,10 @@ switch (op) {
                     };
 /* End of opcodes starting with 66h 0Fh C5h */
                     break;
-                case 0xC6: /* 66h 0Fh C6h SHUFPD sse(reg),sse(r/m)      spec: 0x0F 0xC6 mod/reg/rm mprefix(0x66) */
+                case 0xC6: /* 66h 0Fh C6h SHUFPD sse(reg),sse(r/m),i      spec: 0x0F 0xC6 mod/reg/rm ib mprefix(0x66) */
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHUFPD XMM%u,%s",mrm.reg(),IPDecPrint32(mrm,sib,disp,16,RC_SSEREG,""));
+                    imm=IPFB();
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SHUFPD XMM%u,%s,0x%02lX",mrm.reg(),IPDecPrint32(mrm,sib,disp,16,RC_SSEREG,""),(unsigned long)((uint32_t)imm));
                     break;
                 /* opcode 66h 0Fh C7h  not defined */
                 /* opcode 66h 0Fh C8h  not defined */
@@ -12591,9 +12593,10 @@ switch (op) {
                 /* opcode F2h 0Fh BFh  not defined */
                 /* opcode F2h 0Fh C0h  not defined */
                 /* opcode F2h 0Fh C1h  not defined */
-                case 0xC2: /* F2h 0Fh C2h CMPSD sse(reg),sse(r/m)      spec: 0x0F 0xC2 mod/reg/rm mprefix(0xF2) */
+                case 0xC2: /* F2h 0Fh C2h CMPSD sse(reg),sse(r/m),i      spec: 0x0F 0xC2 mod/reg/rm ib mprefix(0xF2) */
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
-                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CMPSD XMM%u,%s",mrm.reg(),IPDecPrint32(mrm,sib,disp,16,RC_SSEREG,""));
+                    imm=IPFB();
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CMPSD XMM%u,%s,0x%02lX",mrm.reg(),IPDecPrint32(mrm,sib,disp,16,RC_SSEREG,""),(unsigned long)((uint32_t)imm));
                     break;
                 /* opcode F2h 0Fh C3h  not defined */
                 /* opcode F2h 0Fh C4h  not defined */
@@ -12810,71 +12813,71 @@ switch (op) {
                         /* opcode F2h 0Fh D6h BDh  not defined */
                         /* opcode F2h 0Fh D6h BEh  not defined */
                         /* opcode F2h 0Fh D6h BFh  not defined */
-                        case 0xC0: /* F2h 0Fh D6h C0h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=0 rm=0      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xC1: /* F2h 0Fh D6h C1h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=0 rm=1      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xC2: /* F2h 0Fh D6h C2h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=0 rm=2      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xC3: /* F2h 0Fh D6h C3h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=0 rm=3      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xC4: /* F2h 0Fh D6h C4h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=0 rm=4      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xC5: /* F2h 0Fh D6h C5h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=0 rm=5      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xC6: /* F2h 0Fh D6h C6h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=0 rm=6      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xC7: /* F2h 0Fh D6h C7h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=0 rm=7      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xC8: /* F2h 0Fh D6h C8h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=1 rm=0      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xC9: /* F2h 0Fh D6h C9h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=1 rm=1      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xCA: /* F2h 0Fh D6h CAh MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=1 rm=2      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xCB: /* F2h 0Fh D6h CBh MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=1 rm=3      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xCC: /* F2h 0Fh D6h CCh MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=1 rm=4      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xCD: /* F2h 0Fh D6h CDh MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=1 rm=5      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xCE: /* F2h 0Fh D6h CEh MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=1 rm=6      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xCF: /* F2h 0Fh D6h CFh MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=1 rm=7      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xD0: /* F2h 0Fh D6h D0h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=2 rm=0      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xD1: /* F2h 0Fh D6h D1h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=2 rm=1      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xD2: /* F2h 0Fh D6h D2h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=2 rm=2      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xD3: /* F2h 0Fh D6h D3h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=2 rm=3      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xD4: /* F2h 0Fh D6h D4h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=2 rm=4      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xD5: /* F2h 0Fh D6h D5h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=2 rm=5      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xD6: /* F2h 0Fh D6h D6h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=2 rm=6      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xD7: /* F2h 0Fh D6h D7h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=2 rm=7      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xD8: /* F2h 0Fh D6h D8h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=3 rm=0      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xD9: /* F2h 0Fh D6h D9h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=3 rm=1      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xDA: /* F2h 0Fh D6h DAh MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=3 rm=2      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xDB: /* F2h 0Fh D6h DBh MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=3 rm=3      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xDC: /* F2h 0Fh D6h DCh MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=3 rm=4      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xDD: /* F2h 0Fh D6h DDh MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=3 rm=5      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xDE: /* F2h 0Fh D6h DEh MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=3 rm=6      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xDF: /* F2h 0Fh D6h DFh MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=3 rm=7      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xE0: /* F2h 0Fh D6h E0h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=4 rm=0      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xE1: /* F2h 0Fh D6h E1h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=4 rm=1      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xE2: /* F2h 0Fh D6h E2h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=4 rm=2      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xE3: /* F2h 0Fh D6h E3h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=4 rm=3      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xE4: /* F2h 0Fh D6h E4h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=4 rm=4      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xE5: /* F2h 0Fh D6h E5h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=4 rm=5      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xE6: /* F2h 0Fh D6h E6h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=4 rm=6      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xE7: /* F2h 0Fh D6h E7h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=4 rm=7      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xE8: /* F2h 0Fh D6h E8h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=5 rm=0      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xE9: /* F2h 0Fh D6h E9h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=5 rm=1      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xEA: /* F2h 0Fh D6h EAh MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=5 rm=2      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xEB: /* F2h 0Fh D6h EBh MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=5 rm=3      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xEC: /* F2h 0Fh D6h ECh MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=5 rm=4      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xED: /* F2h 0Fh D6h EDh MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=5 rm=5      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xEE: /* F2h 0Fh D6h EEh MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=5 rm=6      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xEF: /* F2h 0Fh D6h EFh MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=5 rm=7      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xF0: /* F2h 0Fh D6h F0h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=6 rm=0      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xF1: /* F2h 0Fh D6h F1h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=6 rm=1      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xF2: /* F2h 0Fh D6h F2h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=6 rm=2      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xF3: /* F2h 0Fh D6h F3h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=6 rm=3      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xF4: /* F2h 0Fh D6h F4h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=6 rm=4      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xF5: /* F2h 0Fh D6h F5h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=6 rm=5      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xF6: /* F2h 0Fh D6h F6h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=6 rm=6      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xF7: /* F2h 0Fh D6h F7h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=6 rm=7      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xF8: /* F2h 0Fh D6h F8h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=7 rm=0      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xF9: /* F2h 0Fh D6h F9h MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=7 rm=1      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xFA: /* F2h 0Fh D6h FAh MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=7 rm=2      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xFB: /* F2h 0Fh D6h FBh MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=7 rm=3      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xFC: /* F2h 0Fh D6h FCh MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=7 rm=4      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xFD: /* F2h 0Fh D6h FDh MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=7 rm=5      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xFE: /* F2h 0Fh D6h FEh MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=7 rm=6      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                        case 0xFF: /* F2h 0Fh D6h FFh MOVDQ2Q mmx(reg),sse(reg) mod=3 reg=7 rm=7      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
-                            ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVDQ2Q MM%u,XMM%u",mrm.reg(),mrm.reg());
+                        case 0xC0: /* F2h 0Fh D6h C0h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=0 rm=0      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xC1: /* F2h 0Fh D6h C1h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=0 rm=1      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xC2: /* F2h 0Fh D6h C2h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=0 rm=2      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xC3: /* F2h 0Fh D6h C3h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=0 rm=3      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xC4: /* F2h 0Fh D6h C4h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=0 rm=4      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xC5: /* F2h 0Fh D6h C5h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=0 rm=5      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xC6: /* F2h 0Fh D6h C6h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=0 rm=6      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xC7: /* F2h 0Fh D6h C7h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=0 rm=7      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xC8: /* F2h 0Fh D6h C8h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=1 rm=0      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xC9: /* F2h 0Fh D6h C9h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=1 rm=1      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xCA: /* F2h 0Fh D6h CAh MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=1 rm=2      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xCB: /* F2h 0Fh D6h CBh MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=1 rm=3      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xCC: /* F2h 0Fh D6h CCh MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=1 rm=4      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xCD: /* F2h 0Fh D6h CDh MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=1 rm=5      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xCE: /* F2h 0Fh D6h CEh MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=1 rm=6      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xCF: /* F2h 0Fh D6h CFh MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=1 rm=7      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xD0: /* F2h 0Fh D6h D0h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=2 rm=0      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xD1: /* F2h 0Fh D6h D1h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=2 rm=1      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xD2: /* F2h 0Fh D6h D2h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=2 rm=2      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xD3: /* F2h 0Fh D6h D3h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=2 rm=3      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xD4: /* F2h 0Fh D6h D4h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=2 rm=4      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xD5: /* F2h 0Fh D6h D5h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=2 rm=5      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xD6: /* F2h 0Fh D6h D6h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=2 rm=6      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xD7: /* F2h 0Fh D6h D7h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=2 rm=7      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xD8: /* F2h 0Fh D6h D8h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=3 rm=0      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xD9: /* F2h 0Fh D6h D9h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=3 rm=1      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xDA: /* F2h 0Fh D6h DAh MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=3 rm=2      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xDB: /* F2h 0Fh D6h DBh MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=3 rm=3      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xDC: /* F2h 0Fh D6h DCh MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=3 rm=4      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xDD: /* F2h 0Fh D6h DDh MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=3 rm=5      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xDE: /* F2h 0Fh D6h DEh MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=3 rm=6      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xDF: /* F2h 0Fh D6h DFh MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=3 rm=7      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xE0: /* F2h 0Fh D6h E0h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=4 rm=0      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xE1: /* F2h 0Fh D6h E1h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=4 rm=1      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xE2: /* F2h 0Fh D6h E2h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=4 rm=2      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xE3: /* F2h 0Fh D6h E3h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=4 rm=3      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xE4: /* F2h 0Fh D6h E4h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=4 rm=4      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xE5: /* F2h 0Fh D6h E5h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=4 rm=5      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xE6: /* F2h 0Fh D6h E6h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=4 rm=6      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xE7: /* F2h 0Fh D6h E7h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=4 rm=7      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xE8: /* F2h 0Fh D6h E8h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=5 rm=0      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xE9: /* F2h 0Fh D6h E9h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=5 rm=1      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xEA: /* F2h 0Fh D6h EAh MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=5 rm=2      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xEB: /* F2h 0Fh D6h EBh MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=5 rm=3      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xEC: /* F2h 0Fh D6h ECh MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=5 rm=4      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xED: /* F2h 0Fh D6h EDh MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=5 rm=5      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xEE: /* F2h 0Fh D6h EEh MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=5 rm=6      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xEF: /* F2h 0Fh D6h EFh MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=5 rm=7      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xF0: /* F2h 0Fh D6h F0h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=6 rm=0      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xF1: /* F2h 0Fh D6h F1h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=6 rm=1      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xF2: /* F2h 0Fh D6h F2h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=6 rm=2      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xF3: /* F2h 0Fh D6h F3h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=6 rm=3      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xF4: /* F2h 0Fh D6h F4h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=6 rm=4      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xF5: /* F2h 0Fh D6h F5h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=6 rm=5      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xF6: /* F2h 0Fh D6h F6h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=6 rm=6      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xF7: /* F2h 0Fh D6h F7h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=6 rm=7      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xF8: /* F2h 0Fh D6h F8h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=7 rm=0      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xF9: /* F2h 0Fh D6h F9h MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=7 rm=1      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xFA: /* F2h 0Fh D6h FAh MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=7 rm=2      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xFB: /* F2h 0Fh D6h FBh MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=7 rm=3      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xFC: /* F2h 0Fh D6h FCh MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=7 rm=4      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xFD: /* F2h 0Fh D6h FDh MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=7 rm=5      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xFE: /* F2h 0Fh D6h FEh MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=7 rm=6      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                        case 0xFF: /* F2h 0Fh D6h FFh MOVDQ2Q mmx(reg),sse(r/m) mod=3 reg=7 rm=7      spec: 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3 */
+                            ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVDQ2Q MM%u,%s",mrm.reg(),IPDecPrint32(mrm,sib,disp,16,RC_SSEREG,""));
                             break;
                         default:
                             goto _x86decode_illegal_opcode;
