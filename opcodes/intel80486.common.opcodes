@@ -3,13 +3,20 @@
 opcode 0x0F range(0xC8,0xCF) reg=op02:          "BSWAP"w w(reg)             ; Byte Swap                                 00001111 11001<reg> reg=0.7
 opcode 0x0F 0xC0 mod/reg/rm:                    "XADD"b b(r/m),b(reg)       ; Exchange and Add                          00001111 1100000w w=0
 opcode 0x0F 0xC1 mod/reg/rm:                    "XADD"w w(r/m),w(reg)       ; Exchange and Add                          00001111 1100000w w=1
+#if defined(CMPXCHG_EARLY_486)
+opcode 0x0F 0xA6 mod/reg/rm:                    "CMPXCHG"b b(r/m),b(reg)    ; Compare and Exchange                      00001111 1011000w w=0
+opcode 0x0F 0xA7 mod/reg/rm:                    "CMPXCHG"w w(r/m),w(reg)    ; Compare and Exchange                      00001111 1011000w w=1
+#else
 opcode 0x0F 0xB0 mod/reg/rm:                    "CMPXCHG"b b(r/m),b(reg)    ; Compare and Exchange                      00001111 1011000w w=0
 opcode 0x0F 0xB1 mod/reg/rm:                    "CMPXCHG"w w(r/m),w(reg)    ; Compare and Exchange                      00001111 1011000w w=1
+#endif
 opcode 0x0F 0x01 mod/reg/rm mod!=3 /7:          "INVLPG" b(r/m)             ; Invalidate TLB Entry                      00001111 00000001
 opcode 0x0F 0x08:                               "INVD"                      ; Invalidate Internal Caches                00001111 00001000
 opcode 0x0F 0x09:                               "WBINVD"                    ; Write Back and Invalidate Cache           00001111 00001001
 
+#if !defined(CMPXCHG_EARLY_486)
 ; CPUID. Note: Older 486 processors (pre-dating the Pentium) do not have this instruction.
 ; The emulator code may jump to illegal opcode if emulating the older one.
 opcode 0x0F 0xA2:                               "CPUID"                     ; CPUID                                     00001111 10100010
+#endif
 

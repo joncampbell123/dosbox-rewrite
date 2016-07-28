@@ -26,6 +26,8 @@ void IPDec_80386(x86_offset_t ip);
 void IPDec_80386_generic(x86_offset_t ip);
 void IPDec_80486(x86_offset_t ip);
 void IPDec_80486_generic(x86_offset_t ip);
+void IPDec_80486early(x86_offset_t ip);
+void IPDec_80486early_generic(x86_offset_t ip);
 void IPDec_Pentium(x86_offset_t ip);
 void IPDec_Pentium_generic(x86_offset_t ip);
 void IPDec_PentiumPro(x86_offset_t ip);
@@ -88,6 +90,10 @@ int main(int argc,char **argv) {
                     IPDec = IPDec_80486;
                 else if (!strcmp(a,"intel80486g") || !strcmp(a,"intel486g") || !strcmp(a,"486g"))
                     IPDec = IPDec_80486_generic;
+                else if (!strcmp(a,"intel80486early") || !strcmp(a,"intel486early") || !strcmp(a,"486early"))
+                    IPDec = IPDec_80486early;
+                else if (!strcmp(a,"intel80486earlyg") || !strcmp(a,"intel486earlyg") || !strcmp(a,"486earlyg"))
+                    IPDec = IPDec_80486early_generic;
                 else if (!strcmp(a,"intelpentium") || !strcmp(a,"intel586") || !strcmp(a,"586"))
                     IPDec = IPDec_Pentium;
                 else if (!strcmp(a,"intelpentiumg") || !strcmp(a,"intel586g") || !strcmp(a,"586g"))
