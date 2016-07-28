@@ -5381,3 +5381,20 @@ jmp2:
 ; RSM. i386L only.
     db      0x0F,0xAA
 
+; UMOV
+    umov    al,ah
+    umov    al,[si]
+    umov    al,[bx+si]
+    umov    ax,bx
+    umov    ax,[si]
+    umov    ax,[bx+si]
+    umov    eax,ebx
+    umov    eax,[si]
+    umov    eax,[bx+si]
+    umov    [si],al
+    umov    [bx+si],al
+    umov    [si],ax
+    umov    [bx+si],ax
+    umov    [si],eax
+    umov    [bx+si],eax
+

@@ -2,6 +2,7 @@
 
 #define CORE86 4
 #define CORE_8086_F6_TEST_ALIAS
+#define CORE_UMOV
 
 #include "opcodes/intel8086.common.opcodes"
 #include "opcodes/intel80186.common.opcodes"

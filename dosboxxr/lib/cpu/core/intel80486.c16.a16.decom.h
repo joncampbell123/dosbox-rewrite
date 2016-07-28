@@ -668,10 +668,22 @@ switch (op=IPFB()) {
             /* opcode 0Fh 0Dh  not defined */
             /* opcode 0Fh 0Eh  not defined */
             /* opcode 0Fh 0Fh  not defined */
-            /* opcode 0Fh 10h  not defined */
-            /* opcode 0Fh 11h  not defined */
-            /* opcode 0Fh 12h  not defined */
-            /* opcode 0Fh 13h  not defined */
+            case 0x10: /* 0Fh 10h UMOV b(r/m),b(reg)      spec: 0x0F 0x10 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"UMOV %s,%s",IPDecPrint16(mrm,disp,1,RC_REG,"b"),CPUregsN[1][mrm.reg()]);
+                break;
+            case 0x11: /* 0Fh 11h UMOV w(r/m),w(reg)      spec: 0x0F 0x11 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"UMOV %s,%s",IPDecPrint16(mrm,disp,2,RC_REG,"w"),CPUregsN[2][mrm.reg()]);
+                break;
+            case 0x12: /* 0Fh 12h UMOV b(reg),b(r/m)      spec: 0x0F 0x12 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"UMOV %s,%s",CPUregsN[1][mrm.reg()],IPDecPrint16(mrm,disp,1,RC_REG,"b"));
+                break;
+            case 0x13: /* 0Fh 13h UMOV w(reg),w(r/m)      spec: 0x0F 0x13 mod/reg/rm */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"UMOV %s,%s",CPUregsN[2][mrm.reg()],IPDecPrint16(mrm,disp,2,RC_REG,"w"));
+                break;
             /* opcode 0Fh 14h  not defined */
             /* opcode 0Fh 15h  not defined */
             /* opcode 0Fh 16h  not defined */

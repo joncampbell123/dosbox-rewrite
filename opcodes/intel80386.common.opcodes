@@ -100,3 +100,11 @@ opcode 0x0F 0xAD mod/reg/rm:                    "SHRD"w w(r/m),w(reg),b(c)  ; Do
 ; RSM
 opcode 0x0F 0xAA:                               "RSM"                       ; Resume from System Management Mode        00001111 10101010
 
+; UMOV (80386/80486 only)
+#if defined(CORE_UMOV) && CORE86 >= 3 && CORE86 <= 4
+opcode 0x0F 0x10 mod/reg/rm:                    "UMOV" b(r/m),b(reg)        ; 
+opcode 0x0F 0x11 mod/reg/rm:                    "UMOV" w(r/m),w(reg)        ; 
+opcode 0x0F 0x12 mod/reg/rm:                    "UMOV" b(reg),b(r/m)        ; 
+opcode 0x0F 0x13 mod/reg/rm:                    "UMOV" w(reg),w(r/m)        ; 
+#endif
+
