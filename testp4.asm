@@ -5911,5 +5911,65 @@ jmp2:
     movq2dq     xmm0,mm1
     movdq2q     mm0,xmm1
     psubusb     xmm0,xmm1
+    psubusb     xmm0,[si]
     pand        xmm0,xmm1
+    pand        xmm0,[si]
+    paddusb     xmm0,xmm1
+    paddusb     xmm0,[si]
+    paddusw     xmm0,xmm1
+    paddusw     xmm0,[si]
+    pandn       xmm0,xmm1
+    pandn       xmm0,[si]
+    psraw       xmm0,xmm1
+    psraw       xmm0,[si]
+    psrad       xmm0,xmm1
+    psrad       xmm0,[si]
+    pmulhw      xmm0,xmm1
+    pmulhw      xmm0,[si]
+    cvtpd2dq    xmm0,xmm1
+    cvtpd2dq    xmm0,[si]
+    cvttpd2dq   xmm0,xmm1
+    cvttpd2dq   xmm0,[si]
+    cvtdq2pd    xmm0,xmm1
+    cvtdq2pd    xmm0,[si]
+    movntdq     [si],xmm0
+    psubsb      xmm0,xmm1
+    psubsb      xmm0,[si]
+    psubsw      xmm0,xmm1
+    psubsw      xmm0,[si]
+    por         xmm0,xmm1
+    por         xmm0,[si]
+    paddsb      xmm0,xmm1
+    paddsb      xmm0,[si]
+    paddsw      xmm0,xmm1
+    paddsw      xmm0,[si]
+    pxor        xmm0,xmm1
+    pxor        xmm0,[si]
+    psllw       xmm0,xmm1
+    psllw       xmm0,[si]
+    pslld       xmm0,xmm1
+    pslld       xmm0,[si]
+    psllq       xmm0,xmm1
+    psllq       xmm0,[si]
+    pmuludq     mm0,mm1
+    pmuludq     mm0,[si]
+    pmuludq     xmm0,xmm1
+    pmuludq     xmm0,[si]
+    pmaddwd     xmm0,xmm1
+    pmaddwd     xmm0,[si]
+    maskmovdqu  xmm0,xmm1
+    psubb       xmm0,xmm1
+    psubb       xmm0,[si]
+    psubw       xmm0,xmm1
+    psubw       xmm0,[si]
+    psubd       mm0,mm1
+    psubd       mm0,[si]
+    psubd       xmm0,xmm1
+    psubd       xmm0,[si]
+    paddb       xmm0,xmm1
+    paddb       xmm0,[si]
+    paddw       xmm0,xmm1
+    paddw       xmm0,[si]
+    paddd       xmm0,xmm1
+    paddd       xmm0,[si]
 
