@@ -5721,3 +5721,41 @@ jmp2:
     movlps      xmm0,[si]
     movlps      [si],xmm0
 
+    unpcklpd    xmm0,xmm1
+    unpcklpd    xmm0,[si]
+    unpckhpd    xmm0,xmm1
+    unpckhpd    xmm0,[si]
+
+    movhpd      xmm0,[si]
+    movhpd      [si],xmm0
+
+    movapd      xmm0,xmm1
+    movapd      xmm0,[si]
+    movapd      [si],xmm0
+
+    cvtpi2pd    xmm0,mm1
+    cvtpi2pd    xmm0,[si]
+
+    cvtsi2sd    xmm0,eax
+    cvtsi2sd    xmm0,[si]
+
+    movntpd     [si],xmm0
+
+    cvttpd2pi   mm0,xmm1
+    cvttpd2pi   mm0,[si]
+
+    cvttsd2si   eax,xmm1
+    cvttsd2si   eax,[si]
+
+    cvtpd2pi    mm0,xmm1
+    cvtpd2pi    mm0,[si]
+
+    cvtsd2si    eax,xmm1
+    cvtsd2si    eax,[si]
+
+    ucomisd     xmm0,xmm1
+    ucomisd     xmm0,[si]
+
+    comisd      xmm0,xmm1
+    comisd      xmm0,[si]
+

@@ -6879,10 +6879,22 @@ switch (op) {
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
                     ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVLPD %s,XMM%u",IPDecPrint16(mrm,disp,16,RC_SSEREG,""),mrm.reg());
                     break;
-                /* opcode 66h 0Fh 14h  not defined */
-                /* opcode 66h 0Fh 15h  not defined */
-                /* opcode 66h 0Fh 16h  not defined */
-                /* opcode 66h 0Fh 17h  not defined */
+                case 0x14: /* 66h 0Fh 14h UNPCKLPD sse(reg),sse(r/m)      spec: 0x0F 0x14 mod/reg/rm mprefix(0x66) */
+                    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"UNPCKLPD XMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x15: /* 66h 0Fh 15h UNPCKHPD sse(reg),sse(r/m)      spec: 0x0F 0x15 mod/reg/rm mprefix(0x66) */
+                    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"UNPCKHPD XMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x16: /* 66h 0Fh 16h MOVHPD sse(reg),sse(r/m)      spec: 0x0F 0x16 mod/reg/rm mprefix(0x66) */
+                    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVHPD XMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x17: /* 66h 0Fh 17h MOVHPD sse(r/m),sse(reg)      spec: 0x0F 0x17 mod/reg/rm mprefix(0x66) */
+                    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVHPD %s,XMM%u",IPDecPrint16(mrm,disp,16,RC_SSEREG,""),mrm.reg());
+                    break;
                 /* opcode 66h 0Fh 18h  not defined */
                 /* opcode 66h 0Fh 19h  not defined */
                 /* opcode 66h 0Fh 1Ah  not defined */
@@ -6899,14 +6911,38 @@ switch (op) {
                 /* opcode 66h 0Fh 25h  not defined */
                 /* opcode 66h 0Fh 26h  not defined */
                 /* opcode 66h 0Fh 27h  not defined */
-                /* opcode 66h 0Fh 28h  not defined */
-                /* opcode 66h 0Fh 29h  not defined */
-                /* opcode 66h 0Fh 2Ah  not defined */
-                /* opcode 66h 0Fh 2Bh  not defined */
-                /* opcode 66h 0Fh 2Ch  not defined */
-                /* opcode 66h 0Fh 2Dh  not defined */
-                /* opcode 66h 0Fh 2Eh  not defined */
-                /* opcode 66h 0Fh 2Fh  not defined */
+                case 0x28: /* 66h 0Fh 28h MOVAPD sse(reg),sse(r/m)      spec: 0x0F 0x28 mod/reg/rm mprefix(0x66) */
+                    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVAPD XMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x29: /* 66h 0Fh 29h MOVAPD sse(r/m),sse(reg)      spec: 0x0F 0x29 mod/reg/rm mprefix(0x66) */
+                    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVAPD %s,XMM%u",IPDecPrint16(mrm,disp,16,RC_SSEREG,""),mrm.reg());
+                    break;
+                case 0x2A: /* 66h 0Fh 2Ah CVTPI2PD sse(reg),mmx(r/m)      spec: 0x0F 0x2A mod/reg/rm mprefix(0x66) */
+                    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CVTPI2PD XMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                    break;
+                case 0x2B: /* 66h 0Fh 2Bh MOVNTPD sse(r/m),sse(reg)      spec: 0x0F 0x2B mod/reg/rm mprefix(0x66) */
+                    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVNTPD %s,XMM%u",IPDecPrint16(mrm,disp,16,RC_SSEREG,""),mrm.reg());
+                    break;
+                case 0x2C: /* 66h 0Fh 2Ch CVTTPD2PI mmx(reg),sse(r/m)      spec: 0x0F 0x2C mod/reg/rm mprefix(0x66) */
+                    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CVTTPD2PI MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x2D: /* 66h 0Fh 2Dh CVTPD2PI mmx(reg),sse(r/m)      spec: 0x0F 0x2D mod/reg/rm mprefix(0x66) */
+                    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CVTPD2PI MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x2E: /* 66h 0Fh 2Eh UCOMISD sse(reg),sse(r/m)      spec: 0x0F 0x2E mod/reg/rm mprefix(0x66) */
+                    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"UCOMISD XMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x2F: /* 66h 0Fh 2Fh COMISD sse(reg),sse(r/m)      spec: 0x0F 0x2F mod/reg/rm mprefix(0x66) */
+                    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"COMISD XMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                    break;
                 /* opcode 66h 0Fh 30h  not defined */
                 /* opcode 66h 0Fh 31h  not defined */
                 /* opcode 66h 0Fh 32h  not defined */
@@ -10860,10 +10896,19 @@ switch (op) {
                 /* opcode F2h 0Fh 27h  not defined */
                 /* opcode F2h 0Fh 28h  not defined */
                 /* opcode F2h 0Fh 29h  not defined */
-                /* opcode F2h 0Fh 2Ah  not defined */
+                case 0x2A: /* F2h 0Fh 2Ah CVTSI2SD sse(reg),w32(r/m)      spec: 0x0F 0x2A mod/reg/rm mprefix(0xF2) */
+                    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CVTSI2SD XMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,4,RC_REG,"w32"));
+                    break;
                 /* opcode F2h 0Fh 2Bh  not defined */
-                /* opcode F2h 0Fh 2Ch  not defined */
-                /* opcode F2h 0Fh 2Dh  not defined */
+                case 0x2C: /* F2h 0Fh 2Ch CVTTSD2SI w32(reg),sse(r/m)      spec: 0x0F 0x2C mod/reg/rm mprefix(0xF2) */
+                    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CVTTSD2SI %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x2D: /* F2h 0Fh 2Dh CVTSD2SI w32(reg),sse(r/m)      spec: 0x0F 0x2D mod/reg/rm mprefix(0xF2) */
+                    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CVTSD2SI %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                    break;
                 /* opcode F2h 0Fh 2Eh  not defined */
                 /* opcode F2h 0Fh 2Fh  not defined */
                 /* opcode F2h 0Fh 30h  not defined */
