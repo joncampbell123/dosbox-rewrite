@@ -5716,3 +5716,8 @@ jmp2:
     movsd       xmm0,[si]
     movsd       [si],xmm0
 
+    movlpd      xmm0,[si]
+    movlpd      [si],xmm0
+    movlps      xmm0,[si]
+    movlps      [si],xmm0
+

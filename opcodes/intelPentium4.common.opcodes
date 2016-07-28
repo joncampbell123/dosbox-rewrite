@@ -9,4 +9,6 @@ opcode 0x0F 0x10 mod/reg/rm mprefix(0x66):      "MOVUPD" sse(reg),sse(r/m)
 opcode 0x0F 0x10 mod/reg/rm mprefix(0xF2):      "MOVSD" sse(reg),sse(r/m)
 opcode 0x0F 0x11 mod/reg/rm mprefix(0x66):      "MOVUPD" sse(r/m),sse(reg)
 opcode 0x0F 0x11 mod/reg/rm mprefix(0xF2):      "MOVSD" sse(r/m),sse(reg)
+opcode 0x0F 0x12 mod/reg/rm mprefix(0x66):      "MOVLPD" sse(reg),sse(r/m)
+opcode 0x0F 0x13 mod/reg/rm mprefix(0x66):      "MOVLPD" sse(r/m),sse(reg)
 

@@ -6871,8 +6871,14 @@ switch (op) {
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                     ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVUPD %s,XMM%u",IPDecPrint32(mrm,sib,disp,16,RC_SSEREG,""),mrm.reg());
                     break;
-                /* opcode 66h 0Fh 12h  not defined */
-                /* opcode 66h 0Fh 13h  not defined */
+                case 0x12: /* 66h 0Fh 12h MOVLPD sse(reg),sse(r/m)      spec: 0x0F 0x12 mod/reg/rm mprefix(0x66) */
+                    IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVLPD XMM%u,%s",mrm.reg(),IPDecPrint32(mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x13: /* 66h 0Fh 13h MOVLPD sse(r/m),sse(reg)      spec: 0x0F 0x13 mod/reg/rm mprefix(0x66) */
+                    IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVLPD %s,XMM%u",IPDecPrint32(mrm,sib,disp,16,RC_SSEREG,""),mrm.reg());
+                    break;
                 /* opcode 66h 0Fh 14h  not defined */
                 /* opcode 66h 0Fh 15h  not defined */
                 /* opcode 66h 0Fh 16h  not defined */
