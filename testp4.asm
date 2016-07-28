@@ -5759,3 +5759,65 @@ jmp2:
     comisd      xmm0,xmm1
     comisd      xmm0,[si]
 
+    movmskpd    eax,xmm1
+
+    sqrtpd      xmm0,xmm1
+    sqrtpd      xmm0,[si]
+    sqrtsd      xmm0,xmm1
+    sqrtsd      xmm0,[si]
+
+    andpd       xmm0,xmm1
+    andpd       xmm0,[si]
+
+    andnpd      xmm0,xmm1
+    andnpd      xmm0,[si]
+
+    orpd        xmm0,xmm1
+    orpd        xmm0,[si]
+
+    xorpd       xmm0,xmm1
+    xorpd       xmm0,[si]
+
+    addpd       xmm0,xmm1
+    addpd       xmm0,[si]
+
+    addsd       xmm0,xmm1
+    addsd       xmm0,[si]
+
+    mulpd       xmm0,xmm1
+    mulpd       xmm0,[si]
+    mulsd       xmm0,xmm1
+    mulsd       xmm0,[si]
+
+    cvtps2pd    xmm0,xmm1
+    cvtps2pd    xmm0,[si]
+    cvtpd2ps    xmm0,xmm1
+    cvtpd2ps    xmm0,[si]
+    cvtss2sd    xmm0,xmm1
+    cvtss2sd    xmm0,[si]
+    cvtsd2ss    xmm0,xmm1
+    cvtsd2ss    xmm0,[si]
+    cvtdq2ps    xmm0,xmm1
+    cvtdq2ps    xmm0,[si]
+    cvtps2dq    xmm0,xmm1
+    cvtps2dq    xmm0,[si]
+    cvttps2dq   xmm0,xmm1
+    cvttps2dq   xmm0,[si]
+
+    subpd       xmm0,xmm1
+    subpd       xmm0,[si]
+    subsd       xmm0,xmm1
+    subsd       xmm0,[si]
+    minpd       xmm0,xmm1
+    minpd       xmm0,[si]
+    minsd       xmm0,xmm1
+    minsd       xmm0,[si]
+    divpd       xmm0,xmm1
+    divpd       xmm0,[si]
+    divps       xmm0,xmm1
+    divps       xmm0,[si]
+    maxpd       xmm0,xmm1
+    maxpd       xmm0,[si]
+    maxsd       xmm0,xmm1
+    maxsd       xmm0,[si]
+

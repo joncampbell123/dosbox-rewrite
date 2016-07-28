@@ -4001,8 +4001,20 @@ switch (op) {
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MULPS XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
                 break;
-            /* opcode 0Fh 5Ah  not defined */
-            /* opcode 0Fh 5Bh  not defined */
+            case 0x5A: /* 0Fh 5Ah CVTPS2PD sse(reg),sse(r/m)      spec: 0x0F 0x5A mod/reg/rm */
+                if (addr32)
+                    IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                else
+                    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CVTPS2PD XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                break;
+            case 0x5B: /* 0Fh 5Bh CVTDQ2PS sse(reg),sse(r/m)      spec: 0x0F 0x5B mod/reg/rm */
+                if (addr32)
+                    IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                else
+                    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CVTDQ2PS XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                break;
             case 0x5C: /* 0Fh 5Ch SUBPS sse(reg),sse(r/m)      spec: 0x0F 0x5C mod/reg/rm */
                 if (addr32)
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
@@ -7614,22 +7626,369 @@ switch (op) {
                 /* opcode 66h 0Fh 4Dh  not defined */
                 /* opcode 66h 0Fh 4Eh  not defined */
                 /* opcode 66h 0Fh 4Fh  not defined */
-                /* opcode 66h 0Fh 50h  not defined */
-                /* opcode 66h 0Fh 51h  not defined */
+                case 0x50: /* 66h 0Fh 50h        spec:  */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+/* Opcodes starting with 66h 0Fh 50h */
+                    switch (mrm.byte) {
+                        /* opcode 66h 0Fh 50h 00h  not defined */
+                        /* opcode 66h 0Fh 50h 01h  not defined */
+                        /* opcode 66h 0Fh 50h 02h  not defined */
+                        /* opcode 66h 0Fh 50h 03h  not defined */
+                        /* opcode 66h 0Fh 50h 04h  not defined */
+                        /* opcode 66h 0Fh 50h 05h  not defined */
+                        /* opcode 66h 0Fh 50h 06h  not defined */
+                        /* opcode 66h 0Fh 50h 07h  not defined */
+                        /* opcode 66h 0Fh 50h 08h  not defined */
+                        /* opcode 66h 0Fh 50h 09h  not defined */
+                        /* opcode 66h 0Fh 50h 0Ah  not defined */
+                        /* opcode 66h 0Fh 50h 0Bh  not defined */
+                        /* opcode 66h 0Fh 50h 0Ch  not defined */
+                        /* opcode 66h 0Fh 50h 0Dh  not defined */
+                        /* opcode 66h 0Fh 50h 0Eh  not defined */
+                        /* opcode 66h 0Fh 50h 0Fh  not defined */
+                        /* opcode 66h 0Fh 50h 10h  not defined */
+                        /* opcode 66h 0Fh 50h 11h  not defined */
+                        /* opcode 66h 0Fh 50h 12h  not defined */
+                        /* opcode 66h 0Fh 50h 13h  not defined */
+                        /* opcode 66h 0Fh 50h 14h  not defined */
+                        /* opcode 66h 0Fh 50h 15h  not defined */
+                        /* opcode 66h 0Fh 50h 16h  not defined */
+                        /* opcode 66h 0Fh 50h 17h  not defined */
+                        /* opcode 66h 0Fh 50h 18h  not defined */
+                        /* opcode 66h 0Fh 50h 19h  not defined */
+                        /* opcode 66h 0Fh 50h 1Ah  not defined */
+                        /* opcode 66h 0Fh 50h 1Bh  not defined */
+                        /* opcode 66h 0Fh 50h 1Ch  not defined */
+                        /* opcode 66h 0Fh 50h 1Dh  not defined */
+                        /* opcode 66h 0Fh 50h 1Eh  not defined */
+                        /* opcode 66h 0Fh 50h 1Fh  not defined */
+                        /* opcode 66h 0Fh 50h 20h  not defined */
+                        /* opcode 66h 0Fh 50h 21h  not defined */
+                        /* opcode 66h 0Fh 50h 22h  not defined */
+                        /* opcode 66h 0Fh 50h 23h  not defined */
+                        /* opcode 66h 0Fh 50h 24h  not defined */
+                        /* opcode 66h 0Fh 50h 25h  not defined */
+                        /* opcode 66h 0Fh 50h 26h  not defined */
+                        /* opcode 66h 0Fh 50h 27h  not defined */
+                        /* opcode 66h 0Fh 50h 28h  not defined */
+                        /* opcode 66h 0Fh 50h 29h  not defined */
+                        /* opcode 66h 0Fh 50h 2Ah  not defined */
+                        /* opcode 66h 0Fh 50h 2Bh  not defined */
+                        /* opcode 66h 0Fh 50h 2Ch  not defined */
+                        /* opcode 66h 0Fh 50h 2Dh  not defined */
+                        /* opcode 66h 0Fh 50h 2Eh  not defined */
+                        /* opcode 66h 0Fh 50h 2Fh  not defined */
+                        /* opcode 66h 0Fh 50h 30h  not defined */
+                        /* opcode 66h 0Fh 50h 31h  not defined */
+                        /* opcode 66h 0Fh 50h 32h  not defined */
+                        /* opcode 66h 0Fh 50h 33h  not defined */
+                        /* opcode 66h 0Fh 50h 34h  not defined */
+                        /* opcode 66h 0Fh 50h 35h  not defined */
+                        /* opcode 66h 0Fh 50h 36h  not defined */
+                        /* opcode 66h 0Fh 50h 37h  not defined */
+                        /* opcode 66h 0Fh 50h 38h  not defined */
+                        /* opcode 66h 0Fh 50h 39h  not defined */
+                        /* opcode 66h 0Fh 50h 3Ah  not defined */
+                        /* opcode 66h 0Fh 50h 3Bh  not defined */
+                        /* opcode 66h 0Fh 50h 3Ch  not defined */
+                        /* opcode 66h 0Fh 50h 3Dh  not defined */
+                        /* opcode 66h 0Fh 50h 3Eh  not defined */
+                        /* opcode 66h 0Fh 50h 3Fh  not defined */
+                        /* opcode 66h 0Fh 50h 40h  not defined */
+                        /* opcode 66h 0Fh 50h 41h  not defined */
+                        /* opcode 66h 0Fh 50h 42h  not defined */
+                        /* opcode 66h 0Fh 50h 43h  not defined */
+                        /* opcode 66h 0Fh 50h 44h  not defined */
+                        /* opcode 66h 0Fh 50h 45h  not defined */
+                        /* opcode 66h 0Fh 50h 46h  not defined */
+                        /* opcode 66h 0Fh 50h 47h  not defined */
+                        /* opcode 66h 0Fh 50h 48h  not defined */
+                        /* opcode 66h 0Fh 50h 49h  not defined */
+                        /* opcode 66h 0Fh 50h 4Ah  not defined */
+                        /* opcode 66h 0Fh 50h 4Bh  not defined */
+                        /* opcode 66h 0Fh 50h 4Ch  not defined */
+                        /* opcode 66h 0Fh 50h 4Dh  not defined */
+                        /* opcode 66h 0Fh 50h 4Eh  not defined */
+                        /* opcode 66h 0Fh 50h 4Fh  not defined */
+                        /* opcode 66h 0Fh 50h 50h  not defined */
+                        /* opcode 66h 0Fh 50h 51h  not defined */
+                        /* opcode 66h 0Fh 50h 52h  not defined */
+                        /* opcode 66h 0Fh 50h 53h  not defined */
+                        /* opcode 66h 0Fh 50h 54h  not defined */
+                        /* opcode 66h 0Fh 50h 55h  not defined */
+                        /* opcode 66h 0Fh 50h 56h  not defined */
+                        /* opcode 66h 0Fh 50h 57h  not defined */
+                        /* opcode 66h 0Fh 50h 58h  not defined */
+                        /* opcode 66h 0Fh 50h 59h  not defined */
+                        /* opcode 66h 0Fh 50h 5Ah  not defined */
+                        /* opcode 66h 0Fh 50h 5Bh  not defined */
+                        /* opcode 66h 0Fh 50h 5Ch  not defined */
+                        /* opcode 66h 0Fh 50h 5Dh  not defined */
+                        /* opcode 66h 0Fh 50h 5Eh  not defined */
+                        /* opcode 66h 0Fh 50h 5Fh  not defined */
+                        /* opcode 66h 0Fh 50h 60h  not defined */
+                        /* opcode 66h 0Fh 50h 61h  not defined */
+                        /* opcode 66h 0Fh 50h 62h  not defined */
+                        /* opcode 66h 0Fh 50h 63h  not defined */
+                        /* opcode 66h 0Fh 50h 64h  not defined */
+                        /* opcode 66h 0Fh 50h 65h  not defined */
+                        /* opcode 66h 0Fh 50h 66h  not defined */
+                        /* opcode 66h 0Fh 50h 67h  not defined */
+                        /* opcode 66h 0Fh 50h 68h  not defined */
+                        /* opcode 66h 0Fh 50h 69h  not defined */
+                        /* opcode 66h 0Fh 50h 6Ah  not defined */
+                        /* opcode 66h 0Fh 50h 6Bh  not defined */
+                        /* opcode 66h 0Fh 50h 6Ch  not defined */
+                        /* opcode 66h 0Fh 50h 6Dh  not defined */
+                        /* opcode 66h 0Fh 50h 6Eh  not defined */
+                        /* opcode 66h 0Fh 50h 6Fh  not defined */
+                        /* opcode 66h 0Fh 50h 70h  not defined */
+                        /* opcode 66h 0Fh 50h 71h  not defined */
+                        /* opcode 66h 0Fh 50h 72h  not defined */
+                        /* opcode 66h 0Fh 50h 73h  not defined */
+                        /* opcode 66h 0Fh 50h 74h  not defined */
+                        /* opcode 66h 0Fh 50h 75h  not defined */
+                        /* opcode 66h 0Fh 50h 76h  not defined */
+                        /* opcode 66h 0Fh 50h 77h  not defined */
+                        /* opcode 66h 0Fh 50h 78h  not defined */
+                        /* opcode 66h 0Fh 50h 79h  not defined */
+                        /* opcode 66h 0Fh 50h 7Ah  not defined */
+                        /* opcode 66h 0Fh 50h 7Bh  not defined */
+                        /* opcode 66h 0Fh 50h 7Ch  not defined */
+                        /* opcode 66h 0Fh 50h 7Dh  not defined */
+                        /* opcode 66h 0Fh 50h 7Eh  not defined */
+                        /* opcode 66h 0Fh 50h 7Fh  not defined */
+                        /* opcode 66h 0Fh 50h 80h  not defined */
+                        /* opcode 66h 0Fh 50h 81h  not defined */
+                        /* opcode 66h 0Fh 50h 82h  not defined */
+                        /* opcode 66h 0Fh 50h 83h  not defined */
+                        /* opcode 66h 0Fh 50h 84h  not defined */
+                        /* opcode 66h 0Fh 50h 85h  not defined */
+                        /* opcode 66h 0Fh 50h 86h  not defined */
+                        /* opcode 66h 0Fh 50h 87h  not defined */
+                        /* opcode 66h 0Fh 50h 88h  not defined */
+                        /* opcode 66h 0Fh 50h 89h  not defined */
+                        /* opcode 66h 0Fh 50h 8Ah  not defined */
+                        /* opcode 66h 0Fh 50h 8Bh  not defined */
+                        /* opcode 66h 0Fh 50h 8Ch  not defined */
+                        /* opcode 66h 0Fh 50h 8Dh  not defined */
+                        /* opcode 66h 0Fh 50h 8Eh  not defined */
+                        /* opcode 66h 0Fh 50h 8Fh  not defined */
+                        /* opcode 66h 0Fh 50h 90h  not defined */
+                        /* opcode 66h 0Fh 50h 91h  not defined */
+                        /* opcode 66h 0Fh 50h 92h  not defined */
+                        /* opcode 66h 0Fh 50h 93h  not defined */
+                        /* opcode 66h 0Fh 50h 94h  not defined */
+                        /* opcode 66h 0Fh 50h 95h  not defined */
+                        /* opcode 66h 0Fh 50h 96h  not defined */
+                        /* opcode 66h 0Fh 50h 97h  not defined */
+                        /* opcode 66h 0Fh 50h 98h  not defined */
+                        /* opcode 66h 0Fh 50h 99h  not defined */
+                        /* opcode 66h 0Fh 50h 9Ah  not defined */
+                        /* opcode 66h 0Fh 50h 9Bh  not defined */
+                        /* opcode 66h 0Fh 50h 9Ch  not defined */
+                        /* opcode 66h 0Fh 50h 9Dh  not defined */
+                        /* opcode 66h 0Fh 50h 9Eh  not defined */
+                        /* opcode 66h 0Fh 50h 9Fh  not defined */
+                        /* opcode 66h 0Fh 50h A0h  not defined */
+                        /* opcode 66h 0Fh 50h A1h  not defined */
+                        /* opcode 66h 0Fh 50h A2h  not defined */
+                        /* opcode 66h 0Fh 50h A3h  not defined */
+                        /* opcode 66h 0Fh 50h A4h  not defined */
+                        /* opcode 66h 0Fh 50h A5h  not defined */
+                        /* opcode 66h 0Fh 50h A6h  not defined */
+                        /* opcode 66h 0Fh 50h A7h  not defined */
+                        /* opcode 66h 0Fh 50h A8h  not defined */
+                        /* opcode 66h 0Fh 50h A9h  not defined */
+                        /* opcode 66h 0Fh 50h AAh  not defined */
+                        /* opcode 66h 0Fh 50h ABh  not defined */
+                        /* opcode 66h 0Fh 50h ACh  not defined */
+                        /* opcode 66h 0Fh 50h ADh  not defined */
+                        /* opcode 66h 0Fh 50h AEh  not defined */
+                        /* opcode 66h 0Fh 50h AFh  not defined */
+                        /* opcode 66h 0Fh 50h B0h  not defined */
+                        /* opcode 66h 0Fh 50h B1h  not defined */
+                        /* opcode 66h 0Fh 50h B2h  not defined */
+                        /* opcode 66h 0Fh 50h B3h  not defined */
+                        /* opcode 66h 0Fh 50h B4h  not defined */
+                        /* opcode 66h 0Fh 50h B5h  not defined */
+                        /* opcode 66h 0Fh 50h B6h  not defined */
+                        /* opcode 66h 0Fh 50h B7h  not defined */
+                        /* opcode 66h 0Fh 50h B8h  not defined */
+                        /* opcode 66h 0Fh 50h B9h  not defined */
+                        /* opcode 66h 0Fh 50h BAh  not defined */
+                        /* opcode 66h 0Fh 50h BBh  not defined */
+                        /* opcode 66h 0Fh 50h BCh  not defined */
+                        /* opcode 66h 0Fh 50h BDh  not defined */
+                        /* opcode 66h 0Fh 50h BEh  not defined */
+                        /* opcode 66h 0Fh 50h BFh  not defined */
+                        case 0xC0: /* 66h 0Fh 50h C0h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=0 rm=0      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xC1: /* 66h 0Fh 50h C1h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=0 rm=1      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xC2: /* 66h 0Fh 50h C2h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=0 rm=2      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xC3: /* 66h 0Fh 50h C3h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=0 rm=3      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xC4: /* 66h 0Fh 50h C4h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=0 rm=4      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xC5: /* 66h 0Fh 50h C5h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=0 rm=5      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xC6: /* 66h 0Fh 50h C6h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=0 rm=6      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xC7: /* 66h 0Fh 50h C7h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=0 rm=7      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xC8: /* 66h 0Fh 50h C8h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=1 rm=0      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xC9: /* 66h 0Fh 50h C9h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=1 rm=1      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xCA: /* 66h 0Fh 50h CAh MOVMSKPD w32(reg),sse(r/m) mod=3 reg=1 rm=2      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xCB: /* 66h 0Fh 50h CBh MOVMSKPD w32(reg),sse(r/m) mod=3 reg=1 rm=3      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xCC: /* 66h 0Fh 50h CCh MOVMSKPD w32(reg),sse(r/m) mod=3 reg=1 rm=4      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xCD: /* 66h 0Fh 50h CDh MOVMSKPD w32(reg),sse(r/m) mod=3 reg=1 rm=5      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xCE: /* 66h 0Fh 50h CEh MOVMSKPD w32(reg),sse(r/m) mod=3 reg=1 rm=6      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xCF: /* 66h 0Fh 50h CFh MOVMSKPD w32(reg),sse(r/m) mod=3 reg=1 rm=7      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xD0: /* 66h 0Fh 50h D0h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=2 rm=0      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xD1: /* 66h 0Fh 50h D1h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=2 rm=1      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xD2: /* 66h 0Fh 50h D2h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=2 rm=2      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xD3: /* 66h 0Fh 50h D3h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=2 rm=3      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xD4: /* 66h 0Fh 50h D4h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=2 rm=4      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xD5: /* 66h 0Fh 50h D5h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=2 rm=5      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xD6: /* 66h 0Fh 50h D6h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=2 rm=6      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xD7: /* 66h 0Fh 50h D7h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=2 rm=7      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xD8: /* 66h 0Fh 50h D8h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=3 rm=0      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xD9: /* 66h 0Fh 50h D9h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=3 rm=1      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xDA: /* 66h 0Fh 50h DAh MOVMSKPD w32(reg),sse(r/m) mod=3 reg=3 rm=2      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xDB: /* 66h 0Fh 50h DBh MOVMSKPD w32(reg),sse(r/m) mod=3 reg=3 rm=3      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xDC: /* 66h 0Fh 50h DCh MOVMSKPD w32(reg),sse(r/m) mod=3 reg=3 rm=4      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xDD: /* 66h 0Fh 50h DDh MOVMSKPD w32(reg),sse(r/m) mod=3 reg=3 rm=5      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xDE: /* 66h 0Fh 50h DEh MOVMSKPD w32(reg),sse(r/m) mod=3 reg=3 rm=6      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xDF: /* 66h 0Fh 50h DFh MOVMSKPD w32(reg),sse(r/m) mod=3 reg=3 rm=7      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xE0: /* 66h 0Fh 50h E0h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=4 rm=0      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xE1: /* 66h 0Fh 50h E1h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=4 rm=1      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xE2: /* 66h 0Fh 50h E2h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=4 rm=2      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xE3: /* 66h 0Fh 50h E3h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=4 rm=3      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xE4: /* 66h 0Fh 50h E4h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=4 rm=4      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xE5: /* 66h 0Fh 50h E5h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=4 rm=5      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xE6: /* 66h 0Fh 50h E6h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=4 rm=6      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xE7: /* 66h 0Fh 50h E7h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=4 rm=7      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xE8: /* 66h 0Fh 50h E8h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=5 rm=0      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xE9: /* 66h 0Fh 50h E9h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=5 rm=1      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xEA: /* 66h 0Fh 50h EAh MOVMSKPD w32(reg),sse(r/m) mod=3 reg=5 rm=2      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xEB: /* 66h 0Fh 50h EBh MOVMSKPD w32(reg),sse(r/m) mod=3 reg=5 rm=3      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xEC: /* 66h 0Fh 50h ECh MOVMSKPD w32(reg),sse(r/m) mod=3 reg=5 rm=4      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xED: /* 66h 0Fh 50h EDh MOVMSKPD w32(reg),sse(r/m) mod=3 reg=5 rm=5      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xEE: /* 66h 0Fh 50h EEh MOVMSKPD w32(reg),sse(r/m) mod=3 reg=5 rm=6      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xEF: /* 66h 0Fh 50h EFh MOVMSKPD w32(reg),sse(r/m) mod=3 reg=5 rm=7      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xF0: /* 66h 0Fh 50h F0h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=6 rm=0      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xF1: /* 66h 0Fh 50h F1h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=6 rm=1      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xF2: /* 66h 0Fh 50h F2h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=6 rm=2      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xF3: /* 66h 0Fh 50h F3h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=6 rm=3      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xF4: /* 66h 0Fh 50h F4h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=6 rm=4      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xF5: /* 66h 0Fh 50h F5h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=6 rm=5      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xF6: /* 66h 0Fh 50h F6h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=6 rm=6      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xF7: /* 66h 0Fh 50h F7h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=6 rm=7      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xF8: /* 66h 0Fh 50h F8h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=7 rm=0      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xF9: /* 66h 0Fh 50h F9h MOVMSKPD w32(reg),sse(r/m) mod=3 reg=7 rm=1      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xFA: /* 66h 0Fh 50h FAh MOVMSKPD w32(reg),sse(r/m) mod=3 reg=7 rm=2      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xFB: /* 66h 0Fh 50h FBh MOVMSKPD w32(reg),sse(r/m) mod=3 reg=7 rm=3      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xFC: /* 66h 0Fh 50h FCh MOVMSKPD w32(reg),sse(r/m) mod=3 reg=7 rm=4      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xFD: /* 66h 0Fh 50h FDh MOVMSKPD w32(reg),sse(r/m) mod=3 reg=7 rm=5      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xFE: /* 66h 0Fh 50h FEh MOVMSKPD w32(reg),sse(r/m) mod=3 reg=7 rm=6      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                        case 0xFF: /* 66h 0Fh 50h FFh MOVMSKPD w32(reg),sse(r/m) mod=3 reg=7 rm=7      spec: 0x0F 0x50 mod/reg/rm mprefix(0x66) mod==3 */
+                            ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVMSKPD %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                            break;
+                        default:
+                            goto _x86decode_illegal_opcode;
+                    };
+/* End of opcodes starting with 66h 0Fh 50h */
+                    break;
+                case 0x51: /* 66h 0Fh 51h SQRTPD sse(reg),sse(r/m)      spec: 0x0F 0x51 mod/reg/rm mprefix(0x66) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SQRTPD XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
                 /* opcode 66h 0Fh 52h  not defined */
                 /* opcode 66h 0Fh 53h  not defined */
-                /* opcode 66h 0Fh 54h  not defined */
-                /* opcode 66h 0Fh 55h  not defined */
-                /* opcode 66h 0Fh 56h  not defined */
-                /* opcode 66h 0Fh 57h  not defined */
-                /* opcode 66h 0Fh 58h  not defined */
-                /* opcode 66h 0Fh 59h  not defined */
-                /* opcode 66h 0Fh 5Ah  not defined */
-                /* opcode 66h 0Fh 5Bh  not defined */
-                /* opcode 66h 0Fh 5Ch  not defined */
-                /* opcode 66h 0Fh 5Dh  not defined */
-                /* opcode 66h 0Fh 5Eh  not defined */
-                /* opcode 66h 0Fh 5Fh  not defined */
+                case 0x54: /* 66h 0Fh 54h ANDPD sse(reg),sse(r/m)      spec: 0x0F 0x54 mod/reg/rm mprefix(0x66) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ANDPD XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x55: /* 66h 0Fh 55h ANDNPD sse(reg),sse(r/m)      spec: 0x0F 0x55 mod/reg/rm mprefix(0x66) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ANDNPD XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x56: /* 66h 0Fh 56h ORPD sse(reg),sse(r/m)      spec: 0x0F 0x56 mod/reg/rm mprefix(0x66) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ORPD XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x57: /* 66h 0Fh 57h XORPD sse(reg),sse(r/m)      spec: 0x0F 0x57 mod/reg/rm mprefix(0x66) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"XORPD XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x58: /* 66h 0Fh 58h ADDPD sse(reg),sse(r/m)      spec: 0x0F 0x58 mod/reg/rm mprefix(0x66) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADDPD XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x59: /* 66h 0Fh 59h MULPD sse(reg),sse(r/m)      spec: 0x0F 0x59 mod/reg/rm mprefix(0x66) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MULPD XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x5A: /* 66h 0Fh 5Ah CVTPD2PS sse(reg),sse(r/m)      spec: 0x0F 0x5A mod/reg/rm mprefix(0x66) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CVTPD2PS XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x5B: /* 66h 0Fh 5Bh CVTPS2DQ sse(reg),sse(r/m)      spec: 0x0F 0x5B mod/reg/rm mprefix(0x66) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CVTPS2DQ XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x5C: /* 66h 0Fh 5Ch SUBPD sse(reg),sse(r/m)      spec: 0x0F 0x5C mod/reg/rm mprefix(0x66) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SUBPD XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x5D: /* 66h 0Fh 5Dh MINPD sse(reg),sse(r/m)      spec: 0x0F 0x5D mod/reg/rm mprefix(0x66) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MINPD XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x5E: /* 66h 0Fh 5Eh DIVPD sse(reg),sse(r/m)      spec: 0x0F 0x5E mod/reg/rm mprefix(0x66) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"DIVPD XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x5F: /* 66h 0Fh 5Fh MAXPD sse(reg),sse(r/m)      spec: 0x0F 0x5F mod/reg/rm mprefix(0x66) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MAXPD XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
                 /* opcode 66h 0Fh 60h  not defined */
                 /* opcode 66h 0Fh 61h  not defined */
                 /* opcode 66h 0Fh 62h  not defined */
@@ -11716,21 +12075,69 @@ switch (op) {
                 /* opcode F2h 0Fh 4Eh  not defined */
                 /* opcode F2h 0Fh 4Fh  not defined */
                 /* opcode F2h 0Fh 50h  not defined */
-                /* opcode F2h 0Fh 51h  not defined */
+                case 0x51: /* F2h 0Fh 51h SQRTSD sse(reg),sse(r/m)      spec: 0x0F 0x51 mod/reg/rm mprefix(0xF2) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SQRTSD XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
                 /* opcode F2h 0Fh 52h  not defined */
                 /* opcode F2h 0Fh 53h  not defined */
                 /* opcode F2h 0Fh 54h  not defined */
                 /* opcode F2h 0Fh 55h  not defined */
                 /* opcode F2h 0Fh 56h  not defined */
                 /* opcode F2h 0Fh 57h  not defined */
-                /* opcode F2h 0Fh 58h  not defined */
-                /* opcode F2h 0Fh 59h  not defined */
-                /* opcode F2h 0Fh 5Ah  not defined */
+                case 0x58: /* F2h 0Fh 58h ADDSD sse(reg),sse(r/m)      spec: 0x0F 0x58 mod/reg/rm mprefix(0xF2) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"ADDSD XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x59: /* F2h 0Fh 59h MULSD sse(reg),sse(r/m)      spec: 0x0F 0x59 mod/reg/rm mprefix(0xF2) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MULSD XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x5A: /* F2h 0Fh 5Ah CVTSD2SS sse(reg),sse(r/m)      spec: 0x0F 0x5A mod/reg/rm mprefix(0xF2) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CVTSD2SS XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
                 /* opcode F2h 0Fh 5Bh  not defined */
-                /* opcode F2h 0Fh 5Ch  not defined */
-                /* opcode F2h 0Fh 5Dh  not defined */
-                /* opcode F2h 0Fh 5Eh  not defined */
-                /* opcode F2h 0Fh 5Fh  not defined */
+                case 0x5C: /* F2h 0Fh 5Ch SUBSD sse(reg),sse(r/m)      spec: 0x0F 0x5C mod/reg/rm mprefix(0xF2) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SUBSD XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x5D: /* F2h 0Fh 5Dh MINSD sse(reg),sse(r/m)      spec: 0x0F 0x5D mod/reg/rm mprefix(0xF2) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MINSD XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x5E: /* F2h 0Fh 5Eh DIVSD sse(reg),sse(r/m)      spec: 0x0F 0x5E mod/reg/rm mprefix(0xF2) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"DIVSD XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x5F: /* F2h 0Fh 5Fh MAXSD sse(reg),sse(r/m)      spec: 0x0F 0x5F mod/reg/rm mprefix(0xF2) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MAXSD XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
                 /* opcode F2h 0Fh 60h  not defined */
                 /* opcode F2h 0Fh 61h  not defined */
                 /* opcode F2h 0Fh 62h  not defined */
@@ -12054,8 +12461,20 @@ switch (op) {
                         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
                     ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MULSS XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
                     break;
-                /* opcode F3h 0Fh 5Ah  not defined */
-                /* opcode F3h 0Fh 5Bh  not defined */
+                case 0x5A: /* F3h 0Fh 5Ah CVTSS2SD sse(reg),sse(r/m)      spec: 0x0F 0x5A mod/reg/rm mprefix(0xF3) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CVTSS2SD XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
+                case 0x5B: /* F3h 0Fh 5Bh CVTTPS2DQ sse(reg),sse(r/m)      spec: 0x0F 0x5B mod/reg/rm mprefix(0xF3) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"CVTTPS2DQ XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                    break;
                 case 0x5C: /* F3h 0Fh 5Ch SUBSS sse(reg),sse(r/m)      spec: 0x0F 0x5C mod/reg/rm mprefix(0xF3) */
                     if (addr32)
                         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
