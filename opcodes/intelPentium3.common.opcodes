@@ -12,5 +12,7 @@
 
 ; MOVUPS
 opcode 0x0F 0x10 mod/reg/rm:                    "MOVUPS" sse(reg),sse(r/m)  ; Move Unaligned Packed Single-FP Values
+opcode 0x0F 0x10 mod/reg/rm mprefix(0xF3):      "MOVSS" sse(reg),sse(r/m)   ; Move Scalar Single-FP Values
 opcode 0x0F 0x11 mod/reg/rm:                    "MOVUPS" sse(r/m),sse(reg)  ; Move Unaligned Packed Single-FP Values
+opcode 0x0F 0x11 mod/reg/rm mprefix(0xF3):      "MOVSS" sse(r/m),sse(reg)   ; Move Scalar Single-FP Values
 

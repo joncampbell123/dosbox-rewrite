@@ -5511,4 +5511,11 @@ jmp2:
     movups      [si],xmm0
     movups      [bx+si],xmm0
     movups      [ebx*4+edi+0x12345678],xmm0
+    movss       xmm0,xmm1
+    movss       xmm0,[si]
+    movss       xmm0,[bx+si]
+    movss       xmm0,[ebx*4+edi+0x12345678]
+    movss       [si],xmm0
+    movss       [bx+si],xmm0
+    movss       [ebx*4+edi+0x12345678],xmm0
 
