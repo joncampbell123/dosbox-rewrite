@@ -1,0 +1,12 @@
+
+; Pentium 4. No SSE3 instructions.
+
+; PAUSE
+;opcode 0x90 mprefix(0xF3):                      "PAUSE"                     ; Spin Loop Hint   [FIXME]
+
+; more
+opcode 0x0F 0x10 mod/reg/rm mprefix(0x66):      "MOVUPD" sse(reg),sse(r/m)
+opcode 0x0F 0x10 mod/reg/rm mprefix(0xF2):      "MOVSD" sse(reg),sse(r/m)
+opcode 0x0F 0x11 mod/reg/rm mprefix(0x66):      "MOVUPD" sse(r/m),sse(reg)
+opcode 0x0F 0x11 mod/reg/rm mprefix(0xF2):      "MOVSD" sse(r/m),sse(reg)
+
