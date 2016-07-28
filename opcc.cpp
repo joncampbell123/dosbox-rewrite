@@ -187,6 +187,8 @@ string out_path;
 
 enum opccMode cc_mode = MOD_DECOMPILE;
 
+bool    mprefix_exists = false;
+
 int     sel_code_width = 16;
 int     sel_addr_width = 16;
 
@@ -286,7 +288,8 @@ static bool parse(int argc,char **argv) {
 class OpByte {
 public:
     OpByte() : isprefix(false), segoverride(OPSEG_NONE), modregrm(false), reg_from_opcode(false),
-        already(false), addrsz32(false), opsz32(false), suffix(OPSUFFIX_NONE), opmap_valid(false) {
+        already(false), addrsz32(false), opsz32(false), suffix(OPSUFFIX_NONE), opmap_valid(false),
+        mprefix(0), mprefix_exists_here(false) {
     }
     ~OpByte() {
         free_opmap();
@@ -332,8 +335,10 @@ public:
         if (suffix != r.suffix) return false;
         if (immarg != r.immarg) return false;
         if (disparg != r.disparg) return false;
+        if (mprefix_exists_here != r.mprefix_exists_here) return false;
         if (opmap_valid != r.opmap_valid) return false;
         if (addrsz32 != r.addrsz32) return false;
+        if (mprefix != r.mprefix) return false;
         if (opsz32 != r.opsz32) return false;
 
         if (opmap_valid) {
@@ -374,6 +379,8 @@ public:
     enum opccSuffix suffix;     // suffix to name
     vector<enum opccArgs> immarg;
     vector<OpCodeDisplayArg> disparg;
+    uint8_t         mprefix;    // mandatory prefix
+    bool            mprefix_exists_here;
 public:
     OpByte*         opmap[256];
     bool            opmap_valid;
@@ -403,6 +410,7 @@ public:
         modregrm = false;
         addrsz32 = false;
         opsz32 = false;
+        mprefix = 0;
         op = 0;
     }
 public:
@@ -418,6 +426,7 @@ public:
     int                     mrm_reg_match; // /X style, to say that opcode is specified by REG field of mod/reg/rm
     enum opccSeg            segoverride;
     enum opccSuffix         suffix;     // suffix to name
+    uint8_t                 mprefix;    // mandatory prefix
 public:
     string                  format_str;
     string                  name;
@@ -430,6 +439,20 @@ public:
 
 bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
     OpByte *map = &maproot,*submap;
+
+    if (st.mprefix != 0) {
+        if (!map->exist_opcode(st.mprefix)) {
+            fprintf(stderr,"Mandatory prefix refers to opcode that doesn't exist\n");
+            return false;
+        }
+        map = map->opmap[st.mprefix];
+        assert(map != NULL);
+        if (!map->isprefix) {
+            fprintf(stderr,"Mandatory prefix refers to opcode that isn't a prefix\n");
+            return false;
+        }
+        map->mprefix_exists_here = true;
+    }
 
     for (unsigned int i=0;i < st.op;i++) {
         const uint8_t opcode = st.ops[i];
@@ -461,6 +484,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
                     submap->isprefix = st.is_prefix;
                     submap->opspec = st.opspec;
                     submap->immarg = st.immarg;
+                    submap->mprefix = st.mprefix;
                     submap->suffix = st.suffix;
                     submap->name = st.name;
                     submap->opsz32 = st.opsz32;
@@ -477,6 +501,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
             map->disparg = st.disparg;
             map->opspec = st.opspec;
             map->immarg = st.immarg;
+            map->mprefix = st.mprefix;
             map->suffix = st.suffix;
             map->name = st.name;
         }
@@ -491,6 +516,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
         map->disparg = st.disparg;
         map->opspec = st.opspec;
         map->immarg = st.immarg;
+        map->mprefix = st.mprefix;
         map->suffix = st.suffix;
         map->name = st.name;
     }
@@ -542,6 +568,21 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
             }
 
             st.ops[st.op++] = (unsigned char)b;
+        }
+        else if (!strncmp(s,"mprefix(",8)) {
+            if (st.mprefix != 0) {
+                fprintf(stderr,"Mandatory prefix already defined\n");
+                return false;
+            }
+
+            s += 8;
+            st.mprefix = (int)strtoul(s,&s,0);
+            mprefix_exists = true;
+
+            if (st.mprefix == 0) {
+                fprintf(stderr,"Invalid mandatory prefix mprefix()\n");
+                return false;
+            }
         }
         else if (!strcmp(s,"mod/reg/rm")) {
             if (st.modregrm) {
@@ -727,6 +768,26 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
         return false;
     }
     while (isblank(*next)) next++;
+
+    // mandatory prefixes may only be 0x66, 0xF2, or 0xF3
+    if (!(st.mprefix == 0x00 || st.mprefix == 0x66 || st.mprefix == 0xF2 || st.mprefix == 0xF3)) {
+        fprintf(stderr,"Invalid mandatory prefix. Must be 0x66, 0xF2, or 0xF3\n");
+        return false;
+    }
+
+    // the common pattern in Intel opcodes seems to be that if a mandatory prefix
+    // is present, it's followed by 0x0F. so enforce that. lift this restriction
+    // later if that turns out to be false.
+    if (st.mprefix != 0) {
+        if (st.op == 0) {
+            fprintf(stderr,"Mandatory prefix requires static opcode (range not allowed)\n");
+            return false;
+        }
+        else if (st.ops[0] != 0x0F) {
+            fprintf(stderr,"Mandatory prefix requires first opcode byte to be 0x0F\n");
+            return false;
+        }
+    }
 
     argc = 0;
     s = next;
@@ -1143,12 +1204,16 @@ bool parse_opcodelist(void) {
     return true;
 }
 
-void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const uint8_t *opbase,const size_t opbaselen,OpByte &map,const unsigned int indent=0);
+#define OUTCODE_GEN_ALREADY_IPFB        (1U << 0)
+#define OUTCODE_GEN_DEFAULT_0Fh         (1U << 1)
+
+void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const uint8_t *opbase,const size_t opbaselen,OpByte &map,const unsigned int indent=0,const unsigned int flags=0);
 
 static const char *immnames[4] = {"imm","imm2","imm3","imm4"};
 static const char *immnames_rip[4] = {"(imm+IPval())","(imm2+IPval())","(imm3+IPval())","(imm4+IPval())"};
 
 void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int addrwidth,const uint8_t *opbase,const size_t opbaselen,OpByte &map,const unsigned int indent,const string &indent_str,OpByte *submap,const uint8_t op,uint32_t flags) {
+    bool emit_prefix_goto = false;
     unsigned int immc = 0;
 
     if (submap->modregrm) {
@@ -1223,11 +1288,45 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
     if (submap->opmap_valid) {
         uint8_t tmp[16];
 
-        assert(opbaselen < 15);
-        if (opbaselen != 0) memcpy(tmp,opbase,opbaselen);
-        tmp[opbaselen] = op;
+        if (submap->isprefix) {
+            /* don't generate sub-switch for prefixes, UNLESS a mandatory prefix. */
+            if (submap->mprefix_exists_here) {
+                /* oh joy. well, to make this work, we have to fetch the next byte into var "op".
+                 * if the next byte is not 0x0F, then we have to goto to a label at the start of
+                 * opcode parsing just after a fetch so the prefix decoding can work as normal.
+                 * else, we fetch the next byte and switch case through it with this node to handle
+                 * the instructions. If the case statement falls through then we goto a label to
+                 * handle 0x0F opcode parsing as normal. */
+                fprintf(out_fp,"%s        /* Mandatory prefix detection */\n",indent_str.c_str());
+                fprintf(out_fp,"%s        op=IPFB();\n",indent_str.c_str());
 
-        outcode_gen(codewidth,addrwidth,tmp,opbaselen+1,*submap,indent+2U);
+                if (generic1632)
+                    fprintf(out_fp,"%s        if (op != 0x0F) goto _x86decode_begin_code%u_addr%u_opcode_parse__generic;\n",
+                        indent_str.c_str(),codewidth,addrwidth);
+                else
+                    fprintf(out_fp,"%s        if (op != 0x0F) goto _x86decode_begin_code%u_addr%u_opcode_parse_;\n",
+                        indent_str.c_str(),codewidth,addrwidth);
+
+                assert(opbaselen < 14);
+                if (opbaselen != 0) memcpy(tmp,opbase,opbaselen);
+                tmp[opbaselen] = op;
+                tmp[opbaselen+1] = 0x0F;
+
+                /* next down to 0x0F, because we just checked that */
+                OpByte *submap2 = submap->opmap[0x0F];
+                if (submap2 != NULL && submap2->opmap_valid) {
+                    outcode_gen(codewidth,addrwidth,tmp,opbaselen+2,*submap2,indent+2U,OUTCODE_GEN_ALREADY_IPFB|OUTCODE_GEN_DEFAULT_0Fh);
+                    emit_prefix_goto = true;
+                }
+            }
+        }
+        else {
+            assert(opbaselen < 15);
+            if (opbaselen != 0) memcpy(tmp,opbase,opbaselen);
+            tmp[opbaselen] = op;
+
+            outcode_gen(codewidth,addrwidth,tmp,opbaselen+1,*submap,indent+2U);
+        }
     }
     else {
         if (cc_mode == MOD_DECOMPILE) {
@@ -1608,7 +1707,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
         }
     }
 
-    if (submap->isprefix) {
+    if (submap->isprefix && !emit_prefix_goto) {
         unsigned int jcw=codewidth,jaw=addrwidth;
 
         if (submap->opsz32) {
@@ -1655,7 +1754,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
     }
 }
 
-void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const uint8_t *opbase,const size_t opbaselen,OpByte &map,const unsigned int indent) {
+void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const uint8_t *opbase,const size_t opbaselen,OpByte &map,const unsigned int indent,const unsigned int flags) {
     OpByte *submap,*submap2;
     string indent_str;
     bool reg_enum=false;
@@ -1773,7 +1872,20 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
         }
     }
     else {
-        fprintf(out_fp,"%sswitch (op=IPFB()) {\n",indent_str.c_str());
+        if (mprefix_exists && (opbaselen == 0 || map.isprefix || (opbaselen == 1 && opbase[0] == 0x0F))) {
+            if (!(flags & OUTCODE_GEN_ALREADY_IPFB))
+                fprintf(out_fp,"%sop=IPFB();\n",indent_str.c_str());
+
+            fprintf(out_fp,"%s_x86decode_begin_code%u_addr%u_opcode_parse_",indent_str.c_str(),codewidth,addrwidth);
+            for (size_t i=0;i < opbaselen;i++) fprintf(out_fp,"%02X",opbase[i]);
+            if (generic1632) fprintf(out_fp,"_generic");
+            fprintf(out_fp,":\n");
+
+            fprintf(out_fp,"%sswitch (op) {\n",indent_str.c_str());
+        }
+        else {
+            fprintf(out_fp,"%sswitch (op=IPFB()) {\n",indent_str.c_str());
+        }
     }
 
     if (reg_enum) {
@@ -1799,7 +1911,7 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
                     }
                 }
 
-                opcode_gen_case_statement(codewidth,addrwidth,opbase,opbaselen,map,indent,indent_str,submap,op,0);
+                opcode_gen_case_statement(codewidth,addrwidth,opbase,opbaselen,map,indent,indent_str,submap,op,flags);
             }
 
             if (submap == NULL) {
@@ -1827,7 +1939,7 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
                     }
                 }
 
-                opcode_gen_case_statement(codewidth,addrwidth,opbase,opbaselen,map,indent,indent_str,submap,op,/*flags*/0);
+                opcode_gen_case_statement(codewidth,addrwidth,opbase,opbaselen,map,indent,indent_str,submap,op,flags);
             }
 
             if (submap == NULL) {
@@ -1839,7 +1951,18 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
         }
     }
     fprintf(out_fp,"%s    default:\n",indent_str.c_str());
-    fprintf(out_fp,"%s        goto _x86decode_illegal_opcode;\n",indent_str.c_str());
+
+    if (flags & OUTCODE_GEN_DEFAULT_0Fh) {
+        if (generic1632)
+            fprintf(out_fp,"%s        goto _x86decode_begin_code%u_addr%u_opcode_parse_0F_generic; /* Fall through to normal 0x0F opcode handling */\n",
+                indent_str.c_str(),codewidth,addrwidth);
+        else
+            fprintf(out_fp,"%s        goto _x86decode_begin_code%u_addr%u_opcode_parse_0F; /* Fall through to normal 0x0F opcode handling */\n",
+                indent_str.c_str(),codewidth,addrwidth);
+    }
+    else
+        fprintf(out_fp,"%s        goto _x86decode_illegal_opcode;\n",indent_str.c_str());
+
     fprintf(out_fp,"%s};\n",indent_str.c_str());
 
     if (opbaselen != 0) {
