@@ -97,3 +97,6 @@ opcode 0x0F 0xA5 mod/reg/rm:                    "SHLD"w w(r/m),w(reg),b(c)  ; Do
 opcode 0x0F 0xAC mod/reg/rm ib:                 "SHRD"w w(r/m),w(reg),i     ; Double Precision Shift Right              00001111 10101100
 opcode 0x0F 0xAD mod/reg/rm:                    "SHRD"w w(r/m),w(reg),b(c)  ; Double Precision Shift Right              00001111 10101101
 
+; RSM
+opcode 0x0F 0xAA:                               "RSM"                       ; Resume from System Management Mode        00001111 10101010
+

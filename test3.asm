@@ -5378,3 +5378,6 @@ jmp2:
 ; FSINCOS | ESCAPE 0 0 1 | 1 1 1 1 1 0 1 1
     fsincos
 
+; RSM. i386L only.
+    db      0x0F,0xAA
+

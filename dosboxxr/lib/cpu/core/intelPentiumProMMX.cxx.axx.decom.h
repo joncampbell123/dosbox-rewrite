@@ -696,7 +696,9 @@ switch (op=IPFB()) {
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"WBINVD");
                 break;
             /* opcode 0Fh 0Ah  not defined */
-            /* opcode 0Fh 0Bh  not defined */
+            case 0x0B: /* 0Fh 0Bh UD2       spec: 0x0F 0x0B */
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"UD2");
+                break;
             /* opcode 0Fh 0Ch  not defined */
             case 0x0D: /* 0Fh 0Dh NOP       spec: 0x0F 0x0D */
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"NOP");
@@ -2428,7 +2430,9 @@ switch (op=IPFB()) {
             case 0xA9: /* 0Fh A9h POPd w(gs)      spec: 0x0F 0xA9 */
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"POP%s %s",code32?"d":"w",CPUsregs_80386[5]);
                 break;
-            /* opcode 0Fh AAh  not defined */
+            case 0xAA: /* 0Fh AAh RSM       spec: 0x0F 0xAA */
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RSM");
+                break;
             case 0xAB: /* 0Fh ABh BTSd w(r/m),w(reg)      spec: 0x0F 0xAB mod/reg/rm */
                 if (addr32)
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);

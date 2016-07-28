@@ -39,3 +39,6 @@ opcode 0xDB mod/reg/rm /6 mod==3:               "FCOMI" st(0),st(r/m)       ; Co
 opcode 0xDF mod/reg/rm /5 mod==3:               "FUCOMIP" st(0),st(r/m)     ; Unordered float compare, set EFLAGS, pop  10111111
 opcode 0xDF mod/reg/rm /6 mod==3:               "FCOMIP" st(0),st(r/m)      ; Compare floating point, EFLAGS, pop       10111111
 
+; Official undefined opcode
+opcode 0x0F 0x0B:                               "UD2"                       ; Write Back and Invalidate Cache           00001111 00001011
+

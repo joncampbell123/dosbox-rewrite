@@ -5497,3 +5497,5 @@ jmp2:
     fucomip     st0,st1
     fcomip      st0,st1
 
+    ud2
+

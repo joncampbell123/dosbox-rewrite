@@ -2528,7 +2528,9 @@ switch (op=IPFB()) {
             case 0xA9: /* 0Fh A9h POPd w(gs)      spec: 0x0F 0xA9 */
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"POPd %s",CPUsregs_80386[5]);
                 break;
-            /* opcode 0Fh AAh  not defined */
+            case 0xAA: /* 0Fh AAh RSM       spec: 0x0F 0xAA */
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"RSM");
+                break;
             case 0xAB: /* 0Fh ABh BTSd w(r/m),w(reg)      spec: 0x0F 0xAB mod/reg/rm */
                 IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"BTSd %s,%s",IPDecPrint32(mrm,sib,disp,4,RC_REG,"d"),CPUregsN[4][mrm.reg()]);
