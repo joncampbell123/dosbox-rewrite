@@ -5562,3 +5562,34 @@ jmp2:
     prefetcht2  [bx+si]
     prefetcht2  [edx*4+eax+0x12345678]
 
+    movaps      xmm0,xmm1
+    movaps      xmm1,xmm2
+    movaps      xmm0,[si]
+    movaps      [si],xmm0
+
+    cvtpi2ps    xmm0,mm1
+    cvtpi2ps    xmm0,[si]
+
+    cvtsi2ss    xmm0,eax
+    cvtsi2ss    xmm0,[si]
+
+    movntps     [si],xmm0
+
+    cvttps2pi   mm0,xmm1
+    cvttps2pi   mm0,[si]
+
+    cvttss2si   eax,xmm1
+    cvttss2si   eax,[si]
+
+    cvtps2pi    mm0,xmm1
+    cvtps2pi    mm0,[si]
+
+    cvtss2si    eax,xmm1
+    cvtss2si    eax,[si]
+
+    ucomiss     xmm0,xmm1
+    ucomiss     xmm0,[si]
+
+    comiss      xmm0,xmm1
+    comiss      xmm0,[si]
+

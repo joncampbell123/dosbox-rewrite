@@ -34,3 +34,16 @@ opcode 0x0F 0x18 mod/reg/rm /1 mod!=3:          "PREFETCHT0" b(r/m)         ; Pr
 opcode 0x0F 0x18 mod/reg/rm /2 mod!=3:          "PREFETCHT1" b(r/m)         ; Prefetch Data Into Caches
 opcode 0x0F 0x18 mod/reg/rm /3 mod!=3:          "PREFETCHT2" b(r/m)         ; Prefetch Data Into Caches
 
+; MOVAPS...
+opcode 0x0F 0x28 mod/reg/rm:                    "MOVAPS" sse(reg),sse(r/m)  ; Move Aligned Packed Single-FP Values
+opcode 0x0F 0x29 mod/reg/rm:                    "MOVAPS" sse(r/m),sse(reg)  ; Move Aligned Packed Single-FP Values
+opcode 0x0F 0x2A mod/reg/rm:                    "CVTPI2PS" sse(reg),mmx(r/m); Convert Packed DW Integers to Single-FP Values
+opcode 0x0F 0x2A mod/reg/rm mprefix(0xF3):      "CVTSI2SS" sse(reg),w32(r/m); Convert DW Integer to Scalar Single-FP Value
+opcode 0x0F 0x2B mod/reg/rm mod!=3:             "MOVNTPS" sse(r/m),sse(reg) ; Store Packed Single-FP Values Using Non-Temporal Hint
+opcode 0x0F 0x2C mod/reg/rm:                    "CVTTPS2PI" mmx(reg),sse(r/m);Convert with Trunc. Packed Single-FP Values to DW Integers
+opcode 0x0F 0x2C mod/reg/rm mprefix(0xF3):      "CVTTSS2SI" w32(reg),sse(r/m);Convert with Trunc. Scalar Single-FP Value to DW Integer
+opcode 0x0F 0x2D mod/reg/rm:                    "CVTPS2PI" mmx(reg),sse(r/m); Convert Packed Single-FP Values to DW Integers
+opcode 0x0F 0x2D mod/reg/rm mprefix(0xF3):      "CVTSS2SI" w32(reg),sse(r/m); Convert Scalar Single-FP Value to DW Integer
+opcode 0x0F 0x2E mod/reg/rm:                    "UCOMISS" sse(reg),sse(r/m) ; Unordered Compare Scalar Single-FP Values and Set EFLAGS
+opcode 0x0F 0x2F mod/reg/rm:                    "COMISS" sse(reg),sse(r/m)  ; Compare Scalar Ordered Single-FP Values and Set EFLAGS
+
