@@ -69,4 +69,45 @@ opcode 0x0F 0x6D mod/reg/rm mprefix(0x66):      "PUNPCKHQDQ" sse(reg),sse(r/m)
 opcode 0x0F 0x6E mod/reg/rm mprefix(0x66):      "MOVD" sse(reg),w32(r/m)
 opcode 0x0F 0x6F mod/reg/rm mprefix(0x66):      "MOVDQA" sse(reg),sse(r/m)
 opcode 0x0F 0x6F mod/reg/rm mprefix(0xF3):      "MOVDQU" sse(reg),sse(r/m)
+opcode 0x0F 0x70 mod/reg/rm ib mprefix(0xF2):   "PSHUFLW" sse(reg),sse(r/m),i
+opcode 0x0F 0x70 mod/reg/rm ib mprefix(0xF3):   "PSHUFHW" sse(reg),sse(r/m),i
+opcode 0x0F 0x70 mod/reg/rm ib mprefix(0x66):   "PSHUFD" sse(reg),sse(r/m),i
+opcode 0x0F 0x71 mod/reg/rm /2 ib mprefix(0x66) mod==3:"PSRLW" sse(r/m),i
+opcode 0x0F 0x71 mod/reg/rm /4 ib mprefix(0x66) mod==3:"PSRAW" sse(r/m),i
+opcode 0x0F 0x71 mod/reg/rm /6 ib mprefix(0x66) mod==3:"PSLLW" sse(r/m),i
+opcode 0x0F 0x72 mod/reg/rm /2 ib mprefix(0x66) mod==3:"PSRLD" sse(r/m),i
+opcode 0x0F 0x72 mod/reg/rm /4 ib mprefix(0x66) mod==3:"PSRAD" sse(r/m),i
+opcode 0x0F 0x72 mod/reg/rm /6 ib mprefix(0x66) mod==3:"PSLLD" sse(r/m),i
+opcode 0x0F 0x73 mod/reg/rm /2 ib mprefix(0x66) mod==3:"PSRLQ" sse(r/m),i
+opcode 0x0F 0x73 mod/reg/rm /3 ib mprefix(0x66) mod==3:"PSRLDQ" sse(r/m),i
+opcode 0x0F 0x73 mod/reg/rm /6 ib mprefix(0x66) mod==3:"PSLLQ" sse(r/m),i
+opcode 0x0F 0x73 mod/reg/rm /7 ib mprefix(0x66) mod==3:"PSLLDQ" sse(r/m),i
+opcode 0x0F 0x74 mod/reg/rm mprefix(0x66):      "PCMPEQB" sse(reg),sse(r/m)
+opcode 0x0F 0x75 mod/reg/rm mprefix(0x66):      "PCMPEQW" sse(reg),sse(r/m)
+opcode 0x0F 0x76 mod/reg/rm mprefix(0x66):      "PCMPEQD" sse(reg),sse(r/m)
+opcode 0x0F 0x7E mod/reg/rm mprefix(0x66):      "MOVD" w32(r/m),sse(reg)
+opcode 0x0F 0x7E mod/reg/rm mprefix(0xF3):      "MOVD" sse(reg),sse(r/m)
+opcode 0x0F 0x7F mod/reg/rm mprefix(0x66):      "MOVDQA" sse(r/m),sse(reg)
+opcode 0x0F 0x7F mod/reg/rm mprefix(0xF3):      "MOVDQU" sse(r/m),sse(reg)
+
+opcode 0x0F 0xAE mod/reg/rm /5:                 "LFENCE"
+opcode 0x0F 0xAE mod/reg/rm /6:                 "MFENCE"
+opcode 0x0F 0xAE mod/reg/rm /7 mod!=3:          "CLFLUSH" b(r/m)
+
+opcode 0x0F 0xC2 mod/reg/rm mprefix(0x66):      "CMPPD" sse(reg),sse(r/m)
+opcode 0x0F 0xC2 mod/reg/rm mprefix(0xF2):      "CMPSD" sse(reg),sse(r/m)
+opcode 0x0F 0xC3 mod/reg/rm mod!=3:             "MOVNTI" w32(r/m),w32(reg)
+
+opcode 0x0F 0xC6 mod/reg/rm mprefix(0x66):      "SHUFPD" sse(reg),sse(r/m)
+
+opcode 0x0F 0xD1 mod/reg/rm mprefix(0x66):      "PSRLW" sse(reg),sse(r/m)
+opcode 0x0F 0xD2 mod/reg/rm mprefix(0x66):      "PSRLD" sse(reg),sse(r/m)
+opcode 0x0F 0xD3 mod/reg/rm mprefix(0x66):      "PSRLQ" sse(reg),sse(r/m)
+opcode 0x0F 0xD4 mod/reg/rm mprefix(0x66):      "PADDQ" sse(reg),sse(r/m)
+opcode 0x0F 0xD5 mod/reg/rm mprefix(0x66):      "PMULLW" sse(reg),sse(r/m)
+opcode 0x0F 0xD6 mod/reg/rm mprefix(0x66):      "MOVQ" sse(r/m),sse(reg)
+opcode 0x0F 0xD6 mod/reg/rm mprefix(0xF3) mod==3:"MOVQ2DQ" sse(reg),mmx(r/m)        ; FIXME GUESS
+opcode 0x0F 0xD6 mod/reg/rm mprefix(0xF2) mod==3:"MOVDQ2Q" mmx(reg),sse(reg)        ; FIXME GUESS
+opcode 0x0F 0xD8 mod/reg/rm mprefix(0x66):      "PSUBUSB" sse(reg),sse(r/m)
+opcode 0x0F 0xDB mod/reg/rm mprefix(0x66):      "PAND" sse(reg),sse(r/m)
 

@@ -5856,3 +5856,36 @@ jmp2:
     movdqu      xmm0,xmm1
     movdqu      xmm0,[si]
 
+    pshuflw     xmm0,xmm1,1
+    pshuflw     xmm0,[si],1
+    pshufhw     xmm0,xmm1,1
+    pshufhw     xmm0,[si],1
+    pshufd      xmm0,xmm1,1
+    pshufd      xmm0,[si],1
+    psrlw       xmm0,1
+    psraw       xmm0,1
+    psllw       xmm0,1
+    psrld       xmm0,1
+    psrad       xmm0,1
+    pslld       xmm0,1
+    psrlq       xmm0,1
+    psrldq      xmm0,1
+    psllq       xmm0,1
+    pslldq      xmm0,1
+    pcmpeqb     xmm0,xmm1
+    pcmpeqb     xmm0,[si]
+    pcmpeqw     xmm0,xmm1
+    pcmpeqw     xmm0,[si]
+    pcmpeqd     xmm0,xmm1
+    pcmpeqd     xmm0,[si]
+    movd        eax,xmm0
+    movd        [si],xmm0
+    movdqa      xmm0,xmm1
+    movdqa      [si],xmm0
+    movdqu      xmm0,xmm1
+    movdqu      [si],xmm0
+
+    lfence
+    mfence
+    clflush     [si]
+

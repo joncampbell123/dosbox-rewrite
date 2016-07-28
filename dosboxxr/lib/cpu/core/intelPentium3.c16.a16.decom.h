@@ -3900,7 +3900,11 @@ switch (op) {
                 IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVQ MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
                 break;
-            /* opcode 0Fh 70h  not defined */
+            case 0x70: /* 0Fh 70h PSHUFW mmx(reg),mmx(r/m)      spec: 0x0F 0x70 mod/reg/rm ib */
+                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                imm=IPFB();
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PSHUFW MM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,8,RC_MMXREG,""));
+                break;
             case 0x71: /* 0Fh 71h        spec:  */
                 IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
 /* Opcodes starting with 0Fh 71h */
@@ -4327,40 +4331,14 @@ switch (op) {
                     /* opcode 0Fh AEh 35h  not defined */
                     /* opcode 0Fh AEh 36h  not defined */
                     /* opcode 0Fh AEh 37h  not defined */
-                    case 0x38: /* 0Fh AEh 38h SFENCE  mod=0 reg=7 rm=0      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0x39: /* 0Fh AEh 39h SFENCE  mod=0 reg=7 rm=1      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0x3A: /* 0Fh AEh 3Ah SFENCE  mod=0 reg=7 rm=2      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0x3B: /* 0Fh AEh 3Bh SFENCE  mod=0 reg=7 rm=3      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0x3C: /* 0Fh AEh 3Ch SFENCE  mod=0 reg=7 rm=4      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0x3D: /* 0Fh AEh 3Dh SFENCE  mod=0 reg=7 rm=5      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0x3E: /* 0Fh AEh 3Eh SFENCE  mod=0 reg=7 rm=6      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0x3F: /* 0Fh AEh 3Fh SFENCE  mod=0 reg=7 rm=7      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0x78: /* 0Fh AEh 78h SFENCE  mod=1 reg=7 rm=0      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0x79: /* 0Fh AEh 79h SFENCE  mod=1 reg=7 rm=1      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0x7A: /* 0Fh AEh 7Ah SFENCE  mod=1 reg=7 rm=2      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0x7B: /* 0Fh AEh 7Bh SFENCE  mod=1 reg=7 rm=3      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0x7C: /* 0Fh AEh 7Ch SFENCE  mod=1 reg=7 rm=4      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0x7D: /* 0Fh AEh 7Dh SFENCE  mod=1 reg=7 rm=5      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0x7E: /* 0Fh AEh 7Eh SFENCE  mod=1 reg=7 rm=6      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0x7F: /* 0Fh AEh 7Fh SFENCE  mod=1 reg=7 rm=7      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0xB8: /* 0Fh AEh B8h SFENCE  mod=2 reg=7 rm=0      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0xB9: /* 0Fh AEh B9h SFENCE  mod=2 reg=7 rm=1      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0xBA: /* 0Fh AEh BAh SFENCE  mod=2 reg=7 rm=2      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0xBB: /* 0Fh AEh BBh SFENCE  mod=2 reg=7 rm=3      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0xBC: /* 0Fh AEh BCh SFENCE  mod=2 reg=7 rm=4      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0xBD: /* 0Fh AEh BDh SFENCE  mod=2 reg=7 rm=5      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0xBE: /* 0Fh AEh BEh SFENCE  mod=2 reg=7 rm=6      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0xBF: /* 0Fh AEh BFh SFENCE  mod=2 reg=7 rm=7      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0xF8: /* 0Fh AEh F8h SFENCE  mod=3 reg=7 rm=0      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0xF9: /* 0Fh AEh F9h SFENCE  mod=3 reg=7 rm=1      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0xFA: /* 0Fh AEh FAh SFENCE  mod=3 reg=7 rm=2      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0xFB: /* 0Fh AEh FBh SFENCE  mod=3 reg=7 rm=3      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0xFC: /* 0Fh AEh FCh SFENCE  mod=3 reg=7 rm=4      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0xFD: /* 0Fh AEh FDh SFENCE  mod=3 reg=7 rm=5      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0xFE: /* 0Fh AEh FEh SFENCE  mod=3 reg=7 rm=6      spec: 0x0F 0xAE mod/reg/rm /7 */
-                    case 0xFF: /* 0Fh AEh FFh SFENCE  mod=3 reg=7 rm=7      spec: 0x0F 0xAE mod/reg/rm /7 */
-                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SFENCE");
-                        break;
+                    /* opcode 0Fh AEh 38h  not defined */
+                    /* opcode 0Fh AEh 39h  not defined */
+                    /* opcode 0Fh AEh 3Ah  not defined */
+                    /* opcode 0Fh AEh 3Bh  not defined */
+                    /* opcode 0Fh AEh 3Ch  not defined */
+                    /* opcode 0Fh AEh 3Dh  not defined */
+                    /* opcode 0Fh AEh 3Eh  not defined */
+                    /* opcode 0Fh AEh 3Fh  not defined */
                     /* opcode 0Fh AEh 60h  not defined */
                     /* opcode 0Fh AEh 61h  not defined */
                     /* opcode 0Fh AEh 62h  not defined */
@@ -4385,6 +4363,14 @@ switch (op) {
                     /* opcode 0Fh AEh 75h  not defined */
                     /* opcode 0Fh AEh 76h  not defined */
                     /* opcode 0Fh AEh 77h  not defined */
+                    /* opcode 0Fh AEh 78h  not defined */
+                    /* opcode 0Fh AEh 79h  not defined */
+                    /* opcode 0Fh AEh 7Ah  not defined */
+                    /* opcode 0Fh AEh 7Bh  not defined */
+                    /* opcode 0Fh AEh 7Ch  not defined */
+                    /* opcode 0Fh AEh 7Dh  not defined */
+                    /* opcode 0Fh AEh 7Eh  not defined */
+                    /* opcode 0Fh AEh 7Fh  not defined */
                     /* opcode 0Fh AEh A0h  not defined */
                     /* opcode 0Fh AEh A1h  not defined */
                     /* opcode 0Fh AEh A2h  not defined */
@@ -4409,6 +4395,14 @@ switch (op) {
                     /* opcode 0Fh AEh B5h  not defined */
                     /* opcode 0Fh AEh B6h  not defined */
                     /* opcode 0Fh AEh B7h  not defined */
+                    /* opcode 0Fh AEh B8h  not defined */
+                    /* opcode 0Fh AEh B9h  not defined */
+                    /* opcode 0Fh AEh BAh  not defined */
+                    /* opcode 0Fh AEh BBh  not defined */
+                    /* opcode 0Fh AEh BCh  not defined */
+                    /* opcode 0Fh AEh BDh  not defined */
+                    /* opcode 0Fh AEh BEh  not defined */
+                    /* opcode 0Fh AEh BFh  not defined */
                     /* opcode 0Fh AEh D0h  not defined */
                     /* opcode 0Fh AEh D1h  not defined */
                     /* opcode 0Fh AEh D2h  not defined */
@@ -4449,6 +4443,16 @@ switch (op) {
                     /* opcode 0Fh AEh F5h  not defined */
                     /* opcode 0Fh AEh F6h  not defined */
                     /* opcode 0Fh AEh F7h  not defined */
+                    case 0xF8: /* 0Fh AEh F8h SFENCE  mod=3 reg=7 rm=0      spec: 0x0F 0xAE mod/reg/rm /7 mod==3 */
+                    case 0xF9: /* 0Fh AEh F9h SFENCE  mod=3 reg=7 rm=1      spec: 0x0F 0xAE mod/reg/rm /7 mod==3 */
+                    case 0xFA: /* 0Fh AEh FAh SFENCE  mod=3 reg=7 rm=2      spec: 0x0F 0xAE mod/reg/rm /7 mod==3 */
+                    case 0xFB: /* 0Fh AEh FBh SFENCE  mod=3 reg=7 rm=3      spec: 0x0F 0xAE mod/reg/rm /7 mod==3 */
+                    case 0xFC: /* 0Fh AEh FCh SFENCE  mod=3 reg=7 rm=4      spec: 0x0F 0xAE mod/reg/rm /7 mod==3 */
+                    case 0xFD: /* 0Fh AEh FDh SFENCE  mod=3 reg=7 rm=5      spec: 0x0F 0xAE mod/reg/rm /7 mod==3 */
+                    case 0xFE: /* 0Fh AEh FEh SFENCE  mod=3 reg=7 rm=6      spec: 0x0F 0xAE mod/reg/rm /7 mod==3 */
+                    case 0xFF: /* 0Fh AEh FFh SFENCE  mod=3 reg=7 rm=7      spec: 0x0F 0xAE mod/reg/rm /7 mod==3 */
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SFENCE");
+                        break;
                     default:
                         goto _x86decode_illegal_opcode;
                 };

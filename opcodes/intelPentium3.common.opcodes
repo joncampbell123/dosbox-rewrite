@@ -71,13 +71,14 @@ opcode 0x0F 0x5E mod/reg/rm:                    "DIVPS" sse(reg),sse(r/m)   ;
 opcode 0x0F 0x5E mod/reg/rm mprefix(0xF3):      "DIVSS" sse(reg),sse(r/m)   ; 
 opcode 0x0F 0x5F mod/reg/rm:                    "MAXPS" sse(reg),sse(r/m)   ; 
 opcode 0x0F 0x5F mod/reg/rm mprefix(0xF3):      "MAXSS" sse(reg),sse(r/m)   ; 
+opcode 0x0F 0x70 mod/reg/rm ib:                 "PSHUFW" mmx(reg),mmx(r/m)  ; 
 
 ; MXCSR
 opcode 0x0F 0xAE mod/reg/rm /2 mod!=3:          "LDMXCSR" w(r/m)            ; 
 opcode 0x0F 0xAE mod/reg/rm /3 mod!=3:          "STMXCSR" w(r/m)            ; 
 
 ; more
-opcode 0x0F 0xAE mod/reg/rm /7:                 "SFENCE"                    ; 
+opcode 0x0F 0xAE mod/reg/rm /7 mod==3:          "SFENCE"                    ; 
 
 ; CMPSS..
 opcode 0x0F 0xC2 mod/reg/rm ib:                 "CMPPS" sse(reg),sse(r/m),i ; 
