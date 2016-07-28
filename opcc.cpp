@@ -126,7 +126,8 @@ enum opccDispArgType {
     OPDARGTYPE_CREG,        // control register (CR0...CR7)
     OPDARGTYPE_DREG,        // debug register (DR0...DR7)
     OPDARGTYPE_TREG,        // test register (TR0...TR7)
-    OPDARGTYPE_MMX          // MMX register/memory 64-bit
+    OPDARGTYPE_MMX,         // MMX register/memory 64-bit
+    OPDARGTYPE_SSE          // SSE register/memory 128-bit
 };
 
 class OpCodeDisplayArg {
@@ -1037,6 +1038,14 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
                     arg.argtype = OPDARGTYPE_MMX;
                     arg.arg = OPDARG_rm;
                 }
+                else if (!strcmp(s,"sse(reg)")) {
+                    arg.argtype = OPDARGTYPE_SSE;
+                    arg.arg = OPDARG_reg;
+                }
+                else if (!strcmp(s,"sse(r/m)")) {
+                    arg.argtype = OPDARGTYPE_SSE;
+                    arg.arg = OPDARG_rm;
+                }
                 else {
                     fprintf(stderr,"Unknown format spec %s\n",s);
                     return false;
@@ -1405,6 +1414,11 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                             rc = "RC_MMXREG";
                             suffix = "";
                             break;
+                        case OPDARGTYPE_SSE:
+                            szp = "16";
+                            rc = "RC_SSEREG";
+                            suffix = "";
+                            break;
                     }
 
                     fprintf(out_fp,"%%s");
@@ -1508,6 +1522,11 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                             break;
                         case OPDARGTYPE_MMX:
                             fprintf(out_fp,"MM%%u");
+                            fmtargs += ",";
+                            fmtargs += regname;
+                            break;
+                        case OPDARGTYPE_SSE:
+                            fprintf(out_fp,"XMM%%u");
                             fmtargs += ",";
                             fmtargs += regname;
                             break;

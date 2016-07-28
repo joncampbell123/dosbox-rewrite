@@ -167,8 +167,11 @@ const char *IPDecPrint16(const x86ModRegRm &mrm,const x86_offset_t ofs,const uns
                 case RC_FPUREG: // Floating point registers
                     w += snprintf(w,(size_t)(wf-w),"ST(%u)",mrm.rm());
                     break;
-                case RC_MMXREG: // Floating MMX point registers
+                case RC_MMXREG: // MMX registers
                     w += snprintf(w,(size_t)(wf-w),"MM%u",mrm.rm());
+                    break;
+                case RC_SSEREG: // SSE registers
+                    w += snprintf(w,(size_t)(wf-w),"XMM%u",mrm.rm());
                     break;
             };
             break;
@@ -190,8 +193,11 @@ const char *IPDecPrint32(const x86ModRegRm &mrm,const x86ScaleIndexBase &sib,con
             case RC_FPUREG: // Floating point registers
                 w += snprintf(w,(size_t)(wf-w),"ST(%u)",mrm.rm());
                 break;
-            case RC_MMXREG: // Floating MMX point registers
+            case RC_MMXREG: // MMX registers
                 w += snprintf(w,(size_t)(wf-w),"MM%u",mrm.rm());
+                break;
+            case RC_SSEREG: // SSE registers
+                w += snprintf(w,(size_t)(wf-w),"XMM%u",mrm.rm());
                 break;
         };
     }

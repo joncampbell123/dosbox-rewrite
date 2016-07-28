@@ -6,7 +6,8 @@
 enum IPDecRegClass {
     RC_REG=0,
     RC_FPUREG,
-    RC_MMXREG
+    RC_MMXREG,
+    RC_SSEREG
 };
 
 extern const char *CPUregs32[8];

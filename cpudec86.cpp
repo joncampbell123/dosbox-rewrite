@@ -34,6 +34,8 @@ void IPDec_PentiumProMMX(x86_offset_t ip);
 void IPDec_PentiumProMMX_generic(x86_offset_t ip);
 void IPDec_Pentium2(x86_offset_t ip);
 void IPDec_Pentium2_generic(x86_offset_t ip);
+void IPDec_Pentium3(x86_offset_t ip);
+void IPDec_Pentium3_generic(x86_offset_t ip);
 
 x86_offset_t            exe_ip = 0;
 unsigned char*          exe_ip_ptr = NULL;
@@ -98,7 +100,10 @@ int main(int argc,char **argv) {
                     IPDec = IPDec_Pentium2;
                 else if (!strcmp(a,"intelpentium2g") || !strcmp(a,"intelp2g") || !strcmp(a,"686"))
                     IPDec = IPDec_Pentium2_generic;
-
+                else if (!strcmp(a,"intelpentium3") || !strcmp(a,"intelp3"))
+                    IPDec = IPDec_Pentium3;
+                else if (!strcmp(a,"intelpentium3g") || !strcmp(a,"intelp3g"))
+                    IPDec = IPDec_Pentium3_generic;
                 else {
                     fprintf(stderr,"Unknown CPU\n");
                     return 1;

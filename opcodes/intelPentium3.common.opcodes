@@ -1,0 +1,16 @@
+; NOTE: This is where Intel gets weird.
+;
+;       MMX instructions work as normal but when prefixed with a "Mandatory prefix" like 0xF3 (REP), 0xF2 (REPNE), or 0x66
+;       they become SSE instructions or a different instruction that decodes SORT OF the same.
+;       Suddenly our big switch statement has to decide whether prefixes work as they do or if they switch elsewhere based
+;       on the next byte. But at least, theres only one "Mandatory prefix" and/or 0x66.
+;
+;       The second difference is that prefix 0x66 must be present to select SSE from MMX, even in 32-bit code. Its not
+;       a toggle like 32-bit register access. Running as 32-bit code automatically selects SSE.
+
+; Pentium III
+
+; MOVUPS
+opcode 0x0F 0x10 mod/reg/rm:                    "MOVUPS" sse(reg),sse(r/m)  ; Move Unaligned Packed Single-FP Values
+opcode 0x0F 0x11 mod/reg/rm:                    "MOVUPS" sse(r/m),sse(reg)  ; Move Unaligned Packed Single-FP Values
+
