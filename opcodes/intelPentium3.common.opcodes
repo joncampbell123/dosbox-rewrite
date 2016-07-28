@@ -28,3 +28,9 @@ opcode 0x0F 0x16 mod/reg/rm mod==3:             "MOVLHPS" sse(reg),sse(r/m) ; Mo
 opcode 0x0F 0x16 mod/reg/rm mod!=3:             "MOVHPS" sse(reg),sse(r/m)  ; Move High Packed Single-FP Values
 opcode 0x0F 0x17 mod/reg/rm mod!=3:             "MOVHPS" sse(r/m),sse(reg)  ; Move High Packed Single-FP Values
 
+; PREFETCH
+opcode 0x0F 0x18 mod/reg/rm /0 mod!=3:          "PREFETCHNTA" b(r/m)        ; Prefetch Data Into Caches
+opcode 0x0F 0x18 mod/reg/rm /1 mod!=3:          "PREFETCHT0" b(r/m)         ; Prefetch Data Into Caches
+opcode 0x0F 0x18 mod/reg/rm /2 mod!=3:          "PREFETCHT1" b(r/m)         ; Prefetch Data Into Caches
+opcode 0x0F 0x18 mod/reg/rm /3 mod!=3:          "PREFETCHT2" b(r/m)         ; Prefetch Data Into Caches
+

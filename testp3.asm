@@ -5546,3 +5546,19 @@ jmp2:
     movhps      [bx+si],xmm0
     movhps      [edx*4+eax+0x12345678],xmm0
 
+    prefetchnta [si]
+    prefetchnta [bx+si]
+    prefetchnta [edx*4+eax+0x12345678]
+
+    prefetcht0  [si]
+    prefetcht0  [bx+si]
+    prefetcht0  [edx*4+eax+0x12345678]
+
+    prefetcht1  [si]
+    prefetcht1  [bx+si]
+    prefetcht1  [edx*4+eax+0x12345678]
+
+    prefetcht2  [si]
+    prefetcht2  [bx+si]
+    prefetcht2  [edx*4+eax+0x12345678]
+
