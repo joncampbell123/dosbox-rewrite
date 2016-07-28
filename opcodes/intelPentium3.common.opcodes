@@ -90,4 +90,16 @@ opcode 0x0F 0xC4 mod/reg/rm ib mod==3 mprefix(0x66):"PINSRW" sse(reg),w32(r/m),i
 opcode 0x0F 0xC4 mod/reg/rm ib mod!=3 mprefix(0x66):"PINSRW" sse(reg),w16(r/m),i; 
 opcode 0x0F 0xC5 mod/reg/rm ib mod==3:          "PEXTRW" w32(reg),mmx(r/m),i; 
 opcode 0x0F 0xC5 mod/reg/rm ib mod==3 mprefix(0x66):"PEXTRW" w32(reg),sse(r/m),i; 
+opcode 0x0F 0xC6 mod/reg/rm ib:                 "SHUFPS" sse(reg),sse(r/m),i; 
+opcode 0x0F 0xD7 mod/reg/rm mod==3:             "PMOVMSKB" w32(reg),mmx(r/m); 
+opcode 0x0F 0xDA mod/reg/rm:                    "PMINUB" mmx(reg),mmx(r/m)  ; 
+opcode 0x0F 0xDE mod/reg/rm:                    "PMAXUB" mmx(reg),mmx(r/m)  ; 
+opcode 0x0F 0xE0 mod/reg/rm:                    "PAVGB" mmx(reg),mmx(r/m)   ; 
+opcode 0x0F 0xE3 mod/reg/rm:                    "PAVGW" mmx(reg),mmx(r/m)   ; 
+opcode 0x0F 0xE4 mod/reg/rm:                    "PMULHUW" mmx(reg),mmx(r/m) ; 
+opcode 0x0F 0xE7 mod/reg/rm mod!=3:             "MOVNTQ" mmx(r/m),mmx(reg)  ; 
+opcode 0x0F 0xEA mod/reg/rm:                    "PMINSW" mmx(reg),mmx(r/m)  ; 
+opcode 0x0F 0xEE mod/reg/rm:                    "PMAXSW" mmx(reg),mmx(r/m)  ; 
+opcode 0x0F 0xF6 mod/reg/rm:                    "PSADBW" mmx(reg),mmx(r/m)  ; 
+opcode 0x0F 0xF7 mod/reg/rm mod==3:             "MASKMOVQ" mmx(reg),mmx(r/m); 
 

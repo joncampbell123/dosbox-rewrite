@@ -5675,3 +5675,34 @@ jmp2:
     pinsrw      mm0,[si],1
     pextrw      eax,mm0,1
 
+    shufps      xmm0,xmm1,1
+    shufps      xmm0,[si],1
+
+    pmovmskb    eax,mm0
+
+    pminub      mm0,mm1
+    pminub      mm0,[si]
+
+    pmaxub      mm0,mm1
+    pmaxub      mm0,[si]
+
+    pavgb       mm0,mm1
+    pavgb       mm0,[si]
+
+    pmulhuw     mm0,mm1
+    pmulhuw     mm0,[si]
+
+    movntq      [si],mm0
+    movntq      [ebx+edi],mm0
+
+    pminsw      mm0,mm1
+    pminsw      mm0,[si]
+
+    pmaxsw      mm0,mm1
+    pmaxsw      mm0,[si]
+
+    psadbw      mm0,mm1
+    psadbw      mm0,[si]
+
+    maskmovq    mm0,mm1
+
