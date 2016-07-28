@@ -22,6 +22,7 @@ empty_SOURCES = empty.cpp
 
 cpudec86_SOURCES = cpudec86.cpp \
 	cpudec86_8086.cpp \
+	cpudec86_80186.cpp \
 	cpudec86_80286.cpp \
 	cpudec86_80386.cpp \
 	cpudec86_80386_generic.cpp \
@@ -67,6 +68,8 @@ cpumemreftypes_LDADD =
 
 OPCC_H = \
 	dosboxxr/lib/cpu/core/intel8088.c16.a16.decom.h \
+	\
+	dosboxxr/lib/cpu/core/intel80186.c16.a16.decom.h \
 	\
 	dosboxxr/lib/cpu/core/intel80286.c16.a16.decom.h \
 	\
@@ -138,6 +141,11 @@ dosboxxr/lib/cpu/core/intel8088.opcodes.p: opcodes/intel8088.opcodes
 	$(BUILD_CPP) -I. opcodes/intel8088.opcodes -o $@
 dosboxxr/lib/cpu/core/intel8088.c16.a16.decom.h: dosboxxr/lib/cpu/core/intel8088.opcodes.p opcc$(EXEEXT)
 	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intel8088.opcodes.p -o $@ -m decompile
+
+dosboxxr/lib/cpu/core/intel80186.opcodes.p: opcodes/intel80186.opcodes
+	$(BUILD_CPP) -I. opcodes/intel80186.opcodes -o $@
+dosboxxr/lib/cpu/core/intel80186.c16.a16.decom.h: dosboxxr/lib/cpu/core/intel80186.opcodes.p opcc$(EXEEXT)
+	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80186.opcodes.p -o $@ -m decompile
 
 dosboxxr/lib/cpu/core/intel80286.opcodes.p: opcodes/intel80286.opcodes
 	$(BUILD_CPP) -I. opcodes/intel80286.opcodes -o $@

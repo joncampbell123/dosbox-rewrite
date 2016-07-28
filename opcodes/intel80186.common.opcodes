@@ -1,0 +1,44 @@
+
+; BOUND
+opcode 0x62 mod/reg/rm mod!=3:                  "BOUND"w w(reg),w(r/m)      ; Detect Value out of Range                 01100010
+
+; ENTER/LEAVE
+opcode 0xC8 iw ib:                              "ENTER"w w(i),b(i2)         ; Enter Procedure                           11001000
+opcode 0xC9:                                    "LEAVE"w                    ; Leave Procedure                           11001001
+
+; INS/OUTS
+opcode 0x6C:                                    "INS"b                      ; Input Byte from port DX                   0110110w w=0
+opcode 0x6D:                                    "INS"w                      ; Input Word from port DX                   0110110w w=1
+opcode 0x6E:                                    "OUTS"b                     ; Output Byte to port DX                    0110111w w=0
+opcode 0x6F:                                    "OUTS"w                     ; Output Word to port DX                    0110111w w=1
+
+; IMUL reg = r/m * imm
+opcode 0x69 mod/reg/rm iw:                      "IMUL"w w(reg),w(r/m),w(i)  ; Integer multiply (signed)                 011010a1 a=0
+opcode 0x6B mod/reg/rm ib:                      "IMUL"b w(reg),w(r/m),b(i)  ; Integer multiply (signed)                 011010a1 a=1
+
+; PUSHA
+opcode 0x60:                                    "PUSHA"w                    ; Push All                                  01100000
+opcode 0x61:                                    "POPA"w                     ; Pop All                                   01100001
+
+; PUSH imm
+opcode 0x68 iw:                                 "PUSH"w w(i)                ; Push immediate                            011010a0 a=0
+opcode 0x6A ibs:                                "PUSH"w w(i)                ; Push immediate                            011010a0 a=1
+
+; shift group (GRP2) by imm8
+opcode 0xC0 mod/reg/rm /0 ib:                   "ROL"b b(r/m),b(i)          ; Rotate Left                               1100000w w=0
+opcode 0xC0 mod/reg/rm /1 ib:                   "ROR"b b(r/m),b(i)          ; Rotate Right                              1100000w w=0
+opcode 0xC0 mod/reg/rm /2 ib:                   "RCL"b b(r/m),b(i)          ; Rotate Through Carry Flag Left            1100000w w=0
+opcode 0xC0 mod/reg/rm /3 ib:                   "RCR"b b(r/m),b(i)          ; Rotate Through Carry Flag Right           1100000w w=0
+opcode 0xC0 mod/reg/rm /4 ib:                   "SHL"b b(r/m),b(i)          ; Shift Logical Left                        1100000w w=0
+opcode 0xC0 mod/reg/rm /5 ib:                   "SHR"b b(r/m),b(i)          ; Shift Logical Right                       1100000w w=0
+opcode 0xC0 mod/reg/rm /6 ib:                   "SAL"b b(r/m),b(i)          ; Shift Arithmetic Left                     1100000w w=0
+opcode 0xC0 mod/reg/rm /7 ib:                   "SAR"b b(r/m),b(i)          ; Shift Arithmetic Right                    1100000w w=0
+opcode 0xC1 mod/reg/rm /0 ib:                   "ROL"w w(r/m),b(i)          ; Rotate Left                               1100000w w=1
+opcode 0xC1 mod/reg/rm /1 ib:                   "ROR"w w(r/m),b(i)          ; Rotate Right                              1100000w w=1
+opcode 0xC1 mod/reg/rm /2 ib:                   "RCL"w w(r/m),b(i)          ; Rotate Through Carry Flag Left            1100000w w=1
+opcode 0xC1 mod/reg/rm /3 ib:                   "RCR"w w(r/m),b(i)          ; Rotate Through Carry Flag Right           1100000w w=1
+opcode 0xC1 mod/reg/rm /4 ib:                   "SHL"w w(r/m),b(i)          ; Shift Logical Left                        1100000w w=1
+opcode 0xC1 mod/reg/rm /5 ib:                   "SHR"w w(r/m),b(i)          ; Shift Logical Right                       1100000w w=1
+opcode 0xC1 mod/reg/rm /6 ib:                   "SAL"w w(r/m),b(i)          ; Shift Arithmetic Left                     1100000w w=1
+opcode 0xC1 mod/reg/rm /7 ib:                   "SAR"w w(r/m),b(i)          ; Shift Arithmetic Right                    1100000w w=1
+

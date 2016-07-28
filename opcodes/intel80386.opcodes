@@ -5,6 +5,7 @@
 #define CORE_386_LOADALL
 
 #include "opcodes/intel8086.common.opcodes"
+#include "opcodes/intel80186.common.opcodes"
 #include "opcodes/intel80286.common.opcodes"
 #include "opcodes/intel80386.common.opcodes"
 

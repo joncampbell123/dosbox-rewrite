@@ -19,6 +19,7 @@
 #include "cpudec86common.h"
 
 void IPDec_8086(x86_offset_t ip);
+void IPDec_80186(x86_offset_t ip);
 void IPDec_80286(x86_offset_t ip);
 void IPDec_80386(x86_offset_t ip);
 void IPDec_80386_generic(x86_offset_t ip);
@@ -70,6 +71,8 @@ int main(int argc,char **argv) {
 
                 if (!strcmp(a,"intel8086") || !strcmp(a,"8086") || !strcmp(a,"8088"))
                     IPDec = IPDec_8086;
+                else if (!strcmp(a,"intel80186") || !strcmp(a,"intel186") || !strcmp(a,"186"))
+                    IPDec = IPDec_80186;
                 else if (!strcmp(a,"intel80286") || !strcmp(a,"intel286") || !strcmp(a,"286"))
                     IPDec = IPDec_80286;
                 else if (!strcmp(a,"intel80386") || !strcmp(a,"intel386") || !strcmp(a,"386"))
