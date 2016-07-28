@@ -47,3 +47,47 @@ opcode 0x0F 0x2D mod/reg/rm mprefix(0xF3):      "CVTSS2SI" w32(reg),sse(r/m); Co
 opcode 0x0F 0x2E mod/reg/rm:                    "UCOMISS" sse(reg),sse(r/m) ; Unordered Compare Scalar Single-FP Values and Set EFLAGS
 opcode 0x0F 0x2F mod/reg/rm:                    "COMISS" sse(reg),sse(r/m)  ; Compare Scalar Ordered Single-FP Values and Set EFLAGS
 
+; MOVMSK...
+opcode 0x0F 0x50 mod/reg/rm mod==3:             "MOVMSKPS" w32(reg),sse(r/m); Extract Packed Single-FP Sign Mask
+opcode 0x0F 0x51 mod/reg/rm:                    "SQRTPS" sse(reg),sse(r/m)  ; Compute Square Roots of Packed Single-FP Values
+opcode 0x0F 0x51 mod/reg/rm mprefix(0xF3):      "SQRTSS" sse(reg),sse(r/m)  ; Compute Square Root of Scalar Single-FP Value
+opcode 0x0F 0x52 mod/reg/rm:                    "RSQRTPS" sse(reg),sse(r/m) ; Compute Recipr. of Square Roots of Packed Single-FP Values
+opcode 0x0F 0x52 mod/reg/rm mprefix(0xF3):      "RSQRTSS" sse(reg),sse(r/m) ; Compute Recipr. of Square Root of Packed Single-FP Value
+opcode 0x0F 0x53 mod/reg/rm:                    "RCPPS" sse(reg),sse(r/m)   ; Compute Reciprocals of Packed Single-FP Values
+opcode 0x0F 0x53 mod/reg/rm mprefix(0xF3):      "RCPSS" sse(reg),sse(r/m)   ; Compute Reciprocal of Scalar Single-FP Values
+opcode 0x0F 0x54 mod/reg/rm:                    "ANDPS" sse(reg),sse(r/m)   ; 
+opcode 0x0F 0x55 mod/reg/rm:                    "ANDNPS" sse(reg),sse(r/m)  ; 
+opcode 0x0F 0x56 mod/reg/rm:                    "ORPS" sse(reg),sse(r/m)    ; 
+opcode 0x0F 0x57 mod/reg/rm:                    "XORPS" sse(reg),sse(r/m)   ; 
+opcode 0x0F 0x58 mod/reg/rm:                    "ADDPS" sse(reg),sse(r/m)   ; 
+opcode 0x0F 0x58 mod/reg/rm mprefix(0xF3):      "ADDSS" sse(reg),sse(r/m)   ; 
+opcode 0x0F 0x59 mod/reg/rm:                    "MULPS" sse(reg),sse(r/m)   ; 
+opcode 0x0F 0x59 mod/reg/rm mprefix(0xF3):      "MULSS" sse(reg),sse(r/m)   ; 
+opcode 0x0F 0x5C mod/reg/rm:                    "SUBPS" sse(reg),sse(r/m)   ; 
+opcode 0x0F 0x5C mod/reg/rm mprefix(0xF3):      "SUBSS" sse(reg),sse(r/m)   ; 
+opcode 0x0F 0x5D mod/reg/rm:                    "MINPS" sse(reg),sse(r/m)   ; 
+opcode 0x0F 0x5D mod/reg/rm mprefix(0xF3):      "MINSS" sse(reg),sse(r/m)   ; 
+opcode 0x0F 0x5E mod/reg/rm:                    "DIVPS" sse(reg),sse(r/m)   ; 
+opcode 0x0F 0x5E mod/reg/rm mprefix(0xF3):      "DIVSS" sse(reg),sse(r/m)   ; 
+opcode 0x0F 0x5F mod/reg/rm:                    "MAXPS" sse(reg),sse(r/m)   ; 
+opcode 0x0F 0x5F mod/reg/rm mprefix(0xF3):      "MAXSS" sse(reg),sse(r/m)   ; 
+
+; MXCSR
+opcode 0x0F 0xAE mod/reg/rm /2 mod!=3:          "LDMXCSR" w(r/m)            ; 
+opcode 0x0F 0xAE mod/reg/rm /3 mod!=3:          "STMXCSR" w(r/m)            ; 
+
+; more
+opcode 0x0F 0xAE mod/reg/rm /7:                 "SFENCE"                    ; 
+
+; CMPSS..
+opcode 0x0F 0xC2 mod/reg/rm ib:                 "CMPPS" sse(reg),sse(r/m),i ; 
+opcode 0x0F 0xC2 mod/reg/rm ib mprefix(0xF3):   "CMPSS" sse(reg),sse(r/m),i ; 
+
+; more
+opcode 0x0F 0xC4 mod/reg/rm ib mod==3:          "PINSRW" mmx(reg),w32(r/m),i; 
+opcode 0x0F 0xC4 mod/reg/rm ib mod!=3:          "PINSRW" mmx(reg),w16(r/m),i; 
+opcode 0x0F 0xC4 mod/reg/rm ib mod==3 mprefix(0x66):"PINSRW" sse(reg),w32(r/m),i; 
+opcode 0x0F 0xC4 mod/reg/rm ib mod!=3 mprefix(0x66):"PINSRW" sse(reg),w16(r/m),i; 
+opcode 0x0F 0xC5 mod/reg/rm ib mod==3:          "PEXTRW" w32(reg),mmx(r/m),i; 
+opcode 0x0F 0xC5 mod/reg/rm ib mod==3 mprefix(0x66):"PEXTRW" w32(reg),sse(r/m),i; 
+

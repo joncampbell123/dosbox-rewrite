@@ -5593,3 +5593,85 @@ jmp2:
     comiss      xmm0,xmm1
     comiss      xmm0,[si]
 
+    movmskps    eax,xmm0
+
+    sqrtps      xmm0,xmm1
+    sqrtps      xmm0,[si]
+
+    sqrtss      xmm0,xmm1
+    sqrtss      xmm0,[si]
+
+    rsqrtps     xmm0,xmm1
+    rsqrtps     xmm0,[si]
+
+    rsqrtss     xmm0,xmm1
+    rsqrtss     xmm0,[si]
+
+    rcpps       xmm0,xmm1
+    rcpps       xmm0,[si]
+
+    rcpss       xmm0,xmm1
+    rcpss       xmm0,[si]
+
+    andps       xmm0,xmm1
+    andps       xmm0,[si]
+
+    andnps      xmm0,xmm1
+    andnps      xmm0,[si]
+
+    orps        xmm0,xmm1
+    orps        xmm0,[si]
+
+    xorps       xmm0,xmm1
+    xorps       xmm0,[si]
+
+    addps       xmm0,xmm1
+    addps       xmm0,[si]
+
+    addss       xmm0,xmm1
+    addss       xmm0,[si]
+
+    mulps       xmm0,xmm1
+    mulps       xmm0,[si]
+
+    mulss       xmm0,xmm1
+    mulss       xmm0,[si]
+
+    subps       xmm0,xmm1
+    subps       xmm0,[si]
+
+    subss       xmm0,xmm1
+    subss       xmm0,[si]
+
+    minps       xmm0,xmm1
+    minps       xmm0,[si]
+
+    minss       xmm0,xmm1
+    minss       xmm0,[si]
+
+    divps       xmm0,xmm1
+    divps       xmm0,[si]
+
+    divss       xmm0,xmm1
+    divss       xmm0,[si]
+
+    maxps       xmm0,xmm1
+    maxps       xmm0,[si]
+
+    maxss       xmm0,xmm1
+    maxss       xmm0,[si]
+
+    ldmxcsr     [si]
+    stmxcsr     [si]
+
+    sfence
+
+    cmpps       xmm0,xmm1,1
+    cmpps       xmm0,[si],1
+    cmpss       xmm0,xmm1,1
+    cmpss       xmm0,[si],1
+
+    pinsrw      mm0,eax,1
+    pinsrw      mm0,[si],1
+    pextrw      eax,mm0,1
+
