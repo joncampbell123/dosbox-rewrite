@@ -1135,9 +1135,272 @@ switch (op=IPFB()) {
     case 0x61: /* 61h POPAw       spec: 0x61 */
         ipw += snprintf(ipw,(size_t)(ipwf-ipw),"POPAw");
         break;
-    case 0x62: /* 62h BOUNDw w(reg),w(r/m)      spec: 0x62 mod/reg/rm mod!=3 */
+    case 0x62: /* 62h        spec:  */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"BOUNDw %s,%s",CPUregsN[2][mrm.reg()],IPDecPrint16(mrm,disp,2,RC_REG,"w"));
+/* Opcodes starting with 62h */
+        switch (mrm.byte) {
+            case 0x00: /* 62h 00h BOUNDw w(reg),w(r/m) mod=0 reg=0 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x01: /* 62h 01h BOUNDw w(reg),w(r/m) mod=0 reg=0 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x02: /* 62h 02h BOUNDw w(reg),w(r/m) mod=0 reg=0 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x03: /* 62h 03h BOUNDw w(reg),w(r/m) mod=0 reg=0 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x04: /* 62h 04h BOUNDw w(reg),w(r/m) mod=0 reg=0 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x05: /* 62h 05h BOUNDw w(reg),w(r/m) mod=0 reg=0 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x06: /* 62h 06h BOUNDw w(reg),w(r/m) mod=0 reg=0 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x07: /* 62h 07h BOUNDw w(reg),w(r/m) mod=0 reg=0 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x08: /* 62h 08h BOUNDw w(reg),w(r/m) mod=0 reg=1 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x09: /* 62h 09h BOUNDw w(reg),w(r/m) mod=0 reg=1 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x0A: /* 62h 0Ah BOUNDw w(reg),w(r/m) mod=0 reg=1 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x0B: /* 62h 0Bh BOUNDw w(reg),w(r/m) mod=0 reg=1 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x0C: /* 62h 0Ch BOUNDw w(reg),w(r/m) mod=0 reg=1 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x0D: /* 62h 0Dh BOUNDw w(reg),w(r/m) mod=0 reg=1 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x0E: /* 62h 0Eh BOUNDw w(reg),w(r/m) mod=0 reg=1 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x0F: /* 62h 0Fh BOUNDw w(reg),w(r/m) mod=0 reg=1 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x10: /* 62h 10h BOUNDw w(reg),w(r/m) mod=0 reg=2 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x11: /* 62h 11h BOUNDw w(reg),w(r/m) mod=0 reg=2 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x12: /* 62h 12h BOUNDw w(reg),w(r/m) mod=0 reg=2 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x13: /* 62h 13h BOUNDw w(reg),w(r/m) mod=0 reg=2 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x14: /* 62h 14h BOUNDw w(reg),w(r/m) mod=0 reg=2 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x15: /* 62h 15h BOUNDw w(reg),w(r/m) mod=0 reg=2 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x16: /* 62h 16h BOUNDw w(reg),w(r/m) mod=0 reg=2 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x17: /* 62h 17h BOUNDw w(reg),w(r/m) mod=0 reg=2 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x18: /* 62h 18h BOUNDw w(reg),w(r/m) mod=0 reg=3 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x19: /* 62h 19h BOUNDw w(reg),w(r/m) mod=0 reg=3 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x1A: /* 62h 1Ah BOUNDw w(reg),w(r/m) mod=0 reg=3 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x1B: /* 62h 1Bh BOUNDw w(reg),w(r/m) mod=0 reg=3 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x1C: /* 62h 1Ch BOUNDw w(reg),w(r/m) mod=0 reg=3 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x1D: /* 62h 1Dh BOUNDw w(reg),w(r/m) mod=0 reg=3 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x1E: /* 62h 1Eh BOUNDw w(reg),w(r/m) mod=0 reg=3 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x1F: /* 62h 1Fh BOUNDw w(reg),w(r/m) mod=0 reg=3 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x20: /* 62h 20h BOUNDw w(reg),w(r/m) mod=0 reg=4 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x21: /* 62h 21h BOUNDw w(reg),w(r/m) mod=0 reg=4 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x22: /* 62h 22h BOUNDw w(reg),w(r/m) mod=0 reg=4 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x23: /* 62h 23h BOUNDw w(reg),w(r/m) mod=0 reg=4 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x24: /* 62h 24h BOUNDw w(reg),w(r/m) mod=0 reg=4 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x25: /* 62h 25h BOUNDw w(reg),w(r/m) mod=0 reg=4 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x26: /* 62h 26h BOUNDw w(reg),w(r/m) mod=0 reg=4 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x27: /* 62h 27h BOUNDw w(reg),w(r/m) mod=0 reg=4 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x28: /* 62h 28h BOUNDw w(reg),w(r/m) mod=0 reg=5 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x29: /* 62h 29h BOUNDw w(reg),w(r/m) mod=0 reg=5 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x2A: /* 62h 2Ah BOUNDw w(reg),w(r/m) mod=0 reg=5 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x2B: /* 62h 2Bh BOUNDw w(reg),w(r/m) mod=0 reg=5 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x2C: /* 62h 2Ch BOUNDw w(reg),w(r/m) mod=0 reg=5 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x2D: /* 62h 2Dh BOUNDw w(reg),w(r/m) mod=0 reg=5 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x2E: /* 62h 2Eh BOUNDw w(reg),w(r/m) mod=0 reg=5 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x2F: /* 62h 2Fh BOUNDw w(reg),w(r/m) mod=0 reg=5 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x30: /* 62h 30h BOUNDw w(reg),w(r/m) mod=0 reg=6 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x31: /* 62h 31h BOUNDw w(reg),w(r/m) mod=0 reg=6 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x32: /* 62h 32h BOUNDw w(reg),w(r/m) mod=0 reg=6 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x33: /* 62h 33h BOUNDw w(reg),w(r/m) mod=0 reg=6 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x34: /* 62h 34h BOUNDw w(reg),w(r/m) mod=0 reg=6 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x35: /* 62h 35h BOUNDw w(reg),w(r/m) mod=0 reg=6 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x36: /* 62h 36h BOUNDw w(reg),w(r/m) mod=0 reg=6 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x37: /* 62h 37h BOUNDw w(reg),w(r/m) mod=0 reg=6 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x38: /* 62h 38h BOUNDw w(reg),w(r/m) mod=0 reg=7 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x39: /* 62h 39h BOUNDw w(reg),w(r/m) mod=0 reg=7 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x3A: /* 62h 3Ah BOUNDw w(reg),w(r/m) mod=0 reg=7 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x3B: /* 62h 3Bh BOUNDw w(reg),w(r/m) mod=0 reg=7 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x3C: /* 62h 3Ch BOUNDw w(reg),w(r/m) mod=0 reg=7 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x3D: /* 62h 3Dh BOUNDw w(reg),w(r/m) mod=0 reg=7 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x3E: /* 62h 3Eh BOUNDw w(reg),w(r/m) mod=0 reg=7 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x3F: /* 62h 3Fh BOUNDw w(reg),w(r/m) mod=0 reg=7 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x40: /* 62h 40h BOUNDw w(reg),w(r/m) mod=1 reg=0 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x41: /* 62h 41h BOUNDw w(reg),w(r/m) mod=1 reg=0 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x42: /* 62h 42h BOUNDw w(reg),w(r/m) mod=1 reg=0 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x43: /* 62h 43h BOUNDw w(reg),w(r/m) mod=1 reg=0 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x44: /* 62h 44h BOUNDw w(reg),w(r/m) mod=1 reg=0 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x45: /* 62h 45h BOUNDw w(reg),w(r/m) mod=1 reg=0 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x46: /* 62h 46h BOUNDw w(reg),w(r/m) mod=1 reg=0 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x47: /* 62h 47h BOUNDw w(reg),w(r/m) mod=1 reg=0 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x48: /* 62h 48h BOUNDw w(reg),w(r/m) mod=1 reg=1 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x49: /* 62h 49h BOUNDw w(reg),w(r/m) mod=1 reg=1 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x4A: /* 62h 4Ah BOUNDw w(reg),w(r/m) mod=1 reg=1 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x4B: /* 62h 4Bh BOUNDw w(reg),w(r/m) mod=1 reg=1 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x4C: /* 62h 4Ch BOUNDw w(reg),w(r/m) mod=1 reg=1 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x4D: /* 62h 4Dh BOUNDw w(reg),w(r/m) mod=1 reg=1 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x4E: /* 62h 4Eh BOUNDw w(reg),w(r/m) mod=1 reg=1 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x4F: /* 62h 4Fh BOUNDw w(reg),w(r/m) mod=1 reg=1 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x50: /* 62h 50h BOUNDw w(reg),w(r/m) mod=1 reg=2 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x51: /* 62h 51h BOUNDw w(reg),w(r/m) mod=1 reg=2 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x52: /* 62h 52h BOUNDw w(reg),w(r/m) mod=1 reg=2 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x53: /* 62h 53h BOUNDw w(reg),w(r/m) mod=1 reg=2 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x54: /* 62h 54h BOUNDw w(reg),w(r/m) mod=1 reg=2 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x55: /* 62h 55h BOUNDw w(reg),w(r/m) mod=1 reg=2 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x56: /* 62h 56h BOUNDw w(reg),w(r/m) mod=1 reg=2 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x57: /* 62h 57h BOUNDw w(reg),w(r/m) mod=1 reg=2 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x58: /* 62h 58h BOUNDw w(reg),w(r/m) mod=1 reg=3 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x59: /* 62h 59h BOUNDw w(reg),w(r/m) mod=1 reg=3 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x5A: /* 62h 5Ah BOUNDw w(reg),w(r/m) mod=1 reg=3 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x5B: /* 62h 5Bh BOUNDw w(reg),w(r/m) mod=1 reg=3 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x5C: /* 62h 5Ch BOUNDw w(reg),w(r/m) mod=1 reg=3 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x5D: /* 62h 5Dh BOUNDw w(reg),w(r/m) mod=1 reg=3 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x5E: /* 62h 5Eh BOUNDw w(reg),w(r/m) mod=1 reg=3 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x5F: /* 62h 5Fh BOUNDw w(reg),w(r/m) mod=1 reg=3 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x60: /* 62h 60h BOUNDw w(reg),w(r/m) mod=1 reg=4 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x61: /* 62h 61h BOUNDw w(reg),w(r/m) mod=1 reg=4 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x62: /* 62h 62h BOUNDw w(reg),w(r/m) mod=1 reg=4 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x63: /* 62h 63h BOUNDw w(reg),w(r/m) mod=1 reg=4 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x64: /* 62h 64h BOUNDw w(reg),w(r/m) mod=1 reg=4 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x65: /* 62h 65h BOUNDw w(reg),w(r/m) mod=1 reg=4 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x66: /* 62h 66h BOUNDw w(reg),w(r/m) mod=1 reg=4 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x67: /* 62h 67h BOUNDw w(reg),w(r/m) mod=1 reg=4 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x68: /* 62h 68h BOUNDw w(reg),w(r/m) mod=1 reg=5 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x69: /* 62h 69h BOUNDw w(reg),w(r/m) mod=1 reg=5 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x6A: /* 62h 6Ah BOUNDw w(reg),w(r/m) mod=1 reg=5 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x6B: /* 62h 6Bh BOUNDw w(reg),w(r/m) mod=1 reg=5 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x6C: /* 62h 6Ch BOUNDw w(reg),w(r/m) mod=1 reg=5 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x6D: /* 62h 6Dh BOUNDw w(reg),w(r/m) mod=1 reg=5 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x6E: /* 62h 6Eh BOUNDw w(reg),w(r/m) mod=1 reg=5 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x6F: /* 62h 6Fh BOUNDw w(reg),w(r/m) mod=1 reg=5 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x70: /* 62h 70h BOUNDw w(reg),w(r/m) mod=1 reg=6 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x71: /* 62h 71h BOUNDw w(reg),w(r/m) mod=1 reg=6 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x72: /* 62h 72h BOUNDw w(reg),w(r/m) mod=1 reg=6 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x73: /* 62h 73h BOUNDw w(reg),w(r/m) mod=1 reg=6 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x74: /* 62h 74h BOUNDw w(reg),w(r/m) mod=1 reg=6 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x75: /* 62h 75h BOUNDw w(reg),w(r/m) mod=1 reg=6 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x76: /* 62h 76h BOUNDw w(reg),w(r/m) mod=1 reg=6 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x77: /* 62h 77h BOUNDw w(reg),w(r/m) mod=1 reg=6 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x78: /* 62h 78h BOUNDw w(reg),w(r/m) mod=1 reg=7 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x79: /* 62h 79h BOUNDw w(reg),w(r/m) mod=1 reg=7 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x7A: /* 62h 7Ah BOUNDw w(reg),w(r/m) mod=1 reg=7 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x7B: /* 62h 7Bh BOUNDw w(reg),w(r/m) mod=1 reg=7 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x7C: /* 62h 7Ch BOUNDw w(reg),w(r/m) mod=1 reg=7 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x7D: /* 62h 7Dh BOUNDw w(reg),w(r/m) mod=1 reg=7 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x7E: /* 62h 7Eh BOUNDw w(reg),w(r/m) mod=1 reg=7 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x7F: /* 62h 7Fh BOUNDw w(reg),w(r/m) mod=1 reg=7 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x80: /* 62h 80h BOUNDw w(reg),w(r/m) mod=2 reg=0 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x81: /* 62h 81h BOUNDw w(reg),w(r/m) mod=2 reg=0 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x82: /* 62h 82h BOUNDw w(reg),w(r/m) mod=2 reg=0 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x83: /* 62h 83h BOUNDw w(reg),w(r/m) mod=2 reg=0 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x84: /* 62h 84h BOUNDw w(reg),w(r/m) mod=2 reg=0 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x85: /* 62h 85h BOUNDw w(reg),w(r/m) mod=2 reg=0 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x86: /* 62h 86h BOUNDw w(reg),w(r/m) mod=2 reg=0 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x87: /* 62h 87h BOUNDw w(reg),w(r/m) mod=2 reg=0 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x88: /* 62h 88h BOUNDw w(reg),w(r/m) mod=2 reg=1 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x89: /* 62h 89h BOUNDw w(reg),w(r/m) mod=2 reg=1 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x8A: /* 62h 8Ah BOUNDw w(reg),w(r/m) mod=2 reg=1 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x8B: /* 62h 8Bh BOUNDw w(reg),w(r/m) mod=2 reg=1 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x8C: /* 62h 8Ch BOUNDw w(reg),w(r/m) mod=2 reg=1 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x8D: /* 62h 8Dh BOUNDw w(reg),w(r/m) mod=2 reg=1 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x8E: /* 62h 8Eh BOUNDw w(reg),w(r/m) mod=2 reg=1 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x8F: /* 62h 8Fh BOUNDw w(reg),w(r/m) mod=2 reg=1 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x90: /* 62h 90h BOUNDw w(reg),w(r/m) mod=2 reg=2 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x91: /* 62h 91h BOUNDw w(reg),w(r/m) mod=2 reg=2 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x92: /* 62h 92h BOUNDw w(reg),w(r/m) mod=2 reg=2 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x93: /* 62h 93h BOUNDw w(reg),w(r/m) mod=2 reg=2 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x94: /* 62h 94h BOUNDw w(reg),w(r/m) mod=2 reg=2 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x95: /* 62h 95h BOUNDw w(reg),w(r/m) mod=2 reg=2 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x96: /* 62h 96h BOUNDw w(reg),w(r/m) mod=2 reg=2 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x97: /* 62h 97h BOUNDw w(reg),w(r/m) mod=2 reg=2 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x98: /* 62h 98h BOUNDw w(reg),w(r/m) mod=2 reg=3 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x99: /* 62h 99h BOUNDw w(reg),w(r/m) mod=2 reg=3 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x9A: /* 62h 9Ah BOUNDw w(reg),w(r/m) mod=2 reg=3 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x9B: /* 62h 9Bh BOUNDw w(reg),w(r/m) mod=2 reg=3 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x9C: /* 62h 9Ch BOUNDw w(reg),w(r/m) mod=2 reg=3 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x9D: /* 62h 9Dh BOUNDw w(reg),w(r/m) mod=2 reg=3 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x9E: /* 62h 9Eh BOUNDw w(reg),w(r/m) mod=2 reg=3 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x9F: /* 62h 9Fh BOUNDw w(reg),w(r/m) mod=2 reg=3 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xA0: /* 62h A0h BOUNDw w(reg),w(r/m) mod=2 reg=4 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xA1: /* 62h A1h BOUNDw w(reg),w(r/m) mod=2 reg=4 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xA2: /* 62h A2h BOUNDw w(reg),w(r/m) mod=2 reg=4 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xA3: /* 62h A3h BOUNDw w(reg),w(r/m) mod=2 reg=4 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xA4: /* 62h A4h BOUNDw w(reg),w(r/m) mod=2 reg=4 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xA5: /* 62h A5h BOUNDw w(reg),w(r/m) mod=2 reg=4 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xA6: /* 62h A6h BOUNDw w(reg),w(r/m) mod=2 reg=4 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xA7: /* 62h A7h BOUNDw w(reg),w(r/m) mod=2 reg=4 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xA8: /* 62h A8h BOUNDw w(reg),w(r/m) mod=2 reg=5 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xA9: /* 62h A9h BOUNDw w(reg),w(r/m) mod=2 reg=5 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xAA: /* 62h AAh BOUNDw w(reg),w(r/m) mod=2 reg=5 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xAB: /* 62h ABh BOUNDw w(reg),w(r/m) mod=2 reg=5 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xAC: /* 62h ACh BOUNDw w(reg),w(r/m) mod=2 reg=5 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xAD: /* 62h ADh BOUNDw w(reg),w(r/m) mod=2 reg=5 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xAE: /* 62h AEh BOUNDw w(reg),w(r/m) mod=2 reg=5 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xAF: /* 62h AFh BOUNDw w(reg),w(r/m) mod=2 reg=5 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xB0: /* 62h B0h BOUNDw w(reg),w(r/m) mod=2 reg=6 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xB1: /* 62h B1h BOUNDw w(reg),w(r/m) mod=2 reg=6 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xB2: /* 62h B2h BOUNDw w(reg),w(r/m) mod=2 reg=6 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xB3: /* 62h B3h BOUNDw w(reg),w(r/m) mod=2 reg=6 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xB4: /* 62h B4h BOUNDw w(reg),w(r/m) mod=2 reg=6 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xB5: /* 62h B5h BOUNDw w(reg),w(r/m) mod=2 reg=6 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xB6: /* 62h B6h BOUNDw w(reg),w(r/m) mod=2 reg=6 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xB7: /* 62h B7h BOUNDw w(reg),w(r/m) mod=2 reg=6 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xB8: /* 62h B8h BOUNDw w(reg),w(r/m) mod=2 reg=7 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xB9: /* 62h B9h BOUNDw w(reg),w(r/m) mod=2 reg=7 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xBA: /* 62h BAh BOUNDw w(reg),w(r/m) mod=2 reg=7 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xBB: /* 62h BBh BOUNDw w(reg),w(r/m) mod=2 reg=7 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xBC: /* 62h BCh BOUNDw w(reg),w(r/m) mod=2 reg=7 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xBD: /* 62h BDh BOUNDw w(reg),w(r/m) mod=2 reg=7 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xBE: /* 62h BEh BOUNDw w(reg),w(r/m) mod=2 reg=7 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xBF: /* 62h BFh BOUNDw w(reg),w(r/m) mod=2 reg=7 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"BOUNDw %s,%s",CPUregsN[2][mrm.reg()],IPDecPrint16(mrm,disp,2,RC_REG,"w"));
+                break;
+            /* opcode 62h C0h  not defined */
+            /* opcode 62h C1h  not defined */
+            /* opcode 62h C2h  not defined */
+            /* opcode 62h C3h  not defined */
+            /* opcode 62h C4h  not defined */
+            /* opcode 62h C5h  not defined */
+            /* opcode 62h C6h  not defined */
+            /* opcode 62h C7h  not defined */
+            /* opcode 62h C8h  not defined */
+            /* opcode 62h C9h  not defined */
+            /* opcode 62h CAh  not defined */
+            /* opcode 62h CBh  not defined */
+            /* opcode 62h CCh  not defined */
+            /* opcode 62h CDh  not defined */
+            /* opcode 62h CEh  not defined */
+            /* opcode 62h CFh  not defined */
+            /* opcode 62h D0h  not defined */
+            /* opcode 62h D1h  not defined */
+            /* opcode 62h D2h  not defined */
+            /* opcode 62h D3h  not defined */
+            /* opcode 62h D4h  not defined */
+            /* opcode 62h D5h  not defined */
+            /* opcode 62h D6h  not defined */
+            /* opcode 62h D7h  not defined */
+            /* opcode 62h D8h  not defined */
+            /* opcode 62h D9h  not defined */
+            /* opcode 62h DAh  not defined */
+            /* opcode 62h DBh  not defined */
+            /* opcode 62h DCh  not defined */
+            /* opcode 62h DDh  not defined */
+            /* opcode 62h DEh  not defined */
+            /* opcode 62h DFh  not defined */
+            /* opcode 62h E0h  not defined */
+            /* opcode 62h E1h  not defined */
+            /* opcode 62h E2h  not defined */
+            /* opcode 62h E3h  not defined */
+            /* opcode 62h E4h  not defined */
+            /* opcode 62h E5h  not defined */
+            /* opcode 62h E6h  not defined */
+            /* opcode 62h E7h  not defined */
+            /* opcode 62h E8h  not defined */
+            /* opcode 62h E9h  not defined */
+            /* opcode 62h EAh  not defined */
+            /* opcode 62h EBh  not defined */
+            /* opcode 62h ECh  not defined */
+            /* opcode 62h EDh  not defined */
+            /* opcode 62h EEh  not defined */
+            /* opcode 62h EFh  not defined */
+            /* opcode 62h F0h  not defined */
+            /* opcode 62h F1h  not defined */
+            /* opcode 62h F2h  not defined */
+            /* opcode 62h F3h  not defined */
+            /* opcode 62h F4h  not defined */
+            /* opcode 62h F5h  not defined */
+            /* opcode 62h F6h  not defined */
+            /* opcode 62h F7h  not defined */
+            /* opcode 62h F8h  not defined */
+            /* opcode 62h F9h  not defined */
+            /* opcode 62h FAh  not defined */
+            /* opcode 62h FBh  not defined */
+            /* opcode 62h FCh  not defined */
+            /* opcode 62h FDh  not defined */
+            /* opcode 62h FEh  not defined */
+            /* opcode 62h FFh  not defined */
+            default:
+                goto _x86decode_illegal_opcode;
+        };
+/* End of opcodes starting with 62h */
         break;
     case 0x63: /* 63h ARPLw w(r/m),w(reg)      spec: 0x63 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);

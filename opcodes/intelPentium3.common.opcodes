@@ -17,14 +17,14 @@ opcode 0x0F 0x11 mod/reg/rm:                    "MOVUPS" sse(r/m),sse(reg)  ; Mo
 opcode 0x0F 0x11 mod/reg/rm mprefix(0xF3):      "MOVSS" sse(r/m),sse(reg)   ; Move Scalar Single-FP Values
 
 ; MOVLPS/MOVHLPS
-opcode 0x0F 0x12 mod/reg/rm mod==3:             "MOVHLPS" sse(reg),sse(r/m) ; Move Packed Single-Precision Floating-Point Values High to Low  [OPCC FIXME!]
+opcode 0x0F 0x12 mod/reg/rm mod==3:             "MOVHLPS" sse(reg),sse(r/m) ; Move Packed Single-Precision Floating-Point Values High to Low
 opcode 0x0F 0x12 mod/reg/rm mod!=3:             "MOVLPS" sse(reg),sse(r/m)  ; Move Low Packed Single-Precision Floating-Point Values
 opcode 0x0F 0x13 mod/reg/rm mod!=3:             "MOVLPS" sse(r/m),sse(reg)  ; Move Low Packed Single-Precision Floating-Point Values
 
 ; UNPCKLPS
 opcode 0x0F 0x14 mod/reg/rm:                    "UNPCKLPS" sse(reg),sse(r/m); Unpack and Interleave Low Packed Single-FP Values
 opcode 0x0F 0x15 mod/reg/rm:                    "UNPCKHPS" sse(reg),sse(r/m); Unpack and Interleave High Packed Single-FP Values
-opcode 0x0F 0x16 mod/reg/rm mod==3:             "MOVLHPS" sse(reg),sse(r/m) ; Move Packed Single-FP Values Low to High                        [OPCC FIXME!]
+opcode 0x0F 0x16 mod/reg/rm mod==3:             "MOVLHPS" sse(reg),sse(r/m) ; Move Packed Single-FP Values Low to High
 opcode 0x0F 0x16 mod/reg/rm mod!=3:             "MOVHPS" sse(reg),sse(r/m)  ; Move High Packed Single-FP Values
 opcode 0x0F 0x17 mod/reg/rm mod!=3:             "MOVHPS" sse(r/m),sse(reg)  ; Move High Packed Single-FP Values
 

@@ -721,19 +721,547 @@ switch (op) {
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVUPS %s,XMM%u",IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""),mrm.reg());
                 break;
-            case 0x12: /* 0Fh 12h MOVLPS sse(reg),sse(r/m)      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+            case 0x12: /* 0Fh 12h        spec:  */
                 if (addr32)
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVLPS XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+/* Opcodes starting with 0Fh 12h */
+                switch (mrm.byte) {
+                    case 0x00: /* 0Fh 12h 00h MOVLPS sse(reg),sse(r/m) mod=0 reg=0 rm=0      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x01: /* 0Fh 12h 01h MOVLPS sse(reg),sse(r/m) mod=0 reg=0 rm=1      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x02: /* 0Fh 12h 02h MOVLPS sse(reg),sse(r/m) mod=0 reg=0 rm=2      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x03: /* 0Fh 12h 03h MOVLPS sse(reg),sse(r/m) mod=0 reg=0 rm=3      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x04: /* 0Fh 12h 04h MOVLPS sse(reg),sse(r/m) mod=0 reg=0 rm=4      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x05: /* 0Fh 12h 05h MOVLPS sse(reg),sse(r/m) mod=0 reg=0 rm=5      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x06: /* 0Fh 12h 06h MOVLPS sse(reg),sse(r/m) mod=0 reg=0 rm=6      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x07: /* 0Fh 12h 07h MOVLPS sse(reg),sse(r/m) mod=0 reg=0 rm=7      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x08: /* 0Fh 12h 08h MOVLPS sse(reg),sse(r/m) mod=0 reg=1 rm=0      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x09: /* 0Fh 12h 09h MOVLPS sse(reg),sse(r/m) mod=0 reg=1 rm=1      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x0A: /* 0Fh 12h 0Ah MOVLPS sse(reg),sse(r/m) mod=0 reg=1 rm=2      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x0B: /* 0Fh 12h 0Bh MOVLPS sse(reg),sse(r/m) mod=0 reg=1 rm=3      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x0C: /* 0Fh 12h 0Ch MOVLPS sse(reg),sse(r/m) mod=0 reg=1 rm=4      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x0D: /* 0Fh 12h 0Dh MOVLPS sse(reg),sse(r/m) mod=0 reg=1 rm=5      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x0E: /* 0Fh 12h 0Eh MOVLPS sse(reg),sse(r/m) mod=0 reg=1 rm=6      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x0F: /* 0Fh 12h 0Fh MOVLPS sse(reg),sse(r/m) mod=0 reg=1 rm=7      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x10: /* 0Fh 12h 10h MOVLPS sse(reg),sse(r/m) mod=0 reg=2 rm=0      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x11: /* 0Fh 12h 11h MOVLPS sse(reg),sse(r/m) mod=0 reg=2 rm=1      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x12: /* 0Fh 12h 12h MOVLPS sse(reg),sse(r/m) mod=0 reg=2 rm=2      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x13: /* 0Fh 12h 13h MOVLPS sse(reg),sse(r/m) mod=0 reg=2 rm=3      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x14: /* 0Fh 12h 14h MOVLPS sse(reg),sse(r/m) mod=0 reg=2 rm=4      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x15: /* 0Fh 12h 15h MOVLPS sse(reg),sse(r/m) mod=0 reg=2 rm=5      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x16: /* 0Fh 12h 16h MOVLPS sse(reg),sse(r/m) mod=0 reg=2 rm=6      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x17: /* 0Fh 12h 17h MOVLPS sse(reg),sse(r/m) mod=0 reg=2 rm=7      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x18: /* 0Fh 12h 18h MOVLPS sse(reg),sse(r/m) mod=0 reg=3 rm=0      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x19: /* 0Fh 12h 19h MOVLPS sse(reg),sse(r/m) mod=0 reg=3 rm=1      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x1A: /* 0Fh 12h 1Ah MOVLPS sse(reg),sse(r/m) mod=0 reg=3 rm=2      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x1B: /* 0Fh 12h 1Bh MOVLPS sse(reg),sse(r/m) mod=0 reg=3 rm=3      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x1C: /* 0Fh 12h 1Ch MOVLPS sse(reg),sse(r/m) mod=0 reg=3 rm=4      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x1D: /* 0Fh 12h 1Dh MOVLPS sse(reg),sse(r/m) mod=0 reg=3 rm=5      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x1E: /* 0Fh 12h 1Eh MOVLPS sse(reg),sse(r/m) mod=0 reg=3 rm=6      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x1F: /* 0Fh 12h 1Fh MOVLPS sse(reg),sse(r/m) mod=0 reg=3 rm=7      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x20: /* 0Fh 12h 20h MOVLPS sse(reg),sse(r/m) mod=0 reg=4 rm=0      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x21: /* 0Fh 12h 21h MOVLPS sse(reg),sse(r/m) mod=0 reg=4 rm=1      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x22: /* 0Fh 12h 22h MOVLPS sse(reg),sse(r/m) mod=0 reg=4 rm=2      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x23: /* 0Fh 12h 23h MOVLPS sse(reg),sse(r/m) mod=0 reg=4 rm=3      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x24: /* 0Fh 12h 24h MOVLPS sse(reg),sse(r/m) mod=0 reg=4 rm=4      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x25: /* 0Fh 12h 25h MOVLPS sse(reg),sse(r/m) mod=0 reg=4 rm=5      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x26: /* 0Fh 12h 26h MOVLPS sse(reg),sse(r/m) mod=0 reg=4 rm=6      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x27: /* 0Fh 12h 27h MOVLPS sse(reg),sse(r/m) mod=0 reg=4 rm=7      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x28: /* 0Fh 12h 28h MOVLPS sse(reg),sse(r/m) mod=0 reg=5 rm=0      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x29: /* 0Fh 12h 29h MOVLPS sse(reg),sse(r/m) mod=0 reg=5 rm=1      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x2A: /* 0Fh 12h 2Ah MOVLPS sse(reg),sse(r/m) mod=0 reg=5 rm=2      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x2B: /* 0Fh 12h 2Bh MOVLPS sse(reg),sse(r/m) mod=0 reg=5 rm=3      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x2C: /* 0Fh 12h 2Ch MOVLPS sse(reg),sse(r/m) mod=0 reg=5 rm=4      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x2D: /* 0Fh 12h 2Dh MOVLPS sse(reg),sse(r/m) mod=0 reg=5 rm=5      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x2E: /* 0Fh 12h 2Eh MOVLPS sse(reg),sse(r/m) mod=0 reg=5 rm=6      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x2F: /* 0Fh 12h 2Fh MOVLPS sse(reg),sse(r/m) mod=0 reg=5 rm=7      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x30: /* 0Fh 12h 30h MOVLPS sse(reg),sse(r/m) mod=0 reg=6 rm=0      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x31: /* 0Fh 12h 31h MOVLPS sse(reg),sse(r/m) mod=0 reg=6 rm=1      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x32: /* 0Fh 12h 32h MOVLPS sse(reg),sse(r/m) mod=0 reg=6 rm=2      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x33: /* 0Fh 12h 33h MOVLPS sse(reg),sse(r/m) mod=0 reg=6 rm=3      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x34: /* 0Fh 12h 34h MOVLPS sse(reg),sse(r/m) mod=0 reg=6 rm=4      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x35: /* 0Fh 12h 35h MOVLPS sse(reg),sse(r/m) mod=0 reg=6 rm=5      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x36: /* 0Fh 12h 36h MOVLPS sse(reg),sse(r/m) mod=0 reg=6 rm=6      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x37: /* 0Fh 12h 37h MOVLPS sse(reg),sse(r/m) mod=0 reg=6 rm=7      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x38: /* 0Fh 12h 38h MOVLPS sse(reg),sse(r/m) mod=0 reg=7 rm=0      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x39: /* 0Fh 12h 39h MOVLPS sse(reg),sse(r/m) mod=0 reg=7 rm=1      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x3A: /* 0Fh 12h 3Ah MOVLPS sse(reg),sse(r/m) mod=0 reg=7 rm=2      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x3B: /* 0Fh 12h 3Bh MOVLPS sse(reg),sse(r/m) mod=0 reg=7 rm=3      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x3C: /* 0Fh 12h 3Ch MOVLPS sse(reg),sse(r/m) mod=0 reg=7 rm=4      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x3D: /* 0Fh 12h 3Dh MOVLPS sse(reg),sse(r/m) mod=0 reg=7 rm=5      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x3E: /* 0Fh 12h 3Eh MOVLPS sse(reg),sse(r/m) mod=0 reg=7 rm=6      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x3F: /* 0Fh 12h 3Fh MOVLPS sse(reg),sse(r/m) mod=0 reg=7 rm=7      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x40: /* 0Fh 12h 40h MOVLPS sse(reg),sse(r/m) mod=1 reg=0 rm=0      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x41: /* 0Fh 12h 41h MOVLPS sse(reg),sse(r/m) mod=1 reg=0 rm=1      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x42: /* 0Fh 12h 42h MOVLPS sse(reg),sse(r/m) mod=1 reg=0 rm=2      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x43: /* 0Fh 12h 43h MOVLPS sse(reg),sse(r/m) mod=1 reg=0 rm=3      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x44: /* 0Fh 12h 44h MOVLPS sse(reg),sse(r/m) mod=1 reg=0 rm=4      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x45: /* 0Fh 12h 45h MOVLPS sse(reg),sse(r/m) mod=1 reg=0 rm=5      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x46: /* 0Fh 12h 46h MOVLPS sse(reg),sse(r/m) mod=1 reg=0 rm=6      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x47: /* 0Fh 12h 47h MOVLPS sse(reg),sse(r/m) mod=1 reg=0 rm=7      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x48: /* 0Fh 12h 48h MOVLPS sse(reg),sse(r/m) mod=1 reg=1 rm=0      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x49: /* 0Fh 12h 49h MOVLPS sse(reg),sse(r/m) mod=1 reg=1 rm=1      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x4A: /* 0Fh 12h 4Ah MOVLPS sse(reg),sse(r/m) mod=1 reg=1 rm=2      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x4B: /* 0Fh 12h 4Bh MOVLPS sse(reg),sse(r/m) mod=1 reg=1 rm=3      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x4C: /* 0Fh 12h 4Ch MOVLPS sse(reg),sse(r/m) mod=1 reg=1 rm=4      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x4D: /* 0Fh 12h 4Dh MOVLPS sse(reg),sse(r/m) mod=1 reg=1 rm=5      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x4E: /* 0Fh 12h 4Eh MOVLPS sse(reg),sse(r/m) mod=1 reg=1 rm=6      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x4F: /* 0Fh 12h 4Fh MOVLPS sse(reg),sse(r/m) mod=1 reg=1 rm=7      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x50: /* 0Fh 12h 50h MOVLPS sse(reg),sse(r/m) mod=1 reg=2 rm=0      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x51: /* 0Fh 12h 51h MOVLPS sse(reg),sse(r/m) mod=1 reg=2 rm=1      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x52: /* 0Fh 12h 52h MOVLPS sse(reg),sse(r/m) mod=1 reg=2 rm=2      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x53: /* 0Fh 12h 53h MOVLPS sse(reg),sse(r/m) mod=1 reg=2 rm=3      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x54: /* 0Fh 12h 54h MOVLPS sse(reg),sse(r/m) mod=1 reg=2 rm=4      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x55: /* 0Fh 12h 55h MOVLPS sse(reg),sse(r/m) mod=1 reg=2 rm=5      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x56: /* 0Fh 12h 56h MOVLPS sse(reg),sse(r/m) mod=1 reg=2 rm=6      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x57: /* 0Fh 12h 57h MOVLPS sse(reg),sse(r/m) mod=1 reg=2 rm=7      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x58: /* 0Fh 12h 58h MOVLPS sse(reg),sse(r/m) mod=1 reg=3 rm=0      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x59: /* 0Fh 12h 59h MOVLPS sse(reg),sse(r/m) mod=1 reg=3 rm=1      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x5A: /* 0Fh 12h 5Ah MOVLPS sse(reg),sse(r/m) mod=1 reg=3 rm=2      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x5B: /* 0Fh 12h 5Bh MOVLPS sse(reg),sse(r/m) mod=1 reg=3 rm=3      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x5C: /* 0Fh 12h 5Ch MOVLPS sse(reg),sse(r/m) mod=1 reg=3 rm=4      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x5D: /* 0Fh 12h 5Dh MOVLPS sse(reg),sse(r/m) mod=1 reg=3 rm=5      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x5E: /* 0Fh 12h 5Eh MOVLPS sse(reg),sse(r/m) mod=1 reg=3 rm=6      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x5F: /* 0Fh 12h 5Fh MOVLPS sse(reg),sse(r/m) mod=1 reg=3 rm=7      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x60: /* 0Fh 12h 60h MOVLPS sse(reg),sse(r/m) mod=1 reg=4 rm=0      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x61: /* 0Fh 12h 61h MOVLPS sse(reg),sse(r/m) mod=1 reg=4 rm=1      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x62: /* 0Fh 12h 62h MOVLPS sse(reg),sse(r/m) mod=1 reg=4 rm=2      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x63: /* 0Fh 12h 63h MOVLPS sse(reg),sse(r/m) mod=1 reg=4 rm=3      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x64: /* 0Fh 12h 64h MOVLPS sse(reg),sse(r/m) mod=1 reg=4 rm=4      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x65: /* 0Fh 12h 65h MOVLPS sse(reg),sse(r/m) mod=1 reg=4 rm=5      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x66: /* 0Fh 12h 66h MOVLPS sse(reg),sse(r/m) mod=1 reg=4 rm=6      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x67: /* 0Fh 12h 67h MOVLPS sse(reg),sse(r/m) mod=1 reg=4 rm=7      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x68: /* 0Fh 12h 68h MOVLPS sse(reg),sse(r/m) mod=1 reg=5 rm=0      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x69: /* 0Fh 12h 69h MOVLPS sse(reg),sse(r/m) mod=1 reg=5 rm=1      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x6A: /* 0Fh 12h 6Ah MOVLPS sse(reg),sse(r/m) mod=1 reg=5 rm=2      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x6B: /* 0Fh 12h 6Bh MOVLPS sse(reg),sse(r/m) mod=1 reg=5 rm=3      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x6C: /* 0Fh 12h 6Ch MOVLPS sse(reg),sse(r/m) mod=1 reg=5 rm=4      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x6D: /* 0Fh 12h 6Dh MOVLPS sse(reg),sse(r/m) mod=1 reg=5 rm=5      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x6E: /* 0Fh 12h 6Eh MOVLPS sse(reg),sse(r/m) mod=1 reg=5 rm=6      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x6F: /* 0Fh 12h 6Fh MOVLPS sse(reg),sse(r/m) mod=1 reg=5 rm=7      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x70: /* 0Fh 12h 70h MOVLPS sse(reg),sse(r/m) mod=1 reg=6 rm=0      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x71: /* 0Fh 12h 71h MOVLPS sse(reg),sse(r/m) mod=1 reg=6 rm=1      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x72: /* 0Fh 12h 72h MOVLPS sse(reg),sse(r/m) mod=1 reg=6 rm=2      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x73: /* 0Fh 12h 73h MOVLPS sse(reg),sse(r/m) mod=1 reg=6 rm=3      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x74: /* 0Fh 12h 74h MOVLPS sse(reg),sse(r/m) mod=1 reg=6 rm=4      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x75: /* 0Fh 12h 75h MOVLPS sse(reg),sse(r/m) mod=1 reg=6 rm=5      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x76: /* 0Fh 12h 76h MOVLPS sse(reg),sse(r/m) mod=1 reg=6 rm=6      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x77: /* 0Fh 12h 77h MOVLPS sse(reg),sse(r/m) mod=1 reg=6 rm=7      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x78: /* 0Fh 12h 78h MOVLPS sse(reg),sse(r/m) mod=1 reg=7 rm=0      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x79: /* 0Fh 12h 79h MOVLPS sse(reg),sse(r/m) mod=1 reg=7 rm=1      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x7A: /* 0Fh 12h 7Ah MOVLPS sse(reg),sse(r/m) mod=1 reg=7 rm=2      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x7B: /* 0Fh 12h 7Bh MOVLPS sse(reg),sse(r/m) mod=1 reg=7 rm=3      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x7C: /* 0Fh 12h 7Ch MOVLPS sse(reg),sse(r/m) mod=1 reg=7 rm=4      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x7D: /* 0Fh 12h 7Dh MOVLPS sse(reg),sse(r/m) mod=1 reg=7 rm=5      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x7E: /* 0Fh 12h 7Eh MOVLPS sse(reg),sse(r/m) mod=1 reg=7 rm=6      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x7F: /* 0Fh 12h 7Fh MOVLPS sse(reg),sse(r/m) mod=1 reg=7 rm=7      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x80: /* 0Fh 12h 80h MOVLPS sse(reg),sse(r/m) mod=2 reg=0 rm=0      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x81: /* 0Fh 12h 81h MOVLPS sse(reg),sse(r/m) mod=2 reg=0 rm=1      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x82: /* 0Fh 12h 82h MOVLPS sse(reg),sse(r/m) mod=2 reg=0 rm=2      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x83: /* 0Fh 12h 83h MOVLPS sse(reg),sse(r/m) mod=2 reg=0 rm=3      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x84: /* 0Fh 12h 84h MOVLPS sse(reg),sse(r/m) mod=2 reg=0 rm=4      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x85: /* 0Fh 12h 85h MOVLPS sse(reg),sse(r/m) mod=2 reg=0 rm=5      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x86: /* 0Fh 12h 86h MOVLPS sse(reg),sse(r/m) mod=2 reg=0 rm=6      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x87: /* 0Fh 12h 87h MOVLPS sse(reg),sse(r/m) mod=2 reg=0 rm=7      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x88: /* 0Fh 12h 88h MOVLPS sse(reg),sse(r/m) mod=2 reg=1 rm=0      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x89: /* 0Fh 12h 89h MOVLPS sse(reg),sse(r/m) mod=2 reg=1 rm=1      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x8A: /* 0Fh 12h 8Ah MOVLPS sse(reg),sse(r/m) mod=2 reg=1 rm=2      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x8B: /* 0Fh 12h 8Bh MOVLPS sse(reg),sse(r/m) mod=2 reg=1 rm=3      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x8C: /* 0Fh 12h 8Ch MOVLPS sse(reg),sse(r/m) mod=2 reg=1 rm=4      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x8D: /* 0Fh 12h 8Dh MOVLPS sse(reg),sse(r/m) mod=2 reg=1 rm=5      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x8E: /* 0Fh 12h 8Eh MOVLPS sse(reg),sse(r/m) mod=2 reg=1 rm=6      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x8F: /* 0Fh 12h 8Fh MOVLPS sse(reg),sse(r/m) mod=2 reg=1 rm=7      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x90: /* 0Fh 12h 90h MOVLPS sse(reg),sse(r/m) mod=2 reg=2 rm=0      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x91: /* 0Fh 12h 91h MOVLPS sse(reg),sse(r/m) mod=2 reg=2 rm=1      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x92: /* 0Fh 12h 92h MOVLPS sse(reg),sse(r/m) mod=2 reg=2 rm=2      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x93: /* 0Fh 12h 93h MOVLPS sse(reg),sse(r/m) mod=2 reg=2 rm=3      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x94: /* 0Fh 12h 94h MOVLPS sse(reg),sse(r/m) mod=2 reg=2 rm=4      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x95: /* 0Fh 12h 95h MOVLPS sse(reg),sse(r/m) mod=2 reg=2 rm=5      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x96: /* 0Fh 12h 96h MOVLPS sse(reg),sse(r/m) mod=2 reg=2 rm=6      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x97: /* 0Fh 12h 97h MOVLPS sse(reg),sse(r/m) mod=2 reg=2 rm=7      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x98: /* 0Fh 12h 98h MOVLPS sse(reg),sse(r/m) mod=2 reg=3 rm=0      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x99: /* 0Fh 12h 99h MOVLPS sse(reg),sse(r/m) mod=2 reg=3 rm=1      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x9A: /* 0Fh 12h 9Ah MOVLPS sse(reg),sse(r/m) mod=2 reg=3 rm=2      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x9B: /* 0Fh 12h 9Bh MOVLPS sse(reg),sse(r/m) mod=2 reg=3 rm=3      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x9C: /* 0Fh 12h 9Ch MOVLPS sse(reg),sse(r/m) mod=2 reg=3 rm=4      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x9D: /* 0Fh 12h 9Dh MOVLPS sse(reg),sse(r/m) mod=2 reg=3 rm=5      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x9E: /* 0Fh 12h 9Eh MOVLPS sse(reg),sse(r/m) mod=2 reg=3 rm=6      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0x9F: /* 0Fh 12h 9Fh MOVLPS sse(reg),sse(r/m) mod=2 reg=3 rm=7      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xA0: /* 0Fh 12h A0h MOVLPS sse(reg),sse(r/m) mod=2 reg=4 rm=0      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xA1: /* 0Fh 12h A1h MOVLPS sse(reg),sse(r/m) mod=2 reg=4 rm=1      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xA2: /* 0Fh 12h A2h MOVLPS sse(reg),sse(r/m) mod=2 reg=4 rm=2      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xA3: /* 0Fh 12h A3h MOVLPS sse(reg),sse(r/m) mod=2 reg=4 rm=3      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xA4: /* 0Fh 12h A4h MOVLPS sse(reg),sse(r/m) mod=2 reg=4 rm=4      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xA5: /* 0Fh 12h A5h MOVLPS sse(reg),sse(r/m) mod=2 reg=4 rm=5      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xA6: /* 0Fh 12h A6h MOVLPS sse(reg),sse(r/m) mod=2 reg=4 rm=6      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xA7: /* 0Fh 12h A7h MOVLPS sse(reg),sse(r/m) mod=2 reg=4 rm=7      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xA8: /* 0Fh 12h A8h MOVLPS sse(reg),sse(r/m) mod=2 reg=5 rm=0      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xA9: /* 0Fh 12h A9h MOVLPS sse(reg),sse(r/m) mod=2 reg=5 rm=1      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xAA: /* 0Fh 12h AAh MOVLPS sse(reg),sse(r/m) mod=2 reg=5 rm=2      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xAB: /* 0Fh 12h ABh MOVLPS sse(reg),sse(r/m) mod=2 reg=5 rm=3      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xAC: /* 0Fh 12h ACh MOVLPS sse(reg),sse(r/m) mod=2 reg=5 rm=4      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xAD: /* 0Fh 12h ADh MOVLPS sse(reg),sse(r/m) mod=2 reg=5 rm=5      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xAE: /* 0Fh 12h AEh MOVLPS sse(reg),sse(r/m) mod=2 reg=5 rm=6      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xAF: /* 0Fh 12h AFh MOVLPS sse(reg),sse(r/m) mod=2 reg=5 rm=7      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xB0: /* 0Fh 12h B0h MOVLPS sse(reg),sse(r/m) mod=2 reg=6 rm=0      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xB1: /* 0Fh 12h B1h MOVLPS sse(reg),sse(r/m) mod=2 reg=6 rm=1      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xB2: /* 0Fh 12h B2h MOVLPS sse(reg),sse(r/m) mod=2 reg=6 rm=2      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xB3: /* 0Fh 12h B3h MOVLPS sse(reg),sse(r/m) mod=2 reg=6 rm=3      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xB4: /* 0Fh 12h B4h MOVLPS sse(reg),sse(r/m) mod=2 reg=6 rm=4      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xB5: /* 0Fh 12h B5h MOVLPS sse(reg),sse(r/m) mod=2 reg=6 rm=5      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xB6: /* 0Fh 12h B6h MOVLPS sse(reg),sse(r/m) mod=2 reg=6 rm=6      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xB7: /* 0Fh 12h B7h MOVLPS sse(reg),sse(r/m) mod=2 reg=6 rm=7      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xB8: /* 0Fh 12h B8h MOVLPS sse(reg),sse(r/m) mod=2 reg=7 rm=0      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xB9: /* 0Fh 12h B9h MOVLPS sse(reg),sse(r/m) mod=2 reg=7 rm=1      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xBA: /* 0Fh 12h BAh MOVLPS sse(reg),sse(r/m) mod=2 reg=7 rm=2      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xBB: /* 0Fh 12h BBh MOVLPS sse(reg),sse(r/m) mod=2 reg=7 rm=3      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xBC: /* 0Fh 12h BCh MOVLPS sse(reg),sse(r/m) mod=2 reg=7 rm=4      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xBD: /* 0Fh 12h BDh MOVLPS sse(reg),sse(r/m) mod=2 reg=7 rm=5      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xBE: /* 0Fh 12h BEh MOVLPS sse(reg),sse(r/m) mod=2 reg=7 rm=6      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                    case 0xBF: /* 0Fh 12h BFh MOVLPS sse(reg),sse(r/m) mod=2 reg=7 rm=7      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVLPS XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                        break;
+                    case 0xC0: /* 0Fh 12h C0h MOVHLPS sse(reg),sse(r/m) mod=3 reg=0 rm=0      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xC1: /* 0Fh 12h C1h MOVHLPS sse(reg),sse(r/m) mod=3 reg=0 rm=1      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xC2: /* 0Fh 12h C2h MOVHLPS sse(reg),sse(r/m) mod=3 reg=0 rm=2      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xC3: /* 0Fh 12h C3h MOVHLPS sse(reg),sse(r/m) mod=3 reg=0 rm=3      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xC4: /* 0Fh 12h C4h MOVHLPS sse(reg),sse(r/m) mod=3 reg=0 rm=4      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xC5: /* 0Fh 12h C5h MOVHLPS sse(reg),sse(r/m) mod=3 reg=0 rm=5      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xC6: /* 0Fh 12h C6h MOVHLPS sse(reg),sse(r/m) mod=3 reg=0 rm=6      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xC7: /* 0Fh 12h C7h MOVHLPS sse(reg),sse(r/m) mod=3 reg=0 rm=7      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xC8: /* 0Fh 12h C8h MOVHLPS sse(reg),sse(r/m) mod=3 reg=1 rm=0      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xC9: /* 0Fh 12h C9h MOVHLPS sse(reg),sse(r/m) mod=3 reg=1 rm=1      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xCA: /* 0Fh 12h CAh MOVHLPS sse(reg),sse(r/m) mod=3 reg=1 rm=2      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xCB: /* 0Fh 12h CBh MOVHLPS sse(reg),sse(r/m) mod=3 reg=1 rm=3      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xCC: /* 0Fh 12h CCh MOVHLPS sse(reg),sse(r/m) mod=3 reg=1 rm=4      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xCD: /* 0Fh 12h CDh MOVHLPS sse(reg),sse(r/m) mod=3 reg=1 rm=5      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xCE: /* 0Fh 12h CEh MOVHLPS sse(reg),sse(r/m) mod=3 reg=1 rm=6      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xCF: /* 0Fh 12h CFh MOVHLPS sse(reg),sse(r/m) mod=3 reg=1 rm=7      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xD0: /* 0Fh 12h D0h MOVHLPS sse(reg),sse(r/m) mod=3 reg=2 rm=0      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xD1: /* 0Fh 12h D1h MOVHLPS sse(reg),sse(r/m) mod=3 reg=2 rm=1      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xD2: /* 0Fh 12h D2h MOVHLPS sse(reg),sse(r/m) mod=3 reg=2 rm=2      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xD3: /* 0Fh 12h D3h MOVHLPS sse(reg),sse(r/m) mod=3 reg=2 rm=3      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xD4: /* 0Fh 12h D4h MOVHLPS sse(reg),sse(r/m) mod=3 reg=2 rm=4      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xD5: /* 0Fh 12h D5h MOVHLPS sse(reg),sse(r/m) mod=3 reg=2 rm=5      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xD6: /* 0Fh 12h D6h MOVHLPS sse(reg),sse(r/m) mod=3 reg=2 rm=6      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xD7: /* 0Fh 12h D7h MOVHLPS sse(reg),sse(r/m) mod=3 reg=2 rm=7      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xD8: /* 0Fh 12h D8h MOVHLPS sse(reg),sse(r/m) mod=3 reg=3 rm=0      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xD9: /* 0Fh 12h D9h MOVHLPS sse(reg),sse(r/m) mod=3 reg=3 rm=1      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xDA: /* 0Fh 12h DAh MOVHLPS sse(reg),sse(r/m) mod=3 reg=3 rm=2      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xDB: /* 0Fh 12h DBh MOVHLPS sse(reg),sse(r/m) mod=3 reg=3 rm=3      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xDC: /* 0Fh 12h DCh MOVHLPS sse(reg),sse(r/m) mod=3 reg=3 rm=4      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xDD: /* 0Fh 12h DDh MOVHLPS sse(reg),sse(r/m) mod=3 reg=3 rm=5      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xDE: /* 0Fh 12h DEh MOVHLPS sse(reg),sse(r/m) mod=3 reg=3 rm=6      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xDF: /* 0Fh 12h DFh MOVHLPS sse(reg),sse(r/m) mod=3 reg=3 rm=7      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xE0: /* 0Fh 12h E0h MOVHLPS sse(reg),sse(r/m) mod=3 reg=4 rm=0      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xE1: /* 0Fh 12h E1h MOVHLPS sse(reg),sse(r/m) mod=3 reg=4 rm=1      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xE2: /* 0Fh 12h E2h MOVHLPS sse(reg),sse(r/m) mod=3 reg=4 rm=2      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xE3: /* 0Fh 12h E3h MOVHLPS sse(reg),sse(r/m) mod=3 reg=4 rm=3      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xE4: /* 0Fh 12h E4h MOVHLPS sse(reg),sse(r/m) mod=3 reg=4 rm=4      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xE5: /* 0Fh 12h E5h MOVHLPS sse(reg),sse(r/m) mod=3 reg=4 rm=5      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xE6: /* 0Fh 12h E6h MOVHLPS sse(reg),sse(r/m) mod=3 reg=4 rm=6      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xE7: /* 0Fh 12h E7h MOVHLPS sse(reg),sse(r/m) mod=3 reg=4 rm=7      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xE8: /* 0Fh 12h E8h MOVHLPS sse(reg),sse(r/m) mod=3 reg=5 rm=0      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xE9: /* 0Fh 12h E9h MOVHLPS sse(reg),sse(r/m) mod=3 reg=5 rm=1      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xEA: /* 0Fh 12h EAh MOVHLPS sse(reg),sse(r/m) mod=3 reg=5 rm=2      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xEB: /* 0Fh 12h EBh MOVHLPS sse(reg),sse(r/m) mod=3 reg=5 rm=3      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xEC: /* 0Fh 12h ECh MOVHLPS sse(reg),sse(r/m) mod=3 reg=5 rm=4      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xED: /* 0Fh 12h EDh MOVHLPS sse(reg),sse(r/m) mod=3 reg=5 rm=5      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xEE: /* 0Fh 12h EEh MOVHLPS sse(reg),sse(r/m) mod=3 reg=5 rm=6      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xEF: /* 0Fh 12h EFh MOVHLPS sse(reg),sse(r/m) mod=3 reg=5 rm=7      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xF0: /* 0Fh 12h F0h MOVHLPS sse(reg),sse(r/m) mod=3 reg=6 rm=0      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xF1: /* 0Fh 12h F1h MOVHLPS sse(reg),sse(r/m) mod=3 reg=6 rm=1      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xF2: /* 0Fh 12h F2h MOVHLPS sse(reg),sse(r/m) mod=3 reg=6 rm=2      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xF3: /* 0Fh 12h F3h MOVHLPS sse(reg),sse(r/m) mod=3 reg=6 rm=3      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xF4: /* 0Fh 12h F4h MOVHLPS sse(reg),sse(r/m) mod=3 reg=6 rm=4      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xF5: /* 0Fh 12h F5h MOVHLPS sse(reg),sse(r/m) mod=3 reg=6 rm=5      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xF6: /* 0Fh 12h F6h MOVHLPS sse(reg),sse(r/m) mod=3 reg=6 rm=6      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xF7: /* 0Fh 12h F7h MOVHLPS sse(reg),sse(r/m) mod=3 reg=6 rm=7      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xF8: /* 0Fh 12h F8h MOVHLPS sse(reg),sse(r/m) mod=3 reg=7 rm=0      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xF9: /* 0Fh 12h F9h MOVHLPS sse(reg),sse(r/m) mod=3 reg=7 rm=1      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xFA: /* 0Fh 12h FAh MOVHLPS sse(reg),sse(r/m) mod=3 reg=7 rm=2      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xFB: /* 0Fh 12h FBh MOVHLPS sse(reg),sse(r/m) mod=3 reg=7 rm=3      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xFC: /* 0Fh 12h FCh MOVHLPS sse(reg),sse(r/m) mod=3 reg=7 rm=4      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xFD: /* 0Fh 12h FDh MOVHLPS sse(reg),sse(r/m) mod=3 reg=7 rm=5      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xFE: /* 0Fh 12h FEh MOVHLPS sse(reg),sse(r/m) mod=3 reg=7 rm=6      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                    case 0xFF: /* 0Fh 12h FFh MOVHLPS sse(reg),sse(r/m) mod=3 reg=7 rm=7      spec: 0x0F 0x12 mod/reg/rm mod==3 */
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVHLPS XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                        break;
+                    default:
+                        goto _x86decode_illegal_opcode;
+                };
+/* End of opcodes starting with 0Fh 12h */
                 break;
-            case 0x13: /* 0Fh 13h MOVLPS sse(r/m),sse(reg)      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+            case 0x13: /* 0Fh 13h        spec:  */
                 if (addr32)
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVLPS %s,XMM%u",IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""),mrm.reg());
+/* Opcodes starting with 0Fh 13h */
+                switch (mrm.byte) {
+                    case 0x00: /* 0Fh 13h 00h MOVLPS sse(r/m),sse(reg) mod=0 reg=0 rm=0      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x01: /* 0Fh 13h 01h MOVLPS sse(r/m),sse(reg) mod=0 reg=0 rm=1      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x02: /* 0Fh 13h 02h MOVLPS sse(r/m),sse(reg) mod=0 reg=0 rm=2      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x03: /* 0Fh 13h 03h MOVLPS sse(r/m),sse(reg) mod=0 reg=0 rm=3      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x04: /* 0Fh 13h 04h MOVLPS sse(r/m),sse(reg) mod=0 reg=0 rm=4      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x05: /* 0Fh 13h 05h MOVLPS sse(r/m),sse(reg) mod=0 reg=0 rm=5      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x06: /* 0Fh 13h 06h MOVLPS sse(r/m),sse(reg) mod=0 reg=0 rm=6      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x07: /* 0Fh 13h 07h MOVLPS sse(r/m),sse(reg) mod=0 reg=0 rm=7      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x08: /* 0Fh 13h 08h MOVLPS sse(r/m),sse(reg) mod=0 reg=1 rm=0      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x09: /* 0Fh 13h 09h MOVLPS sse(r/m),sse(reg) mod=0 reg=1 rm=1      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x0A: /* 0Fh 13h 0Ah MOVLPS sse(r/m),sse(reg) mod=0 reg=1 rm=2      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x0B: /* 0Fh 13h 0Bh MOVLPS sse(r/m),sse(reg) mod=0 reg=1 rm=3      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x0C: /* 0Fh 13h 0Ch MOVLPS sse(r/m),sse(reg) mod=0 reg=1 rm=4      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x0D: /* 0Fh 13h 0Dh MOVLPS sse(r/m),sse(reg) mod=0 reg=1 rm=5      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x0E: /* 0Fh 13h 0Eh MOVLPS sse(r/m),sse(reg) mod=0 reg=1 rm=6      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x0F: /* 0Fh 13h 0Fh MOVLPS sse(r/m),sse(reg) mod=0 reg=1 rm=7      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x10: /* 0Fh 13h 10h MOVLPS sse(r/m),sse(reg) mod=0 reg=2 rm=0      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x11: /* 0Fh 13h 11h MOVLPS sse(r/m),sse(reg) mod=0 reg=2 rm=1      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x12: /* 0Fh 13h 12h MOVLPS sse(r/m),sse(reg) mod=0 reg=2 rm=2      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x13: /* 0Fh 13h 13h MOVLPS sse(r/m),sse(reg) mod=0 reg=2 rm=3      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x14: /* 0Fh 13h 14h MOVLPS sse(r/m),sse(reg) mod=0 reg=2 rm=4      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x15: /* 0Fh 13h 15h MOVLPS sse(r/m),sse(reg) mod=0 reg=2 rm=5      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x16: /* 0Fh 13h 16h MOVLPS sse(r/m),sse(reg) mod=0 reg=2 rm=6      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x17: /* 0Fh 13h 17h MOVLPS sse(r/m),sse(reg) mod=0 reg=2 rm=7      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x18: /* 0Fh 13h 18h MOVLPS sse(r/m),sse(reg) mod=0 reg=3 rm=0      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x19: /* 0Fh 13h 19h MOVLPS sse(r/m),sse(reg) mod=0 reg=3 rm=1      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x1A: /* 0Fh 13h 1Ah MOVLPS sse(r/m),sse(reg) mod=0 reg=3 rm=2      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x1B: /* 0Fh 13h 1Bh MOVLPS sse(r/m),sse(reg) mod=0 reg=3 rm=3      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x1C: /* 0Fh 13h 1Ch MOVLPS sse(r/m),sse(reg) mod=0 reg=3 rm=4      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x1D: /* 0Fh 13h 1Dh MOVLPS sse(r/m),sse(reg) mod=0 reg=3 rm=5      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x1E: /* 0Fh 13h 1Eh MOVLPS sse(r/m),sse(reg) mod=0 reg=3 rm=6      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x1F: /* 0Fh 13h 1Fh MOVLPS sse(r/m),sse(reg) mod=0 reg=3 rm=7      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x20: /* 0Fh 13h 20h MOVLPS sse(r/m),sse(reg) mod=0 reg=4 rm=0      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x21: /* 0Fh 13h 21h MOVLPS sse(r/m),sse(reg) mod=0 reg=4 rm=1      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x22: /* 0Fh 13h 22h MOVLPS sse(r/m),sse(reg) mod=0 reg=4 rm=2      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x23: /* 0Fh 13h 23h MOVLPS sse(r/m),sse(reg) mod=0 reg=4 rm=3      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x24: /* 0Fh 13h 24h MOVLPS sse(r/m),sse(reg) mod=0 reg=4 rm=4      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x25: /* 0Fh 13h 25h MOVLPS sse(r/m),sse(reg) mod=0 reg=4 rm=5      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x26: /* 0Fh 13h 26h MOVLPS sse(r/m),sse(reg) mod=0 reg=4 rm=6      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x27: /* 0Fh 13h 27h MOVLPS sse(r/m),sse(reg) mod=0 reg=4 rm=7      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x28: /* 0Fh 13h 28h MOVLPS sse(r/m),sse(reg) mod=0 reg=5 rm=0      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x29: /* 0Fh 13h 29h MOVLPS sse(r/m),sse(reg) mod=0 reg=5 rm=1      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x2A: /* 0Fh 13h 2Ah MOVLPS sse(r/m),sse(reg) mod=0 reg=5 rm=2      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x2B: /* 0Fh 13h 2Bh MOVLPS sse(r/m),sse(reg) mod=0 reg=5 rm=3      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x2C: /* 0Fh 13h 2Ch MOVLPS sse(r/m),sse(reg) mod=0 reg=5 rm=4      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x2D: /* 0Fh 13h 2Dh MOVLPS sse(r/m),sse(reg) mod=0 reg=5 rm=5      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x2E: /* 0Fh 13h 2Eh MOVLPS sse(r/m),sse(reg) mod=0 reg=5 rm=6      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x2F: /* 0Fh 13h 2Fh MOVLPS sse(r/m),sse(reg) mod=0 reg=5 rm=7      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x30: /* 0Fh 13h 30h MOVLPS sse(r/m),sse(reg) mod=0 reg=6 rm=0      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x31: /* 0Fh 13h 31h MOVLPS sse(r/m),sse(reg) mod=0 reg=6 rm=1      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x32: /* 0Fh 13h 32h MOVLPS sse(r/m),sse(reg) mod=0 reg=6 rm=2      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x33: /* 0Fh 13h 33h MOVLPS sse(r/m),sse(reg) mod=0 reg=6 rm=3      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x34: /* 0Fh 13h 34h MOVLPS sse(r/m),sse(reg) mod=0 reg=6 rm=4      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x35: /* 0Fh 13h 35h MOVLPS sse(r/m),sse(reg) mod=0 reg=6 rm=5      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x36: /* 0Fh 13h 36h MOVLPS sse(r/m),sse(reg) mod=0 reg=6 rm=6      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x37: /* 0Fh 13h 37h MOVLPS sse(r/m),sse(reg) mod=0 reg=6 rm=7      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x38: /* 0Fh 13h 38h MOVLPS sse(r/m),sse(reg) mod=0 reg=7 rm=0      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x39: /* 0Fh 13h 39h MOVLPS sse(r/m),sse(reg) mod=0 reg=7 rm=1      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x3A: /* 0Fh 13h 3Ah MOVLPS sse(r/m),sse(reg) mod=0 reg=7 rm=2      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x3B: /* 0Fh 13h 3Bh MOVLPS sse(r/m),sse(reg) mod=0 reg=7 rm=3      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x3C: /* 0Fh 13h 3Ch MOVLPS sse(r/m),sse(reg) mod=0 reg=7 rm=4      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x3D: /* 0Fh 13h 3Dh MOVLPS sse(r/m),sse(reg) mod=0 reg=7 rm=5      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x3E: /* 0Fh 13h 3Eh MOVLPS sse(r/m),sse(reg) mod=0 reg=7 rm=6      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x3F: /* 0Fh 13h 3Fh MOVLPS sse(r/m),sse(reg) mod=0 reg=7 rm=7      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x40: /* 0Fh 13h 40h MOVLPS sse(r/m),sse(reg) mod=1 reg=0 rm=0      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x41: /* 0Fh 13h 41h MOVLPS sse(r/m),sse(reg) mod=1 reg=0 rm=1      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x42: /* 0Fh 13h 42h MOVLPS sse(r/m),sse(reg) mod=1 reg=0 rm=2      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x43: /* 0Fh 13h 43h MOVLPS sse(r/m),sse(reg) mod=1 reg=0 rm=3      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x44: /* 0Fh 13h 44h MOVLPS sse(r/m),sse(reg) mod=1 reg=0 rm=4      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x45: /* 0Fh 13h 45h MOVLPS sse(r/m),sse(reg) mod=1 reg=0 rm=5      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x46: /* 0Fh 13h 46h MOVLPS sse(r/m),sse(reg) mod=1 reg=0 rm=6      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x47: /* 0Fh 13h 47h MOVLPS sse(r/m),sse(reg) mod=1 reg=0 rm=7      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x48: /* 0Fh 13h 48h MOVLPS sse(r/m),sse(reg) mod=1 reg=1 rm=0      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x49: /* 0Fh 13h 49h MOVLPS sse(r/m),sse(reg) mod=1 reg=1 rm=1      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x4A: /* 0Fh 13h 4Ah MOVLPS sse(r/m),sse(reg) mod=1 reg=1 rm=2      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x4B: /* 0Fh 13h 4Bh MOVLPS sse(r/m),sse(reg) mod=1 reg=1 rm=3      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x4C: /* 0Fh 13h 4Ch MOVLPS sse(r/m),sse(reg) mod=1 reg=1 rm=4      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x4D: /* 0Fh 13h 4Dh MOVLPS sse(r/m),sse(reg) mod=1 reg=1 rm=5      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x4E: /* 0Fh 13h 4Eh MOVLPS sse(r/m),sse(reg) mod=1 reg=1 rm=6      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x4F: /* 0Fh 13h 4Fh MOVLPS sse(r/m),sse(reg) mod=1 reg=1 rm=7      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x50: /* 0Fh 13h 50h MOVLPS sse(r/m),sse(reg) mod=1 reg=2 rm=0      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x51: /* 0Fh 13h 51h MOVLPS sse(r/m),sse(reg) mod=1 reg=2 rm=1      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x52: /* 0Fh 13h 52h MOVLPS sse(r/m),sse(reg) mod=1 reg=2 rm=2      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x53: /* 0Fh 13h 53h MOVLPS sse(r/m),sse(reg) mod=1 reg=2 rm=3      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x54: /* 0Fh 13h 54h MOVLPS sse(r/m),sse(reg) mod=1 reg=2 rm=4      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x55: /* 0Fh 13h 55h MOVLPS sse(r/m),sse(reg) mod=1 reg=2 rm=5      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x56: /* 0Fh 13h 56h MOVLPS sse(r/m),sse(reg) mod=1 reg=2 rm=6      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x57: /* 0Fh 13h 57h MOVLPS sse(r/m),sse(reg) mod=1 reg=2 rm=7      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x58: /* 0Fh 13h 58h MOVLPS sse(r/m),sse(reg) mod=1 reg=3 rm=0      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x59: /* 0Fh 13h 59h MOVLPS sse(r/m),sse(reg) mod=1 reg=3 rm=1      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x5A: /* 0Fh 13h 5Ah MOVLPS sse(r/m),sse(reg) mod=1 reg=3 rm=2      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x5B: /* 0Fh 13h 5Bh MOVLPS sse(r/m),sse(reg) mod=1 reg=3 rm=3      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x5C: /* 0Fh 13h 5Ch MOVLPS sse(r/m),sse(reg) mod=1 reg=3 rm=4      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x5D: /* 0Fh 13h 5Dh MOVLPS sse(r/m),sse(reg) mod=1 reg=3 rm=5      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x5E: /* 0Fh 13h 5Eh MOVLPS sse(r/m),sse(reg) mod=1 reg=3 rm=6      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x5F: /* 0Fh 13h 5Fh MOVLPS sse(r/m),sse(reg) mod=1 reg=3 rm=7      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x60: /* 0Fh 13h 60h MOVLPS sse(r/m),sse(reg) mod=1 reg=4 rm=0      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x61: /* 0Fh 13h 61h MOVLPS sse(r/m),sse(reg) mod=1 reg=4 rm=1      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x62: /* 0Fh 13h 62h MOVLPS sse(r/m),sse(reg) mod=1 reg=4 rm=2      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x63: /* 0Fh 13h 63h MOVLPS sse(r/m),sse(reg) mod=1 reg=4 rm=3      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x64: /* 0Fh 13h 64h MOVLPS sse(r/m),sse(reg) mod=1 reg=4 rm=4      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x65: /* 0Fh 13h 65h MOVLPS sse(r/m),sse(reg) mod=1 reg=4 rm=5      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x66: /* 0Fh 13h 66h MOVLPS sse(r/m),sse(reg) mod=1 reg=4 rm=6      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x67: /* 0Fh 13h 67h MOVLPS sse(r/m),sse(reg) mod=1 reg=4 rm=7      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x68: /* 0Fh 13h 68h MOVLPS sse(r/m),sse(reg) mod=1 reg=5 rm=0      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x69: /* 0Fh 13h 69h MOVLPS sse(r/m),sse(reg) mod=1 reg=5 rm=1      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x6A: /* 0Fh 13h 6Ah MOVLPS sse(r/m),sse(reg) mod=1 reg=5 rm=2      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x6B: /* 0Fh 13h 6Bh MOVLPS sse(r/m),sse(reg) mod=1 reg=5 rm=3      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x6C: /* 0Fh 13h 6Ch MOVLPS sse(r/m),sse(reg) mod=1 reg=5 rm=4      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x6D: /* 0Fh 13h 6Dh MOVLPS sse(r/m),sse(reg) mod=1 reg=5 rm=5      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x6E: /* 0Fh 13h 6Eh MOVLPS sse(r/m),sse(reg) mod=1 reg=5 rm=6      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x6F: /* 0Fh 13h 6Fh MOVLPS sse(r/m),sse(reg) mod=1 reg=5 rm=7      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x70: /* 0Fh 13h 70h MOVLPS sse(r/m),sse(reg) mod=1 reg=6 rm=0      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x71: /* 0Fh 13h 71h MOVLPS sse(r/m),sse(reg) mod=1 reg=6 rm=1      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x72: /* 0Fh 13h 72h MOVLPS sse(r/m),sse(reg) mod=1 reg=6 rm=2      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x73: /* 0Fh 13h 73h MOVLPS sse(r/m),sse(reg) mod=1 reg=6 rm=3      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x74: /* 0Fh 13h 74h MOVLPS sse(r/m),sse(reg) mod=1 reg=6 rm=4      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x75: /* 0Fh 13h 75h MOVLPS sse(r/m),sse(reg) mod=1 reg=6 rm=5      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x76: /* 0Fh 13h 76h MOVLPS sse(r/m),sse(reg) mod=1 reg=6 rm=6      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x77: /* 0Fh 13h 77h MOVLPS sse(r/m),sse(reg) mod=1 reg=6 rm=7      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x78: /* 0Fh 13h 78h MOVLPS sse(r/m),sse(reg) mod=1 reg=7 rm=0      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x79: /* 0Fh 13h 79h MOVLPS sse(r/m),sse(reg) mod=1 reg=7 rm=1      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x7A: /* 0Fh 13h 7Ah MOVLPS sse(r/m),sse(reg) mod=1 reg=7 rm=2      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x7B: /* 0Fh 13h 7Bh MOVLPS sse(r/m),sse(reg) mod=1 reg=7 rm=3      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x7C: /* 0Fh 13h 7Ch MOVLPS sse(r/m),sse(reg) mod=1 reg=7 rm=4      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x7D: /* 0Fh 13h 7Dh MOVLPS sse(r/m),sse(reg) mod=1 reg=7 rm=5      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x7E: /* 0Fh 13h 7Eh MOVLPS sse(r/m),sse(reg) mod=1 reg=7 rm=6      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x7F: /* 0Fh 13h 7Fh MOVLPS sse(r/m),sse(reg) mod=1 reg=7 rm=7      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x80: /* 0Fh 13h 80h MOVLPS sse(r/m),sse(reg) mod=2 reg=0 rm=0      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x81: /* 0Fh 13h 81h MOVLPS sse(r/m),sse(reg) mod=2 reg=0 rm=1      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x82: /* 0Fh 13h 82h MOVLPS sse(r/m),sse(reg) mod=2 reg=0 rm=2      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x83: /* 0Fh 13h 83h MOVLPS sse(r/m),sse(reg) mod=2 reg=0 rm=3      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x84: /* 0Fh 13h 84h MOVLPS sse(r/m),sse(reg) mod=2 reg=0 rm=4      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x85: /* 0Fh 13h 85h MOVLPS sse(r/m),sse(reg) mod=2 reg=0 rm=5      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x86: /* 0Fh 13h 86h MOVLPS sse(r/m),sse(reg) mod=2 reg=0 rm=6      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x87: /* 0Fh 13h 87h MOVLPS sse(r/m),sse(reg) mod=2 reg=0 rm=7      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x88: /* 0Fh 13h 88h MOVLPS sse(r/m),sse(reg) mod=2 reg=1 rm=0      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x89: /* 0Fh 13h 89h MOVLPS sse(r/m),sse(reg) mod=2 reg=1 rm=1      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x8A: /* 0Fh 13h 8Ah MOVLPS sse(r/m),sse(reg) mod=2 reg=1 rm=2      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x8B: /* 0Fh 13h 8Bh MOVLPS sse(r/m),sse(reg) mod=2 reg=1 rm=3      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x8C: /* 0Fh 13h 8Ch MOVLPS sse(r/m),sse(reg) mod=2 reg=1 rm=4      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x8D: /* 0Fh 13h 8Dh MOVLPS sse(r/m),sse(reg) mod=2 reg=1 rm=5      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x8E: /* 0Fh 13h 8Eh MOVLPS sse(r/m),sse(reg) mod=2 reg=1 rm=6      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x8F: /* 0Fh 13h 8Fh MOVLPS sse(r/m),sse(reg) mod=2 reg=1 rm=7      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x90: /* 0Fh 13h 90h MOVLPS sse(r/m),sse(reg) mod=2 reg=2 rm=0      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x91: /* 0Fh 13h 91h MOVLPS sse(r/m),sse(reg) mod=2 reg=2 rm=1      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x92: /* 0Fh 13h 92h MOVLPS sse(r/m),sse(reg) mod=2 reg=2 rm=2      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x93: /* 0Fh 13h 93h MOVLPS sse(r/m),sse(reg) mod=2 reg=2 rm=3      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x94: /* 0Fh 13h 94h MOVLPS sse(r/m),sse(reg) mod=2 reg=2 rm=4      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x95: /* 0Fh 13h 95h MOVLPS sse(r/m),sse(reg) mod=2 reg=2 rm=5      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x96: /* 0Fh 13h 96h MOVLPS sse(r/m),sse(reg) mod=2 reg=2 rm=6      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x97: /* 0Fh 13h 97h MOVLPS sse(r/m),sse(reg) mod=2 reg=2 rm=7      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x98: /* 0Fh 13h 98h MOVLPS sse(r/m),sse(reg) mod=2 reg=3 rm=0      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x99: /* 0Fh 13h 99h MOVLPS sse(r/m),sse(reg) mod=2 reg=3 rm=1      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x9A: /* 0Fh 13h 9Ah MOVLPS sse(r/m),sse(reg) mod=2 reg=3 rm=2      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x9B: /* 0Fh 13h 9Bh MOVLPS sse(r/m),sse(reg) mod=2 reg=3 rm=3      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x9C: /* 0Fh 13h 9Ch MOVLPS sse(r/m),sse(reg) mod=2 reg=3 rm=4      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x9D: /* 0Fh 13h 9Dh MOVLPS sse(r/m),sse(reg) mod=2 reg=3 rm=5      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x9E: /* 0Fh 13h 9Eh MOVLPS sse(r/m),sse(reg) mod=2 reg=3 rm=6      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0x9F: /* 0Fh 13h 9Fh MOVLPS sse(r/m),sse(reg) mod=2 reg=3 rm=7      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xA0: /* 0Fh 13h A0h MOVLPS sse(r/m),sse(reg) mod=2 reg=4 rm=0      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xA1: /* 0Fh 13h A1h MOVLPS sse(r/m),sse(reg) mod=2 reg=4 rm=1      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xA2: /* 0Fh 13h A2h MOVLPS sse(r/m),sse(reg) mod=2 reg=4 rm=2      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xA3: /* 0Fh 13h A3h MOVLPS sse(r/m),sse(reg) mod=2 reg=4 rm=3      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xA4: /* 0Fh 13h A4h MOVLPS sse(r/m),sse(reg) mod=2 reg=4 rm=4      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xA5: /* 0Fh 13h A5h MOVLPS sse(r/m),sse(reg) mod=2 reg=4 rm=5      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xA6: /* 0Fh 13h A6h MOVLPS sse(r/m),sse(reg) mod=2 reg=4 rm=6      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xA7: /* 0Fh 13h A7h MOVLPS sse(r/m),sse(reg) mod=2 reg=4 rm=7      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xA8: /* 0Fh 13h A8h MOVLPS sse(r/m),sse(reg) mod=2 reg=5 rm=0      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xA9: /* 0Fh 13h A9h MOVLPS sse(r/m),sse(reg) mod=2 reg=5 rm=1      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xAA: /* 0Fh 13h AAh MOVLPS sse(r/m),sse(reg) mod=2 reg=5 rm=2      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xAB: /* 0Fh 13h ABh MOVLPS sse(r/m),sse(reg) mod=2 reg=5 rm=3      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xAC: /* 0Fh 13h ACh MOVLPS sse(r/m),sse(reg) mod=2 reg=5 rm=4      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xAD: /* 0Fh 13h ADh MOVLPS sse(r/m),sse(reg) mod=2 reg=5 rm=5      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xAE: /* 0Fh 13h AEh MOVLPS sse(r/m),sse(reg) mod=2 reg=5 rm=6      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xAF: /* 0Fh 13h AFh MOVLPS sse(r/m),sse(reg) mod=2 reg=5 rm=7      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xB0: /* 0Fh 13h B0h MOVLPS sse(r/m),sse(reg) mod=2 reg=6 rm=0      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xB1: /* 0Fh 13h B1h MOVLPS sse(r/m),sse(reg) mod=2 reg=6 rm=1      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xB2: /* 0Fh 13h B2h MOVLPS sse(r/m),sse(reg) mod=2 reg=6 rm=2      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xB3: /* 0Fh 13h B3h MOVLPS sse(r/m),sse(reg) mod=2 reg=6 rm=3      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xB4: /* 0Fh 13h B4h MOVLPS sse(r/m),sse(reg) mod=2 reg=6 rm=4      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xB5: /* 0Fh 13h B5h MOVLPS sse(r/m),sse(reg) mod=2 reg=6 rm=5      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xB6: /* 0Fh 13h B6h MOVLPS sse(r/m),sse(reg) mod=2 reg=6 rm=6      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xB7: /* 0Fh 13h B7h MOVLPS sse(r/m),sse(reg) mod=2 reg=6 rm=7      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xB8: /* 0Fh 13h B8h MOVLPS sse(r/m),sse(reg) mod=2 reg=7 rm=0      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xB9: /* 0Fh 13h B9h MOVLPS sse(r/m),sse(reg) mod=2 reg=7 rm=1      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xBA: /* 0Fh 13h BAh MOVLPS sse(r/m),sse(reg) mod=2 reg=7 rm=2      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xBB: /* 0Fh 13h BBh MOVLPS sse(r/m),sse(reg) mod=2 reg=7 rm=3      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xBC: /* 0Fh 13h BCh MOVLPS sse(r/m),sse(reg) mod=2 reg=7 rm=4      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xBD: /* 0Fh 13h BDh MOVLPS sse(r/m),sse(reg) mod=2 reg=7 rm=5      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xBE: /* 0Fh 13h BEh MOVLPS sse(r/m),sse(reg) mod=2 reg=7 rm=6      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                    case 0xBF: /* 0Fh 13h BFh MOVLPS sse(r/m),sse(reg) mod=2 reg=7 rm=7      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVLPS %s,XMM%u",IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""),mrm.reg());
+                        break;
+                    /* opcode 0Fh 13h C0h  not defined */
+                    /* opcode 0Fh 13h C1h  not defined */
+                    /* opcode 0Fh 13h C2h  not defined */
+                    /* opcode 0Fh 13h C3h  not defined */
+                    /* opcode 0Fh 13h C4h  not defined */
+                    /* opcode 0Fh 13h C5h  not defined */
+                    /* opcode 0Fh 13h C6h  not defined */
+                    /* opcode 0Fh 13h C7h  not defined */
+                    /* opcode 0Fh 13h C8h  not defined */
+                    /* opcode 0Fh 13h C9h  not defined */
+                    /* opcode 0Fh 13h CAh  not defined */
+                    /* opcode 0Fh 13h CBh  not defined */
+                    /* opcode 0Fh 13h CCh  not defined */
+                    /* opcode 0Fh 13h CDh  not defined */
+                    /* opcode 0Fh 13h CEh  not defined */
+                    /* opcode 0Fh 13h CFh  not defined */
+                    /* opcode 0Fh 13h D0h  not defined */
+                    /* opcode 0Fh 13h D1h  not defined */
+                    /* opcode 0Fh 13h D2h  not defined */
+                    /* opcode 0Fh 13h D3h  not defined */
+                    /* opcode 0Fh 13h D4h  not defined */
+                    /* opcode 0Fh 13h D5h  not defined */
+                    /* opcode 0Fh 13h D6h  not defined */
+                    /* opcode 0Fh 13h D7h  not defined */
+                    /* opcode 0Fh 13h D8h  not defined */
+                    /* opcode 0Fh 13h D9h  not defined */
+                    /* opcode 0Fh 13h DAh  not defined */
+                    /* opcode 0Fh 13h DBh  not defined */
+                    /* opcode 0Fh 13h DCh  not defined */
+                    /* opcode 0Fh 13h DDh  not defined */
+                    /* opcode 0Fh 13h DEh  not defined */
+                    /* opcode 0Fh 13h DFh  not defined */
+                    /* opcode 0Fh 13h E0h  not defined */
+                    /* opcode 0Fh 13h E1h  not defined */
+                    /* opcode 0Fh 13h E2h  not defined */
+                    /* opcode 0Fh 13h E3h  not defined */
+                    /* opcode 0Fh 13h E4h  not defined */
+                    /* opcode 0Fh 13h E5h  not defined */
+                    /* opcode 0Fh 13h E6h  not defined */
+                    /* opcode 0Fh 13h E7h  not defined */
+                    /* opcode 0Fh 13h E8h  not defined */
+                    /* opcode 0Fh 13h E9h  not defined */
+                    /* opcode 0Fh 13h EAh  not defined */
+                    /* opcode 0Fh 13h EBh  not defined */
+                    /* opcode 0Fh 13h ECh  not defined */
+                    /* opcode 0Fh 13h EDh  not defined */
+                    /* opcode 0Fh 13h EEh  not defined */
+                    /* opcode 0Fh 13h EFh  not defined */
+                    /* opcode 0Fh 13h F0h  not defined */
+                    /* opcode 0Fh 13h F1h  not defined */
+                    /* opcode 0Fh 13h F2h  not defined */
+                    /* opcode 0Fh 13h F3h  not defined */
+                    /* opcode 0Fh 13h F4h  not defined */
+                    /* opcode 0Fh 13h F5h  not defined */
+                    /* opcode 0Fh 13h F6h  not defined */
+                    /* opcode 0Fh 13h F7h  not defined */
+                    /* opcode 0Fh 13h F8h  not defined */
+                    /* opcode 0Fh 13h F9h  not defined */
+                    /* opcode 0Fh 13h FAh  not defined */
+                    /* opcode 0Fh 13h FBh  not defined */
+                    /* opcode 0Fh 13h FCh  not defined */
+                    /* opcode 0Fh 13h FDh  not defined */
+                    /* opcode 0Fh 13h FEh  not defined */
+                    /* opcode 0Fh 13h FFh  not defined */
+                    default:
+                        goto _x86decode_illegal_opcode;
+                };
+/* End of opcodes starting with 0Fh 13h */
                 break;
             case 0x14: /* 0Fh 14h UNPCKLPS sse(reg),sse(r/m)      spec: 0x0F 0x14 mod/reg/rm */
                 if (addr32)
@@ -749,19 +1277,547 @@ switch (op) {
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"UNPCKHPS XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
                 break;
-            case 0x16: /* 0Fh 16h MOVHPS sse(reg),sse(r/m)      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+            case 0x16: /* 0Fh 16h        spec:  */
                 if (addr32)
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVHPS XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+/* Opcodes starting with 0Fh 16h */
+                switch (mrm.byte) {
+                    case 0x00: /* 0Fh 16h 00h MOVHPS sse(reg),sse(r/m) mod=0 reg=0 rm=0      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x01: /* 0Fh 16h 01h MOVHPS sse(reg),sse(r/m) mod=0 reg=0 rm=1      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x02: /* 0Fh 16h 02h MOVHPS sse(reg),sse(r/m) mod=0 reg=0 rm=2      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x03: /* 0Fh 16h 03h MOVHPS sse(reg),sse(r/m) mod=0 reg=0 rm=3      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x04: /* 0Fh 16h 04h MOVHPS sse(reg),sse(r/m) mod=0 reg=0 rm=4      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x05: /* 0Fh 16h 05h MOVHPS sse(reg),sse(r/m) mod=0 reg=0 rm=5      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x06: /* 0Fh 16h 06h MOVHPS sse(reg),sse(r/m) mod=0 reg=0 rm=6      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x07: /* 0Fh 16h 07h MOVHPS sse(reg),sse(r/m) mod=0 reg=0 rm=7      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x08: /* 0Fh 16h 08h MOVHPS sse(reg),sse(r/m) mod=0 reg=1 rm=0      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x09: /* 0Fh 16h 09h MOVHPS sse(reg),sse(r/m) mod=0 reg=1 rm=1      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x0A: /* 0Fh 16h 0Ah MOVHPS sse(reg),sse(r/m) mod=0 reg=1 rm=2      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x0B: /* 0Fh 16h 0Bh MOVHPS sse(reg),sse(r/m) mod=0 reg=1 rm=3      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x0C: /* 0Fh 16h 0Ch MOVHPS sse(reg),sse(r/m) mod=0 reg=1 rm=4      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x0D: /* 0Fh 16h 0Dh MOVHPS sse(reg),sse(r/m) mod=0 reg=1 rm=5      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x0E: /* 0Fh 16h 0Eh MOVHPS sse(reg),sse(r/m) mod=0 reg=1 rm=6      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x0F: /* 0Fh 16h 0Fh MOVHPS sse(reg),sse(r/m) mod=0 reg=1 rm=7      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x10: /* 0Fh 16h 10h MOVHPS sse(reg),sse(r/m) mod=0 reg=2 rm=0      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x11: /* 0Fh 16h 11h MOVHPS sse(reg),sse(r/m) mod=0 reg=2 rm=1      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x12: /* 0Fh 16h 12h MOVHPS sse(reg),sse(r/m) mod=0 reg=2 rm=2      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x13: /* 0Fh 16h 13h MOVHPS sse(reg),sse(r/m) mod=0 reg=2 rm=3      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x14: /* 0Fh 16h 14h MOVHPS sse(reg),sse(r/m) mod=0 reg=2 rm=4      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x15: /* 0Fh 16h 15h MOVHPS sse(reg),sse(r/m) mod=0 reg=2 rm=5      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x16: /* 0Fh 16h 16h MOVHPS sse(reg),sse(r/m) mod=0 reg=2 rm=6      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x17: /* 0Fh 16h 17h MOVHPS sse(reg),sse(r/m) mod=0 reg=2 rm=7      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x18: /* 0Fh 16h 18h MOVHPS sse(reg),sse(r/m) mod=0 reg=3 rm=0      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x19: /* 0Fh 16h 19h MOVHPS sse(reg),sse(r/m) mod=0 reg=3 rm=1      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x1A: /* 0Fh 16h 1Ah MOVHPS sse(reg),sse(r/m) mod=0 reg=3 rm=2      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x1B: /* 0Fh 16h 1Bh MOVHPS sse(reg),sse(r/m) mod=0 reg=3 rm=3      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x1C: /* 0Fh 16h 1Ch MOVHPS sse(reg),sse(r/m) mod=0 reg=3 rm=4      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x1D: /* 0Fh 16h 1Dh MOVHPS sse(reg),sse(r/m) mod=0 reg=3 rm=5      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x1E: /* 0Fh 16h 1Eh MOVHPS sse(reg),sse(r/m) mod=0 reg=3 rm=6      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x1F: /* 0Fh 16h 1Fh MOVHPS sse(reg),sse(r/m) mod=0 reg=3 rm=7      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x20: /* 0Fh 16h 20h MOVHPS sse(reg),sse(r/m) mod=0 reg=4 rm=0      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x21: /* 0Fh 16h 21h MOVHPS sse(reg),sse(r/m) mod=0 reg=4 rm=1      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x22: /* 0Fh 16h 22h MOVHPS sse(reg),sse(r/m) mod=0 reg=4 rm=2      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x23: /* 0Fh 16h 23h MOVHPS sse(reg),sse(r/m) mod=0 reg=4 rm=3      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x24: /* 0Fh 16h 24h MOVHPS sse(reg),sse(r/m) mod=0 reg=4 rm=4      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x25: /* 0Fh 16h 25h MOVHPS sse(reg),sse(r/m) mod=0 reg=4 rm=5      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x26: /* 0Fh 16h 26h MOVHPS sse(reg),sse(r/m) mod=0 reg=4 rm=6      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x27: /* 0Fh 16h 27h MOVHPS sse(reg),sse(r/m) mod=0 reg=4 rm=7      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x28: /* 0Fh 16h 28h MOVHPS sse(reg),sse(r/m) mod=0 reg=5 rm=0      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x29: /* 0Fh 16h 29h MOVHPS sse(reg),sse(r/m) mod=0 reg=5 rm=1      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x2A: /* 0Fh 16h 2Ah MOVHPS sse(reg),sse(r/m) mod=0 reg=5 rm=2      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x2B: /* 0Fh 16h 2Bh MOVHPS sse(reg),sse(r/m) mod=0 reg=5 rm=3      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x2C: /* 0Fh 16h 2Ch MOVHPS sse(reg),sse(r/m) mod=0 reg=5 rm=4      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x2D: /* 0Fh 16h 2Dh MOVHPS sse(reg),sse(r/m) mod=0 reg=5 rm=5      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x2E: /* 0Fh 16h 2Eh MOVHPS sse(reg),sse(r/m) mod=0 reg=5 rm=6      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x2F: /* 0Fh 16h 2Fh MOVHPS sse(reg),sse(r/m) mod=0 reg=5 rm=7      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x30: /* 0Fh 16h 30h MOVHPS sse(reg),sse(r/m) mod=0 reg=6 rm=0      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x31: /* 0Fh 16h 31h MOVHPS sse(reg),sse(r/m) mod=0 reg=6 rm=1      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x32: /* 0Fh 16h 32h MOVHPS sse(reg),sse(r/m) mod=0 reg=6 rm=2      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x33: /* 0Fh 16h 33h MOVHPS sse(reg),sse(r/m) mod=0 reg=6 rm=3      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x34: /* 0Fh 16h 34h MOVHPS sse(reg),sse(r/m) mod=0 reg=6 rm=4      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x35: /* 0Fh 16h 35h MOVHPS sse(reg),sse(r/m) mod=0 reg=6 rm=5      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x36: /* 0Fh 16h 36h MOVHPS sse(reg),sse(r/m) mod=0 reg=6 rm=6      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x37: /* 0Fh 16h 37h MOVHPS sse(reg),sse(r/m) mod=0 reg=6 rm=7      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x38: /* 0Fh 16h 38h MOVHPS sse(reg),sse(r/m) mod=0 reg=7 rm=0      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x39: /* 0Fh 16h 39h MOVHPS sse(reg),sse(r/m) mod=0 reg=7 rm=1      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x3A: /* 0Fh 16h 3Ah MOVHPS sse(reg),sse(r/m) mod=0 reg=7 rm=2      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x3B: /* 0Fh 16h 3Bh MOVHPS sse(reg),sse(r/m) mod=0 reg=7 rm=3      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x3C: /* 0Fh 16h 3Ch MOVHPS sse(reg),sse(r/m) mod=0 reg=7 rm=4      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x3D: /* 0Fh 16h 3Dh MOVHPS sse(reg),sse(r/m) mod=0 reg=7 rm=5      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x3E: /* 0Fh 16h 3Eh MOVHPS sse(reg),sse(r/m) mod=0 reg=7 rm=6      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x3F: /* 0Fh 16h 3Fh MOVHPS sse(reg),sse(r/m) mod=0 reg=7 rm=7      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x40: /* 0Fh 16h 40h MOVHPS sse(reg),sse(r/m) mod=1 reg=0 rm=0      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x41: /* 0Fh 16h 41h MOVHPS sse(reg),sse(r/m) mod=1 reg=0 rm=1      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x42: /* 0Fh 16h 42h MOVHPS sse(reg),sse(r/m) mod=1 reg=0 rm=2      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x43: /* 0Fh 16h 43h MOVHPS sse(reg),sse(r/m) mod=1 reg=0 rm=3      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x44: /* 0Fh 16h 44h MOVHPS sse(reg),sse(r/m) mod=1 reg=0 rm=4      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x45: /* 0Fh 16h 45h MOVHPS sse(reg),sse(r/m) mod=1 reg=0 rm=5      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x46: /* 0Fh 16h 46h MOVHPS sse(reg),sse(r/m) mod=1 reg=0 rm=6      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x47: /* 0Fh 16h 47h MOVHPS sse(reg),sse(r/m) mod=1 reg=0 rm=7      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x48: /* 0Fh 16h 48h MOVHPS sse(reg),sse(r/m) mod=1 reg=1 rm=0      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x49: /* 0Fh 16h 49h MOVHPS sse(reg),sse(r/m) mod=1 reg=1 rm=1      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x4A: /* 0Fh 16h 4Ah MOVHPS sse(reg),sse(r/m) mod=1 reg=1 rm=2      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x4B: /* 0Fh 16h 4Bh MOVHPS sse(reg),sse(r/m) mod=1 reg=1 rm=3      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x4C: /* 0Fh 16h 4Ch MOVHPS sse(reg),sse(r/m) mod=1 reg=1 rm=4      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x4D: /* 0Fh 16h 4Dh MOVHPS sse(reg),sse(r/m) mod=1 reg=1 rm=5      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x4E: /* 0Fh 16h 4Eh MOVHPS sse(reg),sse(r/m) mod=1 reg=1 rm=6      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x4F: /* 0Fh 16h 4Fh MOVHPS sse(reg),sse(r/m) mod=1 reg=1 rm=7      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x50: /* 0Fh 16h 50h MOVHPS sse(reg),sse(r/m) mod=1 reg=2 rm=0      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x51: /* 0Fh 16h 51h MOVHPS sse(reg),sse(r/m) mod=1 reg=2 rm=1      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x52: /* 0Fh 16h 52h MOVHPS sse(reg),sse(r/m) mod=1 reg=2 rm=2      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x53: /* 0Fh 16h 53h MOVHPS sse(reg),sse(r/m) mod=1 reg=2 rm=3      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x54: /* 0Fh 16h 54h MOVHPS sse(reg),sse(r/m) mod=1 reg=2 rm=4      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x55: /* 0Fh 16h 55h MOVHPS sse(reg),sse(r/m) mod=1 reg=2 rm=5      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x56: /* 0Fh 16h 56h MOVHPS sse(reg),sse(r/m) mod=1 reg=2 rm=6      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x57: /* 0Fh 16h 57h MOVHPS sse(reg),sse(r/m) mod=1 reg=2 rm=7      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x58: /* 0Fh 16h 58h MOVHPS sse(reg),sse(r/m) mod=1 reg=3 rm=0      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x59: /* 0Fh 16h 59h MOVHPS sse(reg),sse(r/m) mod=1 reg=3 rm=1      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x5A: /* 0Fh 16h 5Ah MOVHPS sse(reg),sse(r/m) mod=1 reg=3 rm=2      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x5B: /* 0Fh 16h 5Bh MOVHPS sse(reg),sse(r/m) mod=1 reg=3 rm=3      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x5C: /* 0Fh 16h 5Ch MOVHPS sse(reg),sse(r/m) mod=1 reg=3 rm=4      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x5D: /* 0Fh 16h 5Dh MOVHPS sse(reg),sse(r/m) mod=1 reg=3 rm=5      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x5E: /* 0Fh 16h 5Eh MOVHPS sse(reg),sse(r/m) mod=1 reg=3 rm=6      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x5F: /* 0Fh 16h 5Fh MOVHPS sse(reg),sse(r/m) mod=1 reg=3 rm=7      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x60: /* 0Fh 16h 60h MOVHPS sse(reg),sse(r/m) mod=1 reg=4 rm=0      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x61: /* 0Fh 16h 61h MOVHPS sse(reg),sse(r/m) mod=1 reg=4 rm=1      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x62: /* 0Fh 16h 62h MOVHPS sse(reg),sse(r/m) mod=1 reg=4 rm=2      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x63: /* 0Fh 16h 63h MOVHPS sse(reg),sse(r/m) mod=1 reg=4 rm=3      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x64: /* 0Fh 16h 64h MOVHPS sse(reg),sse(r/m) mod=1 reg=4 rm=4      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x65: /* 0Fh 16h 65h MOVHPS sse(reg),sse(r/m) mod=1 reg=4 rm=5      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x66: /* 0Fh 16h 66h MOVHPS sse(reg),sse(r/m) mod=1 reg=4 rm=6      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x67: /* 0Fh 16h 67h MOVHPS sse(reg),sse(r/m) mod=1 reg=4 rm=7      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x68: /* 0Fh 16h 68h MOVHPS sse(reg),sse(r/m) mod=1 reg=5 rm=0      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x69: /* 0Fh 16h 69h MOVHPS sse(reg),sse(r/m) mod=1 reg=5 rm=1      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x6A: /* 0Fh 16h 6Ah MOVHPS sse(reg),sse(r/m) mod=1 reg=5 rm=2      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x6B: /* 0Fh 16h 6Bh MOVHPS sse(reg),sse(r/m) mod=1 reg=5 rm=3      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x6C: /* 0Fh 16h 6Ch MOVHPS sse(reg),sse(r/m) mod=1 reg=5 rm=4      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x6D: /* 0Fh 16h 6Dh MOVHPS sse(reg),sse(r/m) mod=1 reg=5 rm=5      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x6E: /* 0Fh 16h 6Eh MOVHPS sse(reg),sse(r/m) mod=1 reg=5 rm=6      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x6F: /* 0Fh 16h 6Fh MOVHPS sse(reg),sse(r/m) mod=1 reg=5 rm=7      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x70: /* 0Fh 16h 70h MOVHPS sse(reg),sse(r/m) mod=1 reg=6 rm=0      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x71: /* 0Fh 16h 71h MOVHPS sse(reg),sse(r/m) mod=1 reg=6 rm=1      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x72: /* 0Fh 16h 72h MOVHPS sse(reg),sse(r/m) mod=1 reg=6 rm=2      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x73: /* 0Fh 16h 73h MOVHPS sse(reg),sse(r/m) mod=1 reg=6 rm=3      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x74: /* 0Fh 16h 74h MOVHPS sse(reg),sse(r/m) mod=1 reg=6 rm=4      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x75: /* 0Fh 16h 75h MOVHPS sse(reg),sse(r/m) mod=1 reg=6 rm=5      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x76: /* 0Fh 16h 76h MOVHPS sse(reg),sse(r/m) mod=1 reg=6 rm=6      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x77: /* 0Fh 16h 77h MOVHPS sse(reg),sse(r/m) mod=1 reg=6 rm=7      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x78: /* 0Fh 16h 78h MOVHPS sse(reg),sse(r/m) mod=1 reg=7 rm=0      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x79: /* 0Fh 16h 79h MOVHPS sse(reg),sse(r/m) mod=1 reg=7 rm=1      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x7A: /* 0Fh 16h 7Ah MOVHPS sse(reg),sse(r/m) mod=1 reg=7 rm=2      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x7B: /* 0Fh 16h 7Bh MOVHPS sse(reg),sse(r/m) mod=1 reg=7 rm=3      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x7C: /* 0Fh 16h 7Ch MOVHPS sse(reg),sse(r/m) mod=1 reg=7 rm=4      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x7D: /* 0Fh 16h 7Dh MOVHPS sse(reg),sse(r/m) mod=1 reg=7 rm=5      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x7E: /* 0Fh 16h 7Eh MOVHPS sse(reg),sse(r/m) mod=1 reg=7 rm=6      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x7F: /* 0Fh 16h 7Fh MOVHPS sse(reg),sse(r/m) mod=1 reg=7 rm=7      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x80: /* 0Fh 16h 80h MOVHPS sse(reg),sse(r/m) mod=2 reg=0 rm=0      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x81: /* 0Fh 16h 81h MOVHPS sse(reg),sse(r/m) mod=2 reg=0 rm=1      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x82: /* 0Fh 16h 82h MOVHPS sse(reg),sse(r/m) mod=2 reg=0 rm=2      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x83: /* 0Fh 16h 83h MOVHPS sse(reg),sse(r/m) mod=2 reg=0 rm=3      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x84: /* 0Fh 16h 84h MOVHPS sse(reg),sse(r/m) mod=2 reg=0 rm=4      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x85: /* 0Fh 16h 85h MOVHPS sse(reg),sse(r/m) mod=2 reg=0 rm=5      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x86: /* 0Fh 16h 86h MOVHPS sse(reg),sse(r/m) mod=2 reg=0 rm=6      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x87: /* 0Fh 16h 87h MOVHPS sse(reg),sse(r/m) mod=2 reg=0 rm=7      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x88: /* 0Fh 16h 88h MOVHPS sse(reg),sse(r/m) mod=2 reg=1 rm=0      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x89: /* 0Fh 16h 89h MOVHPS sse(reg),sse(r/m) mod=2 reg=1 rm=1      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x8A: /* 0Fh 16h 8Ah MOVHPS sse(reg),sse(r/m) mod=2 reg=1 rm=2      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x8B: /* 0Fh 16h 8Bh MOVHPS sse(reg),sse(r/m) mod=2 reg=1 rm=3      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x8C: /* 0Fh 16h 8Ch MOVHPS sse(reg),sse(r/m) mod=2 reg=1 rm=4      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x8D: /* 0Fh 16h 8Dh MOVHPS sse(reg),sse(r/m) mod=2 reg=1 rm=5      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x8E: /* 0Fh 16h 8Eh MOVHPS sse(reg),sse(r/m) mod=2 reg=1 rm=6      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x8F: /* 0Fh 16h 8Fh MOVHPS sse(reg),sse(r/m) mod=2 reg=1 rm=7      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x90: /* 0Fh 16h 90h MOVHPS sse(reg),sse(r/m) mod=2 reg=2 rm=0      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x91: /* 0Fh 16h 91h MOVHPS sse(reg),sse(r/m) mod=2 reg=2 rm=1      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x92: /* 0Fh 16h 92h MOVHPS sse(reg),sse(r/m) mod=2 reg=2 rm=2      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x93: /* 0Fh 16h 93h MOVHPS sse(reg),sse(r/m) mod=2 reg=2 rm=3      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x94: /* 0Fh 16h 94h MOVHPS sse(reg),sse(r/m) mod=2 reg=2 rm=4      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x95: /* 0Fh 16h 95h MOVHPS sse(reg),sse(r/m) mod=2 reg=2 rm=5      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x96: /* 0Fh 16h 96h MOVHPS sse(reg),sse(r/m) mod=2 reg=2 rm=6      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x97: /* 0Fh 16h 97h MOVHPS sse(reg),sse(r/m) mod=2 reg=2 rm=7      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x98: /* 0Fh 16h 98h MOVHPS sse(reg),sse(r/m) mod=2 reg=3 rm=0      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x99: /* 0Fh 16h 99h MOVHPS sse(reg),sse(r/m) mod=2 reg=3 rm=1      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x9A: /* 0Fh 16h 9Ah MOVHPS sse(reg),sse(r/m) mod=2 reg=3 rm=2      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x9B: /* 0Fh 16h 9Bh MOVHPS sse(reg),sse(r/m) mod=2 reg=3 rm=3      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x9C: /* 0Fh 16h 9Ch MOVHPS sse(reg),sse(r/m) mod=2 reg=3 rm=4      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x9D: /* 0Fh 16h 9Dh MOVHPS sse(reg),sse(r/m) mod=2 reg=3 rm=5      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x9E: /* 0Fh 16h 9Eh MOVHPS sse(reg),sse(r/m) mod=2 reg=3 rm=6      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0x9F: /* 0Fh 16h 9Fh MOVHPS sse(reg),sse(r/m) mod=2 reg=3 rm=7      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xA0: /* 0Fh 16h A0h MOVHPS sse(reg),sse(r/m) mod=2 reg=4 rm=0      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xA1: /* 0Fh 16h A1h MOVHPS sse(reg),sse(r/m) mod=2 reg=4 rm=1      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xA2: /* 0Fh 16h A2h MOVHPS sse(reg),sse(r/m) mod=2 reg=4 rm=2      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xA3: /* 0Fh 16h A3h MOVHPS sse(reg),sse(r/m) mod=2 reg=4 rm=3      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xA4: /* 0Fh 16h A4h MOVHPS sse(reg),sse(r/m) mod=2 reg=4 rm=4      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xA5: /* 0Fh 16h A5h MOVHPS sse(reg),sse(r/m) mod=2 reg=4 rm=5      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xA6: /* 0Fh 16h A6h MOVHPS sse(reg),sse(r/m) mod=2 reg=4 rm=6      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xA7: /* 0Fh 16h A7h MOVHPS sse(reg),sse(r/m) mod=2 reg=4 rm=7      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xA8: /* 0Fh 16h A8h MOVHPS sse(reg),sse(r/m) mod=2 reg=5 rm=0      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xA9: /* 0Fh 16h A9h MOVHPS sse(reg),sse(r/m) mod=2 reg=5 rm=1      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xAA: /* 0Fh 16h AAh MOVHPS sse(reg),sse(r/m) mod=2 reg=5 rm=2      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xAB: /* 0Fh 16h ABh MOVHPS sse(reg),sse(r/m) mod=2 reg=5 rm=3      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xAC: /* 0Fh 16h ACh MOVHPS sse(reg),sse(r/m) mod=2 reg=5 rm=4      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xAD: /* 0Fh 16h ADh MOVHPS sse(reg),sse(r/m) mod=2 reg=5 rm=5      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xAE: /* 0Fh 16h AEh MOVHPS sse(reg),sse(r/m) mod=2 reg=5 rm=6      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xAF: /* 0Fh 16h AFh MOVHPS sse(reg),sse(r/m) mod=2 reg=5 rm=7      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xB0: /* 0Fh 16h B0h MOVHPS sse(reg),sse(r/m) mod=2 reg=6 rm=0      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xB1: /* 0Fh 16h B1h MOVHPS sse(reg),sse(r/m) mod=2 reg=6 rm=1      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xB2: /* 0Fh 16h B2h MOVHPS sse(reg),sse(r/m) mod=2 reg=6 rm=2      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xB3: /* 0Fh 16h B3h MOVHPS sse(reg),sse(r/m) mod=2 reg=6 rm=3      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xB4: /* 0Fh 16h B4h MOVHPS sse(reg),sse(r/m) mod=2 reg=6 rm=4      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xB5: /* 0Fh 16h B5h MOVHPS sse(reg),sse(r/m) mod=2 reg=6 rm=5      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xB6: /* 0Fh 16h B6h MOVHPS sse(reg),sse(r/m) mod=2 reg=6 rm=6      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xB7: /* 0Fh 16h B7h MOVHPS sse(reg),sse(r/m) mod=2 reg=6 rm=7      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xB8: /* 0Fh 16h B8h MOVHPS sse(reg),sse(r/m) mod=2 reg=7 rm=0      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xB9: /* 0Fh 16h B9h MOVHPS sse(reg),sse(r/m) mod=2 reg=7 rm=1      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xBA: /* 0Fh 16h BAh MOVHPS sse(reg),sse(r/m) mod=2 reg=7 rm=2      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xBB: /* 0Fh 16h BBh MOVHPS sse(reg),sse(r/m) mod=2 reg=7 rm=3      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xBC: /* 0Fh 16h BCh MOVHPS sse(reg),sse(r/m) mod=2 reg=7 rm=4      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xBD: /* 0Fh 16h BDh MOVHPS sse(reg),sse(r/m) mod=2 reg=7 rm=5      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xBE: /* 0Fh 16h BEh MOVHPS sse(reg),sse(r/m) mod=2 reg=7 rm=6      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                    case 0xBF: /* 0Fh 16h BFh MOVHPS sse(reg),sse(r/m) mod=2 reg=7 rm=7      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVHPS XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                        break;
+                    case 0xC0: /* 0Fh 16h C0h MOVLHPS sse(reg),sse(r/m) mod=3 reg=0 rm=0      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xC1: /* 0Fh 16h C1h MOVLHPS sse(reg),sse(r/m) mod=3 reg=0 rm=1      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xC2: /* 0Fh 16h C2h MOVLHPS sse(reg),sse(r/m) mod=3 reg=0 rm=2      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xC3: /* 0Fh 16h C3h MOVLHPS sse(reg),sse(r/m) mod=3 reg=0 rm=3      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xC4: /* 0Fh 16h C4h MOVLHPS sse(reg),sse(r/m) mod=3 reg=0 rm=4      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xC5: /* 0Fh 16h C5h MOVLHPS sse(reg),sse(r/m) mod=3 reg=0 rm=5      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xC6: /* 0Fh 16h C6h MOVLHPS sse(reg),sse(r/m) mod=3 reg=0 rm=6      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xC7: /* 0Fh 16h C7h MOVLHPS sse(reg),sse(r/m) mod=3 reg=0 rm=7      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xC8: /* 0Fh 16h C8h MOVLHPS sse(reg),sse(r/m) mod=3 reg=1 rm=0      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xC9: /* 0Fh 16h C9h MOVLHPS sse(reg),sse(r/m) mod=3 reg=1 rm=1      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xCA: /* 0Fh 16h CAh MOVLHPS sse(reg),sse(r/m) mod=3 reg=1 rm=2      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xCB: /* 0Fh 16h CBh MOVLHPS sse(reg),sse(r/m) mod=3 reg=1 rm=3      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xCC: /* 0Fh 16h CCh MOVLHPS sse(reg),sse(r/m) mod=3 reg=1 rm=4      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xCD: /* 0Fh 16h CDh MOVLHPS sse(reg),sse(r/m) mod=3 reg=1 rm=5      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xCE: /* 0Fh 16h CEh MOVLHPS sse(reg),sse(r/m) mod=3 reg=1 rm=6      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xCF: /* 0Fh 16h CFh MOVLHPS sse(reg),sse(r/m) mod=3 reg=1 rm=7      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xD0: /* 0Fh 16h D0h MOVLHPS sse(reg),sse(r/m) mod=3 reg=2 rm=0      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xD1: /* 0Fh 16h D1h MOVLHPS sse(reg),sse(r/m) mod=3 reg=2 rm=1      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xD2: /* 0Fh 16h D2h MOVLHPS sse(reg),sse(r/m) mod=3 reg=2 rm=2      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xD3: /* 0Fh 16h D3h MOVLHPS sse(reg),sse(r/m) mod=3 reg=2 rm=3      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xD4: /* 0Fh 16h D4h MOVLHPS sse(reg),sse(r/m) mod=3 reg=2 rm=4      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xD5: /* 0Fh 16h D5h MOVLHPS sse(reg),sse(r/m) mod=3 reg=2 rm=5      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xD6: /* 0Fh 16h D6h MOVLHPS sse(reg),sse(r/m) mod=3 reg=2 rm=6      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xD7: /* 0Fh 16h D7h MOVLHPS sse(reg),sse(r/m) mod=3 reg=2 rm=7      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xD8: /* 0Fh 16h D8h MOVLHPS sse(reg),sse(r/m) mod=3 reg=3 rm=0      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xD9: /* 0Fh 16h D9h MOVLHPS sse(reg),sse(r/m) mod=3 reg=3 rm=1      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xDA: /* 0Fh 16h DAh MOVLHPS sse(reg),sse(r/m) mod=3 reg=3 rm=2      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xDB: /* 0Fh 16h DBh MOVLHPS sse(reg),sse(r/m) mod=3 reg=3 rm=3      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xDC: /* 0Fh 16h DCh MOVLHPS sse(reg),sse(r/m) mod=3 reg=3 rm=4      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xDD: /* 0Fh 16h DDh MOVLHPS sse(reg),sse(r/m) mod=3 reg=3 rm=5      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xDE: /* 0Fh 16h DEh MOVLHPS sse(reg),sse(r/m) mod=3 reg=3 rm=6      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xDF: /* 0Fh 16h DFh MOVLHPS sse(reg),sse(r/m) mod=3 reg=3 rm=7      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xE0: /* 0Fh 16h E0h MOVLHPS sse(reg),sse(r/m) mod=3 reg=4 rm=0      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xE1: /* 0Fh 16h E1h MOVLHPS sse(reg),sse(r/m) mod=3 reg=4 rm=1      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xE2: /* 0Fh 16h E2h MOVLHPS sse(reg),sse(r/m) mod=3 reg=4 rm=2      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xE3: /* 0Fh 16h E3h MOVLHPS sse(reg),sse(r/m) mod=3 reg=4 rm=3      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xE4: /* 0Fh 16h E4h MOVLHPS sse(reg),sse(r/m) mod=3 reg=4 rm=4      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xE5: /* 0Fh 16h E5h MOVLHPS sse(reg),sse(r/m) mod=3 reg=4 rm=5      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xE6: /* 0Fh 16h E6h MOVLHPS sse(reg),sse(r/m) mod=3 reg=4 rm=6      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xE7: /* 0Fh 16h E7h MOVLHPS sse(reg),sse(r/m) mod=3 reg=4 rm=7      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xE8: /* 0Fh 16h E8h MOVLHPS sse(reg),sse(r/m) mod=3 reg=5 rm=0      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xE9: /* 0Fh 16h E9h MOVLHPS sse(reg),sse(r/m) mod=3 reg=5 rm=1      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xEA: /* 0Fh 16h EAh MOVLHPS sse(reg),sse(r/m) mod=3 reg=5 rm=2      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xEB: /* 0Fh 16h EBh MOVLHPS sse(reg),sse(r/m) mod=3 reg=5 rm=3      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xEC: /* 0Fh 16h ECh MOVLHPS sse(reg),sse(r/m) mod=3 reg=5 rm=4      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xED: /* 0Fh 16h EDh MOVLHPS sse(reg),sse(r/m) mod=3 reg=5 rm=5      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xEE: /* 0Fh 16h EEh MOVLHPS sse(reg),sse(r/m) mod=3 reg=5 rm=6      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xEF: /* 0Fh 16h EFh MOVLHPS sse(reg),sse(r/m) mod=3 reg=5 rm=7      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xF0: /* 0Fh 16h F0h MOVLHPS sse(reg),sse(r/m) mod=3 reg=6 rm=0      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xF1: /* 0Fh 16h F1h MOVLHPS sse(reg),sse(r/m) mod=3 reg=6 rm=1      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xF2: /* 0Fh 16h F2h MOVLHPS sse(reg),sse(r/m) mod=3 reg=6 rm=2      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xF3: /* 0Fh 16h F3h MOVLHPS sse(reg),sse(r/m) mod=3 reg=6 rm=3      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xF4: /* 0Fh 16h F4h MOVLHPS sse(reg),sse(r/m) mod=3 reg=6 rm=4      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xF5: /* 0Fh 16h F5h MOVLHPS sse(reg),sse(r/m) mod=3 reg=6 rm=5      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xF6: /* 0Fh 16h F6h MOVLHPS sse(reg),sse(r/m) mod=3 reg=6 rm=6      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xF7: /* 0Fh 16h F7h MOVLHPS sse(reg),sse(r/m) mod=3 reg=6 rm=7      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xF8: /* 0Fh 16h F8h MOVLHPS sse(reg),sse(r/m) mod=3 reg=7 rm=0      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xF9: /* 0Fh 16h F9h MOVLHPS sse(reg),sse(r/m) mod=3 reg=7 rm=1      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xFA: /* 0Fh 16h FAh MOVLHPS sse(reg),sse(r/m) mod=3 reg=7 rm=2      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xFB: /* 0Fh 16h FBh MOVLHPS sse(reg),sse(r/m) mod=3 reg=7 rm=3      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xFC: /* 0Fh 16h FCh MOVLHPS sse(reg),sse(r/m) mod=3 reg=7 rm=4      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xFD: /* 0Fh 16h FDh MOVLHPS sse(reg),sse(r/m) mod=3 reg=7 rm=5      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xFE: /* 0Fh 16h FEh MOVLHPS sse(reg),sse(r/m) mod=3 reg=7 rm=6      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                    case 0xFF: /* 0Fh 16h FFh MOVLHPS sse(reg),sse(r/m) mod=3 reg=7 rm=7      spec: 0x0F 0x16 mod/reg/rm mod==3 */
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVLHPS XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
+                        break;
+                    default:
+                        goto _x86decode_illegal_opcode;
+                };
+/* End of opcodes starting with 0Fh 16h */
                 break;
-            case 0x17: /* 0Fh 17h MOVHPS sse(r/m),sse(reg)      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+            case 0x17: /* 0Fh 17h        spec:  */
                 if (addr32)
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVHPS %s,XMM%u",IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""),mrm.reg());
+/* Opcodes starting with 0Fh 17h */
+                switch (mrm.byte) {
+                    case 0x00: /* 0Fh 17h 00h MOVHPS sse(r/m),sse(reg) mod=0 reg=0 rm=0      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x01: /* 0Fh 17h 01h MOVHPS sse(r/m),sse(reg) mod=0 reg=0 rm=1      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x02: /* 0Fh 17h 02h MOVHPS sse(r/m),sse(reg) mod=0 reg=0 rm=2      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x03: /* 0Fh 17h 03h MOVHPS sse(r/m),sse(reg) mod=0 reg=0 rm=3      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x04: /* 0Fh 17h 04h MOVHPS sse(r/m),sse(reg) mod=0 reg=0 rm=4      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x05: /* 0Fh 17h 05h MOVHPS sse(r/m),sse(reg) mod=0 reg=0 rm=5      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x06: /* 0Fh 17h 06h MOVHPS sse(r/m),sse(reg) mod=0 reg=0 rm=6      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x07: /* 0Fh 17h 07h MOVHPS sse(r/m),sse(reg) mod=0 reg=0 rm=7      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x08: /* 0Fh 17h 08h MOVHPS sse(r/m),sse(reg) mod=0 reg=1 rm=0      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x09: /* 0Fh 17h 09h MOVHPS sse(r/m),sse(reg) mod=0 reg=1 rm=1      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x0A: /* 0Fh 17h 0Ah MOVHPS sse(r/m),sse(reg) mod=0 reg=1 rm=2      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x0B: /* 0Fh 17h 0Bh MOVHPS sse(r/m),sse(reg) mod=0 reg=1 rm=3      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x0C: /* 0Fh 17h 0Ch MOVHPS sse(r/m),sse(reg) mod=0 reg=1 rm=4      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x0D: /* 0Fh 17h 0Dh MOVHPS sse(r/m),sse(reg) mod=0 reg=1 rm=5      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x0E: /* 0Fh 17h 0Eh MOVHPS sse(r/m),sse(reg) mod=0 reg=1 rm=6      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x0F: /* 0Fh 17h 0Fh MOVHPS sse(r/m),sse(reg) mod=0 reg=1 rm=7      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x10: /* 0Fh 17h 10h MOVHPS sse(r/m),sse(reg) mod=0 reg=2 rm=0      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x11: /* 0Fh 17h 11h MOVHPS sse(r/m),sse(reg) mod=0 reg=2 rm=1      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x12: /* 0Fh 17h 12h MOVHPS sse(r/m),sse(reg) mod=0 reg=2 rm=2      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x13: /* 0Fh 17h 13h MOVHPS sse(r/m),sse(reg) mod=0 reg=2 rm=3      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x14: /* 0Fh 17h 14h MOVHPS sse(r/m),sse(reg) mod=0 reg=2 rm=4      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x15: /* 0Fh 17h 15h MOVHPS sse(r/m),sse(reg) mod=0 reg=2 rm=5      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x16: /* 0Fh 17h 16h MOVHPS sse(r/m),sse(reg) mod=0 reg=2 rm=6      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x17: /* 0Fh 17h 17h MOVHPS sse(r/m),sse(reg) mod=0 reg=2 rm=7      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x18: /* 0Fh 17h 18h MOVHPS sse(r/m),sse(reg) mod=0 reg=3 rm=0      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x19: /* 0Fh 17h 19h MOVHPS sse(r/m),sse(reg) mod=0 reg=3 rm=1      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x1A: /* 0Fh 17h 1Ah MOVHPS sse(r/m),sse(reg) mod=0 reg=3 rm=2      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x1B: /* 0Fh 17h 1Bh MOVHPS sse(r/m),sse(reg) mod=0 reg=3 rm=3      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x1C: /* 0Fh 17h 1Ch MOVHPS sse(r/m),sse(reg) mod=0 reg=3 rm=4      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x1D: /* 0Fh 17h 1Dh MOVHPS sse(r/m),sse(reg) mod=0 reg=3 rm=5      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x1E: /* 0Fh 17h 1Eh MOVHPS sse(r/m),sse(reg) mod=0 reg=3 rm=6      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x1F: /* 0Fh 17h 1Fh MOVHPS sse(r/m),sse(reg) mod=0 reg=3 rm=7      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x20: /* 0Fh 17h 20h MOVHPS sse(r/m),sse(reg) mod=0 reg=4 rm=0      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x21: /* 0Fh 17h 21h MOVHPS sse(r/m),sse(reg) mod=0 reg=4 rm=1      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x22: /* 0Fh 17h 22h MOVHPS sse(r/m),sse(reg) mod=0 reg=4 rm=2      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x23: /* 0Fh 17h 23h MOVHPS sse(r/m),sse(reg) mod=0 reg=4 rm=3      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x24: /* 0Fh 17h 24h MOVHPS sse(r/m),sse(reg) mod=0 reg=4 rm=4      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x25: /* 0Fh 17h 25h MOVHPS sse(r/m),sse(reg) mod=0 reg=4 rm=5      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x26: /* 0Fh 17h 26h MOVHPS sse(r/m),sse(reg) mod=0 reg=4 rm=6      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x27: /* 0Fh 17h 27h MOVHPS sse(r/m),sse(reg) mod=0 reg=4 rm=7      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x28: /* 0Fh 17h 28h MOVHPS sse(r/m),sse(reg) mod=0 reg=5 rm=0      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x29: /* 0Fh 17h 29h MOVHPS sse(r/m),sse(reg) mod=0 reg=5 rm=1      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x2A: /* 0Fh 17h 2Ah MOVHPS sse(r/m),sse(reg) mod=0 reg=5 rm=2      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x2B: /* 0Fh 17h 2Bh MOVHPS sse(r/m),sse(reg) mod=0 reg=5 rm=3      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x2C: /* 0Fh 17h 2Ch MOVHPS sse(r/m),sse(reg) mod=0 reg=5 rm=4      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x2D: /* 0Fh 17h 2Dh MOVHPS sse(r/m),sse(reg) mod=0 reg=5 rm=5      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x2E: /* 0Fh 17h 2Eh MOVHPS sse(r/m),sse(reg) mod=0 reg=5 rm=6      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x2F: /* 0Fh 17h 2Fh MOVHPS sse(r/m),sse(reg) mod=0 reg=5 rm=7      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x30: /* 0Fh 17h 30h MOVHPS sse(r/m),sse(reg) mod=0 reg=6 rm=0      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x31: /* 0Fh 17h 31h MOVHPS sse(r/m),sse(reg) mod=0 reg=6 rm=1      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x32: /* 0Fh 17h 32h MOVHPS sse(r/m),sse(reg) mod=0 reg=6 rm=2      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x33: /* 0Fh 17h 33h MOVHPS sse(r/m),sse(reg) mod=0 reg=6 rm=3      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x34: /* 0Fh 17h 34h MOVHPS sse(r/m),sse(reg) mod=0 reg=6 rm=4      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x35: /* 0Fh 17h 35h MOVHPS sse(r/m),sse(reg) mod=0 reg=6 rm=5      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x36: /* 0Fh 17h 36h MOVHPS sse(r/m),sse(reg) mod=0 reg=6 rm=6      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x37: /* 0Fh 17h 37h MOVHPS sse(r/m),sse(reg) mod=0 reg=6 rm=7      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x38: /* 0Fh 17h 38h MOVHPS sse(r/m),sse(reg) mod=0 reg=7 rm=0      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x39: /* 0Fh 17h 39h MOVHPS sse(r/m),sse(reg) mod=0 reg=7 rm=1      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x3A: /* 0Fh 17h 3Ah MOVHPS sse(r/m),sse(reg) mod=0 reg=7 rm=2      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x3B: /* 0Fh 17h 3Bh MOVHPS sse(r/m),sse(reg) mod=0 reg=7 rm=3      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x3C: /* 0Fh 17h 3Ch MOVHPS sse(r/m),sse(reg) mod=0 reg=7 rm=4      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x3D: /* 0Fh 17h 3Dh MOVHPS sse(r/m),sse(reg) mod=0 reg=7 rm=5      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x3E: /* 0Fh 17h 3Eh MOVHPS sse(r/m),sse(reg) mod=0 reg=7 rm=6      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x3F: /* 0Fh 17h 3Fh MOVHPS sse(r/m),sse(reg) mod=0 reg=7 rm=7      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x40: /* 0Fh 17h 40h MOVHPS sse(r/m),sse(reg) mod=1 reg=0 rm=0      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x41: /* 0Fh 17h 41h MOVHPS sse(r/m),sse(reg) mod=1 reg=0 rm=1      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x42: /* 0Fh 17h 42h MOVHPS sse(r/m),sse(reg) mod=1 reg=0 rm=2      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x43: /* 0Fh 17h 43h MOVHPS sse(r/m),sse(reg) mod=1 reg=0 rm=3      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x44: /* 0Fh 17h 44h MOVHPS sse(r/m),sse(reg) mod=1 reg=0 rm=4      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x45: /* 0Fh 17h 45h MOVHPS sse(r/m),sse(reg) mod=1 reg=0 rm=5      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x46: /* 0Fh 17h 46h MOVHPS sse(r/m),sse(reg) mod=1 reg=0 rm=6      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x47: /* 0Fh 17h 47h MOVHPS sse(r/m),sse(reg) mod=1 reg=0 rm=7      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x48: /* 0Fh 17h 48h MOVHPS sse(r/m),sse(reg) mod=1 reg=1 rm=0      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x49: /* 0Fh 17h 49h MOVHPS sse(r/m),sse(reg) mod=1 reg=1 rm=1      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x4A: /* 0Fh 17h 4Ah MOVHPS sse(r/m),sse(reg) mod=1 reg=1 rm=2      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x4B: /* 0Fh 17h 4Bh MOVHPS sse(r/m),sse(reg) mod=1 reg=1 rm=3      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x4C: /* 0Fh 17h 4Ch MOVHPS sse(r/m),sse(reg) mod=1 reg=1 rm=4      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x4D: /* 0Fh 17h 4Dh MOVHPS sse(r/m),sse(reg) mod=1 reg=1 rm=5      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x4E: /* 0Fh 17h 4Eh MOVHPS sse(r/m),sse(reg) mod=1 reg=1 rm=6      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x4F: /* 0Fh 17h 4Fh MOVHPS sse(r/m),sse(reg) mod=1 reg=1 rm=7      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x50: /* 0Fh 17h 50h MOVHPS sse(r/m),sse(reg) mod=1 reg=2 rm=0      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x51: /* 0Fh 17h 51h MOVHPS sse(r/m),sse(reg) mod=1 reg=2 rm=1      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x52: /* 0Fh 17h 52h MOVHPS sse(r/m),sse(reg) mod=1 reg=2 rm=2      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x53: /* 0Fh 17h 53h MOVHPS sse(r/m),sse(reg) mod=1 reg=2 rm=3      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x54: /* 0Fh 17h 54h MOVHPS sse(r/m),sse(reg) mod=1 reg=2 rm=4      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x55: /* 0Fh 17h 55h MOVHPS sse(r/m),sse(reg) mod=1 reg=2 rm=5      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x56: /* 0Fh 17h 56h MOVHPS sse(r/m),sse(reg) mod=1 reg=2 rm=6      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x57: /* 0Fh 17h 57h MOVHPS sse(r/m),sse(reg) mod=1 reg=2 rm=7      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x58: /* 0Fh 17h 58h MOVHPS sse(r/m),sse(reg) mod=1 reg=3 rm=0      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x59: /* 0Fh 17h 59h MOVHPS sse(r/m),sse(reg) mod=1 reg=3 rm=1      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x5A: /* 0Fh 17h 5Ah MOVHPS sse(r/m),sse(reg) mod=1 reg=3 rm=2      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x5B: /* 0Fh 17h 5Bh MOVHPS sse(r/m),sse(reg) mod=1 reg=3 rm=3      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x5C: /* 0Fh 17h 5Ch MOVHPS sse(r/m),sse(reg) mod=1 reg=3 rm=4      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x5D: /* 0Fh 17h 5Dh MOVHPS sse(r/m),sse(reg) mod=1 reg=3 rm=5      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x5E: /* 0Fh 17h 5Eh MOVHPS sse(r/m),sse(reg) mod=1 reg=3 rm=6      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x5F: /* 0Fh 17h 5Fh MOVHPS sse(r/m),sse(reg) mod=1 reg=3 rm=7      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x60: /* 0Fh 17h 60h MOVHPS sse(r/m),sse(reg) mod=1 reg=4 rm=0      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x61: /* 0Fh 17h 61h MOVHPS sse(r/m),sse(reg) mod=1 reg=4 rm=1      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x62: /* 0Fh 17h 62h MOVHPS sse(r/m),sse(reg) mod=1 reg=4 rm=2      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x63: /* 0Fh 17h 63h MOVHPS sse(r/m),sse(reg) mod=1 reg=4 rm=3      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x64: /* 0Fh 17h 64h MOVHPS sse(r/m),sse(reg) mod=1 reg=4 rm=4      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x65: /* 0Fh 17h 65h MOVHPS sse(r/m),sse(reg) mod=1 reg=4 rm=5      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x66: /* 0Fh 17h 66h MOVHPS sse(r/m),sse(reg) mod=1 reg=4 rm=6      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x67: /* 0Fh 17h 67h MOVHPS sse(r/m),sse(reg) mod=1 reg=4 rm=7      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x68: /* 0Fh 17h 68h MOVHPS sse(r/m),sse(reg) mod=1 reg=5 rm=0      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x69: /* 0Fh 17h 69h MOVHPS sse(r/m),sse(reg) mod=1 reg=5 rm=1      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x6A: /* 0Fh 17h 6Ah MOVHPS sse(r/m),sse(reg) mod=1 reg=5 rm=2      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x6B: /* 0Fh 17h 6Bh MOVHPS sse(r/m),sse(reg) mod=1 reg=5 rm=3      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x6C: /* 0Fh 17h 6Ch MOVHPS sse(r/m),sse(reg) mod=1 reg=5 rm=4      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x6D: /* 0Fh 17h 6Dh MOVHPS sse(r/m),sse(reg) mod=1 reg=5 rm=5      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x6E: /* 0Fh 17h 6Eh MOVHPS sse(r/m),sse(reg) mod=1 reg=5 rm=6      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x6F: /* 0Fh 17h 6Fh MOVHPS sse(r/m),sse(reg) mod=1 reg=5 rm=7      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x70: /* 0Fh 17h 70h MOVHPS sse(r/m),sse(reg) mod=1 reg=6 rm=0      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x71: /* 0Fh 17h 71h MOVHPS sse(r/m),sse(reg) mod=1 reg=6 rm=1      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x72: /* 0Fh 17h 72h MOVHPS sse(r/m),sse(reg) mod=1 reg=6 rm=2      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x73: /* 0Fh 17h 73h MOVHPS sse(r/m),sse(reg) mod=1 reg=6 rm=3      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x74: /* 0Fh 17h 74h MOVHPS sse(r/m),sse(reg) mod=1 reg=6 rm=4      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x75: /* 0Fh 17h 75h MOVHPS sse(r/m),sse(reg) mod=1 reg=6 rm=5      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x76: /* 0Fh 17h 76h MOVHPS sse(r/m),sse(reg) mod=1 reg=6 rm=6      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x77: /* 0Fh 17h 77h MOVHPS sse(r/m),sse(reg) mod=1 reg=6 rm=7      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x78: /* 0Fh 17h 78h MOVHPS sse(r/m),sse(reg) mod=1 reg=7 rm=0      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x79: /* 0Fh 17h 79h MOVHPS sse(r/m),sse(reg) mod=1 reg=7 rm=1      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x7A: /* 0Fh 17h 7Ah MOVHPS sse(r/m),sse(reg) mod=1 reg=7 rm=2      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x7B: /* 0Fh 17h 7Bh MOVHPS sse(r/m),sse(reg) mod=1 reg=7 rm=3      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x7C: /* 0Fh 17h 7Ch MOVHPS sse(r/m),sse(reg) mod=1 reg=7 rm=4      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x7D: /* 0Fh 17h 7Dh MOVHPS sse(r/m),sse(reg) mod=1 reg=7 rm=5      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x7E: /* 0Fh 17h 7Eh MOVHPS sse(r/m),sse(reg) mod=1 reg=7 rm=6      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x7F: /* 0Fh 17h 7Fh MOVHPS sse(r/m),sse(reg) mod=1 reg=7 rm=7      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x80: /* 0Fh 17h 80h MOVHPS sse(r/m),sse(reg) mod=2 reg=0 rm=0      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x81: /* 0Fh 17h 81h MOVHPS sse(r/m),sse(reg) mod=2 reg=0 rm=1      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x82: /* 0Fh 17h 82h MOVHPS sse(r/m),sse(reg) mod=2 reg=0 rm=2      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x83: /* 0Fh 17h 83h MOVHPS sse(r/m),sse(reg) mod=2 reg=0 rm=3      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x84: /* 0Fh 17h 84h MOVHPS sse(r/m),sse(reg) mod=2 reg=0 rm=4      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x85: /* 0Fh 17h 85h MOVHPS sse(r/m),sse(reg) mod=2 reg=0 rm=5      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x86: /* 0Fh 17h 86h MOVHPS sse(r/m),sse(reg) mod=2 reg=0 rm=6      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x87: /* 0Fh 17h 87h MOVHPS sse(r/m),sse(reg) mod=2 reg=0 rm=7      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x88: /* 0Fh 17h 88h MOVHPS sse(r/m),sse(reg) mod=2 reg=1 rm=0      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x89: /* 0Fh 17h 89h MOVHPS sse(r/m),sse(reg) mod=2 reg=1 rm=1      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x8A: /* 0Fh 17h 8Ah MOVHPS sse(r/m),sse(reg) mod=2 reg=1 rm=2      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x8B: /* 0Fh 17h 8Bh MOVHPS sse(r/m),sse(reg) mod=2 reg=1 rm=3      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x8C: /* 0Fh 17h 8Ch MOVHPS sse(r/m),sse(reg) mod=2 reg=1 rm=4      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x8D: /* 0Fh 17h 8Dh MOVHPS sse(r/m),sse(reg) mod=2 reg=1 rm=5      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x8E: /* 0Fh 17h 8Eh MOVHPS sse(r/m),sse(reg) mod=2 reg=1 rm=6      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x8F: /* 0Fh 17h 8Fh MOVHPS sse(r/m),sse(reg) mod=2 reg=1 rm=7      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x90: /* 0Fh 17h 90h MOVHPS sse(r/m),sse(reg) mod=2 reg=2 rm=0      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x91: /* 0Fh 17h 91h MOVHPS sse(r/m),sse(reg) mod=2 reg=2 rm=1      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x92: /* 0Fh 17h 92h MOVHPS sse(r/m),sse(reg) mod=2 reg=2 rm=2      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x93: /* 0Fh 17h 93h MOVHPS sse(r/m),sse(reg) mod=2 reg=2 rm=3      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x94: /* 0Fh 17h 94h MOVHPS sse(r/m),sse(reg) mod=2 reg=2 rm=4      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x95: /* 0Fh 17h 95h MOVHPS sse(r/m),sse(reg) mod=2 reg=2 rm=5      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x96: /* 0Fh 17h 96h MOVHPS sse(r/m),sse(reg) mod=2 reg=2 rm=6      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x97: /* 0Fh 17h 97h MOVHPS sse(r/m),sse(reg) mod=2 reg=2 rm=7      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x98: /* 0Fh 17h 98h MOVHPS sse(r/m),sse(reg) mod=2 reg=3 rm=0      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x99: /* 0Fh 17h 99h MOVHPS sse(r/m),sse(reg) mod=2 reg=3 rm=1      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x9A: /* 0Fh 17h 9Ah MOVHPS sse(r/m),sse(reg) mod=2 reg=3 rm=2      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x9B: /* 0Fh 17h 9Bh MOVHPS sse(r/m),sse(reg) mod=2 reg=3 rm=3      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x9C: /* 0Fh 17h 9Ch MOVHPS sse(r/m),sse(reg) mod=2 reg=3 rm=4      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x9D: /* 0Fh 17h 9Dh MOVHPS sse(r/m),sse(reg) mod=2 reg=3 rm=5      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x9E: /* 0Fh 17h 9Eh MOVHPS sse(r/m),sse(reg) mod=2 reg=3 rm=6      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0x9F: /* 0Fh 17h 9Fh MOVHPS sse(r/m),sse(reg) mod=2 reg=3 rm=7      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xA0: /* 0Fh 17h A0h MOVHPS sse(r/m),sse(reg) mod=2 reg=4 rm=0      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xA1: /* 0Fh 17h A1h MOVHPS sse(r/m),sse(reg) mod=2 reg=4 rm=1      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xA2: /* 0Fh 17h A2h MOVHPS sse(r/m),sse(reg) mod=2 reg=4 rm=2      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xA3: /* 0Fh 17h A3h MOVHPS sse(r/m),sse(reg) mod=2 reg=4 rm=3      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xA4: /* 0Fh 17h A4h MOVHPS sse(r/m),sse(reg) mod=2 reg=4 rm=4      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xA5: /* 0Fh 17h A5h MOVHPS sse(r/m),sse(reg) mod=2 reg=4 rm=5      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xA6: /* 0Fh 17h A6h MOVHPS sse(r/m),sse(reg) mod=2 reg=4 rm=6      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xA7: /* 0Fh 17h A7h MOVHPS sse(r/m),sse(reg) mod=2 reg=4 rm=7      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xA8: /* 0Fh 17h A8h MOVHPS sse(r/m),sse(reg) mod=2 reg=5 rm=0      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xA9: /* 0Fh 17h A9h MOVHPS sse(r/m),sse(reg) mod=2 reg=5 rm=1      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xAA: /* 0Fh 17h AAh MOVHPS sse(r/m),sse(reg) mod=2 reg=5 rm=2      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xAB: /* 0Fh 17h ABh MOVHPS sse(r/m),sse(reg) mod=2 reg=5 rm=3      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xAC: /* 0Fh 17h ACh MOVHPS sse(r/m),sse(reg) mod=2 reg=5 rm=4      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xAD: /* 0Fh 17h ADh MOVHPS sse(r/m),sse(reg) mod=2 reg=5 rm=5      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xAE: /* 0Fh 17h AEh MOVHPS sse(r/m),sse(reg) mod=2 reg=5 rm=6      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xAF: /* 0Fh 17h AFh MOVHPS sse(r/m),sse(reg) mod=2 reg=5 rm=7      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xB0: /* 0Fh 17h B0h MOVHPS sse(r/m),sse(reg) mod=2 reg=6 rm=0      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xB1: /* 0Fh 17h B1h MOVHPS sse(r/m),sse(reg) mod=2 reg=6 rm=1      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xB2: /* 0Fh 17h B2h MOVHPS sse(r/m),sse(reg) mod=2 reg=6 rm=2      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xB3: /* 0Fh 17h B3h MOVHPS sse(r/m),sse(reg) mod=2 reg=6 rm=3      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xB4: /* 0Fh 17h B4h MOVHPS sse(r/m),sse(reg) mod=2 reg=6 rm=4      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xB5: /* 0Fh 17h B5h MOVHPS sse(r/m),sse(reg) mod=2 reg=6 rm=5      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xB6: /* 0Fh 17h B6h MOVHPS sse(r/m),sse(reg) mod=2 reg=6 rm=6      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xB7: /* 0Fh 17h B7h MOVHPS sse(r/m),sse(reg) mod=2 reg=6 rm=7      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xB8: /* 0Fh 17h B8h MOVHPS sse(r/m),sse(reg) mod=2 reg=7 rm=0      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xB9: /* 0Fh 17h B9h MOVHPS sse(r/m),sse(reg) mod=2 reg=7 rm=1      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xBA: /* 0Fh 17h BAh MOVHPS sse(r/m),sse(reg) mod=2 reg=7 rm=2      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xBB: /* 0Fh 17h BBh MOVHPS sse(r/m),sse(reg) mod=2 reg=7 rm=3      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xBC: /* 0Fh 17h BCh MOVHPS sse(r/m),sse(reg) mod=2 reg=7 rm=4      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xBD: /* 0Fh 17h BDh MOVHPS sse(r/m),sse(reg) mod=2 reg=7 rm=5      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xBE: /* 0Fh 17h BEh MOVHPS sse(r/m),sse(reg) mod=2 reg=7 rm=6      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                    case 0xBF: /* 0Fh 17h BFh MOVHPS sse(r/m),sse(reg) mod=2 reg=7 rm=7      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVHPS %s,XMM%u",IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""),mrm.reg());
+                        break;
+                    /* opcode 0Fh 17h C0h  not defined */
+                    /* opcode 0Fh 17h C1h  not defined */
+                    /* opcode 0Fh 17h C2h  not defined */
+                    /* opcode 0Fh 17h C3h  not defined */
+                    /* opcode 0Fh 17h C4h  not defined */
+                    /* opcode 0Fh 17h C5h  not defined */
+                    /* opcode 0Fh 17h C6h  not defined */
+                    /* opcode 0Fh 17h C7h  not defined */
+                    /* opcode 0Fh 17h C8h  not defined */
+                    /* opcode 0Fh 17h C9h  not defined */
+                    /* opcode 0Fh 17h CAh  not defined */
+                    /* opcode 0Fh 17h CBh  not defined */
+                    /* opcode 0Fh 17h CCh  not defined */
+                    /* opcode 0Fh 17h CDh  not defined */
+                    /* opcode 0Fh 17h CEh  not defined */
+                    /* opcode 0Fh 17h CFh  not defined */
+                    /* opcode 0Fh 17h D0h  not defined */
+                    /* opcode 0Fh 17h D1h  not defined */
+                    /* opcode 0Fh 17h D2h  not defined */
+                    /* opcode 0Fh 17h D3h  not defined */
+                    /* opcode 0Fh 17h D4h  not defined */
+                    /* opcode 0Fh 17h D5h  not defined */
+                    /* opcode 0Fh 17h D6h  not defined */
+                    /* opcode 0Fh 17h D7h  not defined */
+                    /* opcode 0Fh 17h D8h  not defined */
+                    /* opcode 0Fh 17h D9h  not defined */
+                    /* opcode 0Fh 17h DAh  not defined */
+                    /* opcode 0Fh 17h DBh  not defined */
+                    /* opcode 0Fh 17h DCh  not defined */
+                    /* opcode 0Fh 17h DDh  not defined */
+                    /* opcode 0Fh 17h DEh  not defined */
+                    /* opcode 0Fh 17h DFh  not defined */
+                    /* opcode 0Fh 17h E0h  not defined */
+                    /* opcode 0Fh 17h E1h  not defined */
+                    /* opcode 0Fh 17h E2h  not defined */
+                    /* opcode 0Fh 17h E3h  not defined */
+                    /* opcode 0Fh 17h E4h  not defined */
+                    /* opcode 0Fh 17h E5h  not defined */
+                    /* opcode 0Fh 17h E6h  not defined */
+                    /* opcode 0Fh 17h E7h  not defined */
+                    /* opcode 0Fh 17h E8h  not defined */
+                    /* opcode 0Fh 17h E9h  not defined */
+                    /* opcode 0Fh 17h EAh  not defined */
+                    /* opcode 0Fh 17h EBh  not defined */
+                    /* opcode 0Fh 17h ECh  not defined */
+                    /* opcode 0Fh 17h EDh  not defined */
+                    /* opcode 0Fh 17h EEh  not defined */
+                    /* opcode 0Fh 17h EFh  not defined */
+                    /* opcode 0Fh 17h F0h  not defined */
+                    /* opcode 0Fh 17h F1h  not defined */
+                    /* opcode 0Fh 17h F2h  not defined */
+                    /* opcode 0Fh 17h F3h  not defined */
+                    /* opcode 0Fh 17h F4h  not defined */
+                    /* opcode 0Fh 17h F5h  not defined */
+                    /* opcode 0Fh 17h F6h  not defined */
+                    /* opcode 0Fh 17h F7h  not defined */
+                    /* opcode 0Fh 17h F8h  not defined */
+                    /* opcode 0Fh 17h F9h  not defined */
+                    /* opcode 0Fh 17h FAh  not defined */
+                    /* opcode 0Fh 17h FBh  not defined */
+                    /* opcode 0Fh 17h FCh  not defined */
+                    /* opcode 0Fh 17h FDh  not defined */
+                    /* opcode 0Fh 17h FEh  not defined */
+                    /* opcode 0Fh 17h FFh  not defined */
+                    default:
+                        goto _x86decode_illegal_opcode;
+                };
+/* End of opcodes starting with 0Fh 17h */
                 break;
             /* opcode 0Fh 18h  not defined */
             /* opcode 0Fh 19h  not defined */
@@ -792,33 +1848,1085 @@ switch (op) {
                 };
 /* End of opcodes starting with 0Fh 1Fh */
                 break;
-            case 0x20: /* 0Fh 20h MOVd w32(r/m),cr(reg)      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+            case 0x20: /* 0Fh 20h        spec:  */
                 if (addr32)
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOV%s %s,CR%u",code32?"d":"w",IPDecPrint1632(addr32,mrm,sib,disp,4,RC_REG,"w32"),mrm.reg());
+/* Opcodes starting with 0Fh 20h */
+                switch (mrm.byte) {
+                    /* opcode 0Fh 20h 00h  not defined */
+                    /* opcode 0Fh 20h 01h  not defined */
+                    /* opcode 0Fh 20h 02h  not defined */
+                    /* opcode 0Fh 20h 03h  not defined */
+                    /* opcode 0Fh 20h 04h  not defined */
+                    /* opcode 0Fh 20h 05h  not defined */
+                    /* opcode 0Fh 20h 06h  not defined */
+                    /* opcode 0Fh 20h 07h  not defined */
+                    /* opcode 0Fh 20h 08h  not defined */
+                    /* opcode 0Fh 20h 09h  not defined */
+                    /* opcode 0Fh 20h 0Ah  not defined */
+                    /* opcode 0Fh 20h 0Bh  not defined */
+                    /* opcode 0Fh 20h 0Ch  not defined */
+                    /* opcode 0Fh 20h 0Dh  not defined */
+                    /* opcode 0Fh 20h 0Eh  not defined */
+                    /* opcode 0Fh 20h 0Fh  not defined */
+                    /* opcode 0Fh 20h 10h  not defined */
+                    /* opcode 0Fh 20h 11h  not defined */
+                    /* opcode 0Fh 20h 12h  not defined */
+                    /* opcode 0Fh 20h 13h  not defined */
+                    /* opcode 0Fh 20h 14h  not defined */
+                    /* opcode 0Fh 20h 15h  not defined */
+                    /* opcode 0Fh 20h 16h  not defined */
+                    /* opcode 0Fh 20h 17h  not defined */
+                    /* opcode 0Fh 20h 18h  not defined */
+                    /* opcode 0Fh 20h 19h  not defined */
+                    /* opcode 0Fh 20h 1Ah  not defined */
+                    /* opcode 0Fh 20h 1Bh  not defined */
+                    /* opcode 0Fh 20h 1Ch  not defined */
+                    /* opcode 0Fh 20h 1Dh  not defined */
+                    /* opcode 0Fh 20h 1Eh  not defined */
+                    /* opcode 0Fh 20h 1Fh  not defined */
+                    /* opcode 0Fh 20h 20h  not defined */
+                    /* opcode 0Fh 20h 21h  not defined */
+                    /* opcode 0Fh 20h 22h  not defined */
+                    /* opcode 0Fh 20h 23h  not defined */
+                    /* opcode 0Fh 20h 24h  not defined */
+                    /* opcode 0Fh 20h 25h  not defined */
+                    /* opcode 0Fh 20h 26h  not defined */
+                    /* opcode 0Fh 20h 27h  not defined */
+                    /* opcode 0Fh 20h 28h  not defined */
+                    /* opcode 0Fh 20h 29h  not defined */
+                    /* opcode 0Fh 20h 2Ah  not defined */
+                    /* opcode 0Fh 20h 2Bh  not defined */
+                    /* opcode 0Fh 20h 2Ch  not defined */
+                    /* opcode 0Fh 20h 2Dh  not defined */
+                    /* opcode 0Fh 20h 2Eh  not defined */
+                    /* opcode 0Fh 20h 2Fh  not defined */
+                    /* opcode 0Fh 20h 30h  not defined */
+                    /* opcode 0Fh 20h 31h  not defined */
+                    /* opcode 0Fh 20h 32h  not defined */
+                    /* opcode 0Fh 20h 33h  not defined */
+                    /* opcode 0Fh 20h 34h  not defined */
+                    /* opcode 0Fh 20h 35h  not defined */
+                    /* opcode 0Fh 20h 36h  not defined */
+                    /* opcode 0Fh 20h 37h  not defined */
+                    /* opcode 0Fh 20h 38h  not defined */
+                    /* opcode 0Fh 20h 39h  not defined */
+                    /* opcode 0Fh 20h 3Ah  not defined */
+                    /* opcode 0Fh 20h 3Bh  not defined */
+                    /* opcode 0Fh 20h 3Ch  not defined */
+                    /* opcode 0Fh 20h 3Dh  not defined */
+                    /* opcode 0Fh 20h 3Eh  not defined */
+                    /* opcode 0Fh 20h 3Fh  not defined */
+                    /* opcode 0Fh 20h 40h  not defined */
+                    /* opcode 0Fh 20h 41h  not defined */
+                    /* opcode 0Fh 20h 42h  not defined */
+                    /* opcode 0Fh 20h 43h  not defined */
+                    /* opcode 0Fh 20h 44h  not defined */
+                    /* opcode 0Fh 20h 45h  not defined */
+                    /* opcode 0Fh 20h 46h  not defined */
+                    /* opcode 0Fh 20h 47h  not defined */
+                    /* opcode 0Fh 20h 48h  not defined */
+                    /* opcode 0Fh 20h 49h  not defined */
+                    /* opcode 0Fh 20h 4Ah  not defined */
+                    /* opcode 0Fh 20h 4Bh  not defined */
+                    /* opcode 0Fh 20h 4Ch  not defined */
+                    /* opcode 0Fh 20h 4Dh  not defined */
+                    /* opcode 0Fh 20h 4Eh  not defined */
+                    /* opcode 0Fh 20h 4Fh  not defined */
+                    /* opcode 0Fh 20h 50h  not defined */
+                    /* opcode 0Fh 20h 51h  not defined */
+                    /* opcode 0Fh 20h 52h  not defined */
+                    /* opcode 0Fh 20h 53h  not defined */
+                    /* opcode 0Fh 20h 54h  not defined */
+                    /* opcode 0Fh 20h 55h  not defined */
+                    /* opcode 0Fh 20h 56h  not defined */
+                    /* opcode 0Fh 20h 57h  not defined */
+                    /* opcode 0Fh 20h 58h  not defined */
+                    /* opcode 0Fh 20h 59h  not defined */
+                    /* opcode 0Fh 20h 5Ah  not defined */
+                    /* opcode 0Fh 20h 5Bh  not defined */
+                    /* opcode 0Fh 20h 5Ch  not defined */
+                    /* opcode 0Fh 20h 5Dh  not defined */
+                    /* opcode 0Fh 20h 5Eh  not defined */
+                    /* opcode 0Fh 20h 5Fh  not defined */
+                    /* opcode 0Fh 20h 60h  not defined */
+                    /* opcode 0Fh 20h 61h  not defined */
+                    /* opcode 0Fh 20h 62h  not defined */
+                    /* opcode 0Fh 20h 63h  not defined */
+                    /* opcode 0Fh 20h 64h  not defined */
+                    /* opcode 0Fh 20h 65h  not defined */
+                    /* opcode 0Fh 20h 66h  not defined */
+                    /* opcode 0Fh 20h 67h  not defined */
+                    /* opcode 0Fh 20h 68h  not defined */
+                    /* opcode 0Fh 20h 69h  not defined */
+                    /* opcode 0Fh 20h 6Ah  not defined */
+                    /* opcode 0Fh 20h 6Bh  not defined */
+                    /* opcode 0Fh 20h 6Ch  not defined */
+                    /* opcode 0Fh 20h 6Dh  not defined */
+                    /* opcode 0Fh 20h 6Eh  not defined */
+                    /* opcode 0Fh 20h 6Fh  not defined */
+                    /* opcode 0Fh 20h 70h  not defined */
+                    /* opcode 0Fh 20h 71h  not defined */
+                    /* opcode 0Fh 20h 72h  not defined */
+                    /* opcode 0Fh 20h 73h  not defined */
+                    /* opcode 0Fh 20h 74h  not defined */
+                    /* opcode 0Fh 20h 75h  not defined */
+                    /* opcode 0Fh 20h 76h  not defined */
+                    /* opcode 0Fh 20h 77h  not defined */
+                    /* opcode 0Fh 20h 78h  not defined */
+                    /* opcode 0Fh 20h 79h  not defined */
+                    /* opcode 0Fh 20h 7Ah  not defined */
+                    /* opcode 0Fh 20h 7Bh  not defined */
+                    /* opcode 0Fh 20h 7Ch  not defined */
+                    /* opcode 0Fh 20h 7Dh  not defined */
+                    /* opcode 0Fh 20h 7Eh  not defined */
+                    /* opcode 0Fh 20h 7Fh  not defined */
+                    /* opcode 0Fh 20h 80h  not defined */
+                    /* opcode 0Fh 20h 81h  not defined */
+                    /* opcode 0Fh 20h 82h  not defined */
+                    /* opcode 0Fh 20h 83h  not defined */
+                    /* opcode 0Fh 20h 84h  not defined */
+                    /* opcode 0Fh 20h 85h  not defined */
+                    /* opcode 0Fh 20h 86h  not defined */
+                    /* opcode 0Fh 20h 87h  not defined */
+                    /* opcode 0Fh 20h 88h  not defined */
+                    /* opcode 0Fh 20h 89h  not defined */
+                    /* opcode 0Fh 20h 8Ah  not defined */
+                    /* opcode 0Fh 20h 8Bh  not defined */
+                    /* opcode 0Fh 20h 8Ch  not defined */
+                    /* opcode 0Fh 20h 8Dh  not defined */
+                    /* opcode 0Fh 20h 8Eh  not defined */
+                    /* opcode 0Fh 20h 8Fh  not defined */
+                    /* opcode 0Fh 20h 90h  not defined */
+                    /* opcode 0Fh 20h 91h  not defined */
+                    /* opcode 0Fh 20h 92h  not defined */
+                    /* opcode 0Fh 20h 93h  not defined */
+                    /* opcode 0Fh 20h 94h  not defined */
+                    /* opcode 0Fh 20h 95h  not defined */
+                    /* opcode 0Fh 20h 96h  not defined */
+                    /* opcode 0Fh 20h 97h  not defined */
+                    /* opcode 0Fh 20h 98h  not defined */
+                    /* opcode 0Fh 20h 99h  not defined */
+                    /* opcode 0Fh 20h 9Ah  not defined */
+                    /* opcode 0Fh 20h 9Bh  not defined */
+                    /* opcode 0Fh 20h 9Ch  not defined */
+                    /* opcode 0Fh 20h 9Dh  not defined */
+                    /* opcode 0Fh 20h 9Eh  not defined */
+                    /* opcode 0Fh 20h 9Fh  not defined */
+                    /* opcode 0Fh 20h A0h  not defined */
+                    /* opcode 0Fh 20h A1h  not defined */
+                    /* opcode 0Fh 20h A2h  not defined */
+                    /* opcode 0Fh 20h A3h  not defined */
+                    /* opcode 0Fh 20h A4h  not defined */
+                    /* opcode 0Fh 20h A5h  not defined */
+                    /* opcode 0Fh 20h A6h  not defined */
+                    /* opcode 0Fh 20h A7h  not defined */
+                    /* opcode 0Fh 20h A8h  not defined */
+                    /* opcode 0Fh 20h A9h  not defined */
+                    /* opcode 0Fh 20h AAh  not defined */
+                    /* opcode 0Fh 20h ABh  not defined */
+                    /* opcode 0Fh 20h ACh  not defined */
+                    /* opcode 0Fh 20h ADh  not defined */
+                    /* opcode 0Fh 20h AEh  not defined */
+                    /* opcode 0Fh 20h AFh  not defined */
+                    /* opcode 0Fh 20h B0h  not defined */
+                    /* opcode 0Fh 20h B1h  not defined */
+                    /* opcode 0Fh 20h B2h  not defined */
+                    /* opcode 0Fh 20h B3h  not defined */
+                    /* opcode 0Fh 20h B4h  not defined */
+                    /* opcode 0Fh 20h B5h  not defined */
+                    /* opcode 0Fh 20h B6h  not defined */
+                    /* opcode 0Fh 20h B7h  not defined */
+                    /* opcode 0Fh 20h B8h  not defined */
+                    /* opcode 0Fh 20h B9h  not defined */
+                    /* opcode 0Fh 20h BAh  not defined */
+                    /* opcode 0Fh 20h BBh  not defined */
+                    /* opcode 0Fh 20h BCh  not defined */
+                    /* opcode 0Fh 20h BDh  not defined */
+                    /* opcode 0Fh 20h BEh  not defined */
+                    /* opcode 0Fh 20h BFh  not defined */
+                    case 0xC0: /* 0Fh 20h C0h MOVd w32(r/m),cr(reg) mod=3 reg=0 rm=0      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xC1: /* 0Fh 20h C1h MOVd w32(r/m),cr(reg) mod=3 reg=0 rm=1      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xC2: /* 0Fh 20h C2h MOVd w32(r/m),cr(reg) mod=3 reg=0 rm=2      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xC3: /* 0Fh 20h C3h MOVd w32(r/m),cr(reg) mod=3 reg=0 rm=3      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xC4: /* 0Fh 20h C4h MOVd w32(r/m),cr(reg) mod=3 reg=0 rm=4      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xC5: /* 0Fh 20h C5h MOVd w32(r/m),cr(reg) mod=3 reg=0 rm=5      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xC6: /* 0Fh 20h C6h MOVd w32(r/m),cr(reg) mod=3 reg=0 rm=6      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xC7: /* 0Fh 20h C7h MOVd w32(r/m),cr(reg) mod=3 reg=0 rm=7      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xC8: /* 0Fh 20h C8h MOVd w32(r/m),cr(reg) mod=3 reg=1 rm=0      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xC9: /* 0Fh 20h C9h MOVd w32(r/m),cr(reg) mod=3 reg=1 rm=1      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xCA: /* 0Fh 20h CAh MOVd w32(r/m),cr(reg) mod=3 reg=1 rm=2      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xCB: /* 0Fh 20h CBh MOVd w32(r/m),cr(reg) mod=3 reg=1 rm=3      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xCC: /* 0Fh 20h CCh MOVd w32(r/m),cr(reg) mod=3 reg=1 rm=4      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xCD: /* 0Fh 20h CDh MOVd w32(r/m),cr(reg) mod=3 reg=1 rm=5      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xCE: /* 0Fh 20h CEh MOVd w32(r/m),cr(reg) mod=3 reg=1 rm=6      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xCF: /* 0Fh 20h CFh MOVd w32(r/m),cr(reg) mod=3 reg=1 rm=7      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xD0: /* 0Fh 20h D0h MOVd w32(r/m),cr(reg) mod=3 reg=2 rm=0      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xD1: /* 0Fh 20h D1h MOVd w32(r/m),cr(reg) mod=3 reg=2 rm=1      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xD2: /* 0Fh 20h D2h MOVd w32(r/m),cr(reg) mod=3 reg=2 rm=2      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xD3: /* 0Fh 20h D3h MOVd w32(r/m),cr(reg) mod=3 reg=2 rm=3      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xD4: /* 0Fh 20h D4h MOVd w32(r/m),cr(reg) mod=3 reg=2 rm=4      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xD5: /* 0Fh 20h D5h MOVd w32(r/m),cr(reg) mod=3 reg=2 rm=5      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xD6: /* 0Fh 20h D6h MOVd w32(r/m),cr(reg) mod=3 reg=2 rm=6      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xD7: /* 0Fh 20h D7h MOVd w32(r/m),cr(reg) mod=3 reg=2 rm=7      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xD8: /* 0Fh 20h D8h MOVd w32(r/m),cr(reg) mod=3 reg=3 rm=0      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xD9: /* 0Fh 20h D9h MOVd w32(r/m),cr(reg) mod=3 reg=3 rm=1      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xDA: /* 0Fh 20h DAh MOVd w32(r/m),cr(reg) mod=3 reg=3 rm=2      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xDB: /* 0Fh 20h DBh MOVd w32(r/m),cr(reg) mod=3 reg=3 rm=3      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xDC: /* 0Fh 20h DCh MOVd w32(r/m),cr(reg) mod=3 reg=3 rm=4      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xDD: /* 0Fh 20h DDh MOVd w32(r/m),cr(reg) mod=3 reg=3 rm=5      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xDE: /* 0Fh 20h DEh MOVd w32(r/m),cr(reg) mod=3 reg=3 rm=6      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xDF: /* 0Fh 20h DFh MOVd w32(r/m),cr(reg) mod=3 reg=3 rm=7      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xE0: /* 0Fh 20h E0h MOVd w32(r/m),cr(reg) mod=3 reg=4 rm=0      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xE1: /* 0Fh 20h E1h MOVd w32(r/m),cr(reg) mod=3 reg=4 rm=1      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xE2: /* 0Fh 20h E2h MOVd w32(r/m),cr(reg) mod=3 reg=4 rm=2      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xE3: /* 0Fh 20h E3h MOVd w32(r/m),cr(reg) mod=3 reg=4 rm=3      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xE4: /* 0Fh 20h E4h MOVd w32(r/m),cr(reg) mod=3 reg=4 rm=4      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xE5: /* 0Fh 20h E5h MOVd w32(r/m),cr(reg) mod=3 reg=4 rm=5      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xE6: /* 0Fh 20h E6h MOVd w32(r/m),cr(reg) mod=3 reg=4 rm=6      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xE7: /* 0Fh 20h E7h MOVd w32(r/m),cr(reg) mod=3 reg=4 rm=7      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xE8: /* 0Fh 20h E8h MOVd w32(r/m),cr(reg) mod=3 reg=5 rm=0      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xE9: /* 0Fh 20h E9h MOVd w32(r/m),cr(reg) mod=3 reg=5 rm=1      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xEA: /* 0Fh 20h EAh MOVd w32(r/m),cr(reg) mod=3 reg=5 rm=2      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xEB: /* 0Fh 20h EBh MOVd w32(r/m),cr(reg) mod=3 reg=5 rm=3      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xEC: /* 0Fh 20h ECh MOVd w32(r/m),cr(reg) mod=3 reg=5 rm=4      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xED: /* 0Fh 20h EDh MOVd w32(r/m),cr(reg) mod=3 reg=5 rm=5      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xEE: /* 0Fh 20h EEh MOVd w32(r/m),cr(reg) mod=3 reg=5 rm=6      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xEF: /* 0Fh 20h EFh MOVd w32(r/m),cr(reg) mod=3 reg=5 rm=7      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xF0: /* 0Fh 20h F0h MOVd w32(r/m),cr(reg) mod=3 reg=6 rm=0      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xF1: /* 0Fh 20h F1h MOVd w32(r/m),cr(reg) mod=3 reg=6 rm=1      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xF2: /* 0Fh 20h F2h MOVd w32(r/m),cr(reg) mod=3 reg=6 rm=2      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xF3: /* 0Fh 20h F3h MOVd w32(r/m),cr(reg) mod=3 reg=6 rm=3      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xF4: /* 0Fh 20h F4h MOVd w32(r/m),cr(reg) mod=3 reg=6 rm=4      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xF5: /* 0Fh 20h F5h MOVd w32(r/m),cr(reg) mod=3 reg=6 rm=5      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xF6: /* 0Fh 20h F6h MOVd w32(r/m),cr(reg) mod=3 reg=6 rm=6      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xF7: /* 0Fh 20h F7h MOVd w32(r/m),cr(reg) mod=3 reg=6 rm=7      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xF8: /* 0Fh 20h F8h MOVd w32(r/m),cr(reg) mod=3 reg=7 rm=0      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xF9: /* 0Fh 20h F9h MOVd w32(r/m),cr(reg) mod=3 reg=7 rm=1      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xFA: /* 0Fh 20h FAh MOVd w32(r/m),cr(reg) mod=3 reg=7 rm=2      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xFB: /* 0Fh 20h FBh MOVd w32(r/m),cr(reg) mod=3 reg=7 rm=3      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xFC: /* 0Fh 20h FCh MOVd w32(r/m),cr(reg) mod=3 reg=7 rm=4      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xFD: /* 0Fh 20h FDh MOVd w32(r/m),cr(reg) mod=3 reg=7 rm=5      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xFE: /* 0Fh 20h FEh MOVd w32(r/m),cr(reg) mod=3 reg=7 rm=6      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                    case 0xFF: /* 0Fh 20h FFh MOVd w32(r/m),cr(reg) mod=3 reg=7 rm=7      spec: 0x0F 0x20 mod/reg/rm mod==3 */
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOV%s %s,CR%u",code32?"d":"w",IPDecPrint1632(addr32,mrm,sib,disp,4,RC_REG,"w32"),mrm.reg());
+                        break;
+                    default:
+                        goto _x86decode_illegal_opcode;
+                };
+/* End of opcodes starting with 0Fh 20h */
                 break;
-            case 0x21: /* 0Fh 21h MOVd w32(r/m),dr(reg)      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+            case 0x21: /* 0Fh 21h        spec:  */
                 if (addr32)
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOV%s %s,DR%u",code32?"d":"w",IPDecPrint1632(addr32,mrm,sib,disp,4,RC_REG,"w32"),mrm.reg());
+/* Opcodes starting with 0Fh 21h */
+                switch (mrm.byte) {
+                    /* opcode 0Fh 21h 00h  not defined */
+                    /* opcode 0Fh 21h 01h  not defined */
+                    /* opcode 0Fh 21h 02h  not defined */
+                    /* opcode 0Fh 21h 03h  not defined */
+                    /* opcode 0Fh 21h 04h  not defined */
+                    /* opcode 0Fh 21h 05h  not defined */
+                    /* opcode 0Fh 21h 06h  not defined */
+                    /* opcode 0Fh 21h 07h  not defined */
+                    /* opcode 0Fh 21h 08h  not defined */
+                    /* opcode 0Fh 21h 09h  not defined */
+                    /* opcode 0Fh 21h 0Ah  not defined */
+                    /* opcode 0Fh 21h 0Bh  not defined */
+                    /* opcode 0Fh 21h 0Ch  not defined */
+                    /* opcode 0Fh 21h 0Dh  not defined */
+                    /* opcode 0Fh 21h 0Eh  not defined */
+                    /* opcode 0Fh 21h 0Fh  not defined */
+                    /* opcode 0Fh 21h 10h  not defined */
+                    /* opcode 0Fh 21h 11h  not defined */
+                    /* opcode 0Fh 21h 12h  not defined */
+                    /* opcode 0Fh 21h 13h  not defined */
+                    /* opcode 0Fh 21h 14h  not defined */
+                    /* opcode 0Fh 21h 15h  not defined */
+                    /* opcode 0Fh 21h 16h  not defined */
+                    /* opcode 0Fh 21h 17h  not defined */
+                    /* opcode 0Fh 21h 18h  not defined */
+                    /* opcode 0Fh 21h 19h  not defined */
+                    /* opcode 0Fh 21h 1Ah  not defined */
+                    /* opcode 0Fh 21h 1Bh  not defined */
+                    /* opcode 0Fh 21h 1Ch  not defined */
+                    /* opcode 0Fh 21h 1Dh  not defined */
+                    /* opcode 0Fh 21h 1Eh  not defined */
+                    /* opcode 0Fh 21h 1Fh  not defined */
+                    /* opcode 0Fh 21h 20h  not defined */
+                    /* opcode 0Fh 21h 21h  not defined */
+                    /* opcode 0Fh 21h 22h  not defined */
+                    /* opcode 0Fh 21h 23h  not defined */
+                    /* opcode 0Fh 21h 24h  not defined */
+                    /* opcode 0Fh 21h 25h  not defined */
+                    /* opcode 0Fh 21h 26h  not defined */
+                    /* opcode 0Fh 21h 27h  not defined */
+                    /* opcode 0Fh 21h 28h  not defined */
+                    /* opcode 0Fh 21h 29h  not defined */
+                    /* opcode 0Fh 21h 2Ah  not defined */
+                    /* opcode 0Fh 21h 2Bh  not defined */
+                    /* opcode 0Fh 21h 2Ch  not defined */
+                    /* opcode 0Fh 21h 2Dh  not defined */
+                    /* opcode 0Fh 21h 2Eh  not defined */
+                    /* opcode 0Fh 21h 2Fh  not defined */
+                    /* opcode 0Fh 21h 30h  not defined */
+                    /* opcode 0Fh 21h 31h  not defined */
+                    /* opcode 0Fh 21h 32h  not defined */
+                    /* opcode 0Fh 21h 33h  not defined */
+                    /* opcode 0Fh 21h 34h  not defined */
+                    /* opcode 0Fh 21h 35h  not defined */
+                    /* opcode 0Fh 21h 36h  not defined */
+                    /* opcode 0Fh 21h 37h  not defined */
+                    /* opcode 0Fh 21h 38h  not defined */
+                    /* opcode 0Fh 21h 39h  not defined */
+                    /* opcode 0Fh 21h 3Ah  not defined */
+                    /* opcode 0Fh 21h 3Bh  not defined */
+                    /* opcode 0Fh 21h 3Ch  not defined */
+                    /* opcode 0Fh 21h 3Dh  not defined */
+                    /* opcode 0Fh 21h 3Eh  not defined */
+                    /* opcode 0Fh 21h 3Fh  not defined */
+                    /* opcode 0Fh 21h 40h  not defined */
+                    /* opcode 0Fh 21h 41h  not defined */
+                    /* opcode 0Fh 21h 42h  not defined */
+                    /* opcode 0Fh 21h 43h  not defined */
+                    /* opcode 0Fh 21h 44h  not defined */
+                    /* opcode 0Fh 21h 45h  not defined */
+                    /* opcode 0Fh 21h 46h  not defined */
+                    /* opcode 0Fh 21h 47h  not defined */
+                    /* opcode 0Fh 21h 48h  not defined */
+                    /* opcode 0Fh 21h 49h  not defined */
+                    /* opcode 0Fh 21h 4Ah  not defined */
+                    /* opcode 0Fh 21h 4Bh  not defined */
+                    /* opcode 0Fh 21h 4Ch  not defined */
+                    /* opcode 0Fh 21h 4Dh  not defined */
+                    /* opcode 0Fh 21h 4Eh  not defined */
+                    /* opcode 0Fh 21h 4Fh  not defined */
+                    /* opcode 0Fh 21h 50h  not defined */
+                    /* opcode 0Fh 21h 51h  not defined */
+                    /* opcode 0Fh 21h 52h  not defined */
+                    /* opcode 0Fh 21h 53h  not defined */
+                    /* opcode 0Fh 21h 54h  not defined */
+                    /* opcode 0Fh 21h 55h  not defined */
+                    /* opcode 0Fh 21h 56h  not defined */
+                    /* opcode 0Fh 21h 57h  not defined */
+                    /* opcode 0Fh 21h 58h  not defined */
+                    /* opcode 0Fh 21h 59h  not defined */
+                    /* opcode 0Fh 21h 5Ah  not defined */
+                    /* opcode 0Fh 21h 5Bh  not defined */
+                    /* opcode 0Fh 21h 5Ch  not defined */
+                    /* opcode 0Fh 21h 5Dh  not defined */
+                    /* opcode 0Fh 21h 5Eh  not defined */
+                    /* opcode 0Fh 21h 5Fh  not defined */
+                    /* opcode 0Fh 21h 60h  not defined */
+                    /* opcode 0Fh 21h 61h  not defined */
+                    /* opcode 0Fh 21h 62h  not defined */
+                    /* opcode 0Fh 21h 63h  not defined */
+                    /* opcode 0Fh 21h 64h  not defined */
+                    /* opcode 0Fh 21h 65h  not defined */
+                    /* opcode 0Fh 21h 66h  not defined */
+                    /* opcode 0Fh 21h 67h  not defined */
+                    /* opcode 0Fh 21h 68h  not defined */
+                    /* opcode 0Fh 21h 69h  not defined */
+                    /* opcode 0Fh 21h 6Ah  not defined */
+                    /* opcode 0Fh 21h 6Bh  not defined */
+                    /* opcode 0Fh 21h 6Ch  not defined */
+                    /* opcode 0Fh 21h 6Dh  not defined */
+                    /* opcode 0Fh 21h 6Eh  not defined */
+                    /* opcode 0Fh 21h 6Fh  not defined */
+                    /* opcode 0Fh 21h 70h  not defined */
+                    /* opcode 0Fh 21h 71h  not defined */
+                    /* opcode 0Fh 21h 72h  not defined */
+                    /* opcode 0Fh 21h 73h  not defined */
+                    /* opcode 0Fh 21h 74h  not defined */
+                    /* opcode 0Fh 21h 75h  not defined */
+                    /* opcode 0Fh 21h 76h  not defined */
+                    /* opcode 0Fh 21h 77h  not defined */
+                    /* opcode 0Fh 21h 78h  not defined */
+                    /* opcode 0Fh 21h 79h  not defined */
+                    /* opcode 0Fh 21h 7Ah  not defined */
+                    /* opcode 0Fh 21h 7Bh  not defined */
+                    /* opcode 0Fh 21h 7Ch  not defined */
+                    /* opcode 0Fh 21h 7Dh  not defined */
+                    /* opcode 0Fh 21h 7Eh  not defined */
+                    /* opcode 0Fh 21h 7Fh  not defined */
+                    /* opcode 0Fh 21h 80h  not defined */
+                    /* opcode 0Fh 21h 81h  not defined */
+                    /* opcode 0Fh 21h 82h  not defined */
+                    /* opcode 0Fh 21h 83h  not defined */
+                    /* opcode 0Fh 21h 84h  not defined */
+                    /* opcode 0Fh 21h 85h  not defined */
+                    /* opcode 0Fh 21h 86h  not defined */
+                    /* opcode 0Fh 21h 87h  not defined */
+                    /* opcode 0Fh 21h 88h  not defined */
+                    /* opcode 0Fh 21h 89h  not defined */
+                    /* opcode 0Fh 21h 8Ah  not defined */
+                    /* opcode 0Fh 21h 8Bh  not defined */
+                    /* opcode 0Fh 21h 8Ch  not defined */
+                    /* opcode 0Fh 21h 8Dh  not defined */
+                    /* opcode 0Fh 21h 8Eh  not defined */
+                    /* opcode 0Fh 21h 8Fh  not defined */
+                    /* opcode 0Fh 21h 90h  not defined */
+                    /* opcode 0Fh 21h 91h  not defined */
+                    /* opcode 0Fh 21h 92h  not defined */
+                    /* opcode 0Fh 21h 93h  not defined */
+                    /* opcode 0Fh 21h 94h  not defined */
+                    /* opcode 0Fh 21h 95h  not defined */
+                    /* opcode 0Fh 21h 96h  not defined */
+                    /* opcode 0Fh 21h 97h  not defined */
+                    /* opcode 0Fh 21h 98h  not defined */
+                    /* opcode 0Fh 21h 99h  not defined */
+                    /* opcode 0Fh 21h 9Ah  not defined */
+                    /* opcode 0Fh 21h 9Bh  not defined */
+                    /* opcode 0Fh 21h 9Ch  not defined */
+                    /* opcode 0Fh 21h 9Dh  not defined */
+                    /* opcode 0Fh 21h 9Eh  not defined */
+                    /* opcode 0Fh 21h 9Fh  not defined */
+                    /* opcode 0Fh 21h A0h  not defined */
+                    /* opcode 0Fh 21h A1h  not defined */
+                    /* opcode 0Fh 21h A2h  not defined */
+                    /* opcode 0Fh 21h A3h  not defined */
+                    /* opcode 0Fh 21h A4h  not defined */
+                    /* opcode 0Fh 21h A5h  not defined */
+                    /* opcode 0Fh 21h A6h  not defined */
+                    /* opcode 0Fh 21h A7h  not defined */
+                    /* opcode 0Fh 21h A8h  not defined */
+                    /* opcode 0Fh 21h A9h  not defined */
+                    /* opcode 0Fh 21h AAh  not defined */
+                    /* opcode 0Fh 21h ABh  not defined */
+                    /* opcode 0Fh 21h ACh  not defined */
+                    /* opcode 0Fh 21h ADh  not defined */
+                    /* opcode 0Fh 21h AEh  not defined */
+                    /* opcode 0Fh 21h AFh  not defined */
+                    /* opcode 0Fh 21h B0h  not defined */
+                    /* opcode 0Fh 21h B1h  not defined */
+                    /* opcode 0Fh 21h B2h  not defined */
+                    /* opcode 0Fh 21h B3h  not defined */
+                    /* opcode 0Fh 21h B4h  not defined */
+                    /* opcode 0Fh 21h B5h  not defined */
+                    /* opcode 0Fh 21h B6h  not defined */
+                    /* opcode 0Fh 21h B7h  not defined */
+                    /* opcode 0Fh 21h B8h  not defined */
+                    /* opcode 0Fh 21h B9h  not defined */
+                    /* opcode 0Fh 21h BAh  not defined */
+                    /* opcode 0Fh 21h BBh  not defined */
+                    /* opcode 0Fh 21h BCh  not defined */
+                    /* opcode 0Fh 21h BDh  not defined */
+                    /* opcode 0Fh 21h BEh  not defined */
+                    /* opcode 0Fh 21h BFh  not defined */
+                    case 0xC0: /* 0Fh 21h C0h MOVd w32(r/m),dr(reg) mod=3 reg=0 rm=0      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xC1: /* 0Fh 21h C1h MOVd w32(r/m),dr(reg) mod=3 reg=0 rm=1      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xC2: /* 0Fh 21h C2h MOVd w32(r/m),dr(reg) mod=3 reg=0 rm=2      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xC3: /* 0Fh 21h C3h MOVd w32(r/m),dr(reg) mod=3 reg=0 rm=3      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xC4: /* 0Fh 21h C4h MOVd w32(r/m),dr(reg) mod=3 reg=0 rm=4      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xC5: /* 0Fh 21h C5h MOVd w32(r/m),dr(reg) mod=3 reg=0 rm=5      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xC6: /* 0Fh 21h C6h MOVd w32(r/m),dr(reg) mod=3 reg=0 rm=6      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xC7: /* 0Fh 21h C7h MOVd w32(r/m),dr(reg) mod=3 reg=0 rm=7      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xC8: /* 0Fh 21h C8h MOVd w32(r/m),dr(reg) mod=3 reg=1 rm=0      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xC9: /* 0Fh 21h C9h MOVd w32(r/m),dr(reg) mod=3 reg=1 rm=1      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xCA: /* 0Fh 21h CAh MOVd w32(r/m),dr(reg) mod=3 reg=1 rm=2      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xCB: /* 0Fh 21h CBh MOVd w32(r/m),dr(reg) mod=3 reg=1 rm=3      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xCC: /* 0Fh 21h CCh MOVd w32(r/m),dr(reg) mod=3 reg=1 rm=4      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xCD: /* 0Fh 21h CDh MOVd w32(r/m),dr(reg) mod=3 reg=1 rm=5      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xCE: /* 0Fh 21h CEh MOVd w32(r/m),dr(reg) mod=3 reg=1 rm=6      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xCF: /* 0Fh 21h CFh MOVd w32(r/m),dr(reg) mod=3 reg=1 rm=7      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xD0: /* 0Fh 21h D0h MOVd w32(r/m),dr(reg) mod=3 reg=2 rm=0      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xD1: /* 0Fh 21h D1h MOVd w32(r/m),dr(reg) mod=3 reg=2 rm=1      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xD2: /* 0Fh 21h D2h MOVd w32(r/m),dr(reg) mod=3 reg=2 rm=2      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xD3: /* 0Fh 21h D3h MOVd w32(r/m),dr(reg) mod=3 reg=2 rm=3      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xD4: /* 0Fh 21h D4h MOVd w32(r/m),dr(reg) mod=3 reg=2 rm=4      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xD5: /* 0Fh 21h D5h MOVd w32(r/m),dr(reg) mod=3 reg=2 rm=5      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xD6: /* 0Fh 21h D6h MOVd w32(r/m),dr(reg) mod=3 reg=2 rm=6      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xD7: /* 0Fh 21h D7h MOVd w32(r/m),dr(reg) mod=3 reg=2 rm=7      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xD8: /* 0Fh 21h D8h MOVd w32(r/m),dr(reg) mod=3 reg=3 rm=0      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xD9: /* 0Fh 21h D9h MOVd w32(r/m),dr(reg) mod=3 reg=3 rm=1      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xDA: /* 0Fh 21h DAh MOVd w32(r/m),dr(reg) mod=3 reg=3 rm=2      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xDB: /* 0Fh 21h DBh MOVd w32(r/m),dr(reg) mod=3 reg=3 rm=3      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xDC: /* 0Fh 21h DCh MOVd w32(r/m),dr(reg) mod=3 reg=3 rm=4      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xDD: /* 0Fh 21h DDh MOVd w32(r/m),dr(reg) mod=3 reg=3 rm=5      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xDE: /* 0Fh 21h DEh MOVd w32(r/m),dr(reg) mod=3 reg=3 rm=6      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xDF: /* 0Fh 21h DFh MOVd w32(r/m),dr(reg) mod=3 reg=3 rm=7      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xE0: /* 0Fh 21h E0h MOVd w32(r/m),dr(reg) mod=3 reg=4 rm=0      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xE1: /* 0Fh 21h E1h MOVd w32(r/m),dr(reg) mod=3 reg=4 rm=1      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xE2: /* 0Fh 21h E2h MOVd w32(r/m),dr(reg) mod=3 reg=4 rm=2      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xE3: /* 0Fh 21h E3h MOVd w32(r/m),dr(reg) mod=3 reg=4 rm=3      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xE4: /* 0Fh 21h E4h MOVd w32(r/m),dr(reg) mod=3 reg=4 rm=4      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xE5: /* 0Fh 21h E5h MOVd w32(r/m),dr(reg) mod=3 reg=4 rm=5      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xE6: /* 0Fh 21h E6h MOVd w32(r/m),dr(reg) mod=3 reg=4 rm=6      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xE7: /* 0Fh 21h E7h MOVd w32(r/m),dr(reg) mod=3 reg=4 rm=7      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xE8: /* 0Fh 21h E8h MOVd w32(r/m),dr(reg) mod=3 reg=5 rm=0      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xE9: /* 0Fh 21h E9h MOVd w32(r/m),dr(reg) mod=3 reg=5 rm=1      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xEA: /* 0Fh 21h EAh MOVd w32(r/m),dr(reg) mod=3 reg=5 rm=2      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xEB: /* 0Fh 21h EBh MOVd w32(r/m),dr(reg) mod=3 reg=5 rm=3      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xEC: /* 0Fh 21h ECh MOVd w32(r/m),dr(reg) mod=3 reg=5 rm=4      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xED: /* 0Fh 21h EDh MOVd w32(r/m),dr(reg) mod=3 reg=5 rm=5      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xEE: /* 0Fh 21h EEh MOVd w32(r/m),dr(reg) mod=3 reg=5 rm=6      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xEF: /* 0Fh 21h EFh MOVd w32(r/m),dr(reg) mod=3 reg=5 rm=7      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xF0: /* 0Fh 21h F0h MOVd w32(r/m),dr(reg) mod=3 reg=6 rm=0      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xF1: /* 0Fh 21h F1h MOVd w32(r/m),dr(reg) mod=3 reg=6 rm=1      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xF2: /* 0Fh 21h F2h MOVd w32(r/m),dr(reg) mod=3 reg=6 rm=2      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xF3: /* 0Fh 21h F3h MOVd w32(r/m),dr(reg) mod=3 reg=6 rm=3      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xF4: /* 0Fh 21h F4h MOVd w32(r/m),dr(reg) mod=3 reg=6 rm=4      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xF5: /* 0Fh 21h F5h MOVd w32(r/m),dr(reg) mod=3 reg=6 rm=5      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xF6: /* 0Fh 21h F6h MOVd w32(r/m),dr(reg) mod=3 reg=6 rm=6      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xF7: /* 0Fh 21h F7h MOVd w32(r/m),dr(reg) mod=3 reg=6 rm=7      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xF8: /* 0Fh 21h F8h MOVd w32(r/m),dr(reg) mod=3 reg=7 rm=0      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xF9: /* 0Fh 21h F9h MOVd w32(r/m),dr(reg) mod=3 reg=7 rm=1      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xFA: /* 0Fh 21h FAh MOVd w32(r/m),dr(reg) mod=3 reg=7 rm=2      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xFB: /* 0Fh 21h FBh MOVd w32(r/m),dr(reg) mod=3 reg=7 rm=3      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xFC: /* 0Fh 21h FCh MOVd w32(r/m),dr(reg) mod=3 reg=7 rm=4      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xFD: /* 0Fh 21h FDh MOVd w32(r/m),dr(reg) mod=3 reg=7 rm=5      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xFE: /* 0Fh 21h FEh MOVd w32(r/m),dr(reg) mod=3 reg=7 rm=6      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                    case 0xFF: /* 0Fh 21h FFh MOVd w32(r/m),dr(reg) mod=3 reg=7 rm=7      spec: 0x0F 0x21 mod/reg/rm mod==3 */
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOV%s %s,DR%u",code32?"d":"w",IPDecPrint1632(addr32,mrm,sib,disp,4,RC_REG,"w32"),mrm.reg());
+                        break;
+                    default:
+                        goto _x86decode_illegal_opcode;
+                };
+/* End of opcodes starting with 0Fh 21h */
                 break;
-            case 0x22: /* 0Fh 22h MOVd cr(reg),w32(r/m)      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+            case 0x22: /* 0Fh 22h        spec:  */
                 if (addr32)
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOV%s CR%u,%s",code32?"d":"w",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,4,RC_REG,"w32"));
+/* Opcodes starting with 0Fh 22h */
+                switch (mrm.byte) {
+                    /* opcode 0Fh 22h 00h  not defined */
+                    /* opcode 0Fh 22h 01h  not defined */
+                    /* opcode 0Fh 22h 02h  not defined */
+                    /* opcode 0Fh 22h 03h  not defined */
+                    /* opcode 0Fh 22h 04h  not defined */
+                    /* opcode 0Fh 22h 05h  not defined */
+                    /* opcode 0Fh 22h 06h  not defined */
+                    /* opcode 0Fh 22h 07h  not defined */
+                    /* opcode 0Fh 22h 08h  not defined */
+                    /* opcode 0Fh 22h 09h  not defined */
+                    /* opcode 0Fh 22h 0Ah  not defined */
+                    /* opcode 0Fh 22h 0Bh  not defined */
+                    /* opcode 0Fh 22h 0Ch  not defined */
+                    /* opcode 0Fh 22h 0Dh  not defined */
+                    /* opcode 0Fh 22h 0Eh  not defined */
+                    /* opcode 0Fh 22h 0Fh  not defined */
+                    /* opcode 0Fh 22h 10h  not defined */
+                    /* opcode 0Fh 22h 11h  not defined */
+                    /* opcode 0Fh 22h 12h  not defined */
+                    /* opcode 0Fh 22h 13h  not defined */
+                    /* opcode 0Fh 22h 14h  not defined */
+                    /* opcode 0Fh 22h 15h  not defined */
+                    /* opcode 0Fh 22h 16h  not defined */
+                    /* opcode 0Fh 22h 17h  not defined */
+                    /* opcode 0Fh 22h 18h  not defined */
+                    /* opcode 0Fh 22h 19h  not defined */
+                    /* opcode 0Fh 22h 1Ah  not defined */
+                    /* opcode 0Fh 22h 1Bh  not defined */
+                    /* opcode 0Fh 22h 1Ch  not defined */
+                    /* opcode 0Fh 22h 1Dh  not defined */
+                    /* opcode 0Fh 22h 1Eh  not defined */
+                    /* opcode 0Fh 22h 1Fh  not defined */
+                    /* opcode 0Fh 22h 20h  not defined */
+                    /* opcode 0Fh 22h 21h  not defined */
+                    /* opcode 0Fh 22h 22h  not defined */
+                    /* opcode 0Fh 22h 23h  not defined */
+                    /* opcode 0Fh 22h 24h  not defined */
+                    /* opcode 0Fh 22h 25h  not defined */
+                    /* opcode 0Fh 22h 26h  not defined */
+                    /* opcode 0Fh 22h 27h  not defined */
+                    /* opcode 0Fh 22h 28h  not defined */
+                    /* opcode 0Fh 22h 29h  not defined */
+                    /* opcode 0Fh 22h 2Ah  not defined */
+                    /* opcode 0Fh 22h 2Bh  not defined */
+                    /* opcode 0Fh 22h 2Ch  not defined */
+                    /* opcode 0Fh 22h 2Dh  not defined */
+                    /* opcode 0Fh 22h 2Eh  not defined */
+                    /* opcode 0Fh 22h 2Fh  not defined */
+                    /* opcode 0Fh 22h 30h  not defined */
+                    /* opcode 0Fh 22h 31h  not defined */
+                    /* opcode 0Fh 22h 32h  not defined */
+                    /* opcode 0Fh 22h 33h  not defined */
+                    /* opcode 0Fh 22h 34h  not defined */
+                    /* opcode 0Fh 22h 35h  not defined */
+                    /* opcode 0Fh 22h 36h  not defined */
+                    /* opcode 0Fh 22h 37h  not defined */
+                    /* opcode 0Fh 22h 38h  not defined */
+                    /* opcode 0Fh 22h 39h  not defined */
+                    /* opcode 0Fh 22h 3Ah  not defined */
+                    /* opcode 0Fh 22h 3Bh  not defined */
+                    /* opcode 0Fh 22h 3Ch  not defined */
+                    /* opcode 0Fh 22h 3Dh  not defined */
+                    /* opcode 0Fh 22h 3Eh  not defined */
+                    /* opcode 0Fh 22h 3Fh  not defined */
+                    /* opcode 0Fh 22h 40h  not defined */
+                    /* opcode 0Fh 22h 41h  not defined */
+                    /* opcode 0Fh 22h 42h  not defined */
+                    /* opcode 0Fh 22h 43h  not defined */
+                    /* opcode 0Fh 22h 44h  not defined */
+                    /* opcode 0Fh 22h 45h  not defined */
+                    /* opcode 0Fh 22h 46h  not defined */
+                    /* opcode 0Fh 22h 47h  not defined */
+                    /* opcode 0Fh 22h 48h  not defined */
+                    /* opcode 0Fh 22h 49h  not defined */
+                    /* opcode 0Fh 22h 4Ah  not defined */
+                    /* opcode 0Fh 22h 4Bh  not defined */
+                    /* opcode 0Fh 22h 4Ch  not defined */
+                    /* opcode 0Fh 22h 4Dh  not defined */
+                    /* opcode 0Fh 22h 4Eh  not defined */
+                    /* opcode 0Fh 22h 4Fh  not defined */
+                    /* opcode 0Fh 22h 50h  not defined */
+                    /* opcode 0Fh 22h 51h  not defined */
+                    /* opcode 0Fh 22h 52h  not defined */
+                    /* opcode 0Fh 22h 53h  not defined */
+                    /* opcode 0Fh 22h 54h  not defined */
+                    /* opcode 0Fh 22h 55h  not defined */
+                    /* opcode 0Fh 22h 56h  not defined */
+                    /* opcode 0Fh 22h 57h  not defined */
+                    /* opcode 0Fh 22h 58h  not defined */
+                    /* opcode 0Fh 22h 59h  not defined */
+                    /* opcode 0Fh 22h 5Ah  not defined */
+                    /* opcode 0Fh 22h 5Bh  not defined */
+                    /* opcode 0Fh 22h 5Ch  not defined */
+                    /* opcode 0Fh 22h 5Dh  not defined */
+                    /* opcode 0Fh 22h 5Eh  not defined */
+                    /* opcode 0Fh 22h 5Fh  not defined */
+                    /* opcode 0Fh 22h 60h  not defined */
+                    /* opcode 0Fh 22h 61h  not defined */
+                    /* opcode 0Fh 22h 62h  not defined */
+                    /* opcode 0Fh 22h 63h  not defined */
+                    /* opcode 0Fh 22h 64h  not defined */
+                    /* opcode 0Fh 22h 65h  not defined */
+                    /* opcode 0Fh 22h 66h  not defined */
+                    /* opcode 0Fh 22h 67h  not defined */
+                    /* opcode 0Fh 22h 68h  not defined */
+                    /* opcode 0Fh 22h 69h  not defined */
+                    /* opcode 0Fh 22h 6Ah  not defined */
+                    /* opcode 0Fh 22h 6Bh  not defined */
+                    /* opcode 0Fh 22h 6Ch  not defined */
+                    /* opcode 0Fh 22h 6Dh  not defined */
+                    /* opcode 0Fh 22h 6Eh  not defined */
+                    /* opcode 0Fh 22h 6Fh  not defined */
+                    /* opcode 0Fh 22h 70h  not defined */
+                    /* opcode 0Fh 22h 71h  not defined */
+                    /* opcode 0Fh 22h 72h  not defined */
+                    /* opcode 0Fh 22h 73h  not defined */
+                    /* opcode 0Fh 22h 74h  not defined */
+                    /* opcode 0Fh 22h 75h  not defined */
+                    /* opcode 0Fh 22h 76h  not defined */
+                    /* opcode 0Fh 22h 77h  not defined */
+                    /* opcode 0Fh 22h 78h  not defined */
+                    /* opcode 0Fh 22h 79h  not defined */
+                    /* opcode 0Fh 22h 7Ah  not defined */
+                    /* opcode 0Fh 22h 7Bh  not defined */
+                    /* opcode 0Fh 22h 7Ch  not defined */
+                    /* opcode 0Fh 22h 7Dh  not defined */
+                    /* opcode 0Fh 22h 7Eh  not defined */
+                    /* opcode 0Fh 22h 7Fh  not defined */
+                    /* opcode 0Fh 22h 80h  not defined */
+                    /* opcode 0Fh 22h 81h  not defined */
+                    /* opcode 0Fh 22h 82h  not defined */
+                    /* opcode 0Fh 22h 83h  not defined */
+                    /* opcode 0Fh 22h 84h  not defined */
+                    /* opcode 0Fh 22h 85h  not defined */
+                    /* opcode 0Fh 22h 86h  not defined */
+                    /* opcode 0Fh 22h 87h  not defined */
+                    /* opcode 0Fh 22h 88h  not defined */
+                    /* opcode 0Fh 22h 89h  not defined */
+                    /* opcode 0Fh 22h 8Ah  not defined */
+                    /* opcode 0Fh 22h 8Bh  not defined */
+                    /* opcode 0Fh 22h 8Ch  not defined */
+                    /* opcode 0Fh 22h 8Dh  not defined */
+                    /* opcode 0Fh 22h 8Eh  not defined */
+                    /* opcode 0Fh 22h 8Fh  not defined */
+                    /* opcode 0Fh 22h 90h  not defined */
+                    /* opcode 0Fh 22h 91h  not defined */
+                    /* opcode 0Fh 22h 92h  not defined */
+                    /* opcode 0Fh 22h 93h  not defined */
+                    /* opcode 0Fh 22h 94h  not defined */
+                    /* opcode 0Fh 22h 95h  not defined */
+                    /* opcode 0Fh 22h 96h  not defined */
+                    /* opcode 0Fh 22h 97h  not defined */
+                    /* opcode 0Fh 22h 98h  not defined */
+                    /* opcode 0Fh 22h 99h  not defined */
+                    /* opcode 0Fh 22h 9Ah  not defined */
+                    /* opcode 0Fh 22h 9Bh  not defined */
+                    /* opcode 0Fh 22h 9Ch  not defined */
+                    /* opcode 0Fh 22h 9Dh  not defined */
+                    /* opcode 0Fh 22h 9Eh  not defined */
+                    /* opcode 0Fh 22h 9Fh  not defined */
+                    /* opcode 0Fh 22h A0h  not defined */
+                    /* opcode 0Fh 22h A1h  not defined */
+                    /* opcode 0Fh 22h A2h  not defined */
+                    /* opcode 0Fh 22h A3h  not defined */
+                    /* opcode 0Fh 22h A4h  not defined */
+                    /* opcode 0Fh 22h A5h  not defined */
+                    /* opcode 0Fh 22h A6h  not defined */
+                    /* opcode 0Fh 22h A7h  not defined */
+                    /* opcode 0Fh 22h A8h  not defined */
+                    /* opcode 0Fh 22h A9h  not defined */
+                    /* opcode 0Fh 22h AAh  not defined */
+                    /* opcode 0Fh 22h ABh  not defined */
+                    /* opcode 0Fh 22h ACh  not defined */
+                    /* opcode 0Fh 22h ADh  not defined */
+                    /* opcode 0Fh 22h AEh  not defined */
+                    /* opcode 0Fh 22h AFh  not defined */
+                    /* opcode 0Fh 22h B0h  not defined */
+                    /* opcode 0Fh 22h B1h  not defined */
+                    /* opcode 0Fh 22h B2h  not defined */
+                    /* opcode 0Fh 22h B3h  not defined */
+                    /* opcode 0Fh 22h B4h  not defined */
+                    /* opcode 0Fh 22h B5h  not defined */
+                    /* opcode 0Fh 22h B6h  not defined */
+                    /* opcode 0Fh 22h B7h  not defined */
+                    /* opcode 0Fh 22h B8h  not defined */
+                    /* opcode 0Fh 22h B9h  not defined */
+                    /* opcode 0Fh 22h BAh  not defined */
+                    /* opcode 0Fh 22h BBh  not defined */
+                    /* opcode 0Fh 22h BCh  not defined */
+                    /* opcode 0Fh 22h BDh  not defined */
+                    /* opcode 0Fh 22h BEh  not defined */
+                    /* opcode 0Fh 22h BFh  not defined */
+                    case 0xC0: /* 0Fh 22h C0h MOVd cr(reg),w32(r/m) mod=3 reg=0 rm=0      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xC1: /* 0Fh 22h C1h MOVd cr(reg),w32(r/m) mod=3 reg=0 rm=1      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xC2: /* 0Fh 22h C2h MOVd cr(reg),w32(r/m) mod=3 reg=0 rm=2      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xC3: /* 0Fh 22h C3h MOVd cr(reg),w32(r/m) mod=3 reg=0 rm=3      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xC4: /* 0Fh 22h C4h MOVd cr(reg),w32(r/m) mod=3 reg=0 rm=4      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xC5: /* 0Fh 22h C5h MOVd cr(reg),w32(r/m) mod=3 reg=0 rm=5      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xC6: /* 0Fh 22h C6h MOVd cr(reg),w32(r/m) mod=3 reg=0 rm=6      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xC7: /* 0Fh 22h C7h MOVd cr(reg),w32(r/m) mod=3 reg=0 rm=7      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xC8: /* 0Fh 22h C8h MOVd cr(reg),w32(r/m) mod=3 reg=1 rm=0      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xC9: /* 0Fh 22h C9h MOVd cr(reg),w32(r/m) mod=3 reg=1 rm=1      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xCA: /* 0Fh 22h CAh MOVd cr(reg),w32(r/m) mod=3 reg=1 rm=2      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xCB: /* 0Fh 22h CBh MOVd cr(reg),w32(r/m) mod=3 reg=1 rm=3      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xCC: /* 0Fh 22h CCh MOVd cr(reg),w32(r/m) mod=3 reg=1 rm=4      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xCD: /* 0Fh 22h CDh MOVd cr(reg),w32(r/m) mod=3 reg=1 rm=5      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xCE: /* 0Fh 22h CEh MOVd cr(reg),w32(r/m) mod=3 reg=1 rm=6      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xCF: /* 0Fh 22h CFh MOVd cr(reg),w32(r/m) mod=3 reg=1 rm=7      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xD0: /* 0Fh 22h D0h MOVd cr(reg),w32(r/m) mod=3 reg=2 rm=0      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xD1: /* 0Fh 22h D1h MOVd cr(reg),w32(r/m) mod=3 reg=2 rm=1      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xD2: /* 0Fh 22h D2h MOVd cr(reg),w32(r/m) mod=3 reg=2 rm=2      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xD3: /* 0Fh 22h D3h MOVd cr(reg),w32(r/m) mod=3 reg=2 rm=3      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xD4: /* 0Fh 22h D4h MOVd cr(reg),w32(r/m) mod=3 reg=2 rm=4      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xD5: /* 0Fh 22h D5h MOVd cr(reg),w32(r/m) mod=3 reg=2 rm=5      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xD6: /* 0Fh 22h D6h MOVd cr(reg),w32(r/m) mod=3 reg=2 rm=6      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xD7: /* 0Fh 22h D7h MOVd cr(reg),w32(r/m) mod=3 reg=2 rm=7      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xD8: /* 0Fh 22h D8h MOVd cr(reg),w32(r/m) mod=3 reg=3 rm=0      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xD9: /* 0Fh 22h D9h MOVd cr(reg),w32(r/m) mod=3 reg=3 rm=1      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xDA: /* 0Fh 22h DAh MOVd cr(reg),w32(r/m) mod=3 reg=3 rm=2      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xDB: /* 0Fh 22h DBh MOVd cr(reg),w32(r/m) mod=3 reg=3 rm=3      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xDC: /* 0Fh 22h DCh MOVd cr(reg),w32(r/m) mod=3 reg=3 rm=4      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xDD: /* 0Fh 22h DDh MOVd cr(reg),w32(r/m) mod=3 reg=3 rm=5      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xDE: /* 0Fh 22h DEh MOVd cr(reg),w32(r/m) mod=3 reg=3 rm=6      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xDF: /* 0Fh 22h DFh MOVd cr(reg),w32(r/m) mod=3 reg=3 rm=7      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xE0: /* 0Fh 22h E0h MOVd cr(reg),w32(r/m) mod=3 reg=4 rm=0      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xE1: /* 0Fh 22h E1h MOVd cr(reg),w32(r/m) mod=3 reg=4 rm=1      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xE2: /* 0Fh 22h E2h MOVd cr(reg),w32(r/m) mod=3 reg=4 rm=2      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xE3: /* 0Fh 22h E3h MOVd cr(reg),w32(r/m) mod=3 reg=4 rm=3      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xE4: /* 0Fh 22h E4h MOVd cr(reg),w32(r/m) mod=3 reg=4 rm=4      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xE5: /* 0Fh 22h E5h MOVd cr(reg),w32(r/m) mod=3 reg=4 rm=5      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xE6: /* 0Fh 22h E6h MOVd cr(reg),w32(r/m) mod=3 reg=4 rm=6      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xE7: /* 0Fh 22h E7h MOVd cr(reg),w32(r/m) mod=3 reg=4 rm=7      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xE8: /* 0Fh 22h E8h MOVd cr(reg),w32(r/m) mod=3 reg=5 rm=0      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xE9: /* 0Fh 22h E9h MOVd cr(reg),w32(r/m) mod=3 reg=5 rm=1      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xEA: /* 0Fh 22h EAh MOVd cr(reg),w32(r/m) mod=3 reg=5 rm=2      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xEB: /* 0Fh 22h EBh MOVd cr(reg),w32(r/m) mod=3 reg=5 rm=3      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xEC: /* 0Fh 22h ECh MOVd cr(reg),w32(r/m) mod=3 reg=5 rm=4      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xED: /* 0Fh 22h EDh MOVd cr(reg),w32(r/m) mod=3 reg=5 rm=5      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xEE: /* 0Fh 22h EEh MOVd cr(reg),w32(r/m) mod=3 reg=5 rm=6      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xEF: /* 0Fh 22h EFh MOVd cr(reg),w32(r/m) mod=3 reg=5 rm=7      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xF0: /* 0Fh 22h F0h MOVd cr(reg),w32(r/m) mod=3 reg=6 rm=0      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xF1: /* 0Fh 22h F1h MOVd cr(reg),w32(r/m) mod=3 reg=6 rm=1      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xF2: /* 0Fh 22h F2h MOVd cr(reg),w32(r/m) mod=3 reg=6 rm=2      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xF3: /* 0Fh 22h F3h MOVd cr(reg),w32(r/m) mod=3 reg=6 rm=3      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xF4: /* 0Fh 22h F4h MOVd cr(reg),w32(r/m) mod=3 reg=6 rm=4      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xF5: /* 0Fh 22h F5h MOVd cr(reg),w32(r/m) mod=3 reg=6 rm=5      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xF6: /* 0Fh 22h F6h MOVd cr(reg),w32(r/m) mod=3 reg=6 rm=6      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xF7: /* 0Fh 22h F7h MOVd cr(reg),w32(r/m) mod=3 reg=6 rm=7      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xF8: /* 0Fh 22h F8h MOVd cr(reg),w32(r/m) mod=3 reg=7 rm=0      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xF9: /* 0Fh 22h F9h MOVd cr(reg),w32(r/m) mod=3 reg=7 rm=1      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xFA: /* 0Fh 22h FAh MOVd cr(reg),w32(r/m) mod=3 reg=7 rm=2      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xFB: /* 0Fh 22h FBh MOVd cr(reg),w32(r/m) mod=3 reg=7 rm=3      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xFC: /* 0Fh 22h FCh MOVd cr(reg),w32(r/m) mod=3 reg=7 rm=4      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xFD: /* 0Fh 22h FDh MOVd cr(reg),w32(r/m) mod=3 reg=7 rm=5      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xFE: /* 0Fh 22h FEh MOVd cr(reg),w32(r/m) mod=3 reg=7 rm=6      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                    case 0xFF: /* 0Fh 22h FFh MOVd cr(reg),w32(r/m) mod=3 reg=7 rm=7      spec: 0x0F 0x22 mod/reg/rm mod==3 */
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOV%s CR%u,%s",code32?"d":"w",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,4,RC_REG,"w32"));
+                        break;
+                    default:
+                        goto _x86decode_illegal_opcode;
+                };
+/* End of opcodes starting with 0Fh 22h */
                 break;
-            case 0x23: /* 0Fh 23h MOVd dr(reg),w32(r/m)      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+            case 0x23: /* 0Fh 23h        spec:  */
                 if (addr32)
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOV%s DR%u,%s",code32?"d":"w",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,4,RC_REG,"w32"));
+/* Opcodes starting with 0Fh 23h */
+                switch (mrm.byte) {
+                    /* opcode 0Fh 23h 00h  not defined */
+                    /* opcode 0Fh 23h 01h  not defined */
+                    /* opcode 0Fh 23h 02h  not defined */
+                    /* opcode 0Fh 23h 03h  not defined */
+                    /* opcode 0Fh 23h 04h  not defined */
+                    /* opcode 0Fh 23h 05h  not defined */
+                    /* opcode 0Fh 23h 06h  not defined */
+                    /* opcode 0Fh 23h 07h  not defined */
+                    /* opcode 0Fh 23h 08h  not defined */
+                    /* opcode 0Fh 23h 09h  not defined */
+                    /* opcode 0Fh 23h 0Ah  not defined */
+                    /* opcode 0Fh 23h 0Bh  not defined */
+                    /* opcode 0Fh 23h 0Ch  not defined */
+                    /* opcode 0Fh 23h 0Dh  not defined */
+                    /* opcode 0Fh 23h 0Eh  not defined */
+                    /* opcode 0Fh 23h 0Fh  not defined */
+                    /* opcode 0Fh 23h 10h  not defined */
+                    /* opcode 0Fh 23h 11h  not defined */
+                    /* opcode 0Fh 23h 12h  not defined */
+                    /* opcode 0Fh 23h 13h  not defined */
+                    /* opcode 0Fh 23h 14h  not defined */
+                    /* opcode 0Fh 23h 15h  not defined */
+                    /* opcode 0Fh 23h 16h  not defined */
+                    /* opcode 0Fh 23h 17h  not defined */
+                    /* opcode 0Fh 23h 18h  not defined */
+                    /* opcode 0Fh 23h 19h  not defined */
+                    /* opcode 0Fh 23h 1Ah  not defined */
+                    /* opcode 0Fh 23h 1Bh  not defined */
+                    /* opcode 0Fh 23h 1Ch  not defined */
+                    /* opcode 0Fh 23h 1Dh  not defined */
+                    /* opcode 0Fh 23h 1Eh  not defined */
+                    /* opcode 0Fh 23h 1Fh  not defined */
+                    /* opcode 0Fh 23h 20h  not defined */
+                    /* opcode 0Fh 23h 21h  not defined */
+                    /* opcode 0Fh 23h 22h  not defined */
+                    /* opcode 0Fh 23h 23h  not defined */
+                    /* opcode 0Fh 23h 24h  not defined */
+                    /* opcode 0Fh 23h 25h  not defined */
+                    /* opcode 0Fh 23h 26h  not defined */
+                    /* opcode 0Fh 23h 27h  not defined */
+                    /* opcode 0Fh 23h 28h  not defined */
+                    /* opcode 0Fh 23h 29h  not defined */
+                    /* opcode 0Fh 23h 2Ah  not defined */
+                    /* opcode 0Fh 23h 2Bh  not defined */
+                    /* opcode 0Fh 23h 2Ch  not defined */
+                    /* opcode 0Fh 23h 2Dh  not defined */
+                    /* opcode 0Fh 23h 2Eh  not defined */
+                    /* opcode 0Fh 23h 2Fh  not defined */
+                    /* opcode 0Fh 23h 30h  not defined */
+                    /* opcode 0Fh 23h 31h  not defined */
+                    /* opcode 0Fh 23h 32h  not defined */
+                    /* opcode 0Fh 23h 33h  not defined */
+                    /* opcode 0Fh 23h 34h  not defined */
+                    /* opcode 0Fh 23h 35h  not defined */
+                    /* opcode 0Fh 23h 36h  not defined */
+                    /* opcode 0Fh 23h 37h  not defined */
+                    /* opcode 0Fh 23h 38h  not defined */
+                    /* opcode 0Fh 23h 39h  not defined */
+                    /* opcode 0Fh 23h 3Ah  not defined */
+                    /* opcode 0Fh 23h 3Bh  not defined */
+                    /* opcode 0Fh 23h 3Ch  not defined */
+                    /* opcode 0Fh 23h 3Dh  not defined */
+                    /* opcode 0Fh 23h 3Eh  not defined */
+                    /* opcode 0Fh 23h 3Fh  not defined */
+                    /* opcode 0Fh 23h 40h  not defined */
+                    /* opcode 0Fh 23h 41h  not defined */
+                    /* opcode 0Fh 23h 42h  not defined */
+                    /* opcode 0Fh 23h 43h  not defined */
+                    /* opcode 0Fh 23h 44h  not defined */
+                    /* opcode 0Fh 23h 45h  not defined */
+                    /* opcode 0Fh 23h 46h  not defined */
+                    /* opcode 0Fh 23h 47h  not defined */
+                    /* opcode 0Fh 23h 48h  not defined */
+                    /* opcode 0Fh 23h 49h  not defined */
+                    /* opcode 0Fh 23h 4Ah  not defined */
+                    /* opcode 0Fh 23h 4Bh  not defined */
+                    /* opcode 0Fh 23h 4Ch  not defined */
+                    /* opcode 0Fh 23h 4Dh  not defined */
+                    /* opcode 0Fh 23h 4Eh  not defined */
+                    /* opcode 0Fh 23h 4Fh  not defined */
+                    /* opcode 0Fh 23h 50h  not defined */
+                    /* opcode 0Fh 23h 51h  not defined */
+                    /* opcode 0Fh 23h 52h  not defined */
+                    /* opcode 0Fh 23h 53h  not defined */
+                    /* opcode 0Fh 23h 54h  not defined */
+                    /* opcode 0Fh 23h 55h  not defined */
+                    /* opcode 0Fh 23h 56h  not defined */
+                    /* opcode 0Fh 23h 57h  not defined */
+                    /* opcode 0Fh 23h 58h  not defined */
+                    /* opcode 0Fh 23h 59h  not defined */
+                    /* opcode 0Fh 23h 5Ah  not defined */
+                    /* opcode 0Fh 23h 5Bh  not defined */
+                    /* opcode 0Fh 23h 5Ch  not defined */
+                    /* opcode 0Fh 23h 5Dh  not defined */
+                    /* opcode 0Fh 23h 5Eh  not defined */
+                    /* opcode 0Fh 23h 5Fh  not defined */
+                    /* opcode 0Fh 23h 60h  not defined */
+                    /* opcode 0Fh 23h 61h  not defined */
+                    /* opcode 0Fh 23h 62h  not defined */
+                    /* opcode 0Fh 23h 63h  not defined */
+                    /* opcode 0Fh 23h 64h  not defined */
+                    /* opcode 0Fh 23h 65h  not defined */
+                    /* opcode 0Fh 23h 66h  not defined */
+                    /* opcode 0Fh 23h 67h  not defined */
+                    /* opcode 0Fh 23h 68h  not defined */
+                    /* opcode 0Fh 23h 69h  not defined */
+                    /* opcode 0Fh 23h 6Ah  not defined */
+                    /* opcode 0Fh 23h 6Bh  not defined */
+                    /* opcode 0Fh 23h 6Ch  not defined */
+                    /* opcode 0Fh 23h 6Dh  not defined */
+                    /* opcode 0Fh 23h 6Eh  not defined */
+                    /* opcode 0Fh 23h 6Fh  not defined */
+                    /* opcode 0Fh 23h 70h  not defined */
+                    /* opcode 0Fh 23h 71h  not defined */
+                    /* opcode 0Fh 23h 72h  not defined */
+                    /* opcode 0Fh 23h 73h  not defined */
+                    /* opcode 0Fh 23h 74h  not defined */
+                    /* opcode 0Fh 23h 75h  not defined */
+                    /* opcode 0Fh 23h 76h  not defined */
+                    /* opcode 0Fh 23h 77h  not defined */
+                    /* opcode 0Fh 23h 78h  not defined */
+                    /* opcode 0Fh 23h 79h  not defined */
+                    /* opcode 0Fh 23h 7Ah  not defined */
+                    /* opcode 0Fh 23h 7Bh  not defined */
+                    /* opcode 0Fh 23h 7Ch  not defined */
+                    /* opcode 0Fh 23h 7Dh  not defined */
+                    /* opcode 0Fh 23h 7Eh  not defined */
+                    /* opcode 0Fh 23h 7Fh  not defined */
+                    /* opcode 0Fh 23h 80h  not defined */
+                    /* opcode 0Fh 23h 81h  not defined */
+                    /* opcode 0Fh 23h 82h  not defined */
+                    /* opcode 0Fh 23h 83h  not defined */
+                    /* opcode 0Fh 23h 84h  not defined */
+                    /* opcode 0Fh 23h 85h  not defined */
+                    /* opcode 0Fh 23h 86h  not defined */
+                    /* opcode 0Fh 23h 87h  not defined */
+                    /* opcode 0Fh 23h 88h  not defined */
+                    /* opcode 0Fh 23h 89h  not defined */
+                    /* opcode 0Fh 23h 8Ah  not defined */
+                    /* opcode 0Fh 23h 8Bh  not defined */
+                    /* opcode 0Fh 23h 8Ch  not defined */
+                    /* opcode 0Fh 23h 8Dh  not defined */
+                    /* opcode 0Fh 23h 8Eh  not defined */
+                    /* opcode 0Fh 23h 8Fh  not defined */
+                    /* opcode 0Fh 23h 90h  not defined */
+                    /* opcode 0Fh 23h 91h  not defined */
+                    /* opcode 0Fh 23h 92h  not defined */
+                    /* opcode 0Fh 23h 93h  not defined */
+                    /* opcode 0Fh 23h 94h  not defined */
+                    /* opcode 0Fh 23h 95h  not defined */
+                    /* opcode 0Fh 23h 96h  not defined */
+                    /* opcode 0Fh 23h 97h  not defined */
+                    /* opcode 0Fh 23h 98h  not defined */
+                    /* opcode 0Fh 23h 99h  not defined */
+                    /* opcode 0Fh 23h 9Ah  not defined */
+                    /* opcode 0Fh 23h 9Bh  not defined */
+                    /* opcode 0Fh 23h 9Ch  not defined */
+                    /* opcode 0Fh 23h 9Dh  not defined */
+                    /* opcode 0Fh 23h 9Eh  not defined */
+                    /* opcode 0Fh 23h 9Fh  not defined */
+                    /* opcode 0Fh 23h A0h  not defined */
+                    /* opcode 0Fh 23h A1h  not defined */
+                    /* opcode 0Fh 23h A2h  not defined */
+                    /* opcode 0Fh 23h A3h  not defined */
+                    /* opcode 0Fh 23h A4h  not defined */
+                    /* opcode 0Fh 23h A5h  not defined */
+                    /* opcode 0Fh 23h A6h  not defined */
+                    /* opcode 0Fh 23h A7h  not defined */
+                    /* opcode 0Fh 23h A8h  not defined */
+                    /* opcode 0Fh 23h A9h  not defined */
+                    /* opcode 0Fh 23h AAh  not defined */
+                    /* opcode 0Fh 23h ABh  not defined */
+                    /* opcode 0Fh 23h ACh  not defined */
+                    /* opcode 0Fh 23h ADh  not defined */
+                    /* opcode 0Fh 23h AEh  not defined */
+                    /* opcode 0Fh 23h AFh  not defined */
+                    /* opcode 0Fh 23h B0h  not defined */
+                    /* opcode 0Fh 23h B1h  not defined */
+                    /* opcode 0Fh 23h B2h  not defined */
+                    /* opcode 0Fh 23h B3h  not defined */
+                    /* opcode 0Fh 23h B4h  not defined */
+                    /* opcode 0Fh 23h B5h  not defined */
+                    /* opcode 0Fh 23h B6h  not defined */
+                    /* opcode 0Fh 23h B7h  not defined */
+                    /* opcode 0Fh 23h B8h  not defined */
+                    /* opcode 0Fh 23h B9h  not defined */
+                    /* opcode 0Fh 23h BAh  not defined */
+                    /* opcode 0Fh 23h BBh  not defined */
+                    /* opcode 0Fh 23h BCh  not defined */
+                    /* opcode 0Fh 23h BDh  not defined */
+                    /* opcode 0Fh 23h BEh  not defined */
+                    /* opcode 0Fh 23h BFh  not defined */
+                    case 0xC0: /* 0Fh 23h C0h MOVd dr(reg),w32(r/m) mod=3 reg=0 rm=0      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xC1: /* 0Fh 23h C1h MOVd dr(reg),w32(r/m) mod=3 reg=0 rm=1      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xC2: /* 0Fh 23h C2h MOVd dr(reg),w32(r/m) mod=3 reg=0 rm=2      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xC3: /* 0Fh 23h C3h MOVd dr(reg),w32(r/m) mod=3 reg=0 rm=3      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xC4: /* 0Fh 23h C4h MOVd dr(reg),w32(r/m) mod=3 reg=0 rm=4      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xC5: /* 0Fh 23h C5h MOVd dr(reg),w32(r/m) mod=3 reg=0 rm=5      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xC6: /* 0Fh 23h C6h MOVd dr(reg),w32(r/m) mod=3 reg=0 rm=6      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xC7: /* 0Fh 23h C7h MOVd dr(reg),w32(r/m) mod=3 reg=0 rm=7      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xC8: /* 0Fh 23h C8h MOVd dr(reg),w32(r/m) mod=3 reg=1 rm=0      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xC9: /* 0Fh 23h C9h MOVd dr(reg),w32(r/m) mod=3 reg=1 rm=1      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xCA: /* 0Fh 23h CAh MOVd dr(reg),w32(r/m) mod=3 reg=1 rm=2      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xCB: /* 0Fh 23h CBh MOVd dr(reg),w32(r/m) mod=3 reg=1 rm=3      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xCC: /* 0Fh 23h CCh MOVd dr(reg),w32(r/m) mod=3 reg=1 rm=4      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xCD: /* 0Fh 23h CDh MOVd dr(reg),w32(r/m) mod=3 reg=1 rm=5      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xCE: /* 0Fh 23h CEh MOVd dr(reg),w32(r/m) mod=3 reg=1 rm=6      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xCF: /* 0Fh 23h CFh MOVd dr(reg),w32(r/m) mod=3 reg=1 rm=7      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xD0: /* 0Fh 23h D0h MOVd dr(reg),w32(r/m) mod=3 reg=2 rm=0      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xD1: /* 0Fh 23h D1h MOVd dr(reg),w32(r/m) mod=3 reg=2 rm=1      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xD2: /* 0Fh 23h D2h MOVd dr(reg),w32(r/m) mod=3 reg=2 rm=2      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xD3: /* 0Fh 23h D3h MOVd dr(reg),w32(r/m) mod=3 reg=2 rm=3      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xD4: /* 0Fh 23h D4h MOVd dr(reg),w32(r/m) mod=3 reg=2 rm=4      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xD5: /* 0Fh 23h D5h MOVd dr(reg),w32(r/m) mod=3 reg=2 rm=5      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xD6: /* 0Fh 23h D6h MOVd dr(reg),w32(r/m) mod=3 reg=2 rm=6      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xD7: /* 0Fh 23h D7h MOVd dr(reg),w32(r/m) mod=3 reg=2 rm=7      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xD8: /* 0Fh 23h D8h MOVd dr(reg),w32(r/m) mod=3 reg=3 rm=0      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xD9: /* 0Fh 23h D9h MOVd dr(reg),w32(r/m) mod=3 reg=3 rm=1      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xDA: /* 0Fh 23h DAh MOVd dr(reg),w32(r/m) mod=3 reg=3 rm=2      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xDB: /* 0Fh 23h DBh MOVd dr(reg),w32(r/m) mod=3 reg=3 rm=3      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xDC: /* 0Fh 23h DCh MOVd dr(reg),w32(r/m) mod=3 reg=3 rm=4      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xDD: /* 0Fh 23h DDh MOVd dr(reg),w32(r/m) mod=3 reg=3 rm=5      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xDE: /* 0Fh 23h DEh MOVd dr(reg),w32(r/m) mod=3 reg=3 rm=6      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xDF: /* 0Fh 23h DFh MOVd dr(reg),w32(r/m) mod=3 reg=3 rm=7      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xE0: /* 0Fh 23h E0h MOVd dr(reg),w32(r/m) mod=3 reg=4 rm=0      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xE1: /* 0Fh 23h E1h MOVd dr(reg),w32(r/m) mod=3 reg=4 rm=1      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xE2: /* 0Fh 23h E2h MOVd dr(reg),w32(r/m) mod=3 reg=4 rm=2      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xE3: /* 0Fh 23h E3h MOVd dr(reg),w32(r/m) mod=3 reg=4 rm=3      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xE4: /* 0Fh 23h E4h MOVd dr(reg),w32(r/m) mod=3 reg=4 rm=4      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xE5: /* 0Fh 23h E5h MOVd dr(reg),w32(r/m) mod=3 reg=4 rm=5      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xE6: /* 0Fh 23h E6h MOVd dr(reg),w32(r/m) mod=3 reg=4 rm=6      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xE7: /* 0Fh 23h E7h MOVd dr(reg),w32(r/m) mod=3 reg=4 rm=7      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xE8: /* 0Fh 23h E8h MOVd dr(reg),w32(r/m) mod=3 reg=5 rm=0      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xE9: /* 0Fh 23h E9h MOVd dr(reg),w32(r/m) mod=3 reg=5 rm=1      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xEA: /* 0Fh 23h EAh MOVd dr(reg),w32(r/m) mod=3 reg=5 rm=2      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xEB: /* 0Fh 23h EBh MOVd dr(reg),w32(r/m) mod=3 reg=5 rm=3      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xEC: /* 0Fh 23h ECh MOVd dr(reg),w32(r/m) mod=3 reg=5 rm=4      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xED: /* 0Fh 23h EDh MOVd dr(reg),w32(r/m) mod=3 reg=5 rm=5      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xEE: /* 0Fh 23h EEh MOVd dr(reg),w32(r/m) mod=3 reg=5 rm=6      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xEF: /* 0Fh 23h EFh MOVd dr(reg),w32(r/m) mod=3 reg=5 rm=7      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xF0: /* 0Fh 23h F0h MOVd dr(reg),w32(r/m) mod=3 reg=6 rm=0      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xF1: /* 0Fh 23h F1h MOVd dr(reg),w32(r/m) mod=3 reg=6 rm=1      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xF2: /* 0Fh 23h F2h MOVd dr(reg),w32(r/m) mod=3 reg=6 rm=2      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xF3: /* 0Fh 23h F3h MOVd dr(reg),w32(r/m) mod=3 reg=6 rm=3      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xF4: /* 0Fh 23h F4h MOVd dr(reg),w32(r/m) mod=3 reg=6 rm=4      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xF5: /* 0Fh 23h F5h MOVd dr(reg),w32(r/m) mod=3 reg=6 rm=5      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xF6: /* 0Fh 23h F6h MOVd dr(reg),w32(r/m) mod=3 reg=6 rm=6      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xF7: /* 0Fh 23h F7h MOVd dr(reg),w32(r/m) mod=3 reg=6 rm=7      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xF8: /* 0Fh 23h F8h MOVd dr(reg),w32(r/m) mod=3 reg=7 rm=0      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xF9: /* 0Fh 23h F9h MOVd dr(reg),w32(r/m) mod=3 reg=7 rm=1      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xFA: /* 0Fh 23h FAh MOVd dr(reg),w32(r/m) mod=3 reg=7 rm=2      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xFB: /* 0Fh 23h FBh MOVd dr(reg),w32(r/m) mod=3 reg=7 rm=3      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xFC: /* 0Fh 23h FCh MOVd dr(reg),w32(r/m) mod=3 reg=7 rm=4      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xFD: /* 0Fh 23h FDh MOVd dr(reg),w32(r/m) mod=3 reg=7 rm=5      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xFE: /* 0Fh 23h FEh MOVd dr(reg),w32(r/m) mod=3 reg=7 rm=6      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                    case 0xFF: /* 0Fh 23h FFh MOVd dr(reg),w32(r/m) mod=3 reg=7 rm=7      spec: 0x0F 0x23 mod/reg/rm mod==3 */
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOV%s DR%u,%s",code32?"d":"w",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,4,RC_REG,"w32"));
+                        break;
+                    default:
+                        goto _x86decode_illegal_opcode;
+                };
+/* End of opcodes starting with 0Fh 23h */
                 break;
             /* opcode 0Fh 24h  not defined */
             /* opcode 0Fh 25h  not defined */
@@ -2441,12 +4549,275 @@ switch (op) {
     case 0x61: /* 61h POPAd       spec: 0x61 */
         ipw += snprintf(ipw,(size_t)(ipwf-ipw),"POPA%s",code32?"d":"w");
         break;
-    case 0x62: /* 62h BOUNDd w(reg),w(r/m)      spec: 0x62 mod/reg/rm mod!=3 */
+    case 0x62: /* 62h        spec:  */
         if (addr32)
             IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
         else
             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"BOUND%s %s,%s",code32?"d":"w",CPUregsN[code32?4:2][mrm.reg()],IPDecPrint1632(addr32,mrm,sib,disp,code32?4:2,RC_REG,code32?"d":"w"));
+/* Opcodes starting with 62h */
+        switch (mrm.byte) {
+            case 0x00: /* 62h 00h BOUNDd w(reg),w(r/m) mod=0 reg=0 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x01: /* 62h 01h BOUNDd w(reg),w(r/m) mod=0 reg=0 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x02: /* 62h 02h BOUNDd w(reg),w(r/m) mod=0 reg=0 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x03: /* 62h 03h BOUNDd w(reg),w(r/m) mod=0 reg=0 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x04: /* 62h 04h BOUNDd w(reg),w(r/m) mod=0 reg=0 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x05: /* 62h 05h BOUNDd w(reg),w(r/m) mod=0 reg=0 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x06: /* 62h 06h BOUNDd w(reg),w(r/m) mod=0 reg=0 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x07: /* 62h 07h BOUNDd w(reg),w(r/m) mod=0 reg=0 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x08: /* 62h 08h BOUNDd w(reg),w(r/m) mod=0 reg=1 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x09: /* 62h 09h BOUNDd w(reg),w(r/m) mod=0 reg=1 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x0A: /* 62h 0Ah BOUNDd w(reg),w(r/m) mod=0 reg=1 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x0B: /* 62h 0Bh BOUNDd w(reg),w(r/m) mod=0 reg=1 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x0C: /* 62h 0Ch BOUNDd w(reg),w(r/m) mod=0 reg=1 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x0D: /* 62h 0Dh BOUNDd w(reg),w(r/m) mod=0 reg=1 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x0E: /* 62h 0Eh BOUNDd w(reg),w(r/m) mod=0 reg=1 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x0F: /* 62h 0Fh BOUNDd w(reg),w(r/m) mod=0 reg=1 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x10: /* 62h 10h BOUNDd w(reg),w(r/m) mod=0 reg=2 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x11: /* 62h 11h BOUNDd w(reg),w(r/m) mod=0 reg=2 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x12: /* 62h 12h BOUNDd w(reg),w(r/m) mod=0 reg=2 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x13: /* 62h 13h BOUNDd w(reg),w(r/m) mod=0 reg=2 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x14: /* 62h 14h BOUNDd w(reg),w(r/m) mod=0 reg=2 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x15: /* 62h 15h BOUNDd w(reg),w(r/m) mod=0 reg=2 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x16: /* 62h 16h BOUNDd w(reg),w(r/m) mod=0 reg=2 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x17: /* 62h 17h BOUNDd w(reg),w(r/m) mod=0 reg=2 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x18: /* 62h 18h BOUNDd w(reg),w(r/m) mod=0 reg=3 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x19: /* 62h 19h BOUNDd w(reg),w(r/m) mod=0 reg=3 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x1A: /* 62h 1Ah BOUNDd w(reg),w(r/m) mod=0 reg=3 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x1B: /* 62h 1Bh BOUNDd w(reg),w(r/m) mod=0 reg=3 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x1C: /* 62h 1Ch BOUNDd w(reg),w(r/m) mod=0 reg=3 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x1D: /* 62h 1Dh BOUNDd w(reg),w(r/m) mod=0 reg=3 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x1E: /* 62h 1Eh BOUNDd w(reg),w(r/m) mod=0 reg=3 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x1F: /* 62h 1Fh BOUNDd w(reg),w(r/m) mod=0 reg=3 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x20: /* 62h 20h BOUNDd w(reg),w(r/m) mod=0 reg=4 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x21: /* 62h 21h BOUNDd w(reg),w(r/m) mod=0 reg=4 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x22: /* 62h 22h BOUNDd w(reg),w(r/m) mod=0 reg=4 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x23: /* 62h 23h BOUNDd w(reg),w(r/m) mod=0 reg=4 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x24: /* 62h 24h BOUNDd w(reg),w(r/m) mod=0 reg=4 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x25: /* 62h 25h BOUNDd w(reg),w(r/m) mod=0 reg=4 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x26: /* 62h 26h BOUNDd w(reg),w(r/m) mod=0 reg=4 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x27: /* 62h 27h BOUNDd w(reg),w(r/m) mod=0 reg=4 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x28: /* 62h 28h BOUNDd w(reg),w(r/m) mod=0 reg=5 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x29: /* 62h 29h BOUNDd w(reg),w(r/m) mod=0 reg=5 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x2A: /* 62h 2Ah BOUNDd w(reg),w(r/m) mod=0 reg=5 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x2B: /* 62h 2Bh BOUNDd w(reg),w(r/m) mod=0 reg=5 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x2C: /* 62h 2Ch BOUNDd w(reg),w(r/m) mod=0 reg=5 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x2D: /* 62h 2Dh BOUNDd w(reg),w(r/m) mod=0 reg=5 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x2E: /* 62h 2Eh BOUNDd w(reg),w(r/m) mod=0 reg=5 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x2F: /* 62h 2Fh BOUNDd w(reg),w(r/m) mod=0 reg=5 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x30: /* 62h 30h BOUNDd w(reg),w(r/m) mod=0 reg=6 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x31: /* 62h 31h BOUNDd w(reg),w(r/m) mod=0 reg=6 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x32: /* 62h 32h BOUNDd w(reg),w(r/m) mod=0 reg=6 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x33: /* 62h 33h BOUNDd w(reg),w(r/m) mod=0 reg=6 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x34: /* 62h 34h BOUNDd w(reg),w(r/m) mod=0 reg=6 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x35: /* 62h 35h BOUNDd w(reg),w(r/m) mod=0 reg=6 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x36: /* 62h 36h BOUNDd w(reg),w(r/m) mod=0 reg=6 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x37: /* 62h 37h BOUNDd w(reg),w(r/m) mod=0 reg=6 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x38: /* 62h 38h BOUNDd w(reg),w(r/m) mod=0 reg=7 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x39: /* 62h 39h BOUNDd w(reg),w(r/m) mod=0 reg=7 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x3A: /* 62h 3Ah BOUNDd w(reg),w(r/m) mod=0 reg=7 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x3B: /* 62h 3Bh BOUNDd w(reg),w(r/m) mod=0 reg=7 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x3C: /* 62h 3Ch BOUNDd w(reg),w(r/m) mod=0 reg=7 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x3D: /* 62h 3Dh BOUNDd w(reg),w(r/m) mod=0 reg=7 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x3E: /* 62h 3Eh BOUNDd w(reg),w(r/m) mod=0 reg=7 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x3F: /* 62h 3Fh BOUNDd w(reg),w(r/m) mod=0 reg=7 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x40: /* 62h 40h BOUNDd w(reg),w(r/m) mod=1 reg=0 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x41: /* 62h 41h BOUNDd w(reg),w(r/m) mod=1 reg=0 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x42: /* 62h 42h BOUNDd w(reg),w(r/m) mod=1 reg=0 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x43: /* 62h 43h BOUNDd w(reg),w(r/m) mod=1 reg=0 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x44: /* 62h 44h BOUNDd w(reg),w(r/m) mod=1 reg=0 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x45: /* 62h 45h BOUNDd w(reg),w(r/m) mod=1 reg=0 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x46: /* 62h 46h BOUNDd w(reg),w(r/m) mod=1 reg=0 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x47: /* 62h 47h BOUNDd w(reg),w(r/m) mod=1 reg=0 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x48: /* 62h 48h BOUNDd w(reg),w(r/m) mod=1 reg=1 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x49: /* 62h 49h BOUNDd w(reg),w(r/m) mod=1 reg=1 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x4A: /* 62h 4Ah BOUNDd w(reg),w(r/m) mod=1 reg=1 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x4B: /* 62h 4Bh BOUNDd w(reg),w(r/m) mod=1 reg=1 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x4C: /* 62h 4Ch BOUNDd w(reg),w(r/m) mod=1 reg=1 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x4D: /* 62h 4Dh BOUNDd w(reg),w(r/m) mod=1 reg=1 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x4E: /* 62h 4Eh BOUNDd w(reg),w(r/m) mod=1 reg=1 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x4F: /* 62h 4Fh BOUNDd w(reg),w(r/m) mod=1 reg=1 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x50: /* 62h 50h BOUNDd w(reg),w(r/m) mod=1 reg=2 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x51: /* 62h 51h BOUNDd w(reg),w(r/m) mod=1 reg=2 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x52: /* 62h 52h BOUNDd w(reg),w(r/m) mod=1 reg=2 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x53: /* 62h 53h BOUNDd w(reg),w(r/m) mod=1 reg=2 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x54: /* 62h 54h BOUNDd w(reg),w(r/m) mod=1 reg=2 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x55: /* 62h 55h BOUNDd w(reg),w(r/m) mod=1 reg=2 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x56: /* 62h 56h BOUNDd w(reg),w(r/m) mod=1 reg=2 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x57: /* 62h 57h BOUNDd w(reg),w(r/m) mod=1 reg=2 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x58: /* 62h 58h BOUNDd w(reg),w(r/m) mod=1 reg=3 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x59: /* 62h 59h BOUNDd w(reg),w(r/m) mod=1 reg=3 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x5A: /* 62h 5Ah BOUNDd w(reg),w(r/m) mod=1 reg=3 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x5B: /* 62h 5Bh BOUNDd w(reg),w(r/m) mod=1 reg=3 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x5C: /* 62h 5Ch BOUNDd w(reg),w(r/m) mod=1 reg=3 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x5D: /* 62h 5Dh BOUNDd w(reg),w(r/m) mod=1 reg=3 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x5E: /* 62h 5Eh BOUNDd w(reg),w(r/m) mod=1 reg=3 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x5F: /* 62h 5Fh BOUNDd w(reg),w(r/m) mod=1 reg=3 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x60: /* 62h 60h BOUNDd w(reg),w(r/m) mod=1 reg=4 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x61: /* 62h 61h BOUNDd w(reg),w(r/m) mod=1 reg=4 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x62: /* 62h 62h BOUNDd w(reg),w(r/m) mod=1 reg=4 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x63: /* 62h 63h BOUNDd w(reg),w(r/m) mod=1 reg=4 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x64: /* 62h 64h BOUNDd w(reg),w(r/m) mod=1 reg=4 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x65: /* 62h 65h BOUNDd w(reg),w(r/m) mod=1 reg=4 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x66: /* 62h 66h BOUNDd w(reg),w(r/m) mod=1 reg=4 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x67: /* 62h 67h BOUNDd w(reg),w(r/m) mod=1 reg=4 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x68: /* 62h 68h BOUNDd w(reg),w(r/m) mod=1 reg=5 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x69: /* 62h 69h BOUNDd w(reg),w(r/m) mod=1 reg=5 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x6A: /* 62h 6Ah BOUNDd w(reg),w(r/m) mod=1 reg=5 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x6B: /* 62h 6Bh BOUNDd w(reg),w(r/m) mod=1 reg=5 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x6C: /* 62h 6Ch BOUNDd w(reg),w(r/m) mod=1 reg=5 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x6D: /* 62h 6Dh BOUNDd w(reg),w(r/m) mod=1 reg=5 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x6E: /* 62h 6Eh BOUNDd w(reg),w(r/m) mod=1 reg=5 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x6F: /* 62h 6Fh BOUNDd w(reg),w(r/m) mod=1 reg=5 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x70: /* 62h 70h BOUNDd w(reg),w(r/m) mod=1 reg=6 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x71: /* 62h 71h BOUNDd w(reg),w(r/m) mod=1 reg=6 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x72: /* 62h 72h BOUNDd w(reg),w(r/m) mod=1 reg=6 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x73: /* 62h 73h BOUNDd w(reg),w(r/m) mod=1 reg=6 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x74: /* 62h 74h BOUNDd w(reg),w(r/m) mod=1 reg=6 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x75: /* 62h 75h BOUNDd w(reg),w(r/m) mod=1 reg=6 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x76: /* 62h 76h BOUNDd w(reg),w(r/m) mod=1 reg=6 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x77: /* 62h 77h BOUNDd w(reg),w(r/m) mod=1 reg=6 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x78: /* 62h 78h BOUNDd w(reg),w(r/m) mod=1 reg=7 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x79: /* 62h 79h BOUNDd w(reg),w(r/m) mod=1 reg=7 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x7A: /* 62h 7Ah BOUNDd w(reg),w(r/m) mod=1 reg=7 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x7B: /* 62h 7Bh BOUNDd w(reg),w(r/m) mod=1 reg=7 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x7C: /* 62h 7Ch BOUNDd w(reg),w(r/m) mod=1 reg=7 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x7D: /* 62h 7Dh BOUNDd w(reg),w(r/m) mod=1 reg=7 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x7E: /* 62h 7Eh BOUNDd w(reg),w(r/m) mod=1 reg=7 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x7F: /* 62h 7Fh BOUNDd w(reg),w(r/m) mod=1 reg=7 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x80: /* 62h 80h BOUNDd w(reg),w(r/m) mod=2 reg=0 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x81: /* 62h 81h BOUNDd w(reg),w(r/m) mod=2 reg=0 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x82: /* 62h 82h BOUNDd w(reg),w(r/m) mod=2 reg=0 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x83: /* 62h 83h BOUNDd w(reg),w(r/m) mod=2 reg=0 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x84: /* 62h 84h BOUNDd w(reg),w(r/m) mod=2 reg=0 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x85: /* 62h 85h BOUNDd w(reg),w(r/m) mod=2 reg=0 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x86: /* 62h 86h BOUNDd w(reg),w(r/m) mod=2 reg=0 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x87: /* 62h 87h BOUNDd w(reg),w(r/m) mod=2 reg=0 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x88: /* 62h 88h BOUNDd w(reg),w(r/m) mod=2 reg=1 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x89: /* 62h 89h BOUNDd w(reg),w(r/m) mod=2 reg=1 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x8A: /* 62h 8Ah BOUNDd w(reg),w(r/m) mod=2 reg=1 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x8B: /* 62h 8Bh BOUNDd w(reg),w(r/m) mod=2 reg=1 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x8C: /* 62h 8Ch BOUNDd w(reg),w(r/m) mod=2 reg=1 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x8D: /* 62h 8Dh BOUNDd w(reg),w(r/m) mod=2 reg=1 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x8E: /* 62h 8Eh BOUNDd w(reg),w(r/m) mod=2 reg=1 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x8F: /* 62h 8Fh BOUNDd w(reg),w(r/m) mod=2 reg=1 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x90: /* 62h 90h BOUNDd w(reg),w(r/m) mod=2 reg=2 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x91: /* 62h 91h BOUNDd w(reg),w(r/m) mod=2 reg=2 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x92: /* 62h 92h BOUNDd w(reg),w(r/m) mod=2 reg=2 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x93: /* 62h 93h BOUNDd w(reg),w(r/m) mod=2 reg=2 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x94: /* 62h 94h BOUNDd w(reg),w(r/m) mod=2 reg=2 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x95: /* 62h 95h BOUNDd w(reg),w(r/m) mod=2 reg=2 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x96: /* 62h 96h BOUNDd w(reg),w(r/m) mod=2 reg=2 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x97: /* 62h 97h BOUNDd w(reg),w(r/m) mod=2 reg=2 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x98: /* 62h 98h BOUNDd w(reg),w(r/m) mod=2 reg=3 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x99: /* 62h 99h BOUNDd w(reg),w(r/m) mod=2 reg=3 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x9A: /* 62h 9Ah BOUNDd w(reg),w(r/m) mod=2 reg=3 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x9B: /* 62h 9Bh BOUNDd w(reg),w(r/m) mod=2 reg=3 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x9C: /* 62h 9Ch BOUNDd w(reg),w(r/m) mod=2 reg=3 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x9D: /* 62h 9Dh BOUNDd w(reg),w(r/m) mod=2 reg=3 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x9E: /* 62h 9Eh BOUNDd w(reg),w(r/m) mod=2 reg=3 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0x9F: /* 62h 9Fh BOUNDd w(reg),w(r/m) mod=2 reg=3 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xA0: /* 62h A0h BOUNDd w(reg),w(r/m) mod=2 reg=4 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xA1: /* 62h A1h BOUNDd w(reg),w(r/m) mod=2 reg=4 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xA2: /* 62h A2h BOUNDd w(reg),w(r/m) mod=2 reg=4 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xA3: /* 62h A3h BOUNDd w(reg),w(r/m) mod=2 reg=4 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xA4: /* 62h A4h BOUNDd w(reg),w(r/m) mod=2 reg=4 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xA5: /* 62h A5h BOUNDd w(reg),w(r/m) mod=2 reg=4 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xA6: /* 62h A6h BOUNDd w(reg),w(r/m) mod=2 reg=4 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xA7: /* 62h A7h BOUNDd w(reg),w(r/m) mod=2 reg=4 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xA8: /* 62h A8h BOUNDd w(reg),w(r/m) mod=2 reg=5 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xA9: /* 62h A9h BOUNDd w(reg),w(r/m) mod=2 reg=5 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xAA: /* 62h AAh BOUNDd w(reg),w(r/m) mod=2 reg=5 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xAB: /* 62h ABh BOUNDd w(reg),w(r/m) mod=2 reg=5 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xAC: /* 62h ACh BOUNDd w(reg),w(r/m) mod=2 reg=5 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xAD: /* 62h ADh BOUNDd w(reg),w(r/m) mod=2 reg=5 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xAE: /* 62h AEh BOUNDd w(reg),w(r/m) mod=2 reg=5 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xAF: /* 62h AFh BOUNDd w(reg),w(r/m) mod=2 reg=5 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xB0: /* 62h B0h BOUNDd w(reg),w(r/m) mod=2 reg=6 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xB1: /* 62h B1h BOUNDd w(reg),w(r/m) mod=2 reg=6 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xB2: /* 62h B2h BOUNDd w(reg),w(r/m) mod=2 reg=6 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xB3: /* 62h B3h BOUNDd w(reg),w(r/m) mod=2 reg=6 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xB4: /* 62h B4h BOUNDd w(reg),w(r/m) mod=2 reg=6 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xB5: /* 62h B5h BOUNDd w(reg),w(r/m) mod=2 reg=6 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xB6: /* 62h B6h BOUNDd w(reg),w(r/m) mod=2 reg=6 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xB7: /* 62h B7h BOUNDd w(reg),w(r/m) mod=2 reg=6 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xB8: /* 62h B8h BOUNDd w(reg),w(r/m) mod=2 reg=7 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xB9: /* 62h B9h BOUNDd w(reg),w(r/m) mod=2 reg=7 rm=1      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xBA: /* 62h BAh BOUNDd w(reg),w(r/m) mod=2 reg=7 rm=2      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xBB: /* 62h BBh BOUNDd w(reg),w(r/m) mod=2 reg=7 rm=3      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xBC: /* 62h BCh BOUNDd w(reg),w(r/m) mod=2 reg=7 rm=4      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xBD: /* 62h BDh BOUNDd w(reg),w(r/m) mod=2 reg=7 rm=5      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xBE: /* 62h BEh BOUNDd w(reg),w(r/m) mod=2 reg=7 rm=6      spec: 0x62 mod/reg/rm mod!=3 */
+            case 0xBF: /* 62h BFh BOUNDd w(reg),w(r/m) mod=2 reg=7 rm=7      spec: 0x62 mod/reg/rm mod!=3 */
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"BOUND%s %s,%s",code32?"d":"w",CPUregsN[code32?4:2][mrm.reg()],IPDecPrint1632(addr32,mrm,sib,disp,code32?4:2,RC_REG,code32?"d":"w"));
+                break;
+            /* opcode 62h C0h  not defined */
+            /* opcode 62h C1h  not defined */
+            /* opcode 62h C2h  not defined */
+            /* opcode 62h C3h  not defined */
+            /* opcode 62h C4h  not defined */
+            /* opcode 62h C5h  not defined */
+            /* opcode 62h C6h  not defined */
+            /* opcode 62h C7h  not defined */
+            /* opcode 62h C8h  not defined */
+            /* opcode 62h C9h  not defined */
+            /* opcode 62h CAh  not defined */
+            /* opcode 62h CBh  not defined */
+            /* opcode 62h CCh  not defined */
+            /* opcode 62h CDh  not defined */
+            /* opcode 62h CEh  not defined */
+            /* opcode 62h CFh  not defined */
+            /* opcode 62h D0h  not defined */
+            /* opcode 62h D1h  not defined */
+            /* opcode 62h D2h  not defined */
+            /* opcode 62h D3h  not defined */
+            /* opcode 62h D4h  not defined */
+            /* opcode 62h D5h  not defined */
+            /* opcode 62h D6h  not defined */
+            /* opcode 62h D7h  not defined */
+            /* opcode 62h D8h  not defined */
+            /* opcode 62h D9h  not defined */
+            /* opcode 62h DAh  not defined */
+            /* opcode 62h DBh  not defined */
+            /* opcode 62h DCh  not defined */
+            /* opcode 62h DDh  not defined */
+            /* opcode 62h DEh  not defined */
+            /* opcode 62h DFh  not defined */
+            /* opcode 62h E0h  not defined */
+            /* opcode 62h E1h  not defined */
+            /* opcode 62h E2h  not defined */
+            /* opcode 62h E3h  not defined */
+            /* opcode 62h E4h  not defined */
+            /* opcode 62h E5h  not defined */
+            /* opcode 62h E6h  not defined */
+            /* opcode 62h E7h  not defined */
+            /* opcode 62h E8h  not defined */
+            /* opcode 62h E9h  not defined */
+            /* opcode 62h EAh  not defined */
+            /* opcode 62h EBh  not defined */
+            /* opcode 62h ECh  not defined */
+            /* opcode 62h EDh  not defined */
+            /* opcode 62h EEh  not defined */
+            /* opcode 62h EFh  not defined */
+            /* opcode 62h F0h  not defined */
+            /* opcode 62h F1h  not defined */
+            /* opcode 62h F2h  not defined */
+            /* opcode 62h F3h  not defined */
+            /* opcode 62h F4h  not defined */
+            /* opcode 62h F5h  not defined */
+            /* opcode 62h F6h  not defined */
+            /* opcode 62h F7h  not defined */
+            /* opcode 62h F8h  not defined */
+            /* opcode 62h F9h  not defined */
+            /* opcode 62h FAh  not defined */
+            /* opcode 62h FBh  not defined */
+            /* opcode 62h FCh  not defined */
+            /* opcode 62h FDh  not defined */
+            /* opcode 62h FEh  not defined */
+            /* opcode 62h FFh  not defined */
+            default:
+                goto _x86decode_illegal_opcode;
+        };
+/* End of opcodes starting with 62h */
         break;
     case 0x63: /* 63h ARPLd w(r/m),w(reg)      spec: 0x63 mod/reg/rm */
         if (addr32)
