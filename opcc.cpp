@@ -809,13 +809,16 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
     // the common pattern in Intel opcodes seems to be that if a mandatory prefix
     // is present, it's followed by 0x0F. so enforce that. lift this restriction
     // later if that turns out to be false.
+    //
+    // UPDATE: Guess which instruction violates this rule? The "PAUSE" instruction!
+    //         Now we allow either 0x0F or 0x90.
     if (st.mprefix != 0) {
         if (st.op == 0) {
             fprintf(stderr,"Mandatory prefix requires static opcode (range not allowed)\n");
             return false;
         }
-        else if (st.ops[0] != 0x0F) {
-            fprintf(stderr,"Mandatory prefix requires first opcode byte to be 0x0F\n");
+        else if (st.ops[0] != 0x0F && st.ops[0] != 0x90) {
+            fprintf(stderr,"Mandatory prefix requires first opcode byte to be 0x0F or 0x90\n");
             return false;
         }
     }
@@ -1322,6 +1325,8 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
         if (submap->isprefix) {
             /* don't generate sub-switch for prefixes, UNLESS a mandatory prefix. */
             if (submap->mprefix_exists_here) {
+                bool emit=false;
+
                 /* oh joy. well, to make this work, we have to fetch the next byte into var "op".
                  * if the next byte is not 0x0F, then we have to goto to a label at the start of
                  * opcode parsing just after a fetch so the prefix decoding can work as normal.
@@ -1331,23 +1336,50 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                 fprintf(out_fp,"%s        /* Mandatory prefix detection */\n",indent_str.c_str());
                 fprintf(out_fp,"%s        op=IPFB();\n",indent_str.c_str());
 
-                if (generic1632)
-                    fprintf(out_fp,"%s        if (op != 0x0F) goto _x86decode_begin_code%u_addr%u_opcode_parse__generic;\n",
-                        indent_str.c_str(),codewidth,addrwidth);
-                else
-                    fprintf(out_fp,"%s        if (op != 0x0F) goto _x86decode_begin_code%u_addr%u_opcode_parse_;\n",
-                        indent_str.c_str(),codewidth,addrwidth);
+                {
+                    OpByte *submap2 = submap->opmap[0x0F];
+                    if (submap2 != NULL && submap2->opmap_valid) {
+                        assert(opbaselen < 14);
+                        if (opbaselen != 0) memcpy(tmp,opbase,opbaselen);
+                        tmp[opbaselen] = op;
+                        tmp[opbaselen+1] = 0x0F;
 
-                assert(opbaselen < 14);
-                if (opbaselen != 0) memcpy(tmp,opbase,opbaselen);
-                tmp[opbaselen] = op;
-                tmp[opbaselen+1] = 0x0F;
+                        fprintf(out_fp,"%s        %sif (op == 0x0F) {\n",indent_str.c_str(),emit?"else ":"");
 
-                /* next down to 0x0F, because we just checked that */
-                OpByte *submap2 = submap->opmap[0x0F];
-                if (submap2 != NULL && submap2->opmap_valid) {
-                    outcode_gen(codewidth,addrwidth,tmp,opbaselen+2,*submap2,indent+2U,OUTCODE_GEN_ALREADY_IPFB|OUTCODE_GEN_DEFAULT_0Fh);
-                    emit_prefix_goto = true;
+                        outcode_gen(codewidth,addrwidth,tmp,opbaselen+2,*submap2,indent+3U,OUTCODE_GEN_ALREADY_IPFB|OUTCODE_GEN_DEFAULT_0Fh);
+                        emit_prefix_goto = true;
+                        emit = true;
+
+                        fprintf(out_fp,"%s        }\n",indent_str.c_str());
+                    }
+                }
+
+                {
+                    OpByte *submap2 = submap->opmap[0x90];
+                    if (submap2 != NULL && !submap2->opmap_valid) {
+                        string indent2 = indent_str + "    ";
+                        assert(opbaselen < 14);
+                        if (opbaselen != 0) memcpy(tmp,opbase,opbaselen);
+                        tmp[opbaselen] = op;
+                        tmp[opbaselen+1] = 0x90;
+
+                        fprintf(out_fp,"%s        %sif (op == 0x90) {\n",indent_str.c_str(),emit?"else ":"");
+
+                        opcode_gen_case_statement(codewidth,addrwidth,tmp,opbaselen+2,map,indent+1U,indent2,submap2,0x90,0);
+                        emit_prefix_goto = true;
+                        emit = true;
+
+                        fprintf(out_fp,"%s        }\n",indent_str.c_str());
+                    }
+                }
+
+                if (emit) {
+                    if (generic1632)
+                        fprintf(out_fp,"%s        else goto _x86decode_begin_code%u_addr%u_opcode_parse__generic;\n",
+                            indent_str.c_str(),codewidth,addrwidth);
+                    else
+                        fprintf(out_fp,"%s        else goto _x86decode_begin_code%u_addr%u_opcode_parse_;\n",
+                            indent_str.c_str(),codewidth,addrwidth);
                 }
             }
         }
