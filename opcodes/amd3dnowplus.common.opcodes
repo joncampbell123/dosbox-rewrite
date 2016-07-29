@@ -1,0 +1,8 @@
+
+; 3DNow+
+opcode 0x0F 0x0F mod/reg/rm amd3dnow(0x1C):                                 "PF2IW" mmx(reg),mmx(r/m)
+opcode 0x0F 0x0F mod/reg/rm amd3dnow(0x0C):                                 "PI2FW" mmx(reg),mmx(r/m)
+opcode 0x0F 0x0F mod/reg/rm amd3dnow(0x8A):                                 "PFNACC" mmx(reg),mmx(r/m)
+opcode 0x0F 0x0F mod/reg/rm amd3dnow(0x8E):                                 "PFPNACC" mmx(reg),mmx(r/m)
+opcode 0x0F 0x0F mod/reg/rm amd3dnow(0xBB):                                 "PSWAPD" mmx(reg),mmx(r/m)
+

@@ -50,6 +50,8 @@ void IPDec_Cyrix6x86MX(x86_offset_t ip);
 void IPDec_Cyrix6x86MX_generic(x86_offset_t ip);
 void IPDec_AMDK6r2(x86_offset_t ip);
 void IPDec_AMDK6r2_generic(x86_offset_t ip);
+void IPDec_AMDAthlon(x86_offset_t ip);
+void IPDec_AMDAthlon_generic(x86_offset_t ip);
 
 x86_offset_t            exe_ip = 0;
 unsigned char*          exe_ip_ptr = NULL;
@@ -146,6 +148,10 @@ int main(int argc,char **argv) {
                     IPDec = IPDec_AMDK6r2;
                 else if (!strcmp(a,"amdk6r2g"))
                     IPDec = IPDec_AMDK6r2_generic;
+                else if (!strcmp(a,"amdathlon"))
+                    IPDec = IPDec_AMDAthlon;
+                else if (!strcmp(a,"amdathlong"))
+                    IPDec = IPDec_AMDAthlon_generic;
                 else {
                     fprintf(stderr,"Unknown CPU\n");
                     return 1;
