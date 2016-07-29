@@ -1,6 +1,6 @@
 ; AMD 3dnow! test instruction set
 
-    cpu     Athlon FPU Undoc Obsolete "3DNow"
+    cpu     Athlon FPU Undoc Obsolete "3DNow" mmx sse
 
     bits    16
     org     100h
@@ -5513,4 +5513,37 @@ jmp2:
     pfpnacc     mm0,[si]
     pswapd      mm0,mm1
     pswapd      mm0,[si]
+
+    cpu         P3 mmx sse
+
+; 3DNow+ MMX extensions
+    maskmovq    mm0,mm1
+    movntq      [si],mm0
+    pavgb       mm0,mm1
+    pavgb       mm0,[si]
+    pavgw       mm0,mm1
+    pavgw       mm0,[si]
+    pmaxsw      mm0,mm1
+    pmaxsw      mm0,[si]
+    pmaxub      mm0,mm1
+    pmaxub      mm0,[si]
+    pminsw      mm0,mm1
+    pminsw      mm0,[si]
+    pminub      mm0,mm1
+    pminub      mm0,[si]
+    pmulhuw     mm0,mm1
+    pmulhuw     mm0,[si]
+    psadbw      mm0,mm1
+    psadbw      mm0,[si]
+    pshufw      mm0,mm1,1
+    pshufw      mm0,[si],1
+    pextrw      eax,mm0,1
+    pinsrw      mm0,eax,1
+    pinsrw      mm0,[si],1
+    pmovmskb    eax,mm0
+    prefetchnta [si]
+    prefetcht0  [si]
+    prefetcht1  [si]
+    prefetcht2  [si]
+    sfence
 

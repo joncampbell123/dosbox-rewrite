@@ -17,6 +17,7 @@
 #include "opcodes/intelPentium2.common.opcodes"
 #include "opcodes/amd3dnow.common.opcodes"
 #include "opcodes/amd3dnowplus.common.opcodes"
+#include "opcodes/amd3dnowplusMMXSSE.common.opcodes"
 
 #include "opcodes/intel8087.common.opcodes"
 #include "opcodes/intel80287.common.opcodes"
