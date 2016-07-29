@@ -12,13 +12,10 @@ dosboxxr_lib_text_libtext_a_SOURCES = dosboxxr/lib/text/chomp.c
 
 noinst_PROGRAMS = \
 	opcc$(EXEEXT) \
-	empty \
 	cpudetect \
 	cpumodregrm \
 	cpumemreftypes \
 	tools/cpudec/cpudec86
-
-empty_SOURCES = empty.cpp
 
 tools_cpudec_cpudec86_SOURCES = \
 	tools/cpudec/cpudec86.cpp \
