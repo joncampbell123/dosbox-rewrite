@@ -5463,4 +5463,42 @@ jmp2:
     pi2fd       mm0,[si]
     pf2id       mm0,mm1
     pf2id       mm0,[si]
+    pfcmpge     mm0,mm1
+    pfcmpge     mm0,[si]
+    pfcmpgt     mm0,mm1
+    pfcmpgt     mm0,[si]
+    pfcmpeq     mm0,mm1
+    pfcmpeq     mm0,[si]
+    pfacc       mm0,mm1
+    pfacc       mm0,[si]
+    pfadd       mm0,mm1
+    pfadd       mm0,[si]
+    pfsub       mm0,mm1
+    pfsub       mm0,[si]
+    pfsubr      mm0,mm1
+    pfsubr      mm0,[si]
+    pfmin       mm0,mm1
+    pfmin       mm0,[si]
+    pfmax       mm0,mm1
+    pfmax       mm0,[si]
+    pfmul       mm0,mm1
+    pfmul       mm0,[si]
+    pfrcp       mm0,mm1
+    pfrcp       mm0,[si]
+    pfrsqrt     mm0,mm1
+    pfrsqrt     mm0,[si]
+    pfrcpit1    mm0,mm1
+    pfrcpit1    mm0,[si]
+    pfrsqit1    mm0,mm1
+    pfrsqit1    mm0,[si]
+    pfrcpit2    mm0,mm1
+    pfrcpit2    mm0,[si]
+    pavgusb     mm0,mm1
+    pavgusb     mm0,[si]
+; YASM won't let me encode these?
+    db          0x0F,0x0F,0xC1,0xB7     ; pmulhrw     mm0,mm1
+    db          0x0F,0x0F,0x00,0xB7     ; pmulhrw     mm0,[bx+si]
+    femms
+    prefetch    [si]
+    prefetchw   [si]
 

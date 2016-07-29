@@ -2,4 +2,26 @@
 ; Base 3DNow! instructions
 opcode 0x0F 0x0F mod/reg/rm amd3dnow(0x0D):                                 "PI2FD" mmx(reg),mmx(r/m)
 opcode 0x0F 0x0F mod/reg/rm amd3dnow(0x1D):                                 "PF2ID" mmx(reg),mmx(r/m)
+opcode 0x0F 0x0F mod/reg/rm amd3dnow(0x90):                                 "PFCMPGE" mmx(reg),mmx(r/m)
+opcode 0x0F 0x0F mod/reg/rm amd3dnow(0xA0):                                 "PFCMPGT" mmx(reg),mmx(r/m)
+opcode 0x0F 0x0F mod/reg/rm amd3dnow(0xB0):                                 "PFCMPEQ" mmx(reg),mmx(r/m)
+opcode 0x0F 0x0F mod/reg/rm amd3dnow(0x94):                                 "PFMIN" mmx(reg),mmx(r/m)
+opcode 0x0F 0x0F mod/reg/rm amd3dnow(0xA4):                                 "PFMAX" mmx(reg),mmx(r/m)
+opcode 0x0F 0x0F mod/reg/rm amd3dnow(0xBF):                                 "PAVGUSB" mmx(reg),mmx(r/m)
+opcode 0x0F 0x0F mod/reg/rm amd3dnow(0x9E):                                 "PFADD" mmx(reg),mmx(r/m)
+opcode 0x0F 0x0F mod/reg/rm amd3dnow(0x9A):                                 "PFSUB" mmx(reg),mmx(r/m)
+opcode 0x0F 0x0F mod/reg/rm amd3dnow(0xAA):                                 "PFSUBR" mmx(reg),mmx(r/m)
+opcode 0x0F 0x0F mod/reg/rm amd3dnow(0xAE):                                 "PFACC" mmx(reg),mmx(r/m)
+opcode 0x0F 0x0F mod/reg/rm amd3dnow(0x96):                                 "PFRCP" mmx(reg),mmx(r/m)
+opcode 0x0F 0x0F mod/reg/rm amd3dnow(0x97):                                 "PFRSQRT" mmx(reg),mmx(r/m)
+opcode 0x0F 0x0F mod/reg/rm amd3dnow(0xB4):                                 "PFMUL" mmx(reg),mmx(r/m)
+opcode 0x0F 0x0F mod/reg/rm amd3dnow(0xA6):                                 "PFRCPIT1" mmx(reg),mmx(r/m)
+opcode 0x0F 0x0F mod/reg/rm amd3dnow(0xA7):                                 "PFRSQIT1" mmx(reg),mmx(r/m)
+opcode 0x0F 0x0F mod/reg/rm amd3dnow(0xB6):                                 "PFRCPIT2" mmx(reg),mmx(r/m)
+opcode 0x0F 0x0F mod/reg/rm amd3dnow(0xB7):                                 "PMULHRW" mmx(reg),mmx(r/m)
+
+; non-3dnow encoding
+opcode 0x0F 0x0E:                                                           "FEMMS"
+opcode 0x0F 0x0D mod/reg/rm mod!=3 /0:                                      "PREFETCH" b(r/m)
+opcode 0x0F 0x0D mod/reg/rm mod!=3 /1:                                      "PREFETCHW" b(r/m)
 
