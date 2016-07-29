@@ -12,8 +12,8 @@ dosboxxr_lib_text_libtext_a_SOURCES = dosboxxr/lib/text/chomp.c
 
 noinst_PROGRAMS = \
 	opcc$(EXEEXT) \
-	cpumodregrm \
-	cpumemreftypes \
+	test/cpumodregrm \
+	test/cpumemreftypes \
 	tools/cpudec/cpudec86 \
 	tools/cpudetect/cpudetect
 
@@ -54,7 +54,7 @@ tools_cpudec_cpudec86_SOURCES = \
 	tools/cpudec/cpudec86_amdathlon.cpp \
 	tools/cpudec/cpudec86_amdathlon_generic.cpp
 
-tools_cpudec_cpudec86_CXXFLAGS = $(AM_CXXFLAGS)
+tools_cpudec_cpudec86_CXXFLAGS = $(AM_CXXFLAGS) -Itools/cpudec
 tools_cpudec_cpudec86_DEPENDENCIES = \
 	dosboxxr/lib/cpu/libcpu.a $(OPCC_H)
 tools_cpudec_cpudec86_LDADD = \
@@ -69,15 +69,15 @@ tools_cpudetect_cpudetect_LDADD = \
 	dosboxxr/lib/hostcpudetect/libhostcpudetect.a \
 	dosboxxr/lib/text/libtext.a
 
-cpumodregrm_SOURCES = cpumodregrm.cpp
-cpumodregrm_CXXFLAGS = $(AM_CXXFLAGS)
-cpumodregrm_DEPENDENCIES =
-cpumodregrm_LDADD =
+test_cpumodregrm_SOURCES = test/cpumodregrm.cpp
+test_cpumodregrm_CXXFLAGS = $(AM_CXXFLAGS)
+test_cpumodregrm_DEPENDENCIES =
+test_cpumodregrm_LDADD =
 
-cpumemreftypes_SOURCES = cpumemreftypes.cpp
-cpumemreftypes_CXXFLAGS = $(AM_CXXFLAGS)
-cpumemreftypes_DEPENDENCIES =
-cpumemreftypes_LDADD =
+test_cpumemreftypes_SOURCES = test/cpumemreftypes.cpp
+test_cpumemreftypes_CXXFLAGS = $(AM_CXXFLAGS)
+test_cpumemreftypes_DEPENDENCIES =
+test_cpumemreftypes_LDADD =
 
 OPCC_H = \
 	dosboxxr/lib/cpu/core/intel8088.c16.a16.decom.h \
