@@ -16,50 +16,51 @@ noinst_PROGRAMS = \
 	cpudetect \
 	cpumodregrm \
 	cpumemreftypes \
-	cpudec86
+	tools/cpudec/cpudec86
 
 empty_SOURCES = empty.cpp
 
-cpudec86_SOURCES = cpudec86.cpp \
-	cpudec86_8086.cpp \
-	cpudec86_necv20.cpp \
-	cpudec86_80186.cpp \
-	cpudec86_80286.cpp \
-	cpudec86_80386.cpp \
-	cpudec86_80386_generic.cpp \
-	cpudec86_80386early.cpp \
-	cpudec86_80386early_generic.cpp \
-	cpudec86_80486early.cpp \
-	cpudec86_80486early_generic.cpp \
-	cpudec86_80486.cpp \
-	cpudec86_80486_generic.cpp \
-	cpudec86_pentium.cpp \
-	cpudec86_pentium_generic.cpp \
-	cpudec86_pentiumpro.cpp \
-	cpudec86_pentiumpro_generic.cpp \
-	cpudec86_pentiummmx.cpp \
-	cpudec86_pentiummmx_generic.cpp \
-	cpudec86_pentiumprommx.cpp \
-	cpudec86_pentiumprommx_generic.cpp \
-	cpudec86_cyrix6x86mx.cpp \
-	cpudec86_cyrix6x86mx_generic.cpp \
-	cpudec86_pentium2.cpp \
-	cpudec86_pentium2_generic.cpp \
-	cpudec86_pentium3.cpp \
-	cpudec86_pentium3_generic.cpp \
-	cpudec86_pentium4.cpp \
-	cpudec86_pentium4_generic.cpp \
-	cpudec86_pentium4prescott.cpp \
-	cpudec86_pentium4prescott_generic.cpp \
-	cpudec86_amdk6r2.cpp \
-	cpudec86_amdk6r2_generic.cpp \
-	cpudec86_amdathlon.cpp \
-	cpudec86_amdathlon_generic.cpp
+tools_cpudec_cpudec86_SOURCES = \
+	tools/cpudec/cpudec86.cpp \
+	tools/cpudec/cpudec86_8086.cpp \
+	tools/cpudec/cpudec86_necv20.cpp \
+	tools/cpudec/cpudec86_80186.cpp \
+	tools/cpudec/cpudec86_80286.cpp \
+	tools/cpudec/cpudec86_80386.cpp \
+	tools/cpudec/cpudec86_80386_generic.cpp \
+	tools/cpudec/cpudec86_80386early.cpp \
+	tools/cpudec/cpudec86_80386early_generic.cpp \
+	tools/cpudec/cpudec86_80486early.cpp \
+	tools/cpudec/cpudec86_80486early_generic.cpp \
+	tools/cpudec/cpudec86_80486.cpp \
+	tools/cpudec/cpudec86_80486_generic.cpp \
+	tools/cpudec/cpudec86_pentium.cpp \
+	tools/cpudec/cpudec86_pentium_generic.cpp \
+	tools/cpudec/cpudec86_pentiumpro.cpp \
+	tools/cpudec/cpudec86_pentiumpro_generic.cpp \
+	tools/cpudec/cpudec86_pentiummmx.cpp \
+	tools/cpudec/cpudec86_pentiummmx_generic.cpp \
+	tools/cpudec/cpudec86_pentiumprommx.cpp \
+	tools/cpudec/cpudec86_pentiumprommx_generic.cpp \
+	tools/cpudec/cpudec86_cyrix6x86mx.cpp \
+	tools/cpudec/cpudec86_cyrix6x86mx_generic.cpp \
+	tools/cpudec/cpudec86_pentium2.cpp \
+	tools/cpudec/cpudec86_pentium2_generic.cpp \
+	tools/cpudec/cpudec86_pentium3.cpp \
+	tools/cpudec/cpudec86_pentium3_generic.cpp \
+	tools/cpudec/cpudec86_pentium4.cpp \
+	tools/cpudec/cpudec86_pentium4_generic.cpp \
+	tools/cpudec/cpudec86_pentium4prescott.cpp \
+	tools/cpudec/cpudec86_pentium4prescott_generic.cpp \
+	tools/cpudec/cpudec86_amdk6r2.cpp \
+	tools/cpudec/cpudec86_amdk6r2_generic.cpp \
+	tools/cpudec/cpudec86_amdathlon.cpp \
+	tools/cpudec/cpudec86_amdathlon_generic.cpp
 
-cpudec86_CXXFLAGS = $(AM_CXXFLAGS)
-cpudec86_DEPENDENCIES = \
+tools_cpudec_cpudec86_CXXFLAGS = $(AM_CXXFLAGS)
+tools_cpudec_cpudec86_DEPENDENCIES = \
 	dosboxxr/lib/cpu/libcpu.a $(OPCC_H)
-cpudec86_LDADD = \
+tools_cpudec_cpudec86_LDADD = \
 	dosboxxr/lib/cpu/libcpu.a
 
 cpudetect_SOURCES = cpudetect.cpp
