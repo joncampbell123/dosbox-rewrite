@@ -1,0 +1,15 @@
+
+; Cyrix Extended MMX
+opcode 0x0F 0x50 mod/reg/rm:                    "PAVEB" mmx(reg),mmx(r/m)
+opcode 0x0F 0x51 mod/reg/rm:                    "PADDSIW" mmx(reg),mmx(r/m)
+opcode 0x0F 0x52 mod/reg/rm:                    "PMAGW" mmx(reg),mmx(r/m)
+opcode 0x0F 0x54 mod/reg/rm:                    "PDISTIB" mmx(reg),mmx(r/m)
+opcode 0x0F 0x55 mod/reg/rm:                    "PSUBSIW" mmx(reg),mmx(r/m)
+opcode 0x0F 0x58 mod/reg/rm:                    "PMVZB" mmx(reg),mmx(r/m)
+opcode 0x0F 0x59 mod/reg/rm:                    "PMULHRW" mmx(reg),mmx(r/m)
+opcode 0x0F 0x5A mod/reg/rm:                    "PMVNZB" mmx(reg),mmx(r/m)
+opcode 0x0F 0x5B mod/reg/rm:                    "PMVLZB" mmx(reg),mmx(r/m)
+opcode 0x0F 0x5C mod/reg/rm:                    "PMVGEZB" mmx(reg),mmx(r/m)
+opcode 0x0F 0x5D mod/reg/rm:                    "PMULHRIW" mmx(reg),mmx(r/m)
+opcode 0x0F 0x5E mod/reg/rm mod!=3:             "PMACHRIW" mmx(reg),mmx(r/m)
+

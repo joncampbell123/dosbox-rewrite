@@ -46,6 +46,8 @@ void IPDec_Pentium4(x86_offset_t ip);
 void IPDec_Pentium4_generic(x86_offset_t ip);
 void IPDec_Pentium4Prescott(x86_offset_t ip);
 void IPDec_Pentium4Prescott_generic(x86_offset_t ip);
+void IPDec_Cyrix6x86MX(x86_offset_t ip);
+void IPDec_Cyrix6x86MX_generic(x86_offset_t ip);
 
 x86_offset_t            exe_ip = 0;
 unsigned char*          exe_ip_ptr = NULL;
@@ -134,6 +136,10 @@ int main(int argc,char **argv) {
                     IPDec = IPDec_Pentium4Prescott_generic;
                 else if (!strcmp(a,"necv20") || !strcmp(a,"v20"))
                     IPDec = IPDec_necv20;
+                else if (!strcmp(a,"cyrix6x86mx") || !strcmp(a,"6x86mx"))
+                    IPDec = IPDec_Cyrix6x86MX;
+                else if (!strcmp(a,"cyrix6x86mxg") || !strcmp(a,"6x86mxg"))
+                    IPDec = IPDec_Cyrix6x86MX_generic;
                 else {
                     fprintf(stderr,"Unknown CPU\n");
                     return 1;

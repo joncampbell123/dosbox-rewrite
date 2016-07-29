@@ -41,6 +41,8 @@ cpudec86_SOURCES = cpudec86.cpp \
 	cpudec86_pentiummmx_generic.cpp \
 	cpudec86_pentiumprommx.cpp \
 	cpudec86_pentiumprommx_generic.cpp \
+	cpudec86_cyrix6x86mx.cpp \
+	cpudec86_cyrix6x86mx_generic.cpp \
 	cpudec86_pentium2.cpp \
 	cpudec86_pentium2_generic.cpp \
 	cpudec86_pentium3.cpp \
@@ -116,6 +118,10 @@ OPCC_H = \
 	dosboxxr/lib/cpu/core/intelPentiumProMMX.cxx.axx.decom.h \
 	dosboxxr/lib/cpu/core/intelPentiumProMMX.c32.a32.decom.h \
 	\
+	dosboxxr/lib/cpu/core/cyrix6x86MX.c16.a16.decom.h \
+	dosboxxr/lib/cpu/core/cyrix6x86MX.cxx.axx.decom.h \
+	dosboxxr/lib/cpu/core/cyrix6x86MX.c32.a32.decom.h \
+	\
 	dosboxxr/lib/cpu/core/intelPentium2.c16.a16.decom.h \
 	dosboxxr/lib/cpu/core/intelPentium2.cxx.axx.decom.h \
 	dosboxxr/lib/cpu/core/intelPentium2.c32.a32.decom.h \
@@ -159,6 +165,9 @@ test5pro.bin: test5pro.asm
 test5mmx.bin: test5mmx.asm
 	yasm -o $@ -f bin $<
 
+testc6mx.bin: testc6mx.asm
+	yasm -o $@ -f bin $<
+
 testp2.bin: testp2.asm
 	yasm -o $@ -f bin $<
 
@@ -174,7 +183,7 @@ testp4p.bin: testp4p.asm
 testv20.bin: testv20.asm
 	yasm -o $@ -f bin $<
 
-test-bins: test1.bin test2.bin test3.bin test3e.bin test4.bin test4e.bin test5.bin test5pro.bin test5mmx.bin testp2.bin testp3.bin testp4.bin testp4p.bin testv20.bin
+test-bins: test1.bin test2.bin test3.bin test3e.bin test4.bin test4e.bin test5.bin test5pro.bin test5mmx.bin testp2.bin testp3.bin testp4.bin testp4p.bin testv20.bin testc6mx.bin
 
 opcc$(EXEEXT): opcc.cpp
 	$(BUILD_CXX) -o $@ $<
@@ -270,6 +279,15 @@ dosboxxr/lib/cpu/core/intelPentiumProMMX.cxx.axx.decom.h: dosboxxr/lib/cpu/core/
 	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentiumProMMX.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
 dosboxxr/lib/cpu/core/intelPentiumProMMX.c32.a32.decom.h: dosboxxr/lib/cpu/core/intelPentiumProMMX.opcodes.p opcc$(EXEEXT)
 	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentiumProMMX.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars
+
+dosboxxr/lib/cpu/core/cyrix6x86MX.opcodes.p: opcodes/cyrix6x86MX.opcodes
+	$(BUILD_CPP) -I. opcodes/cyrix6x86MX.opcodes -o $@
+dosboxxr/lib/cpu/core/cyrix6x86MX.c16.a16.decom.h: dosboxxr/lib/cpu/core/cyrix6x86MX.opcodes.p opcc$(EXEEXT)
+	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/cyrix6x86MX.opcodes.p -o $@ -m decompile -c 16 -a 16 -c32vars
+dosboxxr/lib/cpu/core/cyrix6x86MX.cxx.axx.decom.h: dosboxxr/lib/cpu/core/cyrix6x86MX.opcodes.p opcc$(EXEEXT)
+	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/cyrix6x86MX.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
+dosboxxr/lib/cpu/core/cyrix6x86MX.c32.a32.decom.h: dosboxxr/lib/cpu/core/cyrix6x86MX.opcodes.p opcc$(EXEEXT)
+	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/cyrix6x86MX.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars
 
 dosboxxr/lib/cpu/core/intelPentium2.opcodes.p: opcodes/intelPentium2.opcodes
 	$(BUILD_CPP) -I. opcodes/intelPentium2.opcodes -o $@
