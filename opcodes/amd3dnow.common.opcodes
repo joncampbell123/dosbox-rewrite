@@ -1,0 +1,5 @@
+
+; Base 3DNow! instructions
+opcode 0x0F 0x0F mod/reg/rm amd3dnow(0x0D):                                 "PI2FD" mmx(reg),mmx(r/m)
+opcode 0x0F 0x0F mod/reg/rm amd3dnow(0x1D):                                 "PF2ID" mmx(reg),mmx(r/m)
+

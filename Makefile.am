@@ -50,7 +50,9 @@ cpudec86_SOURCES = cpudec86.cpp \
 	cpudec86_pentium4.cpp \
 	cpudec86_pentium4_generic.cpp \
 	cpudec86_pentium4prescott.cpp \
-	cpudec86_pentium4prescott_generic.cpp
+	cpudec86_pentium4prescott_generic.cpp \
+	cpudec86_amdk6r2.cpp \
+	cpudec86_amdk6r2_generic.cpp
 
 cpudec86_CXXFLAGS = $(AM_CXXFLAGS)
 cpudec86_DEPENDENCIES = \
@@ -136,7 +138,11 @@ OPCC_H = \
 	\
 	dosboxxr/lib/cpu/core/intelPentium4Prescott.c16.a16.decom.h \
 	dosboxxr/lib/cpu/core/intelPentium4Prescott.cxx.axx.decom.h \
-	dosboxxr/lib/cpu/core/intelPentium4Prescott.c32.a32.decom.h
+	dosboxxr/lib/cpu/core/intelPentium4Prescott.c32.a32.decom.h \
+	\
+	dosboxxr/lib/cpu/core/amdk6r2.c16.a16.decom.h \
+	dosboxxr/lib/cpu/core/amdk6r2.cxx.axx.decom.h \
+	dosboxxr/lib/cpu/core/amdk6r2.c32.a32.decom.h
 
 test1.bin: test1.asm
 	yasm -o $@ -f bin $<
@@ -183,7 +189,10 @@ testp4p.bin: testp4p.asm
 testv20.bin: testv20.asm
 	yasm -o $@ -f bin $<
 
-test-bins: test1.bin test2.bin test3.bin test3e.bin test4.bin test4e.bin test5.bin test5pro.bin test5mmx.bin testp2.bin testp3.bin testp4.bin testp4p.bin testv20.bin testc6mx.bin
+test3dn1.bin: test3dn1.asm
+	yasm -o $@ -f bin $<
+
+test-bins: test1.bin test2.bin test3.bin test3e.bin test4.bin test4e.bin test5.bin test5pro.bin test5mmx.bin testp2.bin testp3.bin testp4.bin testp4p.bin testv20.bin testc6mx.bin test3dn1.bin
 
 opcc$(EXEEXT): opcc.cpp
 	$(BUILD_CXX) -o $@ $<
@@ -324,6 +333,15 @@ dosboxxr/lib/cpu/core/intelPentium4Prescott.cxx.axx.decom.h: dosboxxr/lib/cpu/co
 	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentium4Prescott.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
 dosboxxr/lib/cpu/core/intelPentium4Prescott.c32.a32.decom.h: dosboxxr/lib/cpu/core/intelPentium4Prescott.opcodes.p opcc$(EXEEXT)
 	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentium4Prescott.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars
+
+dosboxxr/lib/cpu/core/amdk6r2.opcodes.p: opcodes/amdk6r2.opcodes
+	$(BUILD_CPP) -I. opcodes/amdk6r2.opcodes -o $@
+dosboxxr/lib/cpu/core/amdk6r2.c16.a16.decom.h: dosboxxr/lib/cpu/core/amdk6r2.opcodes.p opcc$(EXEEXT)
+	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/amdk6r2.opcodes.p -o $@ -m decompile -c 16 -a 16 -c32vars
+dosboxxr/lib/cpu/core/amdk6r2.cxx.axx.decom.h: dosboxxr/lib/cpu/core/amdk6r2.opcodes.p opcc$(EXEEXT)
+	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/amdk6r2.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
+dosboxxr/lib/cpu/core/amdk6r2.c32.a32.decom.h: dosboxxr/lib/cpu/core/amdk6r2.opcodes.p opcc$(EXEEXT)
+	./opcc$(EXEEXT) -i dosboxxr/lib/cpu/core/amdk6r2.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars
 
 # grrr how do I get automake to run opcc first before compiling other parts?
 opcodes: $(OPCC_H)

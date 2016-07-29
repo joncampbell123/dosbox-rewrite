@@ -289,7 +289,7 @@ class OpByte {
 public:
     OpByte() : isprefix(false), segoverride(OPSEG_NONE), modregrm(false), reg_from_opcode(false),
         already(false), addrsz32(false), opsz32(false), suffix(OPSUFFIX_NONE), opmap_valid(false),
-        mprefix(0), mprefix_exists_here(false) {
+        mprefix(0), mprefix_exists_here(false), amd3dnowsuffix(-1), amd3dnow_here(false) {
     }
     ~OpByte() {
         free_opmap();
@@ -336,6 +336,8 @@ public:
         if (immarg != r.immarg) return false;
         if (disparg != r.disparg) return false;
         if (mprefix_exists_here != r.mprefix_exists_here) return false;
+        if (amd3dnowsuffix != r.amd3dnowsuffix) return false;
+        if (amd3dnow_here != r.amd3dnow_here) return false;
         if (opmap_valid != r.opmap_valid) return false;
         if (addrsz32 != r.addrsz32) return false;
         if (mprefix != r.mprefix) return false;
@@ -380,7 +382,9 @@ public:
     vector<enum opccArgs> immarg;
     vector<OpCodeDisplayArg> disparg;
     uint8_t         mprefix;    // mandatory prefix
+    int             amd3dnowsuffix; // AMD 3DNow! suffix byte (after mod/reg/rm)
     bool            mprefix_exists_here;
+    bool            amd3dnow_here;
 public:
     OpByte*         opmap[256];
     bool            opmap_valid;
@@ -404,6 +408,7 @@ public:
         reg_from_opcode = false; // if set, lowest 3 bits of opcode define REG field
         segoverride = OPSEG_NONE;
         suffix = OPSUFFIX_NONE;
+        amd3dnowsuffix = -1;
         is_prefix = false; // opcode is prefix, changes decode state then starts another opcode
         mod_not_3 = false;
         mod_is_3 = false;
@@ -427,6 +432,7 @@ public:
     enum opccSeg            segoverride;
     enum opccSuffix         suffix;     // suffix to name
     uint8_t                 mprefix;    // mandatory prefix
+    int                     amd3dnowsuffix; // AMD 3DNow! suffix byte (after mod/reg/rm)
 public:
     string                  format_str;
     string                  name;
@@ -461,6 +467,13 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
         assert(map != NULL);
     }
 
+    if (st.amd3dnowsuffix >= 0) {
+        map->amd3dnow_here = true;
+        map->init_opcode(st.amd3dnowsuffix);
+        map = map->opmap[st.amd3dnowsuffix];
+        assert(map != NULL);
+    }
+
     if (st.modregrm) {
         map->modregrm = st.modregrm;
         if (st.mrm_reg_match >= 0) {
@@ -481,6 +494,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
                     submap->disparg = st.disparg;
                     submap->format_str = st.format_str;
                     submap->segoverride = st.segoverride;
+                    submap->amd3dnowsuffix = st.amd3dnowsuffix;
                     submap->isprefix = st.is_prefix;
                     submap->opspec = st.opspec;
                     submap->immarg = st.immarg;
@@ -511,6 +525,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
                         submap->disparg = st.disparg;
                         submap->format_str = st.format_str;
                         submap->segoverride = st.segoverride;
+                        submap->amd3dnowsuffix = st.amd3dnowsuffix;
                         submap->isprefix = st.is_prefix;
                         submap->opspec = st.opspec;
                         submap->immarg = st.immarg;
@@ -527,6 +542,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
             map->opsz32 = st.opsz32;
             map->addrsz32 = st.addrsz32;
             map->segoverride = st.segoverride;
+            map->amd3dnowsuffix = st.amd3dnowsuffix;
             map->format_str = st.format_str;
             map->isprefix = st.is_prefix;
             map->disparg = st.disparg;
@@ -541,6 +557,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
         map->opsz32 = st.opsz32;
         map->addrsz32 = st.addrsz32;
         map->reg_from_opcode = st.reg_from_opcode;
+        map->amd3dnowsuffix = st.amd3dnowsuffix;
         map->segoverride = st.segoverride;
         map->format_str = st.format_str;
         map->isprefix = st.is_prefix;
@@ -599,6 +616,19 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
             }
 
             st.ops[st.op++] = (unsigned char)b;
+        }
+        else if (!strncmp(s,"amd3dnow(",9)) {
+            if (st.amd3dnowsuffix >= 0) {
+                fprintf(stderr,"AMD 3DNow! suffix can only be defined once\n");
+                return false;
+            }
+
+            s += 9;
+            st.amd3dnowsuffix = (int)strtoul(s,&s,0);
+            if (st.amd3dnowsuffix > 255) {
+                fprintf(stderr,"AMD 3DNow! suffix out of range\n");
+                return false;
+            }
         }
         else if (!strncmp(s,"mprefix(",8)) {
             if (st.mprefix != 0) {
@@ -804,6 +834,22 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
     if (!(st.mprefix == 0x00 || st.mprefix == 0x66 || st.mprefix == 0xF2 || st.mprefix == 0xF3)) {
         fprintf(stderr,"Invalid mandatory prefix. Must be 0x66, 0xF2, or 0xF3\n");
         return false;
+    }
+
+    // AMD 3Dnow! suffixes are only valid if the opcode is 0x0F 0x0F mod/reg/rm
+    if (st.amd3dnowsuffix >= 0) {
+        if (st.op < 2) {
+            fprintf(stderr,"AMD 3Dnow! opcodes need to be at least 2 opcodes\n");
+            return false;
+        }
+        if (memcmp(st.ops,"\x0F\x0F",2)) {
+            fprintf(stderr,"AMD 3Dnow! opcodes must start with 0x0F 0x0F\n");
+            return false;
+        }
+        if (!st.modregrm) {
+            fprintf(stderr,"AMD 3Dnow! opcodes must start with 0x0F 0x0F mod/reg/rm\n");
+            return false;
+        }
     }
 
     // the common pattern in Intel opcodes seems to be that if a mandatory prefix
@@ -1240,6 +1286,7 @@ bool parse_opcodelist(void) {
 
 #define OUTCODE_GEN_ALREADY_IPFB        (1U << 0)
 #define OUTCODE_GEN_DEFAULT_0Fh         (1U << 1)
+#define OUTCODE_GEN_SKIP_MRM            (1U << 2)
 
 void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const uint8_t *opbase,const size_t opbaselen,OpByte &map,const unsigned int indent=0,const unsigned int flags=0);
 
@@ -1250,15 +1297,17 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
     bool emit_prefix_goto = false;
     unsigned int immc = 0;
 
-    if (submap->modregrm) {
-        if (generic1632) {
-            fprintf(out_fp,"%s        if (addr32)\n",indent_str.c_str());
-            fprintf(out_fp,"%s            IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);\n",indent_str.c_str());
-            fprintf(out_fp,"%s        else\n",indent_str.c_str());
-            fprintf(out_fp,"%s            IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);\n",indent_str.c_str());
-        }
-        else {
-            fprintf(out_fp,"%s        IPFB_mrm_sib_disp_a%u_read(mrm,sib,disp);\n",indent_str.c_str(),addrwidth);
+    if (!(flags & OUTCODE_GEN_SKIP_MRM)) {
+        if (submap->modregrm) {
+            if (generic1632) {
+                fprintf(out_fp,"%s        if (addr32)\n",indent_str.c_str());
+                fprintf(out_fp,"%s            IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);\n",indent_str.c_str());
+                fprintf(out_fp,"%s        else\n",indent_str.c_str());
+                fprintf(out_fp,"%s            IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);\n",indent_str.c_str());
+            }
+            else {
+                fprintf(out_fp,"%s        IPFB_mrm_sib_disp_a%u_read(mrm,sib,disp);\n",indent_str.c_str(),addrwidth);
+            }
         }
     }
     if (submap->opsz32)
@@ -1864,7 +1913,24 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
         fprintf(out_fp,"*/\n");
     }
 
-    if (map.modregrm) {
+    if (map.amd3dnow_here) {
+        /* AMD 3DNow! 
+         *
+         * 0x0F 0x0F mod/reg/rm <opcode> */
+        fprintf(out_fp,"%s/* AMD 3DNow! encoding 0x0F 0x0F mod/reg/rm <opcode> */\n",indent_str.c_str());
+        if (generic1632) {
+            fprintf(out_fp,"%sif (addr32)\n",indent_str.c_str());
+            fprintf(out_fp,"%s    IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);\n",indent_str.c_str());
+            fprintf(out_fp,"%selse\n",indent_str.c_str());
+            fprintf(out_fp,"%s    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);\n",indent_str.c_str());
+        }
+        else {
+            fprintf(out_fp,"%sIPFB_mrm_sib_disp_a%u_read(mrm,sib,disp);\n",indent_str.c_str(),addrwidth);
+        }
+
+        fprintf(out_fp,"%sswitch (op=IPFB()) {\n",indent_str.c_str());
+    }
+    else if (map.modregrm) {
         bool is_modreg_pattern = true;
         bool is_reg_pattern = false;
 
@@ -2002,7 +2068,8 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
                     }
                 }
 
-                opcode_gen_case_statement(codewidth,addrwidth,opbase,opbaselen,map,indent,indent_str,submap,op,flags);
+                opcode_gen_case_statement(codewidth,addrwidth,opbase,opbaselen,map,indent,indent_str,submap,op,
+                    flags | (map.amd3dnow_here ? OUTCODE_GEN_SKIP_MRM : 0));
             }
 
             if (submap == NULL) {
