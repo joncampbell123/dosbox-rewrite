@@ -12,10 +12,10 @@ dosboxxr_lib_text_libtext_a_SOURCES = dosboxxr/lib/text/chomp.c
 
 noinst_PROGRAMS = \
 	opcc$(EXEEXT) \
-	cpudetect \
 	cpumodregrm \
 	cpumemreftypes \
-	tools/cpudec/cpudec86
+	tools/cpudec/cpudec86 \
+	tools/cpudetect/cpudetect
 
 tools_cpudec_cpudec86_SOURCES = \
 	tools/cpudec/cpudec86.cpp \
@@ -60,12 +60,12 @@ tools_cpudec_cpudec86_DEPENDENCIES = \
 tools_cpudec_cpudec86_LDADD = \
 	dosboxxr/lib/cpu/libcpu.a
 
-cpudetect_SOURCES = cpudetect.cpp
-cpudetect_CXXFLAGS = $(AM_CXXFLAGS)
-cpudetect_DEPENDENCIES = \
+tools_cpudetect_cpudetect_SOURCES = tools/cpudetect/cpudetect.cpp
+tools_cpudetect_cpudetect_CXXFLAGS = $(AM_CXXFLAGS)
+tools_cpudetect_cpudetect_DEPENDENCIES = \
 	dosboxxr/lib/hostcpudetect/libhostcpudetect.a \
 	dosboxxr/lib/text/libtext.a
-cpudetect_LDADD = \
+tools_cpudetect_cpudetect_LDADD = \
 	dosboxxr/lib/hostcpudetect/libhostcpudetect.a \
 	dosboxxr/lib/text/libtext.a
 
