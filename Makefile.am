@@ -148,58 +148,58 @@ OPCC_H = \
 	dosboxxr/lib/cpu/core/amdAthlon.cxx.axx.decom.h \
 	dosboxxr/lib/cpu/core/amdAthlon.c32.a32.decom.h
 
-test1.bin: test1.asm
+testasm/test1.bin: testasm/test1.asm
 	yasm -o $@ -f bin $<
 
-test2.bin: test2.asm
+testasm/test2.bin: testasm/test2.asm
 	yasm -o $@ -f bin $<
 
-test3.bin: test3.asm
+testasm/test3.bin: testasm/test3.asm
 	yasm -o $@ -f bin $<
 
-test3e.bin: test3e.asm
+testasm/test3e.bin: testasm/test3e.asm
 	yasm -o $@ -f bin $<
 
-test4.bin: test4.asm
+testasm/test4.bin: testasm/test4.asm
 	yasm -o $@ -f bin $<
 
-test4e.bin: test4e.asm
+testasm/test4e.bin: testasm/test4e.asm
 	yasm -o $@ -f bin $<
 
-test5.bin: test5.asm
+testasm/test5.bin: testasm/test5.asm
 	yasm -o $@ -f bin $<
 
-test5pro.bin: test5pro.asm
+testasm/test5pro.bin: testasm/test5pro.asm
 	yasm -o $@ -f bin $<
 
-test5mmx.bin: test5mmx.asm
+testasm/test5mmx.bin: testasm/test5mmx.asm
 	yasm -o $@ -f bin $<
 
-testc6mx.bin: testc6mx.asm
+testasm/testc6mx.bin: testasm/testc6mx.asm
 	yasm -o $@ -f bin $<
 
-testp2.bin: testp2.asm
+testasm/testp2.bin: testasm/testp2.asm
 	yasm -o $@ -f bin $<
 
-testp3.bin: testp3.asm
+testasm/testp3.bin: testasm/testp3.asm
 	yasm -o $@ -f bin $<
 
-testp4.bin: testp4.asm
+testasm/testp4.bin: testasm/testp4.asm
 	yasm -o $@ -f bin $<
 
-testp4p.bin: testp4p.asm
+testasm/testp4p.bin: testasm/testp4p.asm
 	yasm -o $@ -f bin $<
 
-testv20.bin: testv20.asm
+testasm/testv20.bin: testasm/testv20.asm
 	yasm -o $@ -f bin $<
 
-test3dn1.bin: test3dn1.asm
+testasm/test3dn1.bin: testasm/test3dn1.asm
 	yasm -o $@ -f bin $<
 
-test3dn2.bin: test3dn2.asm
+testasm/test3dn2.bin: testasm/test3dn2.asm
 	yasm -o $@ -f bin $<
 
-test-bins: test1.bin test2.bin test3.bin test3e.bin test4.bin test4e.bin test5.bin test5pro.bin test5mmx.bin testp2.bin testp3.bin testp4.bin testp4p.bin testv20.bin testc6mx.bin test3dn1.bin test3dn2.bin
+test-bins: testasm/test1.bin testasm/test2.bin testasm/test3.bin testasm/test3e.bin testasm/test4.bin testasm/test4e.bin testasm/test5.bin testasm/test5pro.bin testasm/test5mmx.bin testasm/testp2.bin testasm/testp3.bin testasm/testp4.bin testasm/testp4p.bin testasm/testv20.bin testasm/testc6mx.bin testasm/test3dn1.bin testasm/test3dn2.bin
 
 opcc$(EXEEXT): opcc.cpp
 	$(BUILD_CXX) -o $@ $<
