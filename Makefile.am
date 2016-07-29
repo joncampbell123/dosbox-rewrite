@@ -10,16 +10,16 @@ dosboxxr_lib_cpu_libcpu_a_SOURCES = dosboxxr/lib/cpu/ipdec_strings.cpp
 
 dosboxxr_lib_text_libtext_a_SOURCES = dosboxxr/lib/text/chomp.c
 
-OPCC=tools/opcc/opcc$(EXEEXT)
+OPCC=bin/tools/opcc$(EXEEXT)
 
 noinst_PROGRAMS = \
-	tools/opcc/opcc$(EXEEXT) \
+	bin/tools/opcc$(EXEEXT) \
+	bin/tools/cpudec86 \
+	bin/tools/cpudetect \
 	test/cpumodregrm \
-	test/cpumemreftypes \
-	tools/cpudec/cpudec86 \
-	tools/cpudetect/cpudetect
+	test/cpumemreftypes
 
-tools_cpudec_cpudec86_SOURCES = \
+bin_tools_cpudec86_SOURCES = \
 	tools/cpudec/cpudec86.cpp \
 	tools/cpudec/cpudec86_8086.cpp \
 	tools/cpudec/cpudec86_necv20.cpp \
@@ -56,18 +56,18 @@ tools_cpudec_cpudec86_SOURCES = \
 	tools/cpudec/cpudec86_amdathlon.cpp \
 	tools/cpudec/cpudec86_amdathlon_generic.cpp
 
-tools_cpudec_cpudec86_CXXFLAGS = $(AM_CXXFLAGS) -Itools/cpudec
-tools_cpudec_cpudec86_DEPENDENCIES = \
+bin_tools_cpudec86_CXXFLAGS = $(AM_CXXFLAGS) -Itools/cpudec
+bin_tools_cpudec86_DEPENDENCIES = \
 	dosboxxr/lib/cpu/libcpu.a $(OPCC_H)
-tools_cpudec_cpudec86_LDADD = \
+bin_tools_cpudec86_LDADD = \
 	dosboxxr/lib/cpu/libcpu.a
 
-tools_cpudetect_cpudetect_SOURCES = tools/cpudetect/cpudetect.cpp
-tools_cpudetect_cpudetect_CXXFLAGS = $(AM_CXXFLAGS)
-tools_cpudetect_cpudetect_DEPENDENCIES = \
+bin_tools_cpudetect_SOURCES = tools/cpudetect/cpudetect.cpp
+bin_tools_cpudetect_CXXFLAGS = $(AM_CXXFLAGS)
+bin_tools_cpudetect_DEPENDENCIES = \
 	dosboxxr/lib/hostcpudetect/libhostcpudetect.a \
 	dosboxxr/lib/text/libtext.a
-tools_cpudetect_cpudetect_LDADD = \
+bin_tools_cpudetect_LDADD = \
 	dosboxxr/lib/hostcpudetect/libhostcpudetect.a \
 	dosboxxr/lib/text/libtext.a
 
@@ -203,7 +203,7 @@ testasm/test3dn2.bin: testasm/test3dn2.asm
 
 test-bins: testasm/test1.bin testasm/test2.bin testasm/test3.bin testasm/test3e.bin testasm/test4.bin testasm/test4e.bin testasm/test5.bin testasm/test5pro.bin testasm/test5mmx.bin testasm/testp2.bin testasm/testp3.bin testasm/testp4.bin testasm/testp4p.bin testasm/testv20.bin testasm/testc6mx.bin testasm/test3dn1.bin testasm/test3dn2.bin
 
-tools/opcc/opcc$(EXEEXT): tools/opcc/opcc.cpp
+bin/tools/opcc$(EXEEXT): tools/opcc/opcc.cpp
 	$(BUILD_CXX) -o $@ $<
 
 dosboxxr/lib/cpu/core/necv20.opcodes.p: opcodes/necv20.opcodes
