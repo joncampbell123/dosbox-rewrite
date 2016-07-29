@@ -16,14 +16,14 @@ noinst_PROGRAMS = \
 	bin/tools/opcc$(EXEEXT) \
 	bin/tools/cpudec86 \
 	bin/tools/cpudetect \
-	test/cpumodregrm \
-	test/cpumemreftypes
+	bin/test/cpumodregrm \
+	bin/test/cpumemreftypes
 
 if HAVE_X11
 if HAVE_OPENGL
 if HAVE_OPENGL_GLU
 noinst_PROGRAMS += \
-	test/xlibopengl
+	bin/test/xlibopengl
 endif
 endif
 endif
@@ -33,7 +33,7 @@ if HAVE_X11_XCB
 if HAVE_OPENGL
 if HAVE_OPENGL_GLU
 noinst_PROGRAMS += \
-	test/xlibxcbopengl
+	bin/test/xlibxcbopengl
 endif
 endif
 endif
@@ -91,25 +91,25 @@ bin_tools_cpudetect_LDADD = \
 	dosboxxr/lib/hostcpudetect/libhostcpudetect.a \
 	dosboxxr/lib/text/libtext.a
 
-test_xlibopengl_SOURCES = test/xlibopengl.cpp
-test_xlibopengl_CXXFLAGS = $(AM_CXXFLAGS) $(X11_CFLAGS) $(OPENGL_CFLAGS) $(OPENGL_GLU_CFLAGS)
-test_xlibopengl_DEPENDENCIES =
-test_xlibopengl_LDADD = $(X11_LDFLAGS) $(OPENGL_LDFLAGS) $(OPENGL_GLU_LDFLAGS)
+bin_test_xlibopengl_SOURCES = test/xlibopengl.cpp
+bin_test_xlibopengl_CXXFLAGS = $(AM_CXXFLAGS) $(X11_CFLAGS) $(OPENGL_CFLAGS) $(OPENGL_GLU_CFLAGS)
+bin_test_xlibopengl_DEPENDENCIES =
+bin_test_xlibopengl_LDADD = $(X11_LDFLAGS) $(OPENGL_LDFLAGS) $(OPENGL_GLU_LDFLAGS)
 
-test_xlibxcbopengl_SOURCES = test/xlibxcbopengl.cpp
-test_xlibxcbopengl_CXXFLAGS = $(AM_CXXFLAGS) $(X11_CFLAGS) $(OPENGL_CFLAGS) $(OPENGL_GLU_CFLAGS) $(X11_XCB_CFLAGS)
-test_xlibxcbopengl_DEPENDENCIES =
-test_xlibxcbopengl_LDADD = $(X11_LDFLAGS) $(OPENGL_LDFLAGS) $(OPENGL_GLU_LDFLAGS) $(X11_XCB_LDFLAGS)
+bin_test_xlibxcbopengl_SOURCES = test/xlibxcbopengl.cpp
+bin_test_xlibxcbopengl_CXXFLAGS = $(AM_CXXFLAGS) $(X11_CFLAGS) $(OPENGL_CFLAGS) $(OPENGL_GLU_CFLAGS) $(X11_XCB_CFLAGS)
+bin_test_xlibxcbopengl_DEPENDENCIES =
+bin_test_xlibxcbopengl_LDADD = $(X11_LDFLAGS) $(OPENGL_LDFLAGS) $(OPENGL_GLU_LDFLAGS) $(X11_XCB_LDFLAGS)
 
-test_cpumodregrm_SOURCES = test/cpumodregrm.cpp
-test_cpumodregrm_CXXFLAGS = $(AM_CXXFLAGS)
-test_cpumodregrm_DEPENDENCIES =
-test_cpumodregrm_LDADD =
+bin_test_cpumodregrm_SOURCES = test/cpumodregrm.cpp
+bin_test_cpumodregrm_CXXFLAGS = $(AM_CXXFLAGS)
+bin_test_cpumodregrm_DEPENDENCIES =
+bin_test_cpumodregrm_LDADD =
 
-test_cpumemreftypes_SOURCES = test/cpumemreftypes.cpp
-test_cpumemreftypes_CXXFLAGS = $(AM_CXXFLAGS)
-test_cpumemreftypes_DEPENDENCIES =
-test_cpumemreftypes_LDADD =
+bin_test_cpumemreftypes_SOURCES = test/cpumemreftypes.cpp
+bin_test_cpumemreftypes_CXXFLAGS = $(AM_CXXFLAGS)
+bin_test_cpumemreftypes_DEPENDENCIES =
+bin_test_cpumemreftypes_LDADD =
 
 OPCC_H = \
 	dosboxxr/lib/cpu/core/intel8088.c16.a16.decom.h \
