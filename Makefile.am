@@ -19,6 +19,26 @@ noinst_PROGRAMS = \
 	test/cpumodregrm \
 	test/cpumemreftypes
 
+if HAVE_X11
+if HAVE_OPENGL
+if HAVE_OPENGL_GLU
+noinst_PROGRAMS += \
+	test/xlibopengl
+endif
+endif
+endif
+
+if HAVE_X11
+if HAVE_X11_XCB
+if HAVE_OPENGL
+if HAVE_OPENGL_GLU
+noinst_PROGRAMS += \
+	test/xlibxcbopengl
+endif
+endif
+endif
+endif
+
 bin_tools_cpudec86_SOURCES = \
 	tools/cpudec/cpudec86.cpp \
 	tools/cpudec/cpudec86_8086.cpp \
@@ -70,6 +90,16 @@ bin_tools_cpudetect_DEPENDENCIES = \
 bin_tools_cpudetect_LDADD = \
 	dosboxxr/lib/hostcpudetect/libhostcpudetect.a \
 	dosboxxr/lib/text/libtext.a
+
+test_xlibopengl_SOURCES = test/xlibopengl.cpp
+test_xlibopengl_CXXFLAGS = $(AM_CXXFLAGS) $(X11_CFLAGS) $(OPENGL_CFLAGS) $(OPENGL_GLU_CFLAGS)
+test_xlibopengl_DEPENDENCIES =
+test_xlibopengl_LDADD = $(X11_LDFLAGS) $(OPENGL_LDFLAGS) $(OPENGL_GLU_LDFLAGS)
+
+test_xlibxcbopengl_SOURCES = test/xlibxcbopengl.cpp
+test_xlibxcbopengl_CXXFLAGS = $(AM_CXXFLAGS) $(X11_CFLAGS) $(OPENGL_CFLAGS) $(OPENGL_GLU_CFLAGS) $(X11_XCB_CFLAGS)
+test_xlibxcbopengl_DEPENDENCIES =
+test_xlibxcbopengl_LDADD = $(X11_LDFLAGS) $(OPENGL_LDFLAGS) $(OPENGL_GLU_LDFLAGS) $(X11_XCB_LDFLAGS)
 
 test_cpumodregrm_SOURCES = test/cpumodregrm.cpp
 test_cpumodregrm_CXXFLAGS = $(AM_CXXFLAGS)
