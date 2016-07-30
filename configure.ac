@@ -144,6 +144,7 @@ AC_SUBST(LDFLAGS)
 # important functions
 AC_CHECK_FUNCS([nanosleep usleep lseek64 lseeki64 truncate ftruncate openat renameat symlink link stat fstat fstatat statfs fstatfs realpath sysconf mmap munmap getpagesize mincore mlock munlock mprotect mremap msync getrlimit setrlimit shmat shm_open remap_file_pages fallocate readlink readlinkat signal sigaction alarm pause sigprocmask sigaddset sigemptyset sigismember])
 AC_CHECK_DECLS([isinf, isnan],[],[],[[#include <math.h>]])
+AC_CHECK_DECLS([le16toh, le32toh],[],[],[[#include <endian.h>]])
 
 # we use yasm
 AC_SUBST(HAVE_YASM)
@@ -243,6 +244,28 @@ AC_TRY_LINK([ ],
 AM_CONDITIONAL([HAVE_TARGET_SIGNED_RIGHT_SHIFT],[test $HAVE_TARGET_SIGNED_RIGHT_SHIFT = 1])
 AC_DEFINE_UNQUOTED([HAVE_TARGET_SIGNED_RIGHT_SHIFT],[$HAVE_TARGET_SIGNED_RIGHT_SHIFT],[Has 2s complement host integer format])
 
+# O_BINARY?
+HAVE_O_BINARY=0
+AC_SUBST(HAVE_O_BINARY)
+AC_MSG_CHECKING([for O_BINARY])
+AC_TRY_LINK(
+    [
+        #include <unistd.h>
+	#include <fcntl.h>
+    ],
+    [
+    	int fd = open("test",O_BINARY|O_RDONLY);
+    ],
+    [
+        AC_MSG_RESULT([yes])
+        HAVE_O_BINARY=1
+    ],
+    [
+        AC_MSG_RESULT([no])
+    ])
+AM_CONDITIONAL([HAVE_O_BINARY],[test $HAVE_O_BINARY = 1])
+AC_DEFINE_UNQUOTED([HAVE_O_BINARY],[$HAVE_O_BINARY],[Has O_BINARY])
+
 # Does Linux have sys/vm86.h for virtual 8086 mode?
 HAVE_SYS_VM86_H=0
 AC_SUBST(HAVE_SYS_VM86_H)
@@ -305,6 +328,13 @@ AC_SUBST(HAVE_AVXINTRIN_H)
 AC_CHECK_HEADER([avxintrin.h],[HAVE_AVXINTRIN_H=1],[HAVE_AVXINTRIN_H=0])
 AM_CONDITIONAL([HAVE_AVXINTRIN_H],[test $HAVE_AVXINTRIN_H = 1])
 AC_DEFINE_UNQUOTED([HAVE_AVXINTRIN_H],[$HAVE_AVXINTRIN_H],[Has avxintrin.h])
+
+# Does your compiler have endian.h?
+HAVE_ENDIAN_H=0
+AC_SUBST(HAVE_ENDIAN_H)
+AC_CHECK_HEADER([endian.h],[HAVE_ENDIAN_H=1],[HAVE_ENDIAN_H=0])
+AM_CONDITIONAL([HAVE_ENDIAN_H],[test $HAVE_ENDIAN_H = 1])
+AC_DEFINE_UNQUOTED([HAVE_ENDIAN_H],[$HAVE_ENDIAN_H],[Has endian.h])
 
 # X11
 HAVE_X11=0

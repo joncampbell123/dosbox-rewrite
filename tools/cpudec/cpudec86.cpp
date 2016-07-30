@@ -9,7 +9,16 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <unistd.h>
-#include <endian.h>
+
+#if HAVE_ENDIAN_H
+# include <endian.h>
+#else
+# include "dosboxxr/lib/util/endian.h"
+#endif
+
+#ifndef O_BINARY
+#define O_BINARY 0
+#endif
 
 #include "dosboxxr/lib/cpu/ipdec.h"
 #include "dosboxxr/lib/cpu/x86ModRegRm.h"
@@ -173,7 +182,7 @@ int main(int argc,char **argv) {
         return 1;
     }
 
-    fd = open(src_file,O_RDONLY);
+    fd = open(src_file,O_RDONLY|O_BINARY);
     if (fd < 0) {
         fprintf(stderr,"Cannot open input file\n");
         return 1;

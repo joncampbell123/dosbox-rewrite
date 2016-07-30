@@ -9,7 +9,12 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <unistd.h>
-#include <endian.h>
+
+#if HAVE_ENDIAN_H
+# include <endian.h>
+#else
+# include "dosboxxr/lib/util/endian.h"
+#endif
 
 #include "dosboxxr/lib/cpu/ipdec.h"
 #include "dosboxxr/lib/cpu/x86ModRegRm.h"
