@@ -39,6 +39,13 @@ endif
 endif
 endif
 
+if HAVE_X11
+if HAVE_XEXT
+noinst_PROGRAMS += \
+	bin/test/xlib1
+endif
+endif
+
 bin_tools_cpudec86_SOURCES = \
 	tools/cpudec/cpudec86.cpp \
 	tools/cpudec/cpudec86_8086.cpp \
@@ -100,6 +107,11 @@ bin_test_xlibxcbopengl_SOURCES = test/xlibxcbopengl.cpp
 bin_test_xlibxcbopengl_CXXFLAGS = $(AM_CXXFLAGS) $(X11_CFLAGS) $(OPENGL_CFLAGS) $(OPENGL_GLU_CFLAGS) $(X11_XCB_CFLAGS)
 bin_test_xlibxcbopengl_DEPENDENCIES =
 bin_test_xlibxcbopengl_LDADD = $(X11_LDFLAGS) $(OPENGL_LDFLAGS) $(OPENGL_GLU_LDFLAGS) $(X11_XCB_LDFLAGS)
+
+bin_test_xlib1_SOURCES = test/xlib1.cpp
+bin_test_xlib1_CXXFLAGS = $(AM_CXXFLAGS) $(X11_CFLAGS) $(XEXT_CFLAGS)
+bin_test_xlib1_DEPENDENCIES =
+bin_test_xlib1_LDADD = $(X11_LDFLAGS) $(XEXT_LDFLAGS)
 
 bin_test_cpumodregrm_SOURCES = test/cpumodregrm.cpp
 bin_test_cpumodregrm_CXXFLAGS = $(AM_CXXFLAGS)

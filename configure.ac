@@ -330,6 +330,26 @@ fi
 AC_DEFINE_UNQUOTED([HAVE_X11],[$HAVE_X11],[Has X11])
 AM_CONDITIONAL([HAVE_X11],[test $HAVE_X11 = 1])
 
+# XExt
+HAVE_XEXT=0
+AC_ARG_WITH(xext,AS_HELP_STRING([--with-xext],[Enable XEXT support]),[],[with_xext=yes])
+AC_SUBST(HAVE_XEXT)
+AC_SUBST(XEXT_CFLAGS)
+AC_SUBST(XEXT_LDFLAGS)
+if test "$with_xext" = "yes"; then
+    AC_MSG_CHECKING([for XEXT])
+    if pkg-config --atleast-version=1.3.1 xext; then
+        AC_MSG_RESULT([yes])
+        HAVE_XEXT=1
+        XEXT_CFLAGS=`pkg-config --cflags xext`
+        XEXT_LDFLAGS=`pkg-config --libs xext`
+    else
+        AC_MSG_RESULT([no])
+    fi
+fi
+AC_DEFINE_UNQUOTED([HAVE_XEXT],[$HAVE_XEXT],[Has XEXT])
+AM_CONDITIONAL([HAVE_XEXT],[test $HAVE_XEXT = 1])
+
 # X11-XCB
 HAVE_X11_XCB=0
 AC_ARG_WITH(x11-xcb,AS_HELP_STRING([--with-x11-xcb],[Enable X11-XCB support]),[],[with_x11_xcb=yes])
