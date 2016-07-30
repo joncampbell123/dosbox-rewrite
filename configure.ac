@@ -404,7 +404,7 @@ AC_SUBST(XCB_CFLAGS)
 AC_SUBST(XCB_LDFLAGS)
 if test "$with_xcb" = "yes"; then
     AC_MSG_CHECKING([for XCB])
-    if pkg-config --atleast-version=1.12 xcb; then
+    if pkg-config --atleast-version=1.11 xcb; then
         AC_MSG_RESULT([yes])
         HAVE_XCB=1
         XCB_CFLAGS=`pkg-config --cflags xcb`
@@ -424,7 +424,7 @@ AC_SUBST(XCB_XV_CFLAGS)
 AC_SUBST(XCB_XV_LDFLAGS)
 if test "$with_xcb_xv" = "yes"; then
     AC_MSG_CHECKING([for XCB xv])
-    if pkg-config --atleast-version=1.12 xcb-xv; then
+    if pkg-config --atleast-version=1.11 xcb-xv; then
         AC_MSG_RESULT([yes])
         HAVE_XCB_XV=1
         XCB_CFLAGS=`pkg-config --cflags xcb-xv`
@@ -444,7 +444,7 @@ AC_SUBST(XCB_SHM_CFLAGS)
 AC_SUBST(XCB_SHM_LDFLAGS)
 if test "$with_xcb_shm" = "yes"; then
     AC_MSG_CHECKING([for XCB SHM])
-    if pkg-config --atleast-version=1.12 xcb-shm; then
+    if pkg-config --atleast-version=1.11 xcb-shm; then
         AC_MSG_RESULT([yes])
         HAVE_XCB_SHM=1
         XCB_SHM_CFLAGS=`pkg-config --cflags xcb-shm`
@@ -464,7 +464,7 @@ AC_SUBST(XCB_XKB_CFLAGS)
 AC_SUBST(XCB_XKB_LDFLAGS)
 if test "$with_xcb_xkb" = "yes"; then
     AC_MSG_CHECKING([for XCB XKB])
-    if pkg-config --atleast-version=1.12 xcb-xkb; then
+    if pkg-config --atleast-version=1.11 xcb-xkb; then
         AC_MSG_RESULT([yes])
         HAVE_XCB_XKB=1
         XCB_XKB_CFLAGS=`pkg-config --cflags xcb-xkb`
