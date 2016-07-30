@@ -1,5 +1,5 @@
 
-; WARNING: YASM won't generate these opcodes, so the best I can do to test is
+; WARNING: YASM wont generate these opcodes, so the best I can do to test is
 ;          hand code the opcodes according to the datasheet. In some cases I
 ;          had to guess register order. There may be mistakes here.
 
