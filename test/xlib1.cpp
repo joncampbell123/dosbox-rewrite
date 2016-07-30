@@ -222,6 +222,40 @@ void rerender_out() {
             }
         }
     }
+    else if (x_image->bits_per_pixel == 16) {
+        const uint16_t alpha =
+            (~(x_image->red_mask+x_image->green_mask+x_image->blue_mask));
+        uint16_t rm,gm,bm;
+        uint8_t rs,gs,bs;
+        uint16_t r,g,b;
+        uint16_t *drow;
+
+        rs = bitscan_forward(x_image->red_mask,0);
+        rm = bitscan_count(x_image->red_mask,rs) - rs;
+        rm = (1U << rm) - 1U;
+
+        gs = bitscan_forward(x_image->green_mask,0);
+        gm = bitscan_count(x_image->green_mask,gs) - gs;
+        gm = (1U << gm) - 1U;
+
+        bs = bitscan_forward(x_image->blue_mask,0);
+        bm = bitscan_count(x_image->blue_mask,bs) - bs;
+        bm = (1U << bm) - 1U;
+
+        fprintf(stderr,"R/G/B shift/mask %u/0x%X %u/0x%X %u/0x%X\n",rs,rm,gs,gm,bs,bm);
+
+        for (oy=0;oy < bitmap_height;oy++) {
+            drow = (uint16_t*)((uint8_t*)x_image->data + (x_image->bytes_per_line * oy));
+            for (ox=0;ox < bitmap_width;ox++) {
+                /* color */
+                r = (ox * rm) / bitmap_width;
+                g = (oy * gm) / bitmap_height;
+                b = bm - ((ox * bm) / bitmap_width);
+
+                *drow++ = (r << rs) + (g << gs) + (b << bs) + alpha;
+            }
+        }
+    }
     else {
         fprintf(stderr,"WARNING: unsupported bit depth %u/bpp\n",
             x_image->bits_per_pixel);
