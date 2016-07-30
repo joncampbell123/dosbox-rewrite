@@ -190,8 +190,8 @@ AC_TRY_LINK([#include <time.h>],
     ],
     [
         AC_MSG_RESULT([no])
-        old_CXXFLAGS=$CXXFLAGS
-        old_CFLAGS=$CFLAGS
+        CXXFLAGS=$old_CXXFLAGS
+        CFLAGS=$old_CFLAGS
     ])
 AM_CONDITIONAL([HAVE_CLOCK_GETTIME],[test $HAVE_CLOCK_GETTIME = 1])
 AC_DEFINE_UNQUOTED([HAVE_CLOCK_GETTIME],[$HAVE_CLOCK_GETTIME],[Has clock_gettime])
@@ -215,8 +215,6 @@ AC_TRY_LINK([ ],
     ],
     [
         AC_MSG_RESULT([no])
-        old_CXXFLAGS=$CXXFLAGS
-        old_CFLAGS=$CFLAGS
     ])
 AM_CONDITIONAL([HAVE_TARGET_2S_COMPLEMENT],[test $HAVE_TARGET_2S_COMPLEMENT = 1])
 AC_DEFINE_UNQUOTED([HAVE_TARGET_2S_COMPLEMENT],[$HAVE_TARGET_2S_COMPLEMENT],[Has 2s complement host integer format])
@@ -241,8 +239,6 @@ AC_TRY_LINK([ ],
     ],
     [
         AC_MSG_RESULT([no])
-        old_CXXFLAGS=$CXXFLAGS
-        old_CFLAGS=$CFLAGS
     ])
 AM_CONDITIONAL([HAVE_TARGET_SIGNED_RIGHT_SHIFT],[test $HAVE_TARGET_SIGNED_RIGHT_SHIFT = 1])
 AC_DEFINE_UNQUOTED([HAVE_TARGET_SIGNED_RIGHT_SHIFT],[$HAVE_TARGET_SIGNED_RIGHT_SHIFT],[Has 2s complement host integer format])
