@@ -10,10 +10,10 @@ dosboxxr_lib_cpu_libcpu_a_SOURCES = dosboxxr/lib/cpu/ipdec_strings.cpp
 
 dosboxxr_lib_text_libtext_a_SOURCES = dosboxxr/lib/text/chomp.c
 
-OPCC=bin/tools/opcc$(EXEEXT)
+OPCC=bin/tools/opcc
 
 noinst_PROGRAMS = \
-	bin/tools/opcc$(EXEEXT) \
+	bin/tools/opcc \
 	bin/tools/cpudec86 \
 	bin/tools/cpudetect \
 	bin/test/cpumodregrm \
@@ -266,157 +266,157 @@ bin/tools/opcc$(EXEEXT): tools/opcc/opcc.cpp
 
 dosboxxr/lib/cpu/core/necv20.opcodes.p: opcodes/necv20.opcodes
 	$(BUILD_CPP) -I. opcodes/necv20.opcodes -o $@
-dosboxxr/lib/cpu/core/necv20.c16.a16.decom.h: dosboxxr/lib/cpu/core/necv20.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/necv20.c16.a16.decom.h: dosboxxr/lib/cpu/core/necv20.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/necv20.opcodes.p -o $@ -m decompile
 
 dosboxxr/lib/cpu/core/intel8088.opcodes.p: opcodes/intel8088.opcodes
 	$(BUILD_CPP) -I. opcodes/intel8088.opcodes -o $@
-dosboxxr/lib/cpu/core/intel8088.c16.a16.decom.h: dosboxxr/lib/cpu/core/intel8088.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intel8088.c16.a16.decom.h: dosboxxr/lib/cpu/core/intel8088.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intel8088.opcodes.p -o $@ -m decompile
 
 dosboxxr/lib/cpu/core/intel80186.opcodes.p: opcodes/intel80186.opcodes
 	$(BUILD_CPP) -I. opcodes/intel80186.opcodes -o $@
-dosboxxr/lib/cpu/core/intel80186.c16.a16.decom.h: dosboxxr/lib/cpu/core/intel80186.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intel80186.c16.a16.decom.h: dosboxxr/lib/cpu/core/intel80186.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80186.opcodes.p -o $@ -m decompile
 
 dosboxxr/lib/cpu/core/intel80286.opcodes.p: opcodes/intel80286.opcodes
 	$(BUILD_CPP) -I. opcodes/intel80286.opcodes -o $@
-dosboxxr/lib/cpu/core/intel80286.c16.a16.decom.h: dosboxxr/lib/cpu/core/intel80286.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intel80286.c16.a16.decom.h: dosboxxr/lib/cpu/core/intel80286.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80286.opcodes.p -o $@ -m decompile
 
 dosboxxr/lib/cpu/core/intel80386.opcodes.p: opcodes/intel80386.opcodes
 	$(BUILD_CPP) -I. opcodes/intel80386.opcodes -o $@
-dosboxxr/lib/cpu/core/intel80386.c16.a16.decom.h: dosboxxr/lib/cpu/core/intel80386.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intel80386.c16.a16.decom.h: dosboxxr/lib/cpu/core/intel80386.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80386.opcodes.p -o $@ -m decompile -c 16 -a 16 -c32vars
-dosboxxr/lib/cpu/core/intel80386.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intel80386.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intel80386.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intel80386.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80386.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
-dosboxxr/lib/cpu/core/intel80386.c32.a32.decom.h: dosboxxr/lib/cpu/core/intel80386.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intel80386.c32.a32.decom.h: dosboxxr/lib/cpu/core/intel80386.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80386.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars
 
 dosboxxr/lib/cpu/core/intel80386early.opcodes.p: opcodes/intel80386early.opcodes
 	$(BUILD_CPP) -I. opcodes/intel80386early.opcodes -o $@
-dosboxxr/lib/cpu/core/intel80386early.c16.a16.decom.h: dosboxxr/lib/cpu/core/intel80386early.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intel80386early.c16.a16.decom.h: dosboxxr/lib/cpu/core/intel80386early.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80386early.opcodes.p -o $@ -m decompile -c 16 -a 16 -c32vars
-dosboxxr/lib/cpu/core/intel80386early.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intel80386early.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intel80386early.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intel80386early.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80386early.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
-dosboxxr/lib/cpu/core/intel80386early.c32.a32.decom.h: dosboxxr/lib/cpu/core/intel80386early.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intel80386early.c32.a32.decom.h: dosboxxr/lib/cpu/core/intel80386early.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80386early.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars
 
 dosboxxr/lib/cpu/core/intel80486.opcodes.p: opcodes/intel80486.opcodes
 	$(BUILD_CPP) -I. opcodes/intel80486.opcodes -o $@
-dosboxxr/lib/cpu/core/intel80486.c16.a16.decom.h: dosboxxr/lib/cpu/core/intel80486.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intel80486.c16.a16.decom.h: dosboxxr/lib/cpu/core/intel80486.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80486.opcodes.p -o $@ -m decompile -c 16 -a 16 -c32vars
-dosboxxr/lib/cpu/core/intel80486.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intel80486.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intel80486.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intel80486.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80486.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
-dosboxxr/lib/cpu/core/intel80486.c32.a32.decom.h: dosboxxr/lib/cpu/core/intel80486.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intel80486.c32.a32.decom.h: dosboxxr/lib/cpu/core/intel80486.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80486.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars
 
 dosboxxr/lib/cpu/core/intel80486early.opcodes.p: opcodes/intel80486early.opcodes
 	$(BUILD_CPP) -I. opcodes/intel80486early.opcodes -o $@
-dosboxxr/lib/cpu/core/intel80486early.c16.a16.decom.h: dosboxxr/lib/cpu/core/intel80486early.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intel80486early.c16.a16.decom.h: dosboxxr/lib/cpu/core/intel80486early.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80486early.opcodes.p -o $@ -m decompile -c 16 -a 16 -c32vars
-dosboxxr/lib/cpu/core/intel80486early.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intel80486early.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intel80486early.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intel80486early.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80486early.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
-dosboxxr/lib/cpu/core/intel80486early.c32.a32.decom.h: dosboxxr/lib/cpu/core/intel80486early.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intel80486early.c32.a32.decom.h: dosboxxr/lib/cpu/core/intel80486early.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intel80486early.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars
 
 dosboxxr/lib/cpu/core/intelPentium.opcodes.p: opcodes/intelPentium.opcodes
 	$(BUILD_CPP) -I. opcodes/intelPentium.opcodes -o $@
-dosboxxr/lib/cpu/core/intelPentium.c16.a16.decom.h: dosboxxr/lib/cpu/core/intelPentium.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intelPentium.c16.a16.decom.h: dosboxxr/lib/cpu/core/intelPentium.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentium.opcodes.p -o $@ -m decompile -c 16 -a 16 -c32vars
-dosboxxr/lib/cpu/core/intelPentium.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intelPentium.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intelPentium.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intelPentium.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentium.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
-dosboxxr/lib/cpu/core/intelPentium.c32.a32.decom.h: dosboxxr/lib/cpu/core/intelPentium.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intelPentium.c32.a32.decom.h: dosboxxr/lib/cpu/core/intelPentium.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentium.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars
 
 dosboxxr/lib/cpu/core/intelPentiumPro.opcodes.p: opcodes/intelPentiumPro.opcodes
 	$(BUILD_CPP) -I. opcodes/intelPentiumPro.opcodes -o $@
-dosboxxr/lib/cpu/core/intelPentiumPro.c16.a16.decom.h: dosboxxr/lib/cpu/core/intelPentiumPro.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intelPentiumPro.c16.a16.decom.h: dosboxxr/lib/cpu/core/intelPentiumPro.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentiumPro.opcodes.p -o $@ -m decompile -c 16 -a 16 -c32vars
-dosboxxr/lib/cpu/core/intelPentiumPro.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intelPentiumPro.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intelPentiumPro.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intelPentiumPro.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentiumPro.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
-dosboxxr/lib/cpu/core/intelPentiumPro.c32.a32.decom.h: dosboxxr/lib/cpu/core/intelPentiumPro.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intelPentiumPro.c32.a32.decom.h: dosboxxr/lib/cpu/core/intelPentiumPro.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentiumPro.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars
 
 dosboxxr/lib/cpu/core/intelPentiumMMX.opcodes.p: opcodes/intelPentiumMMX.opcodes
 	$(BUILD_CPP) -I. opcodes/intelPentiumMMX.opcodes -o $@
-dosboxxr/lib/cpu/core/intelPentiumMMX.c16.a16.decom.h: dosboxxr/lib/cpu/core/intelPentiumMMX.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intelPentiumMMX.c16.a16.decom.h: dosboxxr/lib/cpu/core/intelPentiumMMX.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentiumMMX.opcodes.p -o $@ -m decompile -c 16 -a 16 -c32vars
-dosboxxr/lib/cpu/core/intelPentiumMMX.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intelPentiumMMX.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intelPentiumMMX.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intelPentiumMMX.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentiumMMX.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
-dosboxxr/lib/cpu/core/intelPentiumMMX.c32.a32.decom.h: dosboxxr/lib/cpu/core/intelPentiumMMX.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intelPentiumMMX.c32.a32.decom.h: dosboxxr/lib/cpu/core/intelPentiumMMX.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentiumMMX.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars
 
 dosboxxr/lib/cpu/core/intelPentiumProMMX.opcodes.p: opcodes/intelPentiumProMMX.opcodes
 	$(BUILD_CPP) -I. opcodes/intelPentiumProMMX.opcodes -o $@
-dosboxxr/lib/cpu/core/intelPentiumProMMX.c16.a16.decom.h: dosboxxr/lib/cpu/core/intelPentiumProMMX.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intelPentiumProMMX.c16.a16.decom.h: dosboxxr/lib/cpu/core/intelPentiumProMMX.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentiumProMMX.opcodes.p -o $@ -m decompile -c 16 -a 16 -c32vars
-dosboxxr/lib/cpu/core/intelPentiumProMMX.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intelPentiumProMMX.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intelPentiumProMMX.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intelPentiumProMMX.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentiumProMMX.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
-dosboxxr/lib/cpu/core/intelPentiumProMMX.c32.a32.decom.h: dosboxxr/lib/cpu/core/intelPentiumProMMX.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intelPentiumProMMX.c32.a32.decom.h: dosboxxr/lib/cpu/core/intelPentiumProMMX.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentiumProMMX.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars
 
 dosboxxr/lib/cpu/core/cyrix6x86MX.opcodes.p: opcodes/cyrix6x86MX.opcodes
 	$(BUILD_CPP) -I. opcodes/cyrix6x86MX.opcodes -o $@
-dosboxxr/lib/cpu/core/cyrix6x86MX.c16.a16.decom.h: dosboxxr/lib/cpu/core/cyrix6x86MX.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/cyrix6x86MX.c16.a16.decom.h: dosboxxr/lib/cpu/core/cyrix6x86MX.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/cyrix6x86MX.opcodes.p -o $@ -m decompile -c 16 -a 16 -c32vars
-dosboxxr/lib/cpu/core/cyrix6x86MX.cxx.axx.decom.h: dosboxxr/lib/cpu/core/cyrix6x86MX.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/cyrix6x86MX.cxx.axx.decom.h: dosboxxr/lib/cpu/core/cyrix6x86MX.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/cyrix6x86MX.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
-dosboxxr/lib/cpu/core/cyrix6x86MX.c32.a32.decom.h: dosboxxr/lib/cpu/core/cyrix6x86MX.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/cyrix6x86MX.c32.a32.decom.h: dosboxxr/lib/cpu/core/cyrix6x86MX.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/cyrix6x86MX.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars
 
 dosboxxr/lib/cpu/core/intelPentium2.opcodes.p: opcodes/intelPentium2.opcodes
 	$(BUILD_CPP) -I. opcodes/intelPentium2.opcodes -o $@
-dosboxxr/lib/cpu/core/intelPentium2.c16.a16.decom.h: dosboxxr/lib/cpu/core/intelPentium2.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intelPentium2.c16.a16.decom.h: dosboxxr/lib/cpu/core/intelPentium2.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentium2.opcodes.p -o $@ -m decompile -c 16 -a 16 -c32vars
-dosboxxr/lib/cpu/core/intelPentium2.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intelPentium2.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intelPentium2.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intelPentium2.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentium2.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
-dosboxxr/lib/cpu/core/intelPentium2.c32.a32.decom.h: dosboxxr/lib/cpu/core/intelPentium2.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intelPentium2.c32.a32.decom.h: dosboxxr/lib/cpu/core/intelPentium2.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentium2.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars
 
 dosboxxr/lib/cpu/core/intelPentium3.opcodes.p: opcodes/intelPentium3.opcodes
 	$(BUILD_CPP) -I. opcodes/intelPentium3.opcodes -o $@
-dosboxxr/lib/cpu/core/intelPentium3.c16.a16.decom.h: dosboxxr/lib/cpu/core/intelPentium3.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intelPentium3.c16.a16.decom.h: dosboxxr/lib/cpu/core/intelPentium3.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentium3.opcodes.p -o $@ -m decompile -c 16 -a 16 -c32vars
-dosboxxr/lib/cpu/core/intelPentium3.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intelPentium3.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intelPentium3.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intelPentium3.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentium3.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
-dosboxxr/lib/cpu/core/intelPentium3.c32.a32.decom.h: dosboxxr/lib/cpu/core/intelPentium3.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intelPentium3.c32.a32.decom.h: dosboxxr/lib/cpu/core/intelPentium3.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentium3.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars
 
 dosboxxr/lib/cpu/core/intelPentium4.opcodes.p: opcodes/intelPentium4.opcodes
 	$(BUILD_CPP) -I. opcodes/intelPentium4.opcodes -o $@
-dosboxxr/lib/cpu/core/intelPentium4.c16.a16.decom.h: dosboxxr/lib/cpu/core/intelPentium4.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intelPentium4.c16.a16.decom.h: dosboxxr/lib/cpu/core/intelPentium4.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentium4.opcodes.p -o $@ -m decompile -c 16 -a 16 -c32vars
-dosboxxr/lib/cpu/core/intelPentium4.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intelPentium4.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intelPentium4.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intelPentium4.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentium4.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
-dosboxxr/lib/cpu/core/intelPentium4.c32.a32.decom.h: dosboxxr/lib/cpu/core/intelPentium4.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intelPentium4.c32.a32.decom.h: dosboxxr/lib/cpu/core/intelPentium4.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentium4.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars
 
 dosboxxr/lib/cpu/core/intelPentium4Prescott.opcodes.p: opcodes/intelPentium4Prescott.opcodes
 	$(BUILD_CPP) -I. opcodes/intelPentium4Prescott.opcodes -o $@
-dosboxxr/lib/cpu/core/intelPentium4Prescott.c16.a16.decom.h: dosboxxr/lib/cpu/core/intelPentium4Prescott.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intelPentium4Prescott.c16.a16.decom.h: dosboxxr/lib/cpu/core/intelPentium4Prescott.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentium4Prescott.opcodes.p -o $@ -m decompile -c 16 -a 16 -c32vars
-dosboxxr/lib/cpu/core/intelPentium4Prescott.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intelPentium4Prescott.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intelPentium4Prescott.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intelPentium4Prescott.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentium4Prescott.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
-dosboxxr/lib/cpu/core/intelPentium4Prescott.c32.a32.decom.h: dosboxxr/lib/cpu/core/intelPentium4Prescott.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/intelPentium4Prescott.c32.a32.decom.h: dosboxxr/lib/cpu/core/intelPentium4Prescott.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intelPentium4Prescott.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars
 
 dosboxxr/lib/cpu/core/amdk6r2.opcodes.p: opcodes/amdk6r2.opcodes
 	$(BUILD_CPP) -I. opcodes/amdk6r2.opcodes -o $@
-dosboxxr/lib/cpu/core/amdk6r2.c16.a16.decom.h: dosboxxr/lib/cpu/core/amdk6r2.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/amdk6r2.c16.a16.decom.h: dosboxxr/lib/cpu/core/amdk6r2.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/amdk6r2.opcodes.p -o $@ -m decompile -c 16 -a 16 -c32vars
-dosboxxr/lib/cpu/core/amdk6r2.cxx.axx.decom.h: dosboxxr/lib/cpu/core/amdk6r2.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/amdk6r2.cxx.axx.decom.h: dosboxxr/lib/cpu/core/amdk6r2.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/amdk6r2.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
-dosboxxr/lib/cpu/core/amdk6r2.c32.a32.decom.h: dosboxxr/lib/cpu/core/amdk6r2.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/amdk6r2.c32.a32.decom.h: dosboxxr/lib/cpu/core/amdk6r2.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/amdk6r2.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars
 
 dosboxxr/lib/cpu/core/amdAthlon.opcodes.p: opcodes/amdAthlon.opcodes
 	$(BUILD_CPP) -I. opcodes/amdAthlon.opcodes -o $@
-dosboxxr/lib/cpu/core/amdAthlon.c16.a16.decom.h: dosboxxr/lib/cpu/core/amdAthlon.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/amdAthlon.c16.a16.decom.h: dosboxxr/lib/cpu/core/amdAthlon.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/amdAthlon.opcodes.p -o $@ -m decompile -c 16 -a 16 -c32vars
-dosboxxr/lib/cpu/core/amdAthlon.cxx.axx.decom.h: dosboxxr/lib/cpu/core/amdAthlon.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/amdAthlon.cxx.axx.decom.h: dosboxxr/lib/cpu/core/amdAthlon.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/amdAthlon.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
-dosboxxr/lib/cpu/core/amdAthlon.c32.a32.decom.h: dosboxxr/lib/cpu/core/amdAthlon.opcodes.p $(OPCC)
+dosboxxr/lib/cpu/core/amdAthlon.c32.a32.decom.h: dosboxxr/lib/cpu/core/amdAthlon.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/amdAthlon.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars
 
 # grrr how do I get automake to run opcc first before compiling other parts?
