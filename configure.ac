@@ -550,6 +550,26 @@ fi
 AC_DEFINE_UNQUOTED([HAVE_OPENGL_EGL],[$HAVE_OPENGL_EGL],[Has OpenGL EGL])
 AM_CONDITIONAL([HAVE_OPENGL_EGL],[test $HAVE_OPENGL_EGL = 1])
 
+# Mesa OpenGL OSMesa (offscreen s/w rendering)
+HAVE_OPENGL_OSMESA=0
+AC_ARG_WITH(osmesa,AS_HELP_STRING([--with-osmesa],[Enable MESA OpenGL (OSMesa) support]),[],[with_osmesa=yes])
+AC_SUBST(HAVE_OPENGL_OSMESA)
+AC_SUBST(OPENGL_OSMESA_CFLAGS)
+AC_SUBST(OPENGL_OSMESA_LDFLAGS)
+if test "$with_osmesa" = "yes"; then
+    AC_MSG_CHECKING([for OpenGL OSMESA])
+    if pkg-config --atleast-version=8 osmesa; then
+        AC_MSG_RESULT([yes])
+        HAVE_OPENGL_OSMESA=1
+        OPENGL_OSMESA_CFLAGS=`pkg-config --cflags osmesa`
+        OPENGL_OSMESA_LDFLAGS=`pkg-config --libs osmesa`
+    else
+        AC_MSG_RESULT([no])
+    fi
+fi
+AC_DEFINE_UNQUOTED([HAVE_OPENGL_OSMESA],[$HAVE_OPENGL_OSMESA],[Has MESA OpenGL (OSMesa)])
+AM_CONDITIONAL([HAVE_OPENGL_OSMESA],[test $HAVE_OPENGL_OSMESA = 1])
+
 # ZLIB
 HAVE_ZLIB=0
 AC_ARG_WITH(zlib,AS_HELP_STRING([--with-zlib],[Enable ZLIB support]),[],[with_zlib=yes])
