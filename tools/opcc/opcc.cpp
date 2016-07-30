@@ -298,10 +298,12 @@ public:
         for (size_t i=0;i < 256;i++) free_opmap_code(i);
     }
     void free_opmap_code(size_t i) {
-        if (opmap[i] != NULL) {
-            delete opmap[i];
-            opmap[i] = NULL;
-        }
+    	if (opmap_valid) {
+            if (opmap[i] != NULL) {
+                delete opmap[i];
+                opmap[i] = NULL;
+            }
+	}
     }
     void init_opmap(void) {
         if (!opmap_valid) {
