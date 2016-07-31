@@ -410,10 +410,10 @@ template <class T> void rerender_out_neighbor() {
 template <class T> inline T rerender_line_bilinear_pixel_blend(const T cur,const T nxt,const T mulmax,const T mul,const T rbmask,const T abmask,const T pshift) {
     T sum;
 
-    sum  = (((uint32_t)(cur & rbmask) * (mulmax - mul)) >> pshift) & rbmask;
-    sum += (((uint32_t)(cur & abmask) * (mulmax - mul)) >> pshift) & abmask;
-    sum += (((uint32_t)(nxt & rbmask) *           mul ) >> pshift) & rbmask;
-    sum += (((uint32_t)(nxt & abmask) *           mul ) >> pshift) & abmask;
+    sum  = (((uint64_t)(cur & rbmask) * (mulmax - mul)) >> pshift) & rbmask;
+    sum += (((uint64_t)(cur & abmask) * (mulmax - mul)) >> pshift) & abmask;
+    sum += (((uint64_t)(nxt & rbmask) *           mul ) >> pshift) & rbmask;
+    sum += (((uint64_t)(nxt & abmask) *           mul ) >> pshift) & abmask;
     return sum;
 }
 
