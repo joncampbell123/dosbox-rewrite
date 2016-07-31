@@ -437,6 +437,32 @@ static inline __m64 rerender_line_bilinear_pixel_blend_mmx_argb8(const __m64 cur
     d4 = _mm_add_pi8(d3,d3);
     return _mm_add_pi8(d4,cur);
 }
+
+// 16bpp general R/G/B, usually 5/6/5 or 5/5/5
+static inline __m64 rerender_line_bilinear_pixel_blend_mmx_rgb16(const __m64 cur,const __m64 nxt,const __m64 mul,const __m64 rmask,const uint16_t rshift,const __m64 gmask,const uint16_t gshift,const __m64 bmask,const uint16_t bshift) {
+    __m64 rc,gc,bc;
+    __m64 rn,gn,bn;
+    __m64 d,sum;
+
+    rc = _mm_and_si64(_mm_srli_si64(cur,rshift),rmask);
+    gc = _mm_and_si64(_mm_srli_si64(cur,gshift),gmask);
+    bc = _mm_and_si64(_mm_srli_si64(cur,bshift),bmask);
+
+    rn = _mm_and_si64(_mm_srli_si64(nxt,rshift),rmask);
+    gn = _mm_and_si64(_mm_srli_si64(nxt,gshift),gmask);
+    bn = _mm_and_si64(_mm_srli_si64(nxt,bshift),bmask);
+
+    d = _mm_sub_pi16(rn,rc);
+    sum = _mm_slli_si64(_mm_add_pi16(rc,_mm_and_si64(_mm_mulhi_pi16(_mm_add_pi16(d,d),mul),rmask)),rshift);
+
+    d = _mm_sub_pi16(gn,gc);
+    sum = _mm_add_pi16(_mm_slli_si64(_mm_add_pi16(gc,_mm_and_si64(_mm_mulhi_pi16(_mm_add_pi16(d,d),mul),gmask)),gshift),sum);
+
+    d = _mm_sub_pi16(bn,bc);
+    sum = _mm_add_pi16(_mm_slli_si64(_mm_add_pi16(bc,_mm_and_si64(_mm_mulhi_pi16(_mm_add_pi16(d,d),mul),bmask)),bshift),sum);
+
+    return sum;
+}
 #endif
 
 template <class T> inline void rerender_line_bilinear_hinterp_stage(T *d,T *s,struct nr_wfpack sx,const struct nr_wfpack &stepx,size_t dwidth,const T rbmask,const T abmask,const T fmax,const T fshift,const T pshift) {
@@ -457,9 +483,9 @@ static inline void rerender_line_bilinear_vinterp_stage_mmx_argb8(__m64 *d,__m64
 
 // case 1: 16-bit arbitrary masks
 static inline void rerender_line_bilinear_vinterp_stage_mmx_rgb16(__m64 *d,__m64 *s,__m64 *s2,const __m64 mul,size_t width,const __m64 rmask,const uint16_t rshift,const __m64 gmask,const uint16_t gshift,const __m64 bmask,const uint16_t bshift) {
-//    do {
-//        *d++ = rerender_line_bilinear_pixel_blend<T>(*s++,*s2++,fmax,mul,rbmask,abmask,pshift);
-//    } while ((--width) != (size_t)0);
+    do {
+        *d++ = rerender_line_bilinear_pixel_blend_mmx_rgb16(*s++,*s2++,mul,rmask,rshift,gmask,gshift,bmask,bshift);
+    } while ((--width) != (size_t)0);
 }
 #endif
 
