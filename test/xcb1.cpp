@@ -14,7 +14,7 @@
 
 xcb_connection_t*		xcb_connection = NULL;
 xcb_screen_t*			xcb_screen = NULL;
-xcb_window_t			xcb_window = NULL;
+xcb_window_t			xcb_window = 0;
 xcb_generic_event_t*		xcb_event = NULL;
 const xcb_setup_t*		xcb_setup = NULL;
 int				xcb_screen_num = -1;
