@@ -159,8 +159,10 @@ build_os=$target_alias
 if test "$build_os" = ""; then build_os=$build_alias; fi
 if test "$build_os" = ""; then build_os=$host_alias; fi
 if test "$build_os" = ""; then build_os=`uname -o`; fi
+if test "$build_os" = ""; then build_os=`uname -s`; fi
 AC_MSG_RESULT([$build_os])
 
+IS_MAC_OSX=0
 IS_LINUX=0
 case "$build_os" in
     *linux*)
@@ -168,6 +170,9 @@ case "$build_os" in
         ;;
     *GNU\/Linux*)
         IS_LINUX=1
+        ;;
+    *Darwin*)
+        IS_MAC_OSX=1
         ;;
     *)
         ;;
