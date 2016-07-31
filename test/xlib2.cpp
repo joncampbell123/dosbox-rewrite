@@ -636,6 +636,10 @@ template <class T> void rerender_out_bilinear() {
     } while (1);
 }
 
+// MMX alignment warning:
+// It is strongly recommended that the bitmap base and scan line stride are MMX aligned, meaning
+// that the base of the bitmap is aligned to 8 bytes and the scan line stride is a multiple of 8.
+// Failure to do so may cause a performance loss.
 template <class T> void rerender_out_bilinear_mmx() {
 #if HAVE_CPU_MMX
     // WARNING: This code assumes typical RGBA type packing where red and blue are NOT adjacent, and alpha and green are not adjacent
@@ -751,6 +755,13 @@ template <class T> void rerender_out_bilinear_mmx() {
 #endif
 }
 
+// SSE alignment warning:
+// Do not use this routine unless the scan lines in the bitmap are all aligned to SSE boundaries,
+// meaning that the bitmap base is aligned to a 16 byte boundary and the scan line "stride" is a
+// multiple of 16 bytes. Modern processors (like Intel Core 2 and such) tolerate misaligned SSE
+// but older processors (like the Pentium 4) will throw an exception if SSE instructions are
+// executed on misaligned memory. Besides that, there may be performance loss if SSE operations
+// are misaligned.
 template <class T> void rerender_out_bilinear_sse() {
 #if HAVE_CPU_SSE2
     // WARNING: This code assumes typical RGBA type packing where red and blue are NOT adjacent, and alpha and green are not adjacent
