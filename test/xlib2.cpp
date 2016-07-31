@@ -479,8 +479,8 @@ static inline __m128i rerender_line_bilinear_pixel_blend_sse_argb8(const __m128i
     d1 = _mm_and_si128(_mm_mulhi_epi16(_mm_sub_epi16(_mm_and_si128(nxt,rmask),_mm_and_si128(cur,rmask)),mul),rmask);
     d2 = _mm_slli_si128(_mm_and_si128(_mm_mulhi_epi16(_mm_sub_epi16(_mm_and_si128(_mm_srli_si128(nxt,1/*bytes!*/),rmask),_mm_and_si128(_mm_srli_si128(cur,1/*bytes!*/),rmask)),mul),rmask),1/*bytes!*/);
     d3 = _mm_add_epi8(d1,d2);
-
-    return _mm_add_epi8(_mm_add_epi8(d3,d3),cur);
+    d4 = _mm_add_epi8(d3,d3);
+    return _mm_add_epi8(d4,cur);
 }
 
 // 16bpp general R/G/B, usually 5/6/5 or 5/5/5
