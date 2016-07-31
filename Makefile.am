@@ -126,7 +126,7 @@ bin_test_xlib1_DEPENDENCIES =
 bin_test_xlib1_LDADD = $(X11_LDFLAGS) $(XEXT_LDFLAGS)
 
 bin_test_xlib2_SOURCES = test/xlib2.cpp
-bin_test_xlib2_CXXFLAGS = $(AM_CXXFLAGS) $(X11_CFLAGS) $(XEXT_CFLAGS)
+bin_test_xlib2_CXXFLAGS = $(AM_CXXFLAGS) $(X11_CFLAGS) $(XEXT_CFLAGS) $(CPU_MMX_CFLAGS) $(CPU_SSE2_CFLAGS) $(CPU_AVX2_CFLAGS)
 bin_test_xlib2_DEPENDENCIES = \
 	dosboxxr/lib/hostcpudetect/libhostcpudetect.a \
 	dosboxxr/lib/text/libtext.a
