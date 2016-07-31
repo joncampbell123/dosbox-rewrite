@@ -152,7 +152,33 @@ AC_CHECK_PROG([HAVE_YASM],[yasm],[1],[0])
 AM_CONDITIONAL([HAVE_YASM],[test $HAVE_YASM = 1])
 AC_DEFINE_UNQUOTED([HAVE_YASM],[$HAVE_YASM],[Has YASM])
 
-# GCC __builtin_cpu_init and other functions
+# autoconf script provides "target_alias"
+# what OS are we targeting?
+AC_MSG_CHECKING([host os])
+build_os=$target_alias
+if test "$build_os" = ""; then build_os=$build_alias; fi
+if test "$build_os" = ""; then build_os=$host_alias; fi
+if test "$build_os" = ""; then build_os=`uname -o`; fi
+AC_MSG_RESULT([$build_os])
+
+IS_LINUX=0
+case "$build_os" in
+    *linux*)
+        IS_LINUX=1
+        ;;
+    *GNU\/Linux*)
+        IS_LINUX=1
+        ;;
+    *)
+        ;;
+esac
+
+AC_SUBST(IS_LINUX)
+AM_CONDITIONAL([IS_LINUX],[test $IS_LINUX = 1])
+AC_DEFINE_UNQUOTED([IS_LINUX],[$IS_LINUX],[OS is Linux])
+
+# GCC __builtin_cpu_init and other functions.
+# Note that Clang doesn't provide this, yet.
 HAVE_GCC_BUILTIN_CPU=0
 AC_SUBST(HAVE_GCC_BUILTIN_CPU)
 AC_MSG_CHECKING([for GCC builtin_cpu functions])

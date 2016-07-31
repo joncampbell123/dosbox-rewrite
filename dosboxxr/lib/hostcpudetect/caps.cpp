@@ -35,7 +35,7 @@ void HostCPUCaps::detect() {
     ssse3 = __builtin_cpu_supports("ssse3");
     avx = __builtin_cpu_supports("avx");
     avx2 = __builtin_cpu_supports("avx2");
-# else//TODO: This block is Linux-specific
+# elif IS_LINUX
 /*------------------ x86/x86_64 we can use procfs cpuinfo ------------*/
     char line[1024],*name,*value;
     int cpuno=0;
