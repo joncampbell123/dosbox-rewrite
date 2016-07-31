@@ -42,7 +42,8 @@ endif
 if HAVE_X11
 if HAVE_XEXT
 noinst_PROGRAMS += \
-	bin/test/xlib1
+	bin/test/xlib1 \
+	bin/test/xlib2
 endif
 endif
 
@@ -123,6 +124,11 @@ bin_test_xlib1_SOURCES = test/xlib1.cpp
 bin_test_xlib1_CXXFLAGS = $(AM_CXXFLAGS) $(X11_CFLAGS) $(XEXT_CFLAGS)
 bin_test_xlib1_DEPENDENCIES =
 bin_test_xlib1_LDADD = $(X11_LDFLAGS) $(XEXT_LDFLAGS)
+
+bin_test_xlib2_SOURCES = test/xlib2.cpp
+bin_test_xlib2_CXXFLAGS = $(AM_CXXFLAGS) $(X11_CFLAGS) $(XEXT_CFLAGS)
+bin_test_xlib2_DEPENDENCIES =
+bin_test_xlib2_LDADD = $(X11_LDFLAGS) $(XEXT_LDFLAGS)
 
 bin_test_xcb1_SOURCES = test/xcb1.cpp
 bin_test_xcb1_CXXFLAGS = $(AM_CXXFLAGS) $(X11_CFLAGS) $(XEXT_CFLAGS) $(X11_XCB_CFLAGS) $(XCB_SHM_CFLAGS)
