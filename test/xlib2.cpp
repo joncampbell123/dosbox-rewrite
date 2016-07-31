@@ -454,15 +454,12 @@ template <class T> void rerender_out_bilinear() {
 
     rs = bitscan_forward(x_image->red_mask,0);
     rm = bitscan_count(x_image->red_mask,rs) - rs;
-//    rm = (1U << rm) - 1U;
 
     gs = bitscan_forward(x_image->green_mask,0);
     gm = bitscan_count(x_image->green_mask,gs) - gs;
-//    gm = (1U << gm) - 1U;
 
     bs = bitscan_forward(x_image->blue_mask,0);
     bm = bitscan_count(x_image->blue_mask,bs) - bs;
-//    bm = (1U << bm) - 1U;
 
     fshift = std::min(rm,std::min(gm,bm));
     pshift = fshift;
