@@ -22,6 +22,8 @@
 
 #include <algorithm>
 
+#include "dosboxxr/lib/hostcpudetect/caps.h"
+
 #if HAVE_CPU_MMX
 # include <mmintrin.h>
 #endif
@@ -595,6 +597,9 @@ template <class T> void rerender_out_bilinear_mmx() {
     T fmax;
     T mul;
 
+    // do not run this function if MMX extensions are not present
+    if (!hostCPUcaps.mmx) return;
+
     rs = bitscan_forward(x_image->red_mask,0);
     rm = bitscan_count(x_image->red_mask,rs) - rs;
 
@@ -714,6 +719,8 @@ void rerender_out() {
 
 int main() {
 	int redraw = 1;
+
+    hostCPUcaps.detect();
 
 	memset(&x_shminfo,0,sizeof(x_shminfo));
 
