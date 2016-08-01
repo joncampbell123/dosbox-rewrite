@@ -560,7 +560,7 @@ static inline __m256i rerender_line_bilinear_pixel_blend_avx_rgb16(const __m256i
 #if HAVE_CPU_ARM_NEON
 // 32bpp optimized for 8-bit ARGB/RGBA. rmask should be 0x00FF,0x00FF,... etc
 static inline int16x8_t rerender_line_bilinear_pixel_blend_arm_neon_argb8(const int16x8_t cur,const int16x8_t nxt,const int16_t mul,const int16x8_t rmask) {
-#if 0
+#if 0 // FIXME: I can't develop this code until I can figure out how to get X on my Raspberry Pi 2 to come up in 32-bit ARGB mode
     int16x8_t d1,d2,d3,d4;
 
     d1 = _mm256_and_si256(_mm256_mulhi_epi16(_mm256_sub_epi16(_mm256_and_si256(nxt,rmask),_mm256_and_si256(cur,rmask)),mul),rmask);
