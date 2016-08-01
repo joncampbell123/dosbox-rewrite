@@ -722,7 +722,10 @@ template <class T> void rerender_out_bilinear_mmx() {
     T mul;
 
     // do not run this function if MMX extensions are not present
-    if (!hostCPUcaps.mmx) return;
+    if (!hostCPUcaps.mmx) {
+        fprintf(stderr,"CPU does not support MMX\n");
+        return;
+    }
 
     rs = bitscan_forward(x_image->red_mask,0);
     rm = bitscan_count(x_image->red_mask,rs) - rs;
@@ -812,6 +815,8 @@ template <class T> void rerender_out_bilinear_mmx() {
         drow += x_image->bytes_per_line;
         sy += stepy;
     } while (1);
+#else
+    fprintf(stderr,"Compiler does not support MMX\n");
 #endif
 }
 
@@ -844,7 +849,10 @@ template <class T> void rerender_out_bilinear_sse() {
     T mul;
 
     // do not run this function if SSE2 extensions are not present
-    if (!hostCPUcaps.sse2) return;
+    if (!hostCPUcaps.sse2) {
+        fprintf(stderr,"CPU does not support SSE2\n");
+        return;
+    }
 
     rs = bitscan_forward(x_image->red_mask,0);
     rm = bitscan_count(x_image->red_mask,rs) - rs;
@@ -934,6 +942,8 @@ template <class T> void rerender_out_bilinear_sse() {
         drow += x_image->bytes_per_line;
         sy += stepy;
     } while (1);
+#else
+    fprintf(stderr,"Compiler does not support SSE2\n");
 #endif
 }
 
@@ -968,7 +978,10 @@ template <class T> void rerender_out_bilinear_avx() {
     T mul;
 
     // do not run this function if AVX2 extensions are not present
-    if (!hostCPUcaps.avx2) return;
+    if (!hostCPUcaps.avx2) {
+        fprintf(stderr,"CPU does not support AVX2\n");
+        return;
+    }
 
     rs = bitscan_forward(x_image->red_mask,0);
     rm = bitscan_count(x_image->red_mask,rs) - rs;
@@ -1078,6 +1091,8 @@ template <class T> void rerender_out_bilinear_avx() {
         drow += x_image->bytes_per_line;
         sy += stepy;
     } while (1);
+#else
+    fprintf(stderr,"Compiler does not support AVX2\n");
 #endif
 }
 
