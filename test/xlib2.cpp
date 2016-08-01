@@ -1294,7 +1294,7 @@ template <class T> void rerender_out_bilinear_arm_neon() {
         sy += stepy;
     } while (1);
 #else
-    fprintf(stderr,"Compiler does not support AVX2\n");
+    fprintf(stderr,"Compiler does not support ARM NEON\n");
 #endif
 }
 
