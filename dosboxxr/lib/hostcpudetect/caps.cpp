@@ -4,6 +4,9 @@
 #endif
 
 #include <sys/types.h>
+#if IS_MAC_OSX
+# include <sys/sysctl.h>
+#endif
 #include <sys/stat.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -35,6 +38,76 @@ void HostCPUCaps::detect() {
     ssse3 = __builtin_cpu_supports("ssse3");
     avx = __builtin_cpu_supports("avx");
     avx2 = __builtin_cpu_supports("avx2");
+# elif IS_MAC_OSX
+/*------------------ x86/x86_64 Mac OS X has a way to query CPU features -------*/
+    char line[4096],*value;
+    size_t linelen = sizeof(line);
+
+    detect_method = "Mac OS X (Darwin) sysctl";
+
+    line[0] = 0;
+    value = line;
+    sysctlbyname("machdep.cpu.features",&line,&linelen,NULL,0);
+
+    /* each flag is separated by a space */
+    while (*value != 0) {
+	    if (*value == ' ') {
+		    value++;
+		    continue;
+	    }
+
+	    char *n = strchr(value,' ');
+	    if (n != NULL) {
+		    *n++ = 0; // only one space. overwrite with NUL to cut the string.
+	    }
+	    else {
+		    n = value+strlen(value);
+	    }
+
+	    if (!strcmp(value,"MMX"))
+		    mmx = 1;
+	    else if (!strcmp(value,"SSE"))
+		    sse = 1;
+	    else if (!strcmp(value,"SSE2"))
+		    sse2 = 1;
+	    else if (!strcmp(value,"SSE3"))
+		    sse3 = 1;
+	    else if (!strcmp(value,"SSSE3"))
+		    ssse3 = sse3 = 1; // FIXME, right?
+	    else if (!strcmp(value,"AVX1.0"))
+		    avx = 1;
+	    else if (!strcmp(value,"AVX2"))
+		    avx2 = 1;
+
+	    // next flag
+	    value = n;
+    }
+
+    line[0] = 0;
+    value = line;
+    sysctlbyname("machdep.cpu.leaf7_features",&line,&linelen,NULL,0);
+
+    /* each flag is separated by a space */
+    while (*value != 0) {
+	    if (*value == ' ') {
+		    value++;
+		    continue;
+	    }
+
+	    char *n = strchr(value,' ');
+	    if (n != NULL) {
+		    *n++ = 0; // only one space. overwrite with NUL to cut the string.
+	    }
+	    else {
+		    n = value+strlen(value);
+	    }
+
+	    if (!strcmp(value,"AVX2"))
+		    avx2 = 1;
+
+	    // next flag
+	    value = n;
+    }
 # elif IS_LINUX
 /*------------------ x86/x86_64 we can use procfs cpuinfo ------------*/
     char line[1024],*name,*value;

@@ -178,6 +178,16 @@ case "$build_os" in
         ;;
 esac
 
+# Apple in their wisdom use their own typedefs that don't show up by default
+# if you define POSIX_C_SOURCE, but that many important syscalls use anyway.
+# we need these syscalls, so we have to define DARWIN_C_SOURCE to get them.
+if test "$IS_MAC_OSX" = 1; then
+    DARWIN_DEF=" -D_DARWIN_C_SOURCE"
+    CFLAGS+="$DARWIN_DEF"
+    CPPFLAGS+="$DARWIN_DEF"
+    CXXFLAGS+="$DARWIN_DEF"
+fi
+
 AC_SUBST(IS_LINUX)
 AM_CONDITIONAL([IS_LINUX],[test $IS_LINUX = 1])
 AC_DEFINE_UNQUOTED([IS_LINUX],[$IS_LINUX],[OS is Linux])
