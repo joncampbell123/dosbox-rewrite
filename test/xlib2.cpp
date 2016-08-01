@@ -36,6 +36,10 @@
 # include <immintrin.h>
 #endif
 
+#if HAVE_CPU_ARM_NEON
+# include <arm_neon.h>
+#endif
+
 int                 method = 0;
 
 Display*			x_display = NULL;
@@ -553,6 +557,46 @@ static inline __m256i rerender_line_bilinear_pixel_blend_avx_rgb16(const __m256i
 }
 #endif
 
+#if HAVE_CPU_ARM_NEON
+// 32bpp optimized for 8-bit ARGB/RGBA. rmask should be 0x00FF,0x00FF,... etc
+static inline int16x8_t rerender_line_bilinear_pixel_blend_arm_neon_argb8(const int16x8_t cur,const int16x8_t nxt,const int16_t mul,const int16x8_t rmask) {
+#if 0
+    int16x8_t d1,d2,d3,d4;
+
+    d1 = _mm256_and_si256(_mm256_mulhi_epi16(_mm256_sub_epi16(_mm256_and_si256(nxt,rmask),_mm256_and_si256(cur,rmask)),mul),rmask);
+    d2 = _mm256_slli_si256(_mm256_and_si256(_mm256_mulhi_epi16(_mm256_sub_epi16(_mm256_and_si256(_mm256_srli_si256(nxt,1/*bytes!*/),rmask),_mm256_and_si256(_mm256_srli_si256(cur,1/*bytes!*/),rmask)),mul),rmask),1/*bytes!*/);
+    d3 = _mm256_add_epi8(d1,d2);
+    d4 = _mm256_add_epi8(d3,d3);
+    return _mm256_add_epi8(d4,cur);
+#endif
+}
+
+template <const uint8_t shf> static inline int16x8_t rerender_line_bilinear_pixel_blend_arm_neon_rgb16channel(const int16x8_t cur,const int16x8_t nxt,const int16_t mul,const int16x8_t cmask) {
+    const int16x8_t cir = (shf != 0) ? vshrq_n_s16(cur,shf) : cur;
+    const int16x8_t nir = (shf != 0) ? vshrq_n_s16(nxt,shf) : nxt;
+    const int16x8_t rc = vandq_s16(cir,cmask);
+    const int16x8_t rn = vandq_s16(nir,cmask);
+    const int16x8_t d = vsubq_s16(rn,rc);
+    const int16x8_t f = vaddq_s16(rc,vandq_s16(vqdmulhq_n_s16(d,mul),cmask));
+    return (shf != 0) ? vshlq_n_s16(f,shf) : f;
+}
+
+// 16bpp general R/G/B, usually 5/6/5 or 5/5/5
+static inline int16x8_t rerender_line_bilinear_pixel_blend_arm_neon_rgb16(const int16x8_t cur,const int16x8_t nxt,const int16_t mul,const int16x8_t rmask,const uint16_t rshift,const int16x8_t gmask,const uint16_t gshift,const int16x8_t bmask,const uint16_t bshift) {
+    int16x8_t sr,sg,sb;
+
+// FIXME: sadly, NEON doesn't allow variable shifts, must be constant
+// so we hardcode for now 5/6/5 where R starts at 11, G starts at 5, B starts at 0.
+// remember that as a general interpolation function it really doesn't matter whether R/G/B starts at 11/5/0 or 0/5/11,
+// only that the RGB fields are 5/6/5 bits
+
+    sr = rerender_line_bilinear_pixel_blend_arm_neon_rgb16channel<uint8_t(11)>(cur,nxt,mul,rmask);
+    sg = rerender_line_bilinear_pixel_blend_arm_neon_rgb16channel<uint8_t(5)>(cur,nxt,mul,gmask);
+    sb = rerender_line_bilinear_pixel_blend_arm_neon_rgb16channel<uint8_t(0)>(cur,nxt,mul,bmask);
+    return vaddq_s16(vaddq_s16(sr,sg),sb);
+}
+#endif
+
 template <class T> inline void rerender_line_bilinear_hinterp_stage(T *d,T *s,struct nr_wfpack sx,const struct nr_wfpack &stepx,size_t dwidth,const T rbmask,const T abmask,const T fmax,const T fshift,const T pshift) {
     do {
         *d++ = rerender_line_bilinear_pixel_blend<T>(s[sx.w],s[sx.w+1],fmax,(T)(sx.f >> (T)fshift),rbmask,abmask,pshift);
@@ -583,7 +627,6 @@ static inline void rerender_line_bilinear_vinterp_stage_sse_argb8(__m128i *d,__m
     do {
         *d++ = rerender_line_bilinear_pixel_blend_sse_argb8(*s++,*s2++,mul,rmask);
     } while ((--width) != (size_t)0);
-    _mm_empty();
 }
 
 // case 1: 16-bit arbitrary masks
@@ -600,13 +643,28 @@ static inline void rerender_line_bilinear_vinterp_stage_avx_argb8(__m256i *d,__m
     do {
         *d++ = rerender_line_bilinear_pixel_blend_avx_argb8(*s++,*s2++,mul,rmask);
     } while ((--width) != (size_t)0);
-    _mm_empty();
 }
 
 // case 1: 16-bit arbitrary masks
 static inline void rerender_line_bilinear_vinterp_stage_avx_rgb16(__m256i *d,__m256i *s,__m256i *s2,const __m256i mul,size_t width,const __m256i rmask,const uint16_t rshift,const __m256i gmask,const uint16_t gshift,const __m256i bmask,const uint16_t bshift) {
     do {
         *d++ = rerender_line_bilinear_pixel_blend_avx_rgb16(*s++,*s2++,mul,rmask,rshift,gmask,gshift,bmask,bshift);
+    } while ((--width) != (size_t)0);
+}
+#endif
+
+#if HAVE_CPU_ARM_NEON
+// case 2: 32-bit ARGB 8-bits per pixel
+static inline void rerender_line_bilinear_vinterp_stage_arm_neon_argb8(int16x8_t *d,int16x8_t *s,int16x8_t *s2,const int16_t mul,size_t width,const int16x8_t rmask) {
+    do {
+        *d++ = rerender_line_bilinear_pixel_blend_arm_neon_argb8(*s++,*s2++,mul,rmask);
+    } while ((--width) != (size_t)0);
+}
+
+// case 1: 16-bit arbitrary masks
+static inline void rerender_line_bilinear_vinterp_stage_arm_neon_rgb16(int16x8_t *d,int16x8_t *s,int16x8_t *s2,const int16_t mul,size_t width,const int16x8_t rmask,const uint16_t rshift,const int16x8_t gmask,const uint16_t gshift,const int16x8_t bmask,const uint16_t bshift) {
+    do {
+        *d++ = rerender_line_bilinear_pixel_blend_arm_neon_rgb16(*s++,*s2++,mul,rmask,rshift,gmask,gshift,bmask,bshift);
     } while ((--width) != (size_t)0);
 }
 #endif
@@ -1096,6 +1154,150 @@ template <class T> void rerender_out_bilinear_avx() {
 #endif
 }
 
+template <class T> void rerender_out_bilinear_arm_neon() {
+#if HAVE_CPU_ARM_NEON
+    // WARNING: This code assumes typical RGBA type packing where red and blue are NOT adjacent, and alpha and green are not adjacent
+    nr_wfpack sx={0,0},sy={0,0},stepx,stepy;
+    static vinterp_tmp<int16x8_t> vinterp_tmp;
+    const T alpha = 
+        (T)(~(x_image->red_mask+x_image->green_mask+x_image->blue_mask));
+    const T rbmask = (T)(x_image->red_mask+x_image->blue_mask);
+    const T abmask = (T)x_image->green_mask + alpha;
+    int16x8_t rmask128,gmask128,bmask128;
+    const size_t pixels_per_group =
+        sizeof(int16x8_t) / sizeof(T);
+    unsigned char *drow;
+    uint16_t rm,gm,bm;
+    uint8_t rs,gs,bs;
+    int16_t mul128;
+    size_t ox,oy;
+    T fshift;
+    T pshift;
+    T fmax;
+    T mul;
+
+    // do not run this function if NEON extensions are not present
+    if (!hostCPUcaps.neon) {
+        fprintf(stderr,"CPU does not support NEON\n");
+        return;
+    }
+
+    rs = bitscan_forward(x_image->red_mask,0);
+    rm = bitscan_count(x_image->red_mask,rs) - rs;
+
+    gs = bitscan_forward(x_image->green_mask,0);
+    gm = bitscan_count(x_image->green_mask,gs) - gs;
+
+    bs = bitscan_forward(x_image->blue_mask,0);
+    bm = bitscan_count(x_image->blue_mask,bs) - bs;
+
+    fshift = std::min(rm,std::min(gm,bm));
+    pshift = fshift;
+    fshift = (sizeof(nr_wftype) * 8) - fshift;
+
+    // this code WILL fault if base or stride are not multiple of 16!
+    if ((src_bitmap_stride & 15) != 0 || ((size_t)src_bitmap & 15) != 0) {
+        fprintf(stderr,"Source bitmap not NEON usable (base=%p stride=0x%x\n",(void*)src_bitmap,(unsigned int)src_bitmap_stride);
+        return;
+    }
+    if (((size_t)x_image->data & 15) != 0 || (x_image->bytes_per_line & 15) != 0) {
+        fprintf(stderr,"Target bitmap not NEON usable (base=%p stride=0x%x\n",(void*)x_image->data,(unsigned int)x_image->bytes_per_line);
+        return;
+    }
+
+    if (sizeof(T) == 4) {
+        // 32bpp this code can only handle the 8-bit RGBA/ARGB case, else R/G/B fields cross 16-bit boundaries
+        if (pshift != 8) return;
+        if (bm != 8 || gm != 8 || rm != 8) return; // each field, 8 bits
+        if ((rs&7) != 0 || (gs&7) != 0 || (bs&7) != 0) return; // each field, starts on 8-bit boundaries
+
+        rmask128 = (int16x8_t){0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};
+    }
+    else {
+        // 16bpp this code can handle any case
+        if (pshift > 15) return;
+
+        rmask128 = (int16x8_t){
+            (int16_t)((1 << rm) - 1),   (int16_t)((1 << rm) - 1),
+            (int16_t)((1 << rm) - 1),   (int16_t)((1 << rm) - 1),
+            (int16_t)((1 << rm) - 1),   (int16_t)((1 << rm) - 1),
+            (int16_t)((1 << rm) - 1),   (int16_t)((1 << rm) - 1)
+        };
+
+        gmask128 = (int16x8_t){
+            (int16_t)((1 << gm) - 1),   (int16_t)((1 << gm) - 1),
+            (int16_t)((1 << gm) - 1),   (int16_t)((1 << gm) - 1),
+            (int16_t)((1 << gm) - 1),   (int16_t)((1 << gm) - 1),
+            (int16_t)((1 << gm) - 1),   (int16_t)((1 << gm) - 1)
+        };
+
+        bmask128 = (int16x8_t){
+            (int16_t)((1 << bm) - 1),   (int16_t)((1 << bm) - 1),
+            (int16_t)((1 << bm) - 1),   (int16_t)((1 << bm) - 1),
+            (int16_t)((1 << bm) - 1),   (int16_t)((1 << bm) - 1),
+            (int16_t)((1 << bm) - 1),   (int16_t)((1 << bm) - 1)
+        };
+    }
+
+    fmax = 1U << pshift;
+
+    render_scale_from_sd(/*&*/stepx,bitmap_width,src_bitmap_width);
+    render_scale_from_sd(/*&*/stepy,bitmap_height,src_bitmap_height);
+
+    unsigned int src_bitmap_width_groups = (src_bitmap_width + pixels_per_group - 1) / pixels_per_group;
+
+    if (bitmap_width == 0 || src_bitmap_width_groups == 0) return;
+
+    drow = (unsigned char*)x_image->data;
+    oy = bitmap_height;
+    do {
+        T *s2 = (T*)((uint8_t*)src_bitmap + (src_bitmap_stride*(sy.w+1)));
+        T *s = (T*)((uint8_t*)src_bitmap + (src_bitmap_stride*sy.w));
+        T *d = (T*)drow;
+
+        mul = (T)(sy.f >> fshift);
+        mul128 = (mul & (~1U)) << (15 - pshift); // 16-bit MMX multiply (signed bit), remove one bit to match precision
+
+        if (mul != 0) {
+            if (stepx.w != 1 || stepx.f != 0) {
+                // horizontal interpolation, vertical interpolation
+                if (sizeof(T) == 4)
+                    rerender_line_bilinear_vinterp_stage_arm_neon_argb8(vinterp_tmp.tmp,(int16x8_t*)s,(int16x8_t*)s2,mul128,src_bitmap_width_groups,rmask128);
+                else
+                    rerender_line_bilinear_vinterp_stage_arm_neon_rgb16(vinterp_tmp.tmp,(int16x8_t*)s,(int16x8_t*)s2,mul128,src_bitmap_width_groups,
+                        rmask128,rs,gmask128,gs,bmask128,bs);
+
+                rerender_line_bilinear_hinterp_stage<T>(d,(T*)vinterp_tmp.tmp,sx,stepx,bitmap_width,rbmask,abmask,fmax,fshift,pshift);
+            }
+            else {
+                // vertical interpolation only
+                if (sizeof(T) == 4)
+                    rerender_line_bilinear_vinterp_stage_arm_neon_argb8((int16x8_t*)d,(int16x8_t*)s,(int16x8_t*)s2,mul128,src_bitmap_width_groups,rmask128);
+                else
+                    rerender_line_bilinear_vinterp_stage_arm_neon_rgb16((int16x8_t*)d,(int16x8_t*)s,(int16x8_t*)s2,mul128,src_bitmap_width_groups,
+                        rmask128,rs,gmask128,gs,bmask128,bs);
+            }
+        }
+        else {
+            if (stepx.w != 1 || stepx.f != 0) {
+                // horizontal interpolation, no vertical interpolation
+                rerender_line_bilinear_hinterp_stage<T>(d,s,sx,stepx,bitmap_width,rbmask,abmask,fmax,fshift,pshift);
+            }
+            else {
+                // copy the scanline 1:1 no interpolation
+                memcpy(d,s,bitmap_width*sizeof(T));
+            }
+        }
+
+        if ((--oy) == 0) break;
+        drow += x_image->bytes_per_line;
+        sy += stepy;
+    } while (1);
+#else
+    fprintf(stderr,"Compiler does not support AVX2\n");
+#endif
+}
+
 void rerender_out() {
     if (method == 0) {
         fprintf(stderr,"Neighbor\n");
@@ -1133,6 +1335,13 @@ void rerender_out() {
             rerender_out_bilinear_avx<uint32_t>();
         else if (x_image->bits_per_pixel == 16)
             rerender_out_bilinear_avx<uint16_t>();
+    }
+    else if (method == 5) {
+        fprintf(stderr,"Basic bilinear ARM NEON\n");
+        if (x_image->bits_per_pixel == 32)
+            rerender_out_bilinear_arm_neon<uint32_t>();
+        else if (x_image->bits_per_pixel == 16)
+            rerender_out_bilinear_arm_neon<uint16_t>();
     }
 }
 
@@ -1262,7 +1471,7 @@ int main() {
 					x_quit = 1;
 				}
                 else if (sym == XK_space) {
-                    if ((++method) >= 5)
+                    if ((++method) >= 6)
                         method = 0;
 
                     rerender_out();
