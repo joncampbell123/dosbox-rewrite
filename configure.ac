@@ -158,8 +158,8 @@ AC_MSG_CHECKING([host os])
 build_os=$target_alias
 if test "$build_os" = ""; then build_os=$build_alias; fi
 if test "$build_os" = ""; then build_os=$host_alias; fi
-if test "$build_os" = ""; then build_os=`uname -o`; fi
-if test "$build_os" = ""; then build_os=`uname -s`; fi
+if test "$build_os" = ""; then build_os=`uname -o 2>/dev/null`; fi
+if test "$build_os" = ""; then build_os=`uname -s 2>/dev/null`; fi
 AC_MSG_RESULT([$build_os])
 
 IS_MAC_OSX=0
@@ -181,6 +181,10 @@ esac
 AC_SUBST(IS_LINUX)
 AM_CONDITIONAL([IS_LINUX],[test $IS_LINUX = 1])
 AC_DEFINE_UNQUOTED([IS_LINUX],[$IS_LINUX],[OS is Linux])
+
+AC_SUBST(IS_MAC_OSX)
+AM_CONDITIONAL([IS_MAC_OSX],[test $IS_MAC_OSX = 1])
+AC_DEFINE_UNQUOTED([IS_MAC_OSX],[$IS_MAC_OSX],[OS is Mac OS X (Darwin)])
 
 # GCC __builtin_cpu_init and other functions.
 # Note that Clang doesn't provide this, yet.
