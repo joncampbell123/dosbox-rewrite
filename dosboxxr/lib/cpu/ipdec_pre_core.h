@@ -25,9 +25,11 @@ static inline x86_offset_t IPFmrmdisplace16(x86ModRegRm &mrm) {
             return IPFBsigned();
         case 2:
             return IPFW();
-        case 3:
-            return 0;
+//        case 3:
+//            return 0;
     };
+
+    return 0;
 }
 
 // given mod/reg/rm fetch displacement (32-bit code)
@@ -40,9 +42,11 @@ static inline x86_offset_t IPFmrmdisplace32(x86ModRegRm &mrm) {
             return IPFBsigned();
         case 2:
             return IPFDW();
-        case 3:
-            return 0;
+//        case 3:
+//            return 0;
     };
+
+    return 0;
 }
 
 // 16-bit addressing
