@@ -6,12 +6,12 @@
 #include <stdio.h>
 #include <fcntl.h>
 
-using namespace std;
-
 #include <algorithm>        // std::min
 #include <string>
 #include <vector>
 #include <map>
+
+using namespace std;
 
 enum opccMode {
     MOD_DECOMPILE=0,
@@ -174,6 +174,8 @@ const char *suffix_str(enum opccSuffix c,const unsigned int opsize) {
             return "f80";
         case OPSUFFIX_FLOATBCD:
             return "fbcd";
+	default:
+	    break;
     }
 
     return "";
@@ -1313,9 +1315,9 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
         }
     }
     if (submap->opsz32)
-        fprintf(out_fp,"%s        prefix66 ^= 1;\n");
+        fprintf(out_fp,"%s        prefix66 ^= 1;\n",indent_str.c_str());
     if (submap->addrsz32)
-        fprintf(out_fp,"%s        prefix67 ^= 1;\n");
+        fprintf(out_fp,"%s        prefix67 ^= 1;\n",indent_str.c_str());
 
     /* then fetch other args */
     for (size_t i=0;i < submap->immarg.size();i++) {
@@ -1367,6 +1369,8 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                 else            fprintf(out_fp,"%s        imm=IPFDWsigned();\n",indent_str.c_str());
                 immc++;
                 break;
+	    default:
+		break;
         };
     }
 
@@ -1470,7 +1474,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                     if (arg.immval > 9)
                         fprintf(out_fp,"0x%lX",(unsigned long)arg.immval);
                     else
-                        fprintf(out_fp,"%u",(unsigned long)arg.immval);
+                        fprintf(out_fp,"%lu",(unsigned long)arg.immval);
                 }
                 else if (arg.arg == OPDARG_mem_imm) {
                     enum opccArgs argt = OPARG_NONE;
@@ -1521,6 +1525,8 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                             fmtargs += tmp;
                             if (generic1632) fmtargs += "&0xFFFFFFFFUL";
                             break;
+			default:
+			    break;
                     };
 
                     switch (arg.argtype) {
@@ -1557,6 +1563,8 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                         case OPDARGTYPE_FPUSTATE:
                             fprintf(out_fp,"fstate");
                             break;
+			default:
+			    break;
                     }
                 }
                 else if (arg.arg == OPDARG_rm) {
@@ -1632,6 +1640,8 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                             rc = "RC_SSEREG";
                             suffix = "";
                             break;
+			default:
+			    break;
                     }
 
                     fprintf(out_fp,"%%s");
@@ -1743,6 +1753,8 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                             fmtargs += ",";
                             fmtargs += regname;
                             break;
+			default:
+			    break;
                     }
                 }
                 else if (arg.arg == OPDARG_imm) {
@@ -1809,6 +1821,8 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                             fmtargs += tmp;
                             if (generic1632) fmtargs += "&0xFFFFFFFFUL";
                             break;
+			default:
+			    break;
                     };
                 }
 
@@ -1899,7 +1913,7 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
         fprintf(out_fp,"/*   uint32_t IPFDW();         fetch dword at instruction pointer */\n");
         fprintf(out_fp,"/*   uint%u_t IPFcodeW();      fetch %u-bit word at instruction pointer */\n",codewidth,codewidth);
         fprintf(out_fp,"/*   uint%u_t IPFaddrW();      fetch %u-bit word at instruction pointer */\n",addrwidth,addrwidth);
-        fprintf(out_fp,"/*   void IPFB_mrm_sib_disp_a%u_read(mrm,sib,disp);   read mod/reg/rm, sib, displacement */\n",codewidth,addrwidth);
+        fprintf(out_fp,"/*   void IPFB_mrm_sib_disp_a%u_read(mrm,sib,disp);   read mod/reg/rm, sib, displacement */\n",codewidth);
 
         if (cc_mode == MOD_DECOMPILE) {
             fprintf(out_fp,"/* expect host to provide: */\n");
@@ -2075,7 +2089,7 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
             }
 
             if (submap == NULL) {
-                fprintf(out_fp,"%s    /* opcode ",indent_str.c_str(),op);
+                fprintf(out_fp,"%s    /* opcode ",indent_str.c_str());
                 for (size_t i=0;i < opbaselen;i++) fprintf(out_fp,"%02Xh ",opbase[i]);
                 fprintf(out_fp,"%02Xh ",op);
                 fprintf(out_fp," not defined */\n");
