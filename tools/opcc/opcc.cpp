@@ -1272,13 +1272,13 @@ bool parse_opcodelist(void) {
             while (isblank(*s)) s++;
 
             if (!parse_opcode_def(line,lineno,s)) {
-                fprintf(stderr," (%u): %s\n",lineno,parse_line);
+                fprintf(stderr," (%lu): %s\n",lineno,parse_line);
                 return false;
             }
         }
         else {
             fprintf(stderr,"Unknown input:\n");
-            fprintf(stderr," (%u): %s\n",lineno,parse_line);
+            fprintf(stderr," (%lu): %s\n",lineno,parse_line);
             return false;
         }
     }
