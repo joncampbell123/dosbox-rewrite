@@ -25,7 +25,72 @@
 struct HostCPUCaps hostCPUcaps;
 
 void HostCPUCaps::detect() {
-#if defined(__i386__) || defined(__x86_64__)
+#if defined(__arm__)
+# if IS_LINUX
+/*------------------ arm we can use procfs cpuinfo ------------*/
+    char line[1024],*name,*value;
+    int cpuno=0;
+    FILE *fp;
+
+    detect_method = "Linux /proc/cpuinfo";
+
+    if ((fp=fopen("/proc/cpuinfo","r")) != NULL) {
+        memset(line,0,sizeof(line));
+        while (!feof(fp) && !ferror(fp)) {
+            if (fgets(line,sizeof(line)-1,fp) == NULL) break;
+            chomp(line); // eat trailing newline
+
+            /* empty lines separate one CPU from another */
+            if (line[0] == 0) {
+                cpuno++;
+                continue;
+            }
+
+            /* "name" + \t + ": value" */
+            name = value = line;
+            value = strchr(line,':');
+            if (value == NULL)
+                continue;
+
+            /* eat the tab/space chars prior to the colon */
+            {
+                char *x = value - 1;
+
+                while (x >= name && (*x == '\t' || *x == ' ')) *x-- = 0;
+            }
+
+            *value++ = 0; /* ASCII overwrite : with NUL to split string */
+            if (*value == ' ') value++;
+
+            /* we're looking for features: ... */
+            if (!strcasecmp(name,"features")) {
+                /* each flag is separated by a space */
+                while (*value != 0) {
+                    if (*value == ' ') {
+                        value++;
+                        continue;
+                    }
+
+                    char *n = strchr(value,' ');
+                    if (n != NULL) {
+                        *n++ = 0; // only one space. overwrite with NUL to cut the string.
+                    }
+                    else {
+                        n = value+strlen(value);
+                    }
+
+                    if (!strcmp(value,"neon"))
+                        neon = 1;
+
+                    // next flag
+                    value = n;
+                }
+            }
+        }
+        fclose(fp);
+    }
+# endif
+#elif defined(__i386__) || defined(__x86_64__)
 # if HAVE_GCC_BUILTIN_CPU
 /*------------------ x86/x86_64 we can use GCC builtins --------------*/
     detect_method = "GCC __builtin_cpu_init";

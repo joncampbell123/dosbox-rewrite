@@ -14,7 +14,9 @@ int main() {
 
     fprintf(stdout,"CPU detect results:\n");
     fprintf(stdout,"  Method:           %s\n",hostCPUcaps.detect_method);
-#if defined(__i386__) || defined(__x86_64__)
+#if defined(__arm__)
+    fprintf(stdout,"  NEON:             %s\n",yesno[hostCPUcaps.neon?1:0]);
+#elif defined(__i386__) || defined(__x86_64__)
     fprintf(stdout,"  MMX:              %s\n",yesno[hostCPUcaps.mmx?1:0]);
     fprintf(stdout,"  SSE:              %s\n",yesno[hostCPUcaps.sse?1:0]);
     fprintf(stdout,"  SSE2:             %s\n",yesno[hostCPUcaps.sse2?1:0]);
