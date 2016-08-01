@@ -572,6 +572,13 @@ static inline int16x8_t rerender_line_bilinear_pixel_blend_arm_neon_argb8(const 
 }
 
 template <const uint8_t shf> static inline int16x8_t rerender_line_bilinear_pixel_blend_arm_neon_rgb16channel(const int16x8_t cur,const int16x8_t nxt,const int16_t mul,const int16x8_t cmask) {
+    // WARNING: The reason for shf != 0 conditional shifting by template param 'shf' is that
+    //          the ARMv7 assembler behind GCC 4.8 on the Raspberry Pi won't allow you to specify a
+    //          constant shift of 0. It will complain "invalid constant", though in a way that
+    //          is confusing that causes GCC to point to some unrelated closing bracket farther
+    //          down this source code. The ternary expression is meant to bypass the shift
+    //          entirely if shf == 0 to avoid that error. That is also why the template parameter
+    //          is declared const.
     const int16x8_t cir = (shf != 0) ? vshrq_n_s16(cur,shf) : cur;
     const int16x8_t nir = (shf != 0) ? vshrq_n_s16(nxt,shf) : nxt;
     const int16x8_t rc = vandq_s16(cir,cmask);
@@ -581,14 +588,16 @@ template <const uint8_t shf> static inline int16x8_t rerender_line_bilinear_pixe
     return (shf != 0) ? vshlq_n_s16(f,shf) : f;
 }
 
-// 16bpp general R/G/B, usually 5/6/5 or 5/5/5
+// 16bpp 5/6/5 (FIXME: Add another variant for 5/5/5 when the need arises)
 static inline int16x8_t rerender_line_bilinear_pixel_blend_arm_neon_rgb16(const int16x8_t cur,const int16x8_t nxt,const int16_t mul,const int16x8_t rmask,const uint16_t rshift,const int16x8_t gmask,const uint16_t gshift,const int16x8_t bmask,const uint16_t bshift) {
     int16x8_t sr,sg,sb;
 
-// FIXME: sadly, NEON doesn't allow variable shifts, must be constant
-// so we hardcode for now 5/6/5 where R starts at 11, G starts at 5, B starts at 0.
-// remember that as a general interpolation function it really doesn't matter whether R/G/B starts at 11/5/0 or 0/5/11,
-// only that the RGB fields are 5/6/5 bits
+    // WARNING: ARMv7 NEON shift intrinsics demand that the shift bit count is a constant. It cannot
+    //          be a variable. So in the interest of getting this to work, we assume (for now)
+    //          that it is the RGB 5/6/5 format that my Raspberry Pi 2 comes up in when starting X.
+    //
+    //          Note that it doesn't matter whether the 5/6/5 bit fields are R/G/B or B/G/R, what
+    //          matters is that the bit fields are 5-bit/6-bit/5-bit.
 
     sr = rerender_line_bilinear_pixel_blend_arm_neon_rgb16channel<uint8_t(11)>(cur,nxt,mul,rmask);
     sg = rerender_line_bilinear_pixel_blend_arm_neon_rgb16channel<uint8_t(5)>(cur,nxt,mul,gmask);
