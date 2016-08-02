@@ -25,6 +25,7 @@
 #include "dosboxxr/lib/hostcpudetect/caps.h"
 #include "dosboxxr/lib/util/nr_wfpack.h"
 #include "dosboxxr/lib/util/bitscan.h"
+#include "dosboxxr/lib/util/rgbinfo.h"
 
 #if HAVE_CPU_MMX
 # include <mmintrin.h>
@@ -196,35 +197,30 @@ void update_to_X11() {
 }
 
 template <class T> void src_bitmap_render() {
-    const T alpha =
-        (~(x_image->red_mask+x_image->green_mask+x_image->blue_mask));
-    T rm,gm,bm,r,g,b,*drow;
-    uint8_t rs,gs,bs;
+    rgbinfo<T> rgb;
+    T r,g,b,*drow;
     int ox,oy;
 
-    rs = bitscan_forward(x_image->red_mask,0);
-    rm = bitscan_count(x_image->red_mask,rs) - rs;
-    rm = (1U << rm) - 1U;
+    rgb.r.setByMask((T)x_image->red_mask);
+    rgb.g.setByMask((T)x_image->green_mask);
+    rgb.b.setByMask((T)x_image->blue_mask);
+    rgb.a.setByMask((T)(~(x_image->red_mask+x_image->green_mask+x_image->blue_mask))); // alpha = anything not covered by R,G,B
 
-    gs = bitscan_forward(x_image->green_mask,0);
-    gm = bitscan_count(x_image->green_mask,gs) - gs;
-    gm = (1U << gm) - 1U;
-
-    bs = bitscan_forward(x_image->blue_mask,0);
-    bm = bitscan_count(x_image->blue_mask,bs) - bs;
-    bm = (1U << bm) - 1U;
-
-    fprintf(stderr,"R/G/B shift/mask %u/0x%X %u/0x%X %u/0x%X\n",rs,rm,gs,gm,bs,bm);
+    fprintf(stderr,"R/G/B/A shift/width/mask %u/%u/0x%X %u/%u/0x%X %u/%u/0x%X %u/%u/0x%X\n",
+        rgb.r.shift,rgb.r.bwidth,rgb.r.bmask,
+        rgb.g.shift,rgb.g.bwidth,rgb.g.bmask,
+        rgb.b.shift,rgb.b.bwidth,rgb.b.bmask,
+        rgb.a.shift,rgb.a.bwidth,rgb.a.bmask);
 
     for (oy=0;oy < (src_bitmap_height/2);oy++) {
         drow = (T*)((uint8_t*)src_bitmap + (src_bitmap_stride * oy));
         for (ox=0;ox < (src_bitmap_width/2);ox++) {
             /* color */
-            r = (ox * rm) / (src_bitmap_width/2);
-            g = (oy * gm) / (src_bitmap_height/2);
-            b = bm - ((ox * bm) / (src_bitmap_width/2));
+            r = (ox * rgb.r.bmask) / (src_bitmap_width/2);
+            g = (oy * rgb.g.bmask) / (src_bitmap_height/2);
+            b = rgb.b.bmask - ((ox * rgb.b.bmask) / (src_bitmap_width/2));
 
-            *drow++ = (r << rs) + (g << gs) + (b << bs) + alpha;
+            *drow++ = (r << rgb.r.shift) + (g << rgb.g.shift) + (b << rgb.b.shift) + rgb.a.mask;
         }
     }
 
@@ -232,11 +228,11 @@ template <class T> void src_bitmap_render() {
         drow = ((T*)((uint8_t*)src_bitmap + (src_bitmap_stride * oy))) + (src_bitmap_width/2);
         for (ox=(src_bitmap_width/2);ox < src_bitmap_width;ox++) {
             /* color */
-            r = ((ox ^ oy) & 1) ? rm : 0;
-            g = ((ox ^ oy) & 1) ? gm : 0;
-            b = ((ox ^ oy) & 1) ? bm : 0;
+            r = ((ox ^ oy) & 1) ? rgb.r.bmask : 0;
+            g = ((ox ^ oy) & 1) ? rgb.g.bmask : 0;
+            b = ((ox ^ oy) & 1) ? rgb.b.bmask : 0;
 
-            *drow++ = (r << rs) + (g << gs) + (b << bs) + alpha;
+            *drow++ = (r << rgb.r.shift) + (g << rgb.g.shift) + (b << rgb.b.shift) + rgb.a.mask;
         }
     }
 
@@ -244,11 +240,11 @@ template <class T> void src_bitmap_render() {
         drow = ((T*)((uint8_t*)src_bitmap + (src_bitmap_stride * oy)));
         for (ox=0;ox < (src_bitmap_width/2);ox++) {
             /* color */
-            r = ((ox ^ oy) & 2) ? rm : 0;
-            g = ((ox ^ oy) & 2) ? gm : 0;
-            b = ((ox ^ oy) & 2) ? bm : 0;
+            r = ((ox ^ oy) & 2) ? rgb.r.bmask : 0;
+            g = ((ox ^ oy) & 2) ? rgb.g.bmask : 0;
+            b = ((ox ^ oy) & 2) ? rgb.b.bmask : 0;
 
-            *drow++ = (r << rs) + (g << gs) + (b << bs) + alpha;
+            *drow++ = (r << rgb.r.shift) + (g << rgb.g.shift) + (b << rgb.b.shift) + rgb.a.mask;
         }
     }
 
@@ -256,11 +252,11 @@ template <class T> void src_bitmap_render() {
         drow = ((T*)((uint8_t*)src_bitmap + (src_bitmap_stride * oy))) + (src_bitmap_width/2);
         for (ox=(src_bitmap_width/2);ox < src_bitmap_width;ox++) {
             /* color */
-            r = ((ox ^ oy) & 4) ? rm : 0;
-            g = ((ox ^ oy) & 4) ? gm : 0;
-            b = ((ox ^ oy) & 4) ? bm : 0;
+            r = ((ox ^ oy) & 4) ? rgb.r.bmask : 0;
+            g = ((ox ^ oy) & 4) ? rgb.g.bmask : 0;
+            b = ((ox ^ oy) & 4) ? rgb.b.bmask : 0;
 
-            *drow++ = (r << rs) + (g << gs) + (b << bs) + alpha;
+            *drow++ = (r << rgb.r.shift) + (g << rgb.g.shift) + (b << rgb.b.shift) + rgb.a.mask;
         }
     }
 }
