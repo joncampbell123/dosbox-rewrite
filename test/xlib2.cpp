@@ -43,6 +43,52 @@
 # include <arm_neon.h>
 #endif
 
+struct rgb_bitmap_info {
+    // describe bitmap by base, width, height, alignment, length (of buffer), and stride.
+    // this does NOT describe where it's allocated from, how to free it, etc. BY DESIGN.
+    unsigned char*              base;           // base of the memory block
+    unsigned char*              canvas;         // where to draw from
+    size_t                      width,height;   // dimensions of frame
+    size_t                      length;         // length of the buffer (last byte = base+length-1)
+    size_t                      stride;         // bytes per scanline
+    size_t                      bytes_per_pixel;// bytes per pixel
+    size_t                      stride_align;   // required alignment per scanline
+    size_t                      base_align;     // required alignment for base
+    size_t                      stride_padding; // additional padding in pixels per scanline
+    size_t                      height_padding; // additional padding in pixels, vertically
+    rgbinfo_t                   rgbinfo;
+public:
+    rgb_bitmap_info() : base(NULL), canvas(NULL), width(0), height(0), length(0), stride(0), bytes_per_pixel(0), stride_align(0), base_align(0),
+        stride_padding(0), height_padding(0), rgbinfo() { }
+    bool inline is_valid() const /* does not change class members */ {
+        if (base == NULL) return false;
+        if (canvas == NULL) return false;
+        if (length == 0) return false;
+        if (stride == 0) return false;
+        if (width == 0 || height == 0) return false;
+        if (bytes_per_pixel == 0 || bytes_per_pixel > 8) return false;
+        if ((width*bytes_per_pixel) > stride) return false;
+        if ((height*stride) > length) return false;
+        return true;
+    }
+    template <class T> inline T* get_scanline(const size_t y,const size_t x=0) const { /* WARNING: does not range-check 'y', assumes canvas != NULL */
+        return (T*)(canvas + (y * stride) + (x * bytes_per_pixel));
+    }
+    void update_stride_from_width() {
+        stride = ((width + stride_padding) * bytes_per_pixel);
+        if (stride_align > 0) {
+            size_t a = stride % stride_align;
+            if (a != 0) stride += stride_align - a;
+        }
+    }
+    void update_length_from_stride_and_height() {
+        length = stride * (height + height_padding);
+    }
+    void update_canvas_from_base() {
+        canvas = base;
+    }
+};
+
 int                             method = 0;
 
 Display*                        x_display = NULL;
@@ -65,13 +111,8 @@ int                             x_screen_index = 0;
 int                             x_quit = 0;
 int                             bitmap_width = 0;
 int                             bitmap_height = 0;
-
-unsigned char*                  src_bitmap = NULL;
-unsigned int                    src_bitmap_width = 0;
-unsigned int                    src_bitmap_align = 0;
-unsigned int                    src_bitmap_height = 0;
-size_t                          src_bitmap_length = 0;
-size_t                          src_bitmap_stride = 0;
+rgbinfo_t                       x_rgbinfo;
+rgb_bitmap_info                 src_bitmap;
 
 void close_bitmap();
 
@@ -196,88 +237,74 @@ void update_to_X11() {
 		XPutImage(x_display, x_window, x_gc, x_image, 0, 0, 0, 0, bitmap_width, bitmap_height);
 }
 
-template <class T> void src_bitmap_render() {
-    rgbinfo<T> rgb;
+template <class T> void src_bitmap_render(rgb_bitmap_info &bitmap) {
     T r,g,b,*drow;
-    int ox,oy;
+    size_t ox,oy;
 
-    rgb.r.setByMask((T)x_image->red_mask);
-    rgb.g.setByMask((T)x_image->green_mask);
-    rgb.b.setByMask((T)x_image->blue_mask);
-    rgb.a.setByMask((T)(~(x_image->red_mask+x_image->green_mask+x_image->blue_mask))); // alpha = anything not covered by R,G,B
+    if (!bitmap.is_valid()) return;
 
-    fprintf(stderr,"R/G/B/A shift/width/mask %u/%u/0x%X %u/%u/0x%X %u/%u/0x%X %u/%u/0x%X\n",
-        rgb.r.shift,rgb.r.bwidth,rgb.r.bmask,
-        rgb.g.shift,rgb.g.bwidth,rgb.g.bmask,
-        rgb.b.shift,rgb.b.bwidth,rgb.b.bmask,
-        rgb.a.shift,rgb.a.bwidth,rgb.a.bmask);
-
-    for (oy=0;oy < (src_bitmap_height/2);oy++) {
-        drow = (T*)((uint8_t*)src_bitmap + (src_bitmap_stride * oy));
-        for (ox=0;ox < (src_bitmap_width/2);ox++) {
+    for (oy=0;oy < (bitmap.height/2);oy++) {
+        drow = bitmap.get_scanline<T>(oy);
+        for (ox=0;ox < (bitmap.width/2);ox++) {
             /* color */
-            r = (ox * rgb.r.bmask) / (src_bitmap_width/2);
-            g = (oy * rgb.g.bmask) / (src_bitmap_height/2);
-            b = rgb.b.bmask - ((ox * rgb.b.bmask) / (src_bitmap_width/2));
+            r = ((T)ox * (T)x_rgbinfo.r.bmask) / (T)(bitmap.width/2);
+            g = ((T)oy * (T)x_rgbinfo.g.bmask) / (T)(bitmap.height/2);
+            b = (T)x_rgbinfo.b.bmask -
+                (((T)ox * (T)x_rgbinfo.b.bmask) / (T)(bitmap.width/2));
 
-            *drow++ = (r << rgb.r.shift) + (g << rgb.g.shift) + (b << rgb.b.shift) + rgb.a.mask;
+            *drow++ = (r << x_rgbinfo.r.shift) + (g << x_rgbinfo.g.shift) + (b << x_rgbinfo.b.shift) + x_rgbinfo.a.mask;
         }
     }
 
-    for (oy=0;oy < (src_bitmap_height/2);oy++) {
-        drow = ((T*)((uint8_t*)src_bitmap + (src_bitmap_stride * oy))) + (src_bitmap_width/2);
-        for (ox=(src_bitmap_width/2);ox < src_bitmap_width;ox++) {
+    for (oy=0;oy < (bitmap.height/2);oy++) {
+        drow = bitmap.get_scanline<T>(oy,bitmap.width/2U);
+        for (ox=(bitmap.width/2);ox < bitmap.width;ox++) {
             /* color */
-            r = ((ox ^ oy) & 1) ? rgb.r.bmask : 0;
-            g = ((ox ^ oy) & 1) ? rgb.g.bmask : 0;
-            b = ((ox ^ oy) & 1) ? rgb.b.bmask : 0;
+            r = ((ox ^ oy) & 1) ? x_rgbinfo.r.bmask : 0;
+            g = ((ox ^ oy) & 1) ? x_rgbinfo.g.bmask : 0;
+            b = ((ox ^ oy) & 1) ? x_rgbinfo.b.bmask : 0;
 
-            *drow++ = (r << rgb.r.shift) + (g << rgb.g.shift) + (b << rgb.b.shift) + rgb.a.mask;
+            *drow++ = (r << x_rgbinfo.r.shift) + (g << x_rgbinfo.g.shift) + (b << x_rgbinfo.b.shift) + x_rgbinfo.a.mask;
         }
     }
 
-    for (oy=(src_bitmap_height/2);oy < src_bitmap_height;oy++) {
-        drow = ((T*)((uint8_t*)src_bitmap + (src_bitmap_stride * oy)));
-        for (ox=0;ox < (src_bitmap_width/2);ox++) {
+    for (oy=(bitmap.height/2);oy < bitmap.height;oy++) {
+        drow = bitmap.get_scanline<T>(oy);
+        for (ox=0;ox < (bitmap.width/2);ox++) {
             /* color */
-            r = ((ox ^ oy) & 2) ? rgb.r.bmask : 0;
-            g = ((ox ^ oy) & 2) ? rgb.g.bmask : 0;
-            b = ((ox ^ oy) & 2) ? rgb.b.bmask : 0;
+            r = ((ox ^ oy) & 2) ? x_rgbinfo.r.bmask : 0;
+            g = ((ox ^ oy) & 2) ? x_rgbinfo.g.bmask : 0;
+            b = ((ox ^ oy) & 2) ? x_rgbinfo.b.bmask : 0;
 
-            *drow++ = (r << rgb.r.shift) + (g << rgb.g.shift) + (b << rgb.b.shift) + rgb.a.mask;
+            *drow++ = (r << x_rgbinfo.r.shift) + (g << x_rgbinfo.g.shift) + (b << x_rgbinfo.b.shift) + x_rgbinfo.a.mask;
         }
     }
 
-    for (oy=(src_bitmap_height/2);oy < src_bitmap_height;oy++) {
-        drow = ((T*)((uint8_t*)src_bitmap + (src_bitmap_stride * oy))) + (src_bitmap_width/2);
-        for (ox=(src_bitmap_width/2);ox < src_bitmap_width;ox++) {
+    for (oy=(bitmap.height/2);oy < bitmap.height;oy++) {
+        drow = bitmap.get_scanline<T>(oy,bitmap.width/2U);
+        for (ox=(bitmap.width/2);ox < bitmap.width;ox++) {
             /* color */
-            r = ((ox ^ oy) & 4) ? rgb.r.bmask : 0;
-            g = ((ox ^ oy) & 4) ? rgb.g.bmask : 0;
-            b = ((ox ^ oy) & 4) ? rgb.b.bmask : 0;
+            r = ((ox ^ oy) & 4) ? x_rgbinfo.r.bmask : 0;
+            g = ((ox ^ oy) & 4) ? x_rgbinfo.g.bmask : 0;
+            b = ((ox ^ oy) & 4) ? x_rgbinfo.b.bmask : 0;
 
-            *drow++ = (r << rgb.r.shift) + (g << rgb.g.shift) + (b << rgb.b.shift) + rgb.a.mask;
+            *drow++ = (r << x_rgbinfo.r.shift) + (g << x_rgbinfo.g.shift) + (b << x_rgbinfo.b.shift) + x_rgbinfo.a.mask;
         }
     }
 }
 
-void src_bitmap_render() {
+void src_bitmap_render(rgb_bitmap_info &bitmap) {
     if (x_image->bits_per_pixel == 32)
-        src_bitmap_render<uint32_t>();
+        src_bitmap_render<uint32_t>(bitmap);
     else if (x_image->bits_per_pixel == 16)
-        src_bitmap_render<uint16_t>();
+        src_bitmap_render<uint16_t>(bitmap);
     else {
-        fprintf(stderr,"WARNING: unsupported bit depth %u/bpp\n",
+        fprintf(stderr,"WARNING: src_bitmap_render() unsupported bit depth %u/bpp\n",
             x_image->bits_per_pixel);
     }
 }
 
-void render_scale_from_sd(struct nr_wfpack &sy,const uint32_t dh,const uint32_t sh) {
-	uint64_t t;
-
-    t  = (uint64_t)((uint64_t)sh << (uint64_t)32);
-    t /= (uint64_t)dh;
-
+static inline void render_scale_from_sd_64towf(struct nr_wfpack &sy,const uint64_t t) {
 	if (sizeof(nr_wftype) == 8) {
 		// nr_wftype is 64.64
 		sy.w = (nr_wftype)(t >> (uint64_t)32);
@@ -293,6 +320,28 @@ void render_scale_from_sd(struct nr_wfpack &sy,const uint32_t dh,const uint32_t 
 	}
 }
 
+// This version uses sh / dh for even scaling with nearest neighbor interpolation.
+// for bilinear interpolation, use render_scale_from_sd(). using this function for
+// bilinear interpolation will expose blank/junk pixels on the bottom/right edge of the frame.
+void render_scale_from_sd_nearest(struct nr_wfpack &sy,const uint32_t dh,const uint32_t sh) {
+	uint64_t t;
+
+    t  = (uint64_t)((uint64_t)sh << (uint64_t)32);
+    t /= (uint64_t)dh;
+    render_scale_from_sd_64towf(sy,t);
+}
+
+// This version uses (sh - 1) / (dh - 1) so that bilinear interpolation does not expose junk pixels on the
+// bottom/right edge of the frame. If you are using nearest neighbor scaling, don't use this version, use
+// the render_scale_from_sd_nearest() version of the function.
+void render_scale_from_sd(struct nr_wfpack &sy,const uint32_t dh,const uint32_t sh) {
+	uint64_t t;
+
+    t  = (uint64_t)((uint64_t)(sh - uint32_t(1)) << (uint64_t)32);
+    t /= (uint64_t)(dh - uint32_t(1));
+    render_scale_from_sd_64towf(sy,t);
+}
+
 /* render image to XImage.
  * stretch fit using crude nearest neighbor scaling */
 
@@ -301,13 +350,13 @@ template <class T> void rerender_out_neighbor() {
     unsigned char *drow;
     size_t ox,oy;
 
-    render_scale_from_sd(/*&*/stepx,bitmap_width,src_bitmap_width);
-    render_scale_from_sd(/*&*/stepy,bitmap_height,src_bitmap_height);
+    render_scale_from_sd_nearest(/*&*/stepx,bitmap_width,src_bitmap.width);
+    render_scale_from_sd_nearest(/*&*/stepy,bitmap_height,src_bitmap.height);
 
     drow = (unsigned char*)x_image->data;
     oy = bitmap_height;
     do {
-        T *s = (T*)((uint8_t*)src_bitmap + (src_bitmap_stride*sy.w));
+        T *s = src_bitmap.get_scanline<T>(sy.w);
         T *d = (T*)drow;
 
         ox = bitmap_width;
@@ -620,16 +669,16 @@ template <class T> void rerender_out_bilinear() {
 
     fmax = 1U << pshift;
 
-    render_scale_from_sd(/*&*/stepx,bitmap_width,src_bitmap_width);
-    render_scale_from_sd(/*&*/stepy,bitmap_height,src_bitmap_height);
+    render_scale_from_sd(/*&*/stepx,bitmap_width,src_bitmap.width);
+    render_scale_from_sd(/*&*/stepy,bitmap_height,src_bitmap.height);
 
-    if (bitmap_width == 0 || src_bitmap_width == 0) return;
+    if (bitmap_width == 0 || src_bitmap.width == 0) return;
 
     drow = (unsigned char*)x_image->data;
     oy = bitmap_height;
     do {
-        T *s2 = (T*)((uint8_t*)src_bitmap + (src_bitmap_stride*(sy.w+1)));
-        T *s = (T*)((uint8_t*)src_bitmap + (src_bitmap_stride*sy.w));
+        T *s2 = src_bitmap.get_scanline<T>(sy.w+1);
+        T *s = src_bitmap.get_scanline<T>(sy.w);
         T *d = (T*)drow;
 
         mul = (T)(sy.f >> fshift);
@@ -637,12 +686,12 @@ template <class T> void rerender_out_bilinear() {
         if (mul != 0) {
             if (stepx.w != 1 || stepx.f != 0) {
                 // horizontal interpolation, vertical interpolation
-                rerender_line_bilinear_vinterp_stage<T>(vinterp_tmp.tmp,s,s2,mul,src_bitmap_width,rbmask,abmask,fmax,pshift);
+                rerender_line_bilinear_vinterp_stage<T>(vinterp_tmp.tmp,s,s2,mul,src_bitmap.width,rbmask,abmask,fmax,pshift);
                 rerender_line_bilinear_hinterp_stage<T>(d,vinterp_tmp.tmp,sx,stepx,bitmap_width,rbmask,abmask,fmax,fshift,pshift);
             }
             else {
                 // vertical interpolation only
-                rerender_line_bilinear_vinterp_stage<T>(d,s,s2,mul,src_bitmap_width,rbmask,abmask,fmax,pshift);
+                rerender_line_bilinear_vinterp_stage<T>(d,s,s2,mul,src_bitmap.width,rbmask,abmask,fmax,pshift);
             }
         }
         else {
@@ -725,18 +774,18 @@ template <class T> void rerender_out_bilinear_mmx() {
 
     fmax = 1U << pshift;
 
-    render_scale_from_sd(/*&*/stepx,bitmap_width,src_bitmap_width);
-    render_scale_from_sd(/*&*/stepy,bitmap_height,src_bitmap_height);
+    render_scale_from_sd(/*&*/stepx,bitmap_width,src_bitmap.width);
+    render_scale_from_sd(/*&*/stepy,bitmap_height,src_bitmap.height);
 
-    unsigned int src_bitmap_width_m64 = (src_bitmap_width + pixels_per_mmx - 1) / pixels_per_mmx;
+    unsigned int src_bitmap_width_m64 = (src_bitmap.width + pixels_per_mmx - 1) / pixels_per_mmx;
 
     if (bitmap_width == 0 || src_bitmap_width_m64 == 0) return;
 
     drow = (unsigned char*)x_image->data;
     oy = bitmap_height;
     do {
-        T *s2 = (T*)((uint8_t*)src_bitmap + (src_bitmap_stride*(sy.w+1)));
-        T *s = (T*)((uint8_t*)src_bitmap + (src_bitmap_stride*sy.w));
+        T *s2 = src_bitmap.get_scanline<T>(sy.w+1);
+        T *s = src_bitmap.get_scanline<T>(sy.w);
         T *d = (T*)drow;
 
         mul = (T)(sy.f >> fshift);
@@ -852,18 +901,18 @@ template <class T> void rerender_out_bilinear_sse() {
 
     fmax = 1U << pshift;
 
-    render_scale_from_sd(/*&*/stepx,bitmap_width,src_bitmap_width);
-    render_scale_from_sd(/*&*/stepy,bitmap_height,src_bitmap_height);
+    render_scale_from_sd(/*&*/stepx,bitmap_width,src_bitmap.width);
+    render_scale_from_sd(/*&*/stepy,bitmap_height,src_bitmap.height);
 
-    unsigned int src_bitmap_width_m128 = (src_bitmap_width + pixels_per_sse - 1) / pixels_per_sse;
+    unsigned int src_bitmap_width_m128 = (src_bitmap.width + pixels_per_sse - 1) / pixels_per_sse;
 
     if (bitmap_width == 0 || src_bitmap_width_m128 == 0) return;
 
     drow = (unsigned char*)x_image->data;
     oy = bitmap_height;
     do {
-        T *s2 = (T*)((uint8_t*)src_bitmap + (src_bitmap_stride*(sy.w+1)));
-        T *s = (T*)((uint8_t*)src_bitmap + (src_bitmap_stride*sy.w));
+        T *s2 = src_bitmap.get_scanline<T>(sy.w+1);
+        T *s = src_bitmap.get_scanline<T>(sy.w);
         T *d = (T*)drow;
 
         mul = (T)(sy.f >> fshift);
@@ -1009,8 +1058,8 @@ template <class T> void rerender_out_bilinear_avx() {
     drow = (unsigned char*)x_image->data;
     oy = bitmap_height;
     do {
-        T *s2 = (T*)((uint8_t*)src_bitmap + (src_bitmap_stride*(sy.w+1)));
-        T *s = (T*)((uint8_t*)src_bitmap + (src_bitmap_stride*sy.w));
+        T *s2 = src_bitmap.get_scanline<T>(sy.w+1);
+        T *s = src_bitmap.get_scanline<T>(sy.w);
         T *d = (T*)drow;
 
         mul = (T)(sy.f >> fshift);
@@ -1159,8 +1208,8 @@ template <class T> void rerender_out_bilinear_arm_neon() {
     drow = (unsigned char*)x_image->data;
     oy = bitmap_height;
     do {
-        T *s2 = (T*)((uint8_t*)src_bitmap + (src_bitmap_stride*(sy.w+1)));
-        T *s = (T*)((uint8_t*)src_bitmap + (src_bitmap_stride*sy.w));
+        T *s2 = src_bitmap.get_scanline<T>(sy.w+1);
+        T *s = src_bitmap.get_scanline<T>(sy.w);
         T *d = (T*)drow;
 
         mul = (T)(sy.f >> fshift);
@@ -1310,15 +1359,28 @@ int main() {
 		}
 	}
 
+    assert(x_image != NULL);
+    x_rgbinfo.r.setByMask(x_image->red_mask);
+    x_rgbinfo.g.setByMask(x_image->green_mask);
+    x_rgbinfo.b.setByMask(x_image->blue_mask);
+    x_rgbinfo.a.setByMask(~(x_image->red_mask+x_image->green_mask+x_image->blue_mask)); // alpha = anything not covered by R,G,B
+
+    fprintf(stderr,"R/G/B/A shift/width/mask %u/%u/0x%X %u/%u/0x%X %u/%u/0x%X %u/%u/0x%X\n",
+        x_rgbinfo.r.shift, x_rgbinfo.r.bwidth, x_rgbinfo.r.bmask,
+        x_rgbinfo.g.shift, x_rgbinfo.g.bwidth, x_rgbinfo.g.bmask,
+        x_rgbinfo.b.shift, x_rgbinfo.b.bwidth, x_rgbinfo.b.bmask,
+        x_rgbinfo.a.shift, x_rgbinfo.a.bwidth, x_rgbinfo.a.bmask);
+
     /* src bitmap */
-    src_bitmap_width = 640;
-    src_bitmap_height = 480;
-    src_bitmap_align = 32; // bytes
-    src_bitmap_stride = ((x_image->bits_per_pixel+7)/8) * src_bitmap_width;
-    src_bitmap_stride = (src_bitmap_stride + (src_bitmap_align * 2) - 1) & (~(src_bitmap_align - 1U));
-    src_bitmap_length = src_bitmap_stride * (src_bitmap_height + 1);
+    src_bitmap.width = 640;
+    src_bitmap.height = 480;
+    src_bitmap.bytes_per_pixel = (x_image->bits_per_pixel + 7) / 8;
+    src_bitmap.stride_align = 32;
+    src_bitmap.rgbinfo = x_rgbinfo;
+    src_bitmap.update_stride_from_width();
+    src_bitmap.update_length_from_stride_and_height();
 #if HAVE_POSIX_MEMALIGN
-    if (posix_memalign((void**)(&src_bitmap),src_bitmap_align,src_bitmap_length)) {
+    if (posix_memalign((void**)(&src_bitmap.base),src_bitmap.stride_align,src_bitmap.length)) {
         fprintf(stderr,"Cannot alloc src bitmap\n");
         return 1;
     }
@@ -1326,15 +1388,19 @@ int main() {
     // WARNING: malloc() is not necessarily safe for SSE and AVX use because it cannot guarantee alignment.
     // On Linux x86_64 malloc() seems to generally auto align to 16-byte boundaries which is OK for SSE but
     // can break AVX.
-    src_bitmap = (unsigned char*)malloc(src_bitmap_length);
-    if (src_bitmap == NULL) {
+    src_bitmap.base = (unsigned char*)malloc(src_bitmap_length);
+    if (src_bitmap.base == NULL) {
         fprintf(stderr,"Cannot alloc src bitmap\n");
         return 1;
     }
 #endif
+    src_bitmap.update_canvas_from_base();
+    assert(src_bitmap.canvas != NULL);
+    assert(src_bitmap.base != NULL);
+    assert(src_bitmap.is_valid());
 
     /* make up something */
-    src_bitmap_render();
+    src_bitmap_render(/*&*/src_bitmap);
 
 	rerender_out();
 
@@ -1404,7 +1470,7 @@ int main() {
 
 	/* also a lot involved for cleanup */
 	close_bitmap();
-    free(src_bitmap);
+    free(src_bitmap.base);
 	XDestroyWindow(x_display,x_window);
 	XCloseDisplay(x_display);
 	return 0;
