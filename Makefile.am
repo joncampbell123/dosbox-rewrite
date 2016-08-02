@@ -1,6 +1,7 @@
 
 noinst_LIBRARIES = \
 	dosboxxr/lib/hostcpudetect/libhostcpudetect.a \
+	dosboxxr/lib/util/libutil.a \
 	dosboxxr/lib/text/libtext.a \
 	dosboxxr/lib/cpu/libcpu.a
 
@@ -9,6 +10,10 @@ dosboxxr_lib_hostcpudetect_libhostcpudetect_a_SOURCES = dosboxxr/lib/hostcpudete
 dosboxxr_lib_cpu_libcpu_a_SOURCES = dosboxxr/lib/cpu/ipdec_strings.cpp
 
 dosboxxr_lib_text_libtext_a_SOURCES = dosboxxr/lib/text/chomp.c
+
+dosboxxr_lib_util_libutil_a_SOURCES = \
+	dosboxxr/lib/util/nr_wfpack_scale.cpp \
+	dosboxxr/lib/util/rgb_bitmap_test_pattern_1.cpp
 
 OPCC=bin/tools/opcc
 
@@ -131,8 +136,9 @@ bin_test_xlib2_SOURCES = test/xlib2.cpp
 bin_test_xlib2_CXXFLAGS = $(AM_CXXFLAGS) $(X11_CFLAGS) $(XEXT_CFLAGS) $(CPU_MMX_CFLAGS) $(CPU_SSE2_CFLAGS) $(CPU_AVX2_CFLAGS) $(CPU_ARM_NEON_CFLAGS)
 bin_test_xlib2_DEPENDENCIES = \
 	dosboxxr/lib/hostcpudetect/libhostcpudetect.a \
+	dosboxxr/lib/util/libutil.a \
 	dosboxxr/lib/text/libtext.a
-bin_test_xlib2_LDADD = $(X11_LDFLAGS) $(XEXT_LDFLAGS) dosboxxr/lib/hostcpudetect/libhostcpudetect.a dosboxxr/lib/text/libtext.a
+bin_test_xlib2_LDADD = $(X11_LDFLAGS) $(XEXT_LDFLAGS) dosboxxr/lib/hostcpudetect/libhostcpudetect.a dosboxxr/lib/text/libtext.a dosboxxr/lib/util/libutil.a
 
 bin_test_xcb1_SOURCES = test/xcb1.cpp
 bin_test_xcb1_CXXFLAGS = $(AM_CXXFLAGS) $(X11_CFLAGS) $(XEXT_CFLAGS) $(X11_XCB_CFLAGS) $(XCB_SHM_CFLAGS)

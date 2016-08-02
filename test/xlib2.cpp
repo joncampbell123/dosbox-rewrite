@@ -26,6 +26,8 @@
 #include "dosboxxr/lib/util/nr_wfpack.h"
 #include "dosboxxr/lib/util/bitscan.h"
 #include "dosboxxr/lib/util/rgbinfo.h"
+#include "dosboxxr/lib/util/rgb_bitmap_info.h"
+#include "dosboxxr/lib/util/rgb_bitmap_test_patterns.h"
 
 #if HAVE_CPU_MMX
 # include <mmintrin.h>
@@ -42,52 +44,6 @@
 #if HAVE_CPU_ARM_NEON
 # include <arm_neon.h>
 #endif
-
-struct rgb_bitmap_info {
-    // describe bitmap by base, width, height, alignment, length (of buffer), and stride.
-    // this does NOT describe where it's allocated from, how to free it, etc. BY DESIGN.
-    unsigned char*              base;           // base of the memory block
-    unsigned char*              canvas;         // where to draw from
-    size_t                      width,height;   // dimensions of frame
-    size_t                      length;         // length of the buffer (last byte = base+length-1)
-    size_t                      stride;         // bytes per scanline
-    size_t                      bytes_per_pixel;// bytes per pixel
-    size_t                      stride_align;   // required alignment per scanline
-    size_t                      base_align;     // required alignment for base
-    size_t                      stride_padding; // additional padding in pixels per scanline
-    size_t                      height_padding; // additional padding in pixels, vertically
-    rgbinfo_t                   rgbinfo;
-public:
-    rgb_bitmap_info() : base(NULL), canvas(NULL), width(0), height(0), length(0), stride(0), bytes_per_pixel(0), stride_align(0), base_align(0),
-        stride_padding(0), height_padding(0), rgbinfo() { }
-    bool inline is_valid() const /* does not change class members */ {
-        if (base == NULL) return false;
-        if (canvas == NULL) return false;
-        if (length == 0) return false;
-        if (stride == 0) return false;
-        if (width == 0 || height == 0) return false;
-        if (bytes_per_pixel == 0 || bytes_per_pixel > 8) return false;
-        if ((width*bytes_per_pixel) > stride) return false;
-        if ((height*stride) > length) return false;
-        return true;
-    }
-    template <class T> inline T* get_scanline(const size_t y,const size_t x=0) const { /* WARNING: does not range-check 'y', assumes canvas != NULL */
-        return (T*)(canvas + (y * stride) + (x * bytes_per_pixel));
-    }
-    void update_stride_from_width() {
-        stride = ((width + stride_padding) * bytes_per_pixel);
-        if (stride_align > 0) {
-            size_t a = stride % stride_align;
-            if (a != 0) stride += stride_align - a;
-        }
-    }
-    void update_length_from_stride_and_height() {
-        length = stride * (height + height_padding);
-    }
-    void update_canvas_from_base() {
-        canvas = base;
-    }
-};
 
 int                             method = 0;
 
@@ -235,111 +191,6 @@ void update_to_X11() {
 		XShmPutImage(x_display, x_window, x_gc, x_image, 0, 0, 0, 0, bitmap_width, bitmap_height, 0);
 	else
 		XPutImage(x_display, x_window, x_gc, x_image, 0, 0, 0, 0, bitmap_width, bitmap_height);
-}
-
-template <class T> void src_bitmap_render(rgb_bitmap_info &bitmap) {
-    T r,g,b,*drow;
-    size_t ox,oy;
-
-    if (!bitmap.is_valid()) return;
-
-    for (oy=0;oy < (bitmap.height/2);oy++) {
-        drow = bitmap.get_scanline<T>(oy);
-        for (ox=0;ox < (bitmap.width/2);ox++) {
-            /* color */
-            r = ((T)ox * (T)x_rgbinfo.r.bmask) / (T)(bitmap.width/2);
-            g = ((T)oy * (T)x_rgbinfo.g.bmask) / (T)(bitmap.height/2);
-            b = (T)x_rgbinfo.b.bmask -
-                (((T)ox * (T)x_rgbinfo.b.bmask) / (T)(bitmap.width/2));
-
-            *drow++ = (r << x_rgbinfo.r.shift) + (g << x_rgbinfo.g.shift) + (b << x_rgbinfo.b.shift) + x_rgbinfo.a.mask;
-        }
-    }
-
-    for (oy=0;oy < (bitmap.height/2);oy++) {
-        drow = bitmap.get_scanline<T>(oy,bitmap.width/2U);
-        for (ox=(bitmap.width/2);ox < bitmap.width;ox++) {
-            /* color */
-            r = ((ox ^ oy) & 1) ? x_rgbinfo.r.bmask : 0;
-            g = ((ox ^ oy) & 1) ? x_rgbinfo.g.bmask : 0;
-            b = ((ox ^ oy) & 1) ? x_rgbinfo.b.bmask : 0;
-
-            *drow++ = (r << x_rgbinfo.r.shift) + (g << x_rgbinfo.g.shift) + (b << x_rgbinfo.b.shift) + x_rgbinfo.a.mask;
-        }
-    }
-
-    for (oy=(bitmap.height/2);oy < bitmap.height;oy++) {
-        drow = bitmap.get_scanline<T>(oy);
-        for (ox=0;ox < (bitmap.width/2);ox++) {
-            /* color */
-            r = ((ox ^ oy) & 2) ? x_rgbinfo.r.bmask : 0;
-            g = ((ox ^ oy) & 2) ? x_rgbinfo.g.bmask : 0;
-            b = ((ox ^ oy) & 2) ? x_rgbinfo.b.bmask : 0;
-
-            *drow++ = (r << x_rgbinfo.r.shift) + (g << x_rgbinfo.g.shift) + (b << x_rgbinfo.b.shift) + x_rgbinfo.a.mask;
-        }
-    }
-
-    for (oy=(bitmap.height/2);oy < bitmap.height;oy++) {
-        drow = bitmap.get_scanline<T>(oy,bitmap.width/2U);
-        for (ox=(bitmap.width/2);ox < bitmap.width;ox++) {
-            /* color */
-            r = ((ox ^ oy) & 4) ? x_rgbinfo.r.bmask : 0;
-            g = ((ox ^ oy) & 4) ? x_rgbinfo.g.bmask : 0;
-            b = ((ox ^ oy) & 4) ? x_rgbinfo.b.bmask : 0;
-
-            *drow++ = (r << x_rgbinfo.r.shift) + (g << x_rgbinfo.g.shift) + (b << x_rgbinfo.b.shift) + x_rgbinfo.a.mask;
-        }
-    }
-}
-
-void src_bitmap_render(rgb_bitmap_info &bitmap) {
-    if (x_image->bits_per_pixel == 32)
-        src_bitmap_render<uint32_t>(bitmap);
-    else if (x_image->bits_per_pixel == 16)
-        src_bitmap_render<uint16_t>(bitmap);
-    else {
-        fprintf(stderr,"WARNING: src_bitmap_render() unsupported bit depth %u/bpp\n",
-            x_image->bits_per_pixel);
-    }
-}
-
-static inline void render_scale_from_sd_64towf(struct nr_wfpack &sy,const uint64_t t) {
-	if (sizeof(nr_wftype) == 8) {
-		// nr_wftype is 64.64
-		sy.w = (nr_wftype)(t >> (uint64_t)32);
-		sy.f = (nr_wftype)(t << (uint64_t)32);
-	}
-	else if (sizeof(nr_wftype) == 4) {
-		// nr_wftype is 32.32
-		sy.w = (nr_wftype)(t >> (uint64_t)32);
-		sy.f = (nr_wftype)t;
-	}
-	else {
-		abort();
-	}
-}
-
-// This version uses sh / dh for even scaling with nearest neighbor interpolation.
-// for bilinear interpolation, use render_scale_from_sd(). using this function for
-// bilinear interpolation will expose blank/junk pixels on the bottom/right edge of the frame.
-void render_scale_from_sd_nearest(struct nr_wfpack &sy,const uint32_t dh,const uint32_t sh) {
-	uint64_t t;
-
-    t  = (uint64_t)((uint64_t)sh << (uint64_t)32);
-    t /= (uint64_t)dh;
-    render_scale_from_sd_64towf(sy,t);
-}
-
-// This version uses (sh - 1) / (dh - 1) so that bilinear interpolation does not expose junk pixels on the
-// bottom/right edge of the frame. If you are using nearest neighbor scaling, don't use this version, use
-// the render_scale_from_sd_nearest() version of the function.
-void render_scale_from_sd(struct nr_wfpack &sy,const uint32_t dh,const uint32_t sh) {
-	uint64_t t;
-
-    t  = (uint64_t)((uint64_t)(sh - uint32_t(1)) << (uint64_t)32);
-    t /= (uint64_t)(dh - uint32_t(1));
-    render_scale_from_sd_64towf(sy,t);
 }
 
 /* render image to XImage.
@@ -1400,7 +1251,7 @@ int main() {
     assert(src_bitmap.is_valid());
 
     /* make up something */
-    src_bitmap_render(/*&*/src_bitmap);
+    test_pattern_1_render(/*&*/src_bitmap);
 
 	rerender_out();
 

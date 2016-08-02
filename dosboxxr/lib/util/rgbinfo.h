@@ -1,4 +1,7 @@
 
+#ifndef DOSBOXXR_LIB_UTIL_RGBINFO_H
+#define DOSBOXXR_LIB_UTIL_RGBINFO_H
+
 // utility struct to store bit position, width, and mask of pixels.
 // T is either uint16_t or uint32_t. This is ONLY for use with RGB
 // pixel formats.
@@ -26,4 +29,6 @@ template <class T> struct rgbinfo {
 // 16-bit RGB RGB565 is not as common as it used to be.
 typedef rgbchannelinfo<uint32_t>        rgbchannelinfo_t;
 typedef rgbinfo<uint32_t>               rgbinfo_t;
+
+#endif
 

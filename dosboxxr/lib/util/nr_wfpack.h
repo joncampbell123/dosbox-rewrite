@@ -74,3 +74,6 @@ public:
 	}
 };
 
+void render_scale_from_sd_nearest(struct nr_wfpack &sy,const uint32_t dh,const uint32_t sh);
+void render_scale_from_sd(struct nr_wfpack &sy,const uint32_t dh,const uint32_t sh);
+	
