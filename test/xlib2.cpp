@@ -43,35 +43,35 @@
 # include <arm_neon.h>
 #endif
 
-int                 method = 0;
+int                             method = 0;
 
-Display*			x_display = NULL;
-Visual*				x_visual = NULL;
-Screen*				x_screen = NULL;
-int				x_depth = 0;
-Atom				x_wmDelete;
-XEvent				x_event;
-Colormap			x_cmap;
-XSetWindowAttributes		x_swa;
-XWindowAttributes		x_gwa;
-GC				x_gc = 0;
-XImage*				x_image = NULL;
-XShmSegmentInfo			x_shminfo;
-size_t				x_image_length = 0;
-int				x_using_shm = 0;
-Window				x_root_window;
-Window				x_window = (Window)0;
-int				x_screen_index = 0;
-int				x_quit = 0;
-int				bitmap_width = 0;
-int				bitmap_height = 0;
+Display*                        x_display = NULL;
+Visual*                         x_visual = NULL;
+Screen*                         x_screen = NULL;
+int                             x_depth = 0;
+Atom                            x_wmDelete;
+XEvent                          x_event;
+Colormap                        x_cmap;
+XSetWindowAttributes            x_swa;
+XWindowAttributes               x_gwa;
+GC                              x_gc = 0;
+XImage*                         x_image = NULL;
+XShmSegmentInfo                 x_shminfo;
+size_t                          x_image_length = 0;
+int                             x_using_shm = 0;
+Window                          x_root_window;
+Window                          x_window = (Window)0;
+int                             x_screen_index = 0;
+int                             x_quit = 0;
+int                             bitmap_width = 0;
+int                             bitmap_height = 0;
 
-unsigned char*      src_bitmap = NULL;
-unsigned int        src_bitmap_width = 0;
-unsigned int        src_bitmap_align = 0;
-unsigned int        src_bitmap_height = 0;
-size_t              src_bitmap_length = 0;
-size_t              src_bitmap_stride = 0;
+unsigned char*                  src_bitmap = NULL;
+unsigned int                    src_bitmap_width = 0;
+unsigned int                    src_bitmap_align = 0;
+unsigned int                    src_bitmap_height = 0;
+size_t                          src_bitmap_length = 0;
+size_t                          src_bitmap_stride = 0;
 
 void close_bitmap();
 
