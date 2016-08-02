@@ -34,7 +34,7 @@ public:
 public:
 	// add to THIS struct another struct. inline for performance!
 	inline void add(const struct nr_wfpack &b) {
-#if defined(__x86_64__) && defined(HAVE_GCC_ASM) // x86_64 optimized version because GCC can't figure out what we're trying to do with carry
+#if defined(__x86_64__) && defined(HAVE_GCC_ASM) && defined(USE_ASM) // x86_64 optimized version because GCC can't figure out what we're trying to do with carry
         // f += b.f
         // w += b.w + carry
         __asm__ (   "addq	%2,%0\n"
@@ -42,7 +42,7 @@ public:
                     /* outputs */ "+rme" (f), "+rme" (w) : /* +rme to mean we read/modify/write the outputs */
                     /* inputs */ "ri" (b.f), "ri" (b.w) : /* make input params registers, add cannot take two memory operands */
                     /* clobbered */ "cc" /* modifies flags */);
-#elif defined(__i386__) && defined(HAVE_GCC_ASM) // i686 optimized version because GCC can't figure out what we're trying to do with carry
+#elif defined(__i386__) && defined(HAVE_GCC_ASM) && defined(USE_ASM) // i686 optimized version because GCC can't figure out what we're trying to do with carry
         // f += b.f
         // w += b.w + carry
         __asm__ (   "addl	%2,%0\n"
