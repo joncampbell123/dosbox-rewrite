@@ -61,6 +61,8 @@ void IPDec_AMDK6r2(x86_offset_t ip);
 void IPDec_AMDK6r2_generic(x86_offset_t ip);
 void IPDec_AMDAthlon(x86_offset_t ip);
 void IPDec_AMDAthlon_generic(x86_offset_t ip);
+void IPDec_IntelCore(x86_offset_t ip);
+void IPDec_IntelCore_generic(x86_offset_t ip);
 
 x86_offset_t            exe_ip = 0;
 unsigned char*          exe_ip_ptr = NULL;
@@ -161,6 +163,10 @@ int main(int argc,char **argv) {
                     IPDec = IPDec_AMDAthlon;
                 else if (!strcmp(a,"amdathlong"))
                     IPDec = IPDec_AMDAthlon_generic;
+                else if (!strcmp(a,"intelcore"))
+                    IPDec = IPDec_IntelCore;
+                else if (!strcmp(a,"intelcoreg"))
+                    IPDec = IPDec_IntelCore_generic;
                 else {
                     fprintf(stderr,"Unknown CPU\n");
                     return 1;
