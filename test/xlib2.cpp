@@ -24,6 +24,7 @@
 
 #include "dosboxxr/lib/hostcpudetect/caps.h"
 #include "dosboxxr/lib/util/nr_wfpack.h"
+#include "dosboxxr/lib/util/bitscan.h"
 
 #if HAVE_CPU_MMX
 # include <mmintrin.h>
@@ -192,28 +193,6 @@ void update_to_X11() {
 		XShmPutImage(x_display, x_window, x_gc, x_image, 0, 0, 0, 0, bitmap_width, bitmap_height, 0);
 	else
 		XPutImage(x_display, x_window, x_gc, x_image, 0, 0, 0, 0, bitmap_width, bitmap_height);
-}
-
-unsigned int bitscan_forward(const uint32_t v,unsigned int bit) {
-    while (bit < 32) {
-        if (!(v & (1U << bit)))
-            bit++;
-        else
-            return bit;
-    }
-
-    return bit;
-}
-
-unsigned int bitscan_count(const uint32_t v,unsigned int bit) {
-    while (bit < 32) {
-        if (v & (1U << bit))
-            bit++;
-        else
-            return bit;
-    }
-
-    return bit;
 }
 
 template <class T> void src_bitmap_render() {
