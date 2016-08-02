@@ -6038,4 +6038,43 @@ jmp2:
     phsubsw     xmm0,xmm1
     phsubsw     xmm0,[si]
 
+    psignb      mm0,mm1
+    psignb      mm0,[si]
+    psignb      xmm0,xmm1
+    psignb      xmm0,[si]
+
+    psignw      mm0,mm1
+    psignw      mm0,[si]
+    psignw      xmm0,xmm1
+    psignw      xmm0,[si]
+
+    psignd      mm0,mm1
+    psignd      mm0,[si]
+    psignd      xmm0,xmm1
+    psignd      xmm0,[si]
+
+    pmulhrsw    mm0,mm1
+    pmulhrsw    mm0,[si]
+    pmulhrsw    xmm0,xmm1
+    pmulhrsw    xmm0,[si]
+
+    pabsb       mm0,mm1
+    pabsb       mm0,[si]
+    pabsb       xmm0,xmm1
+    pabsb       xmm0,[si]
+
+    pabsw       mm0,mm1
+    pabsw       mm0,[si]
+    pabsw       xmm0,xmm1
+    pabsw       xmm0,[si]
+
+    pabsd       mm0,mm1
+    pabsd       mm0,[si]
+    pabsd       xmm0,xmm1
+    pabsd       xmm0,[si]
+
+    palignr     mm0,mm1,1
+    palignr     mm0,[si],1
+    palignr     xmm0,xmm1,1
+    palignr     xmm0,[si],1
 
