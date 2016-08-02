@@ -311,6 +311,26 @@ AC_TRY_LINK(
 AM_CONDITIONAL([HAVE_O_BINARY],[test $HAVE_O_BINARY = 1])
 AC_DEFINE_UNQUOTED([HAVE_O_BINARY],[$HAVE_O_BINARY],[Has O_BINARY])
 
+# __asm__?
+HAVE_GCC_ASM=0
+AC_SUBST(HAVE_GCC_ASM)
+AC_MSG_CHECKING([for GCC_ASM])
+AC_TRY_LINK(
+    [
+    ],
+    [
+    	__asm__("");
+    ],
+    [
+        AC_MSG_RESULT([yes])
+        HAVE_GCC_ASM=1
+    ],
+    [
+        AC_MSG_RESULT([no])
+    ])
+AM_CONDITIONAL([HAVE_GCC_ASM],[test $HAVE_GCC_ASM = 1])
+AC_DEFINE_UNQUOTED([HAVE_GCC_ASM],[$HAVE_GCC_ASM],[Has GCC __asm__])
+
 # Does Linux have sys/vm86.h for virtual 8086 mode?
 HAVE_SYS_VM86_H=0
 AC_SUBST(HAVE_SYS_VM86_H)
