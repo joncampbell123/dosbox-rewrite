@@ -333,7 +333,7 @@ AC_DEFINE_UNQUOTED([HAVE_GCC_ASM],[$HAVE_GCC_ASM],[Has GCC __asm__])
 
 # should we use __asm__?
 USE_ASM=$HAVE_GCC_ASM # by default, yes, if the compiler provides it
-AC_ARG_WITH(gcc-asm,AS_HELP_STRING([--asm],[Use inline assembly]),[],[with_asm=yes])
+AC_ARG_WITH(gcc-asm,AS_HELP_STRING([--with-asm],[Use inline assembly]),[],[with_asm=yes])
 AC_SUBST(USE_ASM)
 if test "$with_asm" = "no"; then USE_ASM=0; fi
 AC_DEFINE_UNQUOTED([USE_ASM],[$USE_ASM],[Use inline assembly])
