@@ -50,8 +50,14 @@ static inline void render_scale_from_sd_64towf(struct nr_wfpack &sy,const uint64
 void render_scale_from_sd_nearest(struct nr_wfpack &sy,const uint32_t dh,const uint32_t sh) {
 	uint64_t t;
 
-    t  = (uint64_t)((uint64_t)sh << (uint64_t)32);
-    t /= (uint64_t)dh;
+    if (dh > 0) {
+        t  = (uint64_t)((uint64_t)sh << (uint64_t)32);
+        t /= (uint64_t)dh;
+    }
+    else {
+        t = 0;
+    }
+
     render_scale_from_sd_64towf(sy,t);
 }
 
@@ -61,8 +67,14 @@ void render_scale_from_sd_nearest(struct nr_wfpack &sy,const uint32_t dh,const u
 void render_scale_from_sd(struct nr_wfpack &sy,const uint32_t dh,const uint32_t sh) {
 	uint64_t t;
 
-    t  = (uint64_t)((uint64_t)(sh - uint32_t(1)) << (uint64_t)32);
-    t /= (uint64_t)(dh - uint32_t(1));
+    if (dh > 1) {
+        t  = (uint64_t)((uint64_t)(sh - uint32_t(1)) << (uint64_t)32);
+        t /= (uint64_t)(dh - uint32_t(1));
+    }
+    else {
+        t = 0;
+    }
+
     render_scale_from_sd_64towf(sy,t);
 }
 
