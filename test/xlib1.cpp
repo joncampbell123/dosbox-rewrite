@@ -26,6 +26,7 @@
 #include "dosboxxr/lib/util/bitscan.h"
 #include "dosboxxr/lib/util/rgbinfo.h"
 #include "dosboxxr/lib/util/rgb_bitmap_info.h"
+#include "dosboxxr/lib/util/rgb_bitmap_test_pattern_gradients.h"
 
 Display*                        x_display = NULL;
 Visual*                         x_visual = NULL;
@@ -202,34 +203,6 @@ void update_to_X11() {
 		XPutImage(x_display, x_window, x_gc, x_image, 0, 0, 0, 0, x_bitmap.width, x_bitmap.height);
 }
 
-template <class T> void rerender_out(rgb_bitmap_info &bmp) {
-    size_t ox,oy;
-    T r,g,b;
-    T *drow;
-
-    for (oy=0;oy < bmp.height;oy++) {
-        drow = bmp.get_scanline<T>(oy);
-        for (ox=0;ox < bmp.width;ox++) {
-            /* color */
-            r = (ox * bmp.rgbinfo.r.bmask) / bmp.width;
-            g = (oy * bmp.rgbinfo.g.bmask) / bmp.height;
-            b = bmp.rgbinfo.b.bmask - ((ox * bmp.rgbinfo.b.bmask) / bmp.width);
-
-            *drow++ = (r << bmp.rgbinfo.r.shift) +
-                (g << bmp.rgbinfo.g.shift) +
-                (b << bmp.rgbinfo.b.shift) +
-                bmp.rgbinfo.a.mask;
-        }
-    }
-}
-
-void rerender_out(rgb_bitmap_info &bmp) {
-    if (bmp.bytes_per_pixel == sizeof(uint32_t))
-        rerender_out<uint32_t>(bmp);
-    else if (bmp.bytes_per_pixel == sizeof(uint16_t))
-        rerender_out<uint16_t>(bmp);
-}
-
 int main() {
 	int redraw = 1;
 
@@ -293,7 +266,7 @@ int main() {
         x_bitmap.rgbinfo.b.shift, x_bitmap.rgbinfo.b.bwidth, x_bitmap.rgbinfo.b.bmask,
         x_bitmap.rgbinfo.a.shift, x_bitmap.rgbinfo.a.bwidth, x_bitmap.rgbinfo.a.bmask);
 
-	rerender_out(x_bitmap);
+	render_test_pattern_rgb_gradients(x_bitmap);
 
 	/* wait for events */
 	while (!x_quit) {
@@ -320,7 +293,7 @@ int main() {
 							}
 						}
 
-						rerender_out(x_bitmap);
+						render_test_pattern_rgb_gradients(x_bitmap);
 					}
 				}
 			}
