@@ -29,12 +29,7 @@
 #include "dosboxxr/lib/util/rgb_bitmap_info.h"
 #include "dosboxxr/lib/util/rgb_bitmap_test_patterns.h"
 #include "dosboxxr/lib/util/vinterp_tmp.h"
-#include "dosboxxr/lib/graphics/stretchblt_neighbor.h"
-#include "dosboxxr/lib/graphics/stretchblt_bilinear.h"
-#include "dosboxxr/lib/graphics/stretchblt_bilinear_mmx.h"
-#include "dosboxxr/lib/graphics/stretchblt_bilinear_sse.h"
-#include "dosboxxr/lib/graphics/stretchblt_bilinear_avx.h"
-#include "dosboxxr/lib/graphics/stretchblt_bilinear_arm_neon.h"
+#include "dosboxxr/lib/graphics/stretchblt_general.h"
 
 int                             method = 0;
 
@@ -214,48 +209,9 @@ void update_to_X11() {
 		XPutImage(x_display, x_window, x_gc, x_image, 0, 0, 0, 0, x_bitmap.width, x_bitmap.height);
 }
 
-struct render_mode {
-    const char*         name;
-    void                (*render)(const rgb_bitmap_info &dbmp,const rgb_bitmap_info &sbmp);
-    bool                (*can_do)(const rgb_bitmap_info &dbmp,const rgb_bitmap_info &sbmp);
-};
-
-struct render_mode render_modes[] = {
-    {"bilinear",
-    stretchblt_bilinear,
-    stretchblt_bilinear_can_do},
-#if HAVE_CPU_MMX
-    {"bilinear_mmx",
-    stretchblt_bilinear_mmx,
-    stretchblt_bilinear_mmx_can_do},
-#endif
-#if HAVE_CPU_SSE2
-    {"bilinear_sse",
-    stretchblt_bilinear_sse,
-    stretchblt_bilinear_sse_can_do},
-#endif
-#if HAVE_CPU_AVX2
-    {"bilinear_avx",
-    stretchblt_bilinear_avx,
-    stretchblt_bilinear_avx_can_do},
-#endif
-#if HAVE_CPU_ARM_NEON
-    {"bilinear_arm_neon",
-    stretchblt_bilinear_arm_neon,
-    stretchblt_bilinear_arm_neon_can_do},
-#endif
-    {"neighbor",
-    stretchblt_neighbor,
-    stretchblt_neighbor_can_do}
-};
-
-static inline size_t render_mode_count() {
-    return sizeof(render_modes)/sizeof(render_modes[0]);
-}
-
 void rerender_out() {
-    if (method <= render_mode_count())
-        render_modes[method].render(/*&*/x_bitmap,/*&*/src_bitmap);
+    if (method <= stretchblt_mode_count())
+        stretchblt_modes[method].render(/*&*/x_bitmap,/*&*/src_bitmap);
 }
 
 int main() {
@@ -356,7 +312,7 @@ int main() {
     test_pattern_1_render(/*&*/src_bitmap);
 
     method = 0;
-    fprintf(stderr,"Method is %s\n",render_modes[method].name);
+    fprintf(stderr,"Method is %s\n",stretchblt_modes[method].name);
 	rerender_out();
 
 	/* wait for events */
@@ -400,16 +356,16 @@ int main() {
 				}
                 else if (sym == XK_space) {
                     do {
-                        if ((++method) >= render_mode_count())
+                        if ((++method) >= stretchblt_mode_count())
                             method = 0;
 
-                        if (render_modes[method].can_do(/*&*/x_bitmap,/*&*/src_bitmap))
+                        if (stretchblt_modes[method].can_do(/*&*/x_bitmap,/*&*/src_bitmap))
                             break;
 
-                        fprintf(stderr,"Can't do %s, skipping\n",render_modes[method].name);
+                        fprintf(stderr,"Can't do %s, skipping\n",stretchblt_modes[method].name);
                     } while (1);
 
-                    fprintf(stderr,"Switching to %s\n",render_modes[method].name);
+                    fprintf(stderr,"Switching to %s\n",stretchblt_modes[method].name);
                     rerender_out();
                     redraw = 1;
                 }

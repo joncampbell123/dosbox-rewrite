@@ -24,7 +24,8 @@ dosboxxr_lib_graphics_libstretchblt_a_SOURCES = \
 	dosboxxr/lib/graphics/stretchblt_bilinear_mmx.cpp \
 	dosboxxr/lib/graphics/stretchblt_bilinear_sse.cpp \
 	dosboxxr/lib/graphics/stretchblt_bilinear_avx.cpp \
-	dosboxxr/lib/graphics/stretchblt_bilinear_arm_neon.cpp
+	dosboxxr/lib/graphics/stretchblt_bilinear_arm_neon.cpp \
+	dosboxxr/lib/graphics/stretchblt_general.cpp
 
 OPCC=bin/tools/opcc
 
