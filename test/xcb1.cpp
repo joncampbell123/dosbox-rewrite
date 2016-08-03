@@ -1,3 +1,8 @@
+// TODO: This uses XCB with SHM extension, implement alternate mode without SHM extension
+
+#ifdef HAVE_CONFIG_H
+# include "config.h" // must be first
+#endif
 
 #include <sys/mman.h>
 
@@ -12,66 +17,68 @@
 #include <xcb/xcb.h>
 #include <xcb/shm.h>
 
-xcb_connection_t*		xcb_connection = NULL;
-xcb_screen_t*			xcb_screen = NULL;
-xcb_window_t			xcb_window = 0;
-xcb_generic_event_t*		xcb_event = NULL;
-const xcb_setup_t*		xcb_setup = NULL;
-int				xcb_screen_num = -1;
-xcb_get_geometry_reply_t*	xcb_geo = NULL;
-xcb_gcontext_t			xcb_gc = 0;
-xcb_format_t*			xcb_fmt = NULL;
-xcb_visualtype_t*		xcb_visual = NULL;
+#include <algorithm>
 
-int				bitmap_width = 0,bitmap_height = 0;
-int				redraw = 1;
+#include "dosboxxr/lib/util/rgbinfo.h"
+#include "dosboxxr/lib/util/rgb_bitmap_info.h"
+#include "dosboxxr/lib/util/rgb_bitmap_test_pattern_gradients.h"
 
-xcb_shm_seg_t			xcb_shm = 0;
-int				bitmap_shmid = -1;
-unsigned char*			bitmap = NULL;
-size_t				bitmap_stride = 0;
-size_t				bitmap_size = 0;
-
-unsigned char*			image=NULL; /* 24bpp image */
-size_t				image_stride;
-size_t				image_width,image_height;
+xcb_connection_t*               xcb_connection = NULL;
+xcb_screen_t*                   xcb_screen = NULL;
+xcb_window_t                    xcb_window = 0;
+xcb_generic_event_t*            xcb_event = NULL;
+const xcb_setup_t*              xcb_setup = NULL;
+int                             xcb_screen_num = -1;
+xcb_get_geometry_reply_t*       xcb_geo = NULL;
+xcb_gcontext_t                  xcb_gc = 0;
+xcb_format_t*                   xcb_fmt = NULL;
+xcb_visualtype_t*               xcb_visual = NULL;
+int                             xcb_bitmap_shmid = -1;
+xcb_shm_seg_t                   xcb_shm = 0;
+rgb_bitmap_info                 xcb_bitmap;
 
 void free_bitmap();
 
-void init_bitmap() {
+void init_bitmap(unsigned int width,unsigned int height,unsigned int align=32) {
 	if (xcb_geo == NULL)
 		return;
-	if (bitmap_shmid >= 0)
+	if (xcb_bitmap_shmid >= 0)
 		return;
 
-	bitmap_width = xcb_geo->width;
-	bitmap_height = xcb_geo->height;
+    xcb_bitmap.clear();
+    xcb_bitmap.width = width;
+    xcb_bitmap.height = height;
+    xcb_bitmap.bytes_per_pixel = (xcb_fmt->bits_per_pixel + 7) / 8;
 
-	/* local bitmap */
-	bitmap_stride = bitmap_width * xcb_fmt->bits_per_pixel;
-	bitmap_stride += xcb_fmt->scanline_pad - 1;
-	bitmap_stride -= bitmap_stride % xcb_fmt->scanline_pad;
-	bitmap_stride >>= 3;
-	bitmap_size = bitmap_stride * bitmap_height;
+    // we must obey XCB scanline padding requirements.
+    xcb_bitmap.stride = xcb_bitmap.width * xcb_fmt->bits_per_pixel; /* stride in bits */
+    xcb_bitmap.stride += xcb_fmt->scanline_pad - 1;/* round up */
+    xcb_bitmap.stride -= xcb_bitmap.stride % xcb_fmt->scanline_pad/*bits*/;
+    xcb_bitmap.stride /= 8; /* back to bytes */
 
-	fprintf(stderr,"BMP is %u x %u stride=%zu size=%zu depth=%u\n",
-		bitmap_width, bitmap_height, bitmap_stride, bitmap_size, xcb_fmt->depth);
+    xcb_bitmap.update_length_from_stride_and_height();
 
-	if ((bitmap_shmid=shmget(IPC_PRIVATE, bitmap_size, IPC_CREAT | 0777)) < 0) {
+	if ((xcb_bitmap_shmid=shmget(IPC_PRIVATE, xcb_bitmap.length, IPC_CREAT | 0777)) < 0) {
 		fprintf(stderr,"Cannot get SHM ID for image\n");
 		free_bitmap();
 		return;
 	}
 
-	if ((bitmap=(unsigned char*)shmat(bitmap_shmid, 0, 0)) == MAP_FAILED) {
+	if ((xcb_bitmap.base=(unsigned char*)shmat(xcb_bitmap_shmid, 0, 0)) == MAP_FAILED) {
 		fprintf(stderr,"Cannot mmap for image\n");
-		bitmap = NULL;
+		xcb_bitmap.base = NULL;
 		free_bitmap();
 		return;
 	}
+    xcb_bitmap.canvas = xcb_bitmap.base;
 
 	xcb_shm = xcb_generate_id(xcb_connection);
-	xcb_shm_attach(xcb_connection, xcb_shm, bitmap_shmid, 0);
+	xcb_shm_attach(xcb_connection, xcb_shm, xcb_bitmap_shmid, 0);
+
+    xcb_bitmap.rgbinfo.r.setByMask(xcb_visual->red_mask);
+    xcb_bitmap.rgbinfo.g.setByMask(xcb_visual->green_mask);
+    xcb_bitmap.rgbinfo.b.setByMask(xcb_visual->blue_mask);
+    xcb_bitmap.rgbinfo.a.setByMask(~(xcb_visual->red_mask+xcb_visual->green_mask+xcb_visual->blue_mask)); // alpha = anything not covered by R,G,B
 }
 
 void free_bitmap() {
@@ -79,15 +86,15 @@ void free_bitmap() {
 		xcb_shm_detach(xcb_connection, xcb_shm);
 		xcb_shm = 0;
 	}
-	if (bitmap) {
-		shmdt(bitmap);
-		bitmap = NULL;
-		bitmap_size = 0;
+	if (xcb_bitmap.base) {
+		shmdt(xcb_bitmap.base);
+		xcb_bitmap.base = NULL;
 	}
-	if (bitmap_shmid >= 0) {
-		shmctl(bitmap_shmid, IPC_RMID, 0); /* the buffer will persist until X closes it */
-		bitmap_shmid = -1;
+	if (xcb_bitmap_shmid >= 0) {
+		shmctl(xcb_bitmap_shmid, IPC_RMID, 0); /* the buffer will persist until X closes it */
+		xcb_bitmap_shmid = -1;
 	}
+    xcb_bitmap.clear();
 }
 
 void update_xcb_geo() {
@@ -114,114 +121,10 @@ void freeall() {
 	}
 }
 
-unsigned int bitscan_forward(const uint32_t v,unsigned int bit) {
-    while (bit < 32) {
-        if (!(v & (1U << bit)))
-            bit++;
-        else
-            return bit;
-    }
-
-    return bit;
-}
-
-unsigned int bitscan_count(const uint32_t v,unsigned int bit) {
-    while (bit < 32) {
-        if (v & (1U << bit))
-            bit++;
-        else
-            return bit;
-    }
-
-    return bit;
-}
-
-/* render image to XImage.
- * stretch fit using crude nearest neighbor scaling */
-void rerender_out() {
-	int ox,oy;
-
-#if 0
-		if (xcb_fmt->bits_per_pixel == 32) {
-			if (xcb_visual->blue_mask == 0x000000FF) {/*most common, ARGB*/
-#endif
-
-    if (xcb_fmt->bits_per_pixel == 32) {
-        const uint32_t alpha =
-            (~(xcb_visual->red_mask+xcb_visual->green_mask+xcb_visual->blue_mask));
-        uint32_t rm,gm,bm;
-        uint8_t rs,gs,bs;
-        uint32_t r,g,b;
-        uint32_t *drow;
-
-        rs = bitscan_forward(xcb_visual->red_mask,0);
-        rm = bitscan_count(xcb_visual->red_mask,rs) - rs;
-        rm = (1U << rm) - 1U;
-
-        gs = bitscan_forward(xcb_visual->green_mask,0);
-        gm = bitscan_count(xcb_visual->green_mask,gs) - gs;
-        gm = (1U << gm) - 1U;
-
-        bs = bitscan_forward(xcb_visual->blue_mask,0);
-        bm = bitscan_count(xcb_visual->blue_mask,bs) - bs;
-        bm = (1U << bm) - 1U;
-
-        fprintf(stderr,"R/G/B shift/mask %u/0x%X %u/0x%X %u/0x%X\n",rs,rm,gs,gm,bs,bm);
-
-        for (oy=0;oy < bitmap_height;oy++) {
-            drow = (uint32_t*)((uint8_t*)bitmap + (bitmap_stride * oy));
-            for (ox=0;ox < bitmap_width;ox++) {
-                /* color */
-                r = (ox * rm) / bitmap_width;
-                g = (oy * gm) / bitmap_height;
-                b = bm - ((ox * bm) / bitmap_width);
-
-                *drow++ = (r << rs) + (g << gs) + (b << bs) + alpha;
-            }
-        }
-    }
-    else if (xcb_fmt->bits_per_pixel == 16) {
-        const uint16_t alpha =
-            (~(xcb_visual->red_mask+xcb_visual->green_mask+xcb_visual->blue_mask));
-        uint16_t rm,gm,bm;
-        uint8_t rs,gs,bs;
-        uint16_t r,g,b;
-        uint16_t *drow;
-
-        rs = bitscan_forward(xcb_visual->red_mask,0);
-        rm = bitscan_count(xcb_visual->red_mask,rs) - rs;
-        rm = (1U << rm) - 1U;
-
-        gs = bitscan_forward(xcb_visual->green_mask,0);
-        gm = bitscan_count(xcb_visual->green_mask,gs) - gs;
-        gm = (1U << gm) - 1U;
-
-        bs = bitscan_forward(xcb_visual->blue_mask,0);
-        bm = bitscan_count(xcb_visual->blue_mask,bs) - bs;
-        bm = (1U << bm) - 1U;
-
-        fprintf(stderr,"R/G/B shift/mask %u/0x%X %u/0x%X %u/0x%X\n",rs,rm,gs,gm,bs,bm);
-
-        for (oy=0;oy < bitmap_height;oy++) {
-            drow = (uint16_t*)((uint8_t*)bitmap + (bitmap_stride * oy));
-            for (ox=0;ox < bitmap_width;ox++) {
-                /* color */
-                r = (ox * rm) / bitmap_width;
-                g = (oy * gm) / bitmap_height;
-                b = bm - ((ox * bm) / bitmap_width);
-
-                *drow++ = (r << rs) + (g << gs) + (b << bs) + alpha;
-            }
-        }
-    }
-    else {
-        fprintf(stderr,"WARNING: unsupported bit depth %u/bpp\n",
-            xcb_fmt->bits_per_pixel);
-    }
-}
-
 int main() {
-	/* WARNING: a lot is involved at the XCB low level interface */
+    int redraw = 1;
+
+    /* WARNING: a lot is involved at the XCB low level interface */
 
 	if ((xcb_connection=xcb_connect(NULL, &xcb_screen_num)) == NULL) {
 		if ((xcb_connection=xcb_connect(":0", &xcb_screen_num)) == NULL) {
@@ -326,8 +229,8 @@ int main() {
 		xcb_create_gc(xcb_connection, xcb_gc, xcb_window, mask, values);
 	}
 
-	init_bitmap();
-	rerender_out();
+	init_bitmap(xcb_geo->width,xcb_geo->height);
+	render_test_pattern_rgb_gradients(xcb_bitmap);
 	redraw = 1;
 
 	/* use xcb_poll_event() if you want to do animation at the same time */
@@ -346,8 +249,8 @@ int main() {
 
 			if (pw != xcb_geo->width || ph != xcb_geo->height) {
 				free_bitmap();
-				init_bitmap();
-				rerender_out();
+	            init_bitmap(xcb_geo->width,xcb_geo->height);
+	            render_test_pattern_rgb_gradients(xcb_bitmap);
 				redraw = 1;
 			}
 		}
@@ -386,15 +289,15 @@ int main() {
 
 		if (redraw) {
 			fprintf(stderr,"Redraw\n");
-			if (bitmap_shmid >= 0) {
+			if (xcb_bitmap_shmid >= 0) {
 				/* FIXME: Z_PIXMAP?!?!?? Why not XY_PIXMAP???
 				 *        "Z_PIXMAP" leads me to believe it's something to do with a Z buffer!
 				 *        If you try XY_PIXMAP the function will just render it like a 1-bit monochromatic
 				 *        bitmap! What fucking sense does that make?!?!?!?!? AAARRRRRGH!
 				 *        It doesn't help that NONE of this shit is documented! */
 				xcb_shm_put_image(xcb_connection, xcb_window, xcb_gc,
-					/*total width*/bitmap_width, /*total height*/bitmap_height, /*src x*/0, /*src y*/0,
-					/*src width*/bitmap_width, /*src height*/bitmap_height, /*dst x*/0, /*dst y*/0,
+					/*total width*/xcb_bitmap.width, /*total height*/xcb_bitmap.height, /*src x*/0, /*src y*/0,
+					/*src width*/xcb_bitmap.width, /*src height*/xcb_bitmap.height, /*dst x*/0, /*dst y*/0,
 					xcb_fmt->depth, XCB_IMAGE_FORMAT_Z_PIXMAP, /*send event (image write is complete)*/0, xcb_shm, /*offset*/0);
 				xcb_flush(xcb_connection);
 			}
@@ -404,7 +307,6 @@ int main() {
 	}
 
 	freeall();
-	free(image);
 	xcb_free_gc(xcb_connection, xcb_gc);
 	xcb_disconnect(xcb_connection);
 	return 0;

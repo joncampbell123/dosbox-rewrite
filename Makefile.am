@@ -162,8 +162,10 @@ bin_test_xlib2_LDADD = $(X11_LDFLAGS) $(XEXT_LDFLAGS) \
 
 bin_test_xcb1_SOURCES = test/xcb1.cpp
 bin_test_xcb1_CXXFLAGS = $(AM_CXXFLAGS) $(X11_CFLAGS) $(XEXT_CFLAGS) $(X11_XCB_CFLAGS) $(XCB_SHM_CFLAGS)
-bin_test_xcb1_DEPENDENCIES =
-bin_test_xcb1_LDADD = $(X11_LDFLAGS) $(XEXT_LDFLAGS) $(X11_XCB_LDFLAGS) $(XCB_SHM_LDFLAGS)
+bin_test_xcb1_DEPENDENCIES = \
+	dosboxxr/lib/util/libutil.a
+bin_test_xcb1_LDADD = $(X11_LDFLAGS) $(XEXT_LDFLAGS) $(X11_XCB_LDFLAGS) $(XCB_SHM_LDFLAGS) \
+	dosboxxr/lib/util/libutil.a
 
 bin_test_cpumodregrm_SOURCES = test/cpumodregrm.cpp
 bin_test_cpumodregrm_CXXFLAGS = $(AM_CXXFLAGS)

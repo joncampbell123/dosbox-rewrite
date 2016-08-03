@@ -22,8 +22,6 @@
 
 #include <algorithm>
 
-#include "dosboxxr/lib/util/nr_wfpack.h"
-#include "dosboxxr/lib/util/bitscan.h"
 #include "dosboxxr/lib/util/rgbinfo.h"
 #include "dosboxxr/lib/util/rgb_bitmap_info.h"
 #include "dosboxxr/lib/util/rgb_bitmap_test_pattern_gradients.h"

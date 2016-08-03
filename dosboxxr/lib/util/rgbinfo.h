@@ -2,6 +2,8 @@
 #ifndef DOSBOXXR_LIB_UTIL_RGBINFO_H
 #define DOSBOXXR_LIB_UTIL_RGBINFO_H
 
+#include "dosboxxr/lib/util/bitscan.h"
+
 // utility struct to store bit position, width, and mask of pixels.
 // T is either uint16_t or uint32_t. This is ONLY for use with RGB
 // pixel formats.
