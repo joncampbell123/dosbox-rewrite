@@ -1,4 +1,8 @@
 
+#ifdef HAVE_CONFIG_H
+# include "config.h" // must be first
+#endif
+
 #include <sys/mman.h>
 
 #include <sys/ipc.h>
@@ -6,6 +10,7 @@
 
 #include <stdio.h>
 #include <errno.h>
+#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
@@ -17,31 +22,41 @@
 
 #include <algorithm>
 
-Display*			x_display = NULL;
-Visual*				x_visual = NULL;
-Screen*				x_screen = NULL;
-int				x_depth = 0;
-Atom				x_wmDelete;
-XEvent				x_event;
-Colormap			x_cmap;
-XSetWindowAttributes		x_swa;
-XWindowAttributes		x_gwa;
-GC				x_gc = 0;
-XImage*				x_image = NULL;
-XShmSegmentInfo			x_shminfo;
-size_t				x_image_length = 0;
-int				x_using_shm = 0;
-Window				x_root_window;
-Window				x_window = (Window)0;
-int				x_screen_index = 0;
-int				x_quit = 0;
-int				bitmap_width = 0;
-int				bitmap_height = 0;
+#include "dosboxxr/lib/util/nr_wfpack.h"
+#include "dosboxxr/lib/util/bitscan.h"
+#include "dosboxxr/lib/util/rgbinfo.h"
+#include "dosboxxr/lib/util/rgb_bitmap_info.h"
+
+Display*                        x_display = NULL;
+Visual*                         x_visual = NULL;
+Screen*                         x_screen = NULL;
+int                             x_depth = 0;
+Atom                            x_wmDelete;
+XEvent                          x_event;
+Colormap                        x_cmap;
+XSetWindowAttributes            x_swa;
+XWindowAttributes               x_gwa;
+GC                              x_gc = 0;
+XImage*                         x_image = NULL;
+XShmSegmentInfo                 x_shminfo;
+int                             x_using_shm = 0;
+Window                          x_root_window;
+Window                          x_window = (Window)0;
+int                             x_screen_index = 0;
+int                             x_quit = 0;
+rgb_bitmap_info                 x_bitmap;
 
 void close_bitmap();
 
-int init_shm() {
+int init_xbitmap_common_pre(unsigned int width,unsigned int height,unsigned int align,unsigned int &alloc_width) {
 	close_bitmap();
+    if (width == 0 || height == 0) return 0;
+
+    alloc_width = width;
+    if (align > 1) {
+        alloc_width += align - 1;
+        alloc_width -= alloc_width % align;
+    }
 
 	if ((x_gc=XCreateGC(x_display, (Drawable)x_window, 0, NULL)) == NULL) {
 		fprintf(stderr,"Cannot create drawable\n");
@@ -49,18 +64,35 @@ int init_shm() {
 		return 0;
 	}
 
+    return 1;
+}
+
+int init_shm(unsigned int width,unsigned int height,unsigned int align=32) {
+    unsigned int alloc_width;
+
+    if (!init_xbitmap_common_pre(width,height,align,/*&*/alloc_width))
+        return 0;
+
 	x_using_shm = 1;
 	memset(&x_shminfo,0,sizeof(x_shminfo));
-	bitmap_width = (x_gwa.width+15)&(~15);
-	bitmap_height = (x_gwa.height+15)&(~15);
-	if ((x_image=XShmCreateImage(x_display, x_visual, x_depth, ZPixmap, NULL, &x_shminfo, bitmap_width, bitmap_height)) == NULL) {
+	if ((x_image=XShmCreateImage(x_display, x_visual, x_depth, ZPixmap, NULL, &x_shminfo, alloc_width, height)) == NULL) {
 		fprintf(stderr,"Cannot create SHM image\n");
 		close_bitmap();
 		return 0;
 	}
 
-	x_image_length = x_image->bytes_per_line * (x_image->height + 1);
-	if ((x_shminfo.shmid=shmget(IPC_PRIVATE, x_image_length, IPC_CREAT | 0777)) < 0) {
+    x_bitmap.clear();
+    x_bitmap.width = width;
+    x_bitmap.height = height;
+    x_bitmap.stride = x_image->bytes_per_line;
+    x_bitmap.bytes_per_pixel = (x_image->bits_per_pixel + 7) / 8;
+    x_bitmap.update_length_from_stride_and_height();
+    if (!x_bitmap.is_dim_valid()) {
+		close_bitmap();
+        return 0;
+    }
+
+	if ((x_shminfo.shmid=shmget(IPC_PRIVATE, x_bitmap.length, IPC_CREAT | 0777)) < 0) {
 		fprintf(stderr,"Cannot get SHM ID for image\n");
 		x_shminfo.shmid = 0;
 		close_bitmap();
@@ -75,48 +107,56 @@ int init_shm() {
 		return 0;
 	}
 	x_shminfo.readOnly = 0;
-	XShmAttach(x_display, &x_shminfo);
+    x_bitmap.base = (unsigned char*)x_image->data;
+    x_bitmap.canvas = (unsigned char*)x_image->data;
+
+    XShmAttach(x_display, &x_shminfo);
 	XSync(x_display, 0);
 
-	memset(x_image->data,0x00,x_image_length);
-
-	bitmap_width = x_gwa.width;
-	bitmap_height = x_gwa.height;
-	fprintf(stderr,"SHM-based XImage created %ux%u\n",bitmap_width,bitmap_height);
+    x_bitmap.rgbinfo.r.setByMask(x_image->red_mask);
+    x_bitmap.rgbinfo.g.setByMask(x_image->green_mask);
+    x_bitmap.rgbinfo.b.setByMask(x_image->blue_mask);
+    x_bitmap.rgbinfo.a.setByMask(~(x_image->red_mask+x_image->green_mask+x_image->blue_mask)); // alpha = anything not covered by R,G,B
 	return 1;
 }
 
-int init_norm() {
-	close_bitmap();
+int init_norm(unsigned int width,unsigned int height,unsigned int align=32) {
+    unsigned int alloc_width;
 
-	if ((x_gc=XCreateGC(x_display, (Drawable)x_window, 0, NULL)) == NULL) {
-		fprintf(stderr,"Cannot create drawable\n");
-		close_bitmap();
-		return 0;
-	}
+    if (!init_xbitmap_common_pre(width,height,align,/*&*/alloc_width))
+        return 0;
 
 	x_using_shm = 0;
-	bitmap_width = (x_gwa.width+15)&(~15);
-	bitmap_height = (x_gwa.height+15)&(~15);
-	if ((x_image=XCreateImage(x_display, x_visual, x_depth, ZPixmap, 0, NULL, bitmap_width, bitmap_height, 32, 0)) == NULL) {
+	if ((x_image=XCreateImage(x_display, x_visual, x_depth, ZPixmap, 0, NULL, alloc_width, height, 32, 0)) == NULL) {
 		fprintf(stderr,"Cannot create image\n");
 		close_bitmap();
 		return 0;
 	}
 
-	x_image_length = x_image->bytes_per_line * (x_image->height + 1);
-	if ((x_image->data=(char*)mmap(NULL,x_image_length,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS,-1,0)) == MAP_FAILED) {
+    x_bitmap.clear();
+    x_bitmap.width = width;
+    x_bitmap.height = height;
+    x_bitmap.stride = x_image->bytes_per_line;
+    x_bitmap.bytes_per_pixel = (x_image->bits_per_pixel + 7) / 8;
+    x_bitmap.update_length_from_stride_and_height();
+    if (!x_bitmap.is_dim_valid()) {
+		close_bitmap();
+        return 0;
+    }
+
+	if ((x_image->data=(char*)mmap(NULL,x_bitmap.length,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS,-1,0)) == MAP_FAILED) {
 		fprintf(stderr,"Cannot mmap for image\n");
 		x_image->data = NULL;
 		close_bitmap();
 		return 0;
 	}
+    x_bitmap.base = (unsigned char*)x_image->data;
+    x_bitmap.canvas = (unsigned char*)x_image->data;
 
-	memset(x_image->data,0x00,x_image_length);
-
-	bitmap_width = x_gwa.width;
-	bitmap_height = x_gwa.height;
-	fprintf(stderr,"Normal (non-SHM) XImage created %ux%u\n",bitmap_width,bitmap_height);
+    x_bitmap.rgbinfo.r.setByMask(x_image->red_mask);
+    x_bitmap.rgbinfo.g.setByMask(x_image->green_mask);
+    x_bitmap.rgbinfo.b.setByMask(x_image->blue_mask);
+    x_bitmap.rgbinfo.a.setByMask(~(x_image->red_mask+x_image->green_mask+x_image->blue_mask)); // alpha = anything not covered by R,G,B
 	return 1;
 }
 
@@ -129,15 +169,15 @@ void close_bitmap() {
 		if (x_image) {
 			if (x_image->data != NULL) {
 				shmdt(x_image->data);
+                x_bitmap.base = x_bitmap.canvas = NULL;
 				x_image->data = NULL;
-				x_image_length = 0;
 			}
 		}
 		else {
 			if (x_image->data != NULL) {
-				munmap(x_image->data, x_image_length);
+				munmap(x_image->data, x_bitmap.length);
+                x_bitmap.base = x_bitmap.canvas = NULL;
 				x_image->data = NULL;
-				x_image_length = 0;
 			}
 		}
 		XDestroyImage(x_image);
@@ -148,118 +188,46 @@ void close_bitmap() {
 		x_gc = NULL;
 	}
 	x_shminfo.shmid = 0;
+    x_bitmap.clear();
 	x_using_shm = 0;
 }
 
 void update_to_X11() {
-	if (x_image == NULL || bitmap_width == 0 || bitmap_height == 0)
+	if (x_image == NULL || x_bitmap.width == 0 || x_bitmap.height == 0)
 		return;
 
 	if (x_using_shm)
-		XShmPutImage(x_display, x_window, x_gc, x_image, 0, 0, 0, 0, bitmap_width, bitmap_height, 0);
+		XShmPutImage(x_display, x_window, x_gc, x_image, 0, 0, 0, 0, x_bitmap.width, x_bitmap.height, 0);
 	else
-		XPutImage(x_display, x_window, x_gc, x_image, 0, 0, 0, 0, bitmap_width, bitmap_height);
+		XPutImage(x_display, x_window, x_gc, x_image, 0, 0, 0, 0, x_bitmap.width, x_bitmap.height);
 }
 
-unsigned int bitscan_forward(const uint32_t v,unsigned int bit) {
-    while (bit < 32) {
-        if (!(v & (1U << bit)))
-            bit++;
-        else
-            return bit;
+template <class T> void rerender_out() {
+    size_t ox,oy;
+    T r,g,b;
+    T *drow;
+
+    for (oy=0;oy < x_bitmap.height;oy++) {
+        drow = x_bitmap.get_scanline<T>(oy);
+        for (ox=0;ox < x_bitmap.width;ox++) {
+            /* color */
+            r = (ox * x_bitmap.rgbinfo.r.bmask) / x_bitmap.width;
+            g = (oy * x_bitmap.rgbinfo.g.bmask) / x_bitmap.height;
+            b = x_bitmap.rgbinfo.b.bmask - ((ox * x_bitmap.rgbinfo.b.bmask) / x_bitmap.width);
+
+            *drow++ = (r << x_bitmap.rgbinfo.r.shift) +
+                (g << x_bitmap.rgbinfo.g.shift) +
+                (b << x_bitmap.rgbinfo.b.shift) +
+                x_bitmap.rgbinfo.a.mask;
+        }
     }
-
-    return bit;
 }
 
-unsigned int bitscan_count(const uint32_t v,unsigned int bit) {
-    while (bit < 32) {
-        if (v & (1U << bit))
-            bit++;
-        else
-            return bit;
-    }
-
-    return bit;
-}
-
-/* render image to XImage.
- * stretch fit using crude nearest neighbor scaling */
 void rerender_out() {
-	int ox,oy;
-
-    if (x_image->bits_per_pixel == 32) {
-        const uint32_t alpha =
-            (~(x_image->red_mask+x_image->green_mask+x_image->blue_mask));
-        uint32_t rm,gm,bm;
-        uint8_t rs,gs,bs;
-        uint32_t r,g,b;
-        uint32_t *drow;
-
-        rs = bitscan_forward(x_image->red_mask,0);
-        rm = bitscan_count(x_image->red_mask,rs) - rs;
-        rm = (1U << rm) - 1U;
-
-        gs = bitscan_forward(x_image->green_mask,0);
-        gm = bitscan_count(x_image->green_mask,gs) - gs;
-        gm = (1U << gm) - 1U;
-
-        bs = bitscan_forward(x_image->blue_mask,0);
-        bm = bitscan_count(x_image->blue_mask,bs) - bs;
-        bm = (1U << bm) - 1U;
-
-        fprintf(stderr,"R/G/B shift/mask %u/0x%X %u/0x%X %u/0x%X\n",rs,rm,gs,gm,bs,bm);
-
-        for (oy=0;oy < bitmap_height;oy++) {
-            drow = (uint32_t*)((uint8_t*)x_image->data + (x_image->bytes_per_line * oy));
-            for (ox=0;ox < bitmap_width;ox++) {
-                /* color */
-                r = (ox * rm) / bitmap_width;
-                g = (oy * gm) / bitmap_height;
-                b = bm - ((ox * bm) / bitmap_width);
-
-                *drow++ = (r << rs) + (g << gs) + (b << bs) + alpha;
-            }
-        }
-    }
-    else if (x_image->bits_per_pixel == 16) {
-        const uint16_t alpha =
-            (~(x_image->red_mask+x_image->green_mask+x_image->blue_mask));
-        uint16_t rm,gm,bm;
-        uint8_t rs,gs,bs;
-        uint16_t r,g,b;
-        uint16_t *drow;
-
-        rs = bitscan_forward(x_image->red_mask,0);
-        rm = bitscan_count(x_image->red_mask,rs) - rs;
-        rm = (1U << rm) - 1U;
-
-        gs = bitscan_forward(x_image->green_mask,0);
-        gm = bitscan_count(x_image->green_mask,gs) - gs;
-        gm = (1U << gm) - 1U;
-
-        bs = bitscan_forward(x_image->blue_mask,0);
-        bm = bitscan_count(x_image->blue_mask,bs) - bs;
-        bm = (1U << bm) - 1U;
-
-        fprintf(stderr,"R/G/B shift/mask %u/0x%X %u/0x%X %u/0x%X\n",rs,rm,gs,gm,bs,bm);
-
-        for (oy=0;oy < bitmap_height;oy++) {
-            drow = (uint16_t*)((uint8_t*)x_image->data + (x_image->bytes_per_line * oy));
-            for (ox=0;ox < bitmap_width;ox++) {
-                /* color */
-                r = (ox * rm) / bitmap_width;
-                g = (oy * gm) / bitmap_height;
-                b = bm - ((ox * bm) / bitmap_width);
-
-                *drow++ = (r << rs) + (g << gs) + (b << bs) + alpha;
-            }
-        }
-    }
-    else {
-        fprintf(stderr,"WARNING: unsupported bit depth %u/bpp\n",
-            x_image->bits_per_pixel);
-    }
+    if (x_bitmap.bytes_per_pixel == sizeof(uint32_t))
+        rerender_out<uint32_t>();
+    else if (x_bitmap.bytes_per_pixel == sizeof(uint16_t))
+        rerender_out<uint16_t>();
 }
 
 int main() {
@@ -310,12 +278,20 @@ int main() {
 	XGetWindowAttributes(x_display, x_window, &x_gwa);
 
 	/* now we need an XImage. Try to use SHM (shared memory) mapping if possible, else, don't */
-	if (!init_shm()) {
-		if (!init_norm()) {
+	if (!init_shm(x_gwa.width,x_gwa.height)) {
+		if (!init_norm(x_gwa.width,x_gwa.height)) {
 			fprintf(stderr,"Cannot alloc bitmap\n");
 			return 1;
 		}
 	}
+
+    assert(x_image != NULL);
+
+    fprintf(stderr,"R/G/B/A shift/width/mask %u/%u/0x%X %u/%u/0x%X %u/%u/0x%X %u/%u/0x%X\n",
+        x_bitmap.rgbinfo.r.shift, x_bitmap.rgbinfo.r.bwidth, x_bitmap.rgbinfo.r.bmask,
+        x_bitmap.rgbinfo.g.shift, x_bitmap.rgbinfo.g.bwidth, x_bitmap.rgbinfo.g.bmask,
+        x_bitmap.rgbinfo.b.shift, x_bitmap.rgbinfo.b.bwidth, x_bitmap.rgbinfo.b.bmask,
+        x_bitmap.rgbinfo.a.shift, x_bitmap.rgbinfo.a.bwidth, x_bitmap.rgbinfo.a.bmask);
 
 	rerender_out();
 
@@ -326,7 +302,6 @@ int main() {
 			XNextEvent(x_display, &x_event);
 
 			if (x_event.type == Expose) {
-				fprintf(stderr,"Expose event\n");
 				redraw = 1;
 
 				/* this also seems to be a good way to detect window resize */
@@ -338,8 +313,8 @@ int main() {
 
 					if (pw != x_gwa.width || ph != x_gwa.height) {
 						close_bitmap();
-						if (!init_shm()) {
-							if (!init_norm()) {
+						if (!init_shm(x_gwa.width,x_gwa.height)) {
+							if (!init_norm(x_gwa.width,x_gwa.height)) {
 								fprintf(stderr,"Cannot alloc bitmap\n");
 								return 1;
 							}

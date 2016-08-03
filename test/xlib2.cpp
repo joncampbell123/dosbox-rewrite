@@ -28,7 +28,6 @@
 #include "dosboxxr/lib/util/rgbinfo.h"
 #include "dosboxxr/lib/util/rgb_bitmap_info.h"
 #include "dosboxxr/lib/util/rgb_bitmap_test_patterns.h"
-#include "dosboxxr/lib/util/vinterp_tmp.h"
 #include "dosboxxr/lib/graphics/stretchblt_general.h"
 
 int                             method = 0;
