@@ -23,15 +23,33 @@ struct rgb_bitmap_info {
 public:
     rgb_bitmap_info() : base(NULL), canvas(NULL), width(0), height(0), length(0), stride(0), bytes_per_pixel(0), stride_align(0), base_align(0),
         stride_padding(0), height_padding(0), rgbinfo() { }
-    bool inline is_valid() const /* does not change class members */ {
-        if (base == NULL) return false;
-        if (canvas == NULL) return false;
+    void clear() {
+        base = NULL;
+        canvas = NULL;
+        width = 0;
+        height = 0;
+        length = 0;
+        stride = 0;
+        bytes_per_pixel = 0;
+        stride_align = 0;
+        base_align = 0;
+        stride_padding = 0;
+        height_padding = 0;
+        rgbinfo.clear();
+    }
+    bool inline is_dim_valid() const {
         if (length == 0) return false;
         if (stride == 0) return false;
         if (width == 0 || height == 0) return false;
         if (bytes_per_pixel == 0 || bytes_per_pixel > 8) return false;
         if ((width*bytes_per_pixel) > stride) return false;
         if ((height*stride) > length) return false;
+        return true;
+    }
+    bool inline is_valid() const /* does not change class members */ {
+        if (base == NULL) return false;
+        if (canvas == NULL) return false;
+        if (!is_dim_valid()) return false;
         return true;
     }
     template <class T> inline T* get_scanline(const size_t y,const size_t x=0) const { /* WARNING: does not range-check 'y', assumes canvas != NULL */

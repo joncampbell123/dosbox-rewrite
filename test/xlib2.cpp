@@ -28,14 +28,11 @@
 #include "dosboxxr/lib/util/rgbinfo.h"
 #include "dosboxxr/lib/util/rgb_bitmap_info.h"
 #include "dosboxxr/lib/util/rgb_bitmap_test_patterns.h"
-
-#if HAVE_CPU_MMX
-# include <mmintrin.h>
-#endif
-
-#if HAVE_CPU_SSE2
-# include <xmmintrin.h>
-#endif
+#include "dosboxxr/lib/util/vinterp_tmp.h"
+#include "dosboxxr/lib/graphics/stretchblt_neighbor.h"
+#include "dosboxxr/lib/graphics/stretchblt_bilinear.h"
+#include "dosboxxr/lib/graphics/stretchblt_bilinear_mmx.h"
+#include "dosboxxr/lib/graphics/stretchblt_bilinear_sse.h"
 
 #if HAVE_CPU_AVX2
 # include <immintrin.h>
@@ -59,21 +56,25 @@ XWindowAttributes               x_gwa;
 GC                              x_gc = 0;
 XImage*                         x_image = NULL;
 XShmSegmentInfo                 x_shminfo;
-size_t                          x_image_length = 0;
 int                             x_using_shm = 0;
 Window                          x_root_window;
 Window                          x_window = (Window)0;
 int                             x_screen_index = 0;
 int                             x_quit = 0;
-int                             bitmap_width = 0;
-int                             bitmap_height = 0;
-rgbinfo_t                       x_rgbinfo;
+rgb_bitmap_info                 x_bitmap;
 rgb_bitmap_info                 src_bitmap;
 
 void close_bitmap();
 
-int init_shm() {
+int init_xbitmap_common_pre(unsigned int width,unsigned int height,unsigned int align,unsigned int &alloc_width) {
 	close_bitmap();
+    if (width == 0 || height == 0) return 0;
+
+    alloc_width = width;
+    if (align > 1) {
+        alloc_width += align - 1;
+        alloc_width -= alloc_width % align;
+    }
 
 	if ((x_gc=XCreateGC(x_display, (Drawable)x_window, 0, NULL)) == NULL) {
 		fprintf(stderr,"Cannot create drawable\n");
@@ -81,18 +82,35 @@ int init_shm() {
 		return 0;
 	}
 
+    return 1;
+}
+
+int init_shm(unsigned int width,unsigned int height,unsigned int align=32) {
+    unsigned int alloc_width;
+
+    if (!init_xbitmap_common_pre(width,height,align,/*&*/alloc_width))
+        return 0;
+
 	x_using_shm = 1;
 	memset(&x_shminfo,0,sizeof(x_shminfo));
-	bitmap_width = (x_gwa.width+15)&(~15);
-	bitmap_height = (x_gwa.height+15)&(~15);
-	if ((x_image=XShmCreateImage(x_display, x_visual, x_depth, ZPixmap, NULL, &x_shminfo, bitmap_width, bitmap_height)) == NULL) {
+	if ((x_image=XShmCreateImage(x_display, x_visual, x_depth, ZPixmap, NULL, &x_shminfo, alloc_width, height)) == NULL) {
 		fprintf(stderr,"Cannot create SHM image\n");
 		close_bitmap();
 		return 0;
 	}
 
-	x_image_length = x_image->bytes_per_line * (x_image->height + 1);
-	if ((x_shminfo.shmid=shmget(IPC_PRIVATE, x_image_length, IPC_CREAT | 0777)) < 0) {
+    x_bitmap.clear();
+    x_bitmap.width = width;
+    x_bitmap.height = height;
+    x_bitmap.stride = x_image->bytes_per_line;
+    x_bitmap.bytes_per_pixel = (x_image->bits_per_pixel + 7) / 8;
+    x_bitmap.update_length_from_stride_and_height();
+    if (!x_bitmap.is_dim_valid()) {
+		close_bitmap();
+        return 0;
+    }
+
+	if ((x_shminfo.shmid=shmget(IPC_PRIVATE, x_bitmap.length, IPC_CREAT | 0777)) < 0) {
 		fprintf(stderr,"Cannot get SHM ID for image\n");
 		x_shminfo.shmid = 0;
 		close_bitmap();
@@ -107,48 +125,56 @@ int init_shm() {
 		return 0;
 	}
 	x_shminfo.readOnly = 0;
-	XShmAttach(x_display, &x_shminfo);
+    x_bitmap.base = (unsigned char*)x_image->data;
+    x_bitmap.canvas = (unsigned char*)x_image->data;
+
+    XShmAttach(x_display, &x_shminfo);
 	XSync(x_display, 0);
 
-	memset(x_image->data,0x00,x_image_length);
-
-	bitmap_width = x_gwa.width;
-	bitmap_height = x_gwa.height;
-	fprintf(stderr,"SHM-based XImage created %ux%u\n",bitmap_width,bitmap_height);
+    x_bitmap.rgbinfo.r.setByMask(x_image->red_mask);
+    x_bitmap.rgbinfo.g.setByMask(x_image->green_mask);
+    x_bitmap.rgbinfo.b.setByMask(x_image->blue_mask);
+    x_bitmap.rgbinfo.a.setByMask(~(x_image->red_mask+x_image->green_mask+x_image->blue_mask)); // alpha = anything not covered by R,G,B
 	return 1;
 }
 
-int init_norm() {
-	close_bitmap();
+int init_norm(unsigned int width,unsigned int height,unsigned int align=32) {
+    unsigned int alloc_width;
 
-	if ((x_gc=XCreateGC(x_display, (Drawable)x_window, 0, NULL)) == NULL) {
-		fprintf(stderr,"Cannot create drawable\n");
-		close_bitmap();
-		return 0;
-	}
+    if (!init_xbitmap_common_pre(width,height,align,/*&*/alloc_width))
+        return 0;
 
 	x_using_shm = 0;
-	bitmap_width = (x_gwa.width+15)&(~15);
-	bitmap_height = (x_gwa.height+15)&(~15);
-	if ((x_image=XCreateImage(x_display, x_visual, x_depth, ZPixmap, 0, NULL, bitmap_width, bitmap_height, 32, 0)) == NULL) {
+	if ((x_image=XCreateImage(x_display, x_visual, x_depth, ZPixmap, 0, NULL, alloc_width, height, 32, 0)) == NULL) {
 		fprintf(stderr,"Cannot create image\n");
 		close_bitmap();
 		return 0;
 	}
 
-	x_image_length = x_image->bytes_per_line * (x_image->height + 1);
-	if ((x_image->data=(char*)mmap(NULL,x_image_length,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS,-1,0)) == MAP_FAILED) {
+    x_bitmap.clear();
+    x_bitmap.width = width;
+    x_bitmap.height = height;
+    x_bitmap.stride = x_image->bytes_per_line;
+    x_bitmap.bytes_per_pixel = (x_image->bits_per_pixel + 7) / 8;
+    x_bitmap.update_length_from_stride_and_height();
+    if (!x_bitmap.is_dim_valid()) {
+		close_bitmap();
+        return 0;
+    }
+
+	if ((x_image->data=(char*)mmap(NULL,x_bitmap.length,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS,-1,0)) == MAP_FAILED) {
 		fprintf(stderr,"Cannot mmap for image\n");
 		x_image->data = NULL;
 		close_bitmap();
 		return 0;
 	}
+    x_bitmap.base = (unsigned char*)x_image->data;
+    x_bitmap.canvas = (unsigned char*)x_image->data;
 
-	memset(x_image->data,0x00,x_image_length);
-
-	bitmap_width = x_gwa.width;
-	bitmap_height = x_gwa.height;
-	fprintf(stderr,"Normal (non-SHM) XImage created %ux%u\n",bitmap_width,bitmap_height);
+    x_bitmap.rgbinfo.r.setByMask(x_image->red_mask);
+    x_bitmap.rgbinfo.g.setByMask(x_image->green_mask);
+    x_bitmap.rgbinfo.b.setByMask(x_image->blue_mask);
+    x_bitmap.rgbinfo.a.setByMask(~(x_image->red_mask+x_image->green_mask+x_image->blue_mask)); // alpha = anything not covered by R,G,B
 	return 1;
 }
 
@@ -161,15 +187,15 @@ void close_bitmap() {
 		if (x_image) {
 			if (x_image->data != NULL) {
 				shmdt(x_image->data);
+                x_bitmap.base = x_bitmap.canvas = NULL;
 				x_image->data = NULL;
-				x_image_length = 0;
 			}
 		}
 		else {
 			if (x_image->data != NULL) {
-				munmap(x_image->data, x_image_length);
+				munmap(x_image->data, x_bitmap.length);
+                x_bitmap.base = x_bitmap.canvas = NULL;
 				x_image->data = NULL;
-				x_image_length = 0;
 			}
 		}
 		XDestroyImage(x_image);
@@ -180,146 +206,23 @@ void close_bitmap() {
 		x_gc = NULL;
 	}
 	x_shminfo.shmid = 0;
+    x_bitmap.clear();
 	x_using_shm = 0;
 }
 
 void update_to_X11() {
-	if (x_image == NULL || bitmap_width == 0 || bitmap_height == 0)
+	if (x_image == NULL || x_bitmap.width == 0 || x_bitmap.height == 0)
 		return;
 
 	if (x_using_shm)
-		XShmPutImage(x_display, x_window, x_gc, x_image, 0, 0, 0, 0, bitmap_width, bitmap_height, 0);
+		XShmPutImage(x_display, x_window, x_gc, x_image, 0, 0, 0, 0, x_bitmap.width, x_bitmap.height, 0);
 	else
-		XPutImage(x_display, x_window, x_gc, x_image, 0, 0, 0, 0, bitmap_width, bitmap_height);
+		XPutImage(x_display, x_window, x_gc, x_image, 0, 0, 0, 0, x_bitmap.width, x_bitmap.height);
 }
-
-/* render image to XImage.
- * stretch fit using crude nearest neighbor scaling */
-
-template <class T> void rerender_out_neighbor() {
-    nr_wfpack sx,sxi={0,0},sy={0,0},stepx,stepy;
-    unsigned char *drow;
-    size_t ox,oy;
-
-    render_scale_from_sd_nearest(/*&*/stepx,bitmap_width,src_bitmap.width);
-    render_scale_from_sd_nearest(/*&*/stepy,bitmap_height,src_bitmap.height);
-
-    drow = (unsigned char*)x_image->data;
-    oy = bitmap_height;
-    do {
-        T *s = src_bitmap.get_scanline<T>(sy.w);
-        T *d = (T*)drow;
-
-        ox = bitmap_width;
-        sx = sxi;
-        do {
-            *d++ = s[sx.w];
-            if ((--ox) == 0) break;
-            sx += stepx;
-        } while (1);
-
-        if ((--oy) == 0) break;
-        drow += x_image->bytes_per_line;
-        sy += stepy;
-    } while (1);
-}
-
-
-
-#define VINTERP_MAX 4096
-
-// WARNING: This code assumes typical RGBA type packing where red and blue are NOT adjacent, and alpha and green are not adjacent
-template <class T> inline T rerender_line_bilinear_pixel_blend(const T cur,const T nxt,const T mulmax,const T mul,const T rbmask,const T abmask,const T pshift) {
-    T sum;
-
-    sum  = (((uint64_t)(cur & rbmask) * (mulmax - mul)) >> pshift) & rbmask;
-    sum += (((uint64_t)(cur & abmask) * (mulmax - mul)) >> pshift) & abmask;
-    sum += (((uint64_t)(nxt & rbmask) *           mul ) >> pshift) & rbmask;
-    sum += (((uint64_t)(nxt & abmask) *           mul ) >> pshift) & abmask;
-    return sum;
-}
-
-#if HAVE_CPU_MMX
-// 32bpp optimized for 8-bit ARGB/RGBA. rmask should be 0x00FF,0x00FF,... etc
-static inline __m64 rerender_line_bilinear_pixel_blend_mmx_argb8(const __m64 cur,const __m64 nxt,const __m64 mul,const __m64 rmask) {
-    __m64 d1,d2,d3,d4;
-
-    d1 = _mm_and_si64(_mm_mulhi_pi16(_mm_sub_pi16(_mm_and_si64(nxt,rmask),_mm_and_si64(cur,rmask)),mul),rmask);
-    d2 = _mm_slli_si64(_mm_and_si64(_mm_mulhi_pi16(_mm_sub_pi16(_mm_and_si64(_mm_srli_si64(nxt,8),rmask),_mm_and_si64(_mm_srli_si64(cur,8),rmask)),mul),rmask),8);
-    d3 = _mm_add_pi8(d1,d2);
-    d4 = _mm_add_pi8(d3,d3);
-    return _mm_add_pi8(d4,cur);
-}
-
-// 16bpp general R/G/B, usually 5/6/5 or 5/5/5
-static inline __m64 rerender_line_bilinear_pixel_blend_mmx_rgb16(const __m64 cur,const __m64 nxt,const __m64 mul,const __m64 rmask,const uint16_t rshift,const __m64 gmask,const uint16_t gshift,const __m64 bmask,const uint16_t bshift) {
-    __m64 rc,gc,bc;
-    __m64 rn,gn,bn;
-    __m64 d,sum;
-
-    rc = _mm_and_si64(_mm_srli_si64(cur,rshift),rmask);
-    gc = _mm_and_si64(_mm_srli_si64(cur,gshift),gmask);
-    bc = _mm_and_si64(_mm_srli_si64(cur,bshift),bmask);
-
-    rn = _mm_and_si64(_mm_srli_si64(nxt,rshift),rmask);
-    gn = _mm_and_si64(_mm_srli_si64(nxt,gshift),gmask);
-    bn = _mm_and_si64(_mm_srli_si64(nxt,bshift),bmask);
-
-    d = _mm_sub_pi16(rn,rc);
-    sum = _mm_slli_si64(_mm_add_pi16(rc,_mm_and_si64(_mm_mulhi_pi16(_mm_add_pi16(d,d),mul),rmask)),rshift);
-
-    d = _mm_sub_pi16(gn,gc);
-    sum = _mm_add_pi16(_mm_slli_si64(_mm_add_pi16(gc,_mm_and_si64(_mm_mulhi_pi16(_mm_add_pi16(d,d),mul),gmask)),gshift),sum);
-
-    d = _mm_sub_pi16(bn,bc);
-    sum = _mm_add_pi16(_mm_slli_si64(_mm_add_pi16(bc,_mm_and_si64(_mm_mulhi_pi16(_mm_add_pi16(d,d),mul),bmask)),bshift),sum);
-
-    return sum;
-}
-#endif
-
-#if HAVE_CPU_SSE2
-// 32bpp optimized for 8-bit ARGB/RGBA. rmask should be 0x00FF,0x00FF,... etc
-static inline __m128i rerender_line_bilinear_pixel_blend_sse_argb8(const __m128i cur,const __m128i nxt,const __m128i mul,const __m128i rmask) {
-    __m128i d1,d2,d3,d4;
-
-    d1 = _mm_and_si128(_mm_mulhi_epi16(_mm_sub_epi16(_mm_and_si128(nxt,rmask),_mm_and_si128(cur,rmask)),mul),rmask);
-    d2 = _mm_slli_si128(_mm_and_si128(_mm_mulhi_epi16(_mm_sub_epi16(_mm_and_si128(_mm_srli_si128(nxt,1/*bytes!*/),rmask),_mm_and_si128(_mm_srli_si128(cur,1/*bytes!*/),rmask)),mul),rmask),1/*bytes!*/);
-    d3 = _mm_add_epi8(d1,d2);
-    d4 = _mm_add_epi8(d3,d3);
-    return _mm_add_epi8(d4,cur);
-}
-
-// 16bpp general R/G/B, usually 5/6/5 or 5/5/5
-static inline __m128i rerender_line_bilinear_pixel_blend_sse_rgb16(const __m128i cur,const __m128i nxt,const __m128i mul,const __m128i rmask,const uint16_t rshift,const __m128i gmask,const uint16_t gshift,const __m128i bmask,const uint16_t bshift) {
-    __m128i rc,gc,bc;
-    __m128i rn,gn,bn;
-    __m128i d,sum;
-
-    rc = _mm_and_si128(_mm_srli_epi16(cur,rshift),rmask);
-    gc = _mm_and_si128(_mm_srli_epi16(cur,gshift),gmask);
-    bc = _mm_and_si128(_mm_srli_epi16(cur,bshift),bmask);
-
-    rn = _mm_and_si128(_mm_srli_epi16(nxt,rshift),rmask);
-    gn = _mm_and_si128(_mm_srli_epi16(nxt,gshift),gmask);
-    bn = _mm_and_si128(_mm_srli_epi16(nxt,bshift),bmask);
-
-    d = _mm_sub_epi16(rn,rc);
-    sum = _mm_slli_epi16(_mm_add_epi16(rc,_mm_and_si128(_mm_mulhi_epi16(_mm_add_epi16(d,d),mul),rmask)),rshift);
-
-    d = _mm_sub_epi16(gn,gc);
-    sum = _mm_add_epi16(_mm_slli_epi16(_mm_add_epi16(gc,_mm_and_si128(_mm_mulhi_epi16(_mm_add_epi16(d,d),mul),gmask)),gshift),sum);
-
-    d = _mm_sub_epi16(bn,bc);
-    sum = _mm_add_epi16(_mm_slli_epi16(_mm_add_epi16(bc,_mm_and_si128(_mm_mulhi_epi16(_mm_add_epi16(d,d),mul),bmask)),bshift),sum);
-
-    return sum;
-}
-#endif
 
 #if HAVE_CPU_AVX2
 // 32bpp optimized for 8-bit ARGB/RGBA. rmask should be 0x00FF,0x00FF,... etc
-static inline __m256i rerender_line_bilinear_pixel_blend_avx_argb8(const __m256i cur,const __m256i nxt,const __m256i mul,const __m256i rmask) {
+static inline __m256i stretchblt_line_bilinear_pixel_blend_avx_argb8(const __m256i cur,const __m256i nxt,const __m256i mul,const __m256i rmask) {
     __m256i d1,d2,d3,d4;
 
     d1 = _mm256_and_si256(_mm256_mulhi_epi16(_mm256_sub_epi16(_mm256_and_si256(nxt,rmask),_mm256_and_si256(cur,rmask)),mul),rmask);
@@ -330,7 +233,7 @@ static inline __m256i rerender_line_bilinear_pixel_blend_avx_argb8(const __m256i
 }
 
 // 16bpp general R/G/B, usually 5/6/5 or 5/5/5
-static inline __m256i rerender_line_bilinear_pixel_blend_avx_rgb16(const __m256i cur,const __m256i nxt,const __m256i mul,const __m256i rmask,const uint16_t rshift,const __m256i gmask,const uint16_t gshift,const __m256i bmask,const uint16_t bshift) {
+static inline __m256i stretchblt_line_bilinear_pixel_blend_avx_rgb16(const __m256i cur,const __m256i nxt,const __m256i mul,const __m256i rmask,const uint16_t rshift,const __m256i gmask,const uint16_t gshift,const __m256i bmask,const uint16_t bshift) {
     __m256i rc,gc,bc;
     __m256i rn,gn,bn;
     __m256i d,sum;
@@ -358,7 +261,7 @@ static inline __m256i rerender_line_bilinear_pixel_blend_avx_rgb16(const __m256i
 
 #if HAVE_CPU_ARM_NEON
 // 32bpp optimized for 8-bit ARGB/RGBA. rmask should be 0x00FF,0x00FF,... etc
-static inline int16x8_t rerender_line_bilinear_pixel_blend_arm_neon_argb8(const int16x8_t cur,const int16x8_t nxt,const int16_t mul,const int16x8_t rmask) {
+static inline int16x8_t stretchblt_line_bilinear_pixel_blend_arm_neon_argb8(const int16x8_t cur,const int16x8_t nxt,const int16_t mul,const int16x8_t rmask) {
 #if 0 // FIXME: I can't develop this code until I can figure out how to get X on my Raspberry Pi 2 to come up in 32-bit ARGB mode
     int16x8_t d1,d2,d3,d4;
 
@@ -370,7 +273,7 @@ static inline int16x8_t rerender_line_bilinear_pixel_blend_arm_neon_argb8(const 
 #endif
 }
 
-template <const uint8_t shf> static inline int16x8_t rerender_line_bilinear_pixel_blend_arm_neon_rgb16channel(const int16x8_t cur,const int16x8_t nxt,const int16_t mul,const int16x8_t cmask) {
+template <const uint8_t shf> static inline int16x8_t stretchblt_line_bilinear_pixel_blend_arm_neon_rgb16channel(const int16x8_t cur,const int16x8_t nxt,const int16_t mul,const int16x8_t cmask) {
     // WARNING: The reason for shf != 0 conditional shifting by template param 'shf' is that
     //          the ARMv7 assembler behind GCC 4.8 on the Raspberry Pi won't allow you to specify a
     //          constant shift of 0. It will complain "invalid constant", though in a way that
@@ -388,7 +291,7 @@ template <const uint8_t shf> static inline int16x8_t rerender_line_bilinear_pixe
 }
 
 // 16bpp 5/6/5 (FIXME: Add another variant for 5/5/5 when the need arises)
-static inline int16x8_t rerender_line_bilinear_pixel_blend_arm_neon_rgb16(const int16x8_t cur,const int16x8_t nxt,const int16_t mul,const int16x8_t rmask,const uint16_t rshift,const int16x8_t gmask,const uint16_t gshift,const int16x8_t bmask,const uint16_t bshift) {
+static inline int16x8_t stretchblt_line_bilinear_pixel_blend_arm_neon_rgb16(const int16x8_t cur,const int16x8_t nxt,const int16_t mul,const int16x8_t rmask,const uint16_t rshift,const int16x8_t gmask,const uint16_t gshift,const int16x8_t bmask,const uint16_t bshift) {
     int16x8_t sr,sg,sb;
 
     // WARNING: ARMv7 NEON shift intrinsics demand that the shift bit count is a constant. It cannot
@@ -398,420 +301,44 @@ static inline int16x8_t rerender_line_bilinear_pixel_blend_arm_neon_rgb16(const 
     //          Note that it doesn't matter whether the 5/6/5 bit fields are R/G/B or B/G/R, what
     //          matters is that the bit fields are 5-bit/6-bit/5-bit.
 
-    sr = rerender_line_bilinear_pixel_blend_arm_neon_rgb16channel<uint8_t(11)>(cur,nxt,mul,rmask);
-    sg = rerender_line_bilinear_pixel_blend_arm_neon_rgb16channel<uint8_t(5)>(cur,nxt,mul,gmask);
-    sb = rerender_line_bilinear_pixel_blend_arm_neon_rgb16channel<uint8_t(0)>(cur,nxt,mul,bmask);
+    sr = stretchblt_line_bilinear_pixel_blend_arm_neon_rgb16channel<uint8_t(11)>(cur,nxt,mul,rmask);
+    sg = stretchblt_line_bilinear_pixel_blend_arm_neon_rgb16channel<uint8_t(5)>(cur,nxt,mul,gmask);
+    sb = stretchblt_line_bilinear_pixel_blend_arm_neon_rgb16channel<uint8_t(0)>(cur,nxt,mul,bmask);
     return vaddq_s16(vaddq_s16(sr,sg),sb);
-}
-#endif
-
-template <class T> inline void rerender_line_bilinear_hinterp_stage(T *d,T *s,struct nr_wfpack sx,const struct nr_wfpack &stepx,size_t dwidth,const T rbmask,const T abmask,const T fmax,const T fshift,const T pshift) {
-    do {
-        *d++ = rerender_line_bilinear_pixel_blend<T>(s[sx.w],s[sx.w+1],fmax,(T)(sx.f >> (T)fshift),rbmask,abmask,pshift);
-        sx += stepx;
-    } while ((--dwidth) != (size_t)0);
-}
-
-#if HAVE_CPU_MMX
-// case 2: 32-bit ARGB 8-bits per pixel
-static inline void rerender_line_bilinear_vinterp_stage_mmx_argb8(__m64 *d,__m64 *s,__m64 *s2,const __m64 mul,size_t width,const __m64 rmask) {
-    do {
-        *d++ = rerender_line_bilinear_pixel_blend_mmx_argb8(*s++,*s2++,mul,rmask);
-    } while ((--width) != (size_t)0);
-    _mm_empty();
-}
-
-// case 1: 16-bit arbitrary masks
-static inline void rerender_line_bilinear_vinterp_stage_mmx_rgb16(__m64 *d,__m64 *s,__m64 *s2,const __m64 mul,size_t width,const __m64 rmask,const uint16_t rshift,const __m64 gmask,const uint16_t gshift,const __m64 bmask,const uint16_t bshift) {
-    do {
-        *d++ = rerender_line_bilinear_pixel_blend_mmx_rgb16(*s++,*s2++,mul,rmask,rshift,gmask,gshift,bmask,bshift);
-    } while ((--width) != (size_t)0);
-}
-#endif
-
-#if HAVE_CPU_SSE2
-// case 2: 32-bit ARGB 8-bits per pixel
-static inline void rerender_line_bilinear_vinterp_stage_sse_argb8(__m128i *d,__m128i *s,__m128i *s2,const __m128i mul,size_t width,const __m128i rmask) {
-    do {
-        *d++ = rerender_line_bilinear_pixel_blend_sse_argb8(*s++,*s2++,mul,rmask);
-    } while ((--width) != (size_t)0);
-}
-
-// case 1: 16-bit arbitrary masks
-static inline void rerender_line_bilinear_vinterp_stage_sse_rgb16(__m128i *d,__m128i *s,__m128i *s2,const __m128i mul,size_t width,const __m128i rmask,const uint16_t rshift,const __m128i gmask,const uint16_t gshift,const __m128i bmask,const uint16_t bshift) {
-    do {
-        *d++ = rerender_line_bilinear_pixel_blend_sse_rgb16(*s++,*s2++,mul,rmask,rshift,gmask,gshift,bmask,bshift);
-    } while ((--width) != (size_t)0);
 }
 #endif
 
 #if HAVE_CPU_AVX2
 // case 2: 32-bit ARGB 8-bits per pixel
-static inline void rerender_line_bilinear_vinterp_stage_avx_argb8(__m256i *d,__m256i *s,__m256i *s2,const __m256i mul,size_t width,const __m256i rmask) {
+static inline void stretchblt_line_bilinear_vinterp_stage_avx_argb8(__m256i *d,__m256i *s,__m256i *s2,const __m256i mul,size_t width,const __m256i rmask) {
     do {
-        *d++ = rerender_line_bilinear_pixel_blend_avx_argb8(*s++,*s2++,mul,rmask);
+        *d++ = stretchblt_line_bilinear_pixel_blend_avx_argb8(*s++,*s2++,mul,rmask);
     } while ((--width) != (size_t)0);
 }
 
 // case 1: 16-bit arbitrary masks
-static inline void rerender_line_bilinear_vinterp_stage_avx_rgb16(__m256i *d,__m256i *s,__m256i *s2,const __m256i mul,size_t width,const __m256i rmask,const uint16_t rshift,const __m256i gmask,const uint16_t gshift,const __m256i bmask,const uint16_t bshift) {
+static inline void stretchblt_line_bilinear_vinterp_stage_avx_rgb16(__m256i *d,__m256i *s,__m256i *s2,const __m256i mul,size_t width,const __m256i rmask,const uint16_t rshift,const __m256i gmask,const uint16_t gshift,const __m256i bmask,const uint16_t bshift) {
     do {
-        *d++ = rerender_line_bilinear_pixel_blend_avx_rgb16(*s++,*s2++,mul,rmask,rshift,gmask,gshift,bmask,bshift);
+        *d++ = stretchblt_line_bilinear_pixel_blend_avx_rgb16(*s++,*s2++,mul,rmask,rshift,gmask,gshift,bmask,bshift);
     } while ((--width) != (size_t)0);
 }
 #endif
 
 #if HAVE_CPU_ARM_NEON
 // case 2: 32-bit ARGB 8-bits per pixel
-static inline void rerender_line_bilinear_vinterp_stage_arm_neon_argb8(int16x8_t *d,int16x8_t *s,int16x8_t *s2,const int16_t mul,size_t width,const int16x8_t rmask) {
+static inline void stretchblt_line_bilinear_vinterp_stage_arm_neon_argb8(int16x8_t *d,int16x8_t *s,int16x8_t *s2,const int16_t mul,size_t width,const int16x8_t rmask) {
     do {
-        *d++ = rerender_line_bilinear_pixel_blend_arm_neon_argb8(*s++,*s2++,mul,rmask);
+        *d++ = stretchblt_line_bilinear_pixel_blend_arm_neon_argb8(*s++,*s2++,mul,rmask);
     } while ((--width) != (size_t)0);
 }
 
 // case 1: 16-bit arbitrary masks
-static inline void rerender_line_bilinear_vinterp_stage_arm_neon_rgb16(int16x8_t *d,int16x8_t *s,int16x8_t *s2,const int16_t mul,size_t width,const int16x8_t rmask,const uint16_t rshift,const int16x8_t gmask,const uint16_t gshift,const int16x8_t bmask,const uint16_t bshift) {
+static inline void stretchblt_line_bilinear_vinterp_stage_arm_neon_rgb16(int16x8_t *d,int16x8_t *s,int16x8_t *s2,const int16_t mul,size_t width,const int16x8_t rmask,const uint16_t rshift,const int16x8_t gmask,const uint16_t gshift,const int16x8_t bmask,const uint16_t bshift) {
     do {
-        *d++ = rerender_line_bilinear_pixel_blend_arm_neon_rgb16(*s++,*s2++,mul,rmask,rshift,gmask,gshift,bmask,bshift);
+        *d++ = stretchblt_line_bilinear_pixel_blend_arm_neon_rgb16(*s++,*s2++,mul,rmask,rshift,gmask,gshift,bmask,bshift);
     } while ((--width) != (size_t)0);
 }
 #endif
-
-template <class T> inline void rerender_line_bilinear_vinterp_stage(T *d,T *s,T *s2,const T mul,size_t width,const T rbmask,const T abmask,const T fmax,const T pshift) {
-    do {
-        *d++ = rerender_line_bilinear_pixel_blend<T>(*s++,*s2++,fmax,mul,rbmask,abmask,pshift);
-    } while ((--width) != (size_t)0);
-}
-
-template <class T> class vinterp_tmp {
-public:
-    T               tmp[VINTERP_MAX];
-};
-
-template <class T> void rerender_out_bilinear() {
-    // WARNING: This code assumes typical RGBA type packing where red and blue are NOT adjacent, and alpha and green are not adjacent
-    nr_wfpack sx={0,0},sy={0,0},stepx,stepy;
-    static vinterp_tmp<T> vinterp_tmp;
-    const T alpha = 
-        (T)(~(x_image->red_mask+x_image->green_mask+x_image->blue_mask));
-    const T rbmask = (T)(x_image->red_mask+x_image->blue_mask);
-    const T abmask = (T)x_image->green_mask + alpha;
-    unsigned char *drow;
-    uint32_t rm,gm,bm;
-    uint8_t rs,gs,bs;
-    size_t ox,oy;
-    T fshift;
-    T pshift;
-    T fmax;
-    T mul;
-
-    rs = bitscan_forward(x_image->red_mask,0);
-    rm = bitscan_count(x_image->red_mask,rs) - rs;
-
-    gs = bitscan_forward(x_image->green_mask,0);
-    gm = bitscan_count(x_image->green_mask,gs) - gs;
-
-    bs = bitscan_forward(x_image->blue_mask,0);
-    bm = bitscan_count(x_image->blue_mask,bs) - bs;
-
-    fshift = std::min(rm,std::min(gm,bm));
-    pshift = fshift;
-    fshift = (sizeof(nr_wftype) * 8) - fshift;
-
-    fmax = 1U << pshift;
-
-    render_scale_from_sd(/*&*/stepx,bitmap_width,src_bitmap.width);
-    render_scale_from_sd(/*&*/stepy,bitmap_height,src_bitmap.height);
-
-    if (bitmap_width == 0 || src_bitmap.width == 0) return;
-
-    drow = (unsigned char*)x_image->data;
-    oy = bitmap_height;
-    do {
-        T *s2 = src_bitmap.get_scanline<T>(sy.w+1);
-        T *s = src_bitmap.get_scanline<T>(sy.w);
-        T *d = (T*)drow;
-
-        mul = (T)(sy.f >> fshift);
-
-        if (mul != 0) {
-            if (stepx.w != 1 || stepx.f != 0) {
-                // horizontal interpolation, vertical interpolation
-                rerender_line_bilinear_vinterp_stage<T>(vinterp_tmp.tmp,s,s2,mul,src_bitmap.width,rbmask,abmask,fmax,pshift);
-                rerender_line_bilinear_hinterp_stage<T>(d,vinterp_tmp.tmp,sx,stepx,bitmap_width,rbmask,abmask,fmax,fshift,pshift);
-            }
-            else {
-                // vertical interpolation only
-                rerender_line_bilinear_vinterp_stage<T>(d,s,s2,mul,src_bitmap.width,rbmask,abmask,fmax,pshift);
-            }
-        }
-        else {
-            if (stepx.w != 1 || stepx.f != 0) {
-                // horizontal interpolation, no vertical interpolation
-                rerender_line_bilinear_hinterp_stage<T>(d,s,sx,stepx,bitmap_width,rbmask,abmask,fmax,fshift,pshift);
-            }
-            else {
-                // copy the scanline 1:1 no interpolation
-                memcpy(d,s,bitmap_width*sizeof(T));
-            }
-        }
-
-        if ((--oy) == 0) break;
-        drow += x_image->bytes_per_line;
-        sy += stepy;
-    } while (1);
-}
-
-// MMX alignment warning:
-// It is strongly recommended that the bitmap base and scan line stride are MMX aligned, meaning
-// that the base of the bitmap is aligned to 8 bytes and the scan line stride is a multiple of 8.
-// Failure to do so may cause a performance loss.
-template <class T> void rerender_out_bilinear_mmx() {
-#if HAVE_CPU_MMX
-    // WARNING: This code assumes typical RGBA type packing where red and blue are NOT adjacent, and alpha and green are not adjacent
-    nr_wfpack sx={0,0},sy={0,0},stepx,stepy;
-    static vinterp_tmp<__m64> vinterp_tmp;
-    const T alpha = 
-        (T)(~(x_image->red_mask+x_image->green_mask+x_image->blue_mask));
-    const T rbmask = (T)(x_image->red_mask+x_image->blue_mask);
-    const T abmask = (T)x_image->green_mask + alpha;
-    __m64 rmask64,gmask64,bmask64,mul64;
-    const size_t pixels_per_mmx =
-        sizeof(__m64) / sizeof(T);
-    unsigned char *drow;
-    uint32_t rm,gm,bm;
-    uint8_t rs,gs,bs;
-    size_t ox,oy;
-    T fshift;
-    T pshift;
-    T fmax;
-    T mul;
-
-    // do not run this function if MMX extensions are not present
-    if (!hostCPUcaps.mmx) {
-        fprintf(stderr,"CPU does not support MMX\n");
-        return;
-    }
-
-    rs = bitscan_forward(x_image->red_mask,0);
-    rm = bitscan_count(x_image->red_mask,rs) - rs;
-
-    gs = bitscan_forward(x_image->green_mask,0);
-    gm = bitscan_count(x_image->green_mask,gs) - gs;
-
-    bs = bitscan_forward(x_image->blue_mask,0);
-    bm = bitscan_count(x_image->blue_mask,bs) - bs;
-
-    fshift = std::min(rm,std::min(gm,bm));
-    pshift = fshift;
-    fshift = (sizeof(nr_wftype) * 8) - fshift;
-
-    if (sizeof(T) == 4) {
-        // 32bpp this code can only handle the 8-bit RGBA/ARGB case, else R/G/B fields cross 16-bit boundaries
-        if (pshift != 8) return;
-        if (bm != 8 || gm != 8 || rm != 8) return; // each field, 8 bits
-        if ((rs&7) != 0 || (gs&7) != 0 || (bs&7) != 0) return; // each field, starts on 8-bit boundaries
-
-        rmask64 = _mm_set_pi16(0x00FF,0x00FF,0x00FF,0x00FF);
-    }
-    else {
-        // 16bpp this code can handle any case
-        if (pshift > 15) return;
-
-        rmask64 = _mm_set_pi16((1U << rm) - 1,(1U << rm) - 1,(1U << rm) - 1,(1U << rm) - 1);
-        gmask64 = _mm_set_pi16((1U << gm) - 1,(1U << gm) - 1,(1U << gm) - 1,(1U << gm) - 1);
-        bmask64 = _mm_set_pi16((1U << bm) - 1,(1U << bm) - 1,(1U << bm) - 1,(1U << bm) - 1);
-    }
-
-    fmax = 1U << pshift;
-
-    render_scale_from_sd(/*&*/stepx,bitmap_width,src_bitmap.width);
-    render_scale_from_sd(/*&*/stepy,bitmap_height,src_bitmap.height);
-
-    unsigned int src_bitmap_width_m64 = (src_bitmap.width + pixels_per_mmx - 1) / pixels_per_mmx;
-
-    if (bitmap_width == 0 || src_bitmap_width_m64 == 0) return;
-
-    drow = (unsigned char*)x_image->data;
-    oy = bitmap_height;
-    do {
-        T *s2 = src_bitmap.get_scanline<T>(sy.w+1);
-        T *s = src_bitmap.get_scanline<T>(sy.w);
-        T *d = (T*)drow;
-
-        mul = (T)(sy.f >> fshift);
-
-        {
-            unsigned int m = (mul & (~1U)) << (15 - pshift); // 16-bit MMX multiply (signed bit), remove one bit to match precision
-            mul64 = _mm_set_pi16(m,m,m,m);
-        }
-
-        if (mul != 0) {
-            if (stepx.w != 1 || stepx.f != 0) {
-                // horizontal interpolation, vertical interpolation
-                if (sizeof(T) == 4)
-                    rerender_line_bilinear_vinterp_stage_mmx_argb8(vinterp_tmp.tmp,(__m64*)s,(__m64*)s2,mul64,src_bitmap_width_m64,rmask64);
-                else
-                    rerender_line_bilinear_vinterp_stage_mmx_rgb16(vinterp_tmp.tmp,(__m64*)s,(__m64*)s2,mul64,src_bitmap_width_m64,
-                        rmask64,rs,gmask64,gs,bmask64,bs);
-
-                rerender_line_bilinear_hinterp_stage<T>(d,(T*)vinterp_tmp.tmp,sx,stepx,bitmap_width,rbmask,abmask,fmax,fshift,pshift);
-            }
-            else {
-                // vertical interpolation only
-                if (sizeof(T) == 4)
-                    rerender_line_bilinear_vinterp_stage_mmx_argb8((__m64*)d,(__m64*)s,(__m64*)s2,mul64,src_bitmap_width_m64,rmask64);
-                else
-                    rerender_line_bilinear_vinterp_stage_mmx_rgb16((__m64*)d,(__m64*)s,(__m64*)s2,mul64,src_bitmap_width_m64,
-                        rmask64,rs,gmask64,gs,bmask64,bs);
-            }
-        }
-        else {
-            if (stepx.w != 1 || stepx.f != 0) {
-                // horizontal interpolation, no vertical interpolation
-                rerender_line_bilinear_hinterp_stage<T>(d,s,sx,stepx,bitmap_width,rbmask,abmask,fmax,fshift,pshift);
-            }
-            else {
-                // copy the scanline 1:1 no interpolation
-                memcpy(d,s,bitmap_width*sizeof(T));
-            }
-        }
-
-        if ((--oy) == 0) break;
-        drow += x_image->bytes_per_line;
-        sy += stepy;
-    } while (1);
-#else
-    fprintf(stderr,"Compiler does not support MMX\n");
-#endif
-}
-
-// SSE alignment warning:
-// Do not use this routine unless the scan lines in the bitmap are all aligned to SSE boundaries,
-// meaning that the bitmap base is aligned to a 16 byte boundary and the scan line "stride" is a
-// multiple of 16 bytes. Modern processors (like Intel Core 2 and such) tolerate misaligned SSE
-// but older processors (like the Pentium 4) will throw an exception if SSE instructions are
-// executed on misaligned memory. Besides that, there may be performance loss if SSE operations
-// are misaligned.
-template <class T> void rerender_out_bilinear_sse() {
-#if HAVE_CPU_SSE2
-    // WARNING: This code assumes typical RGBA type packing where red and blue are NOT adjacent, and alpha and green are not adjacent
-    nr_wfpack sx={0,0},sy={0,0},stepx,stepy;
-    static vinterp_tmp<__m128i> vinterp_tmp;
-    const T alpha = 
-        (T)(~(x_image->red_mask+x_image->green_mask+x_image->blue_mask));
-    const T rbmask = (T)(x_image->red_mask+x_image->blue_mask);
-    const T abmask = (T)x_image->green_mask + alpha;
-    __m128i rmask128,gmask128,bmask128,mul128;
-    const size_t pixels_per_sse =
-        sizeof(__m128i) / sizeof(T);
-    unsigned char *drow;
-    uint32_t rm,gm,bm;
-    uint8_t rs,gs,bs;
-    size_t ox,oy;
-    T fshift;
-    T pshift;
-    T fmax;
-    T mul;
-
-    // do not run this function if SSE2 extensions are not present
-    if (!hostCPUcaps.sse2) {
-        fprintf(stderr,"CPU does not support SSE2\n");
-        return;
-    }
-
-    rs = bitscan_forward(x_image->red_mask,0);
-    rm = bitscan_count(x_image->red_mask,rs) - rs;
-
-    gs = bitscan_forward(x_image->green_mask,0);
-    gm = bitscan_count(x_image->green_mask,gs) - gs;
-
-    bs = bitscan_forward(x_image->blue_mask,0);
-    bm = bitscan_count(x_image->blue_mask,bs) - bs;
-
-    fshift = std::min(rm,std::min(gm,bm));
-    pshift = fshift;
-    fshift = (sizeof(nr_wftype) * 8) - fshift;
-
-    if (sizeof(T) == 4) {
-        // 32bpp this code can only handle the 8-bit RGBA/ARGB case, else R/G/B fields cross 16-bit boundaries
-        if (pshift != 8) return;
-        if (bm != 8 || gm != 8 || rm != 8) return; // each field, 8 bits
-        if ((rs&7) != 0 || (gs&7) != 0 || (bs&7) != 0) return; // each field, starts on 8-bit boundaries
-
-        rmask128 = _mm_set_epi16(0x00FF,0x00FF,0x00FF,0x00FF,0x00FF,0x00FF,0x00FF,0x00FF);
-    }
-    else {
-        // 16bpp this code can handle any case
-        if (pshift > 15) return;
-
-        rmask128 = _mm_set_epi16((1U << rm) - 1,(1U << rm) - 1,(1U << rm) - 1,(1U << rm) - 1,(1U << rm) - 1,(1U << rm) - 1,(1U << rm) - 1,(1U << rm) - 1);
-        gmask128 = _mm_set_epi16((1U << gm) - 1,(1U << gm) - 1,(1U << gm) - 1,(1U << gm) - 1,(1U << gm) - 1,(1U << gm) - 1,(1U << gm) - 1,(1U << gm) - 1);
-        bmask128 = _mm_set_epi16((1U << bm) - 1,(1U << bm) - 1,(1U << bm) - 1,(1U << bm) - 1,(1U << bm) - 1,(1U << bm) - 1,(1U << bm) - 1,(1U << bm) - 1);
-    }
-
-    fmax = 1U << pshift;
-
-    render_scale_from_sd(/*&*/stepx,bitmap_width,src_bitmap.width);
-    render_scale_from_sd(/*&*/stepy,bitmap_height,src_bitmap.height);
-
-    unsigned int src_bitmap_width_m128 = (src_bitmap.width + pixels_per_sse - 1) / pixels_per_sse;
-
-    if (bitmap_width == 0 || src_bitmap_width_m128 == 0) return;
-
-    drow = (unsigned char*)x_image->data;
-    oy = bitmap_height;
-    do {
-        T *s2 = src_bitmap.get_scanline<T>(sy.w+1);
-        T *s = src_bitmap.get_scanline<T>(sy.w);
-        T *d = (T*)drow;
-
-        mul = (T)(sy.f >> fshift);
-
-        {
-            unsigned int m = (mul & (~1U)) << (15 - pshift); // 16-bit MMX multiply (signed bit), remove one bit to match precision
-            mul128 = _mm_set_epi16(m,m,m,m,m,m,m,m);
-        }
-
-        if (mul != 0) {
-            if (stepx.w != 1 || stepx.f != 0) {
-                // horizontal interpolation, vertical interpolation
-                if (sizeof(T) == 4)
-                    rerender_line_bilinear_vinterp_stage_sse_argb8(vinterp_tmp.tmp,(__m128i*)s,(__m128i*)s2,mul128,src_bitmap_width_m128,rmask128);
-                else
-                    rerender_line_bilinear_vinterp_stage_sse_rgb16(vinterp_tmp.tmp,(__m128i*)s,(__m128i*)s2,mul128,src_bitmap_width_m128,
-                        rmask128,rs,gmask128,gs,bmask128,bs);
-
-                rerender_line_bilinear_hinterp_stage<T>(d,(T*)vinterp_tmp.tmp,sx,stepx,bitmap_width,rbmask,abmask,fmax,fshift,pshift);
-            }
-            else {
-                // vertical interpolation only
-                if (sizeof(T) == 4)
-                    rerender_line_bilinear_vinterp_stage_sse_argb8((__m128i*)d,(__m128i*)s,(__m128i*)s2,mul128,src_bitmap_width_m128,rmask128);
-                else
-                    rerender_line_bilinear_vinterp_stage_sse_rgb16((__m128i*)d,(__m128i*)s,(__m128i*)s2,mul128,src_bitmap_width_m128,
-                        rmask128,rs,gmask128,gs,bmask128,bs);
-            }
-        }
-        else {
-            if (stepx.w != 1 || stepx.f != 0) {
-                // horizontal interpolation, no vertical interpolation
-                rerender_line_bilinear_hinterp_stage<T>(d,s,sx,stepx,bitmap_width,rbmask,abmask,fmax,fshift,pshift);
-            }
-            else {
-                // copy the scanline 1:1 no interpolation
-                memcpy(d,s,bitmap_width*sizeof(T));
-            }
-        }
-
-        if ((--oy) == 0) break;
-        drow += x_image->bytes_per_line;
-        sy += stepy;
-    } while (1);
-#else
-    fprintf(stderr,"Compiler does not support SSE2\n");
-#endif
-}
 
 // AVX alignment warning:
 // Do not use this routine unless the scan lines in the bitmap are all aligned to AVX boundaries,
@@ -822,7 +349,7 @@ template <class T> void rerender_out_bilinear_sse() {
 // NOTE: Experience on my development laptop says this isn't much faster than SSE. However
 //       I'm going to assume that's just my laptop, and that maybe in the future, AVX will
 //       get faster.
-template <class T> void rerender_out_bilinear_avx() {
+template <class T> void stretchblt_bilinear_avx() {
 #if HAVE_CPU_AVX2
     // WARNING: This code assumes typical RGBA type packing where red and blue are NOT adjacent, and alpha and green are not adjacent
     nr_wfpack sx={0,0},sy={0,0},stepx,stepy;
@@ -962,7 +489,7 @@ template <class T> void rerender_out_bilinear_avx() {
 #endif
 }
 
-template <class T> void rerender_out_bilinear_arm_neon() {
+template <class T> void stretchblt_bilinear_arm_neon() {
 #if HAVE_CPU_ARM_NEON
     // WARNING: This code assumes typical RGBA type packing where red and blue are NOT adjacent, and alpha and green are not adjacent
     nr_wfpack sx={0,0},sy={0,0},stepx,stepy;
@@ -1106,51 +633,48 @@ template <class T> void rerender_out_bilinear_arm_neon() {
 #endif
 }
 
+struct render_mode {
+    const char*         name;
+    void                (*render)(const rgb_bitmap_info &dbmp,const rgb_bitmap_info &sbmp);
+    bool                (*can_do)(const rgb_bitmap_info &dbmp,const rgb_bitmap_info &sbmp);
+};
+
+struct render_mode render_modes[] = {
+    {"bilinear",
+    stretchblt_bilinear,
+    stretchblt_bilinear_can_do},
+#if HAVE_CPU_MMX
+    {"bilinear_mmx",
+    stretchblt_bilinear_mmx,
+    stretchblt_bilinear_mmx_can_do},
+#endif
+#if HAVE_CPU_SSE2
+    {"bilinear_sse",
+    stretchblt_bilinear_sse,
+    stretchblt_bilinear_sse_can_do},
+#endif
+#if HAVE_CPU_AVX2
+    {"bilinear_avx",
+    stretchblt_bilinear_avx,
+    stretchblt_bilinear_avx_can_do},
+#endif
+#if HAVE_CPU_ARM_NEON
+    {"bilinear_arm_neon",
+    stretchblt_bilinear_arm_neon,
+    stretchblt_bilinear_arm_neon_can_do},
+#endif
+    {"neighbor",
+    stretchblt_neighbor,
+    stretchblt_neighbor_can_do}
+};
+
+static inline size_t render_mode_count() {
+    return sizeof(render_modes)/sizeof(render_modes[0]);
+}
+
 void rerender_out() {
-    if (method == 0) {
-        fprintf(stderr,"Neighbor\n");
-        if (x_image->bits_per_pixel == 32)
-            rerender_out_neighbor<uint32_t>();
-        else if (x_image->bits_per_pixel == 16)
-            rerender_out_neighbor<uint16_t>();
-        else if (x_image->bits_per_pixel == 8)
-            rerender_out_neighbor<uint8_t>();
-    }
-    else if (method == 1) {
-        fprintf(stderr,"Basic bilinear\n");
-        if (x_image->bits_per_pixel == 32)
-            rerender_out_bilinear<uint32_t>();
-        else if (x_image->bits_per_pixel == 16)
-            rerender_out_bilinear<uint16_t>();
-    }
-    else if (method == 2) {
-        fprintf(stderr,"Basic bilinear MMX\n");
-        if (x_image->bits_per_pixel == 32)
-            rerender_out_bilinear_mmx<uint32_t>();
-        else if (x_image->bits_per_pixel == 16)
-            rerender_out_bilinear_mmx<uint16_t>();
-    }
-    else if (method == 3) {
-        fprintf(stderr,"Basic bilinear SSE\n"); // Well, SSE2. The base SSE set is geared for floating point and doesn't give us what we need.
-        if (x_image->bits_per_pixel == 32)
-            rerender_out_bilinear_sse<uint32_t>();
-        else if (x_image->bits_per_pixel == 16)
-            rerender_out_bilinear_sse<uint16_t>();
-    }
-    else if (method == 4) {
-        fprintf(stderr,"Basic bilinear AVX\n"); // Well, AVX2, actually
-        if (x_image->bits_per_pixel == 32)
-            rerender_out_bilinear_avx<uint32_t>();
-        else if (x_image->bits_per_pixel == 16)
-            rerender_out_bilinear_avx<uint16_t>();
-    }
-    else if (method == 5) {
-        fprintf(stderr,"Basic bilinear ARM NEON\n");
-        if (x_image->bits_per_pixel == 32)
-            rerender_out_bilinear_arm_neon<uint32_t>();
-        else if (x_image->bits_per_pixel == 16)
-            rerender_out_bilinear_arm_neon<uint16_t>();
-    }
+    if (method <= render_mode_count())
+        render_modes[method].render(/*&*/x_bitmap,/*&*/src_bitmap);
 }
 
 int main() {
@@ -1203,31 +727,28 @@ int main() {
 	XGetWindowAttributes(x_display, x_window, &x_gwa);
 
 	/* now we need an XImage. Try to use SHM (shared memory) mapping if possible, else, don't */
-	if (!init_shm()) {
-		if (!init_norm()) {
+	if (!init_shm(x_gwa.width,x_gwa.height)) {
+		if (!init_norm(x_gwa.width,x_gwa.height)) {
 			fprintf(stderr,"Cannot alloc bitmap\n");
 			return 1;
 		}
 	}
 
     assert(x_image != NULL);
-    x_rgbinfo.r.setByMask(x_image->red_mask);
-    x_rgbinfo.g.setByMask(x_image->green_mask);
-    x_rgbinfo.b.setByMask(x_image->blue_mask);
-    x_rgbinfo.a.setByMask(~(x_image->red_mask+x_image->green_mask+x_image->blue_mask)); // alpha = anything not covered by R,G,B
 
     fprintf(stderr,"R/G/B/A shift/width/mask %u/%u/0x%X %u/%u/0x%X %u/%u/0x%X %u/%u/0x%X\n",
-        x_rgbinfo.r.shift, x_rgbinfo.r.bwidth, x_rgbinfo.r.bmask,
-        x_rgbinfo.g.shift, x_rgbinfo.g.bwidth, x_rgbinfo.g.bmask,
-        x_rgbinfo.b.shift, x_rgbinfo.b.bwidth, x_rgbinfo.b.bmask,
-        x_rgbinfo.a.shift, x_rgbinfo.a.bwidth, x_rgbinfo.a.bmask);
+        x_bitmap.rgbinfo.r.shift, x_bitmap.rgbinfo.r.bwidth, x_bitmap.rgbinfo.r.bmask,
+        x_bitmap.rgbinfo.g.shift, x_bitmap.rgbinfo.g.bwidth, x_bitmap.rgbinfo.g.bmask,
+        x_bitmap.rgbinfo.b.shift, x_bitmap.rgbinfo.b.bwidth, x_bitmap.rgbinfo.b.bmask,
+        x_bitmap.rgbinfo.a.shift, x_bitmap.rgbinfo.a.bwidth, x_bitmap.rgbinfo.a.bmask);
 
     /* src bitmap */
+    src_bitmap.clear();
     src_bitmap.width = 640;
     src_bitmap.height = 480;
-    src_bitmap.bytes_per_pixel = (x_image->bits_per_pixel + 7) / 8;
     src_bitmap.stride_align = 32;
-    src_bitmap.rgbinfo = x_rgbinfo;
+    src_bitmap.rgbinfo = x_bitmap.rgbinfo;
+    src_bitmap.bytes_per_pixel = x_bitmap.bytes_per_pixel;
     src_bitmap.update_stride_from_width();
     src_bitmap.update_length_from_stride_and_height();
 #if HAVE_POSIX_MEMALIGN
@@ -1253,6 +774,8 @@ int main() {
     /* make up something */
     test_pattern_1_render(/*&*/src_bitmap);
 
+    method = 0;
+    fprintf(stderr,"Method is %s\n",render_modes[method].name);
 	rerender_out();
 
 	/* wait for events */
@@ -1262,7 +785,6 @@ int main() {
 			XNextEvent(x_display, &x_event);
 
 			if (x_event.type == Expose) {
-				fprintf(stderr,"Expose event\n");
 				redraw = 1;
 
 				/* this also seems to be a good way to detect window resize */
@@ -1274,8 +796,8 @@ int main() {
 
 					if (pw != x_gwa.width || ph != x_gwa.height) {
 						close_bitmap();
-						if (!init_shm()) {
-							if (!init_norm()) {
+						if (!init_shm(x_gwa.width,x_gwa.height)) {
+							if (!init_norm(x_gwa.width,x_gwa.height)) {
 								fprintf(stderr,"Cannot alloc bitmap\n");
 								return 1;
 							}
@@ -1296,9 +818,17 @@ int main() {
 					x_quit = 1;
 				}
                 else if (sym == XK_space) {
-                    if ((++method) >= 6)
-                        method = 0;
+                    do {
+                        if ((++method) >= render_mode_count())
+                            method = 0;
 
+                        if (render_modes[method].can_do(/*&*/x_bitmap,/*&*/src_bitmap))
+                            break;
+
+                        fprintf(stderr,"Can't do %s, skipping\n",render_modes[method].name);
+                    } while (1);
+
+                    fprintf(stderr,"Switching to %s\n",render_modes[method].name);
                     rerender_out();
                     redraw = 1;
                 }
