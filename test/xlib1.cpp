@@ -202,32 +202,32 @@ void update_to_X11() {
 		XPutImage(x_display, x_window, x_gc, x_image, 0, 0, 0, 0, x_bitmap.width, x_bitmap.height);
 }
 
-template <class T> void rerender_out() {
+template <class T> void rerender_out(rgb_bitmap_info &bmp) {
     size_t ox,oy;
     T r,g,b;
     T *drow;
 
-    for (oy=0;oy < x_bitmap.height;oy++) {
-        drow = x_bitmap.get_scanline<T>(oy);
-        for (ox=0;ox < x_bitmap.width;ox++) {
+    for (oy=0;oy < bmp.height;oy++) {
+        drow = bmp.get_scanline<T>(oy);
+        for (ox=0;ox < bmp.width;ox++) {
             /* color */
-            r = (ox * x_bitmap.rgbinfo.r.bmask) / x_bitmap.width;
-            g = (oy * x_bitmap.rgbinfo.g.bmask) / x_bitmap.height;
-            b = x_bitmap.rgbinfo.b.bmask - ((ox * x_bitmap.rgbinfo.b.bmask) / x_bitmap.width);
+            r = (ox * bmp.rgbinfo.r.bmask) / bmp.width;
+            g = (oy * bmp.rgbinfo.g.bmask) / bmp.height;
+            b = bmp.rgbinfo.b.bmask - ((ox * bmp.rgbinfo.b.bmask) / bmp.width);
 
-            *drow++ = (r << x_bitmap.rgbinfo.r.shift) +
-                (g << x_bitmap.rgbinfo.g.shift) +
-                (b << x_bitmap.rgbinfo.b.shift) +
-                x_bitmap.rgbinfo.a.mask;
+            *drow++ = (r << bmp.rgbinfo.r.shift) +
+                (g << bmp.rgbinfo.g.shift) +
+                (b << bmp.rgbinfo.b.shift) +
+                bmp.rgbinfo.a.mask;
         }
     }
 }
 
-void rerender_out() {
-    if (x_bitmap.bytes_per_pixel == sizeof(uint32_t))
-        rerender_out<uint32_t>();
-    else if (x_bitmap.bytes_per_pixel == sizeof(uint16_t))
-        rerender_out<uint16_t>();
+void rerender_out(rgb_bitmap_info &bmp) {
+    if (bmp.bytes_per_pixel == sizeof(uint32_t))
+        rerender_out<uint32_t>(bmp);
+    else if (bmp.bytes_per_pixel == sizeof(uint16_t))
+        rerender_out<uint16_t>(bmp);
 }
 
 int main() {
@@ -293,7 +293,7 @@ int main() {
         x_bitmap.rgbinfo.b.shift, x_bitmap.rgbinfo.b.bwidth, x_bitmap.rgbinfo.b.bmask,
         x_bitmap.rgbinfo.a.shift, x_bitmap.rgbinfo.a.bwidth, x_bitmap.rgbinfo.a.bmask);
 
-	rerender_out();
+	rerender_out(x_bitmap);
 
 	/* wait for events */
 	while (!x_quit) {
@@ -320,7 +320,7 @@ int main() {
 							}
 						}
 
-						rerender_out();
+						rerender_out(x_bitmap);
 					}
 				}
 			}
