@@ -159,12 +159,14 @@ bin_test_xlib2_DEPENDENCIES = \
 	dosboxxr/lib/hostcpudetect/libhostcpudetect.a \
 	dosboxxr/lib/graphics/libstretchblt.a \
 	dosboxxr/lib/util/libutil.a \
-	dosboxxr/lib/text/libtext.a
-bin_test_xlib2_LDADD = $(X11_LDFLAGS) $(XEXT_LDFLAGS) \
-	dosboxxr/lib/hostcpudetect/libhostcpudetect.a \
-	dosboxxr/lib/graphics/libstretchblt.a \
 	dosboxxr/lib/text/libtext.a \
-	dosboxxr/lib/util/libutil.a
+	dosboxxr/lib/xlib/libxlibdemo.a
+bin_test_xlib2_LDADD = $(X11_LDFLAGS) $(XEXT_LDFLAGS) \
+	dosboxxr/lib/graphics/libstretchblt.a \
+	dosboxxr/lib/hostcpudetect/libhostcpudetect.a \
+	dosboxxr/lib/text/libtext.a \
+	dosboxxr/lib/util/libutil.a \
+	dosboxxr/lib/xlib/libxlibdemo.a
 
 bin_test_xcb1_SOURCES = test/xcb1.cpp
 bin_test_xcb1_CXXFLAGS = $(AM_CXXFLAGS) $(X11_CFLAGS) $(XEXT_CFLAGS) $(X11_XCB_CFLAGS) $(XCB_SHM_CFLAGS)
