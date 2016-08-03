@@ -297,7 +297,7 @@ int main() {
     // WARNING: malloc() is not necessarily safe for SSE and AVX use because it cannot guarantee alignment.
     // On Linux x86_64 malloc() seems to generally auto align to 16-byte boundaries which is OK for SSE but
     // can break AVX.
-    src_bitmap.base = (unsigned char*)malloc(src_bitmap_length);
+    src_bitmap.base = (unsigned char*)malloc(src_bitmap.length);
     if (src_bitmap.base == NULL) {
         fprintf(stderr,"Cannot alloc src bitmap\n");
         return 1;
