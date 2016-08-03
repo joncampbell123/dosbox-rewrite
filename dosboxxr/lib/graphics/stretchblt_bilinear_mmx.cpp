@@ -121,7 +121,7 @@ template <class T> void stretchblt_bilinear_mmx(const rgb_bitmap_info &dbmp,cons
     __m64 rmask64,gmask64,bmask64,mul64;
     const size_t pixels_per_group =
         sizeof(__m64) / sizeof(T);
-    const unsigned int src_bitmap_width_m64 =
+    const unsigned int src_bitmap_width_in_groups =
         (sbmp.width + pixels_per_group - 1) / pixels_per_group;
     unsigned char *drow;
     size_t ox,oy;
@@ -145,7 +145,7 @@ template <class T> void stretchblt_bilinear_mmx(const rgb_bitmap_info &dbmp,cons
 
     render_scale_from_sd(/*&*/stepx,dbmp.width,sbmp.width);
     render_scale_from_sd(/*&*/stepy,dbmp.height,sbmp.height);
-    if (dbmp.width == 0 || src_bitmap_width_m64 == 0) return;
+    if (dbmp.width == 0 || src_bitmap_width_in_groups == 0) return;
 
     drow = dbmp.get_scanline<uint8_t>(0);
     oy = dbmp.height;
@@ -165,9 +165,9 @@ template <class T> void stretchblt_bilinear_mmx(const rgb_bitmap_info &dbmp,cons
             if (stepx.w != 1 || stepx.f != 0) {
                 // horizontal interpolation, vertical interpolation
                 if (sizeof(T) == 4)
-                    stretchblt_line_bilinear_vinterp_stage_mmx_argb8(vinterp_tmp.tmp,(__m64*)s,(__m64*)s2,mul64,src_bitmap_width_m64,rmask64);
+                    stretchblt_line_bilinear_vinterp_stage_mmx_argb8(vinterp_tmp.tmp,(__m64*)s,(__m64*)s2,mul64,src_bitmap_width_in_groups,rmask64);
                 else
-                    stretchblt_line_bilinear_vinterp_stage_mmx_rgb16(vinterp_tmp.tmp,(__m64*)s,(__m64*)s2,mul64,src_bitmap_width_m64,
+                    stretchblt_line_bilinear_vinterp_stage_mmx_rgb16(vinterp_tmp.tmp,(__m64*)s,(__m64*)s2,mul64,src_bitmap_width_in_groups,
                         rmask64,dbmp.rgbinfo.r.shift,
                         gmask64,dbmp.rgbinfo.g.shift,
                         bmask64,dbmp.rgbinfo.b.shift);
@@ -177,9 +177,9 @@ template <class T> void stretchblt_bilinear_mmx(const rgb_bitmap_info &dbmp,cons
             else {
                 // vertical interpolation only
                 if (sizeof(T) == 4)
-                    stretchblt_line_bilinear_vinterp_stage_mmx_argb8((__m64*)d,(__m64*)s,(__m64*)s2,mul64,src_bitmap_width_m64,rmask64);
+                    stretchblt_line_bilinear_vinterp_stage_mmx_argb8((__m64*)d,(__m64*)s,(__m64*)s2,mul64,src_bitmap_width_in_groups,rmask64);
                 else
-                    stretchblt_line_bilinear_vinterp_stage_mmx_rgb16((__m64*)d,(__m64*)s,(__m64*)s2,mul64,src_bitmap_width_m64,
+                    stretchblt_line_bilinear_vinterp_stage_mmx_rgb16((__m64*)d,(__m64*)s,(__m64*)s2,mul64,src_bitmap_width_in_groups,
                         rmask64,dbmp.rgbinfo.r.shift,
                         gmask64,dbmp.rgbinfo.g.shift,
                         bmask64,dbmp.rgbinfo.b.shift);

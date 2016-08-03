@@ -16,11 +16,14 @@ dosboxxr_lib_util_libutil_a_SOURCES = \
 	dosboxxr/lib/util/nr_wfpack_scale.cpp \
 	dosboxxr/lib/util/rgb_bitmap_test_pattern_1.cpp
 
+dosboxxr_lib_graphics_libstretchblt_a_CXXFLAGS = \
+	$(AM_CXXFLAGS) $(CPU_MMX_CFLAGS) $(CPU_SSE2_CFLAGS) $(CPU_AVX2_CFLAGS) $(CPU_ARM_NEON_CFLAGS)
 dosboxxr_lib_graphics_libstretchblt_a_SOURCES = \
 	dosboxxr/lib/graphics/stretchblt_neighbor.cpp \
 	dosboxxr/lib/graphics/stretchblt_bilinear.cpp \
 	dosboxxr/lib/graphics/stretchblt_bilinear_mmx.cpp \
-	dosboxxr/lib/graphics/stretchblt_bilinear_sse.cpp
+	dosboxxr/lib/graphics/stretchblt_bilinear_sse.cpp \
+	dosboxxr/lib/graphics/stretchblt_bilinear_avx.cpp
 
 OPCC=bin/tools/opcc
 
@@ -140,7 +143,7 @@ bin_test_xlib1_DEPENDENCIES =
 bin_test_xlib1_LDADD = $(X11_LDFLAGS) $(XEXT_LDFLAGS)
 
 bin_test_xlib2_SOURCES = test/xlib2.cpp
-bin_test_xlib2_CXXFLAGS = $(AM_CXXFLAGS) $(X11_CFLAGS) $(XEXT_CFLAGS) $(CPU_MMX_CFLAGS) $(CPU_SSE2_CFLAGS) $(CPU_AVX2_CFLAGS) $(CPU_ARM_NEON_CFLAGS)
+bin_test_xlib2_CXXFLAGS = $(AM_CXXFLAGS) $(X11_CFLAGS) $(XEXT_CFLAGS)
 bin_test_xlib2_DEPENDENCIES = \
 	dosboxxr/lib/hostcpudetect/libhostcpudetect.a \
 	dosboxxr/lib/graphics/libstretchblt.a \
