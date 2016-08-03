@@ -308,12 +308,14 @@ void XlibDemo::exit(void) {
 }
 
 bool XlibDemo::common_handle_events(void) {
+    got_event = false;
     if (is_idle() || XPending(display)) {
         XNextEvent(display, &event);
         got_event = true;
 
         if (event.type == Expose) {
             update_window_attributes();
+            got_event = false;
             need_update();
             if (!set_bitmap_size()) {
                 set_quit();
@@ -329,6 +331,7 @@ bool XlibDemo::common_handle_events(void) {
 
             if (sym == XK_Escape) {
                 fprintf(stderr,"Exit, by ESC\n");
+                got_event = false;
                 set_quit();
                 return true;
             }
@@ -336,6 +339,7 @@ bool XlibDemo::common_handle_events(void) {
         else if (event.type == ClientMessage) {
             if (wmDelete != None && (Atom)event.xclient.data.l[0] == wmDelete) {
                 fprintf(stderr,"Exit, by window close\n");
+                got_event = false;
                 set_quit();
                 return true;
             }
