@@ -2,6 +2,7 @@
 noinst_LIBRARIES = \
 	dosboxxr/lib/hostcpudetect/libhostcpudetect.a \
 	dosboxxr/lib/graphics/libstretchblt.a \
+	dosboxxr/lib/xlib/libxlibdemo.a \
 	dosboxxr/lib/util/libutil.a \
 	dosboxxr/lib/text/libtext.a \
 	dosboxxr/lib/cpu/libcpu.a
@@ -16,6 +17,9 @@ dosboxxr_lib_util_libutil_a_SOURCES = \
 	dosboxxr/lib/util/nr_wfpack_scale.cpp \
 	dosboxxr/lib/util/rgb_bitmap_test_pattern_1.cpp \
 	dosboxxr/lib/util/rgb_bitmap_test_pattern_gradients.cpp
+
+dosboxxr_lib_xlib_libxlibdemo_a_SOURCES = \
+	dosboxxr/lib/xlib/demo.cpp
 
 dosboxxr_lib_graphics_libstretchblt_a_CXXFLAGS = \
 	$(AM_CXXFLAGS) $(CPU_MMX_CFLAGS) $(CPU_SSE2_CFLAGS) $(CPU_AVX2_CFLAGS) $(CPU_ARM_NEON_CFLAGS)
@@ -143,9 +147,11 @@ bin_test_xlibxcbopengl_LDADD = $(X11_LDFLAGS) $(OPENGL_LDFLAGS) $(OPENGL_GLU_LDF
 bin_test_xlib1_SOURCES = test/xlib1.cpp
 bin_test_xlib1_CXXFLAGS = $(AM_CXXFLAGS) $(X11_CFLAGS) $(XEXT_CFLAGS)
 bin_test_xlib1_DEPENDENCIES = \
-	dosboxxr/lib/util/libutil.a
+	dosboxxr/lib/util/libutil.a \
+	dosboxxr/lib/xlib/libxlibdemo.a
 bin_test_xlib1_LDADD = $(X11_LDFLAGS) $(XEXT_LDFLAGS) \
-	dosboxxr/lib/util/libutil.a
+	dosboxxr/lib/util/libutil.a \
+	dosboxxr/lib/xlib/libxlibdemo.a
 
 bin_test_xlib2_SOURCES = test/xlib2.cpp
 bin_test_xlib2_CXXFLAGS = $(AM_CXXFLAGS) $(X11_CFLAGS) $(XEXT_CFLAGS)
