@@ -80,6 +80,13 @@ template <class T> bool stretchblt_bilinear_mmx_can_do(const rgb_bitmap_info &db
     if (!dbmp.is_valid() || !sbmp.is_valid()) return false;
     if (!hostCPUcaps.mmx) return false;
 
+    // must fit in buffer
+    const size_t pixels_per_group =
+        sizeof(__m64) / sizeof(T);
+
+    if (sbmp.width >= (VINTERP_MAX*pixels_per_group))
+        return false;
+
     if (sizeof(T) == 4) {
         // 32bpp this code can only handle the 8-bit RGBA/ARGB case, else R/G/B fields cross 16-bit boundaries
         if (dbmp.rgbinfo.r.bwidth != 8 ||

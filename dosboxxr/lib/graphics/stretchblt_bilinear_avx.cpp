@@ -207,6 +207,13 @@ template <class T> bool stretchblt_bilinear_avx_can_do(const rgb_bitmap_info &db
     if (!dbmp.is_valid() || !sbmp.is_valid()) return false;
     if (!hostCPUcaps.avx2) return false;
 
+    // must fit in buffer
+    const size_t pixels_per_group =
+        sizeof(__m256i) / sizeof(T);
+
+    if (sbmp.width >= (VINTERP_MAX*pixels_per_group))
+        return false;
+
     // buffer alignment is required, else AVX will fault
     if (((size_t)sbmp.canvas & 31) != 0) return false;
     if (((size_t)dbmp.canvas & 31) != 0) return false;

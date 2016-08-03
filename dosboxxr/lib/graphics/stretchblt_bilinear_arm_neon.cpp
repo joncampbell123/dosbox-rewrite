@@ -231,6 +231,13 @@ template <class T> bool stretchblt_bilinear_arm_neon_can_do(const rgb_bitmap_inf
     if (!dbmp.is_valid() || !sbmp.is_valid()) return false;
     if (!hostCPUcaps.neon) return false;
 
+    // must fit in buffer
+    const size_t pixels_per_group =
+        sizeof(int16x8_t) / sizeof(T);
+
+    if (sbmp.width >= (VINTERP_MAX*pixels_per_group))
+        return false;
+
     // buffer alignment is required
     if (((size_t)sbmp.canvas & 15) != 0) return false;
     if (((size_t)dbmp.canvas & 15) != 0) return false;
