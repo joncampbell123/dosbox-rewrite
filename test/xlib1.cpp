@@ -26,6 +26,7 @@
 #include "dosboxxr/lib/util/rgb_bitmap_info.h"
 #include "dosboxxr/lib/util/rgb_bitmap_test_pattern_gradients.h"
 
+bool                            x_enable_shm = true;
 Display*                        x_display = NULL;
 Visual*                         x_visual = NULL;
 Screen*                         x_screen = NULL;
@@ -68,6 +69,9 @@ int init_xbitmap_common_pre(unsigned int width,unsigned int height,unsigned int 
 
 int init_shm(unsigned int width,unsigned int height,unsigned int align=32) {
     unsigned int alloc_width;
+
+    if (!x_enable_shm)
+        return 0;
 
     if (!init_xbitmap_common_pre(width,height,align,/*&*/alloc_width))
         return 0;
@@ -201,8 +205,50 @@ void update_to_X11() {
 		XPutImage(x_display, x_window, x_gc, x_image, 0, 0, 0, 0, x_bitmap.width, x_bitmap.height);
 }
 
-int main() {
+static void help() {
+    fprintf(stderr,"  -shm       Use SHM extensions (shared memory)\n");
+    fprintf(stderr,"  -no-shm    Don't use SHM extensions\n");
+}
+
+static int parse_argv(int argc,char **argv) {
+    char *a;
+    int i;
+
+    for (i=1;i < argc;) {
+        a = argv[i++];
+
+        if (*a == '-') {
+            do { a++; } while (*a == '-');
+
+            if (!strcmp(a,"h") || !strcmp(a,"help")) {
+                help();
+                return 1;
+            }
+            else if (!strcmp(a,"no-shm")) {
+                x_enable_shm = false;
+            }
+            else if (!strcmp(a,"shm")) {
+                x_enable_shm = true;
+            }
+            else {
+                fprintf(stderr,"Unknown switch %s\n",a);
+                return 1;
+            }
+        }
+        else {
+            fprintf(stderr,"Unhandled arg %s\n",a);
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
+int main(int argc,char **argv) {
 	int redraw = 1;
+
+    if (parse_argv(argc,argv))
+        return 1;
 
 	memset(&x_shminfo,0,sizeof(x_shminfo));
 
@@ -258,11 +304,12 @@ int main() {
 
     assert(x_image != NULL);
 
-    fprintf(stderr,"R/G/B/A shift/width/mask %u/%u/0x%X %u/%u/0x%X %u/%u/0x%X %u/%u/0x%X\n",
+    fprintf(stderr,"R/G/B/A shift/width/mask %u/%u/0x%X %u/%u/0x%X %u/%u/0x%X %u/%u/0x%X using_shm=%u\n",
         x_bitmap.rgbinfo.r.shift, x_bitmap.rgbinfo.r.bwidth, x_bitmap.rgbinfo.r.bmask,
         x_bitmap.rgbinfo.g.shift, x_bitmap.rgbinfo.g.bwidth, x_bitmap.rgbinfo.g.bmask,
         x_bitmap.rgbinfo.b.shift, x_bitmap.rgbinfo.b.bwidth, x_bitmap.rgbinfo.b.bmask,
-        x_bitmap.rgbinfo.a.shift, x_bitmap.rgbinfo.a.bwidth, x_bitmap.rgbinfo.a.bmask);
+        x_bitmap.rgbinfo.a.shift, x_bitmap.rgbinfo.a.bwidth, x_bitmap.rgbinfo.a.bmask,
+        x_using_shm);
 
 	render_test_pattern_rgb_gradients(x_bitmap);
 
