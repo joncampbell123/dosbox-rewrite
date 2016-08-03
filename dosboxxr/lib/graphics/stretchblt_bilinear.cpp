@@ -89,8 +89,20 @@ void stretchblt_bilinear(const rgb_bitmap_info &dbmp,const rgb_bitmap_info &sbmp
         stretchblt_bilinear<uint16_t>(dbmp,sbmp);
 }
 
-bool stretchblt_bilinear_can_do(const rgb_bitmap_info &dbmp,const rgb_bitmap_info &sbmp) {
+template <class T> bool stretchblt_bilinear_can_do(const rgb_bitmap_info &dbmp,const rgb_bitmap_info &sbmp) {
     if (!dbmp.is_valid() || !sbmp.is_valid()) return false;
+
+    if (sbmp.width >= VINTERP_MAX)
+        return false;
+
+    return true;
+}
+
+bool stretchblt_bilinear_can_do(const rgb_bitmap_info &dbmp,const rgb_bitmap_info &sbmp) {
+    if (dbmp.bytes_per_pixel == sizeof(uint32_t))
+        return stretchblt_bilinear_can_do<uint32_t>(dbmp,sbmp);
+    else if (dbmp.bytes_per_pixel == sizeof(uint16_t))
+        return stretchblt_bilinear_can_do<uint16_t>(dbmp,sbmp);
     return true;
 }
 
