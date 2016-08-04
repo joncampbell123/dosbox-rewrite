@@ -47,7 +47,8 @@ noinst_PROGRAMS = \
 
 if HAVE_WINDOWS_H
 noinst_PROGRAMS += \
-	bin/test/wingdi1
+	bin/test/wingdi1 \
+	bin/test/wingdi2
 endif
 
 if HAVE_X11
@@ -234,8 +235,22 @@ bin_test_wingdi1_SOURCES = test/wingdi1.cpp
 bin_test_wingdi1_CXXFLAGS = $(AM_CXXFLAGS)
 bin_test_wingdi1_DEPENDENCIES = \
 	dosboxxr/lib/util/libutil.a
-bin_test_wingdi1_LDADD = $(X11_LDFLAGS)\
+bin_test_wingdi1_LDADD = $(X11_LDFLAGS) \
 	dosboxxr/lib/util/libutil.a -lkernel32 -lgdi32
+
+bin_test_wingdi2_SOURCES = test/wingdi2.cpp
+bin_test_wingdi2_CXXFLAGS = $(AM_CXXFLAGS)
+bin_test_wingdi2_DEPENDENCIES = \
+	dosboxxr/lib/graphics/libstretchblt.a \
+	dosboxxr/lib/hostcpudetect/libhostcpudetect.a \
+	dosboxxr/lib/text/libtext.a \
+	dosboxxr/lib/util/libutil.a
+bin_test_wingdi2_LDADD = $(X11_LDFLAGS) \
+	dosboxxr/lib/graphics/libstretchblt.a \
+	dosboxxr/lib/hostcpudetect/libhostcpudetect.a \
+	dosboxxr/lib/text/libtext.a \
+	dosboxxr/lib/util/libutil.a \
+	-lkernel32 -lgdi32
 
 bin_test_cpumodregrm_SOURCES = test/cpumodregrm.cpp
 bin_test_cpumodregrm_CXXFLAGS = $(AM_CXXFLAGS)
