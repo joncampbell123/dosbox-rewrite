@@ -74,7 +74,8 @@ if HAVE_XEXT
 if HAVE_XCB_SHM
 if HAVE_X11_XCB
 noinst_PROGRAMS += \
-	bin/test/xcb1
+	bin/test/xcb1 \
+	bin/test/xcb2
 endif
 endif
 endif
@@ -174,6 +175,21 @@ bin_test_xcb1_DEPENDENCIES = \
 	dosboxxr/lib/util/libutil.a
 bin_test_xcb1_LDADD = $(X11_LDFLAGS) $(XEXT_LDFLAGS) $(X11_XCB_LDFLAGS) $(XCB_SHM_LDFLAGS) \
 	dosboxxr/lib/util/libutil.a
+
+bin_test_xcb2_SOURCES = test/xcb2.cpp
+bin_test_xcb2_CXXFLAGS = $(AM_CXXFLAGS) $(X11_CFLAGS) $(XEXT_CFLAGS) $(X11_XCB_CFLAGS) $(XCB_SHM_CFLAGS)
+bin_test_xcb2_DEPENDENCIES = \
+	dosboxxr/lib/hostcpudetect/libhostcpudetect.a \
+	dosboxxr/lib/graphics/libstretchblt.a \
+	dosboxxr/lib/util/libutil.a \
+	dosboxxr/lib/text/libtext.a \
+	dosboxxr/lib/xlib/libxlibdemo.a
+bin_test_xcb2_LDADD = $(X11_LDFLAGS) $(XEXT_LDFLAGS) $(X11_XCB_LDFLAGS) $(XCB_SHM_LDFLAGS) \
+	dosboxxr/lib/graphics/libstretchblt.a \
+	dosboxxr/lib/hostcpudetect/libhostcpudetect.a \
+	dosboxxr/lib/text/libtext.a \
+	dosboxxr/lib/util/libutil.a \
+	dosboxxr/lib/xlib/libxlibdemo.a
 
 bin_test_cpumodregrm_SOURCES = test/cpumodregrm.cpp
 bin_test_cpumodregrm_CXXFLAGS = $(AM_CXXFLAGS)
