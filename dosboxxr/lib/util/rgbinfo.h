@@ -20,6 +20,12 @@ public:
         bmask = 0;
         mask = 0;
     }
+    void setByShiftOffset(const T offset,const T length) {
+        shift = offset;
+        bwidth = length;
+        bmask = (uint32_t(1U) << uint32_t(bwidth)) - uint32_t(1U);
+        mask = bmask << shift;
+    }
     void setByMask(const T m) { // initialize this struct by mask (i.e. rgb mask provided by X windows)
         shift = bitscan_forward(m,0);
         bwidth = bitscan_count(m,shift) - shift;

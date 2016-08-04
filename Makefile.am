@@ -81,6 +81,14 @@ endif
 endif
 endif
 
+if HAVE_LINUX_FB_H
+if HAVE_TERMIOS_H
+noinst_PROGRAMS += \
+	bin/test/fb1 \
+	bin/test/fb2
+endif
+endif
+
 bin_tools_cpudec86_SOURCES = \
 	tools/cpudec/cpudec86.cpp \
 	tools/cpudec/cpudec86_8086.cpp \
@@ -185,6 +193,28 @@ bin_test_xcb2_DEPENDENCIES = \
 	dosboxxr/lib/text/libtext.a \
 	dosboxxr/lib/xlib/libxlibdemo.a
 bin_test_xcb2_LDADD = $(X11_LDFLAGS) $(XEXT_LDFLAGS) $(X11_XCB_LDFLAGS) $(XCB_SHM_LDFLAGS) \
+	dosboxxr/lib/graphics/libstretchblt.a \
+	dosboxxr/lib/hostcpudetect/libhostcpudetect.a \
+	dosboxxr/lib/text/libtext.a \
+	dosboxxr/lib/util/libutil.a \
+	dosboxxr/lib/xlib/libxlibdemo.a
+
+bin_test_fb1_SOURCES = test/fb1.cpp
+bin_test_fb1_CXXFLAGS = $(AM_CXXFLAGS)
+bin_test_fb1_DEPENDENCIES = \
+	dosboxxr/lib/util/libutil.a
+bin_test_fb1_LDADD = \
+	dosboxxr/lib/util/libutil.a
+
+bin_test_fb2_SOURCES = test/fb2.cpp
+bin_test_fb2_CXXFLAGS = $(AM_CXXFLAGS)
+bin_test_fb2_DEPENDENCIES = \
+	dosboxxr/lib/graphics/libstretchblt.a \
+	dosboxxr/lib/hostcpudetect/libhostcpudetect.a \
+	dosboxxr/lib/text/libtext.a \
+	dosboxxr/lib/util/libutil.a \
+	dosboxxr/lib/xlib/libxlibdemo.a
+bin_test_fb2_LDADD = \
 	dosboxxr/lib/graphics/libstretchblt.a \
 	dosboxxr/lib/hostcpudetect/libhostcpudetect.a \
 	dosboxxr/lib/text/libtext.a \
