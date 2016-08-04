@@ -103,6 +103,6 @@ bool stretchblt_bilinear_can_do(const rgb_bitmap_info &dbmp,const rgb_bitmap_inf
         return stretchblt_bilinear_can_do<uint32_t>(dbmp,sbmp);
     else if (dbmp.bytes_per_pixel == sizeof(uint16_t))
         return stretchblt_bilinear_can_do<uint16_t>(dbmp,sbmp);
-    return true;
+    return false;
 }
 

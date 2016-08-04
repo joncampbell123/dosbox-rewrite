@@ -500,6 +500,15 @@ int main(int argc,char **argv) {
 	}
 	test_pattern_1_render(/*&*/src_bitmap);
 
+	do {
+		if ((++method) >= stretchblt_mode_count())
+			method = 0;
+
+		if (stretchblt_modes[method].can_do(/*&*/gdi_bitmap,/*&*/src_bitmap))
+			break;
+		fprintf(stderr,"Can't do %s, skipping\n",stretchblt_modes[method].name);
+	} while (1);
+
 	if (method <= stretchblt_mode_count())
 		stretchblt_modes[method].render(/*&*/gdi_bitmap,/*&*/src_bitmap);
 
