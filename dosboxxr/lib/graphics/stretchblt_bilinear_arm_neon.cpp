@@ -24,15 +24,15 @@
 
 // 32bpp optimized for 8-bit ARGB/RGBA. rmask should be 0x00FF,0x00FF,... etc
 static inline int16x8_t stretchblt_line_bilinear_pixel_blend_arm_neon_argb8(const int16x8_t cur,const int16x8_t nxt,const int16_t mul,const int16x8_t rmask) {
-#if 0 // FIXME: I can't develop this code until I can figure out how to get X on my Raspberry Pi 2 to come up in 32-bit ARGB mode
-    int16x8_t d1,d2,d3,d4;
-
-    d1 = _mm256_and_si256(_mm256_mulhi_epi16(_mm256_sub_epi16(_mm256_and_si256(nxt,rmask),_mm256_and_si256(cur,rmask)),mul),rmask);
-    d2 = _mm256_slli_si256(_mm256_and_si256(_mm256_mulhi_epi16(_mm256_sub_epi16(_mm256_and_si256(_mm256_srli_si256(nxt,1/*bytes!*/),rmask),_mm256_and_si256(_mm256_srli_si256(cur,1/*bytes!*/),rmask)),mul),rmask),1/*bytes!*/);
-    d3 = _mm256_add_epi8(d1,d2);
-    d4 = _mm256_add_epi8(d3,d3);
-    return _mm256_add_epi8(d4,cur);
-#endif
+    const int16x8_t crb = vandq_s16(cur,rmask);
+    const int16x8_t cga = vandq_s16(vshrq_n_s16(cur,8),rmask);
+    const int16x8_t nrb = vandq_s16(nxt,rmask);
+    const int16x8_t nga = vandq_s16(vshrq_n_s16(nxt,8),rmask);
+    const int16x8_t d1 = vandq_s16(vqdmulhq_n_s16(vsubq_s16(nrb,crb),mul),rmask);
+    const int16x8_t d2 = vandq_s16(vqdmulhq_n_s16(vsubq_s16(nga,cga),mul),rmask);
+    const int16x8_t f1 = vaddq_s16(crb,d1);
+    const int16x8_t f2 = vshlq_n_s16(vaddq_s16(cga,d2),8);
+    return vaddq_s16(f1,f2);
 }
 
 template <const uint8_t shf> static inline int16x8_t stretchblt_line_bilinear_pixel_blend_arm_neon_rgb16channel(const int16x8_t cur,const int16x8_t nxt,const int16_t mul,const int16x8_t cmask) {
