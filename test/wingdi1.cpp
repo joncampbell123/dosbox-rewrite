@@ -33,6 +33,9 @@ HBITMAP				dibOldBitmap = NULL,dibBitmap = NULL;	// you can't free a bitmap if i
 unsigned int			dibBitsPerPixel = 0;
 unsigned char*			dibBits = NULL;
 
+bool				gdi_no_dpiaware = false;
+unsigned int			gdi_force_depth = 0;
+
 rgb_bitmap_info                 gdi_bitmap;
 bool				announce_fmt = true;
 
@@ -93,7 +96,11 @@ int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
 		return 0;
 	}
 
-	dibBitsPerPixel = GetDeviceCaps(dibDC,BITSPIXEL);
+	if (gdi_force_depth != 0)
+		dibBitsPerPixel = gdi_force_depth;
+	else
+		dibBitsPerPixel = GetDeviceCaps(dibDC,BITSPIXEL);
+
 	if (dibBitsPerPixel <= 8) {
 		fprintf(stderr,"Unsupported BITSPIXEL %u\n",dibBitsPerPixel);
 		free_bitmap();
@@ -236,13 +243,41 @@ static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 	return 0;
 }
 
-int main() {
+int main(int argc,char **argv) {
 	WNDCLASS wnd;
 	RECT rect;
 	MSG msg;
+	char *a;
+	int i;
+
+	for (i=1;i < argc;) {
+		a = argv[i++];
+
+		if (*a == '-') {
+			do { a++; } while (*a == '-');
+
+			if (!strcmp(a,"depth")) {
+				a = argv[i++];
+				if (a == NULL) return 1;
+				gdi_force_depth = atoi(a);
+			}
+			else if (!strcmp(a,"nodpiaware")) {
+				gdi_no_dpiaware = true;
+			}
+			else {
+				fprintf(stderr,"Unhandled switch %s\n",a);
+				return 1;
+			}
+		}
+		else {
+			fprintf(stderr,"Unhandled arg %s\n",a);
+			return 1;
+		}
+	}
 
 	/* Please don't scale me in the name of "DPI awareness" */
-	win32_dpi_aware();
+	if (!gdi_no_dpiaware)
+		win32_dpi_aware();
 
 	myInstance = GetModuleHandle(NULL);
 
