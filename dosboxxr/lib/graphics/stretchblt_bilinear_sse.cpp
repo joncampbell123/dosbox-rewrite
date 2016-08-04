@@ -24,13 +24,23 @@
 
 // 32bpp optimized for 8-bit ARGB/RGBA. rmask should be 0x00FF,0x00FF,... etc
 static inline __m128i stretchblt_line_bilinear_pixel_blend_sse_argb8(const __m128i cur,const __m128i nxt,const __m128i mul,const __m128i rmask) {
-    __m128i d1,d2,d3,d4;
+    __m128i rc,gc;
+    __m128i rn,gn;
+    __m128i d,sum;
 
-    d1 = _mm_and_si128(_mm_mulhi_epi16(_mm_sub_epi16(_mm_and_si128(nxt,rmask),_mm_and_si128(cur,rmask)),mul),rmask);
-    d2 = _mm_slli_si128(_mm_and_si128(_mm_mulhi_epi16(_mm_sub_epi16(_mm_and_si128(_mm_srli_si128(nxt,1/*bytes!*/),rmask),_mm_and_si128(_mm_srli_si128(cur,1/*bytes!*/),rmask)),mul),rmask),1/*bytes!*/);
-    d3 = _mm_add_epi8(d1,d2);
-    d4 = _mm_add_epi8(d3,d3);
-    return _mm_add_epi8(d4,cur);
+    rc = _mm_and_si128(               cur   ,rmask);
+    gc = _mm_and_si128(_mm_srli_epi16(cur,8),rmask);
+
+    rn = _mm_and_si128(               nxt   ,rmask);
+    gn = _mm_and_si128(_mm_srli_epi16(nxt,8),rmask);
+
+    d = _mm_sub_epi16(rn,rc);
+    sum = _mm_add_epi16(rc,_mm_mulhi_epi16(_mm_add_epi16(d,d),mul));
+
+    d = _mm_sub_epi16(gn,gc);
+    sum = _mm_add_epi16(_mm_slli_epi16(_mm_add_epi16(gc,_mm_mulhi_epi16(_mm_add_epi16(d,d),mul)),8),sum);
+
+    return sum;
 }
 
 // 16bpp general R/G/B, usually 5/6/5 or 5/5/5
@@ -48,13 +58,13 @@ static inline __m128i stretchblt_line_bilinear_pixel_blend_sse_rgb16(const __m12
     bn = _mm_and_si128(_mm_srli_epi16(nxt,bshift),bmask);
 
     d = _mm_sub_epi16(rn,rc);
-    sum = _mm_slli_epi16(_mm_add_epi16(rc,_mm_and_si128(_mm_mulhi_epi16(_mm_add_epi16(d,d),mul),rmask)),rshift);
+    sum = _mm_slli_epi16(_mm_add_epi16(rc,_mm_mulhi_epi16(_mm_add_epi16(d,d),mul)),rshift);
 
     d = _mm_sub_epi16(gn,gc);
-    sum = _mm_add_epi16(_mm_slli_epi16(_mm_add_epi16(gc,_mm_and_si128(_mm_mulhi_epi16(_mm_add_epi16(d,d),mul),gmask)),gshift),sum);
+    sum = _mm_add_epi16(_mm_slli_epi16(_mm_add_epi16(gc,_mm_mulhi_epi16(_mm_add_epi16(d,d),mul)),gshift),sum);
 
     d = _mm_sub_epi16(bn,bc);
-    sum = _mm_add_epi16(_mm_slli_epi16(_mm_add_epi16(bc,_mm_and_si128(_mm_mulhi_epi16(_mm_add_epi16(d,d),mul),bmask)),bshift),sum);
+    sum = _mm_add_epi16(_mm_slli_epi16(_mm_add_epi16(bc,_mm_mulhi_epi16(_mm_add_epi16(d,d),mul)),bshift),sum);
 
     return sum;
 }
