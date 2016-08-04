@@ -339,6 +339,13 @@ if test "$with_asm" = "no"; then USE_ASM=0; fi
 AC_DEFINE_UNQUOTED([USE_ASM],[$USE_ASM],[Use inline assembly])
 AM_CONDITIONAL([USE_ASM],[test $USE_ASM = 1])
 
+# Does the system have windows.h?
+HAVE_WINDOWS_H=0
+AC_SUBST(HAVE_WINDOWS_H)
+AC_CHECK_HEADER([windows.h],[HAVE_WINDOWS_H=1],[HAVE_WINDOWS_H=0])
+AM_CONDITIONAL([HAVE_WINDOWS_H],[test $HAVE_WINDOWS_H = 1])
+AC_DEFINE_UNQUOTED([HAVE_WINDOWS_H],[$HAVE_WINDOWS_H],[Has windows.h])
+
 # Does Linux have sys/vm86.h for virtual 8086 mode?
 HAVE_SYS_VM86_H=0
 AC_SUBST(HAVE_SYS_VM86_H)
