@@ -63,6 +63,7 @@ static int init_src_bitmap(unsigned int width=640,unsigned int height=480) {
     src_bitmap.width = width;
     src_bitmap.height = height;
     src_bitmap.update_stride_from_width();
+    if (src_bitmap.bytes_per_pixel == 3) src_bitmap.stride += src_bitmap.stride_align; // 24bpp safety
     src_bitmap.update_length_from_stride_and_height();
 
 #if HAVE_POSIX_MEMALIGN

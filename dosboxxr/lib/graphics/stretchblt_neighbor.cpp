@@ -47,6 +47,8 @@ template <class T> void stretchblt_neighbor(const rgb_bitmap_info &dbmp,const rg
 void stretchblt_neighbor(const rgb_bitmap_info &dbmp,const rgb_bitmap_info &sbmp) {
     if (dbmp.bytes_per_pixel == sizeof(uint32_t))
         stretchblt_neighbor<uint32_t>(dbmp,sbmp);
+    else if (dbmp.bytes_per_pixel == 3)
+        stretchblt_neighbor<rgb24bpp_t>(dbmp,sbmp);
     else if (dbmp.bytes_per_pixel == sizeof(uint16_t))
         stretchblt_neighbor<uint16_t>(dbmp,sbmp);
     else if (dbmp.bytes_per_pixel == sizeof(uint8_t))
