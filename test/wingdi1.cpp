@@ -33,6 +33,9 @@ HBITMAP				dibOldBitmap = NULL,dibBitmap = NULL;	// you can't free a bitmap if i
 unsigned int			dibBitsPerPixel = 0;
 unsigned char*			dibBits = NULL;
 
+rgb_bitmap_info                 gdi_bitmap;
+int				do_redraw = 1;
+
 void free_bitmap(void) {
 	if (dibDC != NULL) {
 		if (dibOldBitmap != NULL) {
@@ -125,18 +128,54 @@ int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
 	// it's not obvious, and if you aren't aware of this, you'll leak bitmaps and cause problems.
 	dibOldBitmap = (HBITMAP)SelectObject(dibDC,dibBitmap);
 
-	// DEBUG: fill bitmap with dark gray
-	memset(dibBits,64,dibBmpInfo->bmiHeader.biSizeImage);
+	gdi_bitmap.clear();
+	gdi_bitmap.width = w;
+	gdi_bitmap.height = h;
+	gdi_bitmap.bytes_per_pixel = (dibBitsPerPixel + 7) / 8;
+	gdi_bitmap.stride = pwidth;
+	gdi_bitmap.update_length_from_stride_and_height();
+	gdi_bitmap.base = dibBits;
+	gdi_bitmap.canvas = dibBits;
+
+	switch (dibBitsPerPixel) {
+		case 32: // WINGDI is XRGB (B is LSByte, X is MSByte)
+			gdi_bitmap.rgbinfo.b.setByShiftOffset(0,8); /* (offset,length) */
+			gdi_bitmap.rgbinfo.g.setByShiftOffset(8,8);
+			gdi_bitmap.rgbinfo.r.setByShiftOffset(16,8);
+			gdi_bitmap.rgbinfo.a.setByShiftOffset(24,8);
+			break;
+		case 24: // WINGDI is RGB (B is LSByte, R is MSByte)
+		default:
+			gdi_bitmap.rgbinfo.b.setByShiftOffset(0,8); /* (offset,length) */
+			gdi_bitmap.rgbinfo.g.setByShiftOffset(8,8);
+			gdi_bitmap.rgbinfo.r.setByShiftOffset(16,8);
+			gdi_bitmap.rgbinfo.a.setByShiftOffset(0,0);
+			break;
+		case 15: // WINGDI is XRGB 5/5/5 (XRRRRRGGGGGBBBBB)
+		case 16:
+			gdi_bitmap.rgbinfo.b.setByShiftOffset(0,5); /* (offset,length) */
+			gdi_bitmap.rgbinfo.g.setByShiftOffset(5,5);
+			gdi_bitmap.rgbinfo.r.setByShiftOffset(10,5);
+			gdi_bitmap.rgbinfo.a.setByShiftOffset(0,0);
+			break;
+	}
 
 	fprintf(stderr,"init_bitmap() OK %ux%ux%u pwidth=%u %u\n",w,h,dibBitsPerPixel,pwidth,pwidth / ((dibBitsPerPixel+7)/8));
+
+	fprintf(stderr,"R/G/B/A shift/width/mask %u/%u/0x%X %u/%u/0x%X %u/%u/0x%X %u/%u/0x%X\n",
+			gdi_bitmap.rgbinfo.r.shift, gdi_bitmap.rgbinfo.r.bwidth, gdi_bitmap.rgbinfo.r.bmask,
+			gdi_bitmap.rgbinfo.g.shift, gdi_bitmap.rgbinfo.g.bwidth, gdi_bitmap.rgbinfo.g.bmask,
+			gdi_bitmap.rgbinfo.b.shift, gdi_bitmap.rgbinfo.b.bwidth, gdi_bitmap.rgbinfo.b.bmask,
+			gdi_bitmap.rgbinfo.a.shift, gdi_bitmap.rgbinfo.a.bwidth, gdi_bitmap.rgbinfo.a.bmask);
 
 	return 1;
 }
 
 void update_screen(HDC targetDC) {
 	if (dibDC == NULL) return;
+	if (!gdi_bitmap.is_valid()) return;
 
-	if (!BitBlt(targetDC,0,0,dibBmpInfo->bmiHeader.biWidth,abs((int)dibBmpInfo->bmiHeader.biHeight),dibDC,0,0,SRCCOPY))
+	if (!BitBlt(targetDC,0,0,gdi_bitmap.width,gdi_bitmap.height,dibDC,0,0,SRCCOPY))
 		fprintf(stderr,"update_screen() warning BitBlt failed\n");
 }
 
@@ -147,6 +186,10 @@ static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		case WM_PAINT: {
 			PAINTSTRUCT ps;
 			HDC hdc = BeginPaint(hwnd,&ps);
+			if (do_redraw) {
+				render_test_pattern_rgb_gradients(gdi_bitmap);
+				do_redraw = 0;
+			}
 			update_screen(hdc);
 			EndPaint(hwnd,&ps);
 			} break;
@@ -154,6 +197,8 @@ static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			if (!init_bitmap(LOWORD(lParam),HIWORD(lParam)))
 				fprintf(stderr,"WARNING WM_RESIZE init_bitmap(%u,%u) failed\n",
 					LOWORD(lParam),HIWORD(lParam));
+			InvalidateRect(hwndMain,NULL,FALSE); // DWM compositor-based versions set WM_PAINT such that only the affected area will repaint
+			do_redraw = 1;
 			break;
 		case WM_DESTROY:
 			PostQuitMessage(0);
@@ -204,6 +249,7 @@ int main() {
 		fprintf(stderr,"nit_bitmap() failed for %ux%u\n",rect.right,rect.bottom);
 		return 1;
 	}
+	render_test_pattern_rgb_gradients(gdi_bitmap);
 
 	ShowWindow(hwndMain,SW_SHOW);
 	UpdateWindow(hwndMain);
