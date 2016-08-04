@@ -163,7 +163,9 @@ if test "$build_os" = ""; then build_os=`uname -s 2>/dev/null`; fi
 AC_MSG_RESULT([$build_os])
 
 IS_MAC_OSX=0
+IS_MINGW=0
 IS_LINUX=0
+IS_WINDOWS=0
 case "$build_os" in
     *linux*)
         IS_LINUX=1
@@ -173,6 +175,10 @@ case "$build_os" in
         ;;
     *Darwin*)
         IS_MAC_OSX=1
+        ;;
+    *Msys*)
+        IS_MINGW=1
+        IS_WINDOWS=1
         ;;
     *)
         ;;
@@ -195,6 +201,14 @@ AC_DEFINE_UNQUOTED([IS_LINUX],[$IS_LINUX],[OS is Linux])
 AC_SUBST(IS_MAC_OSX)
 AM_CONDITIONAL([IS_MAC_OSX],[test $IS_MAC_OSX = 1])
 AC_DEFINE_UNQUOTED([IS_MAC_OSX],[$IS_MAC_OSX],[OS is Mac OS X (Darwin)])
+
+AC_SUBST(IS_WINDOWS)
+AM_CONDITIONAL([IS_WINDOWS],[test $IS_WINDOWS = 1])
+AC_DEFINE_UNQUOTED([IS_WINDOWS],[$IS_WINDOWS],[OS is Windows])
+
+AC_SUBST(IS_MINGW)
+AM_CONDITIONAL([IS_MINGW],[test $IS_MINGW = 1])
+AC_DEFINE_UNQUOTED([IS_MINGW],[$IS_MINGW],[OS is Windows (MinGW/Msys)])
 
 # GCC __builtin_cpu_init and other functions.
 # Note that Clang doesn't provide this, yet.
