@@ -84,21 +84,19 @@ static inline void stretchblt_line_bilinear_vinterp_stage_arm_neon_rgb16(int16x8
 }
 #endif
 
-template <class T> void stretchblt_bilinear_arm_neon() {
+template <class T> void stretchblt_bilinear_arm_neon(const rgb_bitmap_info &dbmp,const rgb_bitmap_info &sbmp) {
 #if HAVE_CPU_ARM_NEON
     // WARNING: This code assumes typical RGBA type packing where red and blue are NOT adjacent, and alpha and green are not adjacent
     nr_wfpack sx={0,0},sy={0,0},stepx,stepy;
     static vinterp_tmp<int16x8_t> vinterp_tmp;
-    const T alpha = 
-        (T)(~(x_image->red_mask+x_image->green_mask+x_image->blue_mask));
-    const T rbmask = (T)(x_image->red_mask+x_image->blue_mask);
-    const T abmask = (T)x_image->green_mask + alpha;
+    const T rbmask = (T)(dbmp.rgbinfo.r.mask+dbmp.rgbinfo.b.mask);
+    const T abmask = (T)(dbmp.rgbinfo.g.mask+dbmp.rgbinfo.a.mask);
     int16x8_t rmask128,gmask128,bmask128;
     const size_t pixels_per_group =
         sizeof(int16x8_t) / sizeof(T);
+    unsigned int src_bitmap_width_groups =
+        (sbmp.width + pixels_per_group - 1) / pixels_per_group;
     unsigned char *drow;
-    uint16_t rm,gm,bm;
-    uint8_t rs,gs,bs;
     int16_t mul128;
     size_t ox,oy;
     T fshift;
@@ -106,83 +104,45 @@ template <class T> void stretchblt_bilinear_arm_neon() {
     T fmax;
     T mul;
 
-    // do not run this function if NEON extensions are not present
-    if (!hostCPUcaps.neon) {
-        fprintf(stderr,"CPU does not support NEON\n");
-        return;
-    }
-
-    rs = bitscan_forward(x_image->red_mask,0);
-    rm = bitscan_count(x_image->red_mask,rs) - rs;
-
-    gs = bitscan_forward(x_image->green_mask,0);
-    gm = bitscan_count(x_image->green_mask,gs) - gs;
-
-    bs = bitscan_forward(x_image->blue_mask,0);
-    bm = bitscan_count(x_image->blue_mask,bs) - bs;
-
-    fshift = std::min(rm,std::min(gm,bm));
-    pshift = fshift;
-    fshift = (sizeof(nr_wftype) * 8) - fshift;
-
-    // this code WILL fault if base or stride are not multiple of 16!
-    if ((src_bitmap_stride & 15) != 0 || ((size_t)src_bitmap & 15) != 0) {
-        fprintf(stderr,"Source bitmap not NEON usable (base=%p stride=0x%x\n",(void*)src_bitmap,(unsigned int)src_bitmap_stride);
-        return;
-    }
-    if (((size_t)x_image->data & 15) != 0 || (x_image->bytes_per_line & 15) != 0) {
-        fprintf(stderr,"Target bitmap not NEON usable (base=%p stride=0x%x\n",(void*)x_image->data,(unsigned int)x_image->bytes_per_line);
-        return;
-    }
+    pshift = std::min(dbmp.rgbinfo.r.bwidth,std::min(dbmp.rgbinfo.g.bwidth,dbmp.rgbinfo.b.bwidth));
+    fshift = (sizeof(nr_wftype) * 8) - pshift;
+    fmax = 1U << pshift;
 
     if (sizeof(T) == 4) {
-        // 32bpp this code can only handle the 8-bit RGBA/ARGB case, else R/G/B fields cross 16-bit boundaries
-        if (pshift != 8) return;
-        if (bm != 8 || gm != 8 || rm != 8) return; // each field, 8 bits
-        if ((rs&7) != 0 || (gs&7) != 0 || (bs&7) != 0) return; // each field, starts on 8-bit boundaries
-
         rmask128 = (int16x8_t){0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};
     }
     else {
-        // 16bpp this code can handle any case
-        if (pshift > 15) return;
-
         rmask128 = (int16x8_t){
-            (int16_t)((1 << rm) - 1),   (int16_t)((1 << rm) - 1),
-            (int16_t)((1 << rm) - 1),   (int16_t)((1 << rm) - 1),
-            (int16_t)((1 << rm) - 1),   (int16_t)((1 << rm) - 1),
-            (int16_t)((1 << rm) - 1),   (int16_t)((1 << rm) - 1)
+            (int16_t)dbmp.rgbinfo.r.bmask,  (int16_t)dbmp.rgbinfo.r.bmask,
+            (int16_t)dbmp.rgbinfo.r.bmask,  (int16_t)dbmp.rgbinfo.r.bmask,
+            (int16_t)dbmp.rgbinfo.r.bmask,  (int16_t)dbmp.rgbinfo.r.bmask,
+            (int16_t)dbmp.rgbinfo.r.bmask,  (int16_t)dbmp.rgbinfo.r.bmask
         };
 
         gmask128 = (int16x8_t){
-            (int16_t)((1 << gm) - 1),   (int16_t)((1 << gm) - 1),
-            (int16_t)((1 << gm) - 1),   (int16_t)((1 << gm) - 1),
-            (int16_t)((1 << gm) - 1),   (int16_t)((1 << gm) - 1),
-            (int16_t)((1 << gm) - 1),   (int16_t)((1 << gm) - 1)
+            (int16_t)dbmp.rgbinfo.g.bmask,  (int16_t)dbmp.rgbinfo.g.bmask,
+            (int16_t)dbmp.rgbinfo.g.bmask,  (int16_t)dbmp.rgbinfo.g.bmask,
+            (int16_t)dbmp.rgbinfo.g.bmask,  (int16_t)dbmp.rgbinfo.g.bmask,
+            (int16_t)dbmp.rgbinfo.g.bmask,  (int16_t)dbmp.rgbinfo.g.bmask
         };
 
         bmask128 = (int16x8_t){
-            (int16_t)((1 << bm) - 1),   (int16_t)((1 << bm) - 1),
-            (int16_t)((1 << bm) - 1),   (int16_t)((1 << bm) - 1),
-            (int16_t)((1 << bm) - 1),   (int16_t)((1 << bm) - 1),
-            (int16_t)((1 << bm) - 1),   (int16_t)((1 << bm) - 1)
+            (int16_t)dbmp.rgbinfo.b.bmask,  (int16_t)dbmp.rgbinfo.b.bmask,
+            (int16_t)dbmp.rgbinfo.b.bmask,  (int16_t)dbmp.rgbinfo.b.bmask,
+            (int16_t)dbmp.rgbinfo.b.bmask,  (int16_t)dbmp.rgbinfo.b.bmask,
+            (int16_t)dbmp.rgbinfo.b.bmask,  (int16_t)dbmp.rgbinfo.b.bmask
         };
     }
 
-    fmax = 1U << pshift;
+    render_scale_from_sd(/*&*/stepx,dbmp.width,sbmp.width);
+    render_scale_from_sd(/*&*/stepy,dbmp.height,sbmp.height);
+    if (dbmp.width == 0 || src_bitmap_width_groups == 0) return;
 
-    render_scale_from_sd(/*&*/stepx,bitmap_width,src_bitmap_width);
-    render_scale_from_sd(/*&*/stepy,bitmap_height,src_bitmap_height);
-
-    unsigned int src_bitmap_width_groups = (src_bitmap_width + pixels_per_group - 1) / pixels_per_group;
-
-    if (bitmap_width == 0 || src_bitmap_width_groups == 0) return;
-
-    drow = (unsigned char*)x_image->data;
-    oy = bitmap_height;
+    drow = dbmp.get_scanline<uint8_t>(0);
+    oy = dbmp.height;
     do {
-        T *s2 = src_bitmap.get_scanline<T>(sy.w+1);
-        T *s = src_bitmap.get_scanline<T>(sy.w);
+        T *s2 = sbmp.get_scanline<T>(sy.w+1);
+        T *s = sbmp.get_scanline<T>(sy.w);
         T *d = (T*)drow;
 
         mul = (T)(sy.f >> fshift);
@@ -192,37 +152,50 @@ template <class T> void stretchblt_bilinear_arm_neon() {
             if (stepx.w != 1 || stepx.f != 0) {
                 // horizontal interpolation, vertical interpolation
                 if (sizeof(T) == 4)
-                    rerender_line_bilinear_vinterp_stage_arm_neon_argb8(vinterp_tmp.tmp,(int16x8_t*)s,(int16x8_t*)s2,mul128,src_bitmap_width_groups,rmask128);
+                    stretchblt_line_bilinear_vinterp_stage_arm_neon_argb8(vinterp_tmp.tmp,(int16x8_t*)s,(int16x8_t*)s2,mul128,src_bitmap_width_groups,rmask128);
                 else
-                    rerender_line_bilinear_vinterp_stage_arm_neon_rgb16(vinterp_tmp.tmp,(int16x8_t*)s,(int16x8_t*)s2,mul128,src_bitmap_width_groups,
-                        rmask128,rs,gmask128,gs,bmask128,bs);
+                    stretchblt_line_bilinear_vinterp_stage_arm_neon_rgb16(vinterp_tmp.tmp,(int16x8_t*)s,(int16x8_t*)s2,mul128,src_bitmap_width_groups,
+                        rmask128,dbmp.rgbinfo.r.shift,
+                        gmask128,dbmp.rgbinfo.g.shift,
+                        bmask128,dbmp.rgbinfo.b.shift);
 
-                rerender_line_bilinear_hinterp_stage<T>(d,(T*)vinterp_tmp.tmp,sx,stepx,bitmap_width,rbmask,abmask,fmax,fshift,pshift);
+                stretchblt_line_bilinear_hinterp_stage<T>(d,(T*)vinterp_tmp.tmp,sx,stepx,dbmp.width,rbmask,abmask,fmax,fshift,pshift);
             }
             else {
                 // vertical interpolation only
                 if (sizeof(T) == 4)
-                    rerender_line_bilinear_vinterp_stage_arm_neon_argb8((int16x8_t*)d,(int16x8_t*)s,(int16x8_t*)s2,mul128,src_bitmap_width_groups,rmask128);
+                    stretchblt_line_bilinear_vinterp_stage_arm_neon_argb8((int16x8_t*)d,(int16x8_t*)s,(int16x8_t*)s2,mul128,src_bitmap_width_groups,rmask128);
                 else
-                    rerender_line_bilinear_vinterp_stage_arm_neon_rgb16((int16x8_t*)d,(int16x8_t*)s,(int16x8_t*)s2,mul128,src_bitmap_width_groups,
-                        rmask128,rs,gmask128,gs,bmask128,bs);
+                    stretchblt_line_bilinear_vinterp_stage_arm_neon_rgb16((int16x8_t*)d,(int16x8_t*)s,(int16x8_t*)s2,mul128,src_bitmap_width_groups,
+                        rmask128,dbmp.rgbinfo.r.shift,
+                        gmask128,dbmp.rgbinfo.g.shift,
+                        bmask128,dbmp.rgbinfo.b.shift);
             }
         }
         else {
             if (stepx.w != 1 || stepx.f != 0) {
                 // horizontal interpolation, no vertical interpolation
-                rerender_line_bilinear_hinterp_stage<T>(d,s,sx,stepx,bitmap_width,rbmask,abmask,fmax,fshift,pshift);
+                stretchblt_line_bilinear_hinterp_stage<T>(d,s,sx,stepx,dbmp.width,rbmask,abmask,fmax,fshift,pshift);
             }
             else {
                 // copy the scanline 1:1 no interpolation
-                memcpy(d,s,bitmap_width*sizeof(T));
+                memcpy(d,s,dbmp.width*sizeof(T));
             }
         }
 
         if ((--oy) == 0) break;
-        drow += x_image->bytes_per_line;
+        drow += dbmp.stride;
         sy += stepy;
     } while (1);
+#endif
+}
+
+void stretchblt_bilinear_arm_neon(const rgb_bitmap_info &dbmp,const rgb_bitmap_info &sbmp) {
+#if HAVE_CPU_ARM_NEON
+    if (dbmp.bytes_per_pixel == sizeof(uint32_t))
+        stretchblt_bilinear_arm_neon<uint32_t>(dbmp,sbmp);
+    else if (dbmp.bytes_per_pixel == sizeof(uint16_t))
+        stretchblt_bilinear_arm_neon<uint16_t>(dbmp,sbmp);
 #endif
 }
 
@@ -256,7 +229,23 @@ template <class T> bool stretchblt_bilinear_arm_neon_can_do(const rgb_bitmap_inf
             (dbmp.rgbinfo.b.shift&7) != 0) return false; // each field, starts on 8-bit boundaries
     }
     else {
-        // 16bpp this code can handle any case
+        // 16bpp can only handle 5/6/5 or 5/5/5 RGB/BGR
+        if (dbmp.rgbinfo.r.bwidth > 6 ||
+            dbmp.rgbinfo.g.bwidth > 6 ||
+            dbmp.rgbinfo.b.bwidth > 6) return false;
+
+        // green must start at bit 5
+        if (dbmp.rgbinfo.g.shift != 5)
+            return false;
+
+        // red/blue must start at 0/10, 0/11, 10/0, or 11/0
+        if ((dbmp.rgbinfo.r.shift == 0 && dbmp.rgbinfo.b.shift == 10) ||
+            (dbmp.rgbinfo.r.shift == 0 && dbmp.rgbinfo.b.shift == 11) ||
+            (dbmp.rgbinfo.r.shift == 10 && dbmp.rgbinfo.b.shift == 0) ||
+            (dbmp.rgbinfo.r.shift == 11 && dbmp.rgbinfo.b.shift == 0))
+            { /*OK*/ }
+        else
+            return false;
     }
 
     return true;
