@@ -3,30 +3,9 @@
 # include "config.h" // must be first
 #endif
 
-#include <sys/mman.h>
-
-#include <sys/ipc.h>
-#include <sys/shm.h>
-
-#include <stdio.h>
-#include <errno.h>
-#include <assert.h>
-#include <stdlib.h>
-#include <string.h>
 #include <stdint.h>
 
-#include <X11/X.h>
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/extensions/XShm.h>
-
-#include <algorithm>
-
-#include "dosboxxr/lib/hostcpudetect/caps.h"
 #include "dosboxxr/lib/util/nr_wfpack.h"
-#include "dosboxxr/lib/util/bitscan.h"
-#include "dosboxxr/lib/util/rgbinfo.h"
-#include "dosboxxr/lib/util/rgb_bitmap_info.h"
 
 static inline void render_scale_from_sd_64towf(struct nr_wfpack &sy,const uint64_t t) {
 	if (sizeof(nr_wftype) == 8) {
@@ -40,7 +19,8 @@ static inline void render_scale_from_sd_64towf(struct nr_wfpack &sy,const uint64
 		sy.f = (nr_wftype)t;
 	}
 	else {
-		abort();
+		sy.w = 0;
+		sy.f = 0;
 	}
 }
 

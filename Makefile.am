@@ -2,10 +2,14 @@
 noinst_LIBRARIES = \
 	dosboxxr/lib/hostcpudetect/libhostcpudetect.a \
 	dosboxxr/lib/graphics/libstretchblt.a \
-	dosboxxr/lib/xlib/libxlibdemo.a \
 	dosboxxr/lib/util/libutil.a \
 	dosboxxr/lib/text/libtext.a \
 	dosboxxr/lib/cpu/libcpu.a
+
+if HAVE_X11
+noinst_LIBRARIES += \
+	dosboxxr/lib/xlib/libxlibdemo.a
+endif
 
 dosboxxr_lib_hostcpudetect_libhostcpudetect_a_SOURCES = dosboxxr/lib/hostcpudetect/caps.cpp
 
