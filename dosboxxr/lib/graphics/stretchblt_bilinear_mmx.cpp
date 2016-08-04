@@ -24,13 +24,23 @@
 
 // 32bpp optimized for 8-bit ARGB/RGBA. rmask should be 0x00FF,0x00FF,... etc
 static inline __m64 stretchblt_line_bilinear_pixel_blend_mmx_argb8(const __m64 cur,const __m64 nxt,const __m64 mul,const __m64 rmask) {
-    __m64 d1,d2,d3,d4;
+    __m64 rc,gc;
+    __m64 rn,gn;
+    __m64 d,sum;
 
-    d1 = _mm_and_si64(_mm_mulhi_pi16(_mm_sub_pi16(_mm_and_si64(nxt,rmask),_mm_and_si64(cur,rmask)),mul),rmask);
-    d2 = _mm_slli_si64(_mm_and_si64(_mm_mulhi_pi16(_mm_sub_pi16(_mm_and_si64(_mm_srli_si64(nxt,8),rmask),_mm_and_si64(_mm_srli_si64(cur,8),rmask)),mul),rmask),8);
-    d3 = _mm_add_pi8(d1,d2);
-    d4 = _mm_add_pi8(d3,d3);
-    return _mm_add_pi8(d4,cur);
+    rc = _mm_and_si64(              cur   ,rmask);
+    gc = _mm_and_si64(_mm_srli_si64(cur,8),rmask);
+
+    rn = _mm_and_si64(              nxt   ,rmask);
+    gn = _mm_and_si64(_mm_srli_si64(nxt,8),rmask);
+
+    d = _mm_sub_pi16(rn,rc);
+    sum = _mm_add_pi16(rc,_mm_mulhi_pi16(_mm_add_pi16(d,d),mul));
+
+    d = _mm_sub_pi16(gn,gc);
+    sum = _mm_add_pi16(_mm_slli_si64(_mm_add_pi16(gc,_mm_mulhi_pi16(_mm_add_pi16(d,d),mul)),8),sum);
+
+    return sum;
 }
 
 // 16bpp general R/G/B, usually 5/6/5 or 5/5/5
@@ -48,13 +58,13 @@ static inline __m64 stretchblt_line_bilinear_pixel_blend_mmx_rgb16(const __m64 c
     bn = _mm_and_si64(_mm_srli_si64(nxt,bshift),bmask);
 
     d = _mm_sub_pi16(rn,rc);
-    sum = _mm_slli_si64(_mm_add_pi16(rc,_mm_and_si64(_mm_mulhi_pi16(_mm_add_pi16(d,d),mul),rmask)),rshift);
+    sum = _mm_slli_si64(_mm_add_pi16(rc,_mm_mulhi_pi16(_mm_add_pi16(d,d),mul)),rshift);
 
     d = _mm_sub_pi16(gn,gc);
-    sum = _mm_add_pi16(_mm_slli_si64(_mm_add_pi16(gc,_mm_and_si64(_mm_mulhi_pi16(_mm_add_pi16(d,d),mul),gmask)),gshift),sum);
+    sum = _mm_add_pi16(_mm_slli_si64(_mm_add_pi16(gc,_mm_mulhi_pi16(_mm_add_pi16(d,d),mul)),gshift),sum);
 
     d = _mm_sub_pi16(bn,bc);
-    sum = _mm_add_pi16(_mm_slli_si64(_mm_add_pi16(bc,_mm_and_si64(_mm_mulhi_pi16(_mm_add_pi16(d,d),mul),bmask)),bshift),sum);
+    sum = _mm_add_pi16(_mm_slli_si64(_mm_add_pi16(bc,_mm_mulhi_pi16(_mm_add_pi16(d,d),mul)),bshift),sum);
 
     return sum;
 }
