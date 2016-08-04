@@ -34,7 +34,27 @@ unsigned int			dibBitsPerPixel = 0;
 unsigned char*			dibBits = NULL;
 
 rgb_bitmap_info                 gdi_bitmap;
-int				do_redraw = 1;
+bool				announce_fmt = true;
+
+void win32_dpi_aware(void) { // Windows 7? DPI scaling, disable it
+	HRESULT WINAPI (*__SetProcessDpiAwareness)(unsigned int aware);
+	HMODULE dll;
+
+	dll = LoadLibrary("shcore.dll");
+	if (dll == NULL) return;
+
+	__SetProcessDpiAwareness = (HRESULT WINAPI (*)(unsigned int))
+		GetProcAddress(dll,"SetProcessDpiAwareness");
+	if (__SetProcessDpiAwareness == NULL) {
+		FreeLibrary(dll);
+		return;
+	}
+
+	__SetProcessDpiAwareness(1/*PROCESS_SYSTEM_DPI_AWARE*/);
+
+	FreeLibrary(dll);
+	return;
+}
 
 void free_bitmap(void) {
 	if (dibDC != NULL) {
@@ -56,6 +76,8 @@ void free_bitmap(void) {
 		DeleteObject(dibBitmap);
 		dibBitmap = NULL;
 	}
+
+	gdi_bitmap.clear();
 }
 
 int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
@@ -160,13 +182,14 @@ int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
 			break;
 	}
 
-	fprintf(stderr,"init_bitmap() OK %ux%ux%u pwidth=%u %u\n",w,h,dibBitsPerPixel,pwidth,pwidth / ((dibBitsPerPixel+7)/8));
-
-	fprintf(stderr,"R/G/B/A shift/width/mask %u/%u/0x%X %u/%u/0x%X %u/%u/0x%X %u/%u/0x%X\n",
-			gdi_bitmap.rgbinfo.r.shift, gdi_bitmap.rgbinfo.r.bwidth, gdi_bitmap.rgbinfo.r.bmask,
-			gdi_bitmap.rgbinfo.g.shift, gdi_bitmap.rgbinfo.g.bwidth, gdi_bitmap.rgbinfo.g.bmask,
-			gdi_bitmap.rgbinfo.b.shift, gdi_bitmap.rgbinfo.b.bwidth, gdi_bitmap.rgbinfo.b.bmask,
-			gdi_bitmap.rgbinfo.a.shift, gdi_bitmap.rgbinfo.a.bwidth, gdi_bitmap.rgbinfo.a.bmask);
+	if (announce_fmt) {
+		announce_fmt = false;
+		fprintf(stderr,"R/G/B/A shift/width/mask %u/%u/0x%X %u/%u/0x%X %u/%u/0x%X %u/%u/0x%X\n",
+				gdi_bitmap.rgbinfo.r.shift, gdi_bitmap.rgbinfo.r.bwidth, gdi_bitmap.rgbinfo.r.bmask,
+				gdi_bitmap.rgbinfo.g.shift, gdi_bitmap.rgbinfo.g.bwidth, gdi_bitmap.rgbinfo.g.bmask,
+				gdi_bitmap.rgbinfo.b.shift, gdi_bitmap.rgbinfo.b.bwidth, gdi_bitmap.rgbinfo.b.bmask,
+				gdi_bitmap.rgbinfo.a.shift, gdi_bitmap.rgbinfo.a.bwidth, gdi_bitmap.rgbinfo.a.bmask);
+	}
 
 	return 1;
 }
@@ -186,10 +209,6 @@ static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		case WM_PAINT: {
 			PAINTSTRUCT ps;
 			HDC hdc = BeginPaint(hwnd,&ps);
-			if (do_redraw) {
-				render_test_pattern_rgb_gradients(gdi_bitmap);
-				do_redraw = 0;
-			}
 			update_screen(hdc);
 			EndPaint(hwnd,&ps);
 			} break;
@@ -197,8 +216,15 @@ static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			if (!init_bitmap(LOWORD(lParam),HIWORD(lParam)))
 				fprintf(stderr,"WARNING WM_RESIZE init_bitmap(%u,%u) failed\n",
 					LOWORD(lParam),HIWORD(lParam));
+			render_test_pattern_rgb_gradients(gdi_bitmap);
 			InvalidateRect(hwndMain,NULL,FALSE); // DWM compositor-based versions set WM_PAINT such that only the affected area will repaint
-			do_redraw = 1;
+			break;
+		case WM_KEYDOWN:
+			switch (wParam) {
+				case VK_ESCAPE:
+					PostMessage(hwnd,WM_CLOSE,0,0);
+					break;
+			}
 			break;
 		case WM_DESTROY:
 			PostQuitMessage(0);
@@ -215,12 +241,16 @@ int main() {
 	RECT rect;
 	MSG msg;
 
+	/* Please don't scale me in the name of "DPI awareness" */
+	win32_dpi_aware();
+
 	myInstance = GetModuleHandle(NULL);
 
 	memset(&wnd,0,sizeof(wnd));
 	wnd.lpfnWndProc = WndProc;
 	wnd.hInstance = myInstance;
 	wnd.lpszClassName = hwndMainClass;
+	wnd.hCursor = LoadCursor(NULL,IDC_ARROW);
 
 	if (!RegisterClass(&wnd)) {
 		fprintf(stderr,"RegisterClass() failed\n");
