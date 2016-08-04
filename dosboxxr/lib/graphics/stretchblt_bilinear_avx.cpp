@@ -25,13 +25,23 @@
 
 // 32bpp optimized for 8-bit ARGB/RGBA. rmask should be 0x00FF,0x00FF,... etc
 static inline __m256i stretchblt_line_bilinear_pixel_blend_avx_argb8(const __m256i cur,const __m256i nxt,const __m256i mul,const __m256i rmask) {
-    __m256i d1,d2,d3,d4;
+    __m256i rc,gc;
+    __m256i rn,gn;
+    __m256i d,sum;
 
-    d1 = _mm256_and_si256(_mm256_mulhi_epi16(_mm256_sub_epi16(_mm256_and_si256(nxt,rmask),_mm256_and_si256(cur,rmask)),mul),rmask);
-    d2 = _mm256_slli_si256(_mm256_and_si256(_mm256_mulhi_epi16(_mm256_sub_epi16(_mm256_and_si256(_mm256_srli_si256(nxt,1/*bytes!*/),rmask),_mm256_and_si256(_mm256_srli_si256(cur,1/*bytes!*/),rmask)),mul),rmask),1/*bytes!*/);
-    d3 = _mm256_add_epi8(d1,d2);
-    d4 = _mm256_add_epi8(d3,d3);
-    return _mm256_add_epi8(d4,cur);
+    rc = _mm256_and_si256(                  cur   ,rmask);
+    gc = _mm256_and_si256(_mm256_srli_epi16(cur,8),rmask);
+
+    rn = _mm256_and_si256(               nxt   ,rmask);
+    gn = _mm256_and_si256(_mm256_srli_epi16(nxt,8),rmask);
+
+    d = _mm256_sub_epi16(rn,rc);
+    sum = _mm256_add_epi16(rc,_mm256_mulhi_epi16(_mm256_add_epi16(d,d),mul));
+
+    d = _mm256_sub_epi16(gn,gc);
+    sum = _mm256_add_epi16(_mm256_slli_epi16(_mm256_add_epi16(gc,_mm256_mulhi_epi16(_mm256_add_epi16(d,d),mul)),8),sum);
+
+    return sum;
 }
 
 // 16bpp general R/G/B, usually 5/6/5 or 5/5/5
@@ -49,13 +59,13 @@ static inline __m256i stretchblt_line_bilinear_pixel_blend_avx_rgb16(const __m25
     bn = _mm256_and_si256(_mm256_srli_epi16(nxt,bshift),bmask);
 
     d = _mm256_sub_epi16(rn,rc);
-    sum = _mm256_slli_epi16(_mm256_add_epi16(rc,_mm256_and_si256(_mm256_mulhi_epi16(_mm256_add_epi16(d,d),mul),rmask)),rshift);
+    sum = _mm256_slli_epi16(_mm256_add_epi16(rc,_mm256_mulhi_epi16(_mm256_add_epi16(d,d),mul)),rshift);
 
     d = _mm256_sub_epi16(gn,gc);
-    sum = _mm256_add_epi16(_mm256_slli_epi16(_mm256_add_epi16(gc,_mm256_and_si256(_mm256_mulhi_epi16(_mm256_add_epi16(d,d),mul),gmask)),gshift),sum);
+    sum = _mm256_add_epi16(_mm256_slli_epi16(_mm256_add_epi16(gc,_mm256_mulhi_epi16(_mm256_add_epi16(d,d),mul)),gshift),sum);
 
     d = _mm256_sub_epi16(bn,bc);
-    sum = _mm256_add_epi16(_mm256_slli_epi16(_mm256_add_epi16(bc,_mm256_and_si256(_mm256_mulhi_epi16(_mm256_add_epi16(d,d),mul),bmask)),bshift),sum);
+    sum = _mm256_add_epi16(_mm256_slli_epi16(_mm256_add_epi16(bc,_mm256_mulhi_epi16(_mm256_add_epi16(d,d),mul)),bshift),sum);
 
     return sum;
 }
