@@ -4,6 +4,13 @@
 
 #include "dosboxxr/lib/util/bitscan.h"
 
+// typedef for 24bpp pixel format
+#pragma pack(push)
+union uint24_t {
+    unsigned char   ch[3];
+};
+#pragma pack(pop)
+
 // utility struct to store bit position, width, and mask of pixels.
 // T is either uint16_t or uint32_t. This is ONLY for use with RGB
 // pixel formats.

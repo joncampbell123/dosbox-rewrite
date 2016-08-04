@@ -343,6 +343,9 @@ int main(int argc,char **argv) {
 		}
 	}
 
+	if (sizeof(uint24_t) != 3)
+		fprintf(stderr,"WARNING: uint24_t is not 3 bytes long, it is %zu bytes\n",sizeof(uint24_t));
+
 	/* Please don't scale me in the name of "DPI awareness" */
 	if (!gdi_no_dpiaware)
 		win32_dpi_aware();
