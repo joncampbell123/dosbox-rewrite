@@ -45,6 +45,11 @@ noinst_PROGRAMS = \
 	bin/test/cpumodregrm \
 	bin/test/cpumemreftypes
 
+if HAVE_WINDOWS_H
+noinst_PROGRAMS += \
+	bin/test/wingdi1
+endif
+
 if HAVE_X11
 if HAVE_OPENGL
 if HAVE_OPENGL_GLU
@@ -224,6 +229,13 @@ bin_test_fb2_LDADD = \
 	dosboxxr/lib/text/libtext.a \
 	dosboxxr/lib/util/libutil.a \
 	dosboxxr/lib/xlib/libxlibdemo.a
+
+bin_test_wingdi1_SOURCES = test/wingdi1.cpp
+bin_test_wingdi1_CXXFLAGS = $(AM_CXXFLAGS)
+bin_test_wingdi1_DEPENDENCIES = \
+	dosboxxr/lib/util/libutil.a
+bin_test_wingdi1_LDADD = $(X11_LDFLAGS)\
+	dosboxxr/lib/util/libutil.a -lkernel32 -lgdi32
 
 bin_test_cpumodregrm_SOURCES = test/cpumodregrm.cpp
 bin_test_cpumodregrm_CXXFLAGS = $(AM_CXXFLAGS)
