@@ -246,6 +246,10 @@ template <class T> bool stretchblt_bilinear_arm_neon_can_do(const rgb_bitmap_inf
             { /*OK*/ }
         else
             return false;
+
+        // red/blue channel width must match, or else it would not be interchangeable
+        if (dbmp.rgbinfo.r.bwidth != dbmp.rgbinfo.b.bwidth)
+            return false;
     }
 
     return true;
