@@ -40,6 +40,7 @@ rgb_bitmap_info                 gdi_bitmap;
 bool				announce_fmt = true;
 bool				use_bitfields = false;
 bool				rgba_order = false;
+bool				no24bpp_pad = false;
 
 void win32_dpi_aware(void) { // Windows 7? DPI scaling, disable it
 	HRESULT WINAPI (*__SetProcessDpiAwareness)(unsigned int aware);
@@ -110,13 +111,15 @@ int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
 	}
 
 	// enforce DIB alignment
-	if (dibBitsPerPixel > 16) {
-		align = (align + 3) & (~3); // must be multiple of 4
-		if (align == 0) align = 4;
-	}
-	else {
-		align = (align + 7) & (~7); // must be multiple of 8
-		if (align == 0) align = 8;
+	if (dibBitsPerPixel >= 8) {
+		unsigned int gdi_align = ((dibBitsPerPixel+7)/8) * 4; // GDI likes 4-pixel alignment
+
+		if (align == 0)
+			align = gdi_align;
+		else {
+			align += gdi_align - 1;
+			align -= align % gdi_align;
+		}
 	}
 
 	// stride now, with alignment.
@@ -125,6 +128,17 @@ int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
 	pwidth = w * ((dibBitsPerPixel+7)/8);
 	pwidth += align - 1;
 	pwidth -= pwidth % align;
+
+	// 24bpp safety padding.
+	// there is a convention in this code to work on 24bpp pixels by typecasting
+	// the 3 bytes as uint32_t and operating on the lowest 24 bits. unfortunately
+	// this means 1 byte past the pixel is read/written. that means that if we set
+	// the stride and length of the bitmap exactly around 24bpp we risk a segfault
+	// accessing 1 byte past end of buffer, therefore we must add padding.
+	if (!no24bpp_pad && dibBitsPerPixel == 24 && pwidth == (w * 3)) {
+		fprintf(stderr,"24bpp safety adjustment adding 1 pixel of padding per scanline\n");
+		pwidth += align;
+	}
 
 	dibBmpInfo = (BITMAPINFO*)dibBmpInfoRaw;
 	memset(dibBmpInfoRaw,0,sizeof(dibBmpInfoRaw));
@@ -136,7 +150,10 @@ int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
 	//
 	// Also note we autodetect from the screen, but WinGDI is fully supportive of our efforts
 	// if we choose to create a DIB section that is not the screen format, it will convert.
-	if (use_bitfields) {
+	//
+	// NOTES: As BI_RGB, GDI will take 1/4/8/16/24/32bpp
+	//        As BI_BITFIELDS, GDI will take 16/32bpp
+	if (use_bitfields && dibBitsPerPixel != 24) {
 		BITMAPV4HEADER *v4 = (BITMAPV4HEADER*)(&dibBmpInfo->bmiHeader);
 
 		dibBmpInfo->bmiHeader.biSize = sizeof(BITMAPV4HEADER);
@@ -153,18 +170,6 @@ int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
 			v4->bV4RedMask = (0x1FU << (rgba_order ? 0U : 11U));
 			v4->bV4GreenMask = (0x3FU << 5U);
 			v4->bV4BlueMask = (0x1FU << (rgba_order ? 11U : 0U));
-		}
-		else if (dibBitsPerPixel == 24) {
-			v4->bV4AlphaMask = 0;
-			v4->bV4RedMask = (0xFFU << (rgba_order ? 0U : 16U));
-			v4->bV4GreenMask = (0xFFU << 8U);
-			v4->bV4BlueMask = (0xFFU << (rgba_order ? 16U : 0U));
-		}
-		else if (dibBitsPerPixel == 30) { // Intel chipsets support a 10-bit ARGB format. Does this work? It's worth a try...
-			v4->bV4AlphaMask = (0x3U << 30U);
-			v4->bV4RedMask = (0x3FFU << (rgba_order ? 0U : 20U));
-			v4->bV4GreenMask = (0x3FFU << 10U);
-			v4->bV4BlueMask = (0x3FFU << (rgba_order ? 20U : 0U));
 		}
 		else if (dibBitsPerPixel == 32) {
 			v4->bV4AlphaMask = (0xFFU << 24U);
@@ -329,6 +334,9 @@ int main(int argc,char **argv) {
 			else if (!strcmp(a,"rgba")) {
 				rgba_order = true;
 			}
+			else if (!strcmp(a,"no24pad")) {
+				no24bpp_pad = true;
+			}
 			else if (!strcmp(a,"nodpiaware")) {
 				gdi_no_dpiaware = true;
 			}
@@ -343,8 +351,8 @@ int main(int argc,char **argv) {
 		}
 	}
 
-	if (sizeof(uint24_t) != 3)
-		fprintf(stderr,"WARNING: uint24_t is not 3 bytes long, it is %zu bytes\n",sizeof(uint24_t));
+	if (sizeof(rgb24bpp_t) != 3)
+		fprintf(stderr,"WARNING: uint24_t is not 3 bytes long, it is %zu bytes\n",sizeof(rgb24bpp_t));
 
 	/* Please don't scale me in the name of "DPI awareness" */
 	if (!gdi_no_dpiaware)

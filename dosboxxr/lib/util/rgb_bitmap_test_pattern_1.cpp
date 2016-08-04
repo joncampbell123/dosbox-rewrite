@@ -71,9 +71,76 @@ template <class T> void test_pattern_1_render(rgb_bitmap_info &bitmap) {
     }
 }
 
+template <> void test_pattern_1_render<rgb24bpp_t>(rgb_bitmap_info &bitmap) { // special case. 24bpp is an odd format that can't be typecast.
+    rgb24bpp_t *drow;
+    uint32_t r,g,b;
+    size_t ox,oy;
+
+    if (!bitmap.is_valid()) return;
+
+    // due to the nature of this code, additional padding is required.
+    // this code may write 1 byte past the last pixel.
+    if (bitmap.stride < ((bitmap.width*3)+1)) {
+	fprintf(stderr,"Test pattern 1 24bpp case: stride is too small to safely generate. Optimized code can access 1 pixel past end of canvas\n");
+	fprintf(stderr,"Please update your code to add stride padding or at least 1 scanline in height padding.\n");
+	return;
+    }
+
+    for (oy=0;oy < (bitmap.height/2);oy++) {
+        drow = bitmap.get_scanline<rgb24bpp_t>(oy);
+        for (ox=0;ox < (bitmap.width/2);ox++) {
+            /* color */
+            r = ((uint32_t)ox * (uint32_t)bitmap.rgbinfo.r.bmask) / (uint32_t)(bitmap.width/2);
+            g = ((uint32_t)oy * (uint32_t)bitmap.rgbinfo.g.bmask) / (uint32_t)(bitmap.height/2);
+            b = (uint32_t)bitmap.rgbinfo.b.bmask -
+                (((uint32_t)ox * (uint32_t)bitmap.rgbinfo.b.bmask) / (uint32_t)(bitmap.width/2));
+
+            *((uint32_t*)(drow++)) = (r << bitmap.rgbinfo.r.shift) + (g << bitmap.rgbinfo.g.shift) + (b << bitmap.rgbinfo.b.shift) + bitmap.rgbinfo.a.mask;
+        }
+    }
+
+    for (oy=0;oy < (bitmap.height/2);oy++) {
+        drow = bitmap.get_scanline<rgb24bpp_t>(oy,bitmap.width/2U);
+        for (ox=(bitmap.width/2);ox < bitmap.width;ox++) {
+            /* color */
+            r = ((ox ^ oy) & 1) ? bitmap.rgbinfo.r.bmask : 0;
+            g = ((ox ^ oy) & 1) ? bitmap.rgbinfo.g.bmask : 0;
+            b = ((ox ^ oy) & 1) ? bitmap.rgbinfo.b.bmask : 0;
+
+            *((uint32_t*)(drow++)) = (r << bitmap.rgbinfo.r.shift) + (g << bitmap.rgbinfo.g.shift) + (b << bitmap.rgbinfo.b.shift) + bitmap.rgbinfo.a.mask;
+        }
+    }
+
+    for (oy=(bitmap.height/2);oy < bitmap.height;oy++) {
+        drow = bitmap.get_scanline<rgb24bpp_t>(oy);
+        for (ox=0;ox < (bitmap.width/2);ox++) {
+            /* color */
+            r = ((ox ^ oy) & 2) ? bitmap.rgbinfo.r.bmask : 0;
+            g = ((ox ^ oy) & 2) ? bitmap.rgbinfo.g.bmask : 0;
+            b = ((ox ^ oy) & 2) ? bitmap.rgbinfo.b.bmask : 0;
+
+            *((uint32_t*)(drow++)) = (r << bitmap.rgbinfo.r.shift) + (g << bitmap.rgbinfo.g.shift) + (b << bitmap.rgbinfo.b.shift) + bitmap.rgbinfo.a.mask;
+        }
+    }
+
+    for (oy=(bitmap.height/2);oy < bitmap.height;oy++) {
+        drow = bitmap.get_scanline<rgb24bpp_t>(oy,bitmap.width/2U);
+        for (ox=(bitmap.width/2);ox < bitmap.width;ox++) {
+            /* color */
+            r = ((ox ^ oy) & 4) ? bitmap.rgbinfo.r.bmask : 0;
+            g = ((ox ^ oy) & 4) ? bitmap.rgbinfo.g.bmask : 0;
+            b = ((ox ^ oy) & 4) ? bitmap.rgbinfo.b.bmask : 0;
+
+            *((uint32_t*)(drow++)) = (r << bitmap.rgbinfo.r.shift) + (g << bitmap.rgbinfo.g.shift) + (b << bitmap.rgbinfo.b.shift) + bitmap.rgbinfo.a.mask;
+        }
+    }
+}
+
 void test_pattern_1_render(rgb_bitmap_info &bitmap) {
     if (bitmap.bytes_per_pixel == sizeof(uint32_t))
         test_pattern_1_render<uint32_t>(bitmap);
+    else if (bitmap.bytes_per_pixel == 3)
+        test_pattern_1_render<rgb24bpp_t>(bitmap);
     else if (bitmap.bytes_per_pixel == sizeof(uint16_t))
         test_pattern_1_render<uint16_t>(bitmap);
     else {

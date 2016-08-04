@@ -6,7 +6,7 @@
 
 // typedef for 24bpp pixel format
 #pragma pack(push)
-union uint24_t {
+union rgb24bpp_t {
     unsigned char   ch[3];
 };
 #pragma pack(pop)
