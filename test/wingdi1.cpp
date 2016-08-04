@@ -28,7 +28,7 @@ HINSTANCE			myInstance;
 
 HDC				dibDC = NULL;
 BITMAPINFO*			dibBmpInfo;
-unsigned char			dibBmpInfoRaw[sizeof(BITMAPINFOHEADER) + (256*sizeof(RGBQUAD))];
+unsigned char			dibBmpInfoRaw[sizeof(BITMAPV4HEADER) + (256*sizeof(RGBQUAD))];
 HBITMAP				dibOldBitmap = NULL,dibBitmap = NULL;	// you can't free a bitmap if it's selected into a DC
 unsigned int			dibBitsPerPixel = 0;
 unsigned char*			dibBits = NULL;
@@ -38,6 +38,8 @@ unsigned int			gdi_force_depth = 0;
 
 rgb_bitmap_info                 gdi_bitmap;
 bool				announce_fmt = true;
+bool				use_bitfields = false;
+bool				rgba_order = false;
 
 void win32_dpi_aware(void) { // Windows 7? DPI scaling, disable it
 	HRESULT WINAPI (*__SetProcessDpiAwareness)(unsigned int aware);
@@ -134,7 +136,57 @@ int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
 	//
 	// Also note we autodetect from the screen, but WinGDI is fully supportive of our efforts
 	// if we choose to create a DIB section that is not the screen format, it will convert.
-	dibBmpInfo->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+	if (use_bitfields) {
+		BITMAPV4HEADER *v4 = (BITMAPV4HEADER*)(&dibBmpInfo->bmiHeader);
+
+		dibBmpInfo->bmiHeader.biSize = sizeof(BITMAPV4HEADER);
+		dibBmpInfo->bmiHeader.biCompression = BI_BITFIELDS;
+
+		if (dibBitsPerPixel == 15) {
+			v4->bV4AlphaMask = (0x1U << 15U);
+			v4->bV4RedMask = (0x1FU << (rgba_order ? 0U : 10U));
+			v4->bV4GreenMask = (0x1FU << 5U);
+			v4->bV4BlueMask = (0x1FU << (rgba_order ? 10U : 0U));
+		}
+		else if (dibBitsPerPixel == 16) {
+			v4->bV4AlphaMask = 0;
+			v4->bV4RedMask = (0x1FU << (rgba_order ? 0U : 11U));
+			v4->bV4GreenMask = (0x3FU << 5U);
+			v4->bV4BlueMask = (0x1FU << (rgba_order ? 11U : 0U));
+		}
+		else if (dibBitsPerPixel == 24) {
+			v4->bV4AlphaMask = 0;
+			v4->bV4RedMask = (0xFFU << (rgba_order ? 0U : 16U));
+			v4->bV4GreenMask = (0xFFU << 8U);
+			v4->bV4BlueMask = (0xFFU << (rgba_order ? 16U : 0U));
+		}
+		else if (dibBitsPerPixel == 30) { // Intel chipsets support a 10-bit ARGB format. Does this work? It's worth a try...
+			v4->bV4AlphaMask = (0x3U << 30U);
+			v4->bV4RedMask = (0x3FFU << (rgba_order ? 0U : 20U));
+			v4->bV4GreenMask = (0x3FFU << 10U);
+			v4->bV4BlueMask = (0x3FFU << (rgba_order ? 20U : 0U));
+		}
+		else if (dibBitsPerPixel == 32) {
+			v4->bV4AlphaMask = (0xFFU << 24U);
+			v4->bV4RedMask = (0xFFU << (rgba_order ? 0U : 16U));
+			v4->bV4GreenMask = (0xFFU << 8U);
+			v4->bV4BlueMask = (0xFFU << (rgba_order ? 16U : 0U));
+		}
+		else {
+			fprintf(stderr,"Unsupported bit depth\n");
+			free_bitmap();
+			return 0;
+		}
+	}
+	else {
+		dibBmpInfo->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+
+		if (!(dibBitsPerPixel == 15 || dibBitsPerPixel == 16 || dibBitsPerPixel == 24 || dibBitsPerPixel == 32)) {
+			fprintf(stderr,"Unsupported bit depth\n");
+			free_bitmap();
+			return 0;
+		}
+	}
 	dibBmpInfo->bmiHeader.biWidth = pwidth / ((dibBitsPerPixel+7)/8); // use back-conversion from stride/align calculation
 	dibBmpInfo->bmiHeader.biHeight = -h;
 	dibBmpInfo->bmiHeader.biPlanes = 1;
@@ -166,27 +218,37 @@ int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
 	gdi_bitmap.base = dibBits;
 	gdi_bitmap.canvas = dibBits;
 
-	switch (dibBitsPerPixel) {
-		case 32: // WINGDI is XRGB (B is LSByte, X is MSByte)
-			gdi_bitmap.rgbinfo.b.setByShiftOffset(0,8); /* (offset,length) */
-			gdi_bitmap.rgbinfo.g.setByShiftOffset(8,8);
-			gdi_bitmap.rgbinfo.r.setByShiftOffset(16,8);
-			gdi_bitmap.rgbinfo.a.setByShiftOffset(24,8);
-			break;
-		case 24: // WINGDI is RGB (B is LSByte, R is MSByte)
-		default:
-			gdi_bitmap.rgbinfo.b.setByShiftOffset(0,8); /* (offset,length) */
-			gdi_bitmap.rgbinfo.g.setByShiftOffset(8,8);
-			gdi_bitmap.rgbinfo.r.setByShiftOffset(16,8);
-			gdi_bitmap.rgbinfo.a.setByShiftOffset(0,0);
-			break;
-		case 15: // WINGDI is XRGB 5/5/5 (XRRRRRGGGGGBBBBB)
-		case 16:
-			gdi_bitmap.rgbinfo.b.setByShiftOffset(0,5); /* (offset,length) */
-			gdi_bitmap.rgbinfo.g.setByShiftOffset(5,5);
-			gdi_bitmap.rgbinfo.r.setByShiftOffset(10,5);
-			gdi_bitmap.rgbinfo.a.setByShiftOffset(0,0);
-			break;
+	if (dibBmpInfo->bmiHeader.biSize >= sizeof(BITMAPV4HEADER) && dibBmpInfo->bmiHeader.biCompression == BI_BITFIELDS) {
+		BITMAPV4HEADER *v4 = (BITMAPV4HEADER*)(&dibBmpInfo->bmiHeader);
+
+		gdi_bitmap.rgbinfo.r.setByMask(v4->bV4RedMask);
+		gdi_bitmap.rgbinfo.g.setByMask(v4->bV4GreenMask);
+		gdi_bitmap.rgbinfo.b.setByMask(v4->bV4BlueMask);
+		gdi_bitmap.rgbinfo.a.setByMask(v4->bV4AlphaMask);
+	}
+	else {
+		switch (dibBitsPerPixel) {
+			case 32: // WINGDI is XRGB (B is LSByte, X is MSByte)
+				gdi_bitmap.rgbinfo.b.setByShiftOffset(0,8); /* (offset,length) */
+				gdi_bitmap.rgbinfo.g.setByShiftOffset(8,8);
+				gdi_bitmap.rgbinfo.r.setByShiftOffset(16,8);
+				gdi_bitmap.rgbinfo.a.setByShiftOffset(24,8);
+				break;
+			case 24: // WINGDI is RGB (B is LSByte, R is MSByte)
+			default:
+				gdi_bitmap.rgbinfo.b.setByShiftOffset(0,8); /* (offset,length) */
+				gdi_bitmap.rgbinfo.g.setByShiftOffset(8,8);
+				gdi_bitmap.rgbinfo.r.setByShiftOffset(16,8);
+				gdi_bitmap.rgbinfo.a.setByShiftOffset(0,0);
+				break;
+			case 15: // WINGDI is XRGB 5/5/5 (XRRRRRGGGGGBBBBB)
+			case 16:
+				gdi_bitmap.rgbinfo.b.setByShiftOffset(0,5); /* (offset,length) */
+				gdi_bitmap.rgbinfo.g.setByShiftOffset(5,5);
+				gdi_bitmap.rgbinfo.r.setByShiftOffset(10,5);
+				gdi_bitmap.rgbinfo.a.setByShiftOffset(0,0);
+				break;
+		}
 	}
 
 	if (announce_fmt) {
@@ -260,6 +322,12 @@ int main(int argc,char **argv) {
 				a = argv[i++];
 				if (a == NULL) return 1;
 				gdi_force_depth = atoi(a);
+			}
+			else if (!strcmp(a,"bitfields")) {
+				use_bitfields = true;
+			}
+			else if (!strcmp(a,"rgba")) {
+				rgba_order = true;
 			}
 			else if (!strcmp(a,"nodpiaware")) {
 				gdi_no_dpiaware = true;
