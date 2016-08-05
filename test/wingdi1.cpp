@@ -460,7 +460,7 @@ int main(int argc,char **argv) {
 	hwndMain = CreateWindow(hwndMainClass,hwndMainTitle,
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT,CW_USEDEFAULT,
-		rect.right,rect.bottom,
+		rect.right - rect.left,rect.bottom - rect.top,
 		NULL,NULL,
 		myInstance,NULL);
 	if (!hwndMain) {
