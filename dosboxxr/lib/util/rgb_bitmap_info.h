@@ -68,6 +68,32 @@ public:
     void update_canvas_from_base() {
         canvas = base;
     }
+
+    // Additional note regarding 24bpp RGB.
+    // This structure can support and represent 24 bits/pixel RGB formats, even though it is uncommon and not often used
+    // in video playback and graphics support code. However, the code in this project imposes one additional requirement
+    // regarding the stride and length of the bitmap.
+    //
+    // For performance reasons, a 24bpp pixel is typecast as uint32_t which then (on little endian processors) places the
+    // 24bpp pixel in the lower 24 bits of the 32-bit unsigned int where this code can work on it. Because of the 32-bit
+    // typedef, it is easily possible for such code to read 1 byte past the last pixel, and possibly 1 byte past the end
+    // of the bitmap. For this reason, 24bpp rendering code in this project will demand that you pad the stride of the bitmap
+    // such that:
+    //
+    //      stride > (width * 3)
+    //
+    // Meaning that each scan line must have at least 1 additional byte of padding to cover for the 32-bit memory access
+    // per pixel without segfaulting or accessing memory out of bounds. Such code *by design* will refuse to render 24bpp
+    // unless this condition is met!
+    //
+    // Because of the odd byte count per pixel in 24bpp, not every graphics routine in this project will implement or
+    // support 24bpp RGB. The routines that do will always be a subset of the overall graphics rendering library.
+    //
+    // For the historical record, 24bpp was once a common framebuffer format in the early to mid 1990's when SVGA graphics
+    // cards were becoming popular. However, it became more efficient both for hardware and software to instead implement
+    // "true color" as 32-bit XRGB since 32-bit (4 bytes) is a power of 2 size and it lines up nicely with the 32-bit
+    // integer datatype of the CPU. Today, most video cards implement the 32bpp, 16bpp, or 8bpp paletted modes, and they 
+    // leave out the 24bpp mode entirely.
 };
 
 #endif
