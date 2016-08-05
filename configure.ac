@@ -567,6 +567,14 @@ if test "$with_x11_xcb" = "yes"; then
         fi
     fi
 
+    if test "$HAVE_X11_XCB" = 0; then
+        if test "$IS_MAC_OSX" = 1; then
+            AC_CHECK_HEADER([xcb/xcb.h],[HAVE_X11_XCB=1],[])
+            XEXT_CFLAGS=""
+            XEXT_LDFLAGS=" -lX11-xcb -lX11 -lxcb"
+        fi
+    fi
+
     if test "$HAVE_X11_XCB" = 1; then
         AC_MSG_RESULT([yes])
     else
@@ -589,6 +597,14 @@ if test "$with_xcb" = "yes"; then
             HAVE_XCB=1
             XCB_CFLAGS=`pkg-config --cflags xcb`
             XCB_LDFLAGS=`pkg-config --libs xcb`
+        fi
+    fi
+
+    if test "$HAVE_XCB" = 0; then
+        if test "$IS_MAC_OSX" = 1; then
+            AC_CHECK_HEADER([xcb/xcb.h],[HAVE_XCB=1],[])
+            XEXT_CFLAGS=""
+            XEXT_LDFLAGS=" -lxcb"
         fi
     fi
 
@@ -617,6 +633,14 @@ if test "$with_xcb_xv" = "yes"; then
         fi
     fi
 
+    if test "$HAVE_XCB_XV" = 0; then
+        if test "$IS_MAC_OSX" = 1; then
+            AC_CHECK_HEADER([xcb/xv.h],[HAVE_XCB_XV=1],[])
+            XEXT_CFLAGS=""
+            XEXT_LDFLAGS=" -lxcb"
+        fi
+    fi
+
     if test "$HAVE_XCB_XV" = 1; then
         AC_MSG_RESULT([yes])
     else
@@ -642,6 +666,14 @@ if test "$with_xcb_shm" = "yes"; then
         fi
     fi
 
+    if test "$HAVE_XCB_SHM" = 0; then
+        if test "$IS_MAC_OSX" = 1; then
+            AC_CHECK_HEADER([xcb/shm.h],[HAVE_XCB_SHM=1],[])
+            XEXT_CFLAGS=""
+            XEXT_LDFLAGS=" -lxcb-shm"
+        fi
+    fi
+
     if test "$HAVE_XCB_SHM" = 1; then
         AC_MSG_RESULT([yes])
     else
@@ -664,6 +696,14 @@ if test "$with_xcb_xkb" = "yes"; then
             HAVE_XCB_XKB=1
             XCB_XKB_CFLAGS=`pkg-config --cflags xcb-xkb`
             XCB_XKB_LDFLAGS=`pkg-config --libs xcb-xkb`
+        fi
+    fi
+
+    if test "$HAVE_XCB_XKB" = 0; then
+        if test "$IS_MAC_OSX" = 1; then
+            AC_CHECK_HEADER([xcb/xkb.h],[HAVE_XCB_XKB=1],[])
+            XEXT_CFLAGS=""
+            XEXT_LDFLAGS=" -lxcb-xkb"
         fi
     fi
 
