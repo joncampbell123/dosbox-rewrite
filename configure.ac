@@ -194,6 +194,17 @@ if test "$IS_MAC_OSX" = 1; then
     CXXFLAGS+="$DARWIN_DEF"
 fi
 
+# Mac OS X may have XQuartz, with X11 headers, in a nonstandard location
+if test "$IS_MAC_OSX" = 1; then
+    if [[ -d "/opt/X11" ]]; then
+        DARWIN_DEF=" -I/opt/X11/include"
+        CFLAGS+="$DARWIN_DEF"
+        CPPFLAGS+="$DARWIN_DEF"
+        CXXFLAGS+="$DARWIN_DEF"
+        LDFLAGS+=" -L/opt/X11/lib"
+    fi
+fi
+
 AC_SUBST(IS_LINUX)
 AM_CONDITIONAL([IS_LINUX],[test $IS_LINUX = 1])
 AC_DEFINE_UNQUOTED([IS_LINUX],[$IS_LINUX],[OS is Linux])
@@ -484,6 +495,14 @@ if test "$with_x11" = "yes"; then
     else
         AC_MSG_RESULT([no])
     fi
+
+    if test "$HAVE_X11" = 0; then
+        if test "$IS_MAC_OSX" = 1; then
+            AC_CHECK_HEADER([X11/X.h],[HAVE_X11=1],[])
+            X11_CFLAGS=""
+            X11_LDFLAGS=" -lX11"
+        fi
+    fi
 fi
 AC_DEFINE_UNQUOTED([HAVE_X11],[$HAVE_X11],[Has X11])
 AM_CONDITIONAL([HAVE_X11],[test $HAVE_X11 = 1])
@@ -503,6 +522,14 @@ if test "$with_xext" = "yes"; then
         XEXT_LDFLAGS=`pkg-config --libs xext`
     else
         AC_MSG_RESULT([no])
+    fi
+
+    if test "$HAVE_XEXT" = 0; then
+        if test "$IS_MAC_OSX" = 1; then
+            AC_CHECK_HEADER([X11/extensions/shm.h],[HAVE_XEXT=1],[])
+            XEXT_CFLAGS=""
+            XEXT_LDFLAGS=" -lXext"
+        fi
     fi
 fi
 AC_DEFINE_UNQUOTED([HAVE_XEXT],[$HAVE_XEXT],[Has XEXT])
