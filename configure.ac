@@ -152,6 +152,12 @@ AC_CHECK_PROG([HAVE_YASM],[yasm],[1],[0])
 AM_CONDITIONAL([HAVE_YASM],[test $HAVE_YASM = 1])
 AC_DEFINE_UNQUOTED([HAVE_YASM],[$HAVE_YASM],[Has YASM])
 
+# we use pkg-config
+AC_SUBST(HAVE_PKGCONFIG)
+AC_CHECK_PROG([HAVE_PKGCONFIG],[pkg-config],[1],[0])
+AM_CONDITIONAL([HAVE_PKGCONFIG],[test $HAVE_PKGCONFIG = 1])
+AC_DEFINE_UNQUOTED([HAVE_PKGCONFIG],[$HAVE_PKGCONFIG],[Has pkg-config])
+
 # autoconf script provides "target_alias"
 # what OS are we targeting?
 AC_MSG_CHECKING([host os])
