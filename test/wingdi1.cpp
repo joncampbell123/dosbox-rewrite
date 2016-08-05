@@ -92,17 +92,147 @@ int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
 	free_bitmap();
 	if (w == 0 || h == 0) return 0;
 
-	dibDC = CreateCompatibleDC(NULL);
+	dibBmpInfo = (BITMAPINFO*)dibBmpInfoRaw;
+	memset(dibBmpInfoRaw,0,sizeof(dibBmpInfoRaw));
+
+	dibDC = CreateCompatibleDC(0);
 	if (dibDC == NULL) {
 		fprintf(stderr,"Unable to create compatible DC\n");
 		free_bitmap();
 		return 0;
 	}
 
-	if (gdi_force_depth != 0)
+	if (gdi_force_depth == 0) {
+		HDC screenDC = GetDC(0);
+		if (screenDC == NULL) {
+			fprintf(stderr,"Failed to create screen DC\n");
+			free_bitmap();
+			return 0;
+		}
+
+		HBITMAP sbmp = CreateCompatibleBitmap(screenDC,32,32);
+		if (sbmp == NULL) {
+			fprintf(stderr,"Failed to create compat bmp\n");
+			ReleaseDC(hwndMain,screenDC);
+			free_bitmap();
+			return 0;
+		}
+
+		dibBmpInfo->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+
+		// first time, fill in the basic struct
+		if (GetDIBits(dibDC,sbmp,0,32,NULL,dibBmpInfo,DIB_RGB_COLORS) == 0) {
+			fprintf(stderr,"Failed to determine screen format\n");
+			ReleaseDC(hwndMain,screenDC);
+			DeleteObject(sbmp);
+			free_bitmap();
+			return 0;
+		}
+
+		// second time, fill in the "palette". In this case, we want the BI_BITFIELDS red/green/blue/alpha bitmasks */
+		if (GetDIBits(dibDC,sbmp,0,32,NULL,dibBmpInfo,DIB_RGB_COLORS) == 0) {
+			fprintf(stderr,"Failed to determine screen format\n");
+			ReleaseDC(hwndMain,screenDC);
+			DeleteObject(sbmp);
+			free_bitmap();
+			return 0;
+		}
+
+		// copy down bits/pixel. leave the BITMAPINFOHEADER intact */
+		// On Windows Vista/7/8 
+		dibBitsPerPixel = dibBmpInfo->bmiHeader.biBitCount;
+
+		if (announce_fmt) {
+			fprintf(stderr,"Using autodetected GDI format:\n");
+			if (dibBmpInfo->bmiHeader.biCompression == BI_BITFIELDS) {
+				BITMAPV4HEADER *v4 = (BITMAPV4HEADER*)(&dibBmpInfo->bmiHeader);
+
+				fprintf(stderr,"  BI_BITFIELDS: %ubpp red=0x%08lx green=0x%08lx blue=0x%08lx alpha=0x%08lx\n",
+						dibBmpInfo->bmiHeader.biBitCount,
+						v4->bV4RedMask,
+						v4->bV4GreenMask,
+						v4->bV4BlueMask,
+						v4->bV4AlphaMask);
+			}
+			else {
+				fprintf(stderr,"  BI_RGB: %ubpp\n",
+						dibBmpInfo->bmiHeader.biBitCount);
+			}
+		}
+
+		if (dibBmpInfo->bmiHeader.biCompression == BI_BITFIELDS) {
+			BITMAPV4HEADER *v4 = (BITMAPV4HEADER*)(&dibBmpInfo->bmiHeader);
+
+			dibBmpInfo->bmiHeader.biClrImportant = 0;
+			dibBmpInfo->bmiHeader.biClrUsed = 0;
+			v4->bV4CSType = 0;
+
+			// HACK: Even with BI_BITFIELDS, GetDIBits still sets biSize == sizeof(BITMAPINFOHEADER).
+			//       Our code below needs biSize == sizeof(BITMAPV4HEADER) for bitfields to work!
+			dibBmpInfo->bmiHeader.biSize = sizeof(BITMAPV4HEADER);
+		}
+
+		DeleteObject(sbmp);
+		ReleaseDC(hwndMain,screenDC);
+		// NTS: Experience says you release screen DC with your window. Windows won't release with hwnd == NULL.
+		//      I used to leak a lot of resources in the Windows 9x/ME days before I learned this...
+	}
+	else { /* gdi_force_depth != 0 */
 		dibBitsPerPixel = gdi_force_depth;
-	else
-		dibBitsPerPixel = GetDeviceCaps(dibDC,BITSPIXEL);
+		dibBmpInfo->bmiHeader.biPlanes = 1;
+
+		if (dibBitsPerPixel == 15)
+			dibBmpInfo->bmiHeader.biBitCount = 16;
+		else
+			dibBmpInfo->bmiHeader.biBitCount = dibBitsPerPixel;
+
+		// next, forge a BITMAPINFOHEADER
+		// NOTES: As BI_RGB, GDI will take 1/4/8/16/24/32bpp
+		//        As BI_BITFIELDS, GDI will take 16/32bpp
+		if (use_bitfields && dibBitsPerPixel != 24) {
+			BITMAPV4HEADER *v4 = (BITMAPV4HEADER*)(&dibBmpInfo->bmiHeader);
+
+			dibBmpInfo->bmiHeader.biSize = sizeof(BITMAPV4HEADER);
+			dibBmpInfo->bmiHeader.biCompression = BI_BITFIELDS;
+
+			if (dibBitsPerPixel == 15) {
+				v4->bV4AlphaMask = (0x1U << 15U);
+				v4->bV4RedMask = (0x1FU << (rgba_order ? 0U : 10U));
+				v4->bV4GreenMask = (0x1FU << 5U);
+				v4->bV4BlueMask = (0x1FU << (rgba_order ? 10U : 0U));
+			}
+			else if (dibBitsPerPixel == 16) {
+				v4->bV4AlphaMask = 0;
+				v4->bV4RedMask = (0x1FU << (rgba_order ? 0U : 11U));
+				v4->bV4GreenMask = (0x3FU << 5U);
+				v4->bV4BlueMask = (0x1FU << (rgba_order ? 11U : 0U));
+			}
+			else if (dibBitsPerPixel == 32) {
+				v4->bV4AlphaMask = (0xFFU << 24U);
+				v4->bV4RedMask = (0xFFU << (rgba_order ? 0U : 16U));
+				v4->bV4GreenMask = (0xFFU << 8U);
+				v4->bV4BlueMask = (0xFFU << (rgba_order ? 16U : 0U));
+			}
+			else {
+				fprintf(stderr,"Unsupported bit depth\n");
+				free_bitmap();
+				return 0;
+			}
+		}
+		else {
+			dibBmpInfo->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+			dibBmpInfo->bmiHeader.biCompression = BI_RGB;
+
+			if (!(dibBitsPerPixel == 15 || dibBitsPerPixel == 16 || dibBitsPerPixel == 24 || dibBitsPerPixel == 32)) {
+				fprintf(stderr,"Unsupported bit depth\n");
+				free_bitmap();
+				return 0;
+			}
+		}
+
+		if (announce_fmt)
+			fprintf(stderr,"Using forced GDI depth\n");
+	}
 
 	if (dibBitsPerPixel <= 8) {
 		fprintf(stderr,"Unsupported BITSPIXEL %u\n",dibBitsPerPixel);
@@ -140,65 +270,8 @@ int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
 		pwidth += align;
 	}
 
-	dibBmpInfo = (BITMAPINFO*)dibBmpInfoRaw;
-	memset(dibBmpInfoRaw,0,sizeof(dibBmpInfoRaw));
-	// NTS: The GDI will tell us bits per pixel but won't give us the exact placement
-	// of R/G/B bitfields i.e. we can't tell if 16bpp means RGB5/5/5 or RGB5/6/5.
-	// However WinGDI 16bpp is always RGB5/5/5 anyway (unless you explicitly use BI_BITFIELDS
-	// to make it RGB5/6/5), but the point is, if the screen is RGB5/6/5 or RGB5/5/5 we can't
-	// tell from the GDI interfaces and we have to guess.
-	//
-	// Also note we autodetect from the screen, but WinGDI is fully supportive of our efforts
-	// if we choose to create a DIB section that is not the screen format, it will convert.
-	//
-	// NOTES: As BI_RGB, GDI will take 1/4/8/16/24/32bpp
-	//        As BI_BITFIELDS, GDI will take 16/32bpp
-	if (use_bitfields && dibBitsPerPixel != 24) {
-		BITMAPV4HEADER *v4 = (BITMAPV4HEADER*)(&dibBmpInfo->bmiHeader);
-
-		dibBmpInfo->bmiHeader.biSize = sizeof(BITMAPV4HEADER);
-		dibBmpInfo->bmiHeader.biCompression = BI_BITFIELDS;
-
-		if (dibBitsPerPixel == 15) {
-			v4->bV4AlphaMask = (0x1U << 15U);
-			v4->bV4RedMask = (0x1FU << (rgba_order ? 0U : 10U));
-			v4->bV4GreenMask = (0x1FU << 5U);
-			v4->bV4BlueMask = (0x1FU << (rgba_order ? 10U : 0U));
-		}
-		else if (dibBitsPerPixel == 16) {
-			v4->bV4AlphaMask = 0;
-			v4->bV4RedMask = (0x1FU << (rgba_order ? 0U : 11U));
-			v4->bV4GreenMask = (0x3FU << 5U);
-			v4->bV4BlueMask = (0x1FU << (rgba_order ? 11U : 0U));
-		}
-		else if (dibBitsPerPixel == 32) {
-			v4->bV4AlphaMask = (0xFFU << 24U);
-			v4->bV4RedMask = (0xFFU << (rgba_order ? 0U : 16U));
-			v4->bV4GreenMask = (0xFFU << 8U);
-			v4->bV4BlueMask = (0xFFU << (rgba_order ? 16U : 0U));
-		}
-		else {
-			fprintf(stderr,"Unsupported bit depth\n");
-			free_bitmap();
-			return 0;
-		}
-	}
-	else {
-		dibBmpInfo->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-
-		if (!(dibBitsPerPixel == 15 || dibBitsPerPixel == 16 || dibBitsPerPixel == 24 || dibBitsPerPixel == 32)) {
-			fprintf(stderr,"Unsupported bit depth\n");
-			free_bitmap();
-			return 0;
-		}
-	}
 	dibBmpInfo->bmiHeader.biWidth = pwidth / ((dibBitsPerPixel+7)/8); // use back-conversion from stride/align calculation
 	dibBmpInfo->bmiHeader.biHeight = -h;
-	dibBmpInfo->bmiHeader.biPlanes = 1;
-	if (dibBitsPerPixel == 15)
-		dibBmpInfo->bmiHeader.biBitCount = 16;
-	else
-		dibBmpInfo->bmiHeader.biBitCount = dibBitsPerPixel;
 	dibBmpInfo->bmiHeader.biSizeImage = pwidth * h;
 
 	dibBits = NULL;
@@ -226,12 +299,19 @@ int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
 	if (dibBmpInfo->bmiHeader.biSize >= sizeof(BITMAPV4HEADER) && dibBmpInfo->bmiHeader.biCompression == BI_BITFIELDS) {
 		BITMAPV4HEADER *v4 = (BITMAPV4HEADER*)(&dibBmpInfo->bmiHeader);
 
+		if (announce_fmt)
+			fprintf(stderr,"Using GDI RGB bitfields %ubpp red=0x%08lx green=0x%08lx blue=0x%08lx alpha=0x%08lx\n",
+				dibBitsPerPixel,v4->bV4RedMask,v4->bV4GreenMask,v4->bV4BlueMask,v4->bV4AlphaMask);
+
 		gdi_bitmap.rgbinfo.r.setByMask(v4->bV4RedMask);
 		gdi_bitmap.rgbinfo.g.setByMask(v4->bV4GreenMask);
 		gdi_bitmap.rgbinfo.b.setByMask(v4->bV4BlueMask);
 		gdi_bitmap.rgbinfo.a.setByMask(v4->bV4AlphaMask);
 	}
 	else {
+		if (announce_fmt)
+			fprintf(stderr,"Assuming RGB bitfields from %ubpp\n",dibBitsPerPixel);
+
 		switch (dibBitsPerPixel) {
 			case 32: // WINGDI is XRGB (B is LSByte, X is MSByte)
 				gdi_bitmap.rgbinfo.b.setByShiftOffset(0,8); /* (offset,length) */
