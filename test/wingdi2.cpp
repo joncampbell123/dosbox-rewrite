@@ -14,6 +14,7 @@
 
 #include <algorithm>
 
+#include "dosboxxr/lib/util/sseutil.h"
 #include "dosboxxr/lib/hostcpudetect/caps.h"
 #include "dosboxxr/lib/util/rgbinfo.h"
 #include "dosboxxr/lib/util/rgb_bitmap_info.h"
@@ -333,7 +334,11 @@ void update_screen(HDC targetDC) {
 		fprintf(stderr,"update_screen() warning BitBlt failed\n");
 }
 
-static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
+// NTS: GCC/MinGW assumes 16-byte stack alignment. Windows uses 4-byte stack alignment.
+//      If supported by the compiler, we tell the compiler to force realignment in this function.
+//      Failure to do so will cause random crashes when other code called from this point attempts
+//      to use SSE intrinsics on the stack! That is what "SSE_REALIGN" means.
+static SSE_REALIGN LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 	switch (uMsg) {
 		case WM_CREATE:
 			break;
