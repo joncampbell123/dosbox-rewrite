@@ -25,16 +25,35 @@ dosboxxr_lib_util_libutil_a_SOURCES = \
 dosboxxr_lib_xlib_libxlibdemo_a_SOURCES = \
 	dosboxxr/lib/xlib/demo.cpp
 
-dosboxxr_lib_graphics_libstretchblt_a_CXXFLAGS = \
-	$(AM_CXXFLAGS) $(CPU_MMX_CFLAGS) $(CPU_SSE2_CFLAGS) $(CPU_AVX2_CFLAGS) $(CPU_ARM_NEON_CFLAGS)
-dosboxxr_lib_graphics_libstretchblt_a_SOURCES = \
-	dosboxxr/lib/graphics/stretchblt_neighbor.cpp \
-	dosboxxr/lib/graphics/stretchblt_bilinear.cpp \
-	dosboxxr/lib/graphics/stretchblt_bilinear_mmx.cpp \
-	dosboxxr/lib/graphics/stretchblt_bilinear_sse.cpp \
-	dosboxxr/lib/graphics/stretchblt_bilinear_avx.cpp \
-	dosboxxr/lib/graphics/stretchblt_bilinear_arm_neon.cpp \
-	dosboxxr/lib/graphics/stretchblt_general.cpp
+# NTS: This is done manually to allow each stretchblt to be compiled with the appropriate CFLAGS.
+#      Compiling all with the -mmmx -msse etc flags only causes problems because it then tells GCC
+#      it's ALWAYS ok to use those extended instruction sets, which is NOT what we want! That causes
+#      problems because then it means our SSE code crashes attempting to use AVX instructions on a
+#      CPU that doesn't support it because GCC thought it was faster to use them in the prologue.
+dosboxxr/lib/graphics/libstretchblt.a: dosboxxr/lib/graphics/stretchblt_neighbor.o dosboxxr/lib/graphics/stretchblt_bilinear.o dosboxxr/lib/graphics/stretchblt_bilinear_mmx.o dosboxxr/lib/graphics/stretchblt_bilinear_sse.o dosboxxr/lib/graphics/stretchblt_bilinear_avx.o dosboxxr/lib/graphics/stretchblt_bilinear_arm_neon.o dosboxxr/lib/graphics/stretchblt_general.o
+	$(RM) dosboxxr/lib/graphics/libstretchblt.a
+	$(AR) r dosboxxr/lib/graphics/libstretchblt.a dosboxxr/lib/graphics/stretchblt_neighbor.o dosboxxr/lib/graphics/stretchblt_bilinear.o dosboxxr/lib/graphics/stretchblt_bilinear_mmx.o dosboxxr/lib/graphics/stretchblt_bilinear_sse.o dosboxxr/lib/graphics/stretchblt_bilinear_avx.o dosboxxr/lib/graphics/stretchblt_bilinear_arm_neon.o dosboxxr/lib/graphics/stretchblt_general.o
+
+dosboxxr/lib/graphics/stretchblt_neighbor.o: dosboxxr/lib/graphics/stretchblt_neighbor.cpp
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(AM_CXXFLAGS) $(CPPFLAGS) -c -o $@ $<
+
+dosboxxr/lib/graphics/stretchblt_bilinear.o: dosboxxr/lib/graphics/stretchblt_bilinear.cpp
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(AM_CXXFLAGS) $(CPPFLAGS) -c -o $@ $<
+
+dosboxxr/lib/graphics/stretchblt_bilinear_mmx.o: dosboxxr/lib/graphics/stretchblt_bilinear_mmx.cpp
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(AM_CXXFLAGS) $(CPPFLAGS) $(CPU_MMX_CFLAGS) -c -o $@ $<
+
+dosboxxr/lib/graphics/stretchblt_bilinear_sse.o: dosboxxr/lib/graphics/stretchblt_bilinear_sse.cpp
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(AM_CXXFLAGS) $(CPPFLAGS) $(CPU_SSE_CFLAGS) $(CPU_SSE2_CFLAGS) -c -o $@ $<
+
+dosboxxr/lib/graphics/stretchblt_bilinear_avx.o: dosboxxr/lib/graphics/stretchblt_bilinear_avx.cpp
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(AM_CXXFLAGS) $(CPPFLAGS) $(CPU_SSE_CFLAGS) $(CPU_SSE2_CFLAGS) $(CPU_AVX_CFLAGS) $(CPU_AVX2_CFLAGS) -c -o $@ $<
+
+dosboxxr/lib/graphics/stretchblt_bilinear_arm_neon.o: dosboxxr/lib/graphics/stretchblt_bilinear_arm_neon.cpp
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(AM_CXXFLAGS) $(CPPFLAGS) $(CPU_ARM_NEON_CFLAGS) -c -o $@ $<
+
+dosboxxr/lib/graphics/stretchblt_general.o: dosboxxr/lib/graphics/stretchblt_general.cpp
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(AM_CXXFLAGS) $(CPPFLAGS) -c -o $@ $<
 
 OPCC=bin/tools/opcc
 
