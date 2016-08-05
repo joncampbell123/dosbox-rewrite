@@ -493,13 +493,12 @@ AC_SUBST(X11_CFLAGS)
 AC_SUBST(X11_LDFLAGS)
 if test "$with_x11" = "yes"; then
     AC_MSG_CHECKING([for X11])
-    if pkg-config --atleast-version=1.5.0 x11; then
-        AC_MSG_RESULT([yes])
-        HAVE_X11=1
-        X11_CFLAGS=`pkg-config --cflags x11`
-        X11_LDFLAGS=`pkg-config --libs x11`
-    else
-        AC_MSG_RESULT([no])
+    if test "$HAVE_PKGCONFIG" = 1; then
+        if pkg-config --atleast-version=1.5.0 x11; then
+            HAVE_X11=1
+            X11_CFLAGS=`pkg-config --cflags x11`
+            X11_LDFLAGS=`pkg-config --libs x11`
+        fi
     fi
 
     if test "$HAVE_X11" = 0; then
@@ -508,6 +507,12 @@ if test "$with_x11" = "yes"; then
             X11_CFLAGS=""
             X11_LDFLAGS=" -lX11"
         fi
+    fi
+
+    if test "$HAVE_X11" = 1; then
+        AC_MSG_RESULT([yes])
+    else
+        AC_MSG_RESULT([no])
     fi
 fi
 AC_DEFINE_UNQUOTED([HAVE_X11],[$HAVE_X11],[Has X11])
@@ -521,13 +526,12 @@ AC_SUBST(XEXT_CFLAGS)
 AC_SUBST(XEXT_LDFLAGS)
 if test "$with_xext" = "yes"; then
     AC_MSG_CHECKING([for XEXT])
-    if pkg-config --atleast-version=1.3.1 xext; then
-        AC_MSG_RESULT([yes])
-        HAVE_XEXT=1
-        XEXT_CFLAGS=`pkg-config --cflags xext`
-        XEXT_LDFLAGS=`pkg-config --libs xext`
-    else
-        AC_MSG_RESULT([no])
+    if test "$HAVE_PKGCONFIG" = 1; then
+        if pkg-config --atleast-version=1.3.1 xext; then
+            HAVE_XEXT=1
+            XEXT_CFLAGS=`pkg-config --cflags xext`
+            XEXT_LDFLAGS=`pkg-config --libs xext`
+        fi
     fi
 
     if test "$HAVE_XEXT" = 0; then
@@ -536,6 +540,12 @@ if test "$with_xext" = "yes"; then
             XEXT_CFLAGS=""
             XEXT_LDFLAGS=" -lXext"
         fi
+    fi
+
+    if test "$HAVE_XEXT" = 1; then
+        AC_MSG_RESULT([yes])
+    else
+        AC_MSG_RESULT([no])
     fi
 fi
 AC_DEFINE_UNQUOTED([HAVE_XEXT],[$HAVE_XEXT],[Has XEXT])
@@ -549,11 +559,16 @@ AC_SUBST(X11_XCB_CFLAGS)
 AC_SUBST(X11_XCB_LDFLAGS)
 if test "$with_x11_xcb" = "yes"; then
     AC_MSG_CHECKING([for X11-XCB])
-    if pkg-config --atleast-version=1.5.0 x11-xcb; then
+    if test "$HAVE_PKGCONFIG" = 1; then
+        if pkg-config --atleast-version=1.5.0 x11-xcb; then
+            HAVE_X11_XCB=1
+            X11_XCB_CFLAGS=`pkg-config --cflags x11-xcb`
+            X11_XCB_LDFLAGS=`pkg-config --libs x11-xcb`
+        fi
+    fi
+
+    if test "$HAVE_X11_XCB" = 1; then
         AC_MSG_RESULT([yes])
-        HAVE_X11_XCB=1
-        X11_XCB_CFLAGS=`pkg-config --cflags x11-xcb`
-        X11_XCB_LDFLAGS=`pkg-config --libs x11-xcb`
     else
         AC_MSG_RESULT([no])
     fi
@@ -569,11 +584,16 @@ AC_SUBST(XCB_CFLAGS)
 AC_SUBST(XCB_LDFLAGS)
 if test "$with_xcb" = "yes"; then
     AC_MSG_CHECKING([for XCB])
-    if pkg-config --atleast-version=1.11 xcb; then
+    if test "$HAVE_PKGCONFIG" = 1; then
+        if pkg-config --atleast-version=1.11 xcb; then
+            HAVE_XCB=1
+            XCB_CFLAGS=`pkg-config --cflags xcb`
+            XCB_LDFLAGS=`pkg-config --libs xcb`
+        fi
+    fi
+
+    if test "$HAVE_XCB" = 1; then
         AC_MSG_RESULT([yes])
-        HAVE_XCB=1
-        XCB_CFLAGS=`pkg-config --cflags xcb`
-        XCB_LDFLAGS=`pkg-config --libs xcb`
     else
         AC_MSG_RESULT([no])
     fi
@@ -589,11 +609,16 @@ AC_SUBST(XCB_XV_CFLAGS)
 AC_SUBST(XCB_XV_LDFLAGS)
 if test "$with_xcb_xv" = "yes"; then
     AC_MSG_CHECKING([for XCB xv])
-    if pkg-config --atleast-version=1.11 xcb-xv; then
+    if test "$HAVE_PKGCONFIG" = 1; then
+        if pkg-config --atleast-version=1.11 xcb-xv; then
+            HAVE_XCB_XV=1
+            XCB_CFLAGS=`pkg-config --cflags xcb-xv`
+            XCB_LDFLAGS=`pkg-config --libs xcb-xv`
+        fi
+    fi
+
+    if test "$HAVE_XCB_XV" = 1; then
         AC_MSG_RESULT([yes])
-        HAVE_XCB_XV=1
-        XCB_CFLAGS=`pkg-config --cflags xcb-xv`
-        XCB_LDFLAGS=`pkg-config --libs xcb-xv`
     else
         AC_MSG_RESULT([no])
     fi
@@ -609,11 +634,16 @@ AC_SUBST(XCB_SHM_CFLAGS)
 AC_SUBST(XCB_SHM_LDFLAGS)
 if test "$with_xcb_shm" = "yes"; then
     AC_MSG_CHECKING([for XCB SHM])
-    if pkg-config --atleast-version=1.11 xcb-shm; then
+    if test "$HAVE_PKGCONFIG" = 1; then
+        if pkg-config --atleast-version=1.11 xcb-shm; then
+            HAVE_XCB_SHM=1
+            XCB_SHM_CFLAGS=`pkg-config --cflags xcb-shm`
+            XCB_SHM_LDFLAGS=`pkg-config --libs xcb-shm`
+        fi
+    fi
+
+    if test "$HAVE_XCB_SHM" = 1; then
         AC_MSG_RESULT([yes])
-        HAVE_XCB_SHM=1
-        XCB_SHM_CFLAGS=`pkg-config --cflags xcb-shm`
-        XCB_SHM_LDFLAGS=`pkg-config --libs xcb-shm`
     else
         AC_MSG_RESULT([no])
     fi
@@ -629,11 +659,16 @@ AC_SUBST(XCB_XKB_CFLAGS)
 AC_SUBST(XCB_XKB_LDFLAGS)
 if test "$with_xcb_xkb" = "yes"; then
     AC_MSG_CHECKING([for XCB XKB])
-    if pkg-config --atleast-version=1.11 xcb-xkb; then
+    if test "$HAVE_PKGCONFIG" = 1; then
+        if pkg-config --atleast-version=1.11 xcb-xkb; then
+            HAVE_XCB_XKB=1
+            XCB_XKB_CFLAGS=`pkg-config --cflags xcb-xkb`
+            XCB_XKB_LDFLAGS=`pkg-config --libs xcb-xkb`
+        fi
+    fi
+
+    if test "$HAVE_XCB_XKB" = 1; then
         AC_MSG_RESULT([yes])
-        HAVE_XCB_XKB=1
-        XCB_XKB_CFLAGS=`pkg-config --cflags xcb-xkb`
-        XCB_XKB_LDFLAGS=`pkg-config --libs xcb-xkb`
     else
         AC_MSG_RESULT([no])
     fi
@@ -649,11 +684,16 @@ AC_SUBST(ALSA_CFLAGS)
 AC_SUBST(ALSA_LDFLAGS)
 if test "$with_alsa" = "yes"; then
     AC_MSG_CHECKING([for ALSA])
-    if pkg-config --atleast-version=1.0.27.2 alsa; then
+    if test "$HAVE_PKGCONFIG" = 1; then
+        if pkg-config --atleast-version=1.0.27.2 alsa; then
+            HAVE_ALSA=1
+            ALSA_CFLAGS=`pkg-config --cflags alsa`
+            ALSA_LDFLAGS=`pkg-config --libs alsa`
+        fi
+    fi
+
+    if test "$HAVE_ALSA" = 1; then
         AC_MSG_RESULT([yes])
-        HAVE_ALSA=1
-        ALSA_CFLAGS=`pkg-config --cflags alsa`
-        ALSA_LDFLAGS=`pkg-config --libs alsa`
     else
         AC_MSG_RESULT([no])
     fi
@@ -669,11 +709,16 @@ AC_SUBST(LIBDRM_CFLAGS)
 AC_SUBST(LIBDRM_LDFLAGS)
 if test "$with_libdrm" = "yes"; then
     AC_MSG_CHECKING([for libdrm])
-    if pkg-config --atleast-version=2.4.53 libdrm; then
+    if test "$HAVE_PKGCONFIG" = 1; then
+        if pkg-config --atleast-version=2.4.53 libdrm; then
+            HAVE_LIBDRM=1
+            LIBDRM_CFLAGS=`pkg-config --cflags libdrm`
+            LIBDRM_LDFLAGS=`pkg-config --libs libdrm`
+        fi
+    fi
+
+    if test "$HAVE_LIBDRM" = 1; then
         AC_MSG_RESULT([yes])
-        HAVE_LIBDRM=1
-        LIBDRM_CFLAGS=`pkg-config --cflags libdrm`
-        LIBDRM_LDFLAGS=`pkg-config --libs libdrm`
     else
         AC_MSG_RESULT([no])
     fi
@@ -689,11 +734,16 @@ AC_SUBST(OPENGL_CFLAGS)
 AC_SUBST(OPENGL_LDFLAGS)
 if test "$with_gl" = "yes"; then
     AC_MSG_CHECKING([for OpenGL GL])
-    if pkg-config --atleast-version=10.0.4 gl; then
+    if test "$HAVE_PKGCONFIG" = 1; then
+        if pkg-config --atleast-version=10.0.4 gl; then
+            HAVE_OPENGL=1
+            OPENGL_CFLAGS=`pkg-config --cflags gl`
+            OPENGL_LDFLAGS=`pkg-config --libs gl`
+        fi
+    fi
+
+    if test "$HAVE_OPENGL" = 1; then
         AC_MSG_RESULT([yes])
-        HAVE_OPENGL=1
-        OPENGL_CFLAGS=`pkg-config --cflags gl`
-        OPENGL_LDFLAGS=`pkg-config --libs gl`
     else
         AC_MSG_RESULT([no])
     fi
@@ -709,11 +759,16 @@ AC_SUBST(OPENGL_GLU_CFLAGS)
 AC_SUBST(OPENGL_GLU_LDFLAGS)
 if test "$with_glu" = "yes"; then
     AC_MSG_CHECKING([for OpenGL GLU])
-    if pkg-config --atleast-version=9.0.0 glu; then
+    if test "$HAVE_PKGCONFIG" = 1; then
+        if pkg-config --atleast-version=9.0.0 glu; then
+            HAVE_OPENGL_GLU=1
+            OPENGL_GLU_CFLAGS=`pkg-config --cflags glu`
+            OPENGL_GLU_LDFLAGS=`pkg-config --libs glu`
+        fi
+    fi
+
+    if test "$HAVE_OPENGL_GLU" = 1; then
         AC_MSG_RESULT([yes])
-        HAVE_OPENGL_GLU=1
-        OPENGL_GLU_CFLAGS=`pkg-config --cflags glu`
-        OPENGL_GLU_LDFLAGS=`pkg-config --libs glu`
     else
         AC_MSG_RESULT([no])
     fi
@@ -729,11 +784,16 @@ AC_SUBST(OPENGL_GLEW_CFLAGS)
 AC_SUBST(OPENGL_GLEW_LDFLAGS)
 if test "$with_glew" = "yes"; then
     AC_MSG_CHECKING([for OpenGL GLEW])
-    if pkg-config --atleast-version=1.6.0 glew; then
+    if test "$HAVE_PKGCONFIG" = 1; then
+        if pkg-config --atleast-version=1.6.0 glew; then
+            HAVE_OPENGL_GLEW=1
+            OPENGL_GLEW_CFLAGS=`pkg-config --cflags glew`
+            OPENGL_GLEW_LDFLAGS=`pkg-config --libs glew`
+        fi
+    fi
+
+    if test "$HAVE_OPENGL_GLEW" = 1; then
         AC_MSG_RESULT([yes])
-        HAVE_OPENGL_GLEW=1
-        OPENGL_GLEW_CFLAGS=`pkg-config --cflags glew`
-        OPENGL_GLEW_LDFLAGS=`pkg-config --libs glew`
     else
         AC_MSG_RESULT([no])
     fi
@@ -749,11 +809,16 @@ AC_SUBST(OPENGL_EGL_CFLAGS)
 AC_SUBST(OPENGL_EGL_LDFLAGS)
 if test "$with_egl" = "yes"; then
     AC_MSG_CHECKING([for OpenGL EGL])
-    if pkg-config --atleast-version=10.0.4 egl; then
+    if test "$HAVE_PKGCONFIG" = 1; then
+        if pkg-config --atleast-version=10.0.4 egl; then
+            HAVE_OPENGL_EGL=1
+            OPENGL_EGL_CFLAGS=`pkg-config --cflags egl`
+            OPENGL_EGL_LDFLAGS=`pkg-config --libs egl`
+        fi
+    fi
+
+    if test "$HAVE_OPENGL_EGL" = 1; then
         AC_MSG_RESULT([yes])
-        HAVE_OPENGL_EGL=1
-        OPENGL_EGL_CFLAGS=`pkg-config --cflags egl`
-        OPENGL_EGL_LDFLAGS=`pkg-config --libs egl`
     else
         AC_MSG_RESULT([no])
     fi
@@ -769,11 +834,16 @@ AC_SUBST(OPENGL_OSMESA_CFLAGS)
 AC_SUBST(OPENGL_OSMESA_LDFLAGS)
 if test "$with_osmesa" = "yes"; then
     AC_MSG_CHECKING([for OpenGL OSMESA])
-    if pkg-config --atleast-version=8 osmesa; then
+    if test "$HAVE_PKGCONFIG" = 1; then
+        if pkg-config --atleast-version=8 osmesa; then
+            HAVE_OPENGL_OSMESA=1
+            OPENGL_OSMESA_CFLAGS=`pkg-config --cflags osmesa`
+            OPENGL_OSMESA_LDFLAGS=`pkg-config --libs osmesa`
+        fi
+    fi
+
+    if test "$HAVE_OPENGL_OSMESA" = 1; then
         AC_MSG_RESULT([yes])
-        HAVE_OPENGL_OSMESA=1
-        OPENGL_OSMESA_CFLAGS=`pkg-config --cflags osmesa`
-        OPENGL_OSMESA_LDFLAGS=`pkg-config --libs osmesa`
     else
         AC_MSG_RESULT([no])
     fi
@@ -789,11 +859,16 @@ AC_SUBST(ZLIB_CFLAGS)
 AC_SUBST(ZLIB_LDFLAGS)
 if test "$with_zlib" = "yes"; then
     AC_MSG_CHECKING([for ZLIB])
-    if pkg-config --atleast-version=1.2.6 zlib; then
+    if test "$HAVE_PKGCONFIG" = 1; then
+        if pkg-config --atleast-version=1.2.6 zlib; then
+            HAVE_ZLIB=1
+            ZLIB_CFLAGS=`pkg-config --cflags zlib`
+            ZLIB_LDFLAGS=`pkg-config --libs zlib`
+        fi
+    fi
+
+    if test "$HAVE_ZLIB" = 1; then
         AC_MSG_RESULT([yes])
-        HAVE_ZLIB=1
-        ZLIB_CFLAGS=`pkg-config --cflags zlib`
-        ZLIB_LDFLAGS=`pkg-config --libs zlib`
     else
         AC_MSG_RESULT([no])
     fi
@@ -809,11 +884,16 @@ AC_SUBST(LZMA_CFLAGS)
 AC_SUBST(LZMA_LDFLAGS)
 if test "$with_lzma" = "yes"; then
     AC_MSG_CHECKING([for LZMA])
-    if pkg-config --atleast-version=5.0.3 liblzma; then
+    if test "$HAVE_PKGCONFIG" = 1; then
+        if pkg-config --atleast-version=5.0.3 liblzma; then
+            HAVE_LZMA=1
+            LZMA_CFLAGS=`pkg-config --cflags liblzma`
+            LZMA_LDFLAGS=`pkg-config --libs liblzma`
+        fi
+    fi
+
+    if test "$HAVE_LZMA" = 1; then
         AC_MSG_RESULT([yes])
-        HAVE_LZMA=1
-        LZMA_CFLAGS=`pkg-config --cflags liblzma`
-        LZMA_LDFLAGS=`pkg-config --libs liblzma`
     else
         AC_MSG_RESULT([no])
     fi
@@ -829,11 +909,16 @@ AC_SUBST(FFMPEG_AVCODEC_CFLAGS)
 AC_SUBST(FFMPEG_AVCODEC_LDFLAGS)
 if test "$with_ffmpeg" = "yes"; then
     AC_MSG_CHECKING([for FFMPEG avcodec])
-    if pkg-config --atleast-version=57.24.102 libavcodec; then
+    if test "$HAVE_PKGCONFIG" = 1; then
+        if pkg-config --atleast-version=57.24.102 libavcodec; then
+            HAVE_FFMPEG_AVCODEC=1
+            FFMPEG_AVCODEC_CFLAGS=`pkg-config --cflags libavcodec`
+            FFMPEG_AVCODEC_LDFLAGS=`pkg-config --libs libavcodec`
+        fi
+    fi
+
+    if test "$HAVE_FFMPEG_AVCODEC" = 1; then
         AC_MSG_RESULT([yes])
-        HAVE_FFMPEG_AVCODEC=1
-        FFMPEG_AVCODEC_CFLAGS=`pkg-config --cflags libavcodec`
-        FFMPEG_AVCODEC_LDFLAGS=`pkg-config --libs libavcodec`
     else
         AC_MSG_RESULT([no])
     fi
@@ -848,11 +933,16 @@ AC_SUBST(FFMPEG_AVFORMAT_CFLAGS)
 AC_SUBST(FFMPEG_AVFORMAT_LDFLAGS)
 if test "$with_ffmpeg" = "yes"; then
     AC_MSG_CHECKING([for FFMPEG avformat])
-    if pkg-config --atleast-version=57.25.100 libavformat; then
+    if test "$HAVE_PKGCONFIG" = 1; then
+        if pkg-config --atleast-version=57.25.100 libavformat; then
+            HAVE_FFMPEG_AVFORMAT=1
+            FFMPEG_AVFORMAT_CFLAGS=`pkg-config --cflags libavformat`
+            FFMPEG_AVFORMAT_LDFLAGS=`pkg-config --libs libavformat`
+        fi
+    fi
+
+    if test "$HAVE_FFMPEG_AVFORMAT" = 1; then
         AC_MSG_RESULT([yes])
-        HAVE_FFMPEG_AVFORMAT=1
-        FFMPEG_AVFORMAT_CFLAGS=`pkg-config --cflags libavformat`
-        FFMPEG_AVFORMAT_LDFLAGS=`pkg-config --libs libavformat`
     else
         AC_MSG_RESULT([no])
     fi
@@ -867,11 +957,16 @@ AC_SUBST(FFMPEG_AVUTIL_CFLAGS)
 AC_SUBST(FFMPEG_AVUTIL_LDFLAGS)
 if test "$with_ffmpeg" = "yes"; then
     AC_MSG_CHECKING([for FFMPEG avutil])
-    if pkg-config --atleast-version=55.17.103 libavutil; then
+    if test "$HAVE_PKGCONFIG" = 1; then
+        if pkg-config --atleast-version=55.17.103 libavutil; then
+            HAVE_FFMPEG_AVUTIL=1
+            FFMPEG_AVUTIL_CFLAGS=`pkg-config --cflags libavutil`
+            FFMPEG_AVUTIL_LDFLAGS=`pkg-config --libs libavutil`
+        fi
+    fi
+
+    if test "$HAVE_FFMPEG_AVUTIL" = 1; then
         AC_MSG_RESULT([yes])
-        HAVE_FFMPEG_AVUTIL=1
-        FFMPEG_AVUTIL_CFLAGS=`pkg-config --cflags libavutil`
-        FFMPEG_AVUTIL_LDFLAGS=`pkg-config --libs libavutil`
     else
         AC_MSG_RESULT([no])
     fi
@@ -887,11 +982,16 @@ AC_SUBST(FFMPEG_SWSCALE_CFLAGS)
 AC_SUBST(FFMPEG_SWSCALE_LDFLAGS)
 if test "$with_ffmpeg_swscale" = "yes"; then
     AC_MSG_CHECKING([for FFMPEG swscale])
-    if pkg-config --atleast-version=4.0.100 libswscale; then
+    if test "$HAVE_PKGCONFIG" = 1; then
+        if pkg-config --atleast-version=4.0.100 libswscale; then
+            HAVE_FFMPEG_SWSCALE=1
+            FFMPEG_SWSCALE_CFLAGS=`pkg-config --cflags libswscale`
+            FFMPEG_SWSCALE_LDFLAGS=`pkg-config --libs libswscale`
+        fi
+    fi
+
+    if test "$HAVE_FFMPEG_SWSCALE" = 1; then
         AC_MSG_RESULT([yes])
-        HAVE_FFMPEG_SWSCALE=1
-        FFMPEG_SWSCALE_CFLAGS=`pkg-config --cflags libswscale`
-        FFMPEG_SWSCALE_LDFLAGS=`pkg-config --libs libswscale`
     else
         AC_MSG_RESULT([no])
     fi
@@ -907,11 +1007,16 @@ AC_SUBST(SDL1_CFLAGS)
 AC_SUBST(SDL1_LDFLAGS)
 if test "$with_sdl1" = "yes"; then
     AC_MSG_CHECKING([for SDL 1.x])
-    if pkg-config --atleast-version=1.2.15 sdl; then
+    if test "$HAVE_PKGCONFIG" = 1; then
+        if pkg-config --atleast-version=1.2.15 sdl; then
+            HAVE_SDL1=1
+            SDL1_CFLAGS=`pkg-config --cflags sdl`
+            SDL1_LDFLAGS=`pkg-config --libs sdl`
+        fi
+    fi
+
+    if test "$HAVE_SDL1" = 1; then
         AC_MSG_RESULT([yes])
-        HAVE_SDL1=1
-        SDL1_CFLAGS=`pkg-config --cflags sdl`
-        SDL1_LDFLAGS=`pkg-config --libs sdl`
     else
         AC_MSG_RESULT([no])
     fi
@@ -927,11 +1032,16 @@ AC_SUBST(SDL2_CFLAGS)
 AC_SUBST(SDL2_LDFLAGS)
 if test "$with_sdl2" = "yes"; then
     AC_MSG_CHECKING([for SDL 2.x])
-    if pkg-config --atleast-version=2.0.3 sdl2; then
+    if test "$HAVE_PKGCONFIG" = 1; then
+        if pkg-config --atleast-version=2.0.3 sdl2; then
+            HAVE_SDL2=1
+            SDL2_CFLAGS=`pkg-config --cflags sdl2`
+            SDL2_LDFLAGS=`pkg-config --libs sdl2`
+        fi
+    fi
+
+    if test "$HAVE_SDL2" = 1; then
         AC_MSG_RESULT([yes])
-        HAVE_SDL2=1
-        SDL2_CFLAGS=`pkg-config --cflags sdl2`
-        SDL2_LDFLAGS=`pkg-config --libs sdl2`
     else
         AC_MSG_RESULT([no])
     fi
@@ -947,11 +1057,16 @@ AC_SUBST(LIBPNG_CFLAGS)
 AC_SUBST(LIBPNG_LDFLAGS)
 if test "$with_libpng" = "yes"; then
     AC_MSG_CHECKING([for libpng])
-    if pkg-config --atleast-version=1.2.46 libpng; then
+    if test "$HAVE_PKGCONFIG" = 1; then
+        if pkg-config --atleast-version=1.2.46 libpng; then
+            HAVE_LIBPNG=1
+            LIBPNG_CFLAGS=`pkg-config --cflags libpng`
+            LIBPNG_LDFLAGS=`pkg-config --libs libpng`
+        fi
+    fi
+
+    if test "$HAVE_LIBPNG" = 1; then
         AC_MSG_RESULT([yes])
-        HAVE_LIBPNG=1
-        LIBPNG_CFLAGS=`pkg-config --cflags libpng`
-        LIBPNG_LDFLAGS=`pkg-config --libs libpng`
     else
         AC_MSG_RESULT([no])
     fi
@@ -967,16 +1082,24 @@ AC_SUBST(LIBJPEG_CFLAGS)
 AC_SUBST(LIBJPEG_LDFLAGS)
 if test "$with_libjpeg" = "yes"; then
     AC_MSG_CHECKING([for libjpeg])
-    if pkg-config --atleast-version=1.0.0 jpeg; then
+    if test "$HAVE_PKGCONFIG" = 1; then
+        if pkg-config --atleast-version=1.0.0 jpeg; then
+            HAVE_LIBJPEG=1
+            LIBJPEG_CFLAGS=`pkg-config --cflags jpeg`
+            LIBJPEG_LDFLAGS=`pkg-config --libs jpeg`
+        fi
+    fi
+
+    if test "$HAVE_LIBJPEG" = 0; then
+        if [[[ -f /usr/lib/libjpeg.a || -f /usr/lib64/libjpeg.a ]]] ; then
+            HAVE_LIBJPEG=1
+            LIBJPEG_CFLAGS=""
+            LIBJPEG_LDFLAGS="-ljpeg";
+        fi
+    fi
+
+    if test "$HAVE_LIBJPEG" = 1; then
         AC_MSG_RESULT([yes])
-        HAVE_LIBJPEG=1
-        LIBJPEG_CFLAGS=`pkg-config --cflags jpeg`
-        LIBJPEG_LDFLAGS=`pkg-config --libs jpeg`
-    elif [[[ -f /usr/lib/libjpeg.a || -f /usr/lib64/libjpeg.a ]]] ; then
-        AC_MSG_RESULT([yes])
-        HAVE_LIBJPEG=1
-        LIBJPEG_CFLAGS=""
-        LIBJPEG_LDFLAGS="-ljpeg";
     else
         AC_MSG_RESULT([no])
     fi
@@ -992,11 +1115,16 @@ AC_SUBST(FREETYPE2_CFLAGS)
 AC_SUBST(FREETYPE2_LDFLAGS)
 if test "$with_freetype2" = "yes"; then
     AC_MSG_CHECKING([for freetype2])
-    if pkg-config --atleast-version=9.20.3 freetype2; then
+    if test "$HAVE_PKGCONFIG" = 1; then
+        if pkg-config --atleast-version=9.20.3 freetype2; then
+            HAVE_FREETYPE2=1
+            FREETYPE2_CFLAGS=`pkg-config --cflags freetype2`
+            FREETYPE2_LDFLAGS=`pkg-config --libs freetype2`
+        fi
+    fi
+
+    if test "$HAVE_FREETYPE2" = 1; then
         AC_MSG_RESULT([yes])
-        HAVE_FREETYPE2=1
-        FREETYPE2_CFLAGS=`pkg-config --cflags freetype2`
-        FREETYPE2_LDFLAGS=`pkg-config --libs freetype2`
     else
         AC_MSG_RESULT([no])
     fi
@@ -1012,11 +1140,16 @@ AC_SUBST(FONTCONFIG_CFLAGS)
 AC_SUBST(FONTCONFIG_LDFLAGS)
 if test "$with_fontconfig" = "yes"; then
     AC_MSG_CHECKING([for fontconfig])
-    if pkg-config --atleast-version=2.7.3 fontconfig; then
+    if test "$HAVE_PKGCONFIG" = 1; then
+        if pkg-config --atleast-version=2.7.3 fontconfig; then
+            HAVE_FONTCONFIG=1
+            FONTCONFIG_CFLAGS=`pkg-config --cflags fontconfig`
+            FONTCONFIG_LDFLAGS=`pkg-config --libs fontconfig`
+        fi
+    fi
+
+    if test "$HAVE_FONTCONFIG" = 1; then
         AC_MSG_RESULT([yes])
-        HAVE_FONTCONFIG=1
-        FONTCONFIG_CFLAGS=`pkg-config --cflags fontconfig`
-        FONTCONFIG_LDFLAGS=`pkg-config --libs fontconfig`
     else
         AC_MSG_RESULT([no])
     fi
@@ -1032,11 +1165,16 @@ AC_SUBST(CAIRO_CFLAGS)
 AC_SUBST(CAIRO_LDFLAGS)
 if test "$with_cairo" = "yes"; then
     AC_MSG_CHECKING([for cairo])
-    if pkg-config --atleast-version=1.11.2 cairo; then
+    if test "$HAVE_PKGCONFIG" = 1; then
+        if pkg-config --atleast-version=1.11.2 cairo; then
+            HAVE_CAIRO=1
+            CAIRO_CFLAGS=`pkg-config --cflags cairo`
+            CAIRO_LDFLAGS=`pkg-config --libs cairo`
+        fi
+    fi
+
+    if test "$HAVE_CAIRO" = 1; then
         AC_MSG_RESULT([yes])
-        HAVE_CAIRO=1
-        CAIRO_CFLAGS=`pkg-config --cflags cairo`
-        CAIRO_LDFLAGS=`pkg-config --libs cairo`
     else
         AC_MSG_RESULT([no])
     fi
