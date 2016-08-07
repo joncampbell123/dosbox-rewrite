@@ -172,6 +172,8 @@ IS_MAC_OSX=0
 IS_MINGW=0
 IS_LINUX=0
 IS_WINDOWS=0
+NEED_FPIC=0
+NEED_M64=0
 case "$build_os" in
     *linux*)
         IS_LINUX=1
@@ -186,9 +188,30 @@ case "$build_os" in
         IS_MINGW=1
         IS_WINDOWS=1
         ;;
+    *x86_64-pc-msys*)
+        IS_MINGW=1
+        IS_WINDOWS=1
+        NEED_M64=1
+        ;;
     *)
         ;;
 esac
+
+# the target may need -fPIC (such as x86_64)
+if test "$NEED_FPIC" = 1; then
+    FPIC_DEF=" -fPIC"
+    CFLAGS+="$FPIC_DEF"
+    CPPFLAGS+="$FPIC_DEF"
+    CXXFLAGS+="$FPIC_DEF"
+fi
+
+# the target may need -m64 (such as x86_64)
+if test "$NEED_M64" = 1; then
+    M64_DEF=" -m64"
+    CFLAGS+="$M64_DEF"
+    CPPFLAGS+="$M64_DEF"
+    CXXFLAGS+="$M64_DEF"
+fi
 
 # Apple in their wisdom use their own typedefs that don't show up by default
 # if you define POSIX_C_SOURCE, but that many important syscalls use anyway.

@@ -1,4 +1,6 @@
 
+CLEANFILES =
+
 noinst_LIBRARIES = \
 	dosboxxr/lib/hostcpudetect/libhostcpudetect.a \
 	dosboxxr/lib/graphics/libstretchblt.a \
@@ -33,6 +35,8 @@ dosboxxr_lib_xlib_libxlibdemo_a_SOURCES = \
 dosboxxr/lib/graphics/libstretchblt.a: dosboxxr/lib/graphics/stretchblt_neighbor.o dosboxxr/lib/graphics/stretchblt_bilinear.o dosboxxr/lib/graphics/stretchblt_bilinear_mmx.o dosboxxr/lib/graphics/stretchblt_bilinear_sse.o dosboxxr/lib/graphics/stretchblt_bilinear_avx.o dosboxxr/lib/graphics/stretchblt_bilinear_arm_neon.o dosboxxr/lib/graphics/stretchblt_general.o
 	$(RM) dosboxxr/lib/graphics/libstretchblt.a
 	$(AR) r dosboxxr/lib/graphics/libstretchblt.a dosboxxr/lib/graphics/stretchblt_neighbor.o dosboxxr/lib/graphics/stretchblt_bilinear.o dosboxxr/lib/graphics/stretchblt_bilinear_mmx.o dosboxxr/lib/graphics/stretchblt_bilinear_sse.o dosboxxr/lib/graphics/stretchblt_bilinear_avx.o dosboxxr/lib/graphics/stretchblt_bilinear_arm_neon.o dosboxxr/lib/graphics/stretchblt_general.o
+
+CLEANFILES += dosboxxr/lib/graphics/libstretchblt.a dosboxxr/lib/graphics/libstretchblt.a dosboxxr/lib/graphics/stretchblt_neighbor.o dosboxxr/lib/graphics/stretchblt_bilinear.o dosboxxr/lib/graphics/stretchblt_bilinear_mmx.o dosboxxr/lib/graphics/stretchblt_bilinear_sse.o dosboxxr/lib/graphics/stretchblt_bilinear_avx.o dosboxxr/lib/graphics/stretchblt_bilinear_arm_neon.o dosboxxr/lib/graphics/stretchblt_general.o
 
 dosboxxr/lib/graphics/stretchblt_neighbor.o: dosboxxr/lib/graphics/stretchblt_neighbor.cpp
 	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(AM_CXXFLAGS) $(CPPFLAGS) -c -o $@ $<
