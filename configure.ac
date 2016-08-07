@@ -242,6 +242,32 @@ if test "$IS_MINGW" = 1; then
     CXXFLAGS+="$STATIC_DEF"
 fi
 
+# Mac OS X test programs require the use of Objective C++
+AC_SUBST(OBJCXXFLAGS)
+OBJCXXFLAGS=0
+AC_SUBST(HAS_OBJCXX)
+HAS_OBJCXX=0
+if test "$IS_MAC_OSX" = 1; then
+	old_CXXFLAGS=$CXXFLAGS
+	old_CFLAGS=$CFLAGS
+	AC_MSG_CHECKING([that your C++ compiler can handle Objective C++])
+	EXT=" -ObjC++"
+	CXXFLAGS+="$ext"
+	CFLAGS+="$ext"
+	AC_TRY_COMPILE([ ],[ ],
+		[
+			AC_MSG_RESULT([yes])
+			OBJCXXFLAGS=" -ObjC++"
+		],
+		[
+			AC_MSG_RESULT([no])
+		])
+	CXXFLAGS=$old_CXXFLAGS
+	CFLAGS=$old_CFLAGS
+fi
+AM_CONDITIONAL([HAS_OBJCXX],[test $HAS_OBJCXX = 1])
+AC_DEFINE_UNQUOTED([HAS_OBJCXX],[$HAS_OBJCXX],[Has Objective C++])
+
 AC_SUBST(IS_LINUX)
 AM_CONDITIONAL([IS_LINUX],[test $IS_LINUX = 1])
 AC_DEFINE_UNQUOTED([IS_LINUX],[$IS_LINUX],[OS is Linux])
