@@ -98,13 +98,13 @@ bool init_bitmap(unsigned int width,unsigned int height,unsigned int align=32) {
 	quartz_bitmap.width = width;
 	quartz_bitmap.height = height;
 	quartz_bitmap.bytes_per_pixel = 4; // 32bpp
-	quartz_bitmap.stride_align = align; // FIXME: What alignment does Quartz require?
+	quartz_bitmap.stride_align = align;
 	quartz_bitmap.update_stride_from_width();
 	quartz_bitmap.update_length_from_stride_and_height();
-	quartz_bitmap.rgbinfo.r.setByMask(0xFF000000UL); // 32bpp kCGImageAlphaNoneSkipLast (no alpha, skip LSB, just like SDL 1.x)
-	quartz_bitmap.rgbinfo.g.setByMask(0x00FF0000UL);
-	quartz_bitmap.rgbinfo.b.setByMask(0x0000FF00UL);
-	quartz_bitmap.rgbinfo.a.setByMask(0x000000FFUL);
+	quartz_bitmap.rgbinfo.r.setByMask(0x000000FFUL);
+	quartz_bitmap.rgbinfo.g.setByMask(0x0000FF00UL);
+	quartz_bitmap.rgbinfo.b.setByMask(0x00FF0000UL);
+	quartz_bitmap.rgbinfo.a.setByMask(0xFF000000UL);
 
 #if HAVE_POSIX_MEMALIGN // OS X "El Capitan" has it!
 	if (posix_memalign((void**)(&quartz_bitmap.base),align,quartz_bitmap.length)) {
@@ -178,6 +178,8 @@ bool init_bitmap_from_main_window(NSSize sz) {
 	if (!init_bitmap_from_main_window())
 		fprintf(stderr,"Failed to init bitmap\n");
 
+	render_test_pattern_rgb_gradients(quartz_bitmap);
+
 	[ mainWindowView setNeedsDisplay:YES ];
 	[ mainWindowSubView setNeedsDisplay:YES ];
 }
@@ -197,6 +199,8 @@ bool init_bitmap_from_main_window(NSSize sz) {
 
 	if (!init_bitmap_from_main_window(frameSize))
 		fprintf(stderr,"Failed to init bitmap\n");
+
+	render_test_pattern_rgb_gradients(quartz_bitmap);
 
 	[ mainWindowView setNeedsDisplay:YES ];
 	[ mainWindowSubView setNeedsDisplay:YES ];

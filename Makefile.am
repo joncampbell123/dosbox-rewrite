@@ -263,8 +263,10 @@ bin_test_fb2_LDADD = \
 
 bin_test_cocoa1_SOURCES = test/cocoa1.cpp
 bin_test_cocoa1_CXXFLAGS = $(AM_CXXFLAGS) $(OBJCXXFLAGS)
-bin_test_cocoa1_DEPENDENCIES =
-bin_test_cocoa1_LDADD = 
+bin_test_cocoa1_DEPENDENCIES = \
+	dosboxxr/lib/util/libutil.a
+bin_test_cocoa1_LDADD = \
+	dosboxxr/lib/util/libutil.a
 bin_test_cocoa1_LDFLAGS = $(AM_LDFLAGS) -framework CoreFoundation -framework CoreServices -framework Cocoa -framework Carbon
 
 bin_test_wingdi1_SOURCES = test/wingdi1.cpp
