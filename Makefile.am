@@ -77,7 +77,8 @@ endif
 if IS_MAC_OSX
 if HAS_OBJCXX
 noinst_PROGRAMS += \
-	bin/test/cocoa1
+	bin/test/cocoa1 \
+	bin/test/cocoa2
 endif
 endif
 
@@ -268,6 +269,22 @@ bin_test_cocoa1_DEPENDENCIES = \
 bin_test_cocoa1_LDADD = \
 	dosboxxr/lib/util/libutil.a
 bin_test_cocoa1_LDFLAGS = $(AM_LDFLAGS) -framework CoreFoundation -framework CoreServices -framework Cocoa -framework Carbon
+
+bin_test_cocoa2_SOURCES = test/cocoa2.cpp
+bin_test_cocoa2_CXXFLAGS = $(AM_CXXFLAGS) $(OBJCXXFLAGS)
+bin_test_cocoa2_DEPENDENCIES = \
+	dosboxxr/lib/graphics/libstretchblt.a \
+	dosboxxr/lib/hostcpudetect/libhostcpudetect.a \
+	dosboxxr/lib/text/libtext.a \
+	dosboxxr/lib/util/libutil.a \
+	dosboxxr/lib/xlib/libxlibdemo.a
+bin_test_cocoa2_LDADD = \
+	dosboxxr/lib/graphics/libstretchblt.a \
+	dosboxxr/lib/hostcpudetect/libhostcpudetect.a \
+	dosboxxr/lib/text/libtext.a \
+	dosboxxr/lib/util/libutil.a \
+	dosboxxr/lib/xlib/libxlibdemo.a
+bin_test_cocoa2_LDFLAGS = $(AM_LDFLAGS) -framework CoreFoundation -framework CoreServices -framework Cocoa -framework Carbon
 
 bin_test_wingdi1_SOURCES = test/wingdi1.cpp
 bin_test_wingdi1_CXXFLAGS = $(AM_CXXFLAGS)
