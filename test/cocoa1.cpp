@@ -53,6 +53,7 @@
 }
 
 - (void)drawRect:(NSRect)dirtyRect;
+- (void)keyDown:(NSEvent*)event;
 @end
 
 rgb_bitmap_info                 quartz_bitmap;
@@ -63,6 +64,10 @@ CocoaTestWindowDelegate*	mainWindowDelegate = NULL;
 CocoaTestWindow*		mainWindow = NULL;
 CocoaTestView*			mainWindowView = NULL;
 NSView*				mainWindowSubView = NULL; // do we really need this?
+bool				force_abgr = false;
+bool				force_bgra = false;
+bool				announce_fmt = true;
+bool				force_rgb555 = false;
 
 void free_bitmap(void) {
 	if (cg_context != NULL) {
@@ -85,6 +90,13 @@ bool init_bitmap(unsigned int width,unsigned int height,unsigned int align=32) {
 	enum CGImageAlphaInfo cgAlphaMode = kCGImageAlphaNoneSkipLast;
 	unsigned int bits_per_channel = 8;
 
+	// TODO: Figure out how to represent RGB 5/5/5 16-bit rgb in OS X
+
+	if (force_abgr)
+		cgAlphaMode = kCGImageAlphaNoneSkipLast;
+	else if (force_bgra)
+		cgAlphaMode = kCGImageAlphaNoneSkipFirst;
+
 	free_bitmap();
 
 	// FIXME: Considering Mac OS X target audience and aethetics, it's best to assume 32bpp ARGB 8-bit/channel
@@ -101,14 +113,49 @@ bool init_bitmap(unsigned int width,unsigned int height,unsigned int align=32) {
 	quartz_bitmap.stride_align = align;
 	quartz_bitmap.update_stride_from_width();
 	quartz_bitmap.update_length_from_stride_and_height();
-	quartz_bitmap.rgbinfo.r.setByMask(0x000000FFUL);
-	quartz_bitmap.rgbinfo.g.setByMask(0x0000FF00UL);
-	quartz_bitmap.rgbinfo.b.setByMask(0x00FF0000UL);
-	quartz_bitmap.rgbinfo.a.setByMask(0xFF000000UL);
+
+	if (cgAlphaMode == kCGImageAlphaNoneSkipLast) { // "If the total size of the pixel is greater than space required, LSB (last byte?) is ignored"
+		if (quartz_bitmap.bytes_per_pixel == 4) {
+			quartz_bitmap.rgbinfo.r.setByMask(0x000000FFUL);
+			quartz_bitmap.rgbinfo.g.setByMask(0x0000FF00UL);
+			quartz_bitmap.rgbinfo.b.setByMask(0x00FF0000UL);
+			quartz_bitmap.rgbinfo.a.setByMask(0xFF000000UL);
+		}
+		else {
+			fprintf(stderr,"Unknown mapping\n");
+			free_bitmap();
+			return false;
+		}
+	}
+	else if (cgAlphaMode == kCGImageAlphaNoneSkipFirst) { // "If the total size of the pixel is greater than space required, MSB (first byte?) is ignored"
+		if (quartz_bitmap.bytes_per_pixel == 4) {
+			quartz_bitmap.rgbinfo.r.setByMask(0x0000FF00UL);
+			quartz_bitmap.rgbinfo.g.setByMask(0x00FF0000UL);
+			quartz_bitmap.rgbinfo.b.setByMask(0xFF000000UL);
+			quartz_bitmap.rgbinfo.a.setByMask(0x000000FFUL);
+		}
+		else if (quartz_bitmap.bytes_per_pixel == 2) {
+			quartz_bitmap.rgbinfo.r.setByMask(0x7C00UL);
+			quartz_bitmap.rgbinfo.g.setByMask(0x03E0UL);
+			quartz_bitmap.rgbinfo.b.setByMask(0x001FUL);
+			quartz_bitmap.rgbinfo.a.setByMask(0x8000UL);
+		}
+		else {
+			fprintf(stderr,"Unknown mapping\n");
+			free_bitmap();
+			return false;
+		}
+	}
+	else {
+		fprintf(stderr,"Unknown mapping\n");
+		free_bitmap();
+		return false;
+	}
 
 #if HAVE_POSIX_MEMALIGN // OS X "El Capitan" has it!
 	if (posix_memalign((void**)(&quartz_bitmap.base),align,quartz_bitmap.length)) {
 		fprintf(stderr,"Failed to alloc bitmap\n");
+		free_bitmap();
 		return false;
 	}
 	quartz_bitmap.canvas = quartz_bitmap.base;
@@ -141,10 +188,16 @@ bool init_bitmap(unsigned int width,unsigned int height,unsigned int align=32) {
 	CGContextTranslateCTM(cg_context, 0, -quartz_bitmap.height);
 	CGContextScaleCTM(cg_context, 1.0, -1.0);
 
-	return true;
-}
+	if (announce_fmt) {
+		announce_fmt = false;
+		fprintf(stderr,"R/G/B/A shift/width/mask %u/%u/0x%X %u/%u/0x%X %u/%u/0x%X %u/%u/0x%X\n",
+				quartz_bitmap.rgbinfo.r.shift, quartz_bitmap.rgbinfo.r.bwidth, quartz_bitmap.rgbinfo.r.bmask,
+				quartz_bitmap.rgbinfo.g.shift, quartz_bitmap.rgbinfo.g.bwidth, quartz_bitmap.rgbinfo.g.bmask,
+				quartz_bitmap.rgbinfo.b.shift, quartz_bitmap.rgbinfo.b.bwidth, quartz_bitmap.rgbinfo.b.bmask,
+				quartz_bitmap.rgbinfo.a.shift, quartz_bitmap.rgbinfo.a.bwidth, quartz_bitmap.rgbinfo.a.bmask);
+	}
 
-void update_bitmap(void) {
+	return true;
 }
 
 bool init_bitmap_from_main_window(void) {
@@ -227,11 +280,51 @@ bool init_bitmap_from_main_window(NSSize sz) {
 		CGContextFlush(ctx);
 	}
 }
+
+- (void)keyDown:(NSEvent*)event
+{
+	NSString* ch = [event characters];
+	char tmp[512];
+
+	[ch getCString:tmp maxLength:sizeof(tmp)];
+
+	if (!strcmp(tmp,"\x1B")) {
+		[ NSApp terminate: self ];
+	}
+}
 @end
 
 int main(int argc,char **argv) {
 	NSRect contentRect;
 	NSString* nstr;
+	char *a;
+	int i;
+
+	for (i=1;i < argc;) {
+		a = argv[i++];
+
+		if (*a == '-') {
+			do { a++; } while (*a == '-');
+
+			if (!strcmp(a,"bgra")) {
+				force_bgra = true;
+			}
+			else if (!strcmp(a,"abgr")) {
+				force_abgr = true;
+			}
+			else if (!strcmp(a,"rgb555")) {
+				force_rgb555 = true;
+			}
+			else {
+				fprintf(stderr,"Unhandled switch %s\n",a);
+				return 1;
+			}
+		}
+		else {
+			fprintf(stderr,"Unhandled arg %s\n",a);
+			return 1;
+		}
+	}
 
 	contentRect = NSMakeRect(0,0,640,480);
 
@@ -302,6 +395,8 @@ int main(int argc,char **argv) {
 	[ mainWindow setContentView: mainWindowView ];
 
 	[ mainWindow makeKeyAndOrderFront:nil ];
+	[ mainWindow makeKeyWindow ];
+	[ mainWindow makeFirstResponder: mainWindowSubView ];
 
 	// main event loop
 	[ NSApp activateIgnoringOtherApps:YES ];
