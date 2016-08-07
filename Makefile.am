@@ -74,6 +74,13 @@ noinst_PROGRAMS += \
 	bin/test/wingdi2
 endif
 
+if IS_MAC_OSX
+if HAS_OBJCXX
+noinst_PROGRAMS += \
+	bin/test/cocoa1
+endif
+endif
+
 if HAVE_X11
 if HAVE_OPENGL
 if HAVE_OPENGL_GLU
@@ -253,6 +260,12 @@ bin_test_fb2_LDADD = \
 	dosboxxr/lib/text/libtext.a \
 	dosboxxr/lib/util/libutil.a \
 	dosboxxr/lib/xlib/libxlibdemo.a
+
+bin_test_cocoa1_SOURCES = test/cocoa1.cpp
+bin_test_cocoa1_CXXFLAGS = $(AM_CXXFLAGS) $(OBJCXXFLAGS)
+bin_test_cocoa1_DEPENDENCIES =
+bin_test_cocoa1_LDADD = 
+bin_test_cocoa1_LDFLAGS = $(AM_LDFLAGS) -framework CoreFoundation -framework CoreServices -framework Cocoa -framework Carbon
 
 bin_test_wingdi1_SOURCES = test/wingdi1.cpp
 bin_test_wingdi1_CXXFLAGS = $(AM_CXXFLAGS)
