@@ -284,12 +284,12 @@ bool init_bitmap_from_main_window(NSSize sz) {
 - (void)keyDown:(NSEvent*)event
 {
 	NSString* ch = [event characters];
-	char tmp[512];
+	const char *chstr = [ch UTF8String];
 
-	[ch getCString:tmp maxLength:sizeof(tmp)];
-
-	if (!strcmp(tmp,"\x1B")) {
-		[ NSApp terminate: self ];
+	if (chstr != NULL) {
+		if (!strcmp(chstr,"\x1B")) {
+			[ NSApp terminate: self ];
+		}
 	}
 }
 @end

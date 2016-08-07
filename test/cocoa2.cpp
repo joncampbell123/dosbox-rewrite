@@ -353,44 +353,44 @@ static void free_src_bitmap(void) {
 - (void)keyDown:(NSEvent*)event
 {
 	NSString* ch = [event characters];
-	char tmp[512];
+	const char *chstr = [ch UTF8String];
 
-	[ch getCString:tmp maxLength:sizeof(tmp)];
+	if (chstr != NULL) {
+		if (!strcmp(chstr,"s")) {
+			resize_src_mode = !resize_src_mode;
 
-	if (!strcmp(tmp,"s")) {
-		resize_src_mode = !resize_src_mode;
+			if (resize_src_mode) {
+				free_src_bitmap();
+				init_src_bitmap(quartz_bitmap.width,quartz_bitmap.height);
+				test_pattern_1_render(/*&*/src_bitmap);
+				if (method <= stretchblt_mode_count())
+					stretchblt_modes[method].render(/*&*/quartz_bitmap,/*&*/src_bitmap);
 
-		if (resize_src_mode) {
-			free_src_bitmap();
-			init_src_bitmap(quartz_bitmap.width,quartz_bitmap.height);
-			test_pattern_1_render(/*&*/src_bitmap);
+				[ mainWindowView setNeedsDisplay:YES ];
+				[ mainWindowSubView setNeedsDisplay:YES ];
+			}
+		}
+		else if (!strcmp(chstr," ")) {
+			do {
+				if ((++method) >= stretchblt_mode_count())
+					method = 0;
+
+				if (stretchblt_modes[method].can_do(/*&*/quartz_bitmap,/*&*/src_bitmap))
+					break;
+				fprintf(stderr,"Can't do %s, skipping\n",stretchblt_modes[method].name);
+			} while (1);
+
+			fprintf(stderr,"Switching to %s\n",stretchblt_modes[method].name);
+
 			if (method <= stretchblt_mode_count())
 				stretchblt_modes[method].render(/*&*/quartz_bitmap,/*&*/src_bitmap);
 
 			[ mainWindowView setNeedsDisplay:YES ];
 			[ mainWindowSubView setNeedsDisplay:YES ];
 		}
-	}
-	else if (!strcmp(tmp," ")) {
-		do {
-			if ((++method) >= stretchblt_mode_count())
-				method = 0;
-
-			if (stretchblt_modes[method].can_do(/*&*/quartz_bitmap,/*&*/src_bitmap))
-				break;
-			fprintf(stderr,"Can't do %s, skipping\n",stretchblt_modes[method].name);
-		} while (1);
-
-		fprintf(stderr,"Switching to %s\n",stretchblt_modes[method].name);
-
-		if (method <= stretchblt_mode_count())
-			stretchblt_modes[method].render(/*&*/quartz_bitmap,/*&*/src_bitmap);
-
-		[ mainWindowView setNeedsDisplay:YES ];
-		[ mainWindowSubView setNeedsDisplay:YES ];
-	}
-	else if (!strcmp(tmp,"\x1B")) {
-		[ NSApp terminate: self ];
+		else if (!strcmp(chstr,"\x1B")) {
+			[ NSApp terminate: self ];
+		}
 	}
 }
 @end
