@@ -217,6 +217,14 @@ template <class T> bool stretchblt_bilinear_avx_can_do(const rgb_bitmap_info &db
     if (!dbmp.is_valid() || !sbmp.is_valid()) return false;
     if (!hostCPUcaps.avx2) return false;
 
+# if IS_WINDOWS && IS_MINGW && defined(__x86_64__)
+    // FIXME: I'm having trouble getting this code to work in 64-bit Windows without crashing in the vinterp stage.
+    //        It doesn't seem to be stack alignment, in fact GDB confirms %rbp is 32-byte aligned when it happens.
+    //        The problem seems to be the compiler allocating __m256i variables at misaligned addresses and then
+    //        accessing them. I will remove this if later updates to MinGW fix this issue.
+    return false;
+# endif
+
     // must fit in buffer
     const size_t pixels_per_group =
         sizeof(__m256i) / sizeof(T);
