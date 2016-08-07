@@ -195,9 +195,12 @@ bool init_bitmap_from_main_window(NSSize sz) {
 
 - (NSSize)windowWillResize:(NSWindow *)sender toSize:(NSSize)frameSize
 {
+	NSRect contentRect = [ sender contentRectForFrameRect: NSMakeRect(0,0,frameSize.width,frameSize.height) ];
+	NSSize contentSize = NSMakeSize(contentRect.size.width,contentRect.size.height);
+
 	fprintf(stderr,"Window resize\n");
 
-	if (!init_bitmap_from_main_window(frameSize))
+	if (!init_bitmap_from_main_window(contentSize))
 		fprintf(stderr,"Failed to init bitmap\n");
 
 	render_test_pattern_rgb_gradients(quartz_bitmap);
