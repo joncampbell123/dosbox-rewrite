@@ -211,6 +211,14 @@ if test "$IS_MAC_OSX" = 1; then
     fi
 fi
 
+# MinGW please statically link libgcc and libstdc++
+if test "$IS_MINGW" = 1; then
+    STATIC_DEF=" -Wl,-Bstatic -static-libgcc"
+    CFLAGS+="$STATIC_DEF"
+    CPPFLAGS+="$STATIC_DEF"
+    CXXFLAGS+="$STATIC_DEF"
+fi
+
 AC_SUBST(IS_LINUX)
 AM_CONDITIONAL([IS_LINUX],[test $IS_LINUX = 1])
 AC_DEFINE_UNQUOTED([IS_LINUX],[$IS_LINUX],[OS is Linux])
