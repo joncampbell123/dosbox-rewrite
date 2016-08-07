@@ -258,6 +258,7 @@ if test "$IS_MAC_OSX" = 1; then
 		[
 			AC_MSG_RESULT([yes])
 			OBJCXXFLAGS=" -ObjC++"
+			HAS_OBJCXX=1
 		],
 		[
 			AC_MSG_RESULT([no])
