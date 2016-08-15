@@ -671,8 +671,9 @@ switch (op) {
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"UD2");
                 break;
             /* opcode 0Fh 0Ch  not defined */
-            case 0x0D: /* 0Fh 0Dh NOP       spec: 0x0F 0x0D */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"NOP");
+            case 0x0D: /* 0Fh 0Dh NOP b(r/m)      spec: 0x0F 0x0D mod/reg/rm */
+                IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"NOP %s",IPDecPrint32(mrm,sib,disp,1,RC_REG,"b"));
                 break;
             /* opcode 0Fh 0Eh  not defined */
             /* opcode 0Fh 0Fh  not defined */
