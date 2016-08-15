@@ -167,7 +167,9 @@ bin_tools_cpudec86_SOURCES = \
 	tools/cpudec/cpudec86_amdathlon.cpp \
 	tools/cpudec/cpudec86_amdathlon_generic.cpp \
 	tools/cpudec/cpudec86_intelcore.cpp \
-	tools/cpudec/cpudec86_intelcore_generic.cpp
+	tools/cpudec/cpudec86_intelcore_generic.cpp \
+	tools/cpudec/cpudec86_everything.cpp \
+	tools/cpudec/cpudec86_everything_generic.cpp
 
 bin_tools_cpudec86_CXXFLAGS = $(AM_CXXFLAGS) -Itools/cpudec
 bin_tools_cpudec86_DEPENDENCIES = \
@@ -388,7 +390,11 @@ OPCC_H = \
 	\
 	dosboxxr/lib/cpu/core/intelCore.c16.a16.decom.h \
 	dosboxxr/lib/cpu/core/intelCore.cxx.axx.decom.h \
-	dosboxxr/lib/cpu/core/intelCore.c32.a32.decom.h
+	dosboxxr/lib/cpu/core/intelCore.c32.a32.decom.h \
+	\
+	dosboxxr/lib/cpu/core/everything.c16.a16.decom.h \
+	dosboxxr/lib/cpu/core/everything.cxx.axx.decom.h \
+	dosboxxr/lib/cpu/core/everything.c32.a32.decom.h
 
 testasm/test1.bin: testasm/test1.asm
 	yasm -o $@ -f bin $<
@@ -444,7 +450,10 @@ testasm/test3dn2.bin: testasm/test3dn2.asm
 testasm/testssse3.bin: testasm/testssse3.asm
 	yasm -o $@ -f bin $<
 
-test-bins: testasm/test1.bin testasm/test2.bin testasm/test3.bin testasm/test3e.bin testasm/test4.bin testasm/test4e.bin testasm/test5.bin testasm/test5pro.bin testasm/test5mmx.bin testasm/testp2.bin testasm/testp3.bin testasm/testp4.bin testasm/testp4p.bin testasm/testv20.bin testasm/testc6mx.bin testasm/test3dn1.bin testasm/test3dn2.bin testasm/testssse3.bin
+testasm/testevry.bin: testasm/testevry.asm
+	yasm -o $@ -f bin $<
+
+test-bins: testasm/test1.bin testasm/test2.bin testasm/test3.bin testasm/test3e.bin testasm/test4.bin testasm/test4e.bin testasm/test5.bin testasm/test5pro.bin testasm/test5mmx.bin testasm/testp2.bin testasm/testp3.bin testasm/testp4.bin testasm/testp4p.bin testasm/testv20.bin testasm/testc6mx.bin testasm/test3dn1.bin testasm/test3dn2.bin testasm/testssse3.bin testasm/testevry.bin
 
 bin/tools/opcc$(EXEEXT): tools/opcc/opcc.cpp
 	$(BUILD_CXX) -o $@ $<
@@ -616,6 +625,15 @@ dosboxxr/lib/cpu/core/intelCore.cxx.axx.decom.h: dosboxxr/lib/cpu/core/intelCore
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intelCore.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
 dosboxxr/lib/cpu/core/intelCore.c32.a32.decom.h: dosboxxr/lib/cpu/core/intelCore.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intelCore.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars
+
+dosboxxr/lib/cpu/core/everything.opcodes.p: opcodes/everything.opcodes
+	$(BUILD_CPP) -E -I. opcodes/everything.opcodes $@
+dosboxxr/lib/cpu/core/everything.c16.a16.decom.h: dosboxxr/lib/cpu/core/everything.opcodes.p $(OPCC)$(EXEEXT)
+	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/everything.opcodes.p -o $@ -m decompile -c 16 -a 16 -c32vars
+dosboxxr/lib/cpu/core/everything.cxx.axx.decom.h: dosboxxr/lib/cpu/core/everything.opcodes.p $(OPCC)$(EXEEXT)
+	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/everything.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
+dosboxxr/lib/cpu/core/everything.c32.a32.decom.h: dosboxxr/lib/cpu/core/everything.opcodes.p $(OPCC)$(EXEEXT)
+	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/everything.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars
 
 # grrr how do I get automake to run opcc first before compiling other parts?
 opcodes: $(OPCC_H)
