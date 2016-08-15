@@ -90,8 +90,8 @@ opcode 0x0F 0x7E mod/reg/rm mprefix(0xF3):      "MOVD" sse(reg),sse(r/m)
 opcode 0x0F 0x7F mod/reg/rm mprefix(0x66):      "MOVDQA" sse(r/m),sse(reg)
 opcode 0x0F 0x7F mod/reg/rm mprefix(0xF3):      "MOVDQU" sse(r/m),sse(reg)
 
-opcode 0x0F 0xAE mod/reg/rm /5:                 "LFENCE"
-opcode 0x0F 0xAE mod/reg/rm /6:                 "MFENCE"
+opcode 0x0F 0xAE mod/reg/rm /5 mod==3:          "LFENCE"
+opcode 0x0F 0xAE mod/reg/rm /6 mod==3:          "MFENCE"
 opcode 0x0F 0xAE mod/reg/rm /7 mod!=3:          "CLFLUSH" b(r/m)
 
 opcode 0x0F 0xC2 mod/reg/rm ib mprefix(0x66):   "CMPPD" sse(reg),sse(r/m),i
