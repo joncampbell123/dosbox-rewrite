@@ -6005,6 +6005,16 @@ jmp2:
     pshufb      xmm0,xmm1
     pshufb      xmm0,[si]
 
+    ; test our decoder's mandatory prefix cross-over code (pshufb 0xF2 prefix not exist)
+    repnz
+    pshufb      mm0,mm1
+    repnz
+    pshufb      mm0,[si]
+    repnz
+    pshufb      xmm0,xmm1
+    repnz
+    pshufb      xmm0,[si]
+
     phaddw      mm0,mm1
     phaddw      mm0,[si]
     phaddw      xmm0,xmm1

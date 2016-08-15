@@ -116,6 +116,7 @@ switch (op) {
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                _x86decode_begin_code32_addr32_opcode_parse_0F00_generic:
 /* Opcodes starting with 0Fh 00h */
                 switch (mrm.byte) {
                     case 0x00: /* 0Fh 00h 00h SLDTd w(r/m) mod=0 reg=0 rm=0      spec: 0x0F 0x00 mod/reg/rm /0 mod!=3 */
@@ -396,6 +397,7 @@ switch (op) {
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                _x86decode_begin_code32_addr32_opcode_parse_0F01_generic:
 /* Opcodes starting with 0Fh 01h */
                 switch (mrm.byte) {
                     case 0x00: /* 0Fh 01h 00h SGDTd w(r/m) mod=0 reg=0 rm=0      spec: 0x0F 0x01 mod/reg/rm /0 mod!=3 */
@@ -736,6 +738,7 @@ switch (op) {
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                _x86decode_begin_code32_addr32_opcode_parse_0F12_generic:
 /* Opcodes starting with 0Fh 12h */
                 switch (mrm.byte) {
                     case 0x00: /* 0Fh 12h 00h MOVLPS sse(reg),sse(r/m) mod=0 reg=0 rm=0      spec: 0x0F 0x12 mod/reg/rm mod!=3 */
@@ -1008,6 +1011,7 @@ switch (op) {
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                _x86decode_begin_code32_addr32_opcode_parse_0F13_generic:
 /* Opcodes starting with 0Fh 13h */
                 switch (mrm.byte) {
                     case 0x00: /* 0Fh 13h 00h MOVLPS sse(r/m),sse(reg) mod=0 reg=0 rm=0      spec: 0x0F 0x13 mod/reg/rm mod!=3 */
@@ -1292,6 +1296,7 @@ switch (op) {
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                _x86decode_begin_code32_addr32_opcode_parse_0F16_generic:
 /* Opcodes starting with 0Fh 16h */
                 switch (mrm.byte) {
                     case 0x00: /* 0Fh 16h 00h MOVHPS sse(reg),sse(r/m) mod=0 reg=0 rm=0      spec: 0x0F 0x16 mod/reg/rm mod!=3 */
@@ -1564,6 +1569,7 @@ switch (op) {
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                _x86decode_begin_code32_addr32_opcode_parse_0F17_generic:
 /* Opcodes starting with 0Fh 17h */
                 switch (mrm.byte) {
                     case 0x00: /* 0Fh 17h 00h MOVHPS sse(r/m),sse(reg) mod=0 reg=0 rm=0      spec: 0x0F 0x17 mod/reg/rm mod!=3 */
@@ -1834,6 +1840,7 @@ switch (op) {
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                _x86decode_begin_code32_addr32_opcode_parse_0F18_generic:
 /* Opcodes starting with 0Fh 18h */
                 switch (mrm.byte) {
                     case 0x00: /* 0Fh 18h 00h PREFETCHNTA b(r/m) mod=0 reg=0 rm=0      spec: 0x0F 0x18 mod/reg/rm /0 mod!=3 */
@@ -2116,6 +2123,7 @@ switch (op) {
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                _x86decode_begin_code32_addr32_opcode_parse_0F1F_generic:
 /* Opcodes starting with 0Fh 1Fh */
                 switch (mrm.reg()) {
                     case 0: /* 0Fh 1Fh 00h NOP b(r/m) reg=0      spec: 0x0F 0x1F mod/reg/rm /0 */
@@ -2138,6 +2146,7 @@ switch (op) {
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                _x86decode_begin_code32_addr32_opcode_parse_0F20_generic:
 /* Opcodes starting with 0Fh 20h */
                 switch (mrm.byte) {
                     /* opcode 0Fh 20h 00h  not defined */
@@ -2408,6 +2417,7 @@ switch (op) {
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                _x86decode_begin_code32_addr32_opcode_parse_0F21_generic:
 /* Opcodes starting with 0Fh 21h */
                 switch (mrm.byte) {
                     /* opcode 0Fh 21h 00h  not defined */
@@ -2678,6 +2688,7 @@ switch (op) {
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                _x86decode_begin_code32_addr32_opcode_parse_0F22_generic:
 /* Opcodes starting with 0Fh 22h */
                 switch (mrm.byte) {
                     /* opcode 0Fh 22h 00h  not defined */
@@ -2948,6 +2959,7 @@ switch (op) {
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                _x86decode_begin_code32_addr32_opcode_parse_0F23_generic:
 /* Opcodes starting with 0Fh 23h */
                 switch (mrm.byte) {
                     /* opcode 0Fh 23h 00h  not defined */
@@ -3243,6 +3255,7 @@ switch (op) {
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                _x86decode_begin_code32_addr32_opcode_parse_0F2B_generic:
 /* Opcodes starting with 0Fh 2Bh */
                 switch (mrm.byte) {
                     case 0x00: /* 0Fh 2Bh 00h MOVNTPS sse(r/m),sse(reg) mod=0 reg=0 rm=0      spec: 0x0F 0x2B mod/reg/rm mod!=3 */
@@ -3681,6 +3694,7 @@ switch (op) {
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                _x86decode_begin_code32_addr32_opcode_parse_0F50_generic:
 /* Opcodes starting with 0Fh 50h */
                 switch (mrm.byte) {
                     /* opcode 0Fh 50h 00h  not defined */
@@ -4164,6 +4178,7 @@ switch (op) {
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                _x86decode_begin_code32_addr32_opcode_parse_0F71_generic:
 /* Opcodes starting with 0Fh 71h */
                 switch (mrm.reg()) {
                     /* reg 0 not defined */
@@ -4193,6 +4208,7 @@ switch (op) {
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                _x86decode_begin_code32_addr32_opcode_parse_0F72_generic:
 /* Opcodes starting with 0Fh 72h */
                 switch (mrm.reg()) {
                     /* reg 0 not defined */
@@ -4222,6 +4238,7 @@ switch (op) {
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                _x86decode_begin_code32_addr32_opcode_parse_0F73_generic:
 /* Opcodes starting with 0Fh 73h */
                 switch (mrm.reg()) {
                     /* reg 0 not defined */
@@ -4532,6 +4549,7 @@ switch (op) {
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                _x86decode_begin_code32_addr32_opcode_parse_0FAE_generic:
 /* Opcodes starting with 0Fh AEh */
                 switch (mrm.byte) {
                     case 0x00: /* 0Fh AEh 00h FXSAVE b(r/m) mod=0 reg=0 rm=0      spec: 0x0F 0xAE mod/reg/rm /0 */
@@ -4881,6 +4899,7 @@ switch (op) {
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                _x86decode_begin_code32_addr32_opcode_parse_0FBA_generic:
 /* Opcodes starting with 0Fh BAh */
                 switch (mrm.reg()) {
                     /* reg 0 not defined */
@@ -4970,6 +4989,7 @@ switch (op) {
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                _x86decode_begin_code32_addr32_opcode_parse_0FC3_generic:
 /* Opcodes starting with 0Fh C3h */
                 switch (mrm.byte) {
                     case 0x00: /* 0Fh C3h 00h MOVNTI w32(r/m),w32(reg) mod=0 reg=0 rm=0      spec: 0x0F 0xC3 mod/reg/rm mod!=3 */
@@ -5240,6 +5260,7 @@ switch (op) {
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                _x86decode_begin_code32_addr32_opcode_parse_0FC4_generic:
 /* Opcodes starting with 0Fh C4h */
                 switch (mrm.byte) {
                     case 0x00: /* 0Fh C4h 00h PINSRW mmx(reg),w16(r/m),i mod=0 reg=0 rm=0      spec: 0x0F 0xC4 mod/reg/rm ib mod!=3 */
@@ -5514,6 +5535,7 @@ switch (op) {
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                _x86decode_begin_code32_addr32_opcode_parse_0FC5_generic:
 /* Opcodes starting with 0Fh C5h */
                 switch (mrm.byte) {
                     /* opcode 0Fh C5h 00h  not defined */
@@ -5793,6 +5815,7 @@ switch (op) {
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                _x86decode_begin_code32_addr32_opcode_parse_0FC7_generic:
 /* Opcodes starting with 0Fh C7h */
                 switch (mrm.byte) {
                     /* opcode 0Fh C7h 00h  not defined */
@@ -6110,6 +6133,7 @@ switch (op) {
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                _x86decode_begin_code32_addr32_opcode_parse_0FD7_generic:
 /* Opcodes starting with 0Fh D7h */
                 switch (mrm.byte) {
                     /* opcode 0Fh D7h 00h  not defined */
@@ -6479,6 +6503,7 @@ switch (op) {
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                _x86decode_begin_code32_addr32_opcode_parse_0FE7_generic:
 /* Opcodes starting with 0Fh E7h */
                 switch (mrm.byte) {
                     case 0x00: /* 0Fh E7h 00h MOVNTQ mmx(r/m),mmx(reg) mod=0 reg=0 rm=0      spec: 0x0F 0xE7 mod/reg/rm mod!=3 */
@@ -6848,6 +6873,7 @@ switch (op) {
                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                 else
                     IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                _x86decode_begin_code32_addr32_opcode_parse_0FF7_generic:
 /* Opcodes starting with 0Fh F7h */
                 switch (mrm.byte) {
                     /* opcode 0Fh F7h 00h  not defined */
@@ -7471,6 +7497,7 @@ switch (op) {
             IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
         else
             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        _x86decode_begin_code32_addr32_opcode_parse_62_generic:
 /* Opcodes starting with 62h */
         switch (mrm.byte) {
             case 0x00: /* 62h 00h BOUNDd w(reg),w(r/m) mod=0 reg=0 rm=0      spec: 0x62 mod/reg/rm mod!=3 */
@@ -7936,6 +7963,7 @@ switch (op) {
                         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                     else
                         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    _x86decode_begin_code32_addr32_opcode_parse_660F50_generic:
 /* Opcodes starting with 66h 0Fh 50h */
                     switch (mrm.byte) {
                         /* opcode 66h 0Fh 50h 00h  not defined */
@@ -8197,7 +8225,7 @@ switch (op) {
                             ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVMSKPD %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
                             break;
                         default:
-                            goto _x86decode_illegal_opcode;
+                            goto _x86decode_begin_code32_addr32_opcode_parse_0F50_generic; /* Fall through to normal 0x0F 0x50 opcode handling */
                     };
 /* End of opcodes starting with 66h 0Fh 50h */
                     break;
@@ -8419,6 +8447,7 @@ switch (op) {
                         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                     else
                         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    _x86decode_begin_code32_addr32_opcode_parse_660F71_generic:
 /* Opcodes starting with 66h 0Fh 71h */
                     switch (mrm.byte) {
                         /* opcode 66h 0Fh 71h 00h  not defined */
@@ -8687,7 +8716,7 @@ switch (op) {
                         /* opcode 66h 0Fh 71h FEh  not defined */
                         /* opcode 66h 0Fh 71h FFh  not defined */
                         default:
-                            goto _x86decode_illegal_opcode;
+                            goto _x86decode_begin_code32_addr32_opcode_parse_0F71_generic; /* Fall through to normal 0x0F 0x71 opcode handling */
                     };
 /* End of opcodes starting with 66h 0Fh 71h */
                     break;
@@ -8696,6 +8725,7 @@ switch (op) {
                         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                     else
                         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    _x86decode_begin_code32_addr32_opcode_parse_660F72_generic:
 /* Opcodes starting with 66h 0Fh 72h */
                     switch (mrm.byte) {
                         /* opcode 66h 0Fh 72h 00h  not defined */
@@ -8964,7 +8994,7 @@ switch (op) {
                         /* opcode 66h 0Fh 72h FEh  not defined */
                         /* opcode 66h 0Fh 72h FFh  not defined */
                         default:
-                            goto _x86decode_illegal_opcode;
+                            goto _x86decode_begin_code32_addr32_opcode_parse_0F72_generic; /* Fall through to normal 0x0F 0x72 opcode handling */
                     };
 /* End of opcodes starting with 66h 0Fh 72h */
                     break;
@@ -8973,6 +9003,7 @@ switch (op) {
                         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                     else
                         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    _x86decode_begin_code32_addr32_opcode_parse_660F73_generic:
 /* Opcodes starting with 66h 0Fh 73h */
                     switch (mrm.byte) {
                         /* opcode 66h 0Fh 73h 00h  not defined */
@@ -9244,7 +9275,7 @@ switch (op) {
                             ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PSLLDQ %s,0x%02lX",IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""),(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
                             break;
                         default:
-                            goto _x86decode_illegal_opcode;
+                            goto _x86decode_begin_code32_addr32_opcode_parse_0F73_generic; /* Fall through to normal 0x0F 0x73 opcode handling */
                     };
 /* End of opcodes starting with 66h 0Fh 73h */
                     break;
@@ -9382,6 +9413,7 @@ switch (op) {
                         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                     else
                         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    _x86decode_begin_code32_addr32_opcode_parse_660FC4_generic:
 /* Opcodes starting with 66h 0Fh C4h */
                     switch (mrm.byte) {
                         case 0x00: /* 66h 0Fh C4h 00h PINSRW sse(reg),w16(r/m),i mod=0 reg=0 rm=0      spec: 0x0F 0xC4 mod/reg/rm ib mod!=3 mprefix(0x66) */
@@ -9647,7 +9679,7 @@ switch (op) {
                             ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PINSRW XMM%u,%s,0x%02lX",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,4,RC_REG,"w32"),(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
                             break;
                         default:
-                            goto _x86decode_illegal_opcode;
+                            goto _x86decode_begin_code32_addr32_opcode_parse_0FC4_generic; /* Fall through to normal 0x0F 0xC4 opcode handling */
                     };
 /* End of opcodes starting with 66h 0Fh C4h */
                     break;
@@ -9656,6 +9688,7 @@ switch (op) {
                         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                     else
                         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    _x86decode_begin_code32_addr32_opcode_parse_660FC5_generic:
 /* Opcodes starting with 66h 0Fh C5h */
                     switch (mrm.byte) {
                         /* opcode 66h 0Fh C5h 00h  not defined */
@@ -9918,7 +9951,7 @@ switch (op) {
                             ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PEXTRW %s,%s,0x%02lX",CPUregsN[4][mrm.reg()],IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""),(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
                             break;
                         default:
-                            goto _x86decode_illegal_opcode;
+                            goto _x86decode_begin_code32_addr32_opcode_parse_0FC5_generic; /* Fall through to normal 0x0F 0xC5 opcode handling */
                     };
 /* End of opcodes starting with 66h 0Fh C5h */
                     break;
@@ -10063,6 +10096,7 @@ switch (op) {
                         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                     else
                         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    _x86decode_begin_code32_addr32_opcode_parse_660FE7_generic:
 /* Opcodes starting with 66h 0Fh E7h */
                     switch (mrm.byte) {
                         case 0x00: /* 66h 0Fh E7h 00h MOVNTDQ sse(r/m),sse(reg) mod=0 reg=0 rm=0      spec: 0x0F 0xE7 mod/reg/rm mprefix(0x66) mod!=3 */
@@ -10324,7 +10358,7 @@ switch (op) {
                         /* opcode 66h 0Fh E7h FEh  not defined */
                         /* opcode 66h 0Fh E7h FFh  not defined */
                         default:
-                            goto _x86decode_illegal_opcode;
+                            goto _x86decode_begin_code32_addr32_opcode_parse_0FE7_generic; /* Fall through to normal 0x0F 0xE7 opcode handling */
                     };
 /* End of opcodes starting with 66h 0Fh E7h */
                     break;
@@ -10414,6 +10448,7 @@ switch (op) {
                         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                     else
                         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    _x86decode_begin_code32_addr32_opcode_parse_660FF7_generic:
 /* Opcodes starting with 66h 0Fh F7h */
                     switch (mrm.byte) {
                         /* opcode 66h 0Fh F7h 00h  not defined */
@@ -10675,7 +10710,7 @@ switch (op) {
                             ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MASKMOVDQU XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
                             break;
                         default:
-                            goto _x86decode_illegal_opcode;
+                            goto _x86decode_begin_code32_addr32_opcode_parse_0FF7_generic; /* Fall through to normal 0x0F 0xF7 opcode handling */
                     };
 /* End of opcodes starting with 66h 0Fh F7h */
                     break;
@@ -10856,6 +10891,7 @@ switch (op) {
             IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
         else
             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        _x86decode_begin_code32_addr32_opcode_parse_80_generic:
 /* Opcodes starting with 80h */
         switch (mrm.reg()) {
             case 0: /* 80h 00h ADDb b(r/m),i reg=0      spec: 0x80 mod/reg/rm /0 ib */
@@ -10900,6 +10936,7 @@ switch (op) {
             IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
         else
             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        _x86decode_begin_code32_addr32_opcode_parse_81_generic:
 /* Opcodes starting with 81h */
         switch (mrm.reg()) {
             case 0: /* 81h 00h ADDd w(r/m),i reg=0      spec: 0x81 mod/reg/rm /0 iw */
@@ -10944,6 +10981,7 @@ switch (op) {
             IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
         else
             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        _x86decode_begin_code32_addr32_opcode_parse_83_generic:
 /* Opcodes starting with 83h */
         switch (mrm.reg()) {
             case 0: /* 83h 00h ADDd w(r/m),i reg=0      spec: 0x83 mod/reg/rm /0 ibs */
@@ -11186,6 +11224,7 @@ switch (op) {
             IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
         else
             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        _x86decode_begin_code32_addr32_opcode_parse_C0_generic:
 /* Opcodes starting with C0h */
         switch (mrm.reg()) {
             case 0: /* C0h 00h ROLb b(r/m),b(i) reg=0      spec: 0xC0 mod/reg/rm /0 ib */
@@ -11230,6 +11269,7 @@ switch (op) {
             IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
         else
             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        _x86decode_begin_code32_addr32_opcode_parse_C1_generic:
 /* Opcodes starting with C1h */
         switch (mrm.reg()) {
             case 0: /* C1h 00h ROLd w(r/m),b(i) reg=0      spec: 0xC1 mod/reg/rm /0 ib */
@@ -11295,6 +11335,7 @@ switch (op) {
             IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
         else
             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        _x86decode_begin_code32_addr32_opcode_parse_C6_generic:
 /* Opcodes starting with C6h */
         switch (mrm.reg()) {
             case 0: /* C6h 00h MOVb b(r/m),i reg=0      spec: 0xC6 mod/reg/rm /0 ib */
@@ -11318,6 +11359,7 @@ switch (op) {
             IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
         else
             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        _x86decode_begin_code32_addr32_opcode_parse_C7_generic:
 /* Opcodes starting with C7h */
         switch (mrm.reg()) {
             case 0: /* C7h 00h MOVd w(r/m),i reg=0      spec: 0xC7 mod/reg/rm /0 iw */
@@ -11369,6 +11411,7 @@ switch (op) {
             IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
         else
             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        _x86decode_begin_code32_addr32_opcode_parse_D0_generic:
 /* Opcodes starting with D0h */
         switch (mrm.reg()) {
             case 0: /* D0h 00h ROLb b(r/m),1 reg=0      spec: 0xD0 mod/reg/rm /0 */
@@ -11405,6 +11448,7 @@ switch (op) {
             IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
         else
             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        _x86decode_begin_code32_addr32_opcode_parse_D1_generic:
 /* Opcodes starting with D1h */
         switch (mrm.reg()) {
             case 0: /* D1h 00h ROLd w(r/m),1 reg=0      spec: 0xD1 mod/reg/rm /0 */
@@ -11441,6 +11485,7 @@ switch (op) {
             IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
         else
             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        _x86decode_begin_code32_addr32_opcode_parse_D2_generic:
 /* Opcodes starting with D2h */
         switch (mrm.reg()) {
             case 0: /* D2h 00h ROLb b(r/m),b(c) reg=0      spec: 0xD2 mod/reg/rm /0 */
@@ -11477,6 +11522,7 @@ switch (op) {
             IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
         else
             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        _x86decode_begin_code32_addr32_opcode_parse_D3_generic:
 /* Opcodes starting with D3h */
         switch (mrm.reg()) {
             case 0: /* D3h 00h ROLd w(r/m),b(c) reg=0      spec: 0xD3 mod/reg/rm /0 */
@@ -11527,6 +11573,7 @@ switch (op) {
             IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
         else
             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        _x86decode_begin_code32_addr32_opcode_parse_D8_generic:
 /* Opcodes starting with D8h */
         switch (mrm.byte) {
             case 0x00: /* D8h 00h FADDf32 f32(r/m) mod=0 reg=0 rm=0      spec: 0xD8 mod/reg/rm /0 mod!=3 */
@@ -11827,6 +11874,7 @@ switch (op) {
             IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
         else
             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        _x86decode_begin_code32_addr32_opcode_parse_D9_generic:
 /* Opcodes starting with D9h */
         switch (mrm.byte) {
             case 0x00: /* D9h 00h FLDf32 f32(r/m) mod=0 reg=0 rm=0      spec: 0xD9 mod/reg/rm /0 mod!=3 */
@@ -12169,6 +12217,7 @@ switch (op) {
             IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
         else
             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        _x86decode_begin_code32_addr32_opcode_parse_DA_generic:
 /* Opcodes starting with DAh */
         switch (mrm.byte) {
             case 0x00: /* DAh 00h FADDd w32(r/m) mod=0 reg=0 rm=0      spec: 0xDA mod/reg/rm /0 mod!=3 */
@@ -12463,6 +12512,7 @@ switch (op) {
             IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
         else
             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        _x86decode_begin_code32_addr32_opcode_parse_DB_generic:
 /* Opcodes starting with DBh */
         switch (mrm.byte) {
             case 0x00: /* DBh 00h FLDd w32(r/m) mod=0 reg=0 rm=0      spec: 0xDB mod/reg/rm /0 mod!=3 */
@@ -12765,6 +12815,7 @@ switch (op) {
             IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
         else
             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        _x86decode_begin_code32_addr32_opcode_parse_DC_generic:
 /* Opcodes starting with DCh */
         switch (mrm.byte) {
             case 0x00: /* DCh 00h FADDf64 f64(r/m) mod=0 reg=0 rm=0      spec: 0xDC mod/reg/rm /0 mod!=3 */
@@ -13061,6 +13112,7 @@ switch (op) {
             IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
         else
             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        _x86decode_begin_code32_addr32_opcode_parse_DD_generic:
 /* Opcodes starting with DDh */
         switch (mrm.byte) {
             case 0x00: /* DDh 00h FLDf64 f64(r/m) mod=0 reg=0 rm=0      spec: 0xDD mod/reg/rm /0 mod!=3 */
@@ -13353,6 +13405,7 @@ switch (op) {
             IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
         else
             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        _x86decode_begin_code32_addr32_opcode_parse_DE_generic:
 /* Opcodes starting with DEh */
         switch (mrm.byte) {
             case 0x00: /* DEh 00h FADDw w16(r/m) mod=0 reg=0 rm=0      spec: 0xDE mod/reg/rm /0 mod!=3 */
@@ -13651,6 +13704,7 @@ switch (op) {
             IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
         else
             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        _x86decode_begin_code32_addr32_opcode_parse_DF_generic:
 /* Opcodes starting with DFh */
         switch (mrm.byte) {
             case 0x00: /* DFh 00h FLDw w16(r/m) mod=0 reg=0 rm=0      spec: 0xDF mod/reg/rm /0 mod!=3 */
@@ -14346,6 +14400,7 @@ switch (op) {
                         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                     else
                         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    _x86decode_begin_code32_addr32_opcode_parse_F20FD6_generic:
 /* Opcodes starting with F2h 0Fh D6h */
                     switch (mrm.byte) {
                         /* opcode F2h 0Fh D6h 00h  not defined */
@@ -14607,7 +14662,7 @@ switch (op) {
                             ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVDQ2Q MM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""));
                             break;
                         default:
-                            goto _x86decode_illegal_opcode;
+                            goto _x86decode_illegal_opcode; /* non-mandatory fallback does not exist */
                     };
 /* End of opcodes starting with F2h 0Fh D6h */
                     break;
@@ -14647,6 +14702,7 @@ switch (op) {
                         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                     else
                         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    _x86decode_begin_code32_addr32_opcode_parse_F20FF0_generic:
 /* Opcodes starting with F2h 0Fh F0h */
                     switch (mrm.byte) {
                         case 0x00: /* F2h 0Fh F0h 00h LDDQU sse(reg),sse(r/m) mod=0 reg=0 rm=0      spec: 0x0F 0xF0 mod/reg/rm mprefix(0xF2) mod!=3 */
@@ -14908,7 +14964,7 @@ switch (op) {
                         /* opcode F2h 0Fh F0h FEh  not defined */
                         /* opcode F2h 0Fh F0h FFh  not defined */
                         default:
-                            goto _x86decode_illegal_opcode;
+                            goto _x86decode_illegal_opcode; /* non-mandatory fallback does not exist */
                     };
 /* End of opcodes starting with F2h 0Fh F0h */
                     break;
@@ -15303,6 +15359,7 @@ switch (op) {
                         IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
                     else
                         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    _x86decode_begin_code32_addr32_opcode_parse_F30FD6_generic:
 /* Opcodes starting with F3h 0Fh D6h */
                     switch (mrm.byte) {
                         /* opcode F3h 0Fh D6h 00h  not defined */
@@ -15564,7 +15621,7 @@ switch (op) {
                             ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVQ2DQ XMM%u,%s",mrm.reg(),IPDecPrint1632(addr32,mrm,sib,disp,8,RC_MMXREG,""));
                             break;
                         default:
-                            goto _x86decode_illegal_opcode;
+                            goto _x86decode_illegal_opcode; /* non-mandatory fallback does not exist */
                     };
 /* End of opcodes starting with F3h 0Fh D6h */
                     break;
@@ -15639,6 +15696,7 @@ switch (op) {
             IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
         else
             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        _x86decode_begin_code32_addr32_opcode_parse_F6_generic:
 /* Opcodes starting with F6h */
         switch (mrm.reg()) {
             case 0: /* F6h 00h TESTb b(r/m),i reg=0      spec: 0xF6 mod/reg/rm /0 ib */
@@ -15674,6 +15732,7 @@ switch (op) {
             IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
         else
             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        _x86decode_begin_code32_addr32_opcode_parse_F7_generic:
 /* Opcodes starting with F7h */
         switch (mrm.reg()) {
             case 0: /* F7h 00h TESTd w(r/m),i reg=0      spec: 0xF7 mod/reg/rm /0 iw */
@@ -15727,6 +15786,7 @@ switch (op) {
             IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
         else
             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        _x86decode_begin_code32_addr32_opcode_parse_FE_generic:
 /* Opcodes starting with FEh */
         switch (mrm.reg()) {
             case 0: /* FEh 00h INCb b(r/m) reg=0      spec: 0xFE mod/reg/rm /0 */
@@ -15751,6 +15811,7 @@ switch (op) {
             IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
         else
             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        _x86decode_begin_code32_addr32_opcode_parse_FF_generic:
 /* Opcodes starting with FFh */
         switch (mrm.reg()) {
             case 0: /* FFh 00h INCd w(r/m) reg=0      spec: 0xFF mod/reg/rm /0 */

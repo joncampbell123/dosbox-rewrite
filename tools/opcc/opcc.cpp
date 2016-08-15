@@ -1363,12 +1363,12 @@ bool parse_opcodelist(void) {
 #define OUTCODE_GEN_CODE32                          (1U << 3)
 #define OUTCODE_GEN_ADDR32                          (1U << 4)
 
-void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const uint8_t *opbase,const size_t opbaselen,OpByte &map,const unsigned int indent=0,const unsigned int flags=0);
+void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const uint8_t *opbase,const size_t opbaselen,OpByte &map,const unsigned int indent,const unsigned int flags,OpByte& maproot);
 
 static const char *immnames[4] = {"imm","imm2","imm3","imm4"};
 static const char *immnames_rip[4] = {"(imm+IPval())","(imm2+IPval())","(imm3+IPval())","(imm4+IPval())"};
 
-void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int addrwidth,const uint8_t *opbase,const size_t opbaselen,OpByte &map,const unsigned int indent,const string &indent_str,OpByte *submap,const uint8_t op,uint32_t flags) {
+void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int addrwidth,const uint8_t *opbase,const size_t opbaselen,OpByte &map,const unsigned int indent,const string &indent_str,OpByte *submap,const uint8_t op,uint32_t flags,OpByte& maproot) {
     bool emit_prefix_goto = false;
     unsigned int immc = 0;
 
@@ -1385,6 +1385,17 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
             }
         }
     }
+
+    if (submap->modregrm && mprefix_exists && submap->opmap_valid) {
+        size_t i=0;
+
+        fprintf(out_fp,"%s        _x86decode_begin_code%u_addr%u_opcode_parse_",indent_str.c_str(),codewidth,addrwidth);
+        for (;i < opbaselen;i++) fprintf(out_fp,"%02X",opbase[i]);
+        fprintf(out_fp,"%02X",op);
+        if (generic1632) fprintf(out_fp,"_generic");
+        fprintf(out_fp,":\n");
+    }
+
     if (submap->opsz32)
         fprintf(out_fp,"%s        prefix66 ^= 1;\n",indent_str.c_str());
     if (submap->addrsz32)
@@ -1506,7 +1517,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
 
                         fprintf(out_fp,"%s        %sif (op == 0x0F) {\n",indent_str.c_str(),emit?"else ":"");
 
-                        outcode_gen(codewidth,addrwidth,tmp,opbaselen+2,*submap2,indent+3U,flags_l/*|OUTCODE_GEN_ALREADY_IPFB*/|OUTCODE_GEN_DEFAULT_IS_GOTO_FALLBACK);
+                        outcode_gen(codewidth,addrwidth,tmp,opbaselen+2,*submap2,indent+3U,flags_l/*|OUTCODE_GEN_ALREADY_IPFB*/|OUTCODE_GEN_DEFAULT_IS_GOTO_FALLBACK,maproot);
                         emit_prefix_goto = true;
                         emit = true;
 
@@ -1525,7 +1536,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
 
                         fprintf(out_fp,"%s        %sif (op == 0x90) {\n",indent_str.c_str(),emit?"else ":"");
 
-                        opcode_gen_case_statement(codewidth,addrwidth,tmp,opbaselen+2,map,indent+1U,indent2,submap2,0x90,0);
+                        opcode_gen_case_statement(codewidth,addrwidth,tmp,opbaselen+2,map,indent+1U,indent2,submap2,0x90,0,maproot);
                         emit_prefix_goto = true;
                         emit = true;
 
@@ -1557,10 +1568,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
             if (opbaselen != 0) memcpy(tmp,opbase,opbaselen);
             tmp[opbaselen] = op;
 
-            if (submap->modregrm) // do not allow goto fallback for mod/reg/rm decisions
-                outcode_gen(codewidth,addrwidth,tmp,opbaselen+1,*submap,indent+2U,flags & (~(OUTCODE_GEN_DEFAULT_IS_GOTO_FALLBACK|OUTCODE_GEN_ALREADY_IPFB)));
-            else
-                outcode_gen(codewidth,addrwidth,tmp,opbaselen+1,*submap,indent+2U,flags & (~(OUTCODE_GEN_ALREADY_IPFB)));
+            outcode_gen(codewidth,addrwidth,tmp,opbaselen+1,*submap,indent+2U,flags & (~(OUTCODE_GEN_ALREADY_IPFB)),maproot);
         }
     }
     else {
@@ -1999,7 +2007,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
     }
 }
 
-void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const uint8_t *opbase,const size_t opbaselen,OpByte &map,const unsigned int indent,const unsigned int flags) {
+void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const uint8_t *opbase,const size_t opbaselen,OpByte &map,const unsigned int indent,const unsigned int flags,OpByte& maproot) {
     OpByte *submap,*submap2;
     string indent_str;
     bool reg_enum=false;
@@ -2175,7 +2183,7 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
                     }
                 }
 
-                opcode_gen_case_statement(codewidth,addrwidth,opbase,opbaselen,map,indent,indent_str,submap,op,flags);
+                opcode_gen_case_statement(codewidth,addrwidth,opbase,opbaselen,map,indent,indent_str,submap,op,flags,maproot);
             }
 
             if (submap == NULL) {
@@ -2204,7 +2212,7 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
                 }
 
                 opcode_gen_case_statement(codewidth,addrwidth,opbase,opbaselen,map,indent,indent_str,submap,op,
-                    flags | (map.amd3dnow_here ? OUTCODE_GEN_SKIP_MRM : 0));
+                    flags | (map.amd3dnow_here ? OUTCODE_GEN_SKIP_MRM : 0),maproot);
             }
 
             if (submap == NULL) {
@@ -2218,7 +2226,9 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
     fprintf(out_fp,"%s    default:\n",indent_str.c_str());
 
     if (flags & OUTCODE_GEN_DEFAULT_IS_GOTO_FALLBACK) {
-        size_t i=0,ii;
+        size_t i,ii;
+        OpByte *chkmap;
+        bool fallopexists = false;
         unsigned int jcw = codewidth,jaw = addrwidth;
 
         if (!generic1632) {
@@ -2228,22 +2238,52 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
                 jaw = (jaw == 32) ? 16 : 32;
         }
 
-        if (!generic1632 && generic_case_1632 && (jcw != jaw) && (jcw != codewidth || jaw != addrwidth))
-            fprintf(out_fp,"%s        goto _x86decode_begin_code%u_addr%u_opcode_parse_",
-                indent_str.c_str(),32/*FIXME*/,32/*FIXME*/);
-        else
-            fprintf(out_fp,"%s        goto _x86decode_begin_code%u_addr%u_opcode_parse_",
-                indent_str.c_str(),jcw,jaw);
+        // don't generate GOTO if the fallback doesn't exist
+        i=0;
+        chkmap = &maproot;
+        for (i=0;i < opbaselen;i++) {
+            if (chkmap->final && chkmap->isprefix)
+                chkmap = &maproot;
 
-        // HACK
-        if (i < opbaselen && (opbase[i] == 0x66 || opbase[i] == 0x67 || opbase[i] == 0xF2 || opbase[i] == 0xF3)) i++;
-        // END HACK
-        ii=i;
-        for (;i < opbaselen;i++) fprintf(out_fp,"%02X",opbase[i]);
-        if (generic1632 || (generic_case_1632 && (jcw != jaw) && (jcw != codewidth || jaw != addrwidth))) fprintf(out_fp,"_generic");
-        fprintf(out_fp,"; /* Fall through to normal");
-        for (i=ii;i < opbaselen;i++) fprintf(out_fp," 0x%02X",opbase[i]);
-        fprintf(out_fp," opcode handling */\n");
+            if (chkmap->final) {
+                if ((i+1) != opbaselen) chkmap = NULL;
+                break;
+            }
+
+            if (chkmap->opmap_valid && chkmap->opmap[opbase[i]] != NULL) {
+                chkmap = chkmap->opmap[opbase[i]];
+            }
+            else {
+                chkmap = NULL;
+                break;
+            }
+        }
+        if (chkmap != NULL)
+            fallopexists = true;
+
+        if (fallopexists) {
+            // HACK skip prefix we just handled
+            i=0;
+            if (i < opbaselen && (opbase[i] == 0x66 || opbase[i] == 0x67 || opbase[i] == 0xF2 || opbase[i] == 0xF3)) i++;
+            // END HACK
+            ii=i;
+
+            if (!generic1632 && generic_case_1632 && (jcw != jaw) && (jcw != codewidth || jaw != addrwidth))
+                fprintf(out_fp,"%s        goto _x86decode_begin_code%u_addr%u_opcode_parse_",
+                        indent_str.c_str(),32/*FIXME*/,32/*FIXME*/);
+            else
+                fprintf(out_fp,"%s        goto _x86decode_begin_code%u_addr%u_opcode_parse_",
+                        indent_str.c_str(),jcw,jaw);
+
+            for (;i < opbaselen;i++) fprintf(out_fp,"%02X",opbase[i]);
+            if (generic1632 || (generic_case_1632 && (jcw != jaw) && (jcw != codewidth || jaw != addrwidth))) fprintf(out_fp,"_generic");
+            fprintf(out_fp,"; /* Fall through to normal");
+            for (i=ii;i < opbaselen;i++) fprintf(out_fp," 0x%02X",opbase[i]);
+            fprintf(out_fp," opcode handling */\n");
+        }
+        else {
+            fprintf(out_fp,"%s        goto _x86decode_illegal_opcode; /* non-mandatory fallback does not exist */\n",indent_str.c_str());
+        }
     }
     else
         fprintf(out_fp,"%s        goto _x86decode_illegal_opcode;\n",indent_str.c_str());
@@ -2319,7 +2359,8 @@ int main(int argc,char **argv) {
      *       Sound stupid? Maybe, but the idea is that most code runs in the CPU mode it's designed for and that
      *       the operator overrides are uncommon, therefore the opcode decoding could gain a speedup by not having
      *       conditional jumps per instruction with regard to opcode size and address size decoding. */
-    outcode_gen(sel_code_width,sel_addr_width,empty_opcode/*opcode base*/,0/*opcode base len*/,sel_code_width == 32 ? opmap32 : opmap16);
+    outcode_gen(sel_code_width,sel_addr_width,empty_opcode/*opcode base*/,0/*opcode base len*/,
+        sel_code_width == 32 ? opmap32 : opmap16,0/*indent*/,0/*flags*/,sel_code_width == 32 ? opmap32 : opmap16);
 
     fprintf(out_fp,"#undef IPFaddrW\n");
     fprintf(out_fp,"#undef IPFaddrWsigned\n");
