@@ -52,5 +52,5 @@ opcode 0xDF mod/reg/rm /5 mod==3:               "FUCOMIP" st(0),st(r/m)     ; Un
 opcode 0xDF mod/reg/rm /6 mod==3:               "FCOMIP" st(0),st(r/m)      ; Compare floating point, EFLAGS, pop       10111111
 
 ; Official undefined opcode
-opcode 0x0F 0x0B:                               "UD2"                       ; Write Back and Invalidate Cache           00001111 00001011
+opcode 0x0F 0x0B:                               illegal                     ; Write Back and Invalidate Cache           00001111 00001011
 

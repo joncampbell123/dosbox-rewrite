@@ -669,9 +669,8 @@ switch (op) {
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"WBINVD");
                 break;
             /* opcode 0Fh 0Ah  not defined */
-            case 0x0B: /* 0Fh 0Bh UD2       spec: 0x0F 0x0B */
-                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"UD2");
-                break;
+            case 0x0B: /* 0Fh 0Bh        spec: 0x0F 0x0B */
+                goto _x86decode_illegal_opcode;
             /* opcode 0Fh 0Ch  not defined */
             case 0x0D: /* 0Fh 0Dh NOP b(r/m)      spec: 0x0F 0x0D mod/reg/rm */
                 IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);

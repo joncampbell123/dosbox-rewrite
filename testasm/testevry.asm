@@ -6301,3 +6301,9 @@ jmp2:
     lzcnt       eax,ecx
     lzcnt       eax,[si]
 
+    nop
+    nop
+    ud2
+    nop
+    nop
+

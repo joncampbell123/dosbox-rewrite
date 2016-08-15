@@ -296,7 +296,7 @@ class OpByte {
 public:
     OpByte() : isprefix(false), segoverride(OPSEG_NONE), modregrm(false), reg_from_opcode(false),
         already(false), addrsz32(false), opsz32(false), suffix(OPSUFFIX_NONE), opmap_valid(false),
-        mprefix(0), mprefix_exists_here(false), amd3dnowsuffix(-1), amd3dnow_here(false), final(false) {
+        mprefix(0), mprefix_exists_here(false), amd3dnowsuffix(-1), amd3dnow_here(false), final(false), illegal(false) {
     }
     ~OpByte() {
         free_opmap();
@@ -350,6 +350,7 @@ public:
         if (opmap_valid != r.opmap_valid) return false;
         if (addrsz32 != r.addrsz32) return false;
         if (mprefix != r.mprefix) return false;
+        if (illegal != r.illegal) return false;
         if (opsz32 != r.opsz32) return false;
 
         if (opmap_valid) {
@@ -394,6 +395,7 @@ public:
     int             amd3dnowsuffix; // AMD 3DNow! suffix byte (after mod/reg/rm)
     bool            mprefix_exists_here;
     bool            amd3dnow_here;
+    bool            illegal;
     bool            final;
 public:
     OpByte*         opmap[256];
@@ -424,6 +426,7 @@ public:
         mod_is_3 = false;
         modregrm = false;
         addrsz32 = false;
+        illegal = false;
         opsz32 = false;
         mprefix = 0;
         op = 0;
@@ -435,6 +438,7 @@ public:
     bool                    mod_not_3;      // some opcodes are not valid if mod != 3
     bool                    mod_is_3;
     bool                    addrsz32;
+    bool                    illegal;
     bool                    opsz32;
     int                     oprange_min;
     int                     oprange_max; // last byte of opcode takes the range (min,max) inclusive
@@ -527,6 +531,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
                     submap->name = st.name;
                     submap->opsz32 = st.opsz32;
                     submap->addrsz32 = st.addrsz32;
+                    submap->illegal = st.illegal;
                     submap->final = true;
                 }
             }
@@ -571,6 +576,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
                         submap->name = st.name;
                         submap->opsz32 = st.opsz32;
                         submap->addrsz32 = st.addrsz32;
+                        submap->illegal = st.illegal;
                         submap->final = true;
                     }
                 }
@@ -600,6 +606,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
                 return false;
             }
 
+            map->illegal = st.illegal;
             map->opsz32 = st.opsz32;
             map->addrsz32 = st.addrsz32;
             map->segoverride = st.segoverride;
@@ -621,6 +628,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
             return false;
         }
 
+        map->illegal = st.illegal;
         map->opsz32 = st.opsz32;
         map->addrsz32 = st.addrsz32;
         map->reg_from_opcode = st.reg_from_opcode;
@@ -955,46 +963,51 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
         if (ns != NULL) *ns++ = 0;
 
         if (argc == 0) { // "NAME"b
-            if (!st.name.empty()) {
-                fprintf(stderr,"Syntax error: %s\n",s);
-                return false;
+            if (!strcmp(s,"illegal")) {
+                st.illegal = true;
             }
-
-            if (*s != '\"') {
-                fprintf(stderr,"Name must be kept in quotes\n");
-                return false;
-            }
-            s++;
-            while (*s != 0 && *s != '\"') st.name += *s++;
-            if (*s != '\"') {
-                fprintf(stderr,"Name must be kept in quotes\n");
-                return false;
-            }
-            s++;
-
-            if (!strcmp(s,"b"))
-                st.suffix = OPSUFFIX_BYTE;
-            else if (!strcmp(s,"w"))
-                st.suffix = OPSUFFIX_WORD;
-            else if (!strcmp(s,"w16"))
-                st.suffix = OPSUFFIX_WORD16;
-            else if (!strcmp(s,"w32"))
-                st.suffix = OPSUFFIX_WORD32;
-            else if (!strcmp(s,"w64"))
-                st.suffix = OPSUFFIX_WORD64;
-            else if (!strcmp(s,"f32"))
-                st.suffix = OPSUFFIX_FLOAT32;
-            else if (!strcmp(s,"f64"))
-                st.suffix = OPSUFFIX_FLOAT64;
-            else if (!strcmp(s,"f80"))
-                st.suffix = OPSUFFIX_FLOAT80;
-            else if (!strcmp(s,"fbcd"))
-                st.suffix = OPSUFFIX_FLOATBCD;
-            else if (*s == 0)
-                st.suffix = OPSUFFIX_NONE;
             else {
-                fprintf(stderr,"Name has unknown suffix %s\n",s);
-                return false;
+                if (!st.name.empty()) {
+                    fprintf(stderr,"Syntax error: %s\n",s);
+                    return false;
+                }
+
+                if (*s != '\"') {
+                    fprintf(stderr,"Name must be kept in quotes\n");
+                    return false;
+                }
+                s++;
+                while (*s != 0 && *s != '\"') st.name += *s++;
+                if (*s != '\"') {
+                    fprintf(stderr,"Name must be kept in quotes\n");
+                    return false;
+                }
+                s++;
+
+                if (!strcmp(s,"b"))
+                    st.suffix = OPSUFFIX_BYTE;
+                else if (!strcmp(s,"w"))
+                    st.suffix = OPSUFFIX_WORD;
+                else if (!strcmp(s,"w16"))
+                    st.suffix = OPSUFFIX_WORD16;
+                else if (!strcmp(s,"w32"))
+                    st.suffix = OPSUFFIX_WORD32;
+                else if (!strcmp(s,"w64"))
+                    st.suffix = OPSUFFIX_WORD64;
+                else if (!strcmp(s,"f32"))
+                    st.suffix = OPSUFFIX_FLOAT32;
+                else if (!strcmp(s,"f64"))
+                    st.suffix = OPSUFFIX_FLOAT64;
+                else if (!strcmp(s,"f80"))
+                    st.suffix = OPSUFFIX_FLOAT80;
+                else if (!strcmp(s,"fbcd"))
+                    st.suffix = OPSUFFIX_FLOATBCD;
+                else if (*s == 0)
+                    st.suffix = OPSUFFIX_NONE;
+                else {
+                    fprintf(stderr,"Name has unknown suffix %s\n",s);
+                    return false;
+                }
             }
         }
         else if (argc == 1) { /* b(r/m),b(reg) */
@@ -1282,6 +1295,13 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
         argc++;
     }
 
+    if (st.name.empty()) {
+        if (!st.opsz32 && !st.addrsz32 && !st.illegal) {
+            fprintf(stderr,"Instruction needs a name\n");
+            return false;
+        }
+    }
+
     if (st.oprange_min < 0) {
         if (true/*16-bit*/ && !parse_opcode_def_gen1(/*&*/st,/*&*/opmap16))
             return false;
@@ -1400,6 +1420,11 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
         fprintf(out_fp,"%s        prefix66 ^= 1;\n",indent_str.c_str());
     if (submap->addrsz32)
         fprintf(out_fp,"%s        prefix67 ^= 1;\n",indent_str.c_str());
+
+    if (submap->illegal) {
+        fprintf(out_fp,"%s        goto _x86decode_illegal_opcode;\n",indent_str.c_str());
+        return;
+    }
 
     /* then fetch other args */
     for (size_t i=0;i < submap->immarg.size();i++) {
