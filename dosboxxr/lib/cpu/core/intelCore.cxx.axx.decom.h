@@ -3558,7 +3558,9 @@ switch (op) {
             /* opcode 0Fh 37h  not defined */
             case 0x38: /* 0Fh 38h        spec:  */
 /* Opcodes starting with 0Fh 38h */
-                switch (op=IPFB()) {
+                op=IPFB();
+                _x86decode_begin_code32_addr32_opcode_parse_0F38_generic:
+                switch (op) {
                     case 0x00: /* 0Fh 38h 00h PSHUFB mmx(reg),mmx(r/m)      spec: 0x0F 0x38 0x00 mod/reg/rm */
                         if (addr32)
                             IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
@@ -3913,7 +3915,9 @@ switch (op) {
             /* opcode 0Fh 39h  not defined */
             case 0x3A: /* 0Fh 3Ah        spec:  */
 /* Opcodes starting with 0Fh 3Ah */
-                switch (op=IPFB()) {
+                op=IPFB();
+                _x86decode_begin_code32_addr32_opcode_parse_0F3A_generic:
+                switch (op) {
                     /* opcode 0Fh 3Ah 00h  not defined */
                     /* opcode 0Fh 3Ah 01h  not defined */
                     /* opcode 0Fh 3Ah 02h  not defined */
@@ -8375,7 +8379,9 @@ switch (op) {
         op=IPFB();
         if (op == 0x0F) {
 /* Opcodes starting with 66h 0Fh */
-            switch (op=IPFB()) {
+            op=IPFB();
+            _x86decode_begin_code32_addr32_opcode_parse_660F_generic:
+            switch (op) {
                 /* opcode 66h 0Fh 00h  not defined */
                 /* opcode 66h 0Fh 01h  not defined */
                 /* opcode 66h 0Fh 02h  not defined */
@@ -8530,7 +8536,9 @@ switch (op) {
                 /* opcode 66h 0Fh 37h  not defined */
                 case 0x38: /* 66h 0Fh 38h        spec:  */
 /* Opcodes starting with 66h 0Fh 38h */
-                    switch (op=IPFB()) {
+                    op=IPFB();
+                    _x86decode_begin_code32_addr32_opcode_parse_660F38_generic:
+                    switch (op) {
                         case 0x00: /* 66h 0Fh 38h 00h PSHUFB sse(reg),sse(r/m)      spec: 0x0F 0x38 0x00 mod/reg/rm mprefix(0x66) */
                             if (addr32)
                                 IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
@@ -8878,14 +8886,16 @@ switch (op) {
                         /* opcode 66h 0Fh 38h FEh  not defined */
                         /* opcode 66h 0Fh 38h FFh  not defined */
                         default:
-                            goto _x86decode_illegal_opcode;
+                            goto _x86decode_begin_code32_addr32_opcode_parse_0F38_generic; /* Fall through to normal 0x0F 0x38 opcode handling */
                     };
 /* End of opcodes starting with 66h 0Fh 38h */
                     break;
                 /* opcode 66h 0Fh 39h  not defined */
                 case 0x3A: /* 66h 0Fh 3Ah        spec:  */
 /* Opcodes starting with 66h 0Fh 3Ah */
-                    switch (op=IPFB()) {
+                    op=IPFB();
+                    _x86decode_begin_code32_addr32_opcode_parse_660F3A_generic:
+                    switch (op) {
                         /* opcode 66h 0Fh 3Ah 00h  not defined */
                         /* opcode 66h 0Fh 3Ah 01h  not defined */
                         /* opcode 66h 0Fh 3Ah 02h  not defined */
@@ -9150,7 +9160,7 @@ switch (op) {
                         /* opcode 66h 0Fh 3Ah FEh  not defined */
                         /* opcode 66h 0Fh 3Ah FFh  not defined */
                         default:
-                            goto _x86decode_illegal_opcode;
+                            goto _x86decode_begin_code32_addr32_opcode_parse_0F3A_generic; /* Fall through to normal 0x0F 0x3A opcode handling */
                     };
 /* End of opcodes starting with 66h 0Fh 3Ah */
                     break;
@@ -15252,7 +15262,9 @@ switch (op) {
         op=IPFB();
         if (op == 0x0F) {
 /* Opcodes starting with F2h 0Fh */
-            switch (op=IPFB()) {
+            op=IPFB();
+            _x86decode_begin_code32_addr32_opcode_parse_F20F_generic:
+            switch (op) {
                 /* opcode F2h 0Fh 00h  not defined */
                 /* opcode F2h 0Fh 01h  not defined */
                 /* opcode F2h 0Fh 02h  not defined */
@@ -16183,7 +16195,9 @@ switch (op) {
         op=IPFB();
         if (op == 0x0F) {
 /* Opcodes starting with F3h 0Fh */
-            switch (op=IPFB()) {
+            op=IPFB();
+            _x86decode_begin_code32_addr32_opcode_parse_F30F_generic:
+            switch (op) {
                 /* opcode F3h 0Fh 00h  not defined */
                 /* opcode F3h 0Fh 01h  not defined */
                 /* opcode F3h 0Fh 02h  not defined */

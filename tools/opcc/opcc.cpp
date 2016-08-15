@@ -1455,6 +1455,11 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                 unsigned int flags_l = 0;
                 bool emit=false;
 
+                if (submap->modregrm) {
+                    fprintf(stderr,"mprefix+mod/reg/rm unsupported case\n");
+                    abort();
+                }
+
                 if (!generic1632) {
                     if (submap->opsz32) {
                         flags_l ^= OUTCODE_GEN_CODE32;
@@ -1501,7 +1506,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
 
                         fprintf(out_fp,"%s        %sif (op == 0x0F) {\n",indent_str.c_str(),emit?"else ":"");
 
-                        outcode_gen(codewidth,addrwidth,tmp,opbaselen+2,*submap2,indent+3U,flags_l|OUTCODE_GEN_ALREADY_IPFB|OUTCODE_GEN_DEFAULT_IS_GOTO_FALLBACK);
+                        outcode_gen(codewidth,addrwidth,tmp,opbaselen+2,*submap2,indent+3U,flags_l/*|OUTCODE_GEN_ALREADY_IPFB*/|OUTCODE_GEN_DEFAULT_IS_GOTO_FALLBACK);
                         emit_prefix_goto = true;
                         emit = true;
 
@@ -1552,7 +1557,10 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
             if (opbaselen != 0) memcpy(tmp,opbase,opbaselen);
             tmp[opbaselen] = op;
 
-            outcode_gen(codewidth,addrwidth,tmp,opbaselen+1,*submap,indent+2U);
+            if (submap->modregrm) // do not allow goto fallback for mod/reg/rm decisions
+                outcode_gen(codewidth,addrwidth,tmp,opbaselen+1,*submap,indent+2U,flags & (~(OUTCODE_GEN_DEFAULT_IS_GOTO_FALLBACK|OUTCODE_GEN_ALREADY_IPFB)));
+            else
+                outcode_gen(codewidth,addrwidth,tmp,opbaselen+1,*submap,indent+2U,flags & (~(OUTCODE_GEN_ALREADY_IPFB)));
         }
     }
     else {
@@ -2126,12 +2134,14 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
         }
     }
     else {
-        if (mprefix_exists && (opbaselen == 0 || map.isprefix || (opbaselen == 1 && opbase[0] == 0x0F))) {
+        if (mprefix_exists) {
+            size_t i=0;
+
             if (!(flags & OUTCODE_GEN_ALREADY_IPFB))
                 fprintf(out_fp,"%sop=IPFB();\n",indent_str.c_str());
 
             fprintf(out_fp,"%s_x86decode_begin_code%u_addr%u_opcode_parse_",indent_str.c_str(),codewidth,addrwidth);
-            for (size_t i=0;i < opbaselen;i++) fprintf(out_fp,"%02X",opbase[i]);
+            for (;i < opbaselen;i++) fprintf(out_fp,"%02X",opbase[i]);
             if (generic1632) fprintf(out_fp,"_generic");
             fprintf(out_fp,":\n");
 
