@@ -19045,7 +19045,13 @@ switch (op) {
                 /* opcode F3h 0Fh BAh  not defined */
                 /* opcode F3h 0Fh BBh  not defined */
                 /* opcode F3h 0Fh BCh  not defined */
-                /* opcode F3h 0Fh BDh  not defined */
+                case 0xBD: /* F3h 0Fh BDh LZCNT w(reg),w(r/m)      spec: 0x0F 0xBD mod/reg/rm mprefix(0xF3) */
+                    if (addr32)
+                        IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    else
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LZCNT %s,%s",CPUregsN[code32?4:2][mrm.reg()],IPDecPrint1632(addr32,mrm,sib,disp,code32?4:2,RC_REG,code32?"d":"w"));
+                    break;
                 /* opcode F3h 0Fh BEh  not defined */
                 /* opcode F3h 0Fh BFh  not defined */
                 /* opcode F3h 0Fh C0h  not defined */

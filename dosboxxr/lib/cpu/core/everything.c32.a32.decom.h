@@ -17622,7 +17622,10 @@ switch (op) {
                 /* opcode F3h 0Fh BAh  not defined */
                 /* opcode F3h 0Fh BBh  not defined */
                 /* opcode F3h 0Fh BCh  not defined */
-                /* opcode F3h 0Fh BDh  not defined */
+                case 0xBD: /* F3h 0Fh BDh LZCNT w(reg),w(r/m)      spec: 0x0F 0xBD mod/reg/rm mprefix(0xF3) */
+                    IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                    ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LZCNT %s,%s",CPUregsN[4][mrm.reg()],IPDecPrint32(mrm,sib,disp,4,RC_REG,"d"));
+                    break;
                 /* opcode F3h 0Fh BEh  not defined */
                 /* opcode F3h 0Fh BFh  not defined */
                 /* opcode F3h 0Fh C0h  not defined */

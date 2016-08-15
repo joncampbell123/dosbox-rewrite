@@ -6169,3 +6169,12 @@ jmp2:
     pmovzxdq    xmm0,[si]
     pmovzxdq    xmm0,[bx+si]
 
+    cpu         amd
+    cpu         Bulldozer
+    cpu         lzcnt
+
+    lzcnt       ax,cx
+    lzcnt       ax,[si]
+    lzcnt       eax,ecx
+    lzcnt       eax,[si]
+

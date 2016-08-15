@@ -110,4 +110,5 @@ opcode 0x0F 0x3A 0x63 mod/reg/rm mprefix(0x66):                             "PCM
 opcode 0x0F 0xAE mod/reg/rm /4:                                             "XSAVE" b(r/m)
 opcode 0x0F 0xAE mod/reg/rm /5 mod!=3:                                      "XRSTOR" b(r/m)                 ; does not conflict with LFENCE because mod!=3
 opcode 0x0F 0xB8 mod/reg/rm mprefix(0xF3):                                  "POPCNT" w(reg),w(r/m)
+opcode 0x0F 0xBD mod/reg/rm mprefix(0xF3):                                  "LZCNT" w(reg),w(r/m)           ; notice this overlaps BSR except for 0xF3 prefix
 
