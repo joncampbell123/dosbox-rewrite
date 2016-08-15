@@ -2,10 +2,15 @@
 ; Pentium Pro
 
 #ifndef CORE_AMD_3DNOW
-; NOTE: On Intel processors this is defined as NOP with no conditions.
-;       On AMD K6 and higher this can encode PREFETCH and PREFETCHW (reg == 0 and reg == 1)
+; NOTE: On AMD K6 and higher this can encode PREFETCH and PREFETCHW (reg == 0 and reg == 1)
 ;       Its not clear yet what the undefined reg or mod combinations do on AMD processors, whether
 ;       they silently ignore them or trigger an undefined opcode.
+;
+; FIXME: The only reference to this is an opcode list sheet that says it starts on the Pentium Pro.
+;        But theres already an 0x0F 0x1F NOP mod/reg/rm opcode, though officially documented as reg==0,
+;        some say unofficially its just mod/reg/rm in general, and some opcodes 0x19-0x1E are also NOP.
+;        This is very confusing to figure out. I might just remove this anyway unless I can verify this
+;        instruction actually exists.
 opcode 0x0F 0x0D mod/reg/rm:                    "NOP" b(r/m)                ; No Operation                              00001111 00001011
 #endif
 
