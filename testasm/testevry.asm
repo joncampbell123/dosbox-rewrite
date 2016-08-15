@@ -6208,6 +6208,8 @@ jmp2:
     invept      eax,[si]        ; second must be memory
     invvpid     eax,[si]        ; second must be memory
 
+    movbe       ax,[si]
+    movbe       [si],ax
     movbe       eax,[si]
     movbe       [si],eax
     crc32       eax,byte [si]
