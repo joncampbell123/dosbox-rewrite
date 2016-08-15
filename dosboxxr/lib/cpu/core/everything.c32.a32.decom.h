@@ -3456,7 +3456,9 @@ switch (op) {
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"SYSEXIT");
                 break;
             /* opcode 0Fh 36h  not defined */
-            /* opcode 0Fh 37h  not defined */
+            case 0x37: /* 0Fh 37h GETSEC       spec: 0x0F 0x37 */
+                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"GETSEC");
+                break;
             case 0x38: /* 0Fh 38h        spec:  */
 /* Opcodes starting with 0Fh 38h */
                 switch (op=IPFB()) {
@@ -7877,12 +7879,21 @@ switch (op) {
                         /* opcode 66h 0Fh 38h 0Dh  not defined */
                         /* opcode 66h 0Fh 38h 0Eh  not defined */
                         /* opcode 66h 0Fh 38h 0Fh  not defined */
-                        /* opcode 66h 0Fh 38h 10h  not defined */
+                        case 0x10: /* 66h 0Fh 38h 10h PBLENDVB sse(reg),sse(r/m)      spec: 0x0F 0x38 0x10 mod/reg/rm mprefix(0x66) */
+                            IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                            ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PBLENDVB XMM%u,%s",mrm.reg(),IPDecPrint32(mrm,sib,disp,16,RC_SSEREG,""));
+                            break;
                         /* opcode 66h 0Fh 38h 11h  not defined */
                         /* opcode 66h 0Fh 38h 12h  not defined */
                         /* opcode 66h 0Fh 38h 13h  not defined */
-                        /* opcode 66h 0Fh 38h 14h  not defined */
-                        /* opcode 66h 0Fh 38h 15h  not defined */
+                        case 0x14: /* 66h 0Fh 38h 14h BLENDVPS sse(reg),sse(r/m)      spec: 0x0F 0x38 0x14 mod/reg/rm mprefix(0x66) */
+                            IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                            ipw += snprintf(ipw,(size_t)(ipwf-ipw),"BLENDVPS XMM%u,%s",mrm.reg(),IPDecPrint32(mrm,sib,disp,16,RC_SSEREG,""));
+                            break;
+                        case 0x15: /* 66h 0Fh 38h 15h BLENDVPD sse(reg),sse(r/m)      spec: 0x0F 0x38 0x15 mod/reg/rm mprefix(0x66) */
+                            IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                            ipw += snprintf(ipw,(size_t)(ipwf-ipw),"BLENDVPD XMM%u,%s",mrm.reg(),IPDecPrint32(mrm,sib,disp,16,RC_SSEREG,""));
+                            break;
                         /* opcode 66h 0Fh 38h 16h  not defined */
                         /* opcode 66h 0Fh 38h 17h  not defined */
                         /* opcode 66h 0Fh 38h 18h  not defined */

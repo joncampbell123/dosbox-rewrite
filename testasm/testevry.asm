@@ -6081,7 +6081,23 @@ jmp2:
     palignr     xmm0,[si],1
 
     cpu         Sandybridge     ; shut up and encode the following instructions
+    cpu         EM64T
+    cpu         SVM
+    cpu         SMX
 
     xgetbv
     xsetbv
+    getsec
+
+    pblendvb    xmm0,xmm1
+    pblendvb    xmm0,[si]
+    pblendvb    xmm0,[bx+si]
+
+    blendvps    xmm0,xmm1
+    blendvps    xmm0,[si]
+    blendvps    xmm0,[bx+si]
+
+    blendvpd    xmm0,xmm1
+    blendvpd    xmm0,[si]
+    blendvpd    xmm0,[bx+si]
 

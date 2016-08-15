@@ -41,4 +41,8 @@
 ; opcodes not defined anywhere else. will be moved to other files later.
 opcode 0x0F 0x01 0xD0:                                                      "XGETBV"
 opcode 0x0F 0x01 0xD1:                                                      "XSETBV"
+opcode 0x0F 0x37:                                                           "GETSEC"
+opcode 0x0F 0x38 0x10 mod/reg/rm mprefix(0x66):                             "PBLENDVB" sse(reg),sse(r/m)
+opcode 0x0F 0x38 0x14 mod/reg/rm mprefix(0x66):                             "BLENDVPS" sse(reg),sse(r/m)
+opcode 0x0F 0x38 0x15 mod/reg/rm mprefix(0x66):                             "BLENDVPD" sse(reg),sse(r/m)
 
