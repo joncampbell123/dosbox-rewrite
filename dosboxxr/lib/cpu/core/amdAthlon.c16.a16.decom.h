@@ -667,7 +667,7 @@ switch (op=IPFB()) {
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"UD2");
                 break;
             /* opcode 0Fh 0Ch  not defined */
-            case 0x0D: /* 0Fh 0Dh NOP       spec: 0x0F 0x0D */
+            case 0x0D: /* 0Fh 0Dh        spec:  */
                 IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
 /* Opcodes starting with 0Fh 0Dh */
                 switch (mrm.byte) {

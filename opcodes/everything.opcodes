@@ -18,6 +18,7 @@
 #define CORE_PENTIUM_SSE4A
 #define CORE_PENTIUM4_PRESCOTT
 #define CORE_8086_F6_TEST_ALIAS
+#define CORE_AMD_3DNOW
 
 #include "opcodes/intel8086.common.opcodes"
 #include "opcodes/intel80186.common.opcodes"
@@ -32,6 +33,11 @@
 #include "opcodes/intelPentium4.common.opcodes"
 #include "opcodes/intelPentium4Prescott.common.opcodes"
 #include "opcodes/intelCore.common.opcodes"
+#include "opcodes/amd3dnow.common.opcodes"
+#include "opcodes/amd3dnowplus.common.opcodes"
+
+; Do NOT include AMD 3DNow+ because opcodes are already defined by Pentium III opcodes
+; #include "opcodes/amd3dnowplusMMXSSE.common.opcodes"
 
 #include "opcodes/intel8087.common.opcodes"
 #include "opcodes/intel80287.common.opcodes"

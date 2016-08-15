@@ -5,6 +5,7 @@
 #define CORE_PENTIUM_PRO
 #define CORE_PENTIUM_MMX
 #define CORE_PENTIUM_RDMPC
+#define CORE_AMD_3DNOW
 
 #include "opcodes/intel8086.common.opcodes"
 #include "opcodes/intel80186.common.opcodes"

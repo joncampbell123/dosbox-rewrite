@@ -1,9 +1,16 @@
 
 ; Pentium Pro
-opcode 0x0F 0x0D:                               "NOP"                       ; No Operation                              00001111 00001011
+
+#ifndef CORE_AMD_3DNOW
+; NOTE: On Intel processors this is defined as NOP with no conditions.
+;       On AMD K6 and higher this can encode PREFETCH and PREFETCHW (reg == 0 and reg == 1)
+;       Its not clear yet what the undefined reg or mod combinations do on AMD processors, whether
+;       they silently ignore them or trigger an undefined opcode.
+opcode 0x0F 0x0D mod/reg/rm:                    "NOP" b(r/m)                ; No Operation                              00001111 00001011
+#endif
+
 opcode 0x0F 0x1F mod/reg/rm /0:                 "NOP" b(r/m)                ; No Operation                              00001111 00011111
-; ^ NOTE: This is the official opcode. There are opcode maps that suggest 0x0F 0x18 through 0x0F 0x1E and 0x0F 0x1F /1-/7 are aliases of this instruction.
-;         If that proves true, I will add them here.
+; ^ NOTE: Official opcode, however some maps suggest this is for Pentium 4. Im not clear where this became valid.
 
 ; Conditional Move
 opcode 0x0F 0x40 mod/reg/rm:                    "CMOVO" w(reg),w(r/m)       ; Conditional Move                          00001111 01000000

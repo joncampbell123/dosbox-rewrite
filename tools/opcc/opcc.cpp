@@ -291,7 +291,7 @@ class OpByte {
 public:
     OpByte() : isprefix(false), segoverride(OPSEG_NONE), modregrm(false), reg_from_opcode(false),
         already(false), addrsz32(false), opsz32(false), suffix(OPSUFFIX_NONE), opmap_valid(false),
-        mprefix(0), mprefix_exists_here(false), amd3dnowsuffix(-1), amd3dnow_here(false) {
+        mprefix(0), mprefix_exists_here(false), amd3dnowsuffix(-1), amd3dnow_here(false), final(false) {
     }
     ~OpByte() {
         free_opmap();
@@ -389,6 +389,7 @@ public:
     int             amd3dnowsuffix; // AMD 3DNow! suffix byte (after mod/reg/rm)
     bool            mprefix_exists_here;
     bool            amd3dnow_here;
+    bool            final;
 public:
     OpByte*         opmap[256];
     bool            opmap_valid;
@@ -469,18 +470,26 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
         map->init_opcode(opcode);
         map = map->opmap[opcode];
         assert(map != NULL);
-    }
-
-    if (st.amd3dnowsuffix >= 0) {
-        map->amd3dnow_here = true;
-        map->init_opcode(st.amd3dnowsuffix);
-        map = map->opmap[st.amd3dnowsuffix];
-        assert(map != NULL);
+        if (map->final) {
+            fprintf(stderr,"Opcode overlaps another opcode, mid-sequence (at byte %u = 0x%02x opcode '%s')\n",
+                i,opcode,map->name.c_str());
+            return false;
+        }
     }
 
     if (st.modregrm) {
         map->modregrm = st.modregrm;
         if (st.mrm_reg_match >= 0) {
+            if (st.amd3dnowsuffix >= 0) {
+                // correct me if there are any instructions that differ by mod byte or match by reg field
+                fprintf(stderr,"AMD 3DNow! opcode encoding requires unconditional mod/reg/rm field\n");
+                return false;
+            }
+            if (map->final) {
+                fprintf(stderr,"Opcode with mod/reg/rm overlaps another opcode without mod/reg/rm (opcode '%s')\n",map->name.c_str());
+                return false;
+            }
+
             for (unsigned int mod=0;mod < 4;mod++) {
                 for (unsigned int rm=0;rm < 8;rm++) {
                     const uint8_t mrm = (mod << 6) + (st.mrm_reg_match << 3) + rm;
@@ -493,6 +502,12 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
                     map->init_opcode(mrm);
                     submap = map->opmap[mrm];
                     assert(submap != NULL);
+
+                    if (submap->final) {
+                        fprintf(stderr,"Opcode with mod/reg/rm overlaps another opcode with mod/reg/rm (mod=%u reg=%u rm=%u opcode='%s')\n",
+                            mod,st.mrm_reg_match,rm,submap->name.c_str());
+                        return false;
+                    }
 
                     submap->modregrm = false;
                     submap->disparg = st.disparg;
@@ -507,10 +522,17 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
                     submap->name = st.name;
                     submap->opsz32 = st.opsz32;
                     submap->addrsz32 = st.addrsz32;
+                    submap->final = true;
                 }
             }
         }
         else if (st.mod_not_3 || st.mod_is_3) {
+            if (st.amd3dnowsuffix >= 0) {
+                // correct me if there are any instructions that differ by mod byte or match by reg field
+                fprintf(stderr,"AMD 3DNow! opcode encoding requires unconditional mod/reg/rm field\n");
+                return false;
+            }
+
             for (unsigned int mod=0;mod < 4;mod++) {
                 for (unsigned int reg=0;reg < 8;reg++) {
                     for (unsigned int rm=0;rm < 8;rm++) {
@@ -525,6 +547,12 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
                         submap = map->opmap[mrm];
                         assert(submap != NULL);
 
+                        if (submap->final) {
+                            fprintf(stderr,"Opcode with mod/reg/rm overlaps another opcode with mod/reg/rm (mod=%u reg=%u rm=%u opcode='%s')\n",
+                                mod,reg,rm,submap->name.c_str());
+                            return false;
+                        }
+
                         submap->modregrm = false;
                         submap->disparg = st.disparg;
                         submap->format_str = st.format_str;
@@ -538,11 +566,35 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
                         submap->name = st.name;
                         submap->opsz32 = st.opsz32;
                         submap->addrsz32 = st.addrsz32;
+                        submap->final = true;
                     }
                 }
             }
         }
         else {
+            if (map->final) {
+                fprintf(stderr,"Opcode overlaps another opcode\n");
+                return false;
+            }
+
+            if (st.amd3dnowsuffix >= 0) {
+                map->modregrm = false;
+                map->amd3dnow_here = true;
+                map->init_opcode(st.amd3dnowsuffix);
+                map = map->opmap[st.amd3dnowsuffix];
+                assert(map != NULL);
+
+                if (map->final) {
+                    fprintf(stderr,"Opcode overlaps another opcode\n");
+                    return false;
+                }
+            }
+
+            if (map->amd3dnow_here) {
+                fprintf(stderr,"Opcode overlaps another opcode that defines as 3DNow! instruction\n");
+                return false;
+            }
+
             map->opsz32 = st.opsz32;
             map->addrsz32 = st.addrsz32;
             map->segoverride = st.segoverride;
@@ -555,9 +607,15 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
             map->mprefix = st.mprefix;
             map->suffix = st.suffix;
             map->name = st.name;
+            map->final = true;
         }
     }
     else {
+        if (map->final) {
+            fprintf(stderr,"Opcode overlaps another opcode\n");
+            return false;
+        }
+
         map->opsz32 = st.opsz32;
         map->addrsz32 = st.addrsz32;
         map->reg_from_opcode = st.reg_from_opcode;
@@ -571,6 +629,12 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
         map->mprefix = st.mprefix;
         map->suffix = st.suffix;
         map->name = st.name;
+        map->final = true;
+
+        if (st.amd3dnowsuffix >= 0) {
+            fprintf(stderr,"AMD 3DNow! opcode encoding requires mod/reg/rm field\n");
+            return false;
+        }
     }
 
     return true;
