@@ -4900,74 +4900,22 @@ switch (op) {
                     /* opcode 0Fh AEh 25h  not defined */
                     /* opcode 0Fh AEh 26h  not defined */
                     /* opcode 0Fh AEh 27h  not defined */
-                    case 0x28: /* 0Fh AEh 28h LFENCE  mod=0 reg=5 rm=0      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0x29: /* 0Fh AEh 29h LFENCE  mod=0 reg=5 rm=1      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0x2A: /* 0Fh AEh 2Ah LFENCE  mod=0 reg=5 rm=2      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0x2B: /* 0Fh AEh 2Bh LFENCE  mod=0 reg=5 rm=3      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0x2C: /* 0Fh AEh 2Ch LFENCE  mod=0 reg=5 rm=4      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0x2D: /* 0Fh AEh 2Dh LFENCE  mod=0 reg=5 rm=5      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0x2E: /* 0Fh AEh 2Eh LFENCE  mod=0 reg=5 rm=6      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0x2F: /* 0Fh AEh 2Fh LFENCE  mod=0 reg=5 rm=7      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0x68: /* 0Fh AEh 68h LFENCE  mod=1 reg=5 rm=0      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0x69: /* 0Fh AEh 69h LFENCE  mod=1 reg=5 rm=1      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0x6A: /* 0Fh AEh 6Ah LFENCE  mod=1 reg=5 rm=2      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0x6B: /* 0Fh AEh 6Bh LFENCE  mod=1 reg=5 rm=3      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0x6C: /* 0Fh AEh 6Ch LFENCE  mod=1 reg=5 rm=4      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0x6D: /* 0Fh AEh 6Dh LFENCE  mod=1 reg=5 rm=5      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0x6E: /* 0Fh AEh 6Eh LFENCE  mod=1 reg=5 rm=6      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0x6F: /* 0Fh AEh 6Fh LFENCE  mod=1 reg=5 rm=7      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0xA8: /* 0Fh AEh A8h LFENCE  mod=2 reg=5 rm=0      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0xA9: /* 0Fh AEh A9h LFENCE  mod=2 reg=5 rm=1      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0xAA: /* 0Fh AEh AAh LFENCE  mod=2 reg=5 rm=2      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0xAB: /* 0Fh AEh ABh LFENCE  mod=2 reg=5 rm=3      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0xAC: /* 0Fh AEh ACh LFENCE  mod=2 reg=5 rm=4      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0xAD: /* 0Fh AEh ADh LFENCE  mod=2 reg=5 rm=5      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0xAE: /* 0Fh AEh AEh LFENCE  mod=2 reg=5 rm=6      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0xAF: /* 0Fh AEh AFh LFENCE  mod=2 reg=5 rm=7      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0xE8: /* 0Fh AEh E8h LFENCE  mod=3 reg=5 rm=0      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0xE9: /* 0Fh AEh E9h LFENCE  mod=3 reg=5 rm=1      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0xEA: /* 0Fh AEh EAh LFENCE  mod=3 reg=5 rm=2      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0xEB: /* 0Fh AEh EBh LFENCE  mod=3 reg=5 rm=3      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0xEC: /* 0Fh AEh ECh LFENCE  mod=3 reg=5 rm=4      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0xED: /* 0Fh AEh EDh LFENCE  mod=3 reg=5 rm=5      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0xEE: /* 0Fh AEh EEh LFENCE  mod=3 reg=5 rm=6      spec: 0x0F 0xAE mod/reg/rm /5 */
-                    case 0xEF: /* 0Fh AEh EFh LFENCE  mod=3 reg=5 rm=7      spec: 0x0F 0xAE mod/reg/rm /5 */
-                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LFENCE");
-                        break;
-                    case 0x30: /* 0Fh AEh 30h MFENCE  mod=0 reg=6 rm=0      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0x31: /* 0Fh AEh 31h MFENCE  mod=0 reg=6 rm=1      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0x32: /* 0Fh AEh 32h MFENCE  mod=0 reg=6 rm=2      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0x33: /* 0Fh AEh 33h MFENCE  mod=0 reg=6 rm=3      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0x34: /* 0Fh AEh 34h MFENCE  mod=0 reg=6 rm=4      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0x35: /* 0Fh AEh 35h MFENCE  mod=0 reg=6 rm=5      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0x36: /* 0Fh AEh 36h MFENCE  mod=0 reg=6 rm=6      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0x37: /* 0Fh AEh 37h MFENCE  mod=0 reg=6 rm=7      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0x70: /* 0Fh AEh 70h MFENCE  mod=1 reg=6 rm=0      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0x71: /* 0Fh AEh 71h MFENCE  mod=1 reg=6 rm=1      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0x72: /* 0Fh AEh 72h MFENCE  mod=1 reg=6 rm=2      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0x73: /* 0Fh AEh 73h MFENCE  mod=1 reg=6 rm=3      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0x74: /* 0Fh AEh 74h MFENCE  mod=1 reg=6 rm=4      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0x75: /* 0Fh AEh 75h MFENCE  mod=1 reg=6 rm=5      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0x76: /* 0Fh AEh 76h MFENCE  mod=1 reg=6 rm=6      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0x77: /* 0Fh AEh 77h MFENCE  mod=1 reg=6 rm=7      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0xB0: /* 0Fh AEh B0h MFENCE  mod=2 reg=6 rm=0      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0xB1: /* 0Fh AEh B1h MFENCE  mod=2 reg=6 rm=1      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0xB2: /* 0Fh AEh B2h MFENCE  mod=2 reg=6 rm=2      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0xB3: /* 0Fh AEh B3h MFENCE  mod=2 reg=6 rm=3      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0xB4: /* 0Fh AEh B4h MFENCE  mod=2 reg=6 rm=4      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0xB5: /* 0Fh AEh B5h MFENCE  mod=2 reg=6 rm=5      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0xB6: /* 0Fh AEh B6h MFENCE  mod=2 reg=6 rm=6      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0xB7: /* 0Fh AEh B7h MFENCE  mod=2 reg=6 rm=7      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0xF0: /* 0Fh AEh F0h MFENCE  mod=3 reg=6 rm=0      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0xF1: /* 0Fh AEh F1h MFENCE  mod=3 reg=6 rm=1      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0xF2: /* 0Fh AEh F2h MFENCE  mod=3 reg=6 rm=2      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0xF3: /* 0Fh AEh F3h MFENCE  mod=3 reg=6 rm=3      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0xF4: /* 0Fh AEh F4h MFENCE  mod=3 reg=6 rm=4      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0xF5: /* 0Fh AEh F5h MFENCE  mod=3 reg=6 rm=5      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0xF6: /* 0Fh AEh F6h MFENCE  mod=3 reg=6 rm=6      spec: 0x0F 0xAE mod/reg/rm /6 */
-                    case 0xF7: /* 0Fh AEh F7h MFENCE  mod=3 reg=6 rm=7      spec: 0x0F 0xAE mod/reg/rm /6 */
-                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MFENCE");
-                        break;
+                    /* opcode 0Fh AEh 28h  not defined */
+                    /* opcode 0Fh AEh 29h  not defined */
+                    /* opcode 0Fh AEh 2Ah  not defined */
+                    /* opcode 0Fh AEh 2Bh  not defined */
+                    /* opcode 0Fh AEh 2Ch  not defined */
+                    /* opcode 0Fh AEh 2Dh  not defined */
+                    /* opcode 0Fh AEh 2Eh  not defined */
+                    /* opcode 0Fh AEh 2Fh  not defined */
+                    /* opcode 0Fh AEh 30h  not defined */
+                    /* opcode 0Fh AEh 31h  not defined */
+                    /* opcode 0Fh AEh 32h  not defined */
+                    /* opcode 0Fh AEh 33h  not defined */
+                    /* opcode 0Fh AEh 34h  not defined */
+                    /* opcode 0Fh AEh 35h  not defined */
+                    /* opcode 0Fh AEh 36h  not defined */
+                    /* opcode 0Fh AEh 37h  not defined */
                     case 0x38: /* 0Fh AEh 38h CLFLUSH b(r/m) mod=0 reg=7 rm=0      spec: 0x0F 0xAE mod/reg/rm /7 mod!=3 */
                     case 0x39: /* 0Fh AEh 39h CLFLUSH b(r/m) mod=0 reg=7 rm=1      spec: 0x0F 0xAE mod/reg/rm /7 mod!=3 */
                     case 0x3A: /* 0Fh AEh 3Ah CLFLUSH b(r/m) mod=0 reg=7 rm=2      spec: 0x0F 0xAE mod/reg/rm /7 mod!=3 */
@@ -5002,6 +4950,22 @@ switch (op) {
                     /* opcode 0Fh AEh 65h  not defined */
                     /* opcode 0Fh AEh 66h  not defined */
                     /* opcode 0Fh AEh 67h  not defined */
+                    /* opcode 0Fh AEh 68h  not defined */
+                    /* opcode 0Fh AEh 69h  not defined */
+                    /* opcode 0Fh AEh 6Ah  not defined */
+                    /* opcode 0Fh AEh 6Bh  not defined */
+                    /* opcode 0Fh AEh 6Ch  not defined */
+                    /* opcode 0Fh AEh 6Dh  not defined */
+                    /* opcode 0Fh AEh 6Eh  not defined */
+                    /* opcode 0Fh AEh 6Fh  not defined */
+                    /* opcode 0Fh AEh 70h  not defined */
+                    /* opcode 0Fh AEh 71h  not defined */
+                    /* opcode 0Fh AEh 72h  not defined */
+                    /* opcode 0Fh AEh 73h  not defined */
+                    /* opcode 0Fh AEh 74h  not defined */
+                    /* opcode 0Fh AEh 75h  not defined */
+                    /* opcode 0Fh AEh 76h  not defined */
+                    /* opcode 0Fh AEh 77h  not defined */
                     /* opcode 0Fh AEh A0h  not defined */
                     /* opcode 0Fh AEh A1h  not defined */
                     /* opcode 0Fh AEh A2h  not defined */
@@ -5010,6 +4974,22 @@ switch (op) {
                     /* opcode 0Fh AEh A5h  not defined */
                     /* opcode 0Fh AEh A6h  not defined */
                     /* opcode 0Fh AEh A7h  not defined */
+                    /* opcode 0Fh AEh A8h  not defined */
+                    /* opcode 0Fh AEh A9h  not defined */
+                    /* opcode 0Fh AEh AAh  not defined */
+                    /* opcode 0Fh AEh ABh  not defined */
+                    /* opcode 0Fh AEh ACh  not defined */
+                    /* opcode 0Fh AEh ADh  not defined */
+                    /* opcode 0Fh AEh AEh  not defined */
+                    /* opcode 0Fh AEh AFh  not defined */
+                    /* opcode 0Fh AEh B0h  not defined */
+                    /* opcode 0Fh AEh B1h  not defined */
+                    /* opcode 0Fh AEh B2h  not defined */
+                    /* opcode 0Fh AEh B3h  not defined */
+                    /* opcode 0Fh AEh B4h  not defined */
+                    /* opcode 0Fh AEh B5h  not defined */
+                    /* opcode 0Fh AEh B6h  not defined */
+                    /* opcode 0Fh AEh B7h  not defined */
                     /* opcode 0Fh AEh D0h  not defined */
                     /* opcode 0Fh AEh D1h  not defined */
                     /* opcode 0Fh AEh D2h  not defined */
@@ -5034,6 +5014,26 @@ switch (op) {
                     /* opcode 0Fh AEh E5h  not defined */
                     /* opcode 0Fh AEh E6h  not defined */
                     /* opcode 0Fh AEh E7h  not defined */
+                    case 0xE8: /* 0Fh AEh E8h LFENCE  mod=3 reg=5 rm=0      spec: 0x0F 0xAE mod/reg/rm /5 mod==3 */
+                    case 0xE9: /* 0Fh AEh E9h LFENCE  mod=3 reg=5 rm=1      spec: 0x0F 0xAE mod/reg/rm /5 mod==3 */
+                    case 0xEA: /* 0Fh AEh EAh LFENCE  mod=3 reg=5 rm=2      spec: 0x0F 0xAE mod/reg/rm /5 mod==3 */
+                    case 0xEB: /* 0Fh AEh EBh LFENCE  mod=3 reg=5 rm=3      spec: 0x0F 0xAE mod/reg/rm /5 mod==3 */
+                    case 0xEC: /* 0Fh AEh ECh LFENCE  mod=3 reg=5 rm=4      spec: 0x0F 0xAE mod/reg/rm /5 mod==3 */
+                    case 0xED: /* 0Fh AEh EDh LFENCE  mod=3 reg=5 rm=5      spec: 0x0F 0xAE mod/reg/rm /5 mod==3 */
+                    case 0xEE: /* 0Fh AEh EEh LFENCE  mod=3 reg=5 rm=6      spec: 0x0F 0xAE mod/reg/rm /5 mod==3 */
+                    case 0xEF: /* 0Fh AEh EFh LFENCE  mod=3 reg=5 rm=7      spec: 0x0F 0xAE mod/reg/rm /5 mod==3 */
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"LFENCE");
+                        break;
+                    case 0xF0: /* 0Fh AEh F0h MFENCE  mod=3 reg=6 rm=0      spec: 0x0F 0xAE mod/reg/rm /6 mod==3 */
+                    case 0xF1: /* 0Fh AEh F1h MFENCE  mod=3 reg=6 rm=1      spec: 0x0F 0xAE mod/reg/rm /6 mod==3 */
+                    case 0xF2: /* 0Fh AEh F2h MFENCE  mod=3 reg=6 rm=2      spec: 0x0F 0xAE mod/reg/rm /6 mod==3 */
+                    case 0xF3: /* 0Fh AEh F3h MFENCE  mod=3 reg=6 rm=3      spec: 0x0F 0xAE mod/reg/rm /6 mod==3 */
+                    case 0xF4: /* 0Fh AEh F4h MFENCE  mod=3 reg=6 rm=4      spec: 0x0F 0xAE mod/reg/rm /6 mod==3 */
+                    case 0xF5: /* 0Fh AEh F5h MFENCE  mod=3 reg=6 rm=5      spec: 0x0F 0xAE mod/reg/rm /6 mod==3 */
+                    case 0xF6: /* 0Fh AEh F6h MFENCE  mod=3 reg=6 rm=6      spec: 0x0F 0xAE mod/reg/rm /6 mod==3 */
+                    case 0xF7: /* 0Fh AEh F7h MFENCE  mod=3 reg=6 rm=7      spec: 0x0F 0xAE mod/reg/rm /6 mod==3 */
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MFENCE");
+                        break;
                     case 0xF8: /* 0Fh AEh F8h SFENCE  mod=3 reg=7 rm=0      spec: 0x0F 0xAE mod/reg/rm /7 mod==3 */
                     case 0xF9: /* 0Fh AEh F9h SFENCE  mod=3 reg=7 rm=1      spec: 0x0F 0xAE mod/reg/rm /7 mod==3 */
                     case 0xFA: /* 0Fh AEh FAh SFENCE  mod=3 reg=7 rm=2      spec: 0x0F 0xAE mod/reg/rm /7 mod==3 */
