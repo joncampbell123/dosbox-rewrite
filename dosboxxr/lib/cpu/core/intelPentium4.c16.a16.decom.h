@@ -670,6 +670,7 @@ switch (op) {
                 break;
             /* opcode 0Fh 0Ah  not defined */
             case 0x0B: /* 0Fh 0Bh        spec: 0x0F 0x0B */
+            case 0xB9: /* 0Fh B9h        spec: 0x0F 0xB9 */
                 goto _x86decode_illegal_opcode;
             /* opcode 0Fh 0Ch  not defined */
             case 0x0D: /* 0Fh 0Dh NOP b(r/m)      spec: 0x0F 0x0D mod/reg/rm */
@@ -4525,7 +4526,6 @@ switch (op) {
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVZXw %s,%s",CPUregsN[2][mrm.reg()],IPDecPrint16(mrm,disp,2,RC_REG,"w16"));
                 break;
             /* opcode 0Fh B8h  not defined */
-            /* opcode 0Fh B9h  not defined */
             case 0xBA: /* 0Fh BAh        spec:  */
                 IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
                 _x86decode_begin_code16_addr16_opcode_parse_0FBA:

@@ -2195,7 +2195,8 @@ switch (op=IPFB()) {
                 ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MOVZXw %s,%s",CPUregsN[2][mrm.reg()],IPDecPrint16(mrm,disp,2,RC_REG,"w16"));
                 break;
             /* opcode 0Fh B8h  not defined */
-            /* opcode 0Fh B9h  not defined */
+            case 0xB9: /* 0Fh B9h        spec: 0x0F 0xB9 */
+                goto _x86decode_illegal_opcode;
             case 0xBA: /* 0Fh BAh        spec:  */
                 IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
 /* Opcodes starting with 0Fh BAh */

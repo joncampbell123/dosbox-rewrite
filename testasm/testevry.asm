@@ -6303,6 +6303,12 @@ jmp2:
 
     nop
     nop
+    db          0x0F,0xB9       ; UD
+    nop
+    nop
+
+    nop
+    nop
     ud2
     nop
     nop

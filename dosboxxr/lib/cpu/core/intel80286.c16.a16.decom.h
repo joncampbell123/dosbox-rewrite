@@ -833,7 +833,8 @@ switch (op=IPFB()) {
             /* opcode 0Fh B6h  not defined */
             /* opcode 0Fh B7h  not defined */
             /* opcode 0Fh B8h  not defined */
-            /* opcode 0Fh B9h  not defined */
+            case 0xB9: /* 0Fh B9h        spec: 0x0F 0xB9 */
+                goto _x86decode_illegal_opcode;
             /* opcode 0Fh BAh  not defined */
             /* opcode 0Fh BBh  not defined */
             /* opcode 0Fh BCh  not defined */

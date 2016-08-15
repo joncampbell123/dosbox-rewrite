@@ -28,3 +28,6 @@ opcode 0x0F 0x06:                               "CLTS"w                     ; Cl
 opcode 0x0F 0x05:                               "LOADALL286"                ; Undocumented 286 "LOADALL" instruction
 #endif
 
+; specifically undefined opcode
+opcode 0x0F 0xB9:                               illegal                     ; Write Back and Invalidate Cache           00001111 00001001
+
