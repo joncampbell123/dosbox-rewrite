@@ -7743,6 +7743,7 @@ switch (op) {
     /* opcode 65h  not defined */
     case 0x66: /* 66h        spec: 0x66 prefix opsz32 */
         prefix66 ^= 1;
+        code32 ^= 1;
         /* Mandatory prefix detection */
         op=IPFB();
         if (op == 0x0F) {
@@ -10709,7 +10710,9 @@ switch (op) {
             };
 /* End of opcodes starting with 66h 0Fh */
         }
-        else goto _x86decode_begin_code32_addr32_opcode_parse__generic;
+        else {
+            goto _x86decode_begin_code32_addr32_opcode_parse__generic;
+        }
         break;
     case 0x67: /* 67h        spec: 0x67 prefix addrsz32 */
         prefix67 ^= 1;
@@ -14604,7 +14607,9 @@ switch (op) {
             };
 /* End of opcodes starting with F2h 0Fh */
         }
-        else goto _x86decode_begin_code32_addr32_opcode_parse__generic;
+        else {
+            goto _x86decode_begin_code32_addr32_opcode_parse__generic;
+        }
         break;
     case 0xF3: /* F3h REPZ       spec: 0xF3 prefix */
         /* Mandatory prefix detection */
@@ -15280,7 +15285,9 @@ switch (op) {
             ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PAUSE");
             break;
         }
-        else goto _x86decode_begin_code32_addr32_opcode_parse__generic;
+        else {
+            goto _x86decode_begin_code32_addr32_opcode_parse__generic;
+        }
         break;
     case 0xF4: /* F4h HLT       spec: 0xF4 */
         ipw += snprintf(ipw,(size_t)(ipwf-ipw),"HLT");

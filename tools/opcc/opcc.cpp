@@ -194,6 +194,7 @@ bool    mprefix_exists = false;
 int     sel_code_width = 16;
 int     sel_addr_width = 16;
 
+bool    generic_case_1632 = false;
 bool    generic1632 = false;
 bool    c32vars = false;
  
@@ -210,6 +211,7 @@ static void help() {
     fprintf(stderr,"   -a <width>          Address width (16 or 32)\n");
     fprintf(stderr,"   -g                  Generic 16/32-bit decode\n");
     fprintf(stderr,"   -c32vars            Variables code32/addr32 exist\n");
+    fprintf(stderr,"   -gc1632             code16/addr32 and code32/addr16 are generic case\n");
 }
 
 static bool parse(int argc,char **argv) {
@@ -228,6 +230,9 @@ static bool parse(int argc,char **argv) {
             }
             else if (!strcmp(a,"g")) {
                 generic1632 = true;
+            }
+            else if (!strcmp(a,"gc1632")) {
+                generic_case_1632 = true;
             }
             else if (!strcmp(a,"c32vars")) {
                 c32vars = true;
@@ -1352,9 +1357,11 @@ bool parse_opcodelist(void) {
     return true;
 }
 
-#define OUTCODE_GEN_ALREADY_IPFB        (1U << 0)
-#define OUTCODE_GEN_DEFAULT_0Fh         (1U << 1)
-#define OUTCODE_GEN_SKIP_MRM            (1U << 2)
+#define OUTCODE_GEN_ALREADY_IPFB                    (1U << 0)
+#define OUTCODE_GEN_DEFAULT_IS_GOTO_FALLBACK        (1U << 1)
+#define OUTCODE_GEN_SKIP_MRM                        (1U << 2)
+#define OUTCODE_GEN_CODE32                          (1U << 3)
+#define OUTCODE_GEN_ADDR32                          (1U << 4)
 
 void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const uint8_t *opbase,const size_t opbaselen,OpByte &map,const unsigned int indent=0,const unsigned int flags=0);
 
@@ -1444,7 +1451,36 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
         if (submap->isprefix) {
             /* don't generate sub-switch for prefixes, UNLESS a mandatory prefix. */
             if (submap->mprefix_exists_here) {
+                unsigned int jcw=codewidth,jaw=addrwidth;
+                unsigned int flags_l = 0;
                 bool emit=false;
+
+                if (!generic1632) {
+                    if (submap->opsz32) {
+                        flags_l ^= OUTCODE_GEN_CODE32;
+                        if (jcw == 32) jcw = 16;
+                        else if (jcw == 16) jcw = 32;
+                    }
+                    if (submap->addrsz32) {
+                        flags_l ^= OUTCODE_GEN_ADDR32;
+                        if (jaw == 32) jaw = 16;
+                        else if (jaw == 16) jaw = 32;
+                    }
+                }
+
+                if (submap->opsz32 || submap->addrsz32) {
+                    if (generic1632) {
+                        if (submap->opsz32)
+                            fprintf(out_fp,"%s        code32 ^= 1;\n",indent_str.c_str());
+                        else if (submap->addrsz32)
+                            fprintf(out_fp,"%s        addr32 ^= 1;\n",indent_str.c_str());
+                    }
+                    else {
+                        if (c32vars)
+                            fprintf(out_fp,"%s        code32=%u; addr32=%u;\n",
+                                    indent_str.c_str(),jcw==32?1:0,jaw==32?1:0);
+                    }
+                }
 
                 /* oh joy. well, to make this work, we have to fetch the next byte into var "op".
                  * if the next byte is not 0x0F, then we have to goto to a label at the start of
@@ -1465,7 +1501,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
 
                         fprintf(out_fp,"%s        %sif (op == 0x0F) {\n",indent_str.c_str(),emit?"else ":"");
 
-                        outcode_gen(codewidth,addrwidth,tmp,opbaselen+2,*submap2,indent+3U,OUTCODE_GEN_ALREADY_IPFB|OUTCODE_GEN_DEFAULT_0Fh);
+                        outcode_gen(codewidth,addrwidth,tmp,opbaselen+2,*submap2,indent+3U,flags_l|OUTCODE_GEN_ALREADY_IPFB|OUTCODE_GEN_DEFAULT_IS_GOTO_FALLBACK);
                         emit_prefix_goto = true;
                         emit = true;
 
@@ -1493,12 +1529,21 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                 }
 
                 if (emit) {
+                    fprintf(out_fp,"%s        else {\n",
+                        indent_str.c_str());
+
                     if (generic1632)
-                        fprintf(out_fp,"%s        else goto _x86decode_begin_code%u_addr%u_opcode_parse__generic;\n",
+                        fprintf(out_fp,"%s            goto _x86decode_begin_code%u_addr%u_opcode_parse__generic;\n",
                             indent_str.c_str(),codewidth,addrwidth);
+                    else if (generic_case_1632 && (jcw != jaw) && (jcw != codewidth || jaw != addrwidth))
+                        fprintf(out_fp,"%s            goto _x86decode_begin_code%u_addr%u_opcode_parse__generic;\n",
+                            indent_str.c_str(),32/*FIXME*/,32/*FIXME*/);
                     else
-                        fprintf(out_fp,"%s        else goto _x86decode_begin_code%u_addr%u_opcode_parse_;\n",
-                            indent_str.c_str(),codewidth,addrwidth);
+                        fprintf(out_fp,"%s            goto _x86decode_begin_code%u_addr%u_opcode_parse_;\n",
+                            indent_str.c_str(),jcw,jaw);
+
+                    fprintf(out_fp,"%s        }\n",
+                        indent_str.c_str());
                 }
             }
         }
@@ -2162,13 +2207,33 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
     }
     fprintf(out_fp,"%s    default:\n",indent_str.c_str());
 
-    if (flags & OUTCODE_GEN_DEFAULT_0Fh) {
-        if (generic1632)
-            fprintf(out_fp,"%s        goto _x86decode_begin_code%u_addr%u_opcode_parse_0F_generic; /* Fall through to normal 0x0F opcode handling */\n",
-                indent_str.c_str(),codewidth,addrwidth);
+    if (flags & OUTCODE_GEN_DEFAULT_IS_GOTO_FALLBACK) {
+        size_t i=0,ii;
+        unsigned int jcw = codewidth,jaw = addrwidth;
+
+        if (!generic1632) {
+            if (flags & OUTCODE_GEN_CODE32)
+                jcw = (jcw == 32) ? 16 : 32;
+            if (flags & OUTCODE_GEN_ADDR32)
+                jaw = (jaw == 32) ? 16 : 32;
+        }
+
+        if (!generic1632 && generic_case_1632 && (jcw != jaw) && (jcw != codewidth || jaw != addrwidth))
+            fprintf(out_fp,"%s        goto _x86decode_begin_code%u_addr%u_opcode_parse_",
+                indent_str.c_str(),32/*FIXME*/,32/*FIXME*/);
         else
-            fprintf(out_fp,"%s        goto _x86decode_begin_code%u_addr%u_opcode_parse_0F; /* Fall through to normal 0x0F opcode handling */\n",
-                indent_str.c_str(),codewidth,addrwidth);
+            fprintf(out_fp,"%s        goto _x86decode_begin_code%u_addr%u_opcode_parse_",
+                indent_str.c_str(),jcw,jaw);
+
+        // HACK
+        if (i < opbaselen && (opbase[i] == 0x66 || opbase[i] == 0x67 || opbase[i] == 0xF2 || opbase[i] == 0xF3)) i++;
+        // END HACK
+        ii=i;
+        for (;i < opbaselen;i++) fprintf(out_fp,"%02X",opbase[i]);
+        if (generic1632 || (generic_case_1632 && (jcw != jaw) && (jcw != codewidth || jaw != addrwidth))) fprintf(out_fp,"_generic");
+        fprintf(out_fp,"; /* Fall through to normal");
+        for (i=ii;i < opbaselen;i++) fprintf(out_fp," 0x%02X",opbase[i]);
+        fprintf(out_fp," opcode handling */\n");
     }
     else
         fprintf(out_fp,"%s        goto _x86decode_illegal_opcode;\n",indent_str.c_str());
