@@ -6084,6 +6084,9 @@ jmp2:
     cpu         EM64T
     cpu         SVM
     cpu         SMX
+    cpu         lzcnt
+    cpu         movbe
+    cpu         eptvpid
 
     xgetbv
     xsetbv
@@ -6169,9 +6172,117 @@ jmp2:
     pmovzxdq    xmm0,[si]
     pmovzxdq    xmm0,[bx+si]
 
-    cpu         amd
-    cpu         Bulldozer
-    cpu         lzcnt
+    pcmpgtq     xmm0,xmm1
+    pcmpgtq     xmm0,[si]
+
+    pminsb      xmm0,xmm1
+    pminsb      xmm0,[si]
+
+    pminsd      xmm0,xmm1
+    pminsd      xmm0,[si]
+
+    pminuw      xmm0,xmm1
+    pminuw      xmm0,[si]
+
+    pminud      xmm0,xmm1
+    pminud      xmm0,[si]
+
+    pmaxsb      xmm0,xmm1
+    pmaxsb      xmm0,[si]
+
+    pmaxsd      xmm0,xmm1
+    pmaxsd      xmm0,[si]
+
+    pmaxuw      xmm0,xmm1
+    pmaxuw      xmm0,[si]
+
+    pmaxud      xmm0,xmm1
+    pmaxud      xmm0,[si]
+
+    pmulld      xmm0,xmm1
+    pmulld      xmm0,[si]
+
+    phminposuw  xmm0,xmm1
+    phminposuw  xmm0,[si]
+
+    invept      eax,[si]        ; second must be memory
+    invvpid     eax,[si]        ; second must be memory
+
+    movbe       eax,[si]
+    movbe       [si],eax
+    crc32       eax,byte [si]
+    crc32       eax,word [si]
+
+    roundps     xmm0,xmm1,1
+    roundps     xmm0,[si],1
+
+    roundpd     xmm0,xmm1,1
+    roundpd     xmm0,[si],1
+
+    roundss     xmm0,xmm1,1
+    roundss     xmm0,[si],1
+
+    roundsd     xmm0,xmm1,1
+    roundsd     xmm0,[si],1
+
+    blendps     xmm0,xmm1,1
+    blendps     xmm0,[si],1
+
+    blendpd     xmm0,xmm1,1
+    blendpd     xmm0,[si],1
+
+    pblendw     xmm0,xmm1,1 
+    pblendw     xmm0,[si],1
+
+    pextrb      eax,xmm1,1
+    pextrb      [si],xmm1,1
+
+    pextrw      eax,xmm1,1
+    pextrw      [si],xmm1,1
+
+    pextrd      eax,xmm1,1
+    pextrd      [si],xmm1,1
+
+    extractps   eax,xmm1,1
+    extractps   [si],xmm1,1
+
+    pinsrb      xmm0,eax,1
+    pinsrb      xmm0,[si],1
+
+    pinsrw      xmm0,eax,1
+    pinsrw      xmm0,[si],1
+
+    pinsrd      xmm0,eax,1
+    pinsrd      xmm0,[si],1
+
+    dpps        xmm0,xmm1,1
+    dpps        xmm0,[si],1
+
+    dppd        xmm0,xmm1,1
+    dppd        xmm0,[si],1
+
+    mpsadbw     xmm0,xmm1,1
+    mpsadbw     xmm0,[si],1
+
+    pcmpestrm   xmm0,xmm1,1
+    pcmpestrm   xmm0,[si],1
+
+    pcmpestri   xmm0,xmm1,1
+    pcmpestri   xmm0,[si],1
+
+    pcmpistrm   xmm0,xmm1,1
+    pcmpistrm   xmm0,[si],1
+
+    pcmpistri   xmm0,xmm1,1
+    pcmpistri   xmm0,[si],1
+
+    xsave       [si]
+    xrstor      [si]
+
+    popcnt      ax,bx
+    popcnt      ax,[si]
+    popcnt      eax,ebx
+    popcnt      eax,[si]
 
     lzcnt       ax,cx
     lzcnt       ax,[si]

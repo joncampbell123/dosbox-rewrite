@@ -10267,17 +10267,20 @@ switch (op) {
                         /* opcode 66h 0Fh 3Ah 3Dh  not defined */
                         /* opcode 66h 0Fh 3Ah 3Eh  not defined */
                         /* opcode 66h 0Fh 3Ah 3Fh  not defined */
-                        case 0x40: /* 66h 0Fh 3Ah 40h DPPS sse(reg),sse(r/m)      spec: 0x0F 0x3A 0x40 mod/reg/rm mprefix(0x66) */
+                        case 0x40: /* 66h 0Fh 3Ah 40h DPPS sse(reg),sse(r/m),i      spec: 0x0F 0x3A 0x40 mod/reg/rm ib mprefix(0x66) */
                             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
-                            ipw += snprintf(ipw,(size_t)(ipwf-ipw),"DPPS XMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                            imm=IPFB();
+                            ipw += snprintf(ipw,(size_t)(ipwf-ipw),"DPPS XMM%u,%s,0x%02lX",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""),(unsigned long)((uint16_t)imm));
                             break;
-                        case 0x41: /* 66h 0Fh 3Ah 41h DPPD sse(reg),sse(r/m)      spec: 0x0F 0x3A 0x41 mod/reg/rm mprefix(0x66) */
+                        case 0x41: /* 66h 0Fh 3Ah 41h DPPD sse(reg),sse(r/m),i      spec: 0x0F 0x3A 0x41 mod/reg/rm ib mprefix(0x66) */
                             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
-                            ipw += snprintf(ipw,(size_t)(ipwf-ipw),"DPPD XMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                            imm=IPFB();
+                            ipw += snprintf(ipw,(size_t)(ipwf-ipw),"DPPD XMM%u,%s,0x%02lX",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""),(unsigned long)((uint16_t)imm));
                             break;
-                        case 0x42: /* 66h 0Fh 3Ah 42h MPSADBW sse(reg),sse(r/m)      spec: 0x0F 0x3A 0x42 mod/reg/rm mprefix(0x66) */
+                        case 0x42: /* 66h 0Fh 3Ah 42h MPSADBW sse(reg),sse(r/m),i      spec: 0x0F 0x3A 0x42 mod/reg/rm ib mprefix(0x66) */
                             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
-                            ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MPSADBW XMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                            imm=IPFB();
+                            ipw += snprintf(ipw,(size_t)(ipwf-ipw),"MPSADBW XMM%u,%s,0x%02lX",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""),(unsigned long)((uint16_t)imm));
                             break;
                         /* opcode 66h 0Fh 3Ah 43h  not defined */
                         /* opcode 66h 0Fh 3Ah 44h  not defined */
@@ -10308,21 +10311,25 @@ switch (op) {
                         /* opcode 66h 0Fh 3Ah 5Dh  not defined */
                         /* opcode 66h 0Fh 3Ah 5Eh  not defined */
                         /* opcode 66h 0Fh 3Ah 5Fh  not defined */
-                        case 0x60: /* 66h 0Fh 3Ah 60h PCMPESTRM sse(reg),sse(r/m)      spec: 0x0F 0x3A 0x60 mod/reg/rm mprefix(0x66) */
+                        case 0x60: /* 66h 0Fh 3Ah 60h PCMPESTRM sse(reg),sse(r/m),i      spec: 0x0F 0x3A 0x60 mod/reg/rm ib mprefix(0x66) */
                             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
-                            ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PCMPESTRM XMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                            imm=IPFB();
+                            ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PCMPESTRM XMM%u,%s,0x%02lX",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""),(unsigned long)((uint16_t)imm));
                             break;
-                        case 0x61: /* 66h 0Fh 3Ah 61h PCMPESTRI sse(reg),sse(r/m)      spec: 0x0F 0x3A 0x61 mod/reg/rm mprefix(0x66) */
+                        case 0x61: /* 66h 0Fh 3Ah 61h PCMPESTRI sse(reg),sse(r/m),i      spec: 0x0F 0x3A 0x61 mod/reg/rm ib mprefix(0x66) */
                             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
-                            ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PCMPESTRI XMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                            imm=IPFB();
+                            ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PCMPESTRI XMM%u,%s,0x%02lX",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""),(unsigned long)((uint16_t)imm));
                             break;
-                        case 0x62: /* 66h 0Fh 3Ah 62h PCMPISTRM sse(reg),sse(r/m)      spec: 0x0F 0x3A 0x62 mod/reg/rm mprefix(0x66) */
+                        case 0x62: /* 66h 0Fh 3Ah 62h PCMPISTRM sse(reg),sse(r/m),i      spec: 0x0F 0x3A 0x62 mod/reg/rm ib mprefix(0x66) */
                             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
-                            ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PCMPISTRM XMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                            imm=IPFB();
+                            ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PCMPISTRM XMM%u,%s,0x%02lX",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""),(unsigned long)((uint16_t)imm));
                             break;
-                        case 0x63: /* 66h 0Fh 3Ah 63h PCMPISTRI sse(reg),sse(r/m)      spec: 0x0F 0x3A 0x63 mod/reg/rm mprefix(0x66) */
+                        case 0x63: /* 66h 0Fh 3Ah 63h PCMPISTRI sse(reg),sse(r/m),i      spec: 0x0F 0x3A 0x63 mod/reg/rm ib mprefix(0x66) */
                             IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
-                            ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PCMPISTRI XMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                            imm=IPFB();
+                            ipw += snprintf(ipw,(size_t)(ipwf-ipw),"PCMPISTRI XMM%u,%s,0x%02lX",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""),(unsigned long)((uint16_t)imm));
                             break;
                         /* opcode 66h 0Fh 3Ah 64h  not defined */
                         /* opcode 66h 0Fh 3Ah 65h  not defined */

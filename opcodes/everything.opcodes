@@ -100,13 +100,13 @@ opcode 0x0F 0x3A 0x17 mod/reg/rm ib mprefix(0x66):                          "EXT
 opcode 0x0F 0x3A 0x20 mod/reg/rm ib mprefix(0x66):                          "PINSRB" sse(reg),b(r/m),i
 opcode 0x0F 0x3A 0x21 mod/reg/rm ib mprefix(0x66):                          "PINSRW" sse(reg),w16(r/m),i
 opcode 0x0F 0x3A 0x22 mod/reg/rm ib mprefix(0x66):                          "PINSRD" sse(reg),w32(r/m),i    ; FIXME: how does this differ from PINSRQ?
-opcode 0x0F 0x3A 0x40 mod/reg/rm mprefix(0x66):                             "DPPS" sse(reg),sse(r/m)
-opcode 0x0F 0x3A 0x41 mod/reg/rm mprefix(0x66):                             "DPPD" sse(reg),sse(r/m)
-opcode 0x0F 0x3A 0x42 mod/reg/rm mprefix(0x66):                             "MPSADBW" sse(reg),sse(r/m)
-opcode 0x0F 0x3A 0x60 mod/reg/rm mprefix(0x66):                             "PCMPESTRM" sse(reg),sse(r/m)   ; FIXME: xmm0,sse(reg),sse(r/m)
-opcode 0x0F 0x3A 0x61 mod/reg/rm mprefix(0x66):                             "PCMPESTRI" sse(reg),sse(r/m)   ; FIXME: ecx,sse(reg),sse(r/m)
-opcode 0x0F 0x3A 0x62 mod/reg/rm mprefix(0x66):                             "PCMPISTRM" sse(reg),sse(r/m)   ; FIXME: xmm0,sse(reg),sse(r/m)
-opcode 0x0F 0x3A 0x63 mod/reg/rm mprefix(0x66):                             "PCMPISTRI" sse(reg),sse(r/m)   ; FIXME: ecx,sse(reg),sse(r/m)
+opcode 0x0F 0x3A 0x40 mod/reg/rm ib mprefix(0x66):                          "DPPS" sse(reg),sse(r/m),i
+opcode 0x0F 0x3A 0x41 mod/reg/rm ib mprefix(0x66):                          "DPPD" sse(reg),sse(r/m),i
+opcode 0x0F 0x3A 0x42 mod/reg/rm ib mprefix(0x66):                          "MPSADBW" sse(reg),sse(r/m),i
+opcode 0x0F 0x3A 0x60 mod/reg/rm ib mprefix(0x66):                          "PCMPESTRM" sse(reg),sse(r/m),i ; FIXME: xmm0,sse(reg),sse(r/m)
+opcode 0x0F 0x3A 0x61 mod/reg/rm ib mprefix(0x66):                          "PCMPESTRI" sse(reg),sse(r/m),i ; FIXME: ecx,sse(reg),sse(r/m)
+opcode 0x0F 0x3A 0x62 mod/reg/rm ib mprefix(0x66):                          "PCMPISTRM" sse(reg),sse(r/m),i ; FIXME: xmm0,sse(reg),sse(r/m)
+opcode 0x0F 0x3A 0x63 mod/reg/rm ib mprefix(0x66):                          "PCMPISTRI" sse(reg),sse(r/m),i ; FIXME: ecx,sse(reg),sse(r/m)
 opcode 0x0F 0xAE mod/reg/rm /4:                                             "XSAVE" b(r/m)
 opcode 0x0F 0xAE mod/reg/rm /5 mod!=3:                                      "XRSTOR" b(r/m)                 ; does not conflict with LFENCE because mod!=3
 opcode 0x0F 0xB8 mod/reg/rm mprefix(0xF3):                                  "POPCNT" w(reg),w(r/m)
