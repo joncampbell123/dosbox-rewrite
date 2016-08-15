@@ -6101,3 +6101,43 @@ jmp2:
     blendvpd    xmm0,[si]
     blendvpd    xmm0,[bx+si]
 
+    ptest       xmm0,xmm1
+    ptest       xmm0,[si]
+    ptest       xmm0,[bx+si]
+
+    pmovsxbw    xmm0,xmm1
+    pmovsxbw    xmm0,[si]
+    pmovsxbw    xmm0,[bx+si]
+
+    pmovsxbd    xmm0,xmm1
+    pmovsxbd    xmm0,[si]
+    pmovsxbd    xmm0,[bx+si]
+
+    pmovsxbq    xmm0,xmm1
+    pmovsxbq    xmm0,[si]
+    pmovsxbq    xmm0,[bx+si]
+
+    pmovsxwd    xmm0,xmm1
+    pmovsxwd    xmm0,[si]
+    pmovsxwd    xmm0,[bx+si]
+
+    pmovsxwq    xmm0,xmm1
+    pmovsxwq    xmm0,[si]
+    pmovsxwq    xmm0,[bx+si]
+
+    pmovsxdq    xmm0,xmm1
+    pmovsxdq    xmm0,[si]
+    pmovsxdq    xmm0,[bx+si]
+
+    pmuldq      xmm0,xmm1
+    pmuldq      xmm0,[si]
+    pmuldq      xmm0,[bx+si]
+
+    pcmpeqq     xmm0,xmm1
+    pcmpeqq     xmm0,[si]
+    pcmpeqq     xmm0,[bx+si]
+
+    ; no register form, mod != 3
+    movntdqa    xmm0,[si]
+    movntdqa    xmm0,[bx+si]
+
