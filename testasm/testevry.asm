@@ -6141,3 +6141,31 @@ jmp2:
     movntdqa    xmm0,[si]
     movntdqa    xmm0,[bx+si]
 
+    packusdw    xmm0,xmm1
+    packusdw    xmm0,[si]
+    packusdw    xmm0,[bx+si]
+
+    pmovzxbw    xmm0,xmm1
+    pmovzxbw    xmm0,[si]
+    pmovzxbw    xmm0,[bx+si]
+
+    pmovzxbd    xmm0,xmm1
+    pmovzxbd    xmm0,[si]
+    pmovzxbd    xmm0,[bx+si]
+
+    pmovzxbq    xmm0,xmm1
+    pmovzxbq    xmm0,[si]
+    pmovzxbq    xmm0,[bx+si]
+
+    pmovzxwd    xmm0,xmm1
+    pmovzxwd    xmm0,[si]
+    pmovzxwd    xmm0,[bx+si]
+
+    pmovzxwq    xmm0,xmm1
+    pmovzxwq    xmm0,[si]
+    pmovzxwq    xmm0,[bx+si]
+
+    pmovzxdq    xmm0,xmm1
+    pmovzxdq    xmm0,[si]
+    pmovzxdq    xmm0,[bx+si]
+
