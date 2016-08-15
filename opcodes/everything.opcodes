@@ -112,3 +112,15 @@ opcode 0x0F 0xAE mod/reg/rm /5 mod!=3:                                      "XRS
 opcode 0x0F 0xB8 mod/reg/rm mprefix(0xF3):                                  "POPCNT" w(reg),w(r/m)
 opcode 0x0F 0xBD mod/reg/rm mprefix(0xF3):                                  "LZCNT" w(reg),w(r/m)           ; notice this overlaps BSR except for 0xF3 prefix
 
+; Pentium 4 VMX extensions, not in our P4 core
+opcode 0x0F 0x01 0xC1:                                                      "VMCALL"
+opcode 0x0F 0x01 0xC2:                                                      "VMLAUNCH"
+opcode 0x0F 0x01 0xC3:                                                      "VMRESUME"
+opcode 0x0F 0x01 0xC4:                                                      "VMXOFF"
+opcode 0x0F 0x78 mod/reg/rm:                                                "VMREAD" w(r/m),w(reg)
+opcode 0x0F 0x79 mod/reg/rm:                                                "VMWRITE" w(reg),w(r/m)
+opcode 0x0F 0xC7 mod/reg/rm /6 mod!=3:                                      "VMPTRLD" w64(r/m)
+opcode 0x0F 0xC7 mod/reg/rm /6 mod!=3 mprefix(0x66):                        "VMCLEAR" w64(r/m)
+opcode 0x0F 0xC7 mod/reg/rm /6 mod!=3 mprefix(0xF3):                        "VMXON" w64(r/m)
+opcode 0x0F 0xC7 mod/reg/rm /7 mod!=3:                                      "VMPTRST" w64(r/m)
+

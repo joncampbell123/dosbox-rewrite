@@ -6307,3 +6307,16 @@ jmp2:
     nop
     nop
 
+    vmcall
+    vmlaunch
+    vmresume
+    vmxoff
+    vmread      eax,ebx
+    vmread      dword [si],ebx
+    vmwrite     eax,ebx
+    vmwrite     eax,dword [si]
+    vmptrld     [si]
+    vmclear     [si]
+    vmxon       [si]
+    vmptrst     [si]
+
