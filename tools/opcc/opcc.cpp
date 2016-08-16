@@ -296,7 +296,7 @@ class OpByte {
 public:
     OpByte() : isprefix(false), segoverride(OPSEG_NONE), modregrm(false), reg_from_opcode(false),
         already(false), addrsz32(false), opsz32(false), suffix(OPSUFFIX_NONE), opmap_valid(false),
-        mprefix(0), mprefix_exists_here(false), amd3dnowsuffix(-1), amd3dnow_here(false), final(false), illegal(false) {
+        mprefix(0), mprefix_exists_here(false), amd3dnowsuffix(-1), amd3dnow_here(false), final(false), illegal(false), vex(0) {
     }
     ~OpByte() {
         free_opmap();
@@ -352,6 +352,7 @@ public:
         if (mprefix != r.mprefix) return false;
         if (illegal != r.illegal) return false;
         if (opsz32 != r.opsz32) return false;
+        if (vex != r.vex) return false;
 
         if (opmap_valid) {
             assert(r.opmap_valid);
@@ -388,6 +389,7 @@ public:
     bool            already;
     bool            addrsz32;
     bool            opsz32;
+    unsigned char   vex;
     enum opccSuffix suffix;     // suffix to name
     vector<enum opccArgs> immarg;
     vector<OpCodeDisplayArg> disparg;
@@ -414,6 +416,7 @@ static void opcc_chomp(char *s) {
 class parse_opcode_state {
 public:
     parse_opcode_state() {
+        vex = 0;
         oprange_min = -1;
         oprange_max = -1; // last byte of opcode takes the range (min,max) inclusive
         mrm_reg_match = -1; // /X style, to say that opcode is specified by REG field of mod/reg/rm
@@ -440,6 +443,7 @@ public:
     bool                    addrsz32;
     bool                    illegal;
     bool                    opsz32;
+    unsigned char           vex;
     int                     oprange_min;
     int                     oprange_max; // last byte of opcode takes the range (min,max) inclusive
     int                     mrm_reg_match; // /X style, to say that opcode is specified by REG field of mod/reg/rm
@@ -532,6 +536,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
                     submap->opsz32 = st.opsz32;
                     submap->addrsz32 = st.addrsz32;
                     submap->illegal = st.illegal;
+                    submap->vex = st.vex;
                     submap->final = true;
                 }
             }
@@ -577,6 +582,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
                         submap->opsz32 = st.opsz32;
                         submap->addrsz32 = st.addrsz32;
                         submap->illegal = st.illegal;
+                        submap->vex = st.vex;
                         submap->final = true;
                     }
                 }
@@ -606,6 +612,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
                 return false;
             }
 
+            map->vex = st.vex;
             map->illegal = st.illegal;
             map->opsz32 = st.opsz32;
             map->addrsz32 = st.addrsz32;
@@ -628,6 +635,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
             return false;
         }
 
+        map->vex = st.vex;
         map->illegal = st.illegal;
         map->opsz32 = st.opsz32;
         map->addrsz32 = st.addrsz32;
@@ -697,6 +705,12 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
             }
 
             st.ops[st.op++] = (unsigned char)b;
+        }
+        else if (!strcmp(s,"vex2")) {
+            st.vex = 2;
+        }
+        else if (!strcmp(s,"vex3")) {
+            st.vex = 3;
         }
         else if (!strncmp(s,"amd3dnow(",9)) {
             if (st.amd3dnowsuffix >= 0) {
@@ -1296,7 +1310,7 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
     }
 
     if (st.name.empty()) {
-        if (!st.opsz32 && !st.addrsz32 && !st.illegal) {
+        if (!st.opsz32 && !st.addrsz32 && !st.illegal && st.vex == 0) {
             fprintf(stderr,"Instruction needs a name\n");
             return false;
         }
@@ -1406,7 +1420,33 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
         }
     }
 
-    if (submap->modregrm && mprefix_exists && submap->opmap_valid) {
+    if (submap->vex != 0) {
+        if (submap->vex == 3) {
+            fprintf(out_fp,"%s        vex.decode3(mrm.byte,IPFB());\n",indent_str.c_str());
+
+            fprintf(out_fp,"%s        _x86decode_begin_code%u_addr%u_vex_",indent_str.c_str(),codewidth,addrwidth);
+            if (generic1632) fprintf(out_fp,"_generic");
+            fprintf(out_fp,":\n");
+
+            // landing point
+
+            // exit point
+            fprintf(out_fp,"%s        goto _x86decode_illegal_opcode;\n",indent_str.c_str());
+            return;
+        }
+        else if (submap->vex == 2) {
+            fprintf(out_fp,"%s        vex.decode2(mrm.byte);\n",indent_str.c_str());
+
+            fprintf(out_fp,"%s        goto _x86decode_begin_code%u_addr%u_vex_",indent_str.c_str(),codewidth,addrwidth);
+            if (generic1632) fprintf(out_fp,"_generic");
+            fprintf(out_fp,";\n");
+            return;
+        }
+        else {
+            abort();
+        }
+    }
+    else if (submap->modregrm && mprefix_exists && submap->opmap_valid) {
         size_t i=0;
 
         fprintf(out_fp,"%s        _x86decode_begin_code%u_addr%u_opcode_parse_",indent_str.c_str(),codewidth,addrwidth);
@@ -1597,7 +1637,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
         }
     }
     else {
-        if (cc_mode == MOD_DECOMPILE) {
+        if (cc_mode == MOD_DECOMPILE && !submap->name.empty()) {
             string fmtargs;
             char tmp[128];
 

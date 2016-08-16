@@ -3467,7 +3467,6 @@ switch (op=IPFB()) {
     /* opcode 65h  not defined */
     case 0x66: /* 66h        spec: 0x66 prefix opsz32 */
         prefix66 ^= 1;
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"");
         code32 ^= 1;
         if (code32 && addr32)
             goto _x86decode_after_prefix_386override_code32_addr32;
@@ -3479,7 +3478,6 @@ switch (op=IPFB()) {
             goto _x86decode_after_prefix_386override_code16_addr16;
     case 0x67: /* 67h        spec: 0x67 prefix addrsz32 */
         prefix67 ^= 1;
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"");
         addr32 ^= 1;
         if (code32 && addr32)
             goto _x86decode_after_prefix_386override_code32_addr32;

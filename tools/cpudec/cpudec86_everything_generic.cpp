@@ -17,6 +17,7 @@
 #endif
 
 #include "dosboxxr/lib/cpu/ipdec.h"
+#include "dosboxxr/lib/cpu/x86Vex.h"
 #include "dosboxxr/lib/cpu/x86ModRegRm.h"
 #include "dosboxxr/lib/cpu/x86ScaleIndexBase.h"
 #include "dosboxxr/lib/cpu/memreftypes.h"
@@ -35,6 +36,7 @@ void IPDec_Everything_generic(x86_offset_t ip) {
     uint32_t imm,imm2;
     char *ipw,*ipwf;
     x86ModRegRm mrm;
+    x86Vex vex;
     uint8_t op;
 
     /* one instruction only */

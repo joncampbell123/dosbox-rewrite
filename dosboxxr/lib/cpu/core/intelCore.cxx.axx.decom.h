@@ -12028,7 +12028,6 @@ switch (op) {
         break;
     case 0x67: /* 67h        spec: 0x67 prefix addrsz32 */
         prefix67 ^= 1;
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"");
         addr32 ^= 1;
         if (code32 && addr32)
             goto _x86decode_after_prefix_386override_code32_addr32;

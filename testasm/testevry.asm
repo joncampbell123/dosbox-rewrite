@@ -6326,3 +6326,10 @@ jmp2:
     vmxon       [si]
     vmptrst     [si]
 
+    nop
+    nop
+
+; VEX encoding
+
+    vzeroall
+

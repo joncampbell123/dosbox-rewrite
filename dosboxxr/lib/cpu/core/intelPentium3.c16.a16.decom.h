@@ -7686,7 +7686,6 @@ switch (op) {
         break;
     case 0x67: /* 67h        spec: 0x67 prefix addrsz32 */
         prefix67 ^= 1;
-        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"");
         code32=0; addr32=1;
         goto _x86decode_after_prefix_386override_code16_addr32;
     case 0x68: /* 68h PUSHw w(i)      spec: 0x68 iw */
