@@ -6475,4 +6475,10 @@ jmp2:
     vmovshdup   xmm0,[si]
     vmovshdup   ymm0,ymm1
     vmovshdup   ymm0,[si]
+    vmovaps     xmm0,xmm1
+    vmovaps     xmm0,[si]
+    vmovaps     ymm0,ymm1
+    vmovaps     ymm0,[si]
+    vmovaps     [si],xmm0
+    vmovaps     [si],ymm0
 

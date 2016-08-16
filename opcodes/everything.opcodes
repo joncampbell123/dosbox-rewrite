@@ -222,3 +222,8 @@ opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x17 mod/reg/rm mod!=3:     "VMO
 opcode vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x16 mod/reg/rm:            "VMOVSHDUP" sse(reg),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(0xF3) 0x16 mod/reg/rm:            "VMOVSHDUP" avx(reg),avx(r/m)
 
+opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x28 mod/reg/rm:            "VMOVAPS" sse(reg),sse(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x29 mod/reg/rm:            "VMOVAPS" sse(r/m),sse(reg)
+opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x28 mod/reg/rm:            "VMOVAPS" avx(reg),avx(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x29 mod/reg/rm:            "VMOVAPS" avx(r/m),avx(reg)
+
