@@ -6469,4 +6469,10 @@ jmp2:
     vmovlhps    xmm0,xmm1,xmm2
     vmovhps     xmm0,xmm1,[si]
     vmovhps     [si],xmm1
+    vmovhpd     xmm0,xmm1,[si]
+    vmovhpd     [si],xmm1
+    vmovshdup   xmm0,xmm1
+    vmovshdup   xmm0,[si]
+    vmovshdup   ymm0,ymm1
+    vmovshdup   ymm0,[si]
 
