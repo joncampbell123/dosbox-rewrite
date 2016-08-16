@@ -6332,4 +6332,5 @@ jmp2:
 ; VEX encoding
 
     vzeroall
+    vzeroupper
 
