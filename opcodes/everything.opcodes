@@ -155,3 +155,5 @@ opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3:"VMA
 opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3:"VMASKMOVPD" sse(r/m),sse(vsidx),sse(reg)
 opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3:"VMASKMOVPD" avx(r/m),avx(vsidx),avx(reg)
 
+opcode vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x19 mod/reg/rm ib vsidx(0): "VEXTRACTF128" sse(r/m),avx(reg),i
+

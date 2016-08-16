@@ -6383,3 +6383,6 @@ jmp2:
     vmaskmovpd  [si],xmm1,xmm2
     vmaskmovpd  [si],ymm1,ymm2
 
+    vextractf128 xmm1,ymm2,3
+    vextractf128 [si],ymm2,3
+
