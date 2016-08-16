@@ -6405,11 +6405,15 @@ jmp2:
     ; VEX new version of SSE instructions
     vaddps      xmm0,xmm1
     vaddps      xmm0,xmm1,xmm2
+    vaddps      ymm0,ymm1
+    vaddps      ymm0,ymm1,ymm2
     vaddpd      xmm0,xmm1
     vaddpd      xmm0,xmm1,xmm2
+    vaddpd      ymm0,ymm1
+    vaddpd      ymm0,ymm1,ymm2
 
-    vaddss      xmm0,xmm1
-    vaddss      xmm0,xmm1,xmm2
-    vaddsd      xmm0,xmm1
-    vaddsd      xmm0,xmm1,xmm2
+    vaddss      xmm0,xmm1               ; no ymm0,ymm1 form
+    vaddss      xmm0,xmm1,xmm2          ; no ymm0,ymm1 form
+    vaddsd      xmm0,xmm1               ; no ymm0,ymm1 form
+    vaddsd      xmm0,xmm1,xmm2          ; no ymm0,ymm1 form
 
