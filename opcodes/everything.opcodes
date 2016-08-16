@@ -227,3 +227,8 @@ opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x29 mod/reg/rm:            "VMO
 opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x28 mod/reg/rm:            "VMOVAPS" avx(reg),avx(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x29 mod/reg/rm:            "VMOVAPS" avx(r/m),avx(reg)
 
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x28 mod/reg/rm:            "VMOVAPD" sse(reg),sse(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x29 mod/reg/rm:            "VMOVAPD" sse(r/m),sse(reg)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x28 mod/reg/rm:            "VMOVAPD" avx(reg),avx(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x29 mod/reg/rm:            "VMOVAPD" avx(r/m),avx(reg)
+
