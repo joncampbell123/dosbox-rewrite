@@ -173,6 +173,9 @@ const char *IPDecPrint16(const x86ModRegRm &mrm,const x86_offset_t ofs,const uns
                 case RC_SSEREG: // SSE registers
                     w += snprintf(w,(size_t)(wf-w),"XMM%u",mrm.rm());
                     break;
+                case RC_AVXREG: // AVX registers
+                    w += snprintf(w,(size_t)(wf-w),"YMM%u",mrm.rm());
+                    break;
             };
             break;
     }
@@ -198,6 +201,9 @@ const char *IPDecPrint32(const x86ModRegRm &mrm,const x86ScaleIndexBase &sib,con
                 break;
             case RC_SSEREG: // SSE registers
                 w += snprintf(w,(size_t)(wf-w),"XMM%u",mrm.rm());
+                break;
+            case RC_AVXREG: // AVX registers
+                w += snprintf(w,(size_t)(wf-w),"YMM%u",mrm.rm());
                 break;
         };
     }

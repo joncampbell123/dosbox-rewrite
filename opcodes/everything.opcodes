@@ -125,3 +125,13 @@ opcode 0x0F 0xC7 mod/reg/rm /6 mod!=3 mprefix(0x66):                        "VMC
 opcode 0x0F 0xC7 mod/reg/rm /6 mod!=3 mprefix(0xF3):                        "VMXON" w64(r/m)
 opcode 0x0F 0xC7 mod/reg/rm /7 mod!=3:                                      "VMPTRST" w64(r/m)
 
+; VEX encoded instructions. Rather than try to manually encode all the weird inverted bits and both 2/3-byte forms we let opcc do it for us.
+; Note that some instructions require a specific value from "VEX source index register".
+; Note also that "VEX source index register" vsidx() here is encoded as the non-inverted bit value.
+; That means vsidx(0) = 0000b would represent a VEX prefix where the v3-v0 bits are 1111b in the opcode byte.
+opcode vex vsize(256) vlead(0x0F) vsidx(0) vprefix(none) 0x77:              "VZEROALL"
+opcode vex vsize(128) vlead(0x0F) vsidx(0) vprefix(none) 0x77:              "VZEROUPPER"
+
+; more complicated forms
+opcode vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x06 mod/reg/rm ib:    "VPERM2F128" avx(reg),avx(vsidx),avx(r/m),i
+

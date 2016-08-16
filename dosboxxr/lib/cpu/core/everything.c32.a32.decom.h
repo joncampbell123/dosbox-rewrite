@@ -14122,9 +14122,1345 @@ switch (op) {
             /* opcode C4h DEh  not defined */
             /* opcode C4h DFh  not defined */
             /* opcode C4h E0h  not defined */
-            /* opcode C4h E1h  not defined */
+            case 0xE1: /* C4h E1h   mod=3 reg=4 rm=1      spec:  */
+/* Opcodes starting with C4h E1h */
+                op=IPFB();
+                _x86decode_begin_code32_addr32_opcode_parse_C4E1:
+                switch (op) {
+                    /* opcode C4h E1h 00h  not defined */
+                    /* opcode C4h E1h 01h  not defined */
+                    /* opcode C4h E1h 02h  not defined */
+                    /* opcode C4h E1h 03h  not defined */
+                    /* opcode C4h E1h 04h  not defined */
+                    /* opcode C4h E1h 05h  not defined */
+                    /* opcode C4h E1h 06h  not defined */
+                    /* opcode C4h E1h 07h  not defined */
+                    /* opcode C4h E1h 08h  not defined */
+                    /* opcode C4h E1h 09h  not defined */
+                    /* opcode C4h E1h 0Ah  not defined */
+                    /* opcode C4h E1h 0Bh  not defined */
+                    /* opcode C4h E1h 0Ch  not defined */
+                    /* opcode C4h E1h 0Dh  not defined */
+                    /* opcode C4h E1h 0Eh  not defined */
+                    /* opcode C4h E1h 0Fh  not defined */
+                    /* opcode C4h E1h 10h  not defined */
+                    /* opcode C4h E1h 11h  not defined */
+                    /* opcode C4h E1h 12h  not defined */
+                    /* opcode C4h E1h 13h  not defined */
+                    /* opcode C4h E1h 14h  not defined */
+                    /* opcode C4h E1h 15h  not defined */
+                    /* opcode C4h E1h 16h  not defined */
+                    /* opcode C4h E1h 17h  not defined */
+                    /* opcode C4h E1h 18h  not defined */
+                    /* opcode C4h E1h 19h  not defined */
+                    /* opcode C4h E1h 1Ah  not defined */
+                    /* opcode C4h E1h 1Bh  not defined */
+                    /* opcode C4h E1h 1Ch  not defined */
+                    /* opcode C4h E1h 1Dh  not defined */
+                    /* opcode C4h E1h 1Eh  not defined */
+                    /* opcode C4h E1h 1Fh  not defined */
+                    /* opcode C4h E1h 20h  not defined */
+                    /* opcode C4h E1h 21h  not defined */
+                    /* opcode C4h E1h 22h  not defined */
+                    /* opcode C4h E1h 23h  not defined */
+                    /* opcode C4h E1h 24h  not defined */
+                    /* opcode C4h E1h 25h  not defined */
+                    /* opcode C4h E1h 26h  not defined */
+                    /* opcode C4h E1h 27h  not defined */
+                    /* opcode C4h E1h 28h  not defined */
+                    /* opcode C4h E1h 29h  not defined */
+                    /* opcode C4h E1h 2Ah  not defined */
+                    /* opcode C4h E1h 2Bh  not defined */
+                    /* opcode C4h E1h 2Ch  not defined */
+                    /* opcode C4h E1h 2Dh  not defined */
+                    /* opcode C4h E1h 2Eh  not defined */
+                    /* opcode C4h E1h 2Fh  not defined */
+                    /* opcode C4h E1h 30h  not defined */
+                    /* opcode C4h E1h 31h  not defined */
+                    /* opcode C4h E1h 32h  not defined */
+                    /* opcode C4h E1h 33h  not defined */
+                    /* opcode C4h E1h 34h  not defined */
+                    /* opcode C4h E1h 35h  not defined */
+                    /* opcode C4h E1h 36h  not defined */
+                    /* opcode C4h E1h 37h  not defined */
+                    /* opcode C4h E1h 38h  not defined */
+                    /* opcode C4h E1h 39h  not defined */
+                    /* opcode C4h E1h 3Ah  not defined */
+                    /* opcode C4h E1h 3Bh  not defined */
+                    /* opcode C4h E1h 3Ch  not defined */
+                    /* opcode C4h E1h 3Dh  not defined */
+                    /* opcode C4h E1h 3Eh  not defined */
+                    /* opcode C4h E1h 3Fh  not defined */
+                    /* opcode C4h E1h 40h  not defined */
+                    /* opcode C4h E1h 41h  not defined */
+                    /* opcode C4h E1h 42h  not defined */
+                    /* opcode C4h E1h 43h  not defined */
+                    /* opcode C4h E1h 44h  not defined */
+                    /* opcode C4h E1h 45h  not defined */
+                    /* opcode C4h E1h 46h  not defined */
+                    /* opcode C4h E1h 47h  not defined */
+                    /* opcode C4h E1h 48h  not defined */
+                    /* opcode C4h E1h 49h  not defined */
+                    /* opcode C4h E1h 4Ah  not defined */
+                    /* opcode C4h E1h 4Bh  not defined */
+                    /* opcode C4h E1h 4Ch  not defined */
+                    /* opcode C4h E1h 4Dh  not defined */
+                    /* opcode C4h E1h 4Eh  not defined */
+                    /* opcode C4h E1h 4Fh  not defined */
+                    /* opcode C4h E1h 50h  not defined */
+                    /* opcode C4h E1h 51h  not defined */
+                    /* opcode C4h E1h 52h  not defined */
+                    /* opcode C4h E1h 53h  not defined */
+                    /* opcode C4h E1h 54h  not defined */
+                    /* opcode C4h E1h 55h  not defined */
+                    /* opcode C4h E1h 56h  not defined */
+                    /* opcode C4h E1h 57h  not defined */
+                    /* opcode C4h E1h 58h  not defined */
+                    /* opcode C4h E1h 59h  not defined */
+                    /* opcode C4h E1h 5Ah  not defined */
+                    /* opcode C4h E1h 5Bh  not defined */
+                    /* opcode C4h E1h 5Ch  not defined */
+                    /* opcode C4h E1h 5Dh  not defined */
+                    /* opcode C4h E1h 5Eh  not defined */
+                    /* opcode C4h E1h 5Fh  not defined */
+                    /* opcode C4h E1h 60h  not defined */
+                    /* opcode C4h E1h 61h  not defined */
+                    /* opcode C4h E1h 62h  not defined */
+                    /* opcode C4h E1h 63h  not defined */
+                    /* opcode C4h E1h 64h  not defined */
+                    /* opcode C4h E1h 65h  not defined */
+                    /* opcode C4h E1h 66h  not defined */
+                    /* opcode C4h E1h 67h  not defined */
+                    /* opcode C4h E1h 68h  not defined */
+                    /* opcode C4h E1h 69h  not defined */
+                    /* opcode C4h E1h 6Ah  not defined */
+                    /* opcode C4h E1h 6Bh  not defined */
+                    /* opcode C4h E1h 6Ch  not defined */
+                    /* opcode C4h E1h 6Dh  not defined */
+                    /* opcode C4h E1h 6Eh  not defined */
+                    /* opcode C4h E1h 6Fh  not defined */
+                    /* opcode C4h E1h 70h  not defined */
+                    /* opcode C4h E1h 71h  not defined */
+                    /* opcode C4h E1h 72h  not defined */
+                    /* opcode C4h E1h 73h  not defined */
+                    /* opcode C4h E1h 74h  not defined */
+                    /* opcode C4h E1h 75h  not defined */
+                    /* opcode C4h E1h 76h  not defined */
+                    /* opcode C4h E1h 77h  not defined */
+                    case 0x78: /* C4h E1h 78h        spec:  */
+                        vex.V = ((~op) >> 3) & 7;
+/* Opcodes starting with C4h E1h 78h */
+                        op=IPFB();
+                        _x86decode_begin_code32_addr32_opcode_parse_C4E178:
+                        switch (op) {
+                            /* opcode C4h E1h 78h 00h  not defined */
+                            /* opcode C4h E1h 78h 01h  not defined */
+                            /* opcode C4h E1h 78h 02h  not defined */
+                            /* opcode C4h E1h 78h 03h  not defined */
+                            /* opcode C4h E1h 78h 04h  not defined */
+                            /* opcode C4h E1h 78h 05h  not defined */
+                            /* opcode C4h E1h 78h 06h  not defined */
+                            /* opcode C4h E1h 78h 07h  not defined */
+                            /* opcode C4h E1h 78h 08h  not defined */
+                            /* opcode C4h E1h 78h 09h  not defined */
+                            /* opcode C4h E1h 78h 0Ah  not defined */
+                            /* opcode C4h E1h 78h 0Bh  not defined */
+                            /* opcode C4h E1h 78h 0Ch  not defined */
+                            /* opcode C4h E1h 78h 0Dh  not defined */
+                            /* opcode C4h E1h 78h 0Eh  not defined */
+                            /* opcode C4h E1h 78h 0Fh  not defined */
+                            /* opcode C4h E1h 78h 10h  not defined */
+                            /* opcode C4h E1h 78h 11h  not defined */
+                            /* opcode C4h E1h 78h 12h  not defined */
+                            /* opcode C4h E1h 78h 13h  not defined */
+                            /* opcode C4h E1h 78h 14h  not defined */
+                            /* opcode C4h E1h 78h 15h  not defined */
+                            /* opcode C4h E1h 78h 16h  not defined */
+                            /* opcode C4h E1h 78h 17h  not defined */
+                            /* opcode C4h E1h 78h 18h  not defined */
+                            /* opcode C4h E1h 78h 19h  not defined */
+                            /* opcode C4h E1h 78h 1Ah  not defined */
+                            /* opcode C4h E1h 78h 1Bh  not defined */
+                            /* opcode C4h E1h 78h 1Ch  not defined */
+                            /* opcode C4h E1h 78h 1Dh  not defined */
+                            /* opcode C4h E1h 78h 1Eh  not defined */
+                            /* opcode C4h E1h 78h 1Fh  not defined */
+                            /* opcode C4h E1h 78h 20h  not defined */
+                            /* opcode C4h E1h 78h 21h  not defined */
+                            /* opcode C4h E1h 78h 22h  not defined */
+                            /* opcode C4h E1h 78h 23h  not defined */
+                            /* opcode C4h E1h 78h 24h  not defined */
+                            /* opcode C4h E1h 78h 25h  not defined */
+                            /* opcode C4h E1h 78h 26h  not defined */
+                            /* opcode C4h E1h 78h 27h  not defined */
+                            /* opcode C4h E1h 78h 28h  not defined */
+                            /* opcode C4h E1h 78h 29h  not defined */
+                            /* opcode C4h E1h 78h 2Ah  not defined */
+                            /* opcode C4h E1h 78h 2Bh  not defined */
+                            /* opcode C4h E1h 78h 2Ch  not defined */
+                            /* opcode C4h E1h 78h 2Dh  not defined */
+                            /* opcode C4h E1h 78h 2Eh  not defined */
+                            /* opcode C4h E1h 78h 2Fh  not defined */
+                            /* opcode C4h E1h 78h 30h  not defined */
+                            /* opcode C4h E1h 78h 31h  not defined */
+                            /* opcode C4h E1h 78h 32h  not defined */
+                            /* opcode C4h E1h 78h 33h  not defined */
+                            /* opcode C4h E1h 78h 34h  not defined */
+                            /* opcode C4h E1h 78h 35h  not defined */
+                            /* opcode C4h E1h 78h 36h  not defined */
+                            /* opcode C4h E1h 78h 37h  not defined */
+                            /* opcode C4h E1h 78h 38h  not defined */
+                            /* opcode C4h E1h 78h 39h  not defined */
+                            /* opcode C4h E1h 78h 3Ah  not defined */
+                            /* opcode C4h E1h 78h 3Bh  not defined */
+                            /* opcode C4h E1h 78h 3Ch  not defined */
+                            /* opcode C4h E1h 78h 3Dh  not defined */
+                            /* opcode C4h E1h 78h 3Eh  not defined */
+                            /* opcode C4h E1h 78h 3Fh  not defined */
+                            /* opcode C4h E1h 78h 40h  not defined */
+                            /* opcode C4h E1h 78h 41h  not defined */
+                            /* opcode C4h E1h 78h 42h  not defined */
+                            /* opcode C4h E1h 78h 43h  not defined */
+                            /* opcode C4h E1h 78h 44h  not defined */
+                            /* opcode C4h E1h 78h 45h  not defined */
+                            /* opcode C4h E1h 78h 46h  not defined */
+                            /* opcode C4h E1h 78h 47h  not defined */
+                            /* opcode C4h E1h 78h 48h  not defined */
+                            /* opcode C4h E1h 78h 49h  not defined */
+                            /* opcode C4h E1h 78h 4Ah  not defined */
+                            /* opcode C4h E1h 78h 4Bh  not defined */
+                            /* opcode C4h E1h 78h 4Ch  not defined */
+                            /* opcode C4h E1h 78h 4Dh  not defined */
+                            /* opcode C4h E1h 78h 4Eh  not defined */
+                            /* opcode C4h E1h 78h 4Fh  not defined */
+                            /* opcode C4h E1h 78h 50h  not defined */
+                            /* opcode C4h E1h 78h 51h  not defined */
+                            /* opcode C4h E1h 78h 52h  not defined */
+                            /* opcode C4h E1h 78h 53h  not defined */
+                            /* opcode C4h E1h 78h 54h  not defined */
+                            /* opcode C4h E1h 78h 55h  not defined */
+                            /* opcode C4h E1h 78h 56h  not defined */
+                            /* opcode C4h E1h 78h 57h  not defined */
+                            /* opcode C4h E1h 78h 58h  not defined */
+                            /* opcode C4h E1h 78h 59h  not defined */
+                            /* opcode C4h E1h 78h 5Ah  not defined */
+                            /* opcode C4h E1h 78h 5Bh  not defined */
+                            /* opcode C4h E1h 78h 5Ch  not defined */
+                            /* opcode C4h E1h 78h 5Dh  not defined */
+                            /* opcode C4h E1h 78h 5Eh  not defined */
+                            /* opcode C4h E1h 78h 5Fh  not defined */
+                            /* opcode C4h E1h 78h 60h  not defined */
+                            /* opcode C4h E1h 78h 61h  not defined */
+                            /* opcode C4h E1h 78h 62h  not defined */
+                            /* opcode C4h E1h 78h 63h  not defined */
+                            /* opcode C4h E1h 78h 64h  not defined */
+                            /* opcode C4h E1h 78h 65h  not defined */
+                            /* opcode C4h E1h 78h 66h  not defined */
+                            /* opcode C4h E1h 78h 67h  not defined */
+                            /* opcode C4h E1h 78h 68h  not defined */
+                            /* opcode C4h E1h 78h 69h  not defined */
+                            /* opcode C4h E1h 78h 6Ah  not defined */
+                            /* opcode C4h E1h 78h 6Bh  not defined */
+                            /* opcode C4h E1h 78h 6Ch  not defined */
+                            /* opcode C4h E1h 78h 6Dh  not defined */
+                            /* opcode C4h E1h 78h 6Eh  not defined */
+                            /* opcode C4h E1h 78h 6Fh  not defined */
+                            /* opcode C4h E1h 78h 70h  not defined */
+                            /* opcode C4h E1h 78h 71h  not defined */
+                            /* opcode C4h E1h 78h 72h  not defined */
+                            /* opcode C4h E1h 78h 73h  not defined */
+                            /* opcode C4h E1h 78h 74h  not defined */
+                            /* opcode C4h E1h 78h 75h  not defined */
+                            /* opcode C4h E1h 78h 76h  not defined */
+                            case 0x77: /* C4h E1h 78h 77h VZEROUPPER       spec: vex vsize(128) vlead(0x0F) vsidx(0) vprefix(none) 0x77 */
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VZEROUPPER");
+                                break;
+                            /* opcode C4h E1h 78h 78h  not defined */
+                            /* opcode C4h E1h 78h 79h  not defined */
+                            /* opcode C4h E1h 78h 7Ah  not defined */
+                            /* opcode C4h E1h 78h 7Bh  not defined */
+                            /* opcode C4h E1h 78h 7Ch  not defined */
+                            /* opcode C4h E1h 78h 7Dh  not defined */
+                            /* opcode C4h E1h 78h 7Eh  not defined */
+                            /* opcode C4h E1h 78h 7Fh  not defined */
+                            /* opcode C4h E1h 78h 80h  not defined */
+                            /* opcode C4h E1h 78h 81h  not defined */
+                            /* opcode C4h E1h 78h 82h  not defined */
+                            /* opcode C4h E1h 78h 83h  not defined */
+                            /* opcode C4h E1h 78h 84h  not defined */
+                            /* opcode C4h E1h 78h 85h  not defined */
+                            /* opcode C4h E1h 78h 86h  not defined */
+                            /* opcode C4h E1h 78h 87h  not defined */
+                            /* opcode C4h E1h 78h 88h  not defined */
+                            /* opcode C4h E1h 78h 89h  not defined */
+                            /* opcode C4h E1h 78h 8Ah  not defined */
+                            /* opcode C4h E1h 78h 8Bh  not defined */
+                            /* opcode C4h E1h 78h 8Ch  not defined */
+                            /* opcode C4h E1h 78h 8Dh  not defined */
+                            /* opcode C4h E1h 78h 8Eh  not defined */
+                            /* opcode C4h E1h 78h 8Fh  not defined */
+                            /* opcode C4h E1h 78h 90h  not defined */
+                            /* opcode C4h E1h 78h 91h  not defined */
+                            /* opcode C4h E1h 78h 92h  not defined */
+                            /* opcode C4h E1h 78h 93h  not defined */
+                            /* opcode C4h E1h 78h 94h  not defined */
+                            /* opcode C4h E1h 78h 95h  not defined */
+                            /* opcode C4h E1h 78h 96h  not defined */
+                            /* opcode C4h E1h 78h 97h  not defined */
+                            /* opcode C4h E1h 78h 98h  not defined */
+                            /* opcode C4h E1h 78h 99h  not defined */
+                            /* opcode C4h E1h 78h 9Ah  not defined */
+                            /* opcode C4h E1h 78h 9Bh  not defined */
+                            /* opcode C4h E1h 78h 9Ch  not defined */
+                            /* opcode C4h E1h 78h 9Dh  not defined */
+                            /* opcode C4h E1h 78h 9Eh  not defined */
+                            /* opcode C4h E1h 78h 9Fh  not defined */
+                            /* opcode C4h E1h 78h A0h  not defined */
+                            /* opcode C4h E1h 78h A1h  not defined */
+                            /* opcode C4h E1h 78h A2h  not defined */
+                            /* opcode C4h E1h 78h A3h  not defined */
+                            /* opcode C4h E1h 78h A4h  not defined */
+                            /* opcode C4h E1h 78h A5h  not defined */
+                            /* opcode C4h E1h 78h A6h  not defined */
+                            /* opcode C4h E1h 78h A7h  not defined */
+                            /* opcode C4h E1h 78h A8h  not defined */
+                            /* opcode C4h E1h 78h A9h  not defined */
+                            /* opcode C4h E1h 78h AAh  not defined */
+                            /* opcode C4h E1h 78h ABh  not defined */
+                            /* opcode C4h E1h 78h ACh  not defined */
+                            /* opcode C4h E1h 78h ADh  not defined */
+                            /* opcode C4h E1h 78h AEh  not defined */
+                            /* opcode C4h E1h 78h AFh  not defined */
+                            /* opcode C4h E1h 78h B0h  not defined */
+                            /* opcode C4h E1h 78h B1h  not defined */
+                            /* opcode C4h E1h 78h B2h  not defined */
+                            /* opcode C4h E1h 78h B3h  not defined */
+                            /* opcode C4h E1h 78h B4h  not defined */
+                            /* opcode C4h E1h 78h B5h  not defined */
+                            /* opcode C4h E1h 78h B6h  not defined */
+                            /* opcode C4h E1h 78h B7h  not defined */
+                            /* opcode C4h E1h 78h B8h  not defined */
+                            /* opcode C4h E1h 78h B9h  not defined */
+                            /* opcode C4h E1h 78h BAh  not defined */
+                            /* opcode C4h E1h 78h BBh  not defined */
+                            /* opcode C4h E1h 78h BCh  not defined */
+                            /* opcode C4h E1h 78h BDh  not defined */
+                            /* opcode C4h E1h 78h BEh  not defined */
+                            /* opcode C4h E1h 78h BFh  not defined */
+                            /* opcode C4h E1h 78h C0h  not defined */
+                            /* opcode C4h E1h 78h C1h  not defined */
+                            /* opcode C4h E1h 78h C2h  not defined */
+                            /* opcode C4h E1h 78h C3h  not defined */
+                            /* opcode C4h E1h 78h C4h  not defined */
+                            /* opcode C4h E1h 78h C5h  not defined */
+                            /* opcode C4h E1h 78h C6h  not defined */
+                            /* opcode C4h E1h 78h C7h  not defined */
+                            /* opcode C4h E1h 78h C8h  not defined */
+                            /* opcode C4h E1h 78h C9h  not defined */
+                            /* opcode C4h E1h 78h CAh  not defined */
+                            /* opcode C4h E1h 78h CBh  not defined */
+                            /* opcode C4h E1h 78h CCh  not defined */
+                            /* opcode C4h E1h 78h CDh  not defined */
+                            /* opcode C4h E1h 78h CEh  not defined */
+                            /* opcode C4h E1h 78h CFh  not defined */
+                            /* opcode C4h E1h 78h D0h  not defined */
+                            /* opcode C4h E1h 78h D1h  not defined */
+                            /* opcode C4h E1h 78h D2h  not defined */
+                            /* opcode C4h E1h 78h D3h  not defined */
+                            /* opcode C4h E1h 78h D4h  not defined */
+                            /* opcode C4h E1h 78h D5h  not defined */
+                            /* opcode C4h E1h 78h D6h  not defined */
+                            /* opcode C4h E1h 78h D7h  not defined */
+                            /* opcode C4h E1h 78h D8h  not defined */
+                            /* opcode C4h E1h 78h D9h  not defined */
+                            /* opcode C4h E1h 78h DAh  not defined */
+                            /* opcode C4h E1h 78h DBh  not defined */
+                            /* opcode C4h E1h 78h DCh  not defined */
+                            /* opcode C4h E1h 78h DDh  not defined */
+                            /* opcode C4h E1h 78h DEh  not defined */
+                            /* opcode C4h E1h 78h DFh  not defined */
+                            /* opcode C4h E1h 78h E0h  not defined */
+                            /* opcode C4h E1h 78h E1h  not defined */
+                            /* opcode C4h E1h 78h E2h  not defined */
+                            /* opcode C4h E1h 78h E3h  not defined */
+                            /* opcode C4h E1h 78h E4h  not defined */
+                            /* opcode C4h E1h 78h E5h  not defined */
+                            /* opcode C4h E1h 78h E6h  not defined */
+                            /* opcode C4h E1h 78h E7h  not defined */
+                            /* opcode C4h E1h 78h E8h  not defined */
+                            /* opcode C4h E1h 78h E9h  not defined */
+                            /* opcode C4h E1h 78h EAh  not defined */
+                            /* opcode C4h E1h 78h EBh  not defined */
+                            /* opcode C4h E1h 78h ECh  not defined */
+                            /* opcode C4h E1h 78h EDh  not defined */
+                            /* opcode C4h E1h 78h EEh  not defined */
+                            /* opcode C4h E1h 78h EFh  not defined */
+                            /* opcode C4h E1h 78h F0h  not defined */
+                            /* opcode C4h E1h 78h F1h  not defined */
+                            /* opcode C4h E1h 78h F2h  not defined */
+                            /* opcode C4h E1h 78h F3h  not defined */
+                            /* opcode C4h E1h 78h F4h  not defined */
+                            /* opcode C4h E1h 78h F5h  not defined */
+                            /* opcode C4h E1h 78h F6h  not defined */
+                            /* opcode C4h E1h 78h F7h  not defined */
+                            /* opcode C4h E1h 78h F8h  not defined */
+                            /* opcode C4h E1h 78h F9h  not defined */
+                            /* opcode C4h E1h 78h FAh  not defined */
+                            /* opcode C4h E1h 78h FBh  not defined */
+                            /* opcode C4h E1h 78h FCh  not defined */
+                            /* opcode C4h E1h 78h FDh  not defined */
+                            /* opcode C4h E1h 78h FEh  not defined */
+                            /* opcode C4h E1h 78h FFh  not defined */
+                            default:
+                                goto _x86decode_illegal_opcode;
+                        };
+/* End of opcodes starting with C4h E1h 78h */
+                        break;
+                    /* opcode C4h E1h 79h  not defined */
+                    /* opcode C4h E1h 7Ah  not defined */
+                    /* opcode C4h E1h 7Bh  not defined */
+                    case 0x7C: /* C4h E1h 7Ch        spec:  */
+                        vex.V = ((~op) >> 3) & 7;
+/* Opcodes starting with C4h E1h 7Ch */
+                        op=IPFB();
+                        _x86decode_begin_code32_addr32_opcode_parse_C4E17C:
+                        switch (op) {
+                            /* opcode C4h E1h 7Ch 00h  not defined */
+                            /* opcode C4h E1h 7Ch 01h  not defined */
+                            /* opcode C4h E1h 7Ch 02h  not defined */
+                            /* opcode C4h E1h 7Ch 03h  not defined */
+                            /* opcode C4h E1h 7Ch 04h  not defined */
+                            /* opcode C4h E1h 7Ch 05h  not defined */
+                            /* opcode C4h E1h 7Ch 06h  not defined */
+                            /* opcode C4h E1h 7Ch 07h  not defined */
+                            /* opcode C4h E1h 7Ch 08h  not defined */
+                            /* opcode C4h E1h 7Ch 09h  not defined */
+                            /* opcode C4h E1h 7Ch 0Ah  not defined */
+                            /* opcode C4h E1h 7Ch 0Bh  not defined */
+                            /* opcode C4h E1h 7Ch 0Ch  not defined */
+                            /* opcode C4h E1h 7Ch 0Dh  not defined */
+                            /* opcode C4h E1h 7Ch 0Eh  not defined */
+                            /* opcode C4h E1h 7Ch 0Fh  not defined */
+                            /* opcode C4h E1h 7Ch 10h  not defined */
+                            /* opcode C4h E1h 7Ch 11h  not defined */
+                            /* opcode C4h E1h 7Ch 12h  not defined */
+                            /* opcode C4h E1h 7Ch 13h  not defined */
+                            /* opcode C4h E1h 7Ch 14h  not defined */
+                            /* opcode C4h E1h 7Ch 15h  not defined */
+                            /* opcode C4h E1h 7Ch 16h  not defined */
+                            /* opcode C4h E1h 7Ch 17h  not defined */
+                            /* opcode C4h E1h 7Ch 18h  not defined */
+                            /* opcode C4h E1h 7Ch 19h  not defined */
+                            /* opcode C4h E1h 7Ch 1Ah  not defined */
+                            /* opcode C4h E1h 7Ch 1Bh  not defined */
+                            /* opcode C4h E1h 7Ch 1Ch  not defined */
+                            /* opcode C4h E1h 7Ch 1Dh  not defined */
+                            /* opcode C4h E1h 7Ch 1Eh  not defined */
+                            /* opcode C4h E1h 7Ch 1Fh  not defined */
+                            /* opcode C4h E1h 7Ch 20h  not defined */
+                            /* opcode C4h E1h 7Ch 21h  not defined */
+                            /* opcode C4h E1h 7Ch 22h  not defined */
+                            /* opcode C4h E1h 7Ch 23h  not defined */
+                            /* opcode C4h E1h 7Ch 24h  not defined */
+                            /* opcode C4h E1h 7Ch 25h  not defined */
+                            /* opcode C4h E1h 7Ch 26h  not defined */
+                            /* opcode C4h E1h 7Ch 27h  not defined */
+                            /* opcode C4h E1h 7Ch 28h  not defined */
+                            /* opcode C4h E1h 7Ch 29h  not defined */
+                            /* opcode C4h E1h 7Ch 2Ah  not defined */
+                            /* opcode C4h E1h 7Ch 2Bh  not defined */
+                            /* opcode C4h E1h 7Ch 2Ch  not defined */
+                            /* opcode C4h E1h 7Ch 2Dh  not defined */
+                            /* opcode C4h E1h 7Ch 2Eh  not defined */
+                            /* opcode C4h E1h 7Ch 2Fh  not defined */
+                            /* opcode C4h E1h 7Ch 30h  not defined */
+                            /* opcode C4h E1h 7Ch 31h  not defined */
+                            /* opcode C4h E1h 7Ch 32h  not defined */
+                            /* opcode C4h E1h 7Ch 33h  not defined */
+                            /* opcode C4h E1h 7Ch 34h  not defined */
+                            /* opcode C4h E1h 7Ch 35h  not defined */
+                            /* opcode C4h E1h 7Ch 36h  not defined */
+                            /* opcode C4h E1h 7Ch 37h  not defined */
+                            /* opcode C4h E1h 7Ch 38h  not defined */
+                            /* opcode C4h E1h 7Ch 39h  not defined */
+                            /* opcode C4h E1h 7Ch 3Ah  not defined */
+                            /* opcode C4h E1h 7Ch 3Bh  not defined */
+                            /* opcode C4h E1h 7Ch 3Ch  not defined */
+                            /* opcode C4h E1h 7Ch 3Dh  not defined */
+                            /* opcode C4h E1h 7Ch 3Eh  not defined */
+                            /* opcode C4h E1h 7Ch 3Fh  not defined */
+                            /* opcode C4h E1h 7Ch 40h  not defined */
+                            /* opcode C4h E1h 7Ch 41h  not defined */
+                            /* opcode C4h E1h 7Ch 42h  not defined */
+                            /* opcode C4h E1h 7Ch 43h  not defined */
+                            /* opcode C4h E1h 7Ch 44h  not defined */
+                            /* opcode C4h E1h 7Ch 45h  not defined */
+                            /* opcode C4h E1h 7Ch 46h  not defined */
+                            /* opcode C4h E1h 7Ch 47h  not defined */
+                            /* opcode C4h E1h 7Ch 48h  not defined */
+                            /* opcode C4h E1h 7Ch 49h  not defined */
+                            /* opcode C4h E1h 7Ch 4Ah  not defined */
+                            /* opcode C4h E1h 7Ch 4Bh  not defined */
+                            /* opcode C4h E1h 7Ch 4Ch  not defined */
+                            /* opcode C4h E1h 7Ch 4Dh  not defined */
+                            /* opcode C4h E1h 7Ch 4Eh  not defined */
+                            /* opcode C4h E1h 7Ch 4Fh  not defined */
+                            /* opcode C4h E1h 7Ch 50h  not defined */
+                            /* opcode C4h E1h 7Ch 51h  not defined */
+                            /* opcode C4h E1h 7Ch 52h  not defined */
+                            /* opcode C4h E1h 7Ch 53h  not defined */
+                            /* opcode C4h E1h 7Ch 54h  not defined */
+                            /* opcode C4h E1h 7Ch 55h  not defined */
+                            /* opcode C4h E1h 7Ch 56h  not defined */
+                            /* opcode C4h E1h 7Ch 57h  not defined */
+                            /* opcode C4h E1h 7Ch 58h  not defined */
+                            /* opcode C4h E1h 7Ch 59h  not defined */
+                            /* opcode C4h E1h 7Ch 5Ah  not defined */
+                            /* opcode C4h E1h 7Ch 5Bh  not defined */
+                            /* opcode C4h E1h 7Ch 5Ch  not defined */
+                            /* opcode C4h E1h 7Ch 5Dh  not defined */
+                            /* opcode C4h E1h 7Ch 5Eh  not defined */
+                            /* opcode C4h E1h 7Ch 5Fh  not defined */
+                            /* opcode C4h E1h 7Ch 60h  not defined */
+                            /* opcode C4h E1h 7Ch 61h  not defined */
+                            /* opcode C4h E1h 7Ch 62h  not defined */
+                            /* opcode C4h E1h 7Ch 63h  not defined */
+                            /* opcode C4h E1h 7Ch 64h  not defined */
+                            /* opcode C4h E1h 7Ch 65h  not defined */
+                            /* opcode C4h E1h 7Ch 66h  not defined */
+                            /* opcode C4h E1h 7Ch 67h  not defined */
+                            /* opcode C4h E1h 7Ch 68h  not defined */
+                            /* opcode C4h E1h 7Ch 69h  not defined */
+                            /* opcode C4h E1h 7Ch 6Ah  not defined */
+                            /* opcode C4h E1h 7Ch 6Bh  not defined */
+                            /* opcode C4h E1h 7Ch 6Ch  not defined */
+                            /* opcode C4h E1h 7Ch 6Dh  not defined */
+                            /* opcode C4h E1h 7Ch 6Eh  not defined */
+                            /* opcode C4h E1h 7Ch 6Fh  not defined */
+                            /* opcode C4h E1h 7Ch 70h  not defined */
+                            /* opcode C4h E1h 7Ch 71h  not defined */
+                            /* opcode C4h E1h 7Ch 72h  not defined */
+                            /* opcode C4h E1h 7Ch 73h  not defined */
+                            /* opcode C4h E1h 7Ch 74h  not defined */
+                            /* opcode C4h E1h 7Ch 75h  not defined */
+                            /* opcode C4h E1h 7Ch 76h  not defined */
+                            case 0x77: /* C4h E1h 7Ch 77h VZEROALL       spec: vex vsize(256) vlead(0x0F) vsidx(0) vprefix(none) 0x77 */
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VZEROALL");
+                                break;
+                            /* opcode C4h E1h 7Ch 78h  not defined */
+                            /* opcode C4h E1h 7Ch 79h  not defined */
+                            /* opcode C4h E1h 7Ch 7Ah  not defined */
+                            /* opcode C4h E1h 7Ch 7Bh  not defined */
+                            /* opcode C4h E1h 7Ch 7Ch  not defined */
+                            /* opcode C4h E1h 7Ch 7Dh  not defined */
+                            /* opcode C4h E1h 7Ch 7Eh  not defined */
+                            /* opcode C4h E1h 7Ch 7Fh  not defined */
+                            /* opcode C4h E1h 7Ch 80h  not defined */
+                            /* opcode C4h E1h 7Ch 81h  not defined */
+                            /* opcode C4h E1h 7Ch 82h  not defined */
+                            /* opcode C4h E1h 7Ch 83h  not defined */
+                            /* opcode C4h E1h 7Ch 84h  not defined */
+                            /* opcode C4h E1h 7Ch 85h  not defined */
+                            /* opcode C4h E1h 7Ch 86h  not defined */
+                            /* opcode C4h E1h 7Ch 87h  not defined */
+                            /* opcode C4h E1h 7Ch 88h  not defined */
+                            /* opcode C4h E1h 7Ch 89h  not defined */
+                            /* opcode C4h E1h 7Ch 8Ah  not defined */
+                            /* opcode C4h E1h 7Ch 8Bh  not defined */
+                            /* opcode C4h E1h 7Ch 8Ch  not defined */
+                            /* opcode C4h E1h 7Ch 8Dh  not defined */
+                            /* opcode C4h E1h 7Ch 8Eh  not defined */
+                            /* opcode C4h E1h 7Ch 8Fh  not defined */
+                            /* opcode C4h E1h 7Ch 90h  not defined */
+                            /* opcode C4h E1h 7Ch 91h  not defined */
+                            /* opcode C4h E1h 7Ch 92h  not defined */
+                            /* opcode C4h E1h 7Ch 93h  not defined */
+                            /* opcode C4h E1h 7Ch 94h  not defined */
+                            /* opcode C4h E1h 7Ch 95h  not defined */
+                            /* opcode C4h E1h 7Ch 96h  not defined */
+                            /* opcode C4h E1h 7Ch 97h  not defined */
+                            /* opcode C4h E1h 7Ch 98h  not defined */
+                            /* opcode C4h E1h 7Ch 99h  not defined */
+                            /* opcode C4h E1h 7Ch 9Ah  not defined */
+                            /* opcode C4h E1h 7Ch 9Bh  not defined */
+                            /* opcode C4h E1h 7Ch 9Ch  not defined */
+                            /* opcode C4h E1h 7Ch 9Dh  not defined */
+                            /* opcode C4h E1h 7Ch 9Eh  not defined */
+                            /* opcode C4h E1h 7Ch 9Fh  not defined */
+                            /* opcode C4h E1h 7Ch A0h  not defined */
+                            /* opcode C4h E1h 7Ch A1h  not defined */
+                            /* opcode C4h E1h 7Ch A2h  not defined */
+                            /* opcode C4h E1h 7Ch A3h  not defined */
+                            /* opcode C4h E1h 7Ch A4h  not defined */
+                            /* opcode C4h E1h 7Ch A5h  not defined */
+                            /* opcode C4h E1h 7Ch A6h  not defined */
+                            /* opcode C4h E1h 7Ch A7h  not defined */
+                            /* opcode C4h E1h 7Ch A8h  not defined */
+                            /* opcode C4h E1h 7Ch A9h  not defined */
+                            /* opcode C4h E1h 7Ch AAh  not defined */
+                            /* opcode C4h E1h 7Ch ABh  not defined */
+                            /* opcode C4h E1h 7Ch ACh  not defined */
+                            /* opcode C4h E1h 7Ch ADh  not defined */
+                            /* opcode C4h E1h 7Ch AEh  not defined */
+                            /* opcode C4h E1h 7Ch AFh  not defined */
+                            /* opcode C4h E1h 7Ch B0h  not defined */
+                            /* opcode C4h E1h 7Ch B1h  not defined */
+                            /* opcode C4h E1h 7Ch B2h  not defined */
+                            /* opcode C4h E1h 7Ch B3h  not defined */
+                            /* opcode C4h E1h 7Ch B4h  not defined */
+                            /* opcode C4h E1h 7Ch B5h  not defined */
+                            /* opcode C4h E1h 7Ch B6h  not defined */
+                            /* opcode C4h E1h 7Ch B7h  not defined */
+                            /* opcode C4h E1h 7Ch B8h  not defined */
+                            /* opcode C4h E1h 7Ch B9h  not defined */
+                            /* opcode C4h E1h 7Ch BAh  not defined */
+                            /* opcode C4h E1h 7Ch BBh  not defined */
+                            /* opcode C4h E1h 7Ch BCh  not defined */
+                            /* opcode C4h E1h 7Ch BDh  not defined */
+                            /* opcode C4h E1h 7Ch BEh  not defined */
+                            /* opcode C4h E1h 7Ch BFh  not defined */
+                            /* opcode C4h E1h 7Ch C0h  not defined */
+                            /* opcode C4h E1h 7Ch C1h  not defined */
+                            /* opcode C4h E1h 7Ch C2h  not defined */
+                            /* opcode C4h E1h 7Ch C3h  not defined */
+                            /* opcode C4h E1h 7Ch C4h  not defined */
+                            /* opcode C4h E1h 7Ch C5h  not defined */
+                            /* opcode C4h E1h 7Ch C6h  not defined */
+                            /* opcode C4h E1h 7Ch C7h  not defined */
+                            /* opcode C4h E1h 7Ch C8h  not defined */
+                            /* opcode C4h E1h 7Ch C9h  not defined */
+                            /* opcode C4h E1h 7Ch CAh  not defined */
+                            /* opcode C4h E1h 7Ch CBh  not defined */
+                            /* opcode C4h E1h 7Ch CCh  not defined */
+                            /* opcode C4h E1h 7Ch CDh  not defined */
+                            /* opcode C4h E1h 7Ch CEh  not defined */
+                            /* opcode C4h E1h 7Ch CFh  not defined */
+                            /* opcode C4h E1h 7Ch D0h  not defined */
+                            /* opcode C4h E1h 7Ch D1h  not defined */
+                            /* opcode C4h E1h 7Ch D2h  not defined */
+                            /* opcode C4h E1h 7Ch D3h  not defined */
+                            /* opcode C4h E1h 7Ch D4h  not defined */
+                            /* opcode C4h E1h 7Ch D5h  not defined */
+                            /* opcode C4h E1h 7Ch D6h  not defined */
+                            /* opcode C4h E1h 7Ch D7h  not defined */
+                            /* opcode C4h E1h 7Ch D8h  not defined */
+                            /* opcode C4h E1h 7Ch D9h  not defined */
+                            /* opcode C4h E1h 7Ch DAh  not defined */
+                            /* opcode C4h E1h 7Ch DBh  not defined */
+                            /* opcode C4h E1h 7Ch DCh  not defined */
+                            /* opcode C4h E1h 7Ch DDh  not defined */
+                            /* opcode C4h E1h 7Ch DEh  not defined */
+                            /* opcode C4h E1h 7Ch DFh  not defined */
+                            /* opcode C4h E1h 7Ch E0h  not defined */
+                            /* opcode C4h E1h 7Ch E1h  not defined */
+                            /* opcode C4h E1h 7Ch E2h  not defined */
+                            /* opcode C4h E1h 7Ch E3h  not defined */
+                            /* opcode C4h E1h 7Ch E4h  not defined */
+                            /* opcode C4h E1h 7Ch E5h  not defined */
+                            /* opcode C4h E1h 7Ch E6h  not defined */
+                            /* opcode C4h E1h 7Ch E7h  not defined */
+                            /* opcode C4h E1h 7Ch E8h  not defined */
+                            /* opcode C4h E1h 7Ch E9h  not defined */
+                            /* opcode C4h E1h 7Ch EAh  not defined */
+                            /* opcode C4h E1h 7Ch EBh  not defined */
+                            /* opcode C4h E1h 7Ch ECh  not defined */
+                            /* opcode C4h E1h 7Ch EDh  not defined */
+                            /* opcode C4h E1h 7Ch EEh  not defined */
+                            /* opcode C4h E1h 7Ch EFh  not defined */
+                            /* opcode C4h E1h 7Ch F0h  not defined */
+                            /* opcode C4h E1h 7Ch F1h  not defined */
+                            /* opcode C4h E1h 7Ch F2h  not defined */
+                            /* opcode C4h E1h 7Ch F3h  not defined */
+                            /* opcode C4h E1h 7Ch F4h  not defined */
+                            /* opcode C4h E1h 7Ch F5h  not defined */
+                            /* opcode C4h E1h 7Ch F6h  not defined */
+                            /* opcode C4h E1h 7Ch F7h  not defined */
+                            /* opcode C4h E1h 7Ch F8h  not defined */
+                            /* opcode C4h E1h 7Ch F9h  not defined */
+                            /* opcode C4h E1h 7Ch FAh  not defined */
+                            /* opcode C4h E1h 7Ch FBh  not defined */
+                            /* opcode C4h E1h 7Ch FCh  not defined */
+                            /* opcode C4h E1h 7Ch FDh  not defined */
+                            /* opcode C4h E1h 7Ch FEh  not defined */
+                            /* opcode C4h E1h 7Ch FFh  not defined */
+                            default:
+                                goto _x86decode_illegal_opcode;
+                        };
+/* End of opcodes starting with C4h E1h 7Ch */
+                        break;
+                    /* opcode C4h E1h 7Dh  not defined */
+                    /* opcode C4h E1h 7Eh  not defined */
+                    /* opcode C4h E1h 7Fh  not defined */
+                    /* opcode C4h E1h 80h  not defined */
+                    /* opcode C4h E1h 81h  not defined */
+                    /* opcode C4h E1h 82h  not defined */
+                    /* opcode C4h E1h 83h  not defined */
+                    /* opcode C4h E1h 84h  not defined */
+                    /* opcode C4h E1h 85h  not defined */
+                    /* opcode C4h E1h 86h  not defined */
+                    /* opcode C4h E1h 87h  not defined */
+                    /* opcode C4h E1h 88h  not defined */
+                    /* opcode C4h E1h 89h  not defined */
+                    /* opcode C4h E1h 8Ah  not defined */
+                    /* opcode C4h E1h 8Bh  not defined */
+                    /* opcode C4h E1h 8Ch  not defined */
+                    /* opcode C4h E1h 8Dh  not defined */
+                    /* opcode C4h E1h 8Eh  not defined */
+                    /* opcode C4h E1h 8Fh  not defined */
+                    /* opcode C4h E1h 90h  not defined */
+                    /* opcode C4h E1h 91h  not defined */
+                    /* opcode C4h E1h 92h  not defined */
+                    /* opcode C4h E1h 93h  not defined */
+                    /* opcode C4h E1h 94h  not defined */
+                    /* opcode C4h E1h 95h  not defined */
+                    /* opcode C4h E1h 96h  not defined */
+                    /* opcode C4h E1h 97h  not defined */
+                    /* opcode C4h E1h 98h  not defined */
+                    /* opcode C4h E1h 99h  not defined */
+                    /* opcode C4h E1h 9Ah  not defined */
+                    /* opcode C4h E1h 9Bh  not defined */
+                    /* opcode C4h E1h 9Ch  not defined */
+                    /* opcode C4h E1h 9Dh  not defined */
+                    /* opcode C4h E1h 9Eh  not defined */
+                    /* opcode C4h E1h 9Fh  not defined */
+                    /* opcode C4h E1h A0h  not defined */
+                    /* opcode C4h E1h A1h  not defined */
+                    /* opcode C4h E1h A2h  not defined */
+                    /* opcode C4h E1h A3h  not defined */
+                    /* opcode C4h E1h A4h  not defined */
+                    /* opcode C4h E1h A5h  not defined */
+                    /* opcode C4h E1h A6h  not defined */
+                    /* opcode C4h E1h A7h  not defined */
+                    /* opcode C4h E1h A8h  not defined */
+                    /* opcode C4h E1h A9h  not defined */
+                    /* opcode C4h E1h AAh  not defined */
+                    /* opcode C4h E1h ABh  not defined */
+                    /* opcode C4h E1h ACh  not defined */
+                    /* opcode C4h E1h ADh  not defined */
+                    /* opcode C4h E1h AEh  not defined */
+                    /* opcode C4h E1h AFh  not defined */
+                    /* opcode C4h E1h B0h  not defined */
+                    /* opcode C4h E1h B1h  not defined */
+                    /* opcode C4h E1h B2h  not defined */
+                    /* opcode C4h E1h B3h  not defined */
+                    /* opcode C4h E1h B4h  not defined */
+                    /* opcode C4h E1h B5h  not defined */
+                    /* opcode C4h E1h B6h  not defined */
+                    /* opcode C4h E1h B7h  not defined */
+                    /* opcode C4h E1h B8h  not defined */
+                    /* opcode C4h E1h B9h  not defined */
+                    /* opcode C4h E1h BAh  not defined */
+                    /* opcode C4h E1h BBh  not defined */
+                    /* opcode C4h E1h BCh  not defined */
+                    /* opcode C4h E1h BDh  not defined */
+                    /* opcode C4h E1h BEh  not defined */
+                    /* opcode C4h E1h BFh  not defined */
+                    /* opcode C4h E1h C0h  not defined */
+                    /* opcode C4h E1h C1h  not defined */
+                    /* opcode C4h E1h C2h  not defined */
+                    /* opcode C4h E1h C3h  not defined */
+                    /* opcode C4h E1h C4h  not defined */
+                    /* opcode C4h E1h C5h  not defined */
+                    /* opcode C4h E1h C6h  not defined */
+                    /* opcode C4h E1h C7h  not defined */
+                    /* opcode C4h E1h C8h  not defined */
+                    /* opcode C4h E1h C9h  not defined */
+                    /* opcode C4h E1h CAh  not defined */
+                    /* opcode C4h E1h CBh  not defined */
+                    /* opcode C4h E1h CCh  not defined */
+                    /* opcode C4h E1h CDh  not defined */
+                    /* opcode C4h E1h CEh  not defined */
+                    /* opcode C4h E1h CFh  not defined */
+                    /* opcode C4h E1h D0h  not defined */
+                    /* opcode C4h E1h D1h  not defined */
+                    /* opcode C4h E1h D2h  not defined */
+                    /* opcode C4h E1h D3h  not defined */
+                    /* opcode C4h E1h D4h  not defined */
+                    /* opcode C4h E1h D5h  not defined */
+                    /* opcode C4h E1h D6h  not defined */
+                    /* opcode C4h E1h D7h  not defined */
+                    /* opcode C4h E1h D8h  not defined */
+                    /* opcode C4h E1h D9h  not defined */
+                    /* opcode C4h E1h DAh  not defined */
+                    /* opcode C4h E1h DBh  not defined */
+                    /* opcode C4h E1h DCh  not defined */
+                    /* opcode C4h E1h DDh  not defined */
+                    /* opcode C4h E1h DEh  not defined */
+                    /* opcode C4h E1h DFh  not defined */
+                    /* opcode C4h E1h E0h  not defined */
+                    /* opcode C4h E1h E1h  not defined */
+                    /* opcode C4h E1h E2h  not defined */
+                    /* opcode C4h E1h E3h  not defined */
+                    /* opcode C4h E1h E4h  not defined */
+                    /* opcode C4h E1h E5h  not defined */
+                    /* opcode C4h E1h E6h  not defined */
+                    /* opcode C4h E1h E7h  not defined */
+                    /* opcode C4h E1h E8h  not defined */
+                    /* opcode C4h E1h E9h  not defined */
+                    /* opcode C4h E1h EAh  not defined */
+                    /* opcode C4h E1h EBh  not defined */
+                    /* opcode C4h E1h ECh  not defined */
+                    /* opcode C4h E1h EDh  not defined */
+                    /* opcode C4h E1h EEh  not defined */
+                    /* opcode C4h E1h EFh  not defined */
+                    /* opcode C4h E1h F0h  not defined */
+                    /* opcode C4h E1h F1h  not defined */
+                    /* opcode C4h E1h F2h  not defined */
+                    /* opcode C4h E1h F3h  not defined */
+                    /* opcode C4h E1h F4h  not defined */
+                    /* opcode C4h E1h F5h  not defined */
+                    /* opcode C4h E1h F6h  not defined */
+                    /* opcode C4h E1h F7h  not defined */
+                    /* opcode C4h E1h F8h  not defined */
+                    /* opcode C4h E1h F9h  not defined */
+                    /* opcode C4h E1h FAh  not defined */
+                    /* opcode C4h E1h FBh  not defined */
+                    /* opcode C4h E1h FCh  not defined */
+                    /* opcode C4h E1h FDh  not defined */
+                    /* opcode C4h E1h FEh  not defined */
+                    /* opcode C4h E1h FFh  not defined */
+                    default:
+                        goto _x86decode_illegal_opcode;
+                };
+/* End of opcodes starting with C4h E1h */
+                break;
             /* opcode C4h E2h  not defined */
-            /* opcode C4h E3h  not defined */
+            case 0xE3: /* C4h E3h   mod=3 reg=4 rm=3      spec:  */
+/* Opcodes starting with C4h E3h */
+                op=IPFB();
+                _x86decode_begin_code32_addr32_opcode_parse_C4E3:
+                switch (op) {
+                    /* opcode C4h E3h 00h  not defined */
+                    /* opcode C4h E3h 01h  not defined */
+                    /* opcode C4h E3h 02h  not defined */
+                    /* opcode C4h E3h 03h  not defined */
+                    /* opcode C4h E3h 04h  not defined */
+                    /* opcode C4h E3h 05h  not defined */
+                    /* opcode C4h E3h 06h  not defined */
+                    /* opcode C4h E3h 07h  not defined */
+                    /* opcode C4h E3h 08h  not defined */
+                    /* opcode C4h E3h 09h  not defined */
+                    /* opcode C4h E3h 0Ah  not defined */
+                    /* opcode C4h E3h 0Bh  not defined */
+                    /* opcode C4h E3h 0Ch  not defined */
+                    /* opcode C4h E3h 0Dh  not defined */
+                    /* opcode C4h E3h 0Eh  not defined */
+                    /* opcode C4h E3h 0Fh  not defined */
+                    /* opcode C4h E3h 10h  not defined */
+                    /* opcode C4h E3h 11h  not defined */
+                    /* opcode C4h E3h 12h  not defined */
+                    /* opcode C4h E3h 13h  not defined */
+                    /* opcode C4h E3h 14h  not defined */
+                    /* opcode C4h E3h 15h  not defined */
+                    /* opcode C4h E3h 16h  not defined */
+                    /* opcode C4h E3h 17h  not defined */
+                    /* opcode C4h E3h 18h  not defined */
+                    /* opcode C4h E3h 19h  not defined */
+                    /* opcode C4h E3h 1Ah  not defined */
+                    /* opcode C4h E3h 1Bh  not defined */
+                    /* opcode C4h E3h 1Ch  not defined */
+                    /* opcode C4h E3h 1Dh  not defined */
+                    /* opcode C4h E3h 1Eh  not defined */
+                    /* opcode C4h E3h 1Fh  not defined */
+                    /* opcode C4h E3h 20h  not defined */
+                    /* opcode C4h E3h 21h  not defined */
+                    /* opcode C4h E3h 22h  not defined */
+                    /* opcode C4h E3h 23h  not defined */
+                    /* opcode C4h E3h 24h  not defined */
+                    /* opcode C4h E3h 25h  not defined */
+                    /* opcode C4h E3h 26h  not defined */
+                    /* opcode C4h E3h 27h  not defined */
+                    /* opcode C4h E3h 28h  not defined */
+                    /* opcode C4h E3h 29h  not defined */
+                    /* opcode C4h E3h 2Ah  not defined */
+                    /* opcode C4h E3h 2Bh  not defined */
+                    /* opcode C4h E3h 2Ch  not defined */
+                    /* opcode C4h E3h 2Dh  not defined */
+                    /* opcode C4h E3h 2Eh  not defined */
+                    /* opcode C4h E3h 2Fh  not defined */
+                    /* opcode C4h E3h 30h  not defined */
+                    /* opcode C4h E3h 31h  not defined */
+                    /* opcode C4h E3h 32h  not defined */
+                    /* opcode C4h E3h 33h  not defined */
+                    /* opcode C4h E3h 34h  not defined */
+                    /* opcode C4h E3h 35h  not defined */
+                    /* opcode C4h E3h 36h  not defined */
+                    /* opcode C4h E3h 37h  not defined */
+                    /* opcode C4h E3h 38h  not defined */
+                    /* opcode C4h E3h 39h  not defined */
+                    /* opcode C4h E3h 3Ah  not defined */
+                    /* opcode C4h E3h 3Bh  not defined */
+                    /* opcode C4h E3h 3Ch  not defined */
+                    /* opcode C4h E3h 3Dh  not defined */
+                    /* opcode C4h E3h 3Eh  not defined */
+                    /* opcode C4h E3h 3Fh  not defined */
+                    /* opcode C4h E3h 40h  not defined */
+                    /* opcode C4h E3h 41h  not defined */
+                    /* opcode C4h E3h 42h  not defined */
+                    /* opcode C4h E3h 43h  not defined */
+                    /* opcode C4h E3h 44h  not defined */
+                    case 0x45: /* C4h E3h 45h        spec:  */
+                    case 0x4D: /* C4h E3h 4Dh        spec:  */
+                    case 0x55: /* C4h E3h 55h        spec:  */
+                    case 0x5D: /* C4h E3h 5Dh        spec:  */
+                    case 0x65: /* C4h E3h 65h        spec:  */
+                    case 0x6D: /* C4h E3h 6Dh        spec:  */
+                    case 0x75: /* C4h E3h 75h        spec:  */
+                    case 0x7D: /* C4h E3h 7Dh        spec:  */
+                        vex.V = ((~op) >> 3) & 7;
+/* Opcodes starting with C4h E3h 45h */
+                        op=IPFB();
+                        _x86decode_begin_code32_addr32_opcode_parse_C4E345:
+                        switch (op) {
+                            /* opcode C4h E3h 45h 00h  not defined */
+                            /* opcode C4h E3h 45h 01h  not defined */
+                            /* opcode C4h E3h 45h 02h  not defined */
+                            /* opcode C4h E3h 45h 03h  not defined */
+                            /* opcode C4h E3h 45h 04h  not defined */
+                            /* opcode C4h E3h 45h 05h  not defined */
+                            case 0x06: /* C4h E3h 45h 06h VPERM2F128 avx(reg),avx(vsidx),avx(r/m),i      spec: vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x06 mod/reg/rm ib */
+                                IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                                imm=IPFB();
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VPERM2F128 YMM%u,YMM%u,%s,0x%02lX",mrm.reg(),vex.V,IPDecPrint32(mrm,sib,disp,32,RC_AVXREG,""),(unsigned long)((uint32_t)imm));
+                                break;
+                            /* opcode C4h E3h 45h 07h  not defined */
+                            /* opcode C4h E3h 45h 08h  not defined */
+                            /* opcode C4h E3h 45h 09h  not defined */
+                            /* opcode C4h E3h 45h 0Ah  not defined */
+                            /* opcode C4h E3h 45h 0Bh  not defined */
+                            /* opcode C4h E3h 45h 0Ch  not defined */
+                            /* opcode C4h E3h 45h 0Dh  not defined */
+                            /* opcode C4h E3h 45h 0Eh  not defined */
+                            /* opcode C4h E3h 45h 0Fh  not defined */
+                            /* opcode C4h E3h 45h 10h  not defined */
+                            /* opcode C4h E3h 45h 11h  not defined */
+                            /* opcode C4h E3h 45h 12h  not defined */
+                            /* opcode C4h E3h 45h 13h  not defined */
+                            /* opcode C4h E3h 45h 14h  not defined */
+                            /* opcode C4h E3h 45h 15h  not defined */
+                            /* opcode C4h E3h 45h 16h  not defined */
+                            /* opcode C4h E3h 45h 17h  not defined */
+                            /* opcode C4h E3h 45h 18h  not defined */
+                            /* opcode C4h E3h 45h 19h  not defined */
+                            /* opcode C4h E3h 45h 1Ah  not defined */
+                            /* opcode C4h E3h 45h 1Bh  not defined */
+                            /* opcode C4h E3h 45h 1Ch  not defined */
+                            /* opcode C4h E3h 45h 1Dh  not defined */
+                            /* opcode C4h E3h 45h 1Eh  not defined */
+                            /* opcode C4h E3h 45h 1Fh  not defined */
+                            /* opcode C4h E3h 45h 20h  not defined */
+                            /* opcode C4h E3h 45h 21h  not defined */
+                            /* opcode C4h E3h 45h 22h  not defined */
+                            /* opcode C4h E3h 45h 23h  not defined */
+                            /* opcode C4h E3h 45h 24h  not defined */
+                            /* opcode C4h E3h 45h 25h  not defined */
+                            /* opcode C4h E3h 45h 26h  not defined */
+                            /* opcode C4h E3h 45h 27h  not defined */
+                            /* opcode C4h E3h 45h 28h  not defined */
+                            /* opcode C4h E3h 45h 29h  not defined */
+                            /* opcode C4h E3h 45h 2Ah  not defined */
+                            /* opcode C4h E3h 45h 2Bh  not defined */
+                            /* opcode C4h E3h 45h 2Ch  not defined */
+                            /* opcode C4h E3h 45h 2Dh  not defined */
+                            /* opcode C4h E3h 45h 2Eh  not defined */
+                            /* opcode C4h E3h 45h 2Fh  not defined */
+                            /* opcode C4h E3h 45h 30h  not defined */
+                            /* opcode C4h E3h 45h 31h  not defined */
+                            /* opcode C4h E3h 45h 32h  not defined */
+                            /* opcode C4h E3h 45h 33h  not defined */
+                            /* opcode C4h E3h 45h 34h  not defined */
+                            /* opcode C4h E3h 45h 35h  not defined */
+                            /* opcode C4h E3h 45h 36h  not defined */
+                            /* opcode C4h E3h 45h 37h  not defined */
+                            /* opcode C4h E3h 45h 38h  not defined */
+                            /* opcode C4h E3h 45h 39h  not defined */
+                            /* opcode C4h E3h 45h 3Ah  not defined */
+                            /* opcode C4h E3h 45h 3Bh  not defined */
+                            /* opcode C4h E3h 45h 3Ch  not defined */
+                            /* opcode C4h E3h 45h 3Dh  not defined */
+                            /* opcode C4h E3h 45h 3Eh  not defined */
+                            /* opcode C4h E3h 45h 3Fh  not defined */
+                            /* opcode C4h E3h 45h 40h  not defined */
+                            /* opcode C4h E3h 45h 41h  not defined */
+                            /* opcode C4h E3h 45h 42h  not defined */
+                            /* opcode C4h E3h 45h 43h  not defined */
+                            /* opcode C4h E3h 45h 44h  not defined */
+                            /* opcode C4h E3h 45h 45h  not defined */
+                            /* opcode C4h E3h 45h 46h  not defined */
+                            /* opcode C4h E3h 45h 47h  not defined */
+                            /* opcode C4h E3h 45h 48h  not defined */
+                            /* opcode C4h E3h 45h 49h  not defined */
+                            /* opcode C4h E3h 45h 4Ah  not defined */
+                            /* opcode C4h E3h 45h 4Bh  not defined */
+                            /* opcode C4h E3h 45h 4Ch  not defined */
+                            /* opcode C4h E3h 45h 4Dh  not defined */
+                            /* opcode C4h E3h 45h 4Eh  not defined */
+                            /* opcode C4h E3h 45h 4Fh  not defined */
+                            /* opcode C4h E3h 45h 50h  not defined */
+                            /* opcode C4h E3h 45h 51h  not defined */
+                            /* opcode C4h E3h 45h 52h  not defined */
+                            /* opcode C4h E3h 45h 53h  not defined */
+                            /* opcode C4h E3h 45h 54h  not defined */
+                            /* opcode C4h E3h 45h 55h  not defined */
+                            /* opcode C4h E3h 45h 56h  not defined */
+                            /* opcode C4h E3h 45h 57h  not defined */
+                            /* opcode C4h E3h 45h 58h  not defined */
+                            /* opcode C4h E3h 45h 59h  not defined */
+                            /* opcode C4h E3h 45h 5Ah  not defined */
+                            /* opcode C4h E3h 45h 5Bh  not defined */
+                            /* opcode C4h E3h 45h 5Ch  not defined */
+                            /* opcode C4h E3h 45h 5Dh  not defined */
+                            /* opcode C4h E3h 45h 5Eh  not defined */
+                            /* opcode C4h E3h 45h 5Fh  not defined */
+                            /* opcode C4h E3h 45h 60h  not defined */
+                            /* opcode C4h E3h 45h 61h  not defined */
+                            /* opcode C4h E3h 45h 62h  not defined */
+                            /* opcode C4h E3h 45h 63h  not defined */
+                            /* opcode C4h E3h 45h 64h  not defined */
+                            /* opcode C4h E3h 45h 65h  not defined */
+                            /* opcode C4h E3h 45h 66h  not defined */
+                            /* opcode C4h E3h 45h 67h  not defined */
+                            /* opcode C4h E3h 45h 68h  not defined */
+                            /* opcode C4h E3h 45h 69h  not defined */
+                            /* opcode C4h E3h 45h 6Ah  not defined */
+                            /* opcode C4h E3h 45h 6Bh  not defined */
+                            /* opcode C4h E3h 45h 6Ch  not defined */
+                            /* opcode C4h E3h 45h 6Dh  not defined */
+                            /* opcode C4h E3h 45h 6Eh  not defined */
+                            /* opcode C4h E3h 45h 6Fh  not defined */
+                            /* opcode C4h E3h 45h 70h  not defined */
+                            /* opcode C4h E3h 45h 71h  not defined */
+                            /* opcode C4h E3h 45h 72h  not defined */
+                            /* opcode C4h E3h 45h 73h  not defined */
+                            /* opcode C4h E3h 45h 74h  not defined */
+                            /* opcode C4h E3h 45h 75h  not defined */
+                            /* opcode C4h E3h 45h 76h  not defined */
+                            /* opcode C4h E3h 45h 77h  not defined */
+                            /* opcode C4h E3h 45h 78h  not defined */
+                            /* opcode C4h E3h 45h 79h  not defined */
+                            /* opcode C4h E3h 45h 7Ah  not defined */
+                            /* opcode C4h E3h 45h 7Bh  not defined */
+                            /* opcode C4h E3h 45h 7Ch  not defined */
+                            /* opcode C4h E3h 45h 7Dh  not defined */
+                            /* opcode C4h E3h 45h 7Eh  not defined */
+                            /* opcode C4h E3h 45h 7Fh  not defined */
+                            /* opcode C4h E3h 45h 80h  not defined */
+                            /* opcode C4h E3h 45h 81h  not defined */
+                            /* opcode C4h E3h 45h 82h  not defined */
+                            /* opcode C4h E3h 45h 83h  not defined */
+                            /* opcode C4h E3h 45h 84h  not defined */
+                            /* opcode C4h E3h 45h 85h  not defined */
+                            /* opcode C4h E3h 45h 86h  not defined */
+                            /* opcode C4h E3h 45h 87h  not defined */
+                            /* opcode C4h E3h 45h 88h  not defined */
+                            /* opcode C4h E3h 45h 89h  not defined */
+                            /* opcode C4h E3h 45h 8Ah  not defined */
+                            /* opcode C4h E3h 45h 8Bh  not defined */
+                            /* opcode C4h E3h 45h 8Ch  not defined */
+                            /* opcode C4h E3h 45h 8Dh  not defined */
+                            /* opcode C4h E3h 45h 8Eh  not defined */
+                            /* opcode C4h E3h 45h 8Fh  not defined */
+                            /* opcode C4h E3h 45h 90h  not defined */
+                            /* opcode C4h E3h 45h 91h  not defined */
+                            /* opcode C4h E3h 45h 92h  not defined */
+                            /* opcode C4h E3h 45h 93h  not defined */
+                            /* opcode C4h E3h 45h 94h  not defined */
+                            /* opcode C4h E3h 45h 95h  not defined */
+                            /* opcode C4h E3h 45h 96h  not defined */
+                            /* opcode C4h E3h 45h 97h  not defined */
+                            /* opcode C4h E3h 45h 98h  not defined */
+                            /* opcode C4h E3h 45h 99h  not defined */
+                            /* opcode C4h E3h 45h 9Ah  not defined */
+                            /* opcode C4h E3h 45h 9Bh  not defined */
+                            /* opcode C4h E3h 45h 9Ch  not defined */
+                            /* opcode C4h E3h 45h 9Dh  not defined */
+                            /* opcode C4h E3h 45h 9Eh  not defined */
+                            /* opcode C4h E3h 45h 9Fh  not defined */
+                            /* opcode C4h E3h 45h A0h  not defined */
+                            /* opcode C4h E3h 45h A1h  not defined */
+                            /* opcode C4h E3h 45h A2h  not defined */
+                            /* opcode C4h E3h 45h A3h  not defined */
+                            /* opcode C4h E3h 45h A4h  not defined */
+                            /* opcode C4h E3h 45h A5h  not defined */
+                            /* opcode C4h E3h 45h A6h  not defined */
+                            /* opcode C4h E3h 45h A7h  not defined */
+                            /* opcode C4h E3h 45h A8h  not defined */
+                            /* opcode C4h E3h 45h A9h  not defined */
+                            /* opcode C4h E3h 45h AAh  not defined */
+                            /* opcode C4h E3h 45h ABh  not defined */
+                            /* opcode C4h E3h 45h ACh  not defined */
+                            /* opcode C4h E3h 45h ADh  not defined */
+                            /* opcode C4h E3h 45h AEh  not defined */
+                            /* opcode C4h E3h 45h AFh  not defined */
+                            /* opcode C4h E3h 45h B0h  not defined */
+                            /* opcode C4h E3h 45h B1h  not defined */
+                            /* opcode C4h E3h 45h B2h  not defined */
+                            /* opcode C4h E3h 45h B3h  not defined */
+                            /* opcode C4h E3h 45h B4h  not defined */
+                            /* opcode C4h E3h 45h B5h  not defined */
+                            /* opcode C4h E3h 45h B6h  not defined */
+                            /* opcode C4h E3h 45h B7h  not defined */
+                            /* opcode C4h E3h 45h B8h  not defined */
+                            /* opcode C4h E3h 45h B9h  not defined */
+                            /* opcode C4h E3h 45h BAh  not defined */
+                            /* opcode C4h E3h 45h BBh  not defined */
+                            /* opcode C4h E3h 45h BCh  not defined */
+                            /* opcode C4h E3h 45h BDh  not defined */
+                            /* opcode C4h E3h 45h BEh  not defined */
+                            /* opcode C4h E3h 45h BFh  not defined */
+                            /* opcode C4h E3h 45h C0h  not defined */
+                            /* opcode C4h E3h 45h C1h  not defined */
+                            /* opcode C4h E3h 45h C2h  not defined */
+                            /* opcode C4h E3h 45h C3h  not defined */
+                            /* opcode C4h E3h 45h C4h  not defined */
+                            /* opcode C4h E3h 45h C5h  not defined */
+                            /* opcode C4h E3h 45h C6h  not defined */
+                            /* opcode C4h E3h 45h C7h  not defined */
+                            /* opcode C4h E3h 45h C8h  not defined */
+                            /* opcode C4h E3h 45h C9h  not defined */
+                            /* opcode C4h E3h 45h CAh  not defined */
+                            /* opcode C4h E3h 45h CBh  not defined */
+                            /* opcode C4h E3h 45h CCh  not defined */
+                            /* opcode C4h E3h 45h CDh  not defined */
+                            /* opcode C4h E3h 45h CEh  not defined */
+                            /* opcode C4h E3h 45h CFh  not defined */
+                            /* opcode C4h E3h 45h D0h  not defined */
+                            /* opcode C4h E3h 45h D1h  not defined */
+                            /* opcode C4h E3h 45h D2h  not defined */
+                            /* opcode C4h E3h 45h D3h  not defined */
+                            /* opcode C4h E3h 45h D4h  not defined */
+                            /* opcode C4h E3h 45h D5h  not defined */
+                            /* opcode C4h E3h 45h D6h  not defined */
+                            /* opcode C4h E3h 45h D7h  not defined */
+                            /* opcode C4h E3h 45h D8h  not defined */
+                            /* opcode C4h E3h 45h D9h  not defined */
+                            /* opcode C4h E3h 45h DAh  not defined */
+                            /* opcode C4h E3h 45h DBh  not defined */
+                            /* opcode C4h E3h 45h DCh  not defined */
+                            /* opcode C4h E3h 45h DDh  not defined */
+                            /* opcode C4h E3h 45h DEh  not defined */
+                            /* opcode C4h E3h 45h DFh  not defined */
+                            /* opcode C4h E3h 45h E0h  not defined */
+                            /* opcode C4h E3h 45h E1h  not defined */
+                            /* opcode C4h E3h 45h E2h  not defined */
+                            /* opcode C4h E3h 45h E3h  not defined */
+                            /* opcode C4h E3h 45h E4h  not defined */
+                            /* opcode C4h E3h 45h E5h  not defined */
+                            /* opcode C4h E3h 45h E6h  not defined */
+                            /* opcode C4h E3h 45h E7h  not defined */
+                            /* opcode C4h E3h 45h E8h  not defined */
+                            /* opcode C4h E3h 45h E9h  not defined */
+                            /* opcode C4h E3h 45h EAh  not defined */
+                            /* opcode C4h E3h 45h EBh  not defined */
+                            /* opcode C4h E3h 45h ECh  not defined */
+                            /* opcode C4h E3h 45h EDh  not defined */
+                            /* opcode C4h E3h 45h EEh  not defined */
+                            /* opcode C4h E3h 45h EFh  not defined */
+                            /* opcode C4h E3h 45h F0h  not defined */
+                            /* opcode C4h E3h 45h F1h  not defined */
+                            /* opcode C4h E3h 45h F2h  not defined */
+                            /* opcode C4h E3h 45h F3h  not defined */
+                            /* opcode C4h E3h 45h F4h  not defined */
+                            /* opcode C4h E3h 45h F5h  not defined */
+                            /* opcode C4h E3h 45h F6h  not defined */
+                            /* opcode C4h E3h 45h F7h  not defined */
+                            /* opcode C4h E3h 45h F8h  not defined */
+                            /* opcode C4h E3h 45h F9h  not defined */
+                            /* opcode C4h E3h 45h FAh  not defined */
+                            /* opcode C4h E3h 45h FBh  not defined */
+                            /* opcode C4h E3h 45h FCh  not defined */
+                            /* opcode C4h E3h 45h FDh  not defined */
+                            /* opcode C4h E3h 45h FEh  not defined */
+                            /* opcode C4h E3h 45h FFh  not defined */
+                            default:
+                                goto _x86decode_illegal_opcode;
+                        };
+/* End of opcodes starting with C4h E3h 45h */
+                        break;
+                    /* opcode C4h E3h 46h  not defined */
+                    /* opcode C4h E3h 47h  not defined */
+                    /* opcode C4h E3h 48h  not defined */
+                    /* opcode C4h E3h 49h  not defined */
+                    /* opcode C4h E3h 4Ah  not defined */
+                    /* opcode C4h E3h 4Bh  not defined */
+                    /* opcode C4h E3h 4Ch  not defined */
+                    /* opcode C4h E3h 4Eh  not defined */
+                    /* opcode C4h E3h 4Fh  not defined */
+                    /* opcode C4h E3h 50h  not defined */
+                    /* opcode C4h E3h 51h  not defined */
+                    /* opcode C4h E3h 52h  not defined */
+                    /* opcode C4h E3h 53h  not defined */
+                    /* opcode C4h E3h 54h  not defined */
+                    /* opcode C4h E3h 56h  not defined */
+                    /* opcode C4h E3h 57h  not defined */
+                    /* opcode C4h E3h 58h  not defined */
+                    /* opcode C4h E3h 59h  not defined */
+                    /* opcode C4h E3h 5Ah  not defined */
+                    /* opcode C4h E3h 5Bh  not defined */
+                    /* opcode C4h E3h 5Ch  not defined */
+                    /* opcode C4h E3h 5Eh  not defined */
+                    /* opcode C4h E3h 5Fh  not defined */
+                    /* opcode C4h E3h 60h  not defined */
+                    /* opcode C4h E3h 61h  not defined */
+                    /* opcode C4h E3h 62h  not defined */
+                    /* opcode C4h E3h 63h  not defined */
+                    /* opcode C4h E3h 64h  not defined */
+                    /* opcode C4h E3h 66h  not defined */
+                    /* opcode C4h E3h 67h  not defined */
+                    /* opcode C4h E3h 68h  not defined */
+                    /* opcode C4h E3h 69h  not defined */
+                    /* opcode C4h E3h 6Ah  not defined */
+                    /* opcode C4h E3h 6Bh  not defined */
+                    /* opcode C4h E3h 6Ch  not defined */
+                    /* opcode C4h E3h 6Eh  not defined */
+                    /* opcode C4h E3h 6Fh  not defined */
+                    /* opcode C4h E3h 70h  not defined */
+                    /* opcode C4h E3h 71h  not defined */
+                    /* opcode C4h E3h 72h  not defined */
+                    /* opcode C4h E3h 73h  not defined */
+                    /* opcode C4h E3h 74h  not defined */
+                    /* opcode C4h E3h 76h  not defined */
+                    /* opcode C4h E3h 77h  not defined */
+                    /* opcode C4h E3h 78h  not defined */
+                    /* opcode C4h E3h 79h  not defined */
+                    /* opcode C4h E3h 7Ah  not defined */
+                    /* opcode C4h E3h 7Bh  not defined */
+                    /* opcode C4h E3h 7Ch  not defined */
+                    /* opcode C4h E3h 7Eh  not defined */
+                    /* opcode C4h E3h 7Fh  not defined */
+                    /* opcode C4h E3h 80h  not defined */
+                    /* opcode C4h E3h 81h  not defined */
+                    /* opcode C4h E3h 82h  not defined */
+                    /* opcode C4h E3h 83h  not defined */
+                    /* opcode C4h E3h 84h  not defined */
+                    /* opcode C4h E3h 85h  not defined */
+                    /* opcode C4h E3h 86h  not defined */
+                    /* opcode C4h E3h 87h  not defined */
+                    /* opcode C4h E3h 88h  not defined */
+                    /* opcode C4h E3h 89h  not defined */
+                    /* opcode C4h E3h 8Ah  not defined */
+                    /* opcode C4h E3h 8Bh  not defined */
+                    /* opcode C4h E3h 8Ch  not defined */
+                    /* opcode C4h E3h 8Dh  not defined */
+                    /* opcode C4h E3h 8Eh  not defined */
+                    /* opcode C4h E3h 8Fh  not defined */
+                    /* opcode C4h E3h 90h  not defined */
+                    /* opcode C4h E3h 91h  not defined */
+                    /* opcode C4h E3h 92h  not defined */
+                    /* opcode C4h E3h 93h  not defined */
+                    /* opcode C4h E3h 94h  not defined */
+                    /* opcode C4h E3h 95h  not defined */
+                    /* opcode C4h E3h 96h  not defined */
+                    /* opcode C4h E3h 97h  not defined */
+                    /* opcode C4h E3h 98h  not defined */
+                    /* opcode C4h E3h 99h  not defined */
+                    /* opcode C4h E3h 9Ah  not defined */
+                    /* opcode C4h E3h 9Bh  not defined */
+                    /* opcode C4h E3h 9Ch  not defined */
+                    /* opcode C4h E3h 9Dh  not defined */
+                    /* opcode C4h E3h 9Eh  not defined */
+                    /* opcode C4h E3h 9Fh  not defined */
+                    /* opcode C4h E3h A0h  not defined */
+                    /* opcode C4h E3h A1h  not defined */
+                    /* opcode C4h E3h A2h  not defined */
+                    /* opcode C4h E3h A3h  not defined */
+                    /* opcode C4h E3h A4h  not defined */
+                    /* opcode C4h E3h A5h  not defined */
+                    /* opcode C4h E3h A6h  not defined */
+                    /* opcode C4h E3h A7h  not defined */
+                    /* opcode C4h E3h A8h  not defined */
+                    /* opcode C4h E3h A9h  not defined */
+                    /* opcode C4h E3h AAh  not defined */
+                    /* opcode C4h E3h ABh  not defined */
+                    /* opcode C4h E3h ACh  not defined */
+                    /* opcode C4h E3h ADh  not defined */
+                    /* opcode C4h E3h AEh  not defined */
+                    /* opcode C4h E3h AFh  not defined */
+                    /* opcode C4h E3h B0h  not defined */
+                    /* opcode C4h E3h B1h  not defined */
+                    /* opcode C4h E3h B2h  not defined */
+                    /* opcode C4h E3h B3h  not defined */
+                    /* opcode C4h E3h B4h  not defined */
+                    /* opcode C4h E3h B5h  not defined */
+                    /* opcode C4h E3h B6h  not defined */
+                    /* opcode C4h E3h B7h  not defined */
+                    /* opcode C4h E3h B8h  not defined */
+                    /* opcode C4h E3h B9h  not defined */
+                    /* opcode C4h E3h BAh  not defined */
+                    /* opcode C4h E3h BBh  not defined */
+                    /* opcode C4h E3h BCh  not defined */
+                    /* opcode C4h E3h BDh  not defined */
+                    /* opcode C4h E3h BEh  not defined */
+                    /* opcode C4h E3h BFh  not defined */
+                    /* opcode C4h E3h C0h  not defined */
+                    /* opcode C4h E3h C1h  not defined */
+                    /* opcode C4h E3h C2h  not defined */
+                    /* opcode C4h E3h C3h  not defined */
+                    /* opcode C4h E3h C4h  not defined */
+                    /* opcode C4h E3h C5h  not defined */
+                    /* opcode C4h E3h C6h  not defined */
+                    /* opcode C4h E3h C7h  not defined */
+                    /* opcode C4h E3h C8h  not defined */
+                    /* opcode C4h E3h C9h  not defined */
+                    /* opcode C4h E3h CAh  not defined */
+                    /* opcode C4h E3h CBh  not defined */
+                    /* opcode C4h E3h CCh  not defined */
+                    /* opcode C4h E3h CDh  not defined */
+                    /* opcode C4h E3h CEh  not defined */
+                    /* opcode C4h E3h CFh  not defined */
+                    /* opcode C4h E3h D0h  not defined */
+                    /* opcode C4h E3h D1h  not defined */
+                    /* opcode C4h E3h D2h  not defined */
+                    /* opcode C4h E3h D3h  not defined */
+                    /* opcode C4h E3h D4h  not defined */
+                    /* opcode C4h E3h D5h  not defined */
+                    /* opcode C4h E3h D6h  not defined */
+                    /* opcode C4h E3h D7h  not defined */
+                    /* opcode C4h E3h D8h  not defined */
+                    /* opcode C4h E3h D9h  not defined */
+                    /* opcode C4h E3h DAh  not defined */
+                    /* opcode C4h E3h DBh  not defined */
+                    /* opcode C4h E3h DCh  not defined */
+                    /* opcode C4h E3h DDh  not defined */
+                    /* opcode C4h E3h DEh  not defined */
+                    /* opcode C4h E3h DFh  not defined */
+                    /* opcode C4h E3h E0h  not defined */
+                    /* opcode C4h E3h E1h  not defined */
+                    /* opcode C4h E3h E2h  not defined */
+                    /* opcode C4h E3h E3h  not defined */
+                    /* opcode C4h E3h E4h  not defined */
+                    /* opcode C4h E3h E5h  not defined */
+                    /* opcode C4h E3h E6h  not defined */
+                    /* opcode C4h E3h E7h  not defined */
+                    /* opcode C4h E3h E8h  not defined */
+                    /* opcode C4h E3h E9h  not defined */
+                    /* opcode C4h E3h EAh  not defined */
+                    /* opcode C4h E3h EBh  not defined */
+                    /* opcode C4h E3h ECh  not defined */
+                    /* opcode C4h E3h EDh  not defined */
+                    /* opcode C4h E3h EEh  not defined */
+                    /* opcode C4h E3h EFh  not defined */
+                    /* opcode C4h E3h F0h  not defined */
+                    /* opcode C4h E3h F1h  not defined */
+                    /* opcode C4h E3h F2h  not defined */
+                    /* opcode C4h E3h F3h  not defined */
+                    /* opcode C4h E3h F4h  not defined */
+                    /* opcode C4h E3h F5h  not defined */
+                    /* opcode C4h E3h F6h  not defined */
+                    /* opcode C4h E3h F7h  not defined */
+                    /* opcode C4h E3h F8h  not defined */
+                    /* opcode C4h E3h F9h  not defined */
+                    /* opcode C4h E3h FAh  not defined */
+                    /* opcode C4h E3h FBh  not defined */
+                    /* opcode C4h E3h FCh  not defined */
+                    /* opcode C4h E3h FDh  not defined */
+                    /* opcode C4h E3h FEh  not defined */
+                    /* opcode C4h E3h FFh  not defined */
+                    default:
+                        goto _x86decode_illegal_opcode;
+                };
+/* End of opcodes starting with C4h E3h */
+                break;
             /* opcode C4h E4h  not defined */
             /* opcode C4h E5h  not defined */
             /* opcode C4h E6h  not defined */
@@ -14413,11 +15749,547 @@ switch (op) {
             /* opcode C5h F5h  not defined */
             /* opcode C5h F6h  not defined */
             /* opcode C5h F7h  not defined */
-            /* opcode C5h F8h  not defined */
+            case 0xF8: /* C5h F8h   mod=3 reg=7 rm=0      spec:  */
+                vex.V = ((~op) >> 3) & 7;
+/* Opcodes starting with C5h F8h */
+                op=IPFB();
+                _x86decode_begin_code32_addr32_opcode_parse_C5F8:
+                switch (op) {
+                    /* opcode C5h F8h 00h  not defined */
+                    /* opcode C5h F8h 01h  not defined */
+                    /* opcode C5h F8h 02h  not defined */
+                    /* opcode C5h F8h 03h  not defined */
+                    /* opcode C5h F8h 04h  not defined */
+                    /* opcode C5h F8h 05h  not defined */
+                    /* opcode C5h F8h 06h  not defined */
+                    /* opcode C5h F8h 07h  not defined */
+                    /* opcode C5h F8h 08h  not defined */
+                    /* opcode C5h F8h 09h  not defined */
+                    /* opcode C5h F8h 0Ah  not defined */
+                    /* opcode C5h F8h 0Bh  not defined */
+                    /* opcode C5h F8h 0Ch  not defined */
+                    /* opcode C5h F8h 0Dh  not defined */
+                    /* opcode C5h F8h 0Eh  not defined */
+                    /* opcode C5h F8h 0Fh  not defined */
+                    /* opcode C5h F8h 10h  not defined */
+                    /* opcode C5h F8h 11h  not defined */
+                    /* opcode C5h F8h 12h  not defined */
+                    /* opcode C5h F8h 13h  not defined */
+                    /* opcode C5h F8h 14h  not defined */
+                    /* opcode C5h F8h 15h  not defined */
+                    /* opcode C5h F8h 16h  not defined */
+                    /* opcode C5h F8h 17h  not defined */
+                    /* opcode C5h F8h 18h  not defined */
+                    /* opcode C5h F8h 19h  not defined */
+                    /* opcode C5h F8h 1Ah  not defined */
+                    /* opcode C5h F8h 1Bh  not defined */
+                    /* opcode C5h F8h 1Ch  not defined */
+                    /* opcode C5h F8h 1Dh  not defined */
+                    /* opcode C5h F8h 1Eh  not defined */
+                    /* opcode C5h F8h 1Fh  not defined */
+                    /* opcode C5h F8h 20h  not defined */
+                    /* opcode C5h F8h 21h  not defined */
+                    /* opcode C5h F8h 22h  not defined */
+                    /* opcode C5h F8h 23h  not defined */
+                    /* opcode C5h F8h 24h  not defined */
+                    /* opcode C5h F8h 25h  not defined */
+                    /* opcode C5h F8h 26h  not defined */
+                    /* opcode C5h F8h 27h  not defined */
+                    /* opcode C5h F8h 28h  not defined */
+                    /* opcode C5h F8h 29h  not defined */
+                    /* opcode C5h F8h 2Ah  not defined */
+                    /* opcode C5h F8h 2Bh  not defined */
+                    /* opcode C5h F8h 2Ch  not defined */
+                    /* opcode C5h F8h 2Dh  not defined */
+                    /* opcode C5h F8h 2Eh  not defined */
+                    /* opcode C5h F8h 2Fh  not defined */
+                    /* opcode C5h F8h 30h  not defined */
+                    /* opcode C5h F8h 31h  not defined */
+                    /* opcode C5h F8h 32h  not defined */
+                    /* opcode C5h F8h 33h  not defined */
+                    /* opcode C5h F8h 34h  not defined */
+                    /* opcode C5h F8h 35h  not defined */
+                    /* opcode C5h F8h 36h  not defined */
+                    /* opcode C5h F8h 37h  not defined */
+                    /* opcode C5h F8h 38h  not defined */
+                    /* opcode C5h F8h 39h  not defined */
+                    /* opcode C5h F8h 3Ah  not defined */
+                    /* opcode C5h F8h 3Bh  not defined */
+                    /* opcode C5h F8h 3Ch  not defined */
+                    /* opcode C5h F8h 3Dh  not defined */
+                    /* opcode C5h F8h 3Eh  not defined */
+                    /* opcode C5h F8h 3Fh  not defined */
+                    /* opcode C5h F8h 40h  not defined */
+                    /* opcode C5h F8h 41h  not defined */
+                    /* opcode C5h F8h 42h  not defined */
+                    /* opcode C5h F8h 43h  not defined */
+                    /* opcode C5h F8h 44h  not defined */
+                    /* opcode C5h F8h 45h  not defined */
+                    /* opcode C5h F8h 46h  not defined */
+                    /* opcode C5h F8h 47h  not defined */
+                    /* opcode C5h F8h 48h  not defined */
+                    /* opcode C5h F8h 49h  not defined */
+                    /* opcode C5h F8h 4Ah  not defined */
+                    /* opcode C5h F8h 4Bh  not defined */
+                    /* opcode C5h F8h 4Ch  not defined */
+                    /* opcode C5h F8h 4Dh  not defined */
+                    /* opcode C5h F8h 4Eh  not defined */
+                    /* opcode C5h F8h 4Fh  not defined */
+                    /* opcode C5h F8h 50h  not defined */
+                    /* opcode C5h F8h 51h  not defined */
+                    /* opcode C5h F8h 52h  not defined */
+                    /* opcode C5h F8h 53h  not defined */
+                    /* opcode C5h F8h 54h  not defined */
+                    /* opcode C5h F8h 55h  not defined */
+                    /* opcode C5h F8h 56h  not defined */
+                    /* opcode C5h F8h 57h  not defined */
+                    /* opcode C5h F8h 58h  not defined */
+                    /* opcode C5h F8h 59h  not defined */
+                    /* opcode C5h F8h 5Ah  not defined */
+                    /* opcode C5h F8h 5Bh  not defined */
+                    /* opcode C5h F8h 5Ch  not defined */
+                    /* opcode C5h F8h 5Dh  not defined */
+                    /* opcode C5h F8h 5Eh  not defined */
+                    /* opcode C5h F8h 5Fh  not defined */
+                    /* opcode C5h F8h 60h  not defined */
+                    /* opcode C5h F8h 61h  not defined */
+                    /* opcode C5h F8h 62h  not defined */
+                    /* opcode C5h F8h 63h  not defined */
+                    /* opcode C5h F8h 64h  not defined */
+                    /* opcode C5h F8h 65h  not defined */
+                    /* opcode C5h F8h 66h  not defined */
+                    /* opcode C5h F8h 67h  not defined */
+                    /* opcode C5h F8h 68h  not defined */
+                    /* opcode C5h F8h 69h  not defined */
+                    /* opcode C5h F8h 6Ah  not defined */
+                    /* opcode C5h F8h 6Bh  not defined */
+                    /* opcode C5h F8h 6Ch  not defined */
+                    /* opcode C5h F8h 6Dh  not defined */
+                    /* opcode C5h F8h 6Eh  not defined */
+                    /* opcode C5h F8h 6Fh  not defined */
+                    /* opcode C5h F8h 70h  not defined */
+                    /* opcode C5h F8h 71h  not defined */
+                    /* opcode C5h F8h 72h  not defined */
+                    /* opcode C5h F8h 73h  not defined */
+                    /* opcode C5h F8h 74h  not defined */
+                    /* opcode C5h F8h 75h  not defined */
+                    /* opcode C5h F8h 76h  not defined */
+                    case 0x77: /* C5h F8h 77h VZEROUPPER       spec: vex vsize(128) vlead(0x0F) vsidx(0) vprefix(none) 0x77 */
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VZEROUPPER");
+                        break;
+                    /* opcode C5h F8h 78h  not defined */
+                    /* opcode C5h F8h 79h  not defined */
+                    /* opcode C5h F8h 7Ah  not defined */
+                    /* opcode C5h F8h 7Bh  not defined */
+                    /* opcode C5h F8h 7Ch  not defined */
+                    /* opcode C5h F8h 7Dh  not defined */
+                    /* opcode C5h F8h 7Eh  not defined */
+                    /* opcode C5h F8h 7Fh  not defined */
+                    /* opcode C5h F8h 80h  not defined */
+                    /* opcode C5h F8h 81h  not defined */
+                    /* opcode C5h F8h 82h  not defined */
+                    /* opcode C5h F8h 83h  not defined */
+                    /* opcode C5h F8h 84h  not defined */
+                    /* opcode C5h F8h 85h  not defined */
+                    /* opcode C5h F8h 86h  not defined */
+                    /* opcode C5h F8h 87h  not defined */
+                    /* opcode C5h F8h 88h  not defined */
+                    /* opcode C5h F8h 89h  not defined */
+                    /* opcode C5h F8h 8Ah  not defined */
+                    /* opcode C5h F8h 8Bh  not defined */
+                    /* opcode C5h F8h 8Ch  not defined */
+                    /* opcode C5h F8h 8Dh  not defined */
+                    /* opcode C5h F8h 8Eh  not defined */
+                    /* opcode C5h F8h 8Fh  not defined */
+                    /* opcode C5h F8h 90h  not defined */
+                    /* opcode C5h F8h 91h  not defined */
+                    /* opcode C5h F8h 92h  not defined */
+                    /* opcode C5h F8h 93h  not defined */
+                    /* opcode C5h F8h 94h  not defined */
+                    /* opcode C5h F8h 95h  not defined */
+                    /* opcode C5h F8h 96h  not defined */
+                    /* opcode C5h F8h 97h  not defined */
+                    /* opcode C5h F8h 98h  not defined */
+                    /* opcode C5h F8h 99h  not defined */
+                    /* opcode C5h F8h 9Ah  not defined */
+                    /* opcode C5h F8h 9Bh  not defined */
+                    /* opcode C5h F8h 9Ch  not defined */
+                    /* opcode C5h F8h 9Dh  not defined */
+                    /* opcode C5h F8h 9Eh  not defined */
+                    /* opcode C5h F8h 9Fh  not defined */
+                    /* opcode C5h F8h A0h  not defined */
+                    /* opcode C5h F8h A1h  not defined */
+                    /* opcode C5h F8h A2h  not defined */
+                    /* opcode C5h F8h A3h  not defined */
+                    /* opcode C5h F8h A4h  not defined */
+                    /* opcode C5h F8h A5h  not defined */
+                    /* opcode C5h F8h A6h  not defined */
+                    /* opcode C5h F8h A7h  not defined */
+                    /* opcode C5h F8h A8h  not defined */
+                    /* opcode C5h F8h A9h  not defined */
+                    /* opcode C5h F8h AAh  not defined */
+                    /* opcode C5h F8h ABh  not defined */
+                    /* opcode C5h F8h ACh  not defined */
+                    /* opcode C5h F8h ADh  not defined */
+                    /* opcode C5h F8h AEh  not defined */
+                    /* opcode C5h F8h AFh  not defined */
+                    /* opcode C5h F8h B0h  not defined */
+                    /* opcode C5h F8h B1h  not defined */
+                    /* opcode C5h F8h B2h  not defined */
+                    /* opcode C5h F8h B3h  not defined */
+                    /* opcode C5h F8h B4h  not defined */
+                    /* opcode C5h F8h B5h  not defined */
+                    /* opcode C5h F8h B6h  not defined */
+                    /* opcode C5h F8h B7h  not defined */
+                    /* opcode C5h F8h B8h  not defined */
+                    /* opcode C5h F8h B9h  not defined */
+                    /* opcode C5h F8h BAh  not defined */
+                    /* opcode C5h F8h BBh  not defined */
+                    /* opcode C5h F8h BCh  not defined */
+                    /* opcode C5h F8h BDh  not defined */
+                    /* opcode C5h F8h BEh  not defined */
+                    /* opcode C5h F8h BFh  not defined */
+                    /* opcode C5h F8h C0h  not defined */
+                    /* opcode C5h F8h C1h  not defined */
+                    /* opcode C5h F8h C2h  not defined */
+                    /* opcode C5h F8h C3h  not defined */
+                    /* opcode C5h F8h C4h  not defined */
+                    /* opcode C5h F8h C5h  not defined */
+                    /* opcode C5h F8h C6h  not defined */
+                    /* opcode C5h F8h C7h  not defined */
+                    /* opcode C5h F8h C8h  not defined */
+                    /* opcode C5h F8h C9h  not defined */
+                    /* opcode C5h F8h CAh  not defined */
+                    /* opcode C5h F8h CBh  not defined */
+                    /* opcode C5h F8h CCh  not defined */
+                    /* opcode C5h F8h CDh  not defined */
+                    /* opcode C5h F8h CEh  not defined */
+                    /* opcode C5h F8h CFh  not defined */
+                    /* opcode C5h F8h D0h  not defined */
+                    /* opcode C5h F8h D1h  not defined */
+                    /* opcode C5h F8h D2h  not defined */
+                    /* opcode C5h F8h D3h  not defined */
+                    /* opcode C5h F8h D4h  not defined */
+                    /* opcode C5h F8h D5h  not defined */
+                    /* opcode C5h F8h D6h  not defined */
+                    /* opcode C5h F8h D7h  not defined */
+                    /* opcode C5h F8h D8h  not defined */
+                    /* opcode C5h F8h D9h  not defined */
+                    /* opcode C5h F8h DAh  not defined */
+                    /* opcode C5h F8h DBh  not defined */
+                    /* opcode C5h F8h DCh  not defined */
+                    /* opcode C5h F8h DDh  not defined */
+                    /* opcode C5h F8h DEh  not defined */
+                    /* opcode C5h F8h DFh  not defined */
+                    /* opcode C5h F8h E0h  not defined */
+                    /* opcode C5h F8h E1h  not defined */
+                    /* opcode C5h F8h E2h  not defined */
+                    /* opcode C5h F8h E3h  not defined */
+                    /* opcode C5h F8h E4h  not defined */
+                    /* opcode C5h F8h E5h  not defined */
+                    /* opcode C5h F8h E6h  not defined */
+                    /* opcode C5h F8h E7h  not defined */
+                    /* opcode C5h F8h E8h  not defined */
+                    /* opcode C5h F8h E9h  not defined */
+                    /* opcode C5h F8h EAh  not defined */
+                    /* opcode C5h F8h EBh  not defined */
+                    /* opcode C5h F8h ECh  not defined */
+                    /* opcode C5h F8h EDh  not defined */
+                    /* opcode C5h F8h EEh  not defined */
+                    /* opcode C5h F8h EFh  not defined */
+                    /* opcode C5h F8h F0h  not defined */
+                    /* opcode C5h F8h F1h  not defined */
+                    /* opcode C5h F8h F2h  not defined */
+                    /* opcode C5h F8h F3h  not defined */
+                    /* opcode C5h F8h F4h  not defined */
+                    /* opcode C5h F8h F5h  not defined */
+                    /* opcode C5h F8h F6h  not defined */
+                    /* opcode C5h F8h F7h  not defined */
+                    /* opcode C5h F8h F8h  not defined */
+                    /* opcode C5h F8h F9h  not defined */
+                    /* opcode C5h F8h FAh  not defined */
+                    /* opcode C5h F8h FBh  not defined */
+                    /* opcode C5h F8h FCh  not defined */
+                    /* opcode C5h F8h FDh  not defined */
+                    /* opcode C5h F8h FEh  not defined */
+                    /* opcode C5h F8h FFh  not defined */
+                    default:
+                        goto _x86decode_illegal_opcode;
+                };
+/* End of opcodes starting with C5h F8h */
+                break;
             /* opcode C5h F9h  not defined */
             /* opcode C5h FAh  not defined */
             /* opcode C5h FBh  not defined */
-            /* opcode C5h FCh  not defined */
+            case 0xFC: /* C5h FCh   mod=3 reg=7 rm=4      spec:  */
+                vex.V = ((~op) >> 3) & 7;
+/* Opcodes starting with C5h FCh */
+                op=IPFB();
+                _x86decode_begin_code32_addr32_opcode_parse_C5FC:
+                switch (op) {
+                    /* opcode C5h FCh 00h  not defined */
+                    /* opcode C5h FCh 01h  not defined */
+                    /* opcode C5h FCh 02h  not defined */
+                    /* opcode C5h FCh 03h  not defined */
+                    /* opcode C5h FCh 04h  not defined */
+                    /* opcode C5h FCh 05h  not defined */
+                    /* opcode C5h FCh 06h  not defined */
+                    /* opcode C5h FCh 07h  not defined */
+                    /* opcode C5h FCh 08h  not defined */
+                    /* opcode C5h FCh 09h  not defined */
+                    /* opcode C5h FCh 0Ah  not defined */
+                    /* opcode C5h FCh 0Bh  not defined */
+                    /* opcode C5h FCh 0Ch  not defined */
+                    /* opcode C5h FCh 0Dh  not defined */
+                    /* opcode C5h FCh 0Eh  not defined */
+                    /* opcode C5h FCh 0Fh  not defined */
+                    /* opcode C5h FCh 10h  not defined */
+                    /* opcode C5h FCh 11h  not defined */
+                    /* opcode C5h FCh 12h  not defined */
+                    /* opcode C5h FCh 13h  not defined */
+                    /* opcode C5h FCh 14h  not defined */
+                    /* opcode C5h FCh 15h  not defined */
+                    /* opcode C5h FCh 16h  not defined */
+                    /* opcode C5h FCh 17h  not defined */
+                    /* opcode C5h FCh 18h  not defined */
+                    /* opcode C5h FCh 19h  not defined */
+                    /* opcode C5h FCh 1Ah  not defined */
+                    /* opcode C5h FCh 1Bh  not defined */
+                    /* opcode C5h FCh 1Ch  not defined */
+                    /* opcode C5h FCh 1Dh  not defined */
+                    /* opcode C5h FCh 1Eh  not defined */
+                    /* opcode C5h FCh 1Fh  not defined */
+                    /* opcode C5h FCh 20h  not defined */
+                    /* opcode C5h FCh 21h  not defined */
+                    /* opcode C5h FCh 22h  not defined */
+                    /* opcode C5h FCh 23h  not defined */
+                    /* opcode C5h FCh 24h  not defined */
+                    /* opcode C5h FCh 25h  not defined */
+                    /* opcode C5h FCh 26h  not defined */
+                    /* opcode C5h FCh 27h  not defined */
+                    /* opcode C5h FCh 28h  not defined */
+                    /* opcode C5h FCh 29h  not defined */
+                    /* opcode C5h FCh 2Ah  not defined */
+                    /* opcode C5h FCh 2Bh  not defined */
+                    /* opcode C5h FCh 2Ch  not defined */
+                    /* opcode C5h FCh 2Dh  not defined */
+                    /* opcode C5h FCh 2Eh  not defined */
+                    /* opcode C5h FCh 2Fh  not defined */
+                    /* opcode C5h FCh 30h  not defined */
+                    /* opcode C5h FCh 31h  not defined */
+                    /* opcode C5h FCh 32h  not defined */
+                    /* opcode C5h FCh 33h  not defined */
+                    /* opcode C5h FCh 34h  not defined */
+                    /* opcode C5h FCh 35h  not defined */
+                    /* opcode C5h FCh 36h  not defined */
+                    /* opcode C5h FCh 37h  not defined */
+                    /* opcode C5h FCh 38h  not defined */
+                    /* opcode C5h FCh 39h  not defined */
+                    /* opcode C5h FCh 3Ah  not defined */
+                    /* opcode C5h FCh 3Bh  not defined */
+                    /* opcode C5h FCh 3Ch  not defined */
+                    /* opcode C5h FCh 3Dh  not defined */
+                    /* opcode C5h FCh 3Eh  not defined */
+                    /* opcode C5h FCh 3Fh  not defined */
+                    /* opcode C5h FCh 40h  not defined */
+                    /* opcode C5h FCh 41h  not defined */
+                    /* opcode C5h FCh 42h  not defined */
+                    /* opcode C5h FCh 43h  not defined */
+                    /* opcode C5h FCh 44h  not defined */
+                    /* opcode C5h FCh 45h  not defined */
+                    /* opcode C5h FCh 46h  not defined */
+                    /* opcode C5h FCh 47h  not defined */
+                    /* opcode C5h FCh 48h  not defined */
+                    /* opcode C5h FCh 49h  not defined */
+                    /* opcode C5h FCh 4Ah  not defined */
+                    /* opcode C5h FCh 4Bh  not defined */
+                    /* opcode C5h FCh 4Ch  not defined */
+                    /* opcode C5h FCh 4Dh  not defined */
+                    /* opcode C5h FCh 4Eh  not defined */
+                    /* opcode C5h FCh 4Fh  not defined */
+                    /* opcode C5h FCh 50h  not defined */
+                    /* opcode C5h FCh 51h  not defined */
+                    /* opcode C5h FCh 52h  not defined */
+                    /* opcode C5h FCh 53h  not defined */
+                    /* opcode C5h FCh 54h  not defined */
+                    /* opcode C5h FCh 55h  not defined */
+                    /* opcode C5h FCh 56h  not defined */
+                    /* opcode C5h FCh 57h  not defined */
+                    /* opcode C5h FCh 58h  not defined */
+                    /* opcode C5h FCh 59h  not defined */
+                    /* opcode C5h FCh 5Ah  not defined */
+                    /* opcode C5h FCh 5Bh  not defined */
+                    /* opcode C5h FCh 5Ch  not defined */
+                    /* opcode C5h FCh 5Dh  not defined */
+                    /* opcode C5h FCh 5Eh  not defined */
+                    /* opcode C5h FCh 5Fh  not defined */
+                    /* opcode C5h FCh 60h  not defined */
+                    /* opcode C5h FCh 61h  not defined */
+                    /* opcode C5h FCh 62h  not defined */
+                    /* opcode C5h FCh 63h  not defined */
+                    /* opcode C5h FCh 64h  not defined */
+                    /* opcode C5h FCh 65h  not defined */
+                    /* opcode C5h FCh 66h  not defined */
+                    /* opcode C5h FCh 67h  not defined */
+                    /* opcode C5h FCh 68h  not defined */
+                    /* opcode C5h FCh 69h  not defined */
+                    /* opcode C5h FCh 6Ah  not defined */
+                    /* opcode C5h FCh 6Bh  not defined */
+                    /* opcode C5h FCh 6Ch  not defined */
+                    /* opcode C5h FCh 6Dh  not defined */
+                    /* opcode C5h FCh 6Eh  not defined */
+                    /* opcode C5h FCh 6Fh  not defined */
+                    /* opcode C5h FCh 70h  not defined */
+                    /* opcode C5h FCh 71h  not defined */
+                    /* opcode C5h FCh 72h  not defined */
+                    /* opcode C5h FCh 73h  not defined */
+                    /* opcode C5h FCh 74h  not defined */
+                    /* opcode C5h FCh 75h  not defined */
+                    /* opcode C5h FCh 76h  not defined */
+                    case 0x77: /* C5h FCh 77h VZEROALL       spec: vex vsize(256) vlead(0x0F) vsidx(0) vprefix(none) 0x77 */
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VZEROALL");
+                        break;
+                    /* opcode C5h FCh 78h  not defined */
+                    /* opcode C5h FCh 79h  not defined */
+                    /* opcode C5h FCh 7Ah  not defined */
+                    /* opcode C5h FCh 7Bh  not defined */
+                    /* opcode C5h FCh 7Ch  not defined */
+                    /* opcode C5h FCh 7Dh  not defined */
+                    /* opcode C5h FCh 7Eh  not defined */
+                    /* opcode C5h FCh 7Fh  not defined */
+                    /* opcode C5h FCh 80h  not defined */
+                    /* opcode C5h FCh 81h  not defined */
+                    /* opcode C5h FCh 82h  not defined */
+                    /* opcode C5h FCh 83h  not defined */
+                    /* opcode C5h FCh 84h  not defined */
+                    /* opcode C5h FCh 85h  not defined */
+                    /* opcode C5h FCh 86h  not defined */
+                    /* opcode C5h FCh 87h  not defined */
+                    /* opcode C5h FCh 88h  not defined */
+                    /* opcode C5h FCh 89h  not defined */
+                    /* opcode C5h FCh 8Ah  not defined */
+                    /* opcode C5h FCh 8Bh  not defined */
+                    /* opcode C5h FCh 8Ch  not defined */
+                    /* opcode C5h FCh 8Dh  not defined */
+                    /* opcode C5h FCh 8Eh  not defined */
+                    /* opcode C5h FCh 8Fh  not defined */
+                    /* opcode C5h FCh 90h  not defined */
+                    /* opcode C5h FCh 91h  not defined */
+                    /* opcode C5h FCh 92h  not defined */
+                    /* opcode C5h FCh 93h  not defined */
+                    /* opcode C5h FCh 94h  not defined */
+                    /* opcode C5h FCh 95h  not defined */
+                    /* opcode C5h FCh 96h  not defined */
+                    /* opcode C5h FCh 97h  not defined */
+                    /* opcode C5h FCh 98h  not defined */
+                    /* opcode C5h FCh 99h  not defined */
+                    /* opcode C5h FCh 9Ah  not defined */
+                    /* opcode C5h FCh 9Bh  not defined */
+                    /* opcode C5h FCh 9Ch  not defined */
+                    /* opcode C5h FCh 9Dh  not defined */
+                    /* opcode C5h FCh 9Eh  not defined */
+                    /* opcode C5h FCh 9Fh  not defined */
+                    /* opcode C5h FCh A0h  not defined */
+                    /* opcode C5h FCh A1h  not defined */
+                    /* opcode C5h FCh A2h  not defined */
+                    /* opcode C5h FCh A3h  not defined */
+                    /* opcode C5h FCh A4h  not defined */
+                    /* opcode C5h FCh A5h  not defined */
+                    /* opcode C5h FCh A6h  not defined */
+                    /* opcode C5h FCh A7h  not defined */
+                    /* opcode C5h FCh A8h  not defined */
+                    /* opcode C5h FCh A9h  not defined */
+                    /* opcode C5h FCh AAh  not defined */
+                    /* opcode C5h FCh ABh  not defined */
+                    /* opcode C5h FCh ACh  not defined */
+                    /* opcode C5h FCh ADh  not defined */
+                    /* opcode C5h FCh AEh  not defined */
+                    /* opcode C5h FCh AFh  not defined */
+                    /* opcode C5h FCh B0h  not defined */
+                    /* opcode C5h FCh B1h  not defined */
+                    /* opcode C5h FCh B2h  not defined */
+                    /* opcode C5h FCh B3h  not defined */
+                    /* opcode C5h FCh B4h  not defined */
+                    /* opcode C5h FCh B5h  not defined */
+                    /* opcode C5h FCh B6h  not defined */
+                    /* opcode C5h FCh B7h  not defined */
+                    /* opcode C5h FCh B8h  not defined */
+                    /* opcode C5h FCh B9h  not defined */
+                    /* opcode C5h FCh BAh  not defined */
+                    /* opcode C5h FCh BBh  not defined */
+                    /* opcode C5h FCh BCh  not defined */
+                    /* opcode C5h FCh BDh  not defined */
+                    /* opcode C5h FCh BEh  not defined */
+                    /* opcode C5h FCh BFh  not defined */
+                    /* opcode C5h FCh C0h  not defined */
+                    /* opcode C5h FCh C1h  not defined */
+                    /* opcode C5h FCh C2h  not defined */
+                    /* opcode C5h FCh C3h  not defined */
+                    /* opcode C5h FCh C4h  not defined */
+                    /* opcode C5h FCh C5h  not defined */
+                    /* opcode C5h FCh C6h  not defined */
+                    /* opcode C5h FCh C7h  not defined */
+                    /* opcode C5h FCh C8h  not defined */
+                    /* opcode C5h FCh C9h  not defined */
+                    /* opcode C5h FCh CAh  not defined */
+                    /* opcode C5h FCh CBh  not defined */
+                    /* opcode C5h FCh CCh  not defined */
+                    /* opcode C5h FCh CDh  not defined */
+                    /* opcode C5h FCh CEh  not defined */
+                    /* opcode C5h FCh CFh  not defined */
+                    /* opcode C5h FCh D0h  not defined */
+                    /* opcode C5h FCh D1h  not defined */
+                    /* opcode C5h FCh D2h  not defined */
+                    /* opcode C5h FCh D3h  not defined */
+                    /* opcode C5h FCh D4h  not defined */
+                    /* opcode C5h FCh D5h  not defined */
+                    /* opcode C5h FCh D6h  not defined */
+                    /* opcode C5h FCh D7h  not defined */
+                    /* opcode C5h FCh D8h  not defined */
+                    /* opcode C5h FCh D9h  not defined */
+                    /* opcode C5h FCh DAh  not defined */
+                    /* opcode C5h FCh DBh  not defined */
+                    /* opcode C5h FCh DCh  not defined */
+                    /* opcode C5h FCh DDh  not defined */
+                    /* opcode C5h FCh DEh  not defined */
+                    /* opcode C5h FCh DFh  not defined */
+                    /* opcode C5h FCh E0h  not defined */
+                    /* opcode C5h FCh E1h  not defined */
+                    /* opcode C5h FCh E2h  not defined */
+                    /* opcode C5h FCh E3h  not defined */
+                    /* opcode C5h FCh E4h  not defined */
+                    /* opcode C5h FCh E5h  not defined */
+                    /* opcode C5h FCh E6h  not defined */
+                    /* opcode C5h FCh E7h  not defined */
+                    /* opcode C5h FCh E8h  not defined */
+                    /* opcode C5h FCh E9h  not defined */
+                    /* opcode C5h FCh EAh  not defined */
+                    /* opcode C5h FCh EBh  not defined */
+                    /* opcode C5h FCh ECh  not defined */
+                    /* opcode C5h FCh EDh  not defined */
+                    /* opcode C5h FCh EEh  not defined */
+                    /* opcode C5h FCh EFh  not defined */
+                    /* opcode C5h FCh F0h  not defined */
+                    /* opcode C5h FCh F1h  not defined */
+                    /* opcode C5h FCh F2h  not defined */
+                    /* opcode C5h FCh F3h  not defined */
+                    /* opcode C5h FCh F4h  not defined */
+                    /* opcode C5h FCh F5h  not defined */
+                    /* opcode C5h FCh F6h  not defined */
+                    /* opcode C5h FCh F7h  not defined */
+                    /* opcode C5h FCh F8h  not defined */
+                    /* opcode C5h FCh F9h  not defined */
+                    /* opcode C5h FCh FAh  not defined */
+                    /* opcode C5h FCh FBh  not defined */
+                    /* opcode C5h FCh FCh  not defined */
+                    /* opcode C5h FCh FDh  not defined */
+                    /* opcode C5h FCh FEh  not defined */
+                    /* opcode C5h FCh FFh  not defined */
+                    default:
+                        goto _x86decode_illegal_opcode;
+                };
+/* End of opcodes starting with C5h FCh */
+                break;
             /* opcode C5h FDh  not defined */
             /* opcode C5h FEh  not defined */
             /* opcode C5h FFh  not defined */

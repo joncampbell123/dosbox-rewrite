@@ -6334,3 +6334,9 @@ jmp2:
     vzeroall
     vzeroupper
 
+; more complex encodings
+
+    vperm2f128  ymm1,ymm2,ymm3,4
+    vperm2f128  ymm1,ymm2,[si],4
+    vperm2f128  ymm1,ymm2,[eax*8+ecx+0x12345678],4
+
