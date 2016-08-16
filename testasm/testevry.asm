@@ -6340,3 +6340,35 @@ jmp2:
     vperm2f128  ymm1,ymm2,[si],4
     vperm2f128  ymm1,ymm2,[eax*8+ecx+0x12345678],4
 
+    vpermilpd   xmm1,xmm2,xmm3
+    vpermilpd   xmm1,xmm2,[si]
+    vpermilpd   xmm1,xmm2,[ebx*4+esi+0x12345678]
+
+    vpermilpd   ymm1,ymm2,ymm3
+    vpermilpd   ymm1,ymm2,[si]
+    vpermilpd   ymm1,ymm2,[ebx*4+esi+0x12345678]
+
+    vpermilpd   xmm1,xmm2,4
+    vpermilpd   xmm1,[si],4
+    vpermilpd   xmm1,[ebx*4+esi+0x12345678],4
+
+    vpermilpd   ymm1,ymm2,4
+    vpermilpd   ymm1,[si],4
+    vpermilpd   ymm1,[ebx*4+esi+0x12345678],4
+
+    vpermilps   xmm1,xmm2,xmm3
+    vpermilps   xmm1,xmm2,[si]
+    vpermilps   xmm1,xmm2,[ebx*4+esi+0x12345678]
+
+    vpermilps   ymm1,ymm2,ymm3
+    vpermilps   ymm1,ymm2,[si]
+    vpermilps   ymm1,ymm2,[ebx*4+esi+0x12345678]
+
+    vpermilps   xmm1,xmm2,4
+    vpermilps   xmm1,[si],4
+    vpermilps   xmm1,[ebx*4+esi+0x12345678],4
+
+    vpermilps   ymm1,ymm2,4
+    vpermilps   ymm1,[si],4
+    vpermilps   ymm1,[ebx*4+esi+0x12345678],4
+

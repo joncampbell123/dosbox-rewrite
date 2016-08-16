@@ -135,3 +135,13 @@ opcode vex vsize(128) vlead(0x0F) vsidx(0) vprefix(none) 0x77:              "VZE
 ; more complicated forms
 opcode vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x06 mod/reg/rm ib:    "VPERM2F128" avx(reg),avx(vsidx),avx(r/m),i
 
+opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x04 mod/reg/rm ib:    "VPERMILPS" sse(reg),sse(vsidx),i
+opcode vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x04 mod/reg/rm ib:    "VPERMILPS" avx(reg),avx(vsidx),i
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x0C mod/reg/rm:       "VPERMILPS" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x0C mod/reg/rm:       "VPERMILPS" avx(reg),avx(vsidx),avx(r/m)
+
+opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x05 mod/reg/rm ib:    "VPERMILPD" sse(reg),sse(vsidx),i
+opcode vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x05 mod/reg/rm ib:    "VPERMILPD" avx(reg),avx(vsidx),i
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x0D mod/reg/rm:       "VPERMILPD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x0D mod/reg/rm:       "VPERMILPD" avx(reg),avx(vsidx),avx(r/m)
+
