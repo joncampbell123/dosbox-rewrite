@@ -6402,3 +6402,7 @@ jmp2:
     vbroadcastss ymm1,xmm2
     vbroadcastsd ymm1,xmm2
 
+    ; VEX new version of SSE instructions
+    vaddps      xmm0,xmm1
+    vaddps      xmm0,xmm1,xmm2
+
