@@ -14221,10 +14221,283 @@ switch (op) {
                             /* opcode C4h E1h 40h 0Fh  not defined */
                             /* opcode C4h E1h 40h 10h  not defined */
                             /* opcode C4h E1h 40h 11h  not defined */
-                            /* opcode C4h E1h 40h 12h  not defined */
+                            case 0x12: /* C4h E1h 40h 12h        spec:  */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                _x86decode_begin_code16_addr16_opcode_parse_C4E14012:
+/* Opcodes starting with C4h E1h 40h 12h */
+                                switch (mrm.byte) {
+                                    /* opcode C4h E1h 40h 12h 00h  not defined */
+                                    /* opcode C4h E1h 40h 12h 01h  not defined */
+                                    /* opcode C4h E1h 40h 12h 02h  not defined */
+                                    /* opcode C4h E1h 40h 12h 03h  not defined */
+                                    /* opcode C4h E1h 40h 12h 04h  not defined */
+                                    /* opcode C4h E1h 40h 12h 05h  not defined */
+                                    /* opcode C4h E1h 40h 12h 06h  not defined */
+                                    /* opcode C4h E1h 40h 12h 07h  not defined */
+                                    /* opcode C4h E1h 40h 12h 08h  not defined */
+                                    /* opcode C4h E1h 40h 12h 09h  not defined */
+                                    /* opcode C4h E1h 40h 12h 0Ah  not defined */
+                                    /* opcode C4h E1h 40h 12h 0Bh  not defined */
+                                    /* opcode C4h E1h 40h 12h 0Ch  not defined */
+                                    /* opcode C4h E1h 40h 12h 0Dh  not defined */
+                                    /* opcode C4h E1h 40h 12h 0Eh  not defined */
+                                    /* opcode C4h E1h 40h 12h 0Fh  not defined */
+                                    /* opcode C4h E1h 40h 12h 10h  not defined */
+                                    /* opcode C4h E1h 40h 12h 11h  not defined */
+                                    /* opcode C4h E1h 40h 12h 12h  not defined */
+                                    /* opcode C4h E1h 40h 12h 13h  not defined */
+                                    /* opcode C4h E1h 40h 12h 14h  not defined */
+                                    /* opcode C4h E1h 40h 12h 15h  not defined */
+                                    /* opcode C4h E1h 40h 12h 16h  not defined */
+                                    /* opcode C4h E1h 40h 12h 17h  not defined */
+                                    /* opcode C4h E1h 40h 12h 18h  not defined */
+                                    /* opcode C4h E1h 40h 12h 19h  not defined */
+                                    /* opcode C4h E1h 40h 12h 1Ah  not defined */
+                                    /* opcode C4h E1h 40h 12h 1Bh  not defined */
+                                    /* opcode C4h E1h 40h 12h 1Ch  not defined */
+                                    /* opcode C4h E1h 40h 12h 1Dh  not defined */
+                                    /* opcode C4h E1h 40h 12h 1Eh  not defined */
+                                    /* opcode C4h E1h 40h 12h 1Fh  not defined */
+                                    /* opcode C4h E1h 40h 12h 20h  not defined */
+                                    /* opcode C4h E1h 40h 12h 21h  not defined */
+                                    /* opcode C4h E1h 40h 12h 22h  not defined */
+                                    /* opcode C4h E1h 40h 12h 23h  not defined */
+                                    /* opcode C4h E1h 40h 12h 24h  not defined */
+                                    /* opcode C4h E1h 40h 12h 25h  not defined */
+                                    /* opcode C4h E1h 40h 12h 26h  not defined */
+                                    /* opcode C4h E1h 40h 12h 27h  not defined */
+                                    /* opcode C4h E1h 40h 12h 28h  not defined */
+                                    /* opcode C4h E1h 40h 12h 29h  not defined */
+                                    /* opcode C4h E1h 40h 12h 2Ah  not defined */
+                                    /* opcode C4h E1h 40h 12h 2Bh  not defined */
+                                    /* opcode C4h E1h 40h 12h 2Ch  not defined */
+                                    /* opcode C4h E1h 40h 12h 2Dh  not defined */
+                                    /* opcode C4h E1h 40h 12h 2Eh  not defined */
+                                    /* opcode C4h E1h 40h 12h 2Fh  not defined */
+                                    /* opcode C4h E1h 40h 12h 30h  not defined */
+                                    /* opcode C4h E1h 40h 12h 31h  not defined */
+                                    /* opcode C4h E1h 40h 12h 32h  not defined */
+                                    /* opcode C4h E1h 40h 12h 33h  not defined */
+                                    /* opcode C4h E1h 40h 12h 34h  not defined */
+                                    /* opcode C4h E1h 40h 12h 35h  not defined */
+                                    /* opcode C4h E1h 40h 12h 36h  not defined */
+                                    /* opcode C4h E1h 40h 12h 37h  not defined */
+                                    /* opcode C4h E1h 40h 12h 38h  not defined */
+                                    /* opcode C4h E1h 40h 12h 39h  not defined */
+                                    /* opcode C4h E1h 40h 12h 3Ah  not defined */
+                                    /* opcode C4h E1h 40h 12h 3Bh  not defined */
+                                    /* opcode C4h E1h 40h 12h 3Ch  not defined */
+                                    /* opcode C4h E1h 40h 12h 3Dh  not defined */
+                                    /* opcode C4h E1h 40h 12h 3Eh  not defined */
+                                    /* opcode C4h E1h 40h 12h 3Fh  not defined */
+                                    /* opcode C4h E1h 40h 12h 40h  not defined */
+                                    /* opcode C4h E1h 40h 12h 41h  not defined */
+                                    /* opcode C4h E1h 40h 12h 42h  not defined */
+                                    /* opcode C4h E1h 40h 12h 43h  not defined */
+                                    /* opcode C4h E1h 40h 12h 44h  not defined */
+                                    /* opcode C4h E1h 40h 12h 45h  not defined */
+                                    /* opcode C4h E1h 40h 12h 46h  not defined */
+                                    /* opcode C4h E1h 40h 12h 47h  not defined */
+                                    /* opcode C4h E1h 40h 12h 48h  not defined */
+                                    /* opcode C4h E1h 40h 12h 49h  not defined */
+                                    /* opcode C4h E1h 40h 12h 4Ah  not defined */
+                                    /* opcode C4h E1h 40h 12h 4Bh  not defined */
+                                    /* opcode C4h E1h 40h 12h 4Ch  not defined */
+                                    /* opcode C4h E1h 40h 12h 4Dh  not defined */
+                                    /* opcode C4h E1h 40h 12h 4Eh  not defined */
+                                    /* opcode C4h E1h 40h 12h 4Fh  not defined */
+                                    /* opcode C4h E1h 40h 12h 50h  not defined */
+                                    /* opcode C4h E1h 40h 12h 51h  not defined */
+                                    /* opcode C4h E1h 40h 12h 52h  not defined */
+                                    /* opcode C4h E1h 40h 12h 53h  not defined */
+                                    /* opcode C4h E1h 40h 12h 54h  not defined */
+                                    /* opcode C4h E1h 40h 12h 55h  not defined */
+                                    /* opcode C4h E1h 40h 12h 56h  not defined */
+                                    /* opcode C4h E1h 40h 12h 57h  not defined */
+                                    /* opcode C4h E1h 40h 12h 58h  not defined */
+                                    /* opcode C4h E1h 40h 12h 59h  not defined */
+                                    /* opcode C4h E1h 40h 12h 5Ah  not defined */
+                                    /* opcode C4h E1h 40h 12h 5Bh  not defined */
+                                    /* opcode C4h E1h 40h 12h 5Ch  not defined */
+                                    /* opcode C4h E1h 40h 12h 5Dh  not defined */
+                                    /* opcode C4h E1h 40h 12h 5Eh  not defined */
+                                    /* opcode C4h E1h 40h 12h 5Fh  not defined */
+                                    /* opcode C4h E1h 40h 12h 60h  not defined */
+                                    /* opcode C4h E1h 40h 12h 61h  not defined */
+                                    /* opcode C4h E1h 40h 12h 62h  not defined */
+                                    /* opcode C4h E1h 40h 12h 63h  not defined */
+                                    /* opcode C4h E1h 40h 12h 64h  not defined */
+                                    /* opcode C4h E1h 40h 12h 65h  not defined */
+                                    /* opcode C4h E1h 40h 12h 66h  not defined */
+                                    /* opcode C4h E1h 40h 12h 67h  not defined */
+                                    /* opcode C4h E1h 40h 12h 68h  not defined */
+                                    /* opcode C4h E1h 40h 12h 69h  not defined */
+                                    /* opcode C4h E1h 40h 12h 6Ah  not defined */
+                                    /* opcode C4h E1h 40h 12h 6Bh  not defined */
+                                    /* opcode C4h E1h 40h 12h 6Ch  not defined */
+                                    /* opcode C4h E1h 40h 12h 6Dh  not defined */
+                                    /* opcode C4h E1h 40h 12h 6Eh  not defined */
+                                    /* opcode C4h E1h 40h 12h 6Fh  not defined */
+                                    /* opcode C4h E1h 40h 12h 70h  not defined */
+                                    /* opcode C4h E1h 40h 12h 71h  not defined */
+                                    /* opcode C4h E1h 40h 12h 72h  not defined */
+                                    /* opcode C4h E1h 40h 12h 73h  not defined */
+                                    /* opcode C4h E1h 40h 12h 74h  not defined */
+                                    /* opcode C4h E1h 40h 12h 75h  not defined */
+                                    /* opcode C4h E1h 40h 12h 76h  not defined */
+                                    /* opcode C4h E1h 40h 12h 77h  not defined */
+                                    /* opcode C4h E1h 40h 12h 78h  not defined */
+                                    /* opcode C4h E1h 40h 12h 79h  not defined */
+                                    /* opcode C4h E1h 40h 12h 7Ah  not defined */
+                                    /* opcode C4h E1h 40h 12h 7Bh  not defined */
+                                    /* opcode C4h E1h 40h 12h 7Ch  not defined */
+                                    /* opcode C4h E1h 40h 12h 7Dh  not defined */
+                                    /* opcode C4h E1h 40h 12h 7Eh  not defined */
+                                    /* opcode C4h E1h 40h 12h 7Fh  not defined */
+                                    /* opcode C4h E1h 40h 12h 80h  not defined */
+                                    /* opcode C4h E1h 40h 12h 81h  not defined */
+                                    /* opcode C4h E1h 40h 12h 82h  not defined */
+                                    /* opcode C4h E1h 40h 12h 83h  not defined */
+                                    /* opcode C4h E1h 40h 12h 84h  not defined */
+                                    /* opcode C4h E1h 40h 12h 85h  not defined */
+                                    /* opcode C4h E1h 40h 12h 86h  not defined */
+                                    /* opcode C4h E1h 40h 12h 87h  not defined */
+                                    /* opcode C4h E1h 40h 12h 88h  not defined */
+                                    /* opcode C4h E1h 40h 12h 89h  not defined */
+                                    /* opcode C4h E1h 40h 12h 8Ah  not defined */
+                                    /* opcode C4h E1h 40h 12h 8Bh  not defined */
+                                    /* opcode C4h E1h 40h 12h 8Ch  not defined */
+                                    /* opcode C4h E1h 40h 12h 8Dh  not defined */
+                                    /* opcode C4h E1h 40h 12h 8Eh  not defined */
+                                    /* opcode C4h E1h 40h 12h 8Fh  not defined */
+                                    /* opcode C4h E1h 40h 12h 90h  not defined */
+                                    /* opcode C4h E1h 40h 12h 91h  not defined */
+                                    /* opcode C4h E1h 40h 12h 92h  not defined */
+                                    /* opcode C4h E1h 40h 12h 93h  not defined */
+                                    /* opcode C4h E1h 40h 12h 94h  not defined */
+                                    /* opcode C4h E1h 40h 12h 95h  not defined */
+                                    /* opcode C4h E1h 40h 12h 96h  not defined */
+                                    /* opcode C4h E1h 40h 12h 97h  not defined */
+                                    /* opcode C4h E1h 40h 12h 98h  not defined */
+                                    /* opcode C4h E1h 40h 12h 99h  not defined */
+                                    /* opcode C4h E1h 40h 12h 9Ah  not defined */
+                                    /* opcode C4h E1h 40h 12h 9Bh  not defined */
+                                    /* opcode C4h E1h 40h 12h 9Ch  not defined */
+                                    /* opcode C4h E1h 40h 12h 9Dh  not defined */
+                                    /* opcode C4h E1h 40h 12h 9Eh  not defined */
+                                    /* opcode C4h E1h 40h 12h 9Fh  not defined */
+                                    /* opcode C4h E1h 40h 12h A0h  not defined */
+                                    /* opcode C4h E1h 40h 12h A1h  not defined */
+                                    /* opcode C4h E1h 40h 12h A2h  not defined */
+                                    /* opcode C4h E1h 40h 12h A3h  not defined */
+                                    /* opcode C4h E1h 40h 12h A4h  not defined */
+                                    /* opcode C4h E1h 40h 12h A5h  not defined */
+                                    /* opcode C4h E1h 40h 12h A6h  not defined */
+                                    /* opcode C4h E1h 40h 12h A7h  not defined */
+                                    /* opcode C4h E1h 40h 12h A8h  not defined */
+                                    /* opcode C4h E1h 40h 12h A9h  not defined */
+                                    /* opcode C4h E1h 40h 12h AAh  not defined */
+                                    /* opcode C4h E1h 40h 12h ABh  not defined */
+                                    /* opcode C4h E1h 40h 12h ACh  not defined */
+                                    /* opcode C4h E1h 40h 12h ADh  not defined */
+                                    /* opcode C4h E1h 40h 12h AEh  not defined */
+                                    /* opcode C4h E1h 40h 12h AFh  not defined */
+                                    /* opcode C4h E1h 40h 12h B0h  not defined */
+                                    /* opcode C4h E1h 40h 12h B1h  not defined */
+                                    /* opcode C4h E1h 40h 12h B2h  not defined */
+                                    /* opcode C4h E1h 40h 12h B3h  not defined */
+                                    /* opcode C4h E1h 40h 12h B4h  not defined */
+                                    /* opcode C4h E1h 40h 12h B5h  not defined */
+                                    /* opcode C4h E1h 40h 12h B6h  not defined */
+                                    /* opcode C4h E1h 40h 12h B7h  not defined */
+                                    /* opcode C4h E1h 40h 12h B8h  not defined */
+                                    /* opcode C4h E1h 40h 12h B9h  not defined */
+                                    /* opcode C4h E1h 40h 12h BAh  not defined */
+                                    /* opcode C4h E1h 40h 12h BBh  not defined */
+                                    /* opcode C4h E1h 40h 12h BCh  not defined */
+                                    /* opcode C4h E1h 40h 12h BDh  not defined */
+                                    /* opcode C4h E1h 40h 12h BEh  not defined */
+                                    /* opcode C4h E1h 40h 12h BFh  not defined */
+                                    case 0xC0: /* C4h E1h 40h 12h C0h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xC1: /* C4h E1h 40h 12h C1h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xC2: /* C4h E1h 40h 12h C2h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xC3: /* C4h E1h 40h 12h C3h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xC4: /* C4h E1h 40h 12h C4h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xC5: /* C4h E1h 40h 12h C5h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xC6: /* C4h E1h 40h 12h C6h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xC7: /* C4h E1h 40h 12h C7h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xC8: /* C4h E1h 40h 12h C8h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xC9: /* C4h E1h 40h 12h C9h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xCA: /* C4h E1h 40h 12h CAh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xCB: /* C4h E1h 40h 12h CBh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xCC: /* C4h E1h 40h 12h CCh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xCD: /* C4h E1h 40h 12h CDh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xCE: /* C4h E1h 40h 12h CEh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xCF: /* C4h E1h 40h 12h CFh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xD0: /* C4h E1h 40h 12h D0h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xD1: /* C4h E1h 40h 12h D1h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xD2: /* C4h E1h 40h 12h D2h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xD3: /* C4h E1h 40h 12h D3h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xD4: /* C4h E1h 40h 12h D4h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xD5: /* C4h E1h 40h 12h D5h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xD6: /* C4h E1h 40h 12h D6h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xD7: /* C4h E1h 40h 12h D7h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xD8: /* C4h E1h 40h 12h D8h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xD9: /* C4h E1h 40h 12h D9h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xDA: /* C4h E1h 40h 12h DAh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xDB: /* C4h E1h 40h 12h DBh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xDC: /* C4h E1h 40h 12h DCh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xDD: /* C4h E1h 40h 12h DDh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xDE: /* C4h E1h 40h 12h DEh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xDF: /* C4h E1h 40h 12h DFh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xE0: /* C4h E1h 40h 12h E0h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xE1: /* C4h E1h 40h 12h E1h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xE2: /* C4h E1h 40h 12h E2h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xE3: /* C4h E1h 40h 12h E3h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xE4: /* C4h E1h 40h 12h E4h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xE5: /* C4h E1h 40h 12h E5h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xE6: /* C4h E1h 40h 12h E6h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xE7: /* C4h E1h 40h 12h E7h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xE8: /* C4h E1h 40h 12h E8h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xE9: /* C4h E1h 40h 12h E9h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xEA: /* C4h E1h 40h 12h EAh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xEB: /* C4h E1h 40h 12h EBh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xEC: /* C4h E1h 40h 12h ECh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xED: /* C4h E1h 40h 12h EDh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xEE: /* C4h E1h 40h 12h EEh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xEF: /* C4h E1h 40h 12h EFh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xF0: /* C4h E1h 40h 12h F0h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xF1: /* C4h E1h 40h 12h F1h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xF2: /* C4h E1h 40h 12h F2h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xF3: /* C4h E1h 40h 12h F3h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xF4: /* C4h E1h 40h 12h F4h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xF5: /* C4h E1h 40h 12h F5h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xF6: /* C4h E1h 40h 12h F6h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xF7: /* C4h E1h 40h 12h F7h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xF8: /* C4h E1h 40h 12h F8h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xF9: /* C4h E1h 40h 12h F9h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xFA: /* C4h E1h 40h 12h FAh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xFB: /* C4h E1h 40h 12h FBh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xFC: /* C4h E1h 40h 12h FCh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xFD: /* C4h E1h 40h 12h FDh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xFE: /* C4h E1h 40h 12h FEh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xFF: /* C4h E1h 40h 12h FFh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVHLPS XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                                        break;
+                                    default:
+                                        goto _x86decode_illegal_opcode;
+                                };
+/* End of opcodes starting with C4h E1h 40h 12h */
+                                break;
                             /* opcode C4h E1h 40h 13h  not defined */
-                            /* opcode C4h E1h 40h 14h  not defined */
-                            /* opcode C4h E1h 40h 15h  not defined */
+                            case 0x14: /* C4h E1h 40h 14h VUNPCKLPS sse(reg),sse(vsidx),sse(r/m)      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x14 mod/reg/rm */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKLPS XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                                break;
+                            case 0x15: /* C4h E1h 40h 15h VUNPCKHPS sse(reg),sse(vsidx),sse(r/m)      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x15 mod/reg/rm */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKHPS XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                                break;
                             /* opcode C4h E1h 40h 16h  not defined */
                             /* opcode C4h E1h 40h 17h  not defined */
                             /* opcode C4h E1h 40h 18h  not defined */
@@ -14474,7 +14747,6 @@ switch (op) {
                     case 0x61: /* C4h E1h 61h        spec:  */
                     case 0x69: /* C4h E1h 69h        spec:  */
                     case 0x71: /* C4h E1h 71h        spec:  */
-                    case 0x79: /* C4h E1h 79h        spec:  */
                         vex.V = ((~op) >> 3) & 7;
 /* Opcodes starting with C4h E1h 41h */
                         op=IPFB();
@@ -14500,8 +14772,14 @@ switch (op) {
                             /* opcode C4h E1h 41h 11h  not defined */
                             /* opcode C4h E1h 41h 12h  not defined */
                             /* opcode C4h E1h 41h 13h  not defined */
-                            /* opcode C4h E1h 41h 14h  not defined */
-                            /* opcode C4h E1h 41h 15h  not defined */
+                            case 0x14: /* C4h E1h 41h 14h VUNPCKLPD sse(reg),sse(vsidx),sse(r/m)      spec: vex vsize(128) vlead(0x0F) vprefix(0x66) 0x14 mod/reg/rm */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKLPD XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                                break;
+                            case 0x15: /* C4h E1h 41h 15h VUNPCKHPD sse(reg),sse(vsidx),sse(r/m)      spec: vex vsize(128) vlead(0x0F) vprefix(0x66) 0x15 mod/reg/rm */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKHPD XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                                break;
                             /* opcode C4h E1h 41h 16h  not defined */
                             /* opcode C4h E1h 41h 17h  not defined */
                             /* opcode C4h E1h 41h 18h  not defined */
@@ -14751,7 +15029,6 @@ switch (op) {
                     case 0x62: /* C4h E1h 62h        spec:  */
                     case 0x6A: /* C4h E1h 6Ah        spec:  */
                     case 0x72: /* C4h E1h 72h        spec:  */
-                    case 0x7A: /* C4h E1h 7Ah        spec:  */
                         vex.V = ((~op) >> 3) & 7;
 /* Opcodes starting with C4h E1h 42h */
                         op=IPFB();
@@ -14773,8 +15050,275 @@ switch (op) {
                             /* opcode C4h E1h 42h 0Dh  not defined */
                             /* opcode C4h E1h 42h 0Eh  not defined */
                             /* opcode C4h E1h 42h 0Fh  not defined */
-                            /* opcode C4h E1h 42h 10h  not defined */
-                            /* opcode C4h E1h 42h 11h  not defined */
+                            case 0x10: /* C4h E1h 42h 10h        spec:  */
+                            case 0x11: /* C4h E1h 42h 11h        spec:  */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                _x86decode_begin_code16_addr16_opcode_parse_C4E14210:
+/* Opcodes starting with C4h E1h 42h 10h */
+                                switch (mrm.byte) {
+                                    /* opcode C4h E1h 42h 10h 00h  not defined */
+                                    /* opcode C4h E1h 42h 10h 01h  not defined */
+                                    /* opcode C4h E1h 42h 10h 02h  not defined */
+                                    /* opcode C4h E1h 42h 10h 03h  not defined */
+                                    /* opcode C4h E1h 42h 10h 04h  not defined */
+                                    /* opcode C4h E1h 42h 10h 05h  not defined */
+                                    /* opcode C4h E1h 42h 10h 06h  not defined */
+                                    /* opcode C4h E1h 42h 10h 07h  not defined */
+                                    /* opcode C4h E1h 42h 10h 08h  not defined */
+                                    /* opcode C4h E1h 42h 10h 09h  not defined */
+                                    /* opcode C4h E1h 42h 10h 0Ah  not defined */
+                                    /* opcode C4h E1h 42h 10h 0Bh  not defined */
+                                    /* opcode C4h E1h 42h 10h 0Ch  not defined */
+                                    /* opcode C4h E1h 42h 10h 0Dh  not defined */
+                                    /* opcode C4h E1h 42h 10h 0Eh  not defined */
+                                    /* opcode C4h E1h 42h 10h 0Fh  not defined */
+                                    /* opcode C4h E1h 42h 10h 10h  not defined */
+                                    /* opcode C4h E1h 42h 10h 11h  not defined */
+                                    /* opcode C4h E1h 42h 10h 12h  not defined */
+                                    /* opcode C4h E1h 42h 10h 13h  not defined */
+                                    /* opcode C4h E1h 42h 10h 14h  not defined */
+                                    /* opcode C4h E1h 42h 10h 15h  not defined */
+                                    /* opcode C4h E1h 42h 10h 16h  not defined */
+                                    /* opcode C4h E1h 42h 10h 17h  not defined */
+                                    /* opcode C4h E1h 42h 10h 18h  not defined */
+                                    /* opcode C4h E1h 42h 10h 19h  not defined */
+                                    /* opcode C4h E1h 42h 10h 1Ah  not defined */
+                                    /* opcode C4h E1h 42h 10h 1Bh  not defined */
+                                    /* opcode C4h E1h 42h 10h 1Ch  not defined */
+                                    /* opcode C4h E1h 42h 10h 1Dh  not defined */
+                                    /* opcode C4h E1h 42h 10h 1Eh  not defined */
+                                    /* opcode C4h E1h 42h 10h 1Fh  not defined */
+                                    /* opcode C4h E1h 42h 10h 20h  not defined */
+                                    /* opcode C4h E1h 42h 10h 21h  not defined */
+                                    /* opcode C4h E1h 42h 10h 22h  not defined */
+                                    /* opcode C4h E1h 42h 10h 23h  not defined */
+                                    /* opcode C4h E1h 42h 10h 24h  not defined */
+                                    /* opcode C4h E1h 42h 10h 25h  not defined */
+                                    /* opcode C4h E1h 42h 10h 26h  not defined */
+                                    /* opcode C4h E1h 42h 10h 27h  not defined */
+                                    /* opcode C4h E1h 42h 10h 28h  not defined */
+                                    /* opcode C4h E1h 42h 10h 29h  not defined */
+                                    /* opcode C4h E1h 42h 10h 2Ah  not defined */
+                                    /* opcode C4h E1h 42h 10h 2Bh  not defined */
+                                    /* opcode C4h E1h 42h 10h 2Ch  not defined */
+                                    /* opcode C4h E1h 42h 10h 2Dh  not defined */
+                                    /* opcode C4h E1h 42h 10h 2Eh  not defined */
+                                    /* opcode C4h E1h 42h 10h 2Fh  not defined */
+                                    /* opcode C4h E1h 42h 10h 30h  not defined */
+                                    /* opcode C4h E1h 42h 10h 31h  not defined */
+                                    /* opcode C4h E1h 42h 10h 32h  not defined */
+                                    /* opcode C4h E1h 42h 10h 33h  not defined */
+                                    /* opcode C4h E1h 42h 10h 34h  not defined */
+                                    /* opcode C4h E1h 42h 10h 35h  not defined */
+                                    /* opcode C4h E1h 42h 10h 36h  not defined */
+                                    /* opcode C4h E1h 42h 10h 37h  not defined */
+                                    /* opcode C4h E1h 42h 10h 38h  not defined */
+                                    /* opcode C4h E1h 42h 10h 39h  not defined */
+                                    /* opcode C4h E1h 42h 10h 3Ah  not defined */
+                                    /* opcode C4h E1h 42h 10h 3Bh  not defined */
+                                    /* opcode C4h E1h 42h 10h 3Ch  not defined */
+                                    /* opcode C4h E1h 42h 10h 3Dh  not defined */
+                                    /* opcode C4h E1h 42h 10h 3Eh  not defined */
+                                    /* opcode C4h E1h 42h 10h 3Fh  not defined */
+                                    /* opcode C4h E1h 42h 10h 40h  not defined */
+                                    /* opcode C4h E1h 42h 10h 41h  not defined */
+                                    /* opcode C4h E1h 42h 10h 42h  not defined */
+                                    /* opcode C4h E1h 42h 10h 43h  not defined */
+                                    /* opcode C4h E1h 42h 10h 44h  not defined */
+                                    /* opcode C4h E1h 42h 10h 45h  not defined */
+                                    /* opcode C4h E1h 42h 10h 46h  not defined */
+                                    /* opcode C4h E1h 42h 10h 47h  not defined */
+                                    /* opcode C4h E1h 42h 10h 48h  not defined */
+                                    /* opcode C4h E1h 42h 10h 49h  not defined */
+                                    /* opcode C4h E1h 42h 10h 4Ah  not defined */
+                                    /* opcode C4h E1h 42h 10h 4Bh  not defined */
+                                    /* opcode C4h E1h 42h 10h 4Ch  not defined */
+                                    /* opcode C4h E1h 42h 10h 4Dh  not defined */
+                                    /* opcode C4h E1h 42h 10h 4Eh  not defined */
+                                    /* opcode C4h E1h 42h 10h 4Fh  not defined */
+                                    /* opcode C4h E1h 42h 10h 50h  not defined */
+                                    /* opcode C4h E1h 42h 10h 51h  not defined */
+                                    /* opcode C4h E1h 42h 10h 52h  not defined */
+                                    /* opcode C4h E1h 42h 10h 53h  not defined */
+                                    /* opcode C4h E1h 42h 10h 54h  not defined */
+                                    /* opcode C4h E1h 42h 10h 55h  not defined */
+                                    /* opcode C4h E1h 42h 10h 56h  not defined */
+                                    /* opcode C4h E1h 42h 10h 57h  not defined */
+                                    /* opcode C4h E1h 42h 10h 58h  not defined */
+                                    /* opcode C4h E1h 42h 10h 59h  not defined */
+                                    /* opcode C4h E1h 42h 10h 5Ah  not defined */
+                                    /* opcode C4h E1h 42h 10h 5Bh  not defined */
+                                    /* opcode C4h E1h 42h 10h 5Ch  not defined */
+                                    /* opcode C4h E1h 42h 10h 5Dh  not defined */
+                                    /* opcode C4h E1h 42h 10h 5Eh  not defined */
+                                    /* opcode C4h E1h 42h 10h 5Fh  not defined */
+                                    /* opcode C4h E1h 42h 10h 60h  not defined */
+                                    /* opcode C4h E1h 42h 10h 61h  not defined */
+                                    /* opcode C4h E1h 42h 10h 62h  not defined */
+                                    /* opcode C4h E1h 42h 10h 63h  not defined */
+                                    /* opcode C4h E1h 42h 10h 64h  not defined */
+                                    /* opcode C4h E1h 42h 10h 65h  not defined */
+                                    /* opcode C4h E1h 42h 10h 66h  not defined */
+                                    /* opcode C4h E1h 42h 10h 67h  not defined */
+                                    /* opcode C4h E1h 42h 10h 68h  not defined */
+                                    /* opcode C4h E1h 42h 10h 69h  not defined */
+                                    /* opcode C4h E1h 42h 10h 6Ah  not defined */
+                                    /* opcode C4h E1h 42h 10h 6Bh  not defined */
+                                    /* opcode C4h E1h 42h 10h 6Ch  not defined */
+                                    /* opcode C4h E1h 42h 10h 6Dh  not defined */
+                                    /* opcode C4h E1h 42h 10h 6Eh  not defined */
+                                    /* opcode C4h E1h 42h 10h 6Fh  not defined */
+                                    /* opcode C4h E1h 42h 10h 70h  not defined */
+                                    /* opcode C4h E1h 42h 10h 71h  not defined */
+                                    /* opcode C4h E1h 42h 10h 72h  not defined */
+                                    /* opcode C4h E1h 42h 10h 73h  not defined */
+                                    /* opcode C4h E1h 42h 10h 74h  not defined */
+                                    /* opcode C4h E1h 42h 10h 75h  not defined */
+                                    /* opcode C4h E1h 42h 10h 76h  not defined */
+                                    /* opcode C4h E1h 42h 10h 77h  not defined */
+                                    /* opcode C4h E1h 42h 10h 78h  not defined */
+                                    /* opcode C4h E1h 42h 10h 79h  not defined */
+                                    /* opcode C4h E1h 42h 10h 7Ah  not defined */
+                                    /* opcode C4h E1h 42h 10h 7Bh  not defined */
+                                    /* opcode C4h E1h 42h 10h 7Ch  not defined */
+                                    /* opcode C4h E1h 42h 10h 7Dh  not defined */
+                                    /* opcode C4h E1h 42h 10h 7Eh  not defined */
+                                    /* opcode C4h E1h 42h 10h 7Fh  not defined */
+                                    /* opcode C4h E1h 42h 10h 80h  not defined */
+                                    /* opcode C4h E1h 42h 10h 81h  not defined */
+                                    /* opcode C4h E1h 42h 10h 82h  not defined */
+                                    /* opcode C4h E1h 42h 10h 83h  not defined */
+                                    /* opcode C4h E1h 42h 10h 84h  not defined */
+                                    /* opcode C4h E1h 42h 10h 85h  not defined */
+                                    /* opcode C4h E1h 42h 10h 86h  not defined */
+                                    /* opcode C4h E1h 42h 10h 87h  not defined */
+                                    /* opcode C4h E1h 42h 10h 88h  not defined */
+                                    /* opcode C4h E1h 42h 10h 89h  not defined */
+                                    /* opcode C4h E1h 42h 10h 8Ah  not defined */
+                                    /* opcode C4h E1h 42h 10h 8Bh  not defined */
+                                    /* opcode C4h E1h 42h 10h 8Ch  not defined */
+                                    /* opcode C4h E1h 42h 10h 8Dh  not defined */
+                                    /* opcode C4h E1h 42h 10h 8Eh  not defined */
+                                    /* opcode C4h E1h 42h 10h 8Fh  not defined */
+                                    /* opcode C4h E1h 42h 10h 90h  not defined */
+                                    /* opcode C4h E1h 42h 10h 91h  not defined */
+                                    /* opcode C4h E1h 42h 10h 92h  not defined */
+                                    /* opcode C4h E1h 42h 10h 93h  not defined */
+                                    /* opcode C4h E1h 42h 10h 94h  not defined */
+                                    /* opcode C4h E1h 42h 10h 95h  not defined */
+                                    /* opcode C4h E1h 42h 10h 96h  not defined */
+                                    /* opcode C4h E1h 42h 10h 97h  not defined */
+                                    /* opcode C4h E1h 42h 10h 98h  not defined */
+                                    /* opcode C4h E1h 42h 10h 99h  not defined */
+                                    /* opcode C4h E1h 42h 10h 9Ah  not defined */
+                                    /* opcode C4h E1h 42h 10h 9Bh  not defined */
+                                    /* opcode C4h E1h 42h 10h 9Ch  not defined */
+                                    /* opcode C4h E1h 42h 10h 9Dh  not defined */
+                                    /* opcode C4h E1h 42h 10h 9Eh  not defined */
+                                    /* opcode C4h E1h 42h 10h 9Fh  not defined */
+                                    /* opcode C4h E1h 42h 10h A0h  not defined */
+                                    /* opcode C4h E1h 42h 10h A1h  not defined */
+                                    /* opcode C4h E1h 42h 10h A2h  not defined */
+                                    /* opcode C4h E1h 42h 10h A3h  not defined */
+                                    /* opcode C4h E1h 42h 10h A4h  not defined */
+                                    /* opcode C4h E1h 42h 10h A5h  not defined */
+                                    /* opcode C4h E1h 42h 10h A6h  not defined */
+                                    /* opcode C4h E1h 42h 10h A7h  not defined */
+                                    /* opcode C4h E1h 42h 10h A8h  not defined */
+                                    /* opcode C4h E1h 42h 10h A9h  not defined */
+                                    /* opcode C4h E1h 42h 10h AAh  not defined */
+                                    /* opcode C4h E1h 42h 10h ABh  not defined */
+                                    /* opcode C4h E1h 42h 10h ACh  not defined */
+                                    /* opcode C4h E1h 42h 10h ADh  not defined */
+                                    /* opcode C4h E1h 42h 10h AEh  not defined */
+                                    /* opcode C4h E1h 42h 10h AFh  not defined */
+                                    /* opcode C4h E1h 42h 10h B0h  not defined */
+                                    /* opcode C4h E1h 42h 10h B1h  not defined */
+                                    /* opcode C4h E1h 42h 10h B2h  not defined */
+                                    /* opcode C4h E1h 42h 10h B3h  not defined */
+                                    /* opcode C4h E1h 42h 10h B4h  not defined */
+                                    /* opcode C4h E1h 42h 10h B5h  not defined */
+                                    /* opcode C4h E1h 42h 10h B6h  not defined */
+                                    /* opcode C4h E1h 42h 10h B7h  not defined */
+                                    /* opcode C4h E1h 42h 10h B8h  not defined */
+                                    /* opcode C4h E1h 42h 10h B9h  not defined */
+                                    /* opcode C4h E1h 42h 10h BAh  not defined */
+                                    /* opcode C4h E1h 42h 10h BBh  not defined */
+                                    /* opcode C4h E1h 42h 10h BCh  not defined */
+                                    /* opcode C4h E1h 42h 10h BDh  not defined */
+                                    /* opcode C4h E1h 42h 10h BEh  not defined */
+                                    /* opcode C4h E1h 42h 10h BFh  not defined */
+                                    case 0xC0: /* C4h E1h 42h 10h C0h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC1: /* C4h E1h 42h 10h C1h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC2: /* C4h E1h 42h 10h C2h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC3: /* C4h E1h 42h 10h C3h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC4: /* C4h E1h 42h 10h C4h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC5: /* C4h E1h 42h 10h C5h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC6: /* C4h E1h 42h 10h C6h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC7: /* C4h E1h 42h 10h C7h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC8: /* C4h E1h 42h 10h C8h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC9: /* C4h E1h 42h 10h C9h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xCA: /* C4h E1h 42h 10h CAh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xCB: /* C4h E1h 42h 10h CBh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xCC: /* C4h E1h 42h 10h CCh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xCD: /* C4h E1h 42h 10h CDh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xCE: /* C4h E1h 42h 10h CEh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xCF: /* C4h E1h 42h 10h CFh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD0: /* C4h E1h 42h 10h D0h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD1: /* C4h E1h 42h 10h D1h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD2: /* C4h E1h 42h 10h D2h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD3: /* C4h E1h 42h 10h D3h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD4: /* C4h E1h 42h 10h D4h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD5: /* C4h E1h 42h 10h D5h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD6: /* C4h E1h 42h 10h D6h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD7: /* C4h E1h 42h 10h D7h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD8: /* C4h E1h 42h 10h D8h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD9: /* C4h E1h 42h 10h D9h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xDA: /* C4h E1h 42h 10h DAh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xDB: /* C4h E1h 42h 10h DBh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xDC: /* C4h E1h 42h 10h DCh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xDD: /* C4h E1h 42h 10h DDh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xDE: /* C4h E1h 42h 10h DEh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xDF: /* C4h E1h 42h 10h DFh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE0: /* C4h E1h 42h 10h E0h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE1: /* C4h E1h 42h 10h E1h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE2: /* C4h E1h 42h 10h E2h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE3: /* C4h E1h 42h 10h E3h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE4: /* C4h E1h 42h 10h E4h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE5: /* C4h E1h 42h 10h E5h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE6: /* C4h E1h 42h 10h E6h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE7: /* C4h E1h 42h 10h E7h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE8: /* C4h E1h 42h 10h E8h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE9: /* C4h E1h 42h 10h E9h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xEA: /* C4h E1h 42h 10h EAh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xEB: /* C4h E1h 42h 10h EBh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xEC: /* C4h E1h 42h 10h ECh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xED: /* C4h E1h 42h 10h EDh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xEE: /* C4h E1h 42h 10h EEh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xEF: /* C4h E1h 42h 10h EFh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF0: /* C4h E1h 42h 10h F0h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF1: /* C4h E1h 42h 10h F1h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF2: /* C4h E1h 42h 10h F2h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF3: /* C4h E1h 42h 10h F3h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF4: /* C4h E1h 42h 10h F4h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF5: /* C4h E1h 42h 10h F5h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF6: /* C4h E1h 42h 10h F6h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF7: /* C4h E1h 42h 10h F7h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF8: /* C4h E1h 42h 10h F8h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF9: /* C4h E1h 42h 10h F9h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xFA: /* C4h E1h 42h 10h FAh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xFB: /* C4h E1h 42h 10h FBh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xFC: /* C4h E1h 42h 10h FCh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xFD: /* C4h E1h 42h 10h FDh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xFE: /* C4h E1h 42h 10h FEh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xFF: /* C4h E1h 42h 10h FFh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVSS XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                                        break;
+                                    default:
+                                        goto _x86decode_illegal_opcode;
+                                };
+/* End of opcodes starting with C4h E1h 42h 10h */
+                                break;
                             /* opcode C4h E1h 42h 12h  not defined */
                             /* opcode C4h E1h 42h 13h  not defined */
                             /* opcode C4h E1h 42h 14h  not defined */
@@ -15028,7 +15572,6 @@ switch (op) {
                     case 0x63: /* C4h E1h 63h        spec:  */
                     case 0x6B: /* C4h E1h 6Bh        spec:  */
                     case 0x73: /* C4h E1h 73h        spec:  */
-                    case 0x7B: /* C4h E1h 7Bh        spec:  */
                         vex.V = ((~op) >> 3) & 7;
 /* Opcodes starting with C4h E1h 43h */
                         op=IPFB();
@@ -15050,8 +15593,275 @@ switch (op) {
                             /* opcode C4h E1h 43h 0Dh  not defined */
                             /* opcode C4h E1h 43h 0Eh  not defined */
                             /* opcode C4h E1h 43h 0Fh  not defined */
-                            /* opcode C4h E1h 43h 10h  not defined */
-                            /* opcode C4h E1h 43h 11h  not defined */
+                            case 0x10: /* C4h E1h 43h 10h        spec:  */
+                            case 0x11: /* C4h E1h 43h 11h        spec:  */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                _x86decode_begin_code16_addr16_opcode_parse_C4E14310:
+/* Opcodes starting with C4h E1h 43h 10h */
+                                switch (mrm.byte) {
+                                    /* opcode C4h E1h 43h 10h 00h  not defined */
+                                    /* opcode C4h E1h 43h 10h 01h  not defined */
+                                    /* opcode C4h E1h 43h 10h 02h  not defined */
+                                    /* opcode C4h E1h 43h 10h 03h  not defined */
+                                    /* opcode C4h E1h 43h 10h 04h  not defined */
+                                    /* opcode C4h E1h 43h 10h 05h  not defined */
+                                    /* opcode C4h E1h 43h 10h 06h  not defined */
+                                    /* opcode C4h E1h 43h 10h 07h  not defined */
+                                    /* opcode C4h E1h 43h 10h 08h  not defined */
+                                    /* opcode C4h E1h 43h 10h 09h  not defined */
+                                    /* opcode C4h E1h 43h 10h 0Ah  not defined */
+                                    /* opcode C4h E1h 43h 10h 0Bh  not defined */
+                                    /* opcode C4h E1h 43h 10h 0Ch  not defined */
+                                    /* opcode C4h E1h 43h 10h 0Dh  not defined */
+                                    /* opcode C4h E1h 43h 10h 0Eh  not defined */
+                                    /* opcode C4h E1h 43h 10h 0Fh  not defined */
+                                    /* opcode C4h E1h 43h 10h 10h  not defined */
+                                    /* opcode C4h E1h 43h 10h 11h  not defined */
+                                    /* opcode C4h E1h 43h 10h 12h  not defined */
+                                    /* opcode C4h E1h 43h 10h 13h  not defined */
+                                    /* opcode C4h E1h 43h 10h 14h  not defined */
+                                    /* opcode C4h E1h 43h 10h 15h  not defined */
+                                    /* opcode C4h E1h 43h 10h 16h  not defined */
+                                    /* opcode C4h E1h 43h 10h 17h  not defined */
+                                    /* opcode C4h E1h 43h 10h 18h  not defined */
+                                    /* opcode C4h E1h 43h 10h 19h  not defined */
+                                    /* opcode C4h E1h 43h 10h 1Ah  not defined */
+                                    /* opcode C4h E1h 43h 10h 1Bh  not defined */
+                                    /* opcode C4h E1h 43h 10h 1Ch  not defined */
+                                    /* opcode C4h E1h 43h 10h 1Dh  not defined */
+                                    /* opcode C4h E1h 43h 10h 1Eh  not defined */
+                                    /* opcode C4h E1h 43h 10h 1Fh  not defined */
+                                    /* opcode C4h E1h 43h 10h 20h  not defined */
+                                    /* opcode C4h E1h 43h 10h 21h  not defined */
+                                    /* opcode C4h E1h 43h 10h 22h  not defined */
+                                    /* opcode C4h E1h 43h 10h 23h  not defined */
+                                    /* opcode C4h E1h 43h 10h 24h  not defined */
+                                    /* opcode C4h E1h 43h 10h 25h  not defined */
+                                    /* opcode C4h E1h 43h 10h 26h  not defined */
+                                    /* opcode C4h E1h 43h 10h 27h  not defined */
+                                    /* opcode C4h E1h 43h 10h 28h  not defined */
+                                    /* opcode C4h E1h 43h 10h 29h  not defined */
+                                    /* opcode C4h E1h 43h 10h 2Ah  not defined */
+                                    /* opcode C4h E1h 43h 10h 2Bh  not defined */
+                                    /* opcode C4h E1h 43h 10h 2Ch  not defined */
+                                    /* opcode C4h E1h 43h 10h 2Dh  not defined */
+                                    /* opcode C4h E1h 43h 10h 2Eh  not defined */
+                                    /* opcode C4h E1h 43h 10h 2Fh  not defined */
+                                    /* opcode C4h E1h 43h 10h 30h  not defined */
+                                    /* opcode C4h E1h 43h 10h 31h  not defined */
+                                    /* opcode C4h E1h 43h 10h 32h  not defined */
+                                    /* opcode C4h E1h 43h 10h 33h  not defined */
+                                    /* opcode C4h E1h 43h 10h 34h  not defined */
+                                    /* opcode C4h E1h 43h 10h 35h  not defined */
+                                    /* opcode C4h E1h 43h 10h 36h  not defined */
+                                    /* opcode C4h E1h 43h 10h 37h  not defined */
+                                    /* opcode C4h E1h 43h 10h 38h  not defined */
+                                    /* opcode C4h E1h 43h 10h 39h  not defined */
+                                    /* opcode C4h E1h 43h 10h 3Ah  not defined */
+                                    /* opcode C4h E1h 43h 10h 3Bh  not defined */
+                                    /* opcode C4h E1h 43h 10h 3Ch  not defined */
+                                    /* opcode C4h E1h 43h 10h 3Dh  not defined */
+                                    /* opcode C4h E1h 43h 10h 3Eh  not defined */
+                                    /* opcode C4h E1h 43h 10h 3Fh  not defined */
+                                    /* opcode C4h E1h 43h 10h 40h  not defined */
+                                    /* opcode C4h E1h 43h 10h 41h  not defined */
+                                    /* opcode C4h E1h 43h 10h 42h  not defined */
+                                    /* opcode C4h E1h 43h 10h 43h  not defined */
+                                    /* opcode C4h E1h 43h 10h 44h  not defined */
+                                    /* opcode C4h E1h 43h 10h 45h  not defined */
+                                    /* opcode C4h E1h 43h 10h 46h  not defined */
+                                    /* opcode C4h E1h 43h 10h 47h  not defined */
+                                    /* opcode C4h E1h 43h 10h 48h  not defined */
+                                    /* opcode C4h E1h 43h 10h 49h  not defined */
+                                    /* opcode C4h E1h 43h 10h 4Ah  not defined */
+                                    /* opcode C4h E1h 43h 10h 4Bh  not defined */
+                                    /* opcode C4h E1h 43h 10h 4Ch  not defined */
+                                    /* opcode C4h E1h 43h 10h 4Dh  not defined */
+                                    /* opcode C4h E1h 43h 10h 4Eh  not defined */
+                                    /* opcode C4h E1h 43h 10h 4Fh  not defined */
+                                    /* opcode C4h E1h 43h 10h 50h  not defined */
+                                    /* opcode C4h E1h 43h 10h 51h  not defined */
+                                    /* opcode C4h E1h 43h 10h 52h  not defined */
+                                    /* opcode C4h E1h 43h 10h 53h  not defined */
+                                    /* opcode C4h E1h 43h 10h 54h  not defined */
+                                    /* opcode C4h E1h 43h 10h 55h  not defined */
+                                    /* opcode C4h E1h 43h 10h 56h  not defined */
+                                    /* opcode C4h E1h 43h 10h 57h  not defined */
+                                    /* opcode C4h E1h 43h 10h 58h  not defined */
+                                    /* opcode C4h E1h 43h 10h 59h  not defined */
+                                    /* opcode C4h E1h 43h 10h 5Ah  not defined */
+                                    /* opcode C4h E1h 43h 10h 5Bh  not defined */
+                                    /* opcode C4h E1h 43h 10h 5Ch  not defined */
+                                    /* opcode C4h E1h 43h 10h 5Dh  not defined */
+                                    /* opcode C4h E1h 43h 10h 5Eh  not defined */
+                                    /* opcode C4h E1h 43h 10h 5Fh  not defined */
+                                    /* opcode C4h E1h 43h 10h 60h  not defined */
+                                    /* opcode C4h E1h 43h 10h 61h  not defined */
+                                    /* opcode C4h E1h 43h 10h 62h  not defined */
+                                    /* opcode C4h E1h 43h 10h 63h  not defined */
+                                    /* opcode C4h E1h 43h 10h 64h  not defined */
+                                    /* opcode C4h E1h 43h 10h 65h  not defined */
+                                    /* opcode C4h E1h 43h 10h 66h  not defined */
+                                    /* opcode C4h E1h 43h 10h 67h  not defined */
+                                    /* opcode C4h E1h 43h 10h 68h  not defined */
+                                    /* opcode C4h E1h 43h 10h 69h  not defined */
+                                    /* opcode C4h E1h 43h 10h 6Ah  not defined */
+                                    /* opcode C4h E1h 43h 10h 6Bh  not defined */
+                                    /* opcode C4h E1h 43h 10h 6Ch  not defined */
+                                    /* opcode C4h E1h 43h 10h 6Dh  not defined */
+                                    /* opcode C4h E1h 43h 10h 6Eh  not defined */
+                                    /* opcode C4h E1h 43h 10h 6Fh  not defined */
+                                    /* opcode C4h E1h 43h 10h 70h  not defined */
+                                    /* opcode C4h E1h 43h 10h 71h  not defined */
+                                    /* opcode C4h E1h 43h 10h 72h  not defined */
+                                    /* opcode C4h E1h 43h 10h 73h  not defined */
+                                    /* opcode C4h E1h 43h 10h 74h  not defined */
+                                    /* opcode C4h E1h 43h 10h 75h  not defined */
+                                    /* opcode C4h E1h 43h 10h 76h  not defined */
+                                    /* opcode C4h E1h 43h 10h 77h  not defined */
+                                    /* opcode C4h E1h 43h 10h 78h  not defined */
+                                    /* opcode C4h E1h 43h 10h 79h  not defined */
+                                    /* opcode C4h E1h 43h 10h 7Ah  not defined */
+                                    /* opcode C4h E1h 43h 10h 7Bh  not defined */
+                                    /* opcode C4h E1h 43h 10h 7Ch  not defined */
+                                    /* opcode C4h E1h 43h 10h 7Dh  not defined */
+                                    /* opcode C4h E1h 43h 10h 7Eh  not defined */
+                                    /* opcode C4h E1h 43h 10h 7Fh  not defined */
+                                    /* opcode C4h E1h 43h 10h 80h  not defined */
+                                    /* opcode C4h E1h 43h 10h 81h  not defined */
+                                    /* opcode C4h E1h 43h 10h 82h  not defined */
+                                    /* opcode C4h E1h 43h 10h 83h  not defined */
+                                    /* opcode C4h E1h 43h 10h 84h  not defined */
+                                    /* opcode C4h E1h 43h 10h 85h  not defined */
+                                    /* opcode C4h E1h 43h 10h 86h  not defined */
+                                    /* opcode C4h E1h 43h 10h 87h  not defined */
+                                    /* opcode C4h E1h 43h 10h 88h  not defined */
+                                    /* opcode C4h E1h 43h 10h 89h  not defined */
+                                    /* opcode C4h E1h 43h 10h 8Ah  not defined */
+                                    /* opcode C4h E1h 43h 10h 8Bh  not defined */
+                                    /* opcode C4h E1h 43h 10h 8Ch  not defined */
+                                    /* opcode C4h E1h 43h 10h 8Dh  not defined */
+                                    /* opcode C4h E1h 43h 10h 8Eh  not defined */
+                                    /* opcode C4h E1h 43h 10h 8Fh  not defined */
+                                    /* opcode C4h E1h 43h 10h 90h  not defined */
+                                    /* opcode C4h E1h 43h 10h 91h  not defined */
+                                    /* opcode C4h E1h 43h 10h 92h  not defined */
+                                    /* opcode C4h E1h 43h 10h 93h  not defined */
+                                    /* opcode C4h E1h 43h 10h 94h  not defined */
+                                    /* opcode C4h E1h 43h 10h 95h  not defined */
+                                    /* opcode C4h E1h 43h 10h 96h  not defined */
+                                    /* opcode C4h E1h 43h 10h 97h  not defined */
+                                    /* opcode C4h E1h 43h 10h 98h  not defined */
+                                    /* opcode C4h E1h 43h 10h 99h  not defined */
+                                    /* opcode C4h E1h 43h 10h 9Ah  not defined */
+                                    /* opcode C4h E1h 43h 10h 9Bh  not defined */
+                                    /* opcode C4h E1h 43h 10h 9Ch  not defined */
+                                    /* opcode C4h E1h 43h 10h 9Dh  not defined */
+                                    /* opcode C4h E1h 43h 10h 9Eh  not defined */
+                                    /* opcode C4h E1h 43h 10h 9Fh  not defined */
+                                    /* opcode C4h E1h 43h 10h A0h  not defined */
+                                    /* opcode C4h E1h 43h 10h A1h  not defined */
+                                    /* opcode C4h E1h 43h 10h A2h  not defined */
+                                    /* opcode C4h E1h 43h 10h A3h  not defined */
+                                    /* opcode C4h E1h 43h 10h A4h  not defined */
+                                    /* opcode C4h E1h 43h 10h A5h  not defined */
+                                    /* opcode C4h E1h 43h 10h A6h  not defined */
+                                    /* opcode C4h E1h 43h 10h A7h  not defined */
+                                    /* opcode C4h E1h 43h 10h A8h  not defined */
+                                    /* opcode C4h E1h 43h 10h A9h  not defined */
+                                    /* opcode C4h E1h 43h 10h AAh  not defined */
+                                    /* opcode C4h E1h 43h 10h ABh  not defined */
+                                    /* opcode C4h E1h 43h 10h ACh  not defined */
+                                    /* opcode C4h E1h 43h 10h ADh  not defined */
+                                    /* opcode C4h E1h 43h 10h AEh  not defined */
+                                    /* opcode C4h E1h 43h 10h AFh  not defined */
+                                    /* opcode C4h E1h 43h 10h B0h  not defined */
+                                    /* opcode C4h E1h 43h 10h B1h  not defined */
+                                    /* opcode C4h E1h 43h 10h B2h  not defined */
+                                    /* opcode C4h E1h 43h 10h B3h  not defined */
+                                    /* opcode C4h E1h 43h 10h B4h  not defined */
+                                    /* opcode C4h E1h 43h 10h B5h  not defined */
+                                    /* opcode C4h E1h 43h 10h B6h  not defined */
+                                    /* opcode C4h E1h 43h 10h B7h  not defined */
+                                    /* opcode C4h E1h 43h 10h B8h  not defined */
+                                    /* opcode C4h E1h 43h 10h B9h  not defined */
+                                    /* opcode C4h E1h 43h 10h BAh  not defined */
+                                    /* opcode C4h E1h 43h 10h BBh  not defined */
+                                    /* opcode C4h E1h 43h 10h BCh  not defined */
+                                    /* opcode C4h E1h 43h 10h BDh  not defined */
+                                    /* opcode C4h E1h 43h 10h BEh  not defined */
+                                    /* opcode C4h E1h 43h 10h BFh  not defined */
+                                    case 0xC0: /* C4h E1h 43h 10h C0h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC1: /* C4h E1h 43h 10h C1h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC2: /* C4h E1h 43h 10h C2h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC3: /* C4h E1h 43h 10h C3h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC4: /* C4h E1h 43h 10h C4h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC5: /* C4h E1h 43h 10h C5h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC6: /* C4h E1h 43h 10h C6h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC7: /* C4h E1h 43h 10h C7h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC8: /* C4h E1h 43h 10h C8h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC9: /* C4h E1h 43h 10h C9h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xCA: /* C4h E1h 43h 10h CAh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xCB: /* C4h E1h 43h 10h CBh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xCC: /* C4h E1h 43h 10h CCh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xCD: /* C4h E1h 43h 10h CDh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xCE: /* C4h E1h 43h 10h CEh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xCF: /* C4h E1h 43h 10h CFh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD0: /* C4h E1h 43h 10h D0h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD1: /* C4h E1h 43h 10h D1h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD2: /* C4h E1h 43h 10h D2h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD3: /* C4h E1h 43h 10h D3h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD4: /* C4h E1h 43h 10h D4h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD5: /* C4h E1h 43h 10h D5h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD6: /* C4h E1h 43h 10h D6h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD7: /* C4h E1h 43h 10h D7h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD8: /* C4h E1h 43h 10h D8h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD9: /* C4h E1h 43h 10h D9h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xDA: /* C4h E1h 43h 10h DAh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xDB: /* C4h E1h 43h 10h DBh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xDC: /* C4h E1h 43h 10h DCh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xDD: /* C4h E1h 43h 10h DDh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xDE: /* C4h E1h 43h 10h DEh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xDF: /* C4h E1h 43h 10h DFh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE0: /* C4h E1h 43h 10h E0h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE1: /* C4h E1h 43h 10h E1h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE2: /* C4h E1h 43h 10h E2h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE3: /* C4h E1h 43h 10h E3h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE4: /* C4h E1h 43h 10h E4h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE5: /* C4h E1h 43h 10h E5h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE6: /* C4h E1h 43h 10h E6h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE7: /* C4h E1h 43h 10h E7h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE8: /* C4h E1h 43h 10h E8h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE9: /* C4h E1h 43h 10h E9h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xEA: /* C4h E1h 43h 10h EAh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xEB: /* C4h E1h 43h 10h EBh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xEC: /* C4h E1h 43h 10h ECh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xED: /* C4h E1h 43h 10h EDh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xEE: /* C4h E1h 43h 10h EEh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xEF: /* C4h E1h 43h 10h EFh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF0: /* C4h E1h 43h 10h F0h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF1: /* C4h E1h 43h 10h F1h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF2: /* C4h E1h 43h 10h F2h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF3: /* C4h E1h 43h 10h F3h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF4: /* C4h E1h 43h 10h F4h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF5: /* C4h E1h 43h 10h F5h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF6: /* C4h E1h 43h 10h F6h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF7: /* C4h E1h 43h 10h F7h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF8: /* C4h E1h 43h 10h F8h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF9: /* C4h E1h 43h 10h F9h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xFA: /* C4h E1h 43h 10h FAh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xFB: /* C4h E1h 43h 10h FBh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xFC: /* C4h E1h 43h 10h FCh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xFD: /* C4h E1h 43h 10h FDh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xFE: /* C4h E1h 43h 10h FEh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xFF: /* C4h E1h 43h 10h FFh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVSD XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                                        break;
+                                    default:
+                                        goto _x86decode_illegal_opcode;
+                                };
+/* End of opcodes starting with C4h E1h 43h 10h */
+                                break;
                             /* opcode C4h E1h 43h 12h  not defined */
                             /* opcode C4h E1h 43h 13h  not defined */
                             /* opcode C4h E1h 43h 14h  not defined */
@@ -15330,8 +16140,14 @@ switch (op) {
                             /* opcode C4h E1h 44h 11h  not defined */
                             /* opcode C4h E1h 44h 12h  not defined */
                             /* opcode C4h E1h 44h 13h  not defined */
-                            /* opcode C4h E1h 44h 14h  not defined */
-                            /* opcode C4h E1h 44h 15h  not defined */
+                            case 0x14: /* C4h E1h 44h 14h VUNPCKLPS avx(reg),avx(vsidx),avx(r/m)      spec: vex vsize(256) vlead(0x0F) vprefix(none) 0x14 mod/reg/rm */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKLPS YMM%u,YMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,32,RC_AVXREG,""));
+                                break;
+                            case 0x15: /* C4h E1h 44h 15h VUNPCKHPS avx(reg),avx(vsidx),avx(r/m)      spec: vex vsize(256) vlead(0x0F) vprefix(none) 0x15 mod/reg/rm */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKHPS YMM%u,YMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,32,RC_AVXREG,""));
+                                break;
                             /* opcode C4h E1h 44h 16h  not defined */
                             /* opcode C4h E1h 44h 17h  not defined */
                             /* opcode C4h E1h 44h 18h  not defined */
@@ -15581,7 +16397,6 @@ switch (op) {
                     case 0x65: /* C4h E1h 65h        spec:  */
                     case 0x6D: /* C4h E1h 6Dh        spec:  */
                     case 0x75: /* C4h E1h 75h        spec:  */
-                    case 0x7D: /* C4h E1h 7Dh        spec:  */
                         vex.V = ((~op) >> 3) & 7;
 /* Opcodes starting with C4h E1h 45h */
                         op=IPFB();
@@ -15607,8 +16422,14 @@ switch (op) {
                             /* opcode C4h E1h 45h 11h  not defined */
                             /* opcode C4h E1h 45h 12h  not defined */
                             /* opcode C4h E1h 45h 13h  not defined */
-                            /* opcode C4h E1h 45h 14h  not defined */
-                            /* opcode C4h E1h 45h 15h  not defined */
+                            case 0x14: /* C4h E1h 45h 14h VUNPCKLPD avx(reg),avx(vsidx),avx(r/m)      spec: vex vsize(256) vlead(0x0F) vprefix(0x66) 0x14 mod/reg/rm */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKLPD YMM%u,YMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,32,RC_AVXREG,""));
+                                break;
+                            case 0x15: /* C4h E1h 45h 15h VUNPCKHPD avx(reg),avx(vsidx),avx(r/m)      spec: vex vsize(256) vlead(0x0F) vprefix(0x66) 0x15 mod/reg/rm */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKHPD YMM%u,YMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,32,RC_AVXREG,""));
+                                break;
                             /* opcode C4h E1h 45h 16h  not defined */
                             /* opcode C4h E1h 45h 17h  not defined */
                             /* opcode C4h E1h 45h 18h  not defined */
@@ -16427,12 +17248,291 @@ switch (op) {
                             /* opcode C4h E1h 78h 0Dh  not defined */
                             /* opcode C4h E1h 78h 0Eh  not defined */
                             /* opcode C4h E1h 78h 0Fh  not defined */
-                            /* opcode C4h E1h 78h 10h  not defined */
-                            /* opcode C4h E1h 78h 11h  not defined */
-                            /* opcode C4h E1h 78h 12h  not defined */
+                            case 0x10: /* C4h E1h 78h 10h VMOVUPS sse(reg),sse(r/m)      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x10 mod/reg/rm vsidx(0) */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVUPS XMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                                break;
+                            case 0x11: /* C4h E1h 78h 11h VMOVUPS sse(r/m),sse(reg)      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x11 mod/reg/rm vsidx(0) */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVUPS %s,XMM%u",IPDecPrint16(mrm,disp,16,RC_SSEREG,""),mrm.reg());
+                                break;
+                            case 0x12: /* C4h E1h 78h 12h        spec:  */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                _x86decode_begin_code16_addr16_opcode_parse_C4E17812:
+/* Opcodes starting with C4h E1h 78h 12h */
+                                switch (mrm.byte) {
+                                    /* opcode C4h E1h 78h 12h 00h  not defined */
+                                    /* opcode C4h E1h 78h 12h 01h  not defined */
+                                    /* opcode C4h E1h 78h 12h 02h  not defined */
+                                    /* opcode C4h E1h 78h 12h 03h  not defined */
+                                    /* opcode C4h E1h 78h 12h 04h  not defined */
+                                    /* opcode C4h E1h 78h 12h 05h  not defined */
+                                    /* opcode C4h E1h 78h 12h 06h  not defined */
+                                    /* opcode C4h E1h 78h 12h 07h  not defined */
+                                    /* opcode C4h E1h 78h 12h 08h  not defined */
+                                    /* opcode C4h E1h 78h 12h 09h  not defined */
+                                    /* opcode C4h E1h 78h 12h 0Ah  not defined */
+                                    /* opcode C4h E1h 78h 12h 0Bh  not defined */
+                                    /* opcode C4h E1h 78h 12h 0Ch  not defined */
+                                    /* opcode C4h E1h 78h 12h 0Dh  not defined */
+                                    /* opcode C4h E1h 78h 12h 0Eh  not defined */
+                                    /* opcode C4h E1h 78h 12h 0Fh  not defined */
+                                    /* opcode C4h E1h 78h 12h 10h  not defined */
+                                    /* opcode C4h E1h 78h 12h 11h  not defined */
+                                    /* opcode C4h E1h 78h 12h 12h  not defined */
+                                    /* opcode C4h E1h 78h 12h 13h  not defined */
+                                    /* opcode C4h E1h 78h 12h 14h  not defined */
+                                    /* opcode C4h E1h 78h 12h 15h  not defined */
+                                    /* opcode C4h E1h 78h 12h 16h  not defined */
+                                    /* opcode C4h E1h 78h 12h 17h  not defined */
+                                    /* opcode C4h E1h 78h 12h 18h  not defined */
+                                    /* opcode C4h E1h 78h 12h 19h  not defined */
+                                    /* opcode C4h E1h 78h 12h 1Ah  not defined */
+                                    /* opcode C4h E1h 78h 12h 1Bh  not defined */
+                                    /* opcode C4h E1h 78h 12h 1Ch  not defined */
+                                    /* opcode C4h E1h 78h 12h 1Dh  not defined */
+                                    /* opcode C4h E1h 78h 12h 1Eh  not defined */
+                                    /* opcode C4h E1h 78h 12h 1Fh  not defined */
+                                    /* opcode C4h E1h 78h 12h 20h  not defined */
+                                    /* opcode C4h E1h 78h 12h 21h  not defined */
+                                    /* opcode C4h E1h 78h 12h 22h  not defined */
+                                    /* opcode C4h E1h 78h 12h 23h  not defined */
+                                    /* opcode C4h E1h 78h 12h 24h  not defined */
+                                    /* opcode C4h E1h 78h 12h 25h  not defined */
+                                    /* opcode C4h E1h 78h 12h 26h  not defined */
+                                    /* opcode C4h E1h 78h 12h 27h  not defined */
+                                    /* opcode C4h E1h 78h 12h 28h  not defined */
+                                    /* opcode C4h E1h 78h 12h 29h  not defined */
+                                    /* opcode C4h E1h 78h 12h 2Ah  not defined */
+                                    /* opcode C4h E1h 78h 12h 2Bh  not defined */
+                                    /* opcode C4h E1h 78h 12h 2Ch  not defined */
+                                    /* opcode C4h E1h 78h 12h 2Dh  not defined */
+                                    /* opcode C4h E1h 78h 12h 2Eh  not defined */
+                                    /* opcode C4h E1h 78h 12h 2Fh  not defined */
+                                    /* opcode C4h E1h 78h 12h 30h  not defined */
+                                    /* opcode C4h E1h 78h 12h 31h  not defined */
+                                    /* opcode C4h E1h 78h 12h 32h  not defined */
+                                    /* opcode C4h E1h 78h 12h 33h  not defined */
+                                    /* opcode C4h E1h 78h 12h 34h  not defined */
+                                    /* opcode C4h E1h 78h 12h 35h  not defined */
+                                    /* opcode C4h E1h 78h 12h 36h  not defined */
+                                    /* opcode C4h E1h 78h 12h 37h  not defined */
+                                    /* opcode C4h E1h 78h 12h 38h  not defined */
+                                    /* opcode C4h E1h 78h 12h 39h  not defined */
+                                    /* opcode C4h E1h 78h 12h 3Ah  not defined */
+                                    /* opcode C4h E1h 78h 12h 3Bh  not defined */
+                                    /* opcode C4h E1h 78h 12h 3Ch  not defined */
+                                    /* opcode C4h E1h 78h 12h 3Dh  not defined */
+                                    /* opcode C4h E1h 78h 12h 3Eh  not defined */
+                                    /* opcode C4h E1h 78h 12h 3Fh  not defined */
+                                    /* opcode C4h E1h 78h 12h 40h  not defined */
+                                    /* opcode C4h E1h 78h 12h 41h  not defined */
+                                    /* opcode C4h E1h 78h 12h 42h  not defined */
+                                    /* opcode C4h E1h 78h 12h 43h  not defined */
+                                    /* opcode C4h E1h 78h 12h 44h  not defined */
+                                    /* opcode C4h E1h 78h 12h 45h  not defined */
+                                    /* opcode C4h E1h 78h 12h 46h  not defined */
+                                    /* opcode C4h E1h 78h 12h 47h  not defined */
+                                    /* opcode C4h E1h 78h 12h 48h  not defined */
+                                    /* opcode C4h E1h 78h 12h 49h  not defined */
+                                    /* opcode C4h E1h 78h 12h 4Ah  not defined */
+                                    /* opcode C4h E1h 78h 12h 4Bh  not defined */
+                                    /* opcode C4h E1h 78h 12h 4Ch  not defined */
+                                    /* opcode C4h E1h 78h 12h 4Dh  not defined */
+                                    /* opcode C4h E1h 78h 12h 4Eh  not defined */
+                                    /* opcode C4h E1h 78h 12h 4Fh  not defined */
+                                    /* opcode C4h E1h 78h 12h 50h  not defined */
+                                    /* opcode C4h E1h 78h 12h 51h  not defined */
+                                    /* opcode C4h E1h 78h 12h 52h  not defined */
+                                    /* opcode C4h E1h 78h 12h 53h  not defined */
+                                    /* opcode C4h E1h 78h 12h 54h  not defined */
+                                    /* opcode C4h E1h 78h 12h 55h  not defined */
+                                    /* opcode C4h E1h 78h 12h 56h  not defined */
+                                    /* opcode C4h E1h 78h 12h 57h  not defined */
+                                    /* opcode C4h E1h 78h 12h 58h  not defined */
+                                    /* opcode C4h E1h 78h 12h 59h  not defined */
+                                    /* opcode C4h E1h 78h 12h 5Ah  not defined */
+                                    /* opcode C4h E1h 78h 12h 5Bh  not defined */
+                                    /* opcode C4h E1h 78h 12h 5Ch  not defined */
+                                    /* opcode C4h E1h 78h 12h 5Dh  not defined */
+                                    /* opcode C4h E1h 78h 12h 5Eh  not defined */
+                                    /* opcode C4h E1h 78h 12h 5Fh  not defined */
+                                    /* opcode C4h E1h 78h 12h 60h  not defined */
+                                    /* opcode C4h E1h 78h 12h 61h  not defined */
+                                    /* opcode C4h E1h 78h 12h 62h  not defined */
+                                    /* opcode C4h E1h 78h 12h 63h  not defined */
+                                    /* opcode C4h E1h 78h 12h 64h  not defined */
+                                    /* opcode C4h E1h 78h 12h 65h  not defined */
+                                    /* opcode C4h E1h 78h 12h 66h  not defined */
+                                    /* opcode C4h E1h 78h 12h 67h  not defined */
+                                    /* opcode C4h E1h 78h 12h 68h  not defined */
+                                    /* opcode C4h E1h 78h 12h 69h  not defined */
+                                    /* opcode C4h E1h 78h 12h 6Ah  not defined */
+                                    /* opcode C4h E1h 78h 12h 6Bh  not defined */
+                                    /* opcode C4h E1h 78h 12h 6Ch  not defined */
+                                    /* opcode C4h E1h 78h 12h 6Dh  not defined */
+                                    /* opcode C4h E1h 78h 12h 6Eh  not defined */
+                                    /* opcode C4h E1h 78h 12h 6Fh  not defined */
+                                    /* opcode C4h E1h 78h 12h 70h  not defined */
+                                    /* opcode C4h E1h 78h 12h 71h  not defined */
+                                    /* opcode C4h E1h 78h 12h 72h  not defined */
+                                    /* opcode C4h E1h 78h 12h 73h  not defined */
+                                    /* opcode C4h E1h 78h 12h 74h  not defined */
+                                    /* opcode C4h E1h 78h 12h 75h  not defined */
+                                    /* opcode C4h E1h 78h 12h 76h  not defined */
+                                    /* opcode C4h E1h 78h 12h 77h  not defined */
+                                    /* opcode C4h E1h 78h 12h 78h  not defined */
+                                    /* opcode C4h E1h 78h 12h 79h  not defined */
+                                    /* opcode C4h E1h 78h 12h 7Ah  not defined */
+                                    /* opcode C4h E1h 78h 12h 7Bh  not defined */
+                                    /* opcode C4h E1h 78h 12h 7Ch  not defined */
+                                    /* opcode C4h E1h 78h 12h 7Dh  not defined */
+                                    /* opcode C4h E1h 78h 12h 7Eh  not defined */
+                                    /* opcode C4h E1h 78h 12h 7Fh  not defined */
+                                    /* opcode C4h E1h 78h 12h 80h  not defined */
+                                    /* opcode C4h E1h 78h 12h 81h  not defined */
+                                    /* opcode C4h E1h 78h 12h 82h  not defined */
+                                    /* opcode C4h E1h 78h 12h 83h  not defined */
+                                    /* opcode C4h E1h 78h 12h 84h  not defined */
+                                    /* opcode C4h E1h 78h 12h 85h  not defined */
+                                    /* opcode C4h E1h 78h 12h 86h  not defined */
+                                    /* opcode C4h E1h 78h 12h 87h  not defined */
+                                    /* opcode C4h E1h 78h 12h 88h  not defined */
+                                    /* opcode C4h E1h 78h 12h 89h  not defined */
+                                    /* opcode C4h E1h 78h 12h 8Ah  not defined */
+                                    /* opcode C4h E1h 78h 12h 8Bh  not defined */
+                                    /* opcode C4h E1h 78h 12h 8Ch  not defined */
+                                    /* opcode C4h E1h 78h 12h 8Dh  not defined */
+                                    /* opcode C4h E1h 78h 12h 8Eh  not defined */
+                                    /* opcode C4h E1h 78h 12h 8Fh  not defined */
+                                    /* opcode C4h E1h 78h 12h 90h  not defined */
+                                    /* opcode C4h E1h 78h 12h 91h  not defined */
+                                    /* opcode C4h E1h 78h 12h 92h  not defined */
+                                    /* opcode C4h E1h 78h 12h 93h  not defined */
+                                    /* opcode C4h E1h 78h 12h 94h  not defined */
+                                    /* opcode C4h E1h 78h 12h 95h  not defined */
+                                    /* opcode C4h E1h 78h 12h 96h  not defined */
+                                    /* opcode C4h E1h 78h 12h 97h  not defined */
+                                    /* opcode C4h E1h 78h 12h 98h  not defined */
+                                    /* opcode C4h E1h 78h 12h 99h  not defined */
+                                    /* opcode C4h E1h 78h 12h 9Ah  not defined */
+                                    /* opcode C4h E1h 78h 12h 9Bh  not defined */
+                                    /* opcode C4h E1h 78h 12h 9Ch  not defined */
+                                    /* opcode C4h E1h 78h 12h 9Dh  not defined */
+                                    /* opcode C4h E1h 78h 12h 9Eh  not defined */
+                                    /* opcode C4h E1h 78h 12h 9Fh  not defined */
+                                    /* opcode C4h E1h 78h 12h A0h  not defined */
+                                    /* opcode C4h E1h 78h 12h A1h  not defined */
+                                    /* opcode C4h E1h 78h 12h A2h  not defined */
+                                    /* opcode C4h E1h 78h 12h A3h  not defined */
+                                    /* opcode C4h E1h 78h 12h A4h  not defined */
+                                    /* opcode C4h E1h 78h 12h A5h  not defined */
+                                    /* opcode C4h E1h 78h 12h A6h  not defined */
+                                    /* opcode C4h E1h 78h 12h A7h  not defined */
+                                    /* opcode C4h E1h 78h 12h A8h  not defined */
+                                    /* opcode C4h E1h 78h 12h A9h  not defined */
+                                    /* opcode C4h E1h 78h 12h AAh  not defined */
+                                    /* opcode C4h E1h 78h 12h ABh  not defined */
+                                    /* opcode C4h E1h 78h 12h ACh  not defined */
+                                    /* opcode C4h E1h 78h 12h ADh  not defined */
+                                    /* opcode C4h E1h 78h 12h AEh  not defined */
+                                    /* opcode C4h E1h 78h 12h AFh  not defined */
+                                    /* opcode C4h E1h 78h 12h B0h  not defined */
+                                    /* opcode C4h E1h 78h 12h B1h  not defined */
+                                    /* opcode C4h E1h 78h 12h B2h  not defined */
+                                    /* opcode C4h E1h 78h 12h B3h  not defined */
+                                    /* opcode C4h E1h 78h 12h B4h  not defined */
+                                    /* opcode C4h E1h 78h 12h B5h  not defined */
+                                    /* opcode C4h E1h 78h 12h B6h  not defined */
+                                    /* opcode C4h E1h 78h 12h B7h  not defined */
+                                    /* opcode C4h E1h 78h 12h B8h  not defined */
+                                    /* opcode C4h E1h 78h 12h B9h  not defined */
+                                    /* opcode C4h E1h 78h 12h BAh  not defined */
+                                    /* opcode C4h E1h 78h 12h BBh  not defined */
+                                    /* opcode C4h E1h 78h 12h BCh  not defined */
+                                    /* opcode C4h E1h 78h 12h BDh  not defined */
+                                    /* opcode C4h E1h 78h 12h BEh  not defined */
+                                    /* opcode C4h E1h 78h 12h BFh  not defined */
+                                    case 0xC0: /* C4h E1h 78h 12h C0h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xC1: /* C4h E1h 78h 12h C1h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xC2: /* C4h E1h 78h 12h C2h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xC3: /* C4h E1h 78h 12h C3h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xC4: /* C4h E1h 78h 12h C4h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xC5: /* C4h E1h 78h 12h C5h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xC6: /* C4h E1h 78h 12h C6h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xC7: /* C4h E1h 78h 12h C7h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xC8: /* C4h E1h 78h 12h C8h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xC9: /* C4h E1h 78h 12h C9h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xCA: /* C4h E1h 78h 12h CAh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xCB: /* C4h E1h 78h 12h CBh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xCC: /* C4h E1h 78h 12h CCh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xCD: /* C4h E1h 78h 12h CDh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xCE: /* C4h E1h 78h 12h CEh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xCF: /* C4h E1h 78h 12h CFh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xD0: /* C4h E1h 78h 12h D0h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xD1: /* C4h E1h 78h 12h D1h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xD2: /* C4h E1h 78h 12h D2h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xD3: /* C4h E1h 78h 12h D3h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xD4: /* C4h E1h 78h 12h D4h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xD5: /* C4h E1h 78h 12h D5h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xD6: /* C4h E1h 78h 12h D6h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xD7: /* C4h E1h 78h 12h D7h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xD8: /* C4h E1h 78h 12h D8h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xD9: /* C4h E1h 78h 12h D9h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xDA: /* C4h E1h 78h 12h DAh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xDB: /* C4h E1h 78h 12h DBh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xDC: /* C4h E1h 78h 12h DCh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xDD: /* C4h E1h 78h 12h DDh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xDE: /* C4h E1h 78h 12h DEh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xDF: /* C4h E1h 78h 12h DFh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xE0: /* C4h E1h 78h 12h E0h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xE1: /* C4h E1h 78h 12h E1h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xE2: /* C4h E1h 78h 12h E2h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xE3: /* C4h E1h 78h 12h E3h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xE4: /* C4h E1h 78h 12h E4h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xE5: /* C4h E1h 78h 12h E5h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xE6: /* C4h E1h 78h 12h E6h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xE7: /* C4h E1h 78h 12h E7h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xE8: /* C4h E1h 78h 12h E8h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xE9: /* C4h E1h 78h 12h E9h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xEA: /* C4h E1h 78h 12h EAh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xEB: /* C4h E1h 78h 12h EBh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xEC: /* C4h E1h 78h 12h ECh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xED: /* C4h E1h 78h 12h EDh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xEE: /* C4h E1h 78h 12h EEh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xEF: /* C4h E1h 78h 12h EFh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xF0: /* C4h E1h 78h 12h F0h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xF1: /* C4h E1h 78h 12h F1h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xF2: /* C4h E1h 78h 12h F2h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xF3: /* C4h E1h 78h 12h F3h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xF4: /* C4h E1h 78h 12h F4h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xF5: /* C4h E1h 78h 12h F5h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xF6: /* C4h E1h 78h 12h F6h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xF7: /* C4h E1h 78h 12h F7h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xF8: /* C4h E1h 78h 12h F8h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xF9: /* C4h E1h 78h 12h F9h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xFA: /* C4h E1h 78h 12h FAh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xFB: /* C4h E1h 78h 12h FBh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xFC: /* C4h E1h 78h 12h FCh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xFD: /* C4h E1h 78h 12h FDh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xFE: /* C4h E1h 78h 12h FEh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                    case 0xFF: /* C4h E1h 78h 12h FFh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVHLPS XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                                        break;
+                                    default:
+                                        goto _x86decode_illegal_opcode;
+                                };
+/* End of opcodes starting with C4h E1h 78h 12h */
+                                break;
                             /* opcode C4h E1h 78h 13h  not defined */
-                            /* opcode C4h E1h 78h 14h  not defined */
-                            /* opcode C4h E1h 78h 15h  not defined */
+                            case 0x14: /* C4h E1h 78h 14h VUNPCKLPS sse(reg),sse(vsidx),sse(r/m)      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x14 mod/reg/rm */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKLPS XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                                break;
+                            case 0x15: /* C4h E1h 78h 15h VUNPCKHPS sse(reg),sse(vsidx),sse(r/m)      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x15 mod/reg/rm */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKHPS XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                                break;
                             /* opcode C4h E1h 78h 16h  not defined */
                             /* opcode C4h E1h 78h 17h  not defined */
                             /* opcode C4h E1h 78h 18h  not defined */
@@ -16677,6 +17777,1904 @@ switch (op) {
                         };
 /* End of opcodes starting with C4h E1h 78h */
                         break;
+                    case 0x79: /* C4h E1h 79h        spec:  */
+                        vex.V = ((~op) >> 3) & 7;
+/* Opcodes starting with C4h E1h 79h */
+                        op=IPFB();
+                        _x86decode_begin_code16_addr16_opcode_parse_C4E179:
+                        switch (op) {
+                            /* opcode C4h E1h 79h 00h  not defined */
+                            /* opcode C4h E1h 79h 01h  not defined */
+                            /* opcode C4h E1h 79h 02h  not defined */
+                            /* opcode C4h E1h 79h 03h  not defined */
+                            /* opcode C4h E1h 79h 04h  not defined */
+                            /* opcode C4h E1h 79h 05h  not defined */
+                            /* opcode C4h E1h 79h 06h  not defined */
+                            /* opcode C4h E1h 79h 07h  not defined */
+                            /* opcode C4h E1h 79h 08h  not defined */
+                            /* opcode C4h E1h 79h 09h  not defined */
+                            /* opcode C4h E1h 79h 0Ah  not defined */
+                            /* opcode C4h E1h 79h 0Bh  not defined */
+                            /* opcode C4h E1h 79h 0Ch  not defined */
+                            /* opcode C4h E1h 79h 0Dh  not defined */
+                            /* opcode C4h E1h 79h 0Eh  not defined */
+                            /* opcode C4h E1h 79h 0Fh  not defined */
+                            case 0x10: /* C4h E1h 79h 10h VMOVUPD sse(reg),sse(r/m)      spec: vex vsize(128) vlead(0x0F) vprefix(0x66) 0x10 mod/reg/rm vsidx(0) */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVUPD XMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                                break;
+                            case 0x11: /* C4h E1h 79h 11h VMOVUPD sse(r/m),sse(reg)      spec: vex vsize(128) vlead(0x0F) vprefix(0x66) 0x11 mod/reg/rm vsidx(0) */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVUPD %s,XMM%u",IPDecPrint16(mrm,disp,16,RC_SSEREG,""),mrm.reg());
+                                break;
+                            /* opcode C4h E1h 79h 12h  not defined */
+                            /* opcode C4h E1h 79h 13h  not defined */
+                            case 0x14: /* C4h E1h 79h 14h VUNPCKLPD sse(reg),sse(vsidx),sse(r/m)      spec: vex vsize(128) vlead(0x0F) vprefix(0x66) 0x14 mod/reg/rm */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKLPD XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                                break;
+                            case 0x15: /* C4h E1h 79h 15h VUNPCKHPD sse(reg),sse(vsidx),sse(r/m)      spec: vex vsize(128) vlead(0x0F) vprefix(0x66) 0x15 mod/reg/rm */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKHPD XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                                break;
+                            /* opcode C4h E1h 79h 16h  not defined */
+                            /* opcode C4h E1h 79h 17h  not defined */
+                            /* opcode C4h E1h 79h 18h  not defined */
+                            /* opcode C4h E1h 79h 19h  not defined */
+                            /* opcode C4h E1h 79h 1Ah  not defined */
+                            /* opcode C4h E1h 79h 1Bh  not defined */
+                            /* opcode C4h E1h 79h 1Ch  not defined */
+                            /* opcode C4h E1h 79h 1Dh  not defined */
+                            /* opcode C4h E1h 79h 1Eh  not defined */
+                            /* opcode C4h E1h 79h 1Fh  not defined */
+                            /* opcode C4h E1h 79h 20h  not defined */
+                            /* opcode C4h E1h 79h 21h  not defined */
+                            /* opcode C4h E1h 79h 22h  not defined */
+                            /* opcode C4h E1h 79h 23h  not defined */
+                            /* opcode C4h E1h 79h 24h  not defined */
+                            /* opcode C4h E1h 79h 25h  not defined */
+                            /* opcode C4h E1h 79h 26h  not defined */
+                            /* opcode C4h E1h 79h 27h  not defined */
+                            /* opcode C4h E1h 79h 28h  not defined */
+                            /* opcode C4h E1h 79h 29h  not defined */
+                            /* opcode C4h E1h 79h 2Ah  not defined */
+                            /* opcode C4h E1h 79h 2Bh  not defined */
+                            /* opcode C4h E1h 79h 2Ch  not defined */
+                            /* opcode C4h E1h 79h 2Dh  not defined */
+                            /* opcode C4h E1h 79h 2Eh  not defined */
+                            /* opcode C4h E1h 79h 2Fh  not defined */
+                            /* opcode C4h E1h 79h 30h  not defined */
+                            /* opcode C4h E1h 79h 31h  not defined */
+                            /* opcode C4h E1h 79h 32h  not defined */
+                            /* opcode C4h E1h 79h 33h  not defined */
+                            /* opcode C4h E1h 79h 34h  not defined */
+                            /* opcode C4h E1h 79h 35h  not defined */
+                            /* opcode C4h E1h 79h 36h  not defined */
+                            /* opcode C4h E1h 79h 37h  not defined */
+                            /* opcode C4h E1h 79h 38h  not defined */
+                            /* opcode C4h E1h 79h 39h  not defined */
+                            /* opcode C4h E1h 79h 3Ah  not defined */
+                            /* opcode C4h E1h 79h 3Bh  not defined */
+                            /* opcode C4h E1h 79h 3Ch  not defined */
+                            /* opcode C4h E1h 79h 3Dh  not defined */
+                            /* opcode C4h E1h 79h 3Eh  not defined */
+                            /* opcode C4h E1h 79h 3Fh  not defined */
+                            /* opcode C4h E1h 79h 40h  not defined */
+                            /* opcode C4h E1h 79h 41h  not defined */
+                            /* opcode C4h E1h 79h 42h  not defined */
+                            /* opcode C4h E1h 79h 43h  not defined */
+                            /* opcode C4h E1h 79h 44h  not defined */
+                            /* opcode C4h E1h 79h 45h  not defined */
+                            /* opcode C4h E1h 79h 46h  not defined */
+                            /* opcode C4h E1h 79h 47h  not defined */
+                            /* opcode C4h E1h 79h 48h  not defined */
+                            /* opcode C4h E1h 79h 49h  not defined */
+                            /* opcode C4h E1h 79h 4Ah  not defined */
+                            /* opcode C4h E1h 79h 4Bh  not defined */
+                            /* opcode C4h E1h 79h 4Ch  not defined */
+                            /* opcode C4h E1h 79h 4Dh  not defined */
+                            /* opcode C4h E1h 79h 4Eh  not defined */
+                            /* opcode C4h E1h 79h 4Fh  not defined */
+                            /* opcode C4h E1h 79h 50h  not defined */
+                            /* opcode C4h E1h 79h 51h  not defined */
+                            /* opcode C4h E1h 79h 52h  not defined */
+                            /* opcode C4h E1h 79h 53h  not defined */
+                            /* opcode C4h E1h 79h 54h  not defined */
+                            /* opcode C4h E1h 79h 55h  not defined */
+                            /* opcode C4h E1h 79h 56h  not defined */
+                            /* opcode C4h E1h 79h 57h  not defined */
+                            case 0x58: /* C4h E1h 79h 58h VADDPD sse(reg),sse(vsidx),sse(r/m)      spec: vex vsize(128) vlead(0x0F) vprefix(0x66) 0x58 mod/reg/rm */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VADDPD XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                                break;
+                            /* opcode C4h E1h 79h 59h  not defined */
+                            /* opcode C4h E1h 79h 5Ah  not defined */
+                            /* opcode C4h E1h 79h 5Bh  not defined */
+                            /* opcode C4h E1h 79h 5Ch  not defined */
+                            /* opcode C4h E1h 79h 5Dh  not defined */
+                            /* opcode C4h E1h 79h 5Eh  not defined */
+                            /* opcode C4h E1h 79h 5Fh  not defined */
+                            /* opcode C4h E1h 79h 60h  not defined */
+                            /* opcode C4h E1h 79h 61h  not defined */
+                            /* opcode C4h E1h 79h 62h  not defined */
+                            /* opcode C4h E1h 79h 63h  not defined */
+                            /* opcode C4h E1h 79h 64h  not defined */
+                            /* opcode C4h E1h 79h 65h  not defined */
+                            /* opcode C4h E1h 79h 66h  not defined */
+                            /* opcode C4h E1h 79h 67h  not defined */
+                            /* opcode C4h E1h 79h 68h  not defined */
+                            /* opcode C4h E1h 79h 69h  not defined */
+                            /* opcode C4h E1h 79h 6Ah  not defined */
+                            /* opcode C4h E1h 79h 6Bh  not defined */
+                            /* opcode C4h E1h 79h 6Ch  not defined */
+                            /* opcode C4h E1h 79h 6Dh  not defined */
+                            /* opcode C4h E1h 79h 6Eh  not defined */
+                            /* opcode C4h E1h 79h 6Fh  not defined */
+                            /* opcode C4h E1h 79h 70h  not defined */
+                            /* opcode C4h E1h 79h 71h  not defined */
+                            /* opcode C4h E1h 79h 72h  not defined */
+                            /* opcode C4h E1h 79h 73h  not defined */
+                            /* opcode C4h E1h 79h 74h  not defined */
+                            /* opcode C4h E1h 79h 75h  not defined */
+                            /* opcode C4h E1h 79h 76h  not defined */
+                            /* opcode C4h E1h 79h 77h  not defined */
+                            /* opcode C4h E1h 79h 78h  not defined */
+                            /* opcode C4h E1h 79h 79h  not defined */
+                            /* opcode C4h E1h 79h 7Ah  not defined */
+                            /* opcode C4h E1h 79h 7Bh  not defined */
+                            /* opcode C4h E1h 79h 7Ch  not defined */
+                            /* opcode C4h E1h 79h 7Dh  not defined */
+                            /* opcode C4h E1h 79h 7Eh  not defined */
+                            /* opcode C4h E1h 79h 7Fh  not defined */
+                            /* opcode C4h E1h 79h 80h  not defined */
+                            /* opcode C4h E1h 79h 81h  not defined */
+                            /* opcode C4h E1h 79h 82h  not defined */
+                            /* opcode C4h E1h 79h 83h  not defined */
+                            /* opcode C4h E1h 79h 84h  not defined */
+                            /* opcode C4h E1h 79h 85h  not defined */
+                            /* opcode C4h E1h 79h 86h  not defined */
+                            /* opcode C4h E1h 79h 87h  not defined */
+                            /* opcode C4h E1h 79h 88h  not defined */
+                            /* opcode C4h E1h 79h 89h  not defined */
+                            /* opcode C4h E1h 79h 8Ah  not defined */
+                            /* opcode C4h E1h 79h 8Bh  not defined */
+                            /* opcode C4h E1h 79h 8Ch  not defined */
+                            /* opcode C4h E1h 79h 8Dh  not defined */
+                            /* opcode C4h E1h 79h 8Eh  not defined */
+                            /* opcode C4h E1h 79h 8Fh  not defined */
+                            /* opcode C4h E1h 79h 90h  not defined */
+                            /* opcode C4h E1h 79h 91h  not defined */
+                            /* opcode C4h E1h 79h 92h  not defined */
+                            /* opcode C4h E1h 79h 93h  not defined */
+                            /* opcode C4h E1h 79h 94h  not defined */
+                            /* opcode C4h E1h 79h 95h  not defined */
+                            /* opcode C4h E1h 79h 96h  not defined */
+                            /* opcode C4h E1h 79h 97h  not defined */
+                            /* opcode C4h E1h 79h 98h  not defined */
+                            /* opcode C4h E1h 79h 99h  not defined */
+                            /* opcode C4h E1h 79h 9Ah  not defined */
+                            /* opcode C4h E1h 79h 9Bh  not defined */
+                            /* opcode C4h E1h 79h 9Ch  not defined */
+                            /* opcode C4h E1h 79h 9Dh  not defined */
+                            /* opcode C4h E1h 79h 9Eh  not defined */
+                            /* opcode C4h E1h 79h 9Fh  not defined */
+                            /* opcode C4h E1h 79h A0h  not defined */
+                            /* opcode C4h E1h 79h A1h  not defined */
+                            /* opcode C4h E1h 79h A2h  not defined */
+                            /* opcode C4h E1h 79h A3h  not defined */
+                            /* opcode C4h E1h 79h A4h  not defined */
+                            /* opcode C4h E1h 79h A5h  not defined */
+                            /* opcode C4h E1h 79h A6h  not defined */
+                            /* opcode C4h E1h 79h A7h  not defined */
+                            /* opcode C4h E1h 79h A8h  not defined */
+                            /* opcode C4h E1h 79h A9h  not defined */
+                            /* opcode C4h E1h 79h AAh  not defined */
+                            /* opcode C4h E1h 79h ABh  not defined */
+                            /* opcode C4h E1h 79h ACh  not defined */
+                            /* opcode C4h E1h 79h ADh  not defined */
+                            /* opcode C4h E1h 79h AEh  not defined */
+                            /* opcode C4h E1h 79h AFh  not defined */
+                            /* opcode C4h E1h 79h B0h  not defined */
+                            /* opcode C4h E1h 79h B1h  not defined */
+                            /* opcode C4h E1h 79h B2h  not defined */
+                            /* opcode C4h E1h 79h B3h  not defined */
+                            /* opcode C4h E1h 79h B4h  not defined */
+                            /* opcode C4h E1h 79h B5h  not defined */
+                            /* opcode C4h E1h 79h B6h  not defined */
+                            /* opcode C4h E1h 79h B7h  not defined */
+                            /* opcode C4h E1h 79h B8h  not defined */
+                            /* opcode C4h E1h 79h B9h  not defined */
+                            /* opcode C4h E1h 79h BAh  not defined */
+                            /* opcode C4h E1h 79h BBh  not defined */
+                            /* opcode C4h E1h 79h BCh  not defined */
+                            /* opcode C4h E1h 79h BDh  not defined */
+                            /* opcode C4h E1h 79h BEh  not defined */
+                            /* opcode C4h E1h 79h BFh  not defined */
+                            /* opcode C4h E1h 79h C0h  not defined */
+                            /* opcode C4h E1h 79h C1h  not defined */
+                            /* opcode C4h E1h 79h C2h  not defined */
+                            /* opcode C4h E1h 79h C3h  not defined */
+                            /* opcode C4h E1h 79h C4h  not defined */
+                            /* opcode C4h E1h 79h C5h  not defined */
+                            /* opcode C4h E1h 79h C6h  not defined */
+                            /* opcode C4h E1h 79h C7h  not defined */
+                            /* opcode C4h E1h 79h C8h  not defined */
+                            /* opcode C4h E1h 79h C9h  not defined */
+                            /* opcode C4h E1h 79h CAh  not defined */
+                            /* opcode C4h E1h 79h CBh  not defined */
+                            /* opcode C4h E1h 79h CCh  not defined */
+                            /* opcode C4h E1h 79h CDh  not defined */
+                            /* opcode C4h E1h 79h CEh  not defined */
+                            /* opcode C4h E1h 79h CFh  not defined */
+                            /* opcode C4h E1h 79h D0h  not defined */
+                            /* opcode C4h E1h 79h D1h  not defined */
+                            /* opcode C4h E1h 79h D2h  not defined */
+                            /* opcode C4h E1h 79h D3h  not defined */
+                            /* opcode C4h E1h 79h D4h  not defined */
+                            /* opcode C4h E1h 79h D5h  not defined */
+                            /* opcode C4h E1h 79h D6h  not defined */
+                            /* opcode C4h E1h 79h D7h  not defined */
+                            /* opcode C4h E1h 79h D8h  not defined */
+                            /* opcode C4h E1h 79h D9h  not defined */
+                            /* opcode C4h E1h 79h DAh  not defined */
+                            /* opcode C4h E1h 79h DBh  not defined */
+                            /* opcode C4h E1h 79h DCh  not defined */
+                            /* opcode C4h E1h 79h DDh  not defined */
+                            /* opcode C4h E1h 79h DEh  not defined */
+                            /* opcode C4h E1h 79h DFh  not defined */
+                            /* opcode C4h E1h 79h E0h  not defined */
+                            /* opcode C4h E1h 79h E1h  not defined */
+                            /* opcode C4h E1h 79h E2h  not defined */
+                            /* opcode C4h E1h 79h E3h  not defined */
+                            /* opcode C4h E1h 79h E4h  not defined */
+                            /* opcode C4h E1h 79h E5h  not defined */
+                            /* opcode C4h E1h 79h E6h  not defined */
+                            /* opcode C4h E1h 79h E7h  not defined */
+                            /* opcode C4h E1h 79h E8h  not defined */
+                            /* opcode C4h E1h 79h E9h  not defined */
+                            /* opcode C4h E1h 79h EAh  not defined */
+                            /* opcode C4h E1h 79h EBh  not defined */
+                            /* opcode C4h E1h 79h ECh  not defined */
+                            /* opcode C4h E1h 79h EDh  not defined */
+                            /* opcode C4h E1h 79h EEh  not defined */
+                            /* opcode C4h E1h 79h EFh  not defined */
+                            /* opcode C4h E1h 79h F0h  not defined */
+                            /* opcode C4h E1h 79h F1h  not defined */
+                            /* opcode C4h E1h 79h F2h  not defined */
+                            /* opcode C4h E1h 79h F3h  not defined */
+                            /* opcode C4h E1h 79h F4h  not defined */
+                            /* opcode C4h E1h 79h F5h  not defined */
+                            /* opcode C4h E1h 79h F6h  not defined */
+                            /* opcode C4h E1h 79h F7h  not defined */
+                            /* opcode C4h E1h 79h F8h  not defined */
+                            /* opcode C4h E1h 79h F9h  not defined */
+                            /* opcode C4h E1h 79h FAh  not defined */
+                            /* opcode C4h E1h 79h FBh  not defined */
+                            /* opcode C4h E1h 79h FCh  not defined */
+                            /* opcode C4h E1h 79h FDh  not defined */
+                            /* opcode C4h E1h 79h FEh  not defined */
+                            /* opcode C4h E1h 79h FFh  not defined */
+                            default:
+                                goto _x86decode_illegal_opcode;
+                        };
+/* End of opcodes starting with C4h E1h 79h */
+                        break;
+                    case 0x7A: /* C4h E1h 7Ah        spec:  */
+                        vex.V = ((~op) >> 3) & 7;
+/* Opcodes starting with C4h E1h 7Ah */
+                        op=IPFB();
+                        _x86decode_begin_code16_addr16_opcode_parse_C4E17A:
+                        switch (op) {
+                            /* opcode C4h E1h 7Ah 00h  not defined */
+                            /* opcode C4h E1h 7Ah 01h  not defined */
+                            /* opcode C4h E1h 7Ah 02h  not defined */
+                            /* opcode C4h E1h 7Ah 03h  not defined */
+                            /* opcode C4h E1h 7Ah 04h  not defined */
+                            /* opcode C4h E1h 7Ah 05h  not defined */
+                            /* opcode C4h E1h 7Ah 06h  not defined */
+                            /* opcode C4h E1h 7Ah 07h  not defined */
+                            /* opcode C4h E1h 7Ah 08h  not defined */
+                            /* opcode C4h E1h 7Ah 09h  not defined */
+                            /* opcode C4h E1h 7Ah 0Ah  not defined */
+                            /* opcode C4h E1h 7Ah 0Bh  not defined */
+                            /* opcode C4h E1h 7Ah 0Ch  not defined */
+                            /* opcode C4h E1h 7Ah 0Dh  not defined */
+                            /* opcode C4h E1h 7Ah 0Eh  not defined */
+                            /* opcode C4h E1h 7Ah 0Fh  not defined */
+                            case 0x10: /* C4h E1h 7Ah 10h        spec:  */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                _x86decode_begin_code16_addr16_opcode_parse_C4E17A10:
+/* Opcodes starting with C4h E1h 7Ah 10h */
+                                switch (mrm.byte) {
+                                    case 0x00: /* C4h E1h 7Ah 10h 00h VMOVSS sse(reg),w32(r/m) mod=0 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x01: /* C4h E1h 7Ah 10h 01h VMOVSS sse(reg),w32(r/m) mod=0 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x02: /* C4h E1h 7Ah 10h 02h VMOVSS sse(reg),w32(r/m) mod=0 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x03: /* C4h E1h 7Ah 10h 03h VMOVSS sse(reg),w32(r/m) mod=0 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x04: /* C4h E1h 7Ah 10h 04h VMOVSS sse(reg),w32(r/m) mod=0 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x05: /* C4h E1h 7Ah 10h 05h VMOVSS sse(reg),w32(r/m) mod=0 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x06: /* C4h E1h 7Ah 10h 06h VMOVSS sse(reg),w32(r/m) mod=0 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x07: /* C4h E1h 7Ah 10h 07h VMOVSS sse(reg),w32(r/m) mod=0 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x08: /* C4h E1h 7Ah 10h 08h VMOVSS sse(reg),w32(r/m) mod=0 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x09: /* C4h E1h 7Ah 10h 09h VMOVSS sse(reg),w32(r/m) mod=0 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x0A: /* C4h E1h 7Ah 10h 0Ah VMOVSS sse(reg),w32(r/m) mod=0 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x0B: /* C4h E1h 7Ah 10h 0Bh VMOVSS sse(reg),w32(r/m) mod=0 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x0C: /* C4h E1h 7Ah 10h 0Ch VMOVSS sse(reg),w32(r/m) mod=0 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x0D: /* C4h E1h 7Ah 10h 0Dh VMOVSS sse(reg),w32(r/m) mod=0 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x0E: /* C4h E1h 7Ah 10h 0Eh VMOVSS sse(reg),w32(r/m) mod=0 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x0F: /* C4h E1h 7Ah 10h 0Fh VMOVSS sse(reg),w32(r/m) mod=0 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x10: /* C4h E1h 7Ah 10h 10h VMOVSS sse(reg),w32(r/m) mod=0 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x11: /* C4h E1h 7Ah 10h 11h VMOVSS sse(reg),w32(r/m) mod=0 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x12: /* C4h E1h 7Ah 10h 12h VMOVSS sse(reg),w32(r/m) mod=0 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x13: /* C4h E1h 7Ah 10h 13h VMOVSS sse(reg),w32(r/m) mod=0 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x14: /* C4h E1h 7Ah 10h 14h VMOVSS sse(reg),w32(r/m) mod=0 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x15: /* C4h E1h 7Ah 10h 15h VMOVSS sse(reg),w32(r/m) mod=0 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x16: /* C4h E1h 7Ah 10h 16h VMOVSS sse(reg),w32(r/m) mod=0 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x17: /* C4h E1h 7Ah 10h 17h VMOVSS sse(reg),w32(r/m) mod=0 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x18: /* C4h E1h 7Ah 10h 18h VMOVSS sse(reg),w32(r/m) mod=0 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x19: /* C4h E1h 7Ah 10h 19h VMOVSS sse(reg),w32(r/m) mod=0 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x1A: /* C4h E1h 7Ah 10h 1Ah VMOVSS sse(reg),w32(r/m) mod=0 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x1B: /* C4h E1h 7Ah 10h 1Bh VMOVSS sse(reg),w32(r/m) mod=0 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x1C: /* C4h E1h 7Ah 10h 1Ch VMOVSS sse(reg),w32(r/m) mod=0 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x1D: /* C4h E1h 7Ah 10h 1Dh VMOVSS sse(reg),w32(r/m) mod=0 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x1E: /* C4h E1h 7Ah 10h 1Eh VMOVSS sse(reg),w32(r/m) mod=0 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x1F: /* C4h E1h 7Ah 10h 1Fh VMOVSS sse(reg),w32(r/m) mod=0 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x20: /* C4h E1h 7Ah 10h 20h VMOVSS sse(reg),w32(r/m) mod=0 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x21: /* C4h E1h 7Ah 10h 21h VMOVSS sse(reg),w32(r/m) mod=0 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x22: /* C4h E1h 7Ah 10h 22h VMOVSS sse(reg),w32(r/m) mod=0 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x23: /* C4h E1h 7Ah 10h 23h VMOVSS sse(reg),w32(r/m) mod=0 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x24: /* C4h E1h 7Ah 10h 24h VMOVSS sse(reg),w32(r/m) mod=0 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x25: /* C4h E1h 7Ah 10h 25h VMOVSS sse(reg),w32(r/m) mod=0 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x26: /* C4h E1h 7Ah 10h 26h VMOVSS sse(reg),w32(r/m) mod=0 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x27: /* C4h E1h 7Ah 10h 27h VMOVSS sse(reg),w32(r/m) mod=0 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x28: /* C4h E1h 7Ah 10h 28h VMOVSS sse(reg),w32(r/m) mod=0 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x29: /* C4h E1h 7Ah 10h 29h VMOVSS sse(reg),w32(r/m) mod=0 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x2A: /* C4h E1h 7Ah 10h 2Ah VMOVSS sse(reg),w32(r/m) mod=0 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x2B: /* C4h E1h 7Ah 10h 2Bh VMOVSS sse(reg),w32(r/m) mod=0 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x2C: /* C4h E1h 7Ah 10h 2Ch VMOVSS sse(reg),w32(r/m) mod=0 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x2D: /* C4h E1h 7Ah 10h 2Dh VMOVSS sse(reg),w32(r/m) mod=0 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x2E: /* C4h E1h 7Ah 10h 2Eh VMOVSS sse(reg),w32(r/m) mod=0 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x2F: /* C4h E1h 7Ah 10h 2Fh VMOVSS sse(reg),w32(r/m) mod=0 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x30: /* C4h E1h 7Ah 10h 30h VMOVSS sse(reg),w32(r/m) mod=0 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x31: /* C4h E1h 7Ah 10h 31h VMOVSS sse(reg),w32(r/m) mod=0 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x32: /* C4h E1h 7Ah 10h 32h VMOVSS sse(reg),w32(r/m) mod=0 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x33: /* C4h E1h 7Ah 10h 33h VMOVSS sse(reg),w32(r/m) mod=0 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x34: /* C4h E1h 7Ah 10h 34h VMOVSS sse(reg),w32(r/m) mod=0 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x35: /* C4h E1h 7Ah 10h 35h VMOVSS sse(reg),w32(r/m) mod=0 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x36: /* C4h E1h 7Ah 10h 36h VMOVSS sse(reg),w32(r/m) mod=0 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x37: /* C4h E1h 7Ah 10h 37h VMOVSS sse(reg),w32(r/m) mod=0 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x38: /* C4h E1h 7Ah 10h 38h VMOVSS sse(reg),w32(r/m) mod=0 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x39: /* C4h E1h 7Ah 10h 39h VMOVSS sse(reg),w32(r/m) mod=0 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x3A: /* C4h E1h 7Ah 10h 3Ah VMOVSS sse(reg),w32(r/m) mod=0 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x3B: /* C4h E1h 7Ah 10h 3Bh VMOVSS sse(reg),w32(r/m) mod=0 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x3C: /* C4h E1h 7Ah 10h 3Ch VMOVSS sse(reg),w32(r/m) mod=0 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x3D: /* C4h E1h 7Ah 10h 3Dh VMOVSS sse(reg),w32(r/m) mod=0 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x3E: /* C4h E1h 7Ah 10h 3Eh VMOVSS sse(reg),w32(r/m) mod=0 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x3F: /* C4h E1h 7Ah 10h 3Fh VMOVSS sse(reg),w32(r/m) mod=0 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x40: /* C4h E1h 7Ah 10h 40h VMOVSS sse(reg),w32(r/m) mod=1 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x41: /* C4h E1h 7Ah 10h 41h VMOVSS sse(reg),w32(r/m) mod=1 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x42: /* C4h E1h 7Ah 10h 42h VMOVSS sse(reg),w32(r/m) mod=1 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x43: /* C4h E1h 7Ah 10h 43h VMOVSS sse(reg),w32(r/m) mod=1 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x44: /* C4h E1h 7Ah 10h 44h VMOVSS sse(reg),w32(r/m) mod=1 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x45: /* C4h E1h 7Ah 10h 45h VMOVSS sse(reg),w32(r/m) mod=1 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x46: /* C4h E1h 7Ah 10h 46h VMOVSS sse(reg),w32(r/m) mod=1 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x47: /* C4h E1h 7Ah 10h 47h VMOVSS sse(reg),w32(r/m) mod=1 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x48: /* C4h E1h 7Ah 10h 48h VMOVSS sse(reg),w32(r/m) mod=1 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x49: /* C4h E1h 7Ah 10h 49h VMOVSS sse(reg),w32(r/m) mod=1 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x4A: /* C4h E1h 7Ah 10h 4Ah VMOVSS sse(reg),w32(r/m) mod=1 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x4B: /* C4h E1h 7Ah 10h 4Bh VMOVSS sse(reg),w32(r/m) mod=1 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x4C: /* C4h E1h 7Ah 10h 4Ch VMOVSS sse(reg),w32(r/m) mod=1 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x4D: /* C4h E1h 7Ah 10h 4Dh VMOVSS sse(reg),w32(r/m) mod=1 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x4E: /* C4h E1h 7Ah 10h 4Eh VMOVSS sse(reg),w32(r/m) mod=1 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x4F: /* C4h E1h 7Ah 10h 4Fh VMOVSS sse(reg),w32(r/m) mod=1 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x50: /* C4h E1h 7Ah 10h 50h VMOVSS sse(reg),w32(r/m) mod=1 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x51: /* C4h E1h 7Ah 10h 51h VMOVSS sse(reg),w32(r/m) mod=1 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x52: /* C4h E1h 7Ah 10h 52h VMOVSS sse(reg),w32(r/m) mod=1 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x53: /* C4h E1h 7Ah 10h 53h VMOVSS sse(reg),w32(r/m) mod=1 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x54: /* C4h E1h 7Ah 10h 54h VMOVSS sse(reg),w32(r/m) mod=1 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x55: /* C4h E1h 7Ah 10h 55h VMOVSS sse(reg),w32(r/m) mod=1 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x56: /* C4h E1h 7Ah 10h 56h VMOVSS sse(reg),w32(r/m) mod=1 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x57: /* C4h E1h 7Ah 10h 57h VMOVSS sse(reg),w32(r/m) mod=1 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x58: /* C4h E1h 7Ah 10h 58h VMOVSS sse(reg),w32(r/m) mod=1 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x59: /* C4h E1h 7Ah 10h 59h VMOVSS sse(reg),w32(r/m) mod=1 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x5A: /* C4h E1h 7Ah 10h 5Ah VMOVSS sse(reg),w32(r/m) mod=1 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x5B: /* C4h E1h 7Ah 10h 5Bh VMOVSS sse(reg),w32(r/m) mod=1 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x5C: /* C4h E1h 7Ah 10h 5Ch VMOVSS sse(reg),w32(r/m) mod=1 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x5D: /* C4h E1h 7Ah 10h 5Dh VMOVSS sse(reg),w32(r/m) mod=1 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x5E: /* C4h E1h 7Ah 10h 5Eh VMOVSS sse(reg),w32(r/m) mod=1 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x5F: /* C4h E1h 7Ah 10h 5Fh VMOVSS sse(reg),w32(r/m) mod=1 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x60: /* C4h E1h 7Ah 10h 60h VMOVSS sse(reg),w32(r/m) mod=1 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x61: /* C4h E1h 7Ah 10h 61h VMOVSS sse(reg),w32(r/m) mod=1 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x62: /* C4h E1h 7Ah 10h 62h VMOVSS sse(reg),w32(r/m) mod=1 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x63: /* C4h E1h 7Ah 10h 63h VMOVSS sse(reg),w32(r/m) mod=1 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x64: /* C4h E1h 7Ah 10h 64h VMOVSS sse(reg),w32(r/m) mod=1 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x65: /* C4h E1h 7Ah 10h 65h VMOVSS sse(reg),w32(r/m) mod=1 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x66: /* C4h E1h 7Ah 10h 66h VMOVSS sse(reg),w32(r/m) mod=1 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x67: /* C4h E1h 7Ah 10h 67h VMOVSS sse(reg),w32(r/m) mod=1 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x68: /* C4h E1h 7Ah 10h 68h VMOVSS sse(reg),w32(r/m) mod=1 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x69: /* C4h E1h 7Ah 10h 69h VMOVSS sse(reg),w32(r/m) mod=1 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x6A: /* C4h E1h 7Ah 10h 6Ah VMOVSS sse(reg),w32(r/m) mod=1 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x6B: /* C4h E1h 7Ah 10h 6Bh VMOVSS sse(reg),w32(r/m) mod=1 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x6C: /* C4h E1h 7Ah 10h 6Ch VMOVSS sse(reg),w32(r/m) mod=1 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x6D: /* C4h E1h 7Ah 10h 6Dh VMOVSS sse(reg),w32(r/m) mod=1 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x6E: /* C4h E1h 7Ah 10h 6Eh VMOVSS sse(reg),w32(r/m) mod=1 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x6F: /* C4h E1h 7Ah 10h 6Fh VMOVSS sse(reg),w32(r/m) mod=1 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x70: /* C4h E1h 7Ah 10h 70h VMOVSS sse(reg),w32(r/m) mod=1 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x71: /* C4h E1h 7Ah 10h 71h VMOVSS sse(reg),w32(r/m) mod=1 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x72: /* C4h E1h 7Ah 10h 72h VMOVSS sse(reg),w32(r/m) mod=1 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x73: /* C4h E1h 7Ah 10h 73h VMOVSS sse(reg),w32(r/m) mod=1 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x74: /* C4h E1h 7Ah 10h 74h VMOVSS sse(reg),w32(r/m) mod=1 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x75: /* C4h E1h 7Ah 10h 75h VMOVSS sse(reg),w32(r/m) mod=1 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x76: /* C4h E1h 7Ah 10h 76h VMOVSS sse(reg),w32(r/m) mod=1 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x77: /* C4h E1h 7Ah 10h 77h VMOVSS sse(reg),w32(r/m) mod=1 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x78: /* C4h E1h 7Ah 10h 78h VMOVSS sse(reg),w32(r/m) mod=1 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x79: /* C4h E1h 7Ah 10h 79h VMOVSS sse(reg),w32(r/m) mod=1 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x7A: /* C4h E1h 7Ah 10h 7Ah VMOVSS sse(reg),w32(r/m) mod=1 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x7B: /* C4h E1h 7Ah 10h 7Bh VMOVSS sse(reg),w32(r/m) mod=1 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x7C: /* C4h E1h 7Ah 10h 7Ch VMOVSS sse(reg),w32(r/m) mod=1 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x7D: /* C4h E1h 7Ah 10h 7Dh VMOVSS sse(reg),w32(r/m) mod=1 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x7E: /* C4h E1h 7Ah 10h 7Eh VMOVSS sse(reg),w32(r/m) mod=1 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x7F: /* C4h E1h 7Ah 10h 7Fh VMOVSS sse(reg),w32(r/m) mod=1 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x80: /* C4h E1h 7Ah 10h 80h VMOVSS sse(reg),w32(r/m) mod=2 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x81: /* C4h E1h 7Ah 10h 81h VMOVSS sse(reg),w32(r/m) mod=2 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x82: /* C4h E1h 7Ah 10h 82h VMOVSS sse(reg),w32(r/m) mod=2 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x83: /* C4h E1h 7Ah 10h 83h VMOVSS sse(reg),w32(r/m) mod=2 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x84: /* C4h E1h 7Ah 10h 84h VMOVSS sse(reg),w32(r/m) mod=2 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x85: /* C4h E1h 7Ah 10h 85h VMOVSS sse(reg),w32(r/m) mod=2 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x86: /* C4h E1h 7Ah 10h 86h VMOVSS sse(reg),w32(r/m) mod=2 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x87: /* C4h E1h 7Ah 10h 87h VMOVSS sse(reg),w32(r/m) mod=2 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x88: /* C4h E1h 7Ah 10h 88h VMOVSS sse(reg),w32(r/m) mod=2 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x89: /* C4h E1h 7Ah 10h 89h VMOVSS sse(reg),w32(r/m) mod=2 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x8A: /* C4h E1h 7Ah 10h 8Ah VMOVSS sse(reg),w32(r/m) mod=2 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x8B: /* C4h E1h 7Ah 10h 8Bh VMOVSS sse(reg),w32(r/m) mod=2 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x8C: /* C4h E1h 7Ah 10h 8Ch VMOVSS sse(reg),w32(r/m) mod=2 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x8D: /* C4h E1h 7Ah 10h 8Dh VMOVSS sse(reg),w32(r/m) mod=2 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x8E: /* C4h E1h 7Ah 10h 8Eh VMOVSS sse(reg),w32(r/m) mod=2 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x8F: /* C4h E1h 7Ah 10h 8Fh VMOVSS sse(reg),w32(r/m) mod=2 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x90: /* C4h E1h 7Ah 10h 90h VMOVSS sse(reg),w32(r/m) mod=2 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x91: /* C4h E1h 7Ah 10h 91h VMOVSS sse(reg),w32(r/m) mod=2 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x92: /* C4h E1h 7Ah 10h 92h VMOVSS sse(reg),w32(r/m) mod=2 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x93: /* C4h E1h 7Ah 10h 93h VMOVSS sse(reg),w32(r/m) mod=2 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x94: /* C4h E1h 7Ah 10h 94h VMOVSS sse(reg),w32(r/m) mod=2 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x95: /* C4h E1h 7Ah 10h 95h VMOVSS sse(reg),w32(r/m) mod=2 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x96: /* C4h E1h 7Ah 10h 96h VMOVSS sse(reg),w32(r/m) mod=2 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x97: /* C4h E1h 7Ah 10h 97h VMOVSS sse(reg),w32(r/m) mod=2 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x98: /* C4h E1h 7Ah 10h 98h VMOVSS sse(reg),w32(r/m) mod=2 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x99: /* C4h E1h 7Ah 10h 99h VMOVSS sse(reg),w32(r/m) mod=2 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x9A: /* C4h E1h 7Ah 10h 9Ah VMOVSS sse(reg),w32(r/m) mod=2 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x9B: /* C4h E1h 7Ah 10h 9Bh VMOVSS sse(reg),w32(r/m) mod=2 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x9C: /* C4h E1h 7Ah 10h 9Ch VMOVSS sse(reg),w32(r/m) mod=2 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x9D: /* C4h E1h 7Ah 10h 9Dh VMOVSS sse(reg),w32(r/m) mod=2 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x9E: /* C4h E1h 7Ah 10h 9Eh VMOVSS sse(reg),w32(r/m) mod=2 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x9F: /* C4h E1h 7Ah 10h 9Fh VMOVSS sse(reg),w32(r/m) mod=2 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA0: /* C4h E1h 7Ah 10h A0h VMOVSS sse(reg),w32(r/m) mod=2 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA1: /* C4h E1h 7Ah 10h A1h VMOVSS sse(reg),w32(r/m) mod=2 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA2: /* C4h E1h 7Ah 10h A2h VMOVSS sse(reg),w32(r/m) mod=2 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA3: /* C4h E1h 7Ah 10h A3h VMOVSS sse(reg),w32(r/m) mod=2 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA4: /* C4h E1h 7Ah 10h A4h VMOVSS sse(reg),w32(r/m) mod=2 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA5: /* C4h E1h 7Ah 10h A5h VMOVSS sse(reg),w32(r/m) mod=2 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA6: /* C4h E1h 7Ah 10h A6h VMOVSS sse(reg),w32(r/m) mod=2 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA7: /* C4h E1h 7Ah 10h A7h VMOVSS sse(reg),w32(r/m) mod=2 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA8: /* C4h E1h 7Ah 10h A8h VMOVSS sse(reg),w32(r/m) mod=2 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA9: /* C4h E1h 7Ah 10h A9h VMOVSS sse(reg),w32(r/m) mod=2 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xAA: /* C4h E1h 7Ah 10h AAh VMOVSS sse(reg),w32(r/m) mod=2 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xAB: /* C4h E1h 7Ah 10h ABh VMOVSS sse(reg),w32(r/m) mod=2 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xAC: /* C4h E1h 7Ah 10h ACh VMOVSS sse(reg),w32(r/m) mod=2 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xAD: /* C4h E1h 7Ah 10h ADh VMOVSS sse(reg),w32(r/m) mod=2 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xAE: /* C4h E1h 7Ah 10h AEh VMOVSS sse(reg),w32(r/m) mod=2 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xAF: /* C4h E1h 7Ah 10h AFh VMOVSS sse(reg),w32(r/m) mod=2 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB0: /* C4h E1h 7Ah 10h B0h VMOVSS sse(reg),w32(r/m) mod=2 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB1: /* C4h E1h 7Ah 10h B1h VMOVSS sse(reg),w32(r/m) mod=2 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB2: /* C4h E1h 7Ah 10h B2h VMOVSS sse(reg),w32(r/m) mod=2 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB3: /* C4h E1h 7Ah 10h B3h VMOVSS sse(reg),w32(r/m) mod=2 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB4: /* C4h E1h 7Ah 10h B4h VMOVSS sse(reg),w32(r/m) mod=2 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB5: /* C4h E1h 7Ah 10h B5h VMOVSS sse(reg),w32(r/m) mod=2 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB6: /* C4h E1h 7Ah 10h B6h VMOVSS sse(reg),w32(r/m) mod=2 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB7: /* C4h E1h 7Ah 10h B7h VMOVSS sse(reg),w32(r/m) mod=2 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB8: /* C4h E1h 7Ah 10h B8h VMOVSS sse(reg),w32(r/m) mod=2 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB9: /* C4h E1h 7Ah 10h B9h VMOVSS sse(reg),w32(r/m) mod=2 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xBA: /* C4h E1h 7Ah 10h BAh VMOVSS sse(reg),w32(r/m) mod=2 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xBB: /* C4h E1h 7Ah 10h BBh VMOVSS sse(reg),w32(r/m) mod=2 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xBC: /* C4h E1h 7Ah 10h BCh VMOVSS sse(reg),w32(r/m) mod=2 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xBD: /* C4h E1h 7Ah 10h BDh VMOVSS sse(reg),w32(r/m) mod=2 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xBE: /* C4h E1h 7Ah 10h BEh VMOVSS sse(reg),w32(r/m) mod=2 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xBF: /* C4h E1h 7Ah 10h BFh VMOVSS sse(reg),w32(r/m) mod=2 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVSS XMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,4,RC_REG,"w32"));
+                                        break;
+                                    case 0xC0: /* C4h E1h 7Ah 10h C0h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC1: /* C4h E1h 7Ah 10h C1h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC2: /* C4h E1h 7Ah 10h C2h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC3: /* C4h E1h 7Ah 10h C3h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC4: /* C4h E1h 7Ah 10h C4h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC5: /* C4h E1h 7Ah 10h C5h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC6: /* C4h E1h 7Ah 10h C6h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC7: /* C4h E1h 7Ah 10h C7h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC8: /* C4h E1h 7Ah 10h C8h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC9: /* C4h E1h 7Ah 10h C9h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xCA: /* C4h E1h 7Ah 10h CAh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xCB: /* C4h E1h 7Ah 10h CBh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xCC: /* C4h E1h 7Ah 10h CCh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xCD: /* C4h E1h 7Ah 10h CDh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xCE: /* C4h E1h 7Ah 10h CEh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xCF: /* C4h E1h 7Ah 10h CFh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD0: /* C4h E1h 7Ah 10h D0h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD1: /* C4h E1h 7Ah 10h D1h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD2: /* C4h E1h 7Ah 10h D2h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD3: /* C4h E1h 7Ah 10h D3h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD4: /* C4h E1h 7Ah 10h D4h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD5: /* C4h E1h 7Ah 10h D5h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD6: /* C4h E1h 7Ah 10h D6h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD7: /* C4h E1h 7Ah 10h D7h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD8: /* C4h E1h 7Ah 10h D8h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD9: /* C4h E1h 7Ah 10h D9h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xDA: /* C4h E1h 7Ah 10h DAh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xDB: /* C4h E1h 7Ah 10h DBh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xDC: /* C4h E1h 7Ah 10h DCh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xDD: /* C4h E1h 7Ah 10h DDh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xDE: /* C4h E1h 7Ah 10h DEh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xDF: /* C4h E1h 7Ah 10h DFh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE0: /* C4h E1h 7Ah 10h E0h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE1: /* C4h E1h 7Ah 10h E1h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE2: /* C4h E1h 7Ah 10h E2h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE3: /* C4h E1h 7Ah 10h E3h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE4: /* C4h E1h 7Ah 10h E4h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE5: /* C4h E1h 7Ah 10h E5h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE6: /* C4h E1h 7Ah 10h E6h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE7: /* C4h E1h 7Ah 10h E7h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE8: /* C4h E1h 7Ah 10h E8h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE9: /* C4h E1h 7Ah 10h E9h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xEA: /* C4h E1h 7Ah 10h EAh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xEB: /* C4h E1h 7Ah 10h EBh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xEC: /* C4h E1h 7Ah 10h ECh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xED: /* C4h E1h 7Ah 10h EDh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xEE: /* C4h E1h 7Ah 10h EEh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xEF: /* C4h E1h 7Ah 10h EFh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF0: /* C4h E1h 7Ah 10h F0h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF1: /* C4h E1h 7Ah 10h F1h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF2: /* C4h E1h 7Ah 10h F2h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF3: /* C4h E1h 7Ah 10h F3h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF4: /* C4h E1h 7Ah 10h F4h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF5: /* C4h E1h 7Ah 10h F5h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF6: /* C4h E1h 7Ah 10h F6h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF7: /* C4h E1h 7Ah 10h F7h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF8: /* C4h E1h 7Ah 10h F8h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF9: /* C4h E1h 7Ah 10h F9h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xFA: /* C4h E1h 7Ah 10h FAh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xFB: /* C4h E1h 7Ah 10h FBh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xFC: /* C4h E1h 7Ah 10h FCh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xFD: /* C4h E1h 7Ah 10h FDh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xFE: /* C4h E1h 7Ah 10h FEh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                    case 0xFF: /* C4h E1h 7Ah 10h FFh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVSS XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                                        break;
+                                    default:
+                                        goto _x86decode_illegal_opcode;
+                                };
+/* End of opcodes starting with C4h E1h 7Ah 10h */
+                                break;
+                            case 0x11: /* C4h E1h 7Ah 11h        spec:  */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                _x86decode_begin_code16_addr16_opcode_parse_C4E17A11:
+/* Opcodes starting with C4h E1h 7Ah 11h */
+                                switch (mrm.byte) {
+                                    case 0x00: /* C4h E1h 7Ah 11h 00h VMOVSS w32(r/m),sse(reg) mod=0 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x01: /* C4h E1h 7Ah 11h 01h VMOVSS w32(r/m),sse(reg) mod=0 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x02: /* C4h E1h 7Ah 11h 02h VMOVSS w32(r/m),sse(reg) mod=0 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x03: /* C4h E1h 7Ah 11h 03h VMOVSS w32(r/m),sse(reg) mod=0 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x04: /* C4h E1h 7Ah 11h 04h VMOVSS w32(r/m),sse(reg) mod=0 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x05: /* C4h E1h 7Ah 11h 05h VMOVSS w32(r/m),sse(reg) mod=0 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x06: /* C4h E1h 7Ah 11h 06h VMOVSS w32(r/m),sse(reg) mod=0 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x07: /* C4h E1h 7Ah 11h 07h VMOVSS w32(r/m),sse(reg) mod=0 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x08: /* C4h E1h 7Ah 11h 08h VMOVSS w32(r/m),sse(reg) mod=0 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x09: /* C4h E1h 7Ah 11h 09h VMOVSS w32(r/m),sse(reg) mod=0 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x0A: /* C4h E1h 7Ah 11h 0Ah VMOVSS w32(r/m),sse(reg) mod=0 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x0B: /* C4h E1h 7Ah 11h 0Bh VMOVSS w32(r/m),sse(reg) mod=0 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x0C: /* C4h E1h 7Ah 11h 0Ch VMOVSS w32(r/m),sse(reg) mod=0 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x0D: /* C4h E1h 7Ah 11h 0Dh VMOVSS w32(r/m),sse(reg) mod=0 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x0E: /* C4h E1h 7Ah 11h 0Eh VMOVSS w32(r/m),sse(reg) mod=0 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x0F: /* C4h E1h 7Ah 11h 0Fh VMOVSS w32(r/m),sse(reg) mod=0 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x10: /* C4h E1h 7Ah 11h 10h VMOVSS w32(r/m),sse(reg) mod=0 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x11: /* C4h E1h 7Ah 11h 11h VMOVSS w32(r/m),sse(reg) mod=0 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x12: /* C4h E1h 7Ah 11h 12h VMOVSS w32(r/m),sse(reg) mod=0 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x13: /* C4h E1h 7Ah 11h 13h VMOVSS w32(r/m),sse(reg) mod=0 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x14: /* C4h E1h 7Ah 11h 14h VMOVSS w32(r/m),sse(reg) mod=0 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x15: /* C4h E1h 7Ah 11h 15h VMOVSS w32(r/m),sse(reg) mod=0 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x16: /* C4h E1h 7Ah 11h 16h VMOVSS w32(r/m),sse(reg) mod=0 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x17: /* C4h E1h 7Ah 11h 17h VMOVSS w32(r/m),sse(reg) mod=0 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x18: /* C4h E1h 7Ah 11h 18h VMOVSS w32(r/m),sse(reg) mod=0 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x19: /* C4h E1h 7Ah 11h 19h VMOVSS w32(r/m),sse(reg) mod=0 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x1A: /* C4h E1h 7Ah 11h 1Ah VMOVSS w32(r/m),sse(reg) mod=0 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x1B: /* C4h E1h 7Ah 11h 1Bh VMOVSS w32(r/m),sse(reg) mod=0 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x1C: /* C4h E1h 7Ah 11h 1Ch VMOVSS w32(r/m),sse(reg) mod=0 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x1D: /* C4h E1h 7Ah 11h 1Dh VMOVSS w32(r/m),sse(reg) mod=0 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x1E: /* C4h E1h 7Ah 11h 1Eh VMOVSS w32(r/m),sse(reg) mod=0 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x1F: /* C4h E1h 7Ah 11h 1Fh VMOVSS w32(r/m),sse(reg) mod=0 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x20: /* C4h E1h 7Ah 11h 20h VMOVSS w32(r/m),sse(reg) mod=0 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x21: /* C4h E1h 7Ah 11h 21h VMOVSS w32(r/m),sse(reg) mod=0 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x22: /* C4h E1h 7Ah 11h 22h VMOVSS w32(r/m),sse(reg) mod=0 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x23: /* C4h E1h 7Ah 11h 23h VMOVSS w32(r/m),sse(reg) mod=0 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x24: /* C4h E1h 7Ah 11h 24h VMOVSS w32(r/m),sse(reg) mod=0 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x25: /* C4h E1h 7Ah 11h 25h VMOVSS w32(r/m),sse(reg) mod=0 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x26: /* C4h E1h 7Ah 11h 26h VMOVSS w32(r/m),sse(reg) mod=0 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x27: /* C4h E1h 7Ah 11h 27h VMOVSS w32(r/m),sse(reg) mod=0 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x28: /* C4h E1h 7Ah 11h 28h VMOVSS w32(r/m),sse(reg) mod=0 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x29: /* C4h E1h 7Ah 11h 29h VMOVSS w32(r/m),sse(reg) mod=0 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x2A: /* C4h E1h 7Ah 11h 2Ah VMOVSS w32(r/m),sse(reg) mod=0 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x2B: /* C4h E1h 7Ah 11h 2Bh VMOVSS w32(r/m),sse(reg) mod=0 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x2C: /* C4h E1h 7Ah 11h 2Ch VMOVSS w32(r/m),sse(reg) mod=0 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x2D: /* C4h E1h 7Ah 11h 2Dh VMOVSS w32(r/m),sse(reg) mod=0 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x2E: /* C4h E1h 7Ah 11h 2Eh VMOVSS w32(r/m),sse(reg) mod=0 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x2F: /* C4h E1h 7Ah 11h 2Fh VMOVSS w32(r/m),sse(reg) mod=0 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x30: /* C4h E1h 7Ah 11h 30h VMOVSS w32(r/m),sse(reg) mod=0 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x31: /* C4h E1h 7Ah 11h 31h VMOVSS w32(r/m),sse(reg) mod=0 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x32: /* C4h E1h 7Ah 11h 32h VMOVSS w32(r/m),sse(reg) mod=0 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x33: /* C4h E1h 7Ah 11h 33h VMOVSS w32(r/m),sse(reg) mod=0 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x34: /* C4h E1h 7Ah 11h 34h VMOVSS w32(r/m),sse(reg) mod=0 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x35: /* C4h E1h 7Ah 11h 35h VMOVSS w32(r/m),sse(reg) mod=0 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x36: /* C4h E1h 7Ah 11h 36h VMOVSS w32(r/m),sse(reg) mod=0 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x37: /* C4h E1h 7Ah 11h 37h VMOVSS w32(r/m),sse(reg) mod=0 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x38: /* C4h E1h 7Ah 11h 38h VMOVSS w32(r/m),sse(reg) mod=0 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x39: /* C4h E1h 7Ah 11h 39h VMOVSS w32(r/m),sse(reg) mod=0 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x3A: /* C4h E1h 7Ah 11h 3Ah VMOVSS w32(r/m),sse(reg) mod=0 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x3B: /* C4h E1h 7Ah 11h 3Bh VMOVSS w32(r/m),sse(reg) mod=0 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x3C: /* C4h E1h 7Ah 11h 3Ch VMOVSS w32(r/m),sse(reg) mod=0 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x3D: /* C4h E1h 7Ah 11h 3Dh VMOVSS w32(r/m),sse(reg) mod=0 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x3E: /* C4h E1h 7Ah 11h 3Eh VMOVSS w32(r/m),sse(reg) mod=0 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x3F: /* C4h E1h 7Ah 11h 3Fh VMOVSS w32(r/m),sse(reg) mod=0 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x40: /* C4h E1h 7Ah 11h 40h VMOVSS w32(r/m),sse(reg) mod=1 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x41: /* C4h E1h 7Ah 11h 41h VMOVSS w32(r/m),sse(reg) mod=1 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x42: /* C4h E1h 7Ah 11h 42h VMOVSS w32(r/m),sse(reg) mod=1 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x43: /* C4h E1h 7Ah 11h 43h VMOVSS w32(r/m),sse(reg) mod=1 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x44: /* C4h E1h 7Ah 11h 44h VMOVSS w32(r/m),sse(reg) mod=1 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x45: /* C4h E1h 7Ah 11h 45h VMOVSS w32(r/m),sse(reg) mod=1 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x46: /* C4h E1h 7Ah 11h 46h VMOVSS w32(r/m),sse(reg) mod=1 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x47: /* C4h E1h 7Ah 11h 47h VMOVSS w32(r/m),sse(reg) mod=1 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x48: /* C4h E1h 7Ah 11h 48h VMOVSS w32(r/m),sse(reg) mod=1 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x49: /* C4h E1h 7Ah 11h 49h VMOVSS w32(r/m),sse(reg) mod=1 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x4A: /* C4h E1h 7Ah 11h 4Ah VMOVSS w32(r/m),sse(reg) mod=1 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x4B: /* C4h E1h 7Ah 11h 4Bh VMOVSS w32(r/m),sse(reg) mod=1 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x4C: /* C4h E1h 7Ah 11h 4Ch VMOVSS w32(r/m),sse(reg) mod=1 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x4D: /* C4h E1h 7Ah 11h 4Dh VMOVSS w32(r/m),sse(reg) mod=1 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x4E: /* C4h E1h 7Ah 11h 4Eh VMOVSS w32(r/m),sse(reg) mod=1 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x4F: /* C4h E1h 7Ah 11h 4Fh VMOVSS w32(r/m),sse(reg) mod=1 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x50: /* C4h E1h 7Ah 11h 50h VMOVSS w32(r/m),sse(reg) mod=1 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x51: /* C4h E1h 7Ah 11h 51h VMOVSS w32(r/m),sse(reg) mod=1 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x52: /* C4h E1h 7Ah 11h 52h VMOVSS w32(r/m),sse(reg) mod=1 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x53: /* C4h E1h 7Ah 11h 53h VMOVSS w32(r/m),sse(reg) mod=1 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x54: /* C4h E1h 7Ah 11h 54h VMOVSS w32(r/m),sse(reg) mod=1 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x55: /* C4h E1h 7Ah 11h 55h VMOVSS w32(r/m),sse(reg) mod=1 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x56: /* C4h E1h 7Ah 11h 56h VMOVSS w32(r/m),sse(reg) mod=1 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x57: /* C4h E1h 7Ah 11h 57h VMOVSS w32(r/m),sse(reg) mod=1 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x58: /* C4h E1h 7Ah 11h 58h VMOVSS w32(r/m),sse(reg) mod=1 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x59: /* C4h E1h 7Ah 11h 59h VMOVSS w32(r/m),sse(reg) mod=1 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x5A: /* C4h E1h 7Ah 11h 5Ah VMOVSS w32(r/m),sse(reg) mod=1 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x5B: /* C4h E1h 7Ah 11h 5Bh VMOVSS w32(r/m),sse(reg) mod=1 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x5C: /* C4h E1h 7Ah 11h 5Ch VMOVSS w32(r/m),sse(reg) mod=1 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x5D: /* C4h E1h 7Ah 11h 5Dh VMOVSS w32(r/m),sse(reg) mod=1 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x5E: /* C4h E1h 7Ah 11h 5Eh VMOVSS w32(r/m),sse(reg) mod=1 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x5F: /* C4h E1h 7Ah 11h 5Fh VMOVSS w32(r/m),sse(reg) mod=1 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x60: /* C4h E1h 7Ah 11h 60h VMOVSS w32(r/m),sse(reg) mod=1 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x61: /* C4h E1h 7Ah 11h 61h VMOVSS w32(r/m),sse(reg) mod=1 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x62: /* C4h E1h 7Ah 11h 62h VMOVSS w32(r/m),sse(reg) mod=1 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x63: /* C4h E1h 7Ah 11h 63h VMOVSS w32(r/m),sse(reg) mod=1 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x64: /* C4h E1h 7Ah 11h 64h VMOVSS w32(r/m),sse(reg) mod=1 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x65: /* C4h E1h 7Ah 11h 65h VMOVSS w32(r/m),sse(reg) mod=1 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x66: /* C4h E1h 7Ah 11h 66h VMOVSS w32(r/m),sse(reg) mod=1 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x67: /* C4h E1h 7Ah 11h 67h VMOVSS w32(r/m),sse(reg) mod=1 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x68: /* C4h E1h 7Ah 11h 68h VMOVSS w32(r/m),sse(reg) mod=1 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x69: /* C4h E1h 7Ah 11h 69h VMOVSS w32(r/m),sse(reg) mod=1 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x6A: /* C4h E1h 7Ah 11h 6Ah VMOVSS w32(r/m),sse(reg) mod=1 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x6B: /* C4h E1h 7Ah 11h 6Bh VMOVSS w32(r/m),sse(reg) mod=1 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x6C: /* C4h E1h 7Ah 11h 6Ch VMOVSS w32(r/m),sse(reg) mod=1 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x6D: /* C4h E1h 7Ah 11h 6Dh VMOVSS w32(r/m),sse(reg) mod=1 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x6E: /* C4h E1h 7Ah 11h 6Eh VMOVSS w32(r/m),sse(reg) mod=1 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x6F: /* C4h E1h 7Ah 11h 6Fh VMOVSS w32(r/m),sse(reg) mod=1 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x70: /* C4h E1h 7Ah 11h 70h VMOVSS w32(r/m),sse(reg) mod=1 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x71: /* C4h E1h 7Ah 11h 71h VMOVSS w32(r/m),sse(reg) mod=1 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x72: /* C4h E1h 7Ah 11h 72h VMOVSS w32(r/m),sse(reg) mod=1 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x73: /* C4h E1h 7Ah 11h 73h VMOVSS w32(r/m),sse(reg) mod=1 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x74: /* C4h E1h 7Ah 11h 74h VMOVSS w32(r/m),sse(reg) mod=1 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x75: /* C4h E1h 7Ah 11h 75h VMOVSS w32(r/m),sse(reg) mod=1 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x76: /* C4h E1h 7Ah 11h 76h VMOVSS w32(r/m),sse(reg) mod=1 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x77: /* C4h E1h 7Ah 11h 77h VMOVSS w32(r/m),sse(reg) mod=1 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x78: /* C4h E1h 7Ah 11h 78h VMOVSS w32(r/m),sse(reg) mod=1 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x79: /* C4h E1h 7Ah 11h 79h VMOVSS w32(r/m),sse(reg) mod=1 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x7A: /* C4h E1h 7Ah 11h 7Ah VMOVSS w32(r/m),sse(reg) mod=1 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x7B: /* C4h E1h 7Ah 11h 7Bh VMOVSS w32(r/m),sse(reg) mod=1 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x7C: /* C4h E1h 7Ah 11h 7Ch VMOVSS w32(r/m),sse(reg) mod=1 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x7D: /* C4h E1h 7Ah 11h 7Dh VMOVSS w32(r/m),sse(reg) mod=1 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x7E: /* C4h E1h 7Ah 11h 7Eh VMOVSS w32(r/m),sse(reg) mod=1 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x7F: /* C4h E1h 7Ah 11h 7Fh VMOVSS w32(r/m),sse(reg) mod=1 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x80: /* C4h E1h 7Ah 11h 80h VMOVSS w32(r/m),sse(reg) mod=2 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x81: /* C4h E1h 7Ah 11h 81h VMOVSS w32(r/m),sse(reg) mod=2 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x82: /* C4h E1h 7Ah 11h 82h VMOVSS w32(r/m),sse(reg) mod=2 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x83: /* C4h E1h 7Ah 11h 83h VMOVSS w32(r/m),sse(reg) mod=2 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x84: /* C4h E1h 7Ah 11h 84h VMOVSS w32(r/m),sse(reg) mod=2 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x85: /* C4h E1h 7Ah 11h 85h VMOVSS w32(r/m),sse(reg) mod=2 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x86: /* C4h E1h 7Ah 11h 86h VMOVSS w32(r/m),sse(reg) mod=2 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x87: /* C4h E1h 7Ah 11h 87h VMOVSS w32(r/m),sse(reg) mod=2 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x88: /* C4h E1h 7Ah 11h 88h VMOVSS w32(r/m),sse(reg) mod=2 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x89: /* C4h E1h 7Ah 11h 89h VMOVSS w32(r/m),sse(reg) mod=2 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x8A: /* C4h E1h 7Ah 11h 8Ah VMOVSS w32(r/m),sse(reg) mod=2 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x8B: /* C4h E1h 7Ah 11h 8Bh VMOVSS w32(r/m),sse(reg) mod=2 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x8C: /* C4h E1h 7Ah 11h 8Ch VMOVSS w32(r/m),sse(reg) mod=2 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x8D: /* C4h E1h 7Ah 11h 8Dh VMOVSS w32(r/m),sse(reg) mod=2 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x8E: /* C4h E1h 7Ah 11h 8Eh VMOVSS w32(r/m),sse(reg) mod=2 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x8F: /* C4h E1h 7Ah 11h 8Fh VMOVSS w32(r/m),sse(reg) mod=2 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x90: /* C4h E1h 7Ah 11h 90h VMOVSS w32(r/m),sse(reg) mod=2 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x91: /* C4h E1h 7Ah 11h 91h VMOVSS w32(r/m),sse(reg) mod=2 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x92: /* C4h E1h 7Ah 11h 92h VMOVSS w32(r/m),sse(reg) mod=2 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x93: /* C4h E1h 7Ah 11h 93h VMOVSS w32(r/m),sse(reg) mod=2 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x94: /* C4h E1h 7Ah 11h 94h VMOVSS w32(r/m),sse(reg) mod=2 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x95: /* C4h E1h 7Ah 11h 95h VMOVSS w32(r/m),sse(reg) mod=2 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x96: /* C4h E1h 7Ah 11h 96h VMOVSS w32(r/m),sse(reg) mod=2 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x97: /* C4h E1h 7Ah 11h 97h VMOVSS w32(r/m),sse(reg) mod=2 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x98: /* C4h E1h 7Ah 11h 98h VMOVSS w32(r/m),sse(reg) mod=2 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x99: /* C4h E1h 7Ah 11h 99h VMOVSS w32(r/m),sse(reg) mod=2 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x9A: /* C4h E1h 7Ah 11h 9Ah VMOVSS w32(r/m),sse(reg) mod=2 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x9B: /* C4h E1h 7Ah 11h 9Bh VMOVSS w32(r/m),sse(reg) mod=2 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x9C: /* C4h E1h 7Ah 11h 9Ch VMOVSS w32(r/m),sse(reg) mod=2 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x9D: /* C4h E1h 7Ah 11h 9Dh VMOVSS w32(r/m),sse(reg) mod=2 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x9E: /* C4h E1h 7Ah 11h 9Eh VMOVSS w32(r/m),sse(reg) mod=2 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x9F: /* C4h E1h 7Ah 11h 9Fh VMOVSS w32(r/m),sse(reg) mod=2 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA0: /* C4h E1h 7Ah 11h A0h VMOVSS w32(r/m),sse(reg) mod=2 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA1: /* C4h E1h 7Ah 11h A1h VMOVSS w32(r/m),sse(reg) mod=2 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA2: /* C4h E1h 7Ah 11h A2h VMOVSS w32(r/m),sse(reg) mod=2 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA3: /* C4h E1h 7Ah 11h A3h VMOVSS w32(r/m),sse(reg) mod=2 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA4: /* C4h E1h 7Ah 11h A4h VMOVSS w32(r/m),sse(reg) mod=2 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA5: /* C4h E1h 7Ah 11h A5h VMOVSS w32(r/m),sse(reg) mod=2 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA6: /* C4h E1h 7Ah 11h A6h VMOVSS w32(r/m),sse(reg) mod=2 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA7: /* C4h E1h 7Ah 11h A7h VMOVSS w32(r/m),sse(reg) mod=2 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA8: /* C4h E1h 7Ah 11h A8h VMOVSS w32(r/m),sse(reg) mod=2 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA9: /* C4h E1h 7Ah 11h A9h VMOVSS w32(r/m),sse(reg) mod=2 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xAA: /* C4h E1h 7Ah 11h AAh VMOVSS w32(r/m),sse(reg) mod=2 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xAB: /* C4h E1h 7Ah 11h ABh VMOVSS w32(r/m),sse(reg) mod=2 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xAC: /* C4h E1h 7Ah 11h ACh VMOVSS w32(r/m),sse(reg) mod=2 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xAD: /* C4h E1h 7Ah 11h ADh VMOVSS w32(r/m),sse(reg) mod=2 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xAE: /* C4h E1h 7Ah 11h AEh VMOVSS w32(r/m),sse(reg) mod=2 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xAF: /* C4h E1h 7Ah 11h AFh VMOVSS w32(r/m),sse(reg) mod=2 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB0: /* C4h E1h 7Ah 11h B0h VMOVSS w32(r/m),sse(reg) mod=2 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB1: /* C4h E1h 7Ah 11h B1h VMOVSS w32(r/m),sse(reg) mod=2 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB2: /* C4h E1h 7Ah 11h B2h VMOVSS w32(r/m),sse(reg) mod=2 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB3: /* C4h E1h 7Ah 11h B3h VMOVSS w32(r/m),sse(reg) mod=2 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB4: /* C4h E1h 7Ah 11h B4h VMOVSS w32(r/m),sse(reg) mod=2 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB5: /* C4h E1h 7Ah 11h B5h VMOVSS w32(r/m),sse(reg) mod=2 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB6: /* C4h E1h 7Ah 11h B6h VMOVSS w32(r/m),sse(reg) mod=2 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB7: /* C4h E1h 7Ah 11h B7h VMOVSS w32(r/m),sse(reg) mod=2 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB8: /* C4h E1h 7Ah 11h B8h VMOVSS w32(r/m),sse(reg) mod=2 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB9: /* C4h E1h 7Ah 11h B9h VMOVSS w32(r/m),sse(reg) mod=2 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xBA: /* C4h E1h 7Ah 11h BAh VMOVSS w32(r/m),sse(reg) mod=2 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xBB: /* C4h E1h 7Ah 11h BBh VMOVSS w32(r/m),sse(reg) mod=2 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xBC: /* C4h E1h 7Ah 11h BCh VMOVSS w32(r/m),sse(reg) mod=2 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xBD: /* C4h E1h 7Ah 11h BDh VMOVSS w32(r/m),sse(reg) mod=2 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xBE: /* C4h E1h 7Ah 11h BEh VMOVSS w32(r/m),sse(reg) mod=2 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xBF: /* C4h E1h 7Ah 11h BFh VMOVSS w32(r/m),sse(reg) mod=2 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVSS %s,XMM%u",IPDecPrint16(mrm,disp,4,RC_REG,"w32"),mrm.reg());
+                                        break;
+                                    case 0xC0: /* C4h E1h 7Ah 11h C0h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xC1: /* C4h E1h 7Ah 11h C1h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xC2: /* C4h E1h 7Ah 11h C2h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xC3: /* C4h E1h 7Ah 11h C3h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xC4: /* C4h E1h 7Ah 11h C4h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xC5: /* C4h E1h 7Ah 11h C5h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xC6: /* C4h E1h 7Ah 11h C6h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xC7: /* C4h E1h 7Ah 11h C7h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xC8: /* C4h E1h 7Ah 11h C8h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xC9: /* C4h E1h 7Ah 11h C9h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xCA: /* C4h E1h 7Ah 11h CAh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xCB: /* C4h E1h 7Ah 11h CBh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xCC: /* C4h E1h 7Ah 11h CCh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xCD: /* C4h E1h 7Ah 11h CDh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xCE: /* C4h E1h 7Ah 11h CEh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xCF: /* C4h E1h 7Ah 11h CFh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xD0: /* C4h E1h 7Ah 11h D0h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xD1: /* C4h E1h 7Ah 11h D1h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xD2: /* C4h E1h 7Ah 11h D2h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xD3: /* C4h E1h 7Ah 11h D3h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xD4: /* C4h E1h 7Ah 11h D4h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xD5: /* C4h E1h 7Ah 11h D5h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xD6: /* C4h E1h 7Ah 11h D6h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xD7: /* C4h E1h 7Ah 11h D7h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xD8: /* C4h E1h 7Ah 11h D8h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xD9: /* C4h E1h 7Ah 11h D9h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xDA: /* C4h E1h 7Ah 11h DAh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xDB: /* C4h E1h 7Ah 11h DBh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xDC: /* C4h E1h 7Ah 11h DCh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xDD: /* C4h E1h 7Ah 11h DDh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xDE: /* C4h E1h 7Ah 11h DEh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xDF: /* C4h E1h 7Ah 11h DFh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xE0: /* C4h E1h 7Ah 11h E0h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xE1: /* C4h E1h 7Ah 11h E1h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xE2: /* C4h E1h 7Ah 11h E2h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xE3: /* C4h E1h 7Ah 11h E3h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xE4: /* C4h E1h 7Ah 11h E4h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xE5: /* C4h E1h 7Ah 11h E5h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xE6: /* C4h E1h 7Ah 11h E6h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xE7: /* C4h E1h 7Ah 11h E7h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xE8: /* C4h E1h 7Ah 11h E8h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xE9: /* C4h E1h 7Ah 11h E9h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xEA: /* C4h E1h 7Ah 11h EAh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xEB: /* C4h E1h 7Ah 11h EBh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xEC: /* C4h E1h 7Ah 11h ECh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xED: /* C4h E1h 7Ah 11h EDh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xEE: /* C4h E1h 7Ah 11h EEh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xEF: /* C4h E1h 7Ah 11h EFh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xF0: /* C4h E1h 7Ah 11h F0h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xF1: /* C4h E1h 7Ah 11h F1h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xF2: /* C4h E1h 7Ah 11h F2h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xF3: /* C4h E1h 7Ah 11h F3h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xF4: /* C4h E1h 7Ah 11h F4h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xF5: /* C4h E1h 7Ah 11h F5h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xF6: /* C4h E1h 7Ah 11h F6h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xF7: /* C4h E1h 7Ah 11h F7h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xF8: /* C4h E1h 7Ah 11h F8h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xF9: /* C4h E1h 7Ah 11h F9h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xFA: /* C4h E1h 7Ah 11h FAh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xFB: /* C4h E1h 7Ah 11h FBh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xFC: /* C4h E1h 7Ah 11h FCh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xFD: /* C4h E1h 7Ah 11h FDh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xFE: /* C4h E1h 7Ah 11h FEh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                    case 0xFF: /* C4h E1h 7Ah 11h FFh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVSS XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                                        break;
+                                    default:
+                                        goto _x86decode_illegal_opcode;
+                                };
+/* End of opcodes starting with C4h E1h 7Ah 11h */
+                                break;
+                            /* opcode C4h E1h 7Ah 12h  not defined */
+                            /* opcode C4h E1h 7Ah 13h  not defined */
+                            /* opcode C4h E1h 7Ah 14h  not defined */
+                            /* opcode C4h E1h 7Ah 15h  not defined */
+                            /* opcode C4h E1h 7Ah 16h  not defined */
+                            /* opcode C4h E1h 7Ah 17h  not defined */
+                            /* opcode C4h E1h 7Ah 18h  not defined */
+                            /* opcode C4h E1h 7Ah 19h  not defined */
+                            /* opcode C4h E1h 7Ah 1Ah  not defined */
+                            /* opcode C4h E1h 7Ah 1Bh  not defined */
+                            /* opcode C4h E1h 7Ah 1Ch  not defined */
+                            /* opcode C4h E1h 7Ah 1Dh  not defined */
+                            /* opcode C4h E1h 7Ah 1Eh  not defined */
+                            /* opcode C4h E1h 7Ah 1Fh  not defined */
+                            /* opcode C4h E1h 7Ah 20h  not defined */
+                            /* opcode C4h E1h 7Ah 21h  not defined */
+                            /* opcode C4h E1h 7Ah 22h  not defined */
+                            /* opcode C4h E1h 7Ah 23h  not defined */
+                            /* opcode C4h E1h 7Ah 24h  not defined */
+                            /* opcode C4h E1h 7Ah 25h  not defined */
+                            /* opcode C4h E1h 7Ah 26h  not defined */
+                            /* opcode C4h E1h 7Ah 27h  not defined */
+                            /* opcode C4h E1h 7Ah 28h  not defined */
+                            /* opcode C4h E1h 7Ah 29h  not defined */
+                            /* opcode C4h E1h 7Ah 2Ah  not defined */
+                            /* opcode C4h E1h 7Ah 2Bh  not defined */
+                            /* opcode C4h E1h 7Ah 2Ch  not defined */
+                            /* opcode C4h E1h 7Ah 2Dh  not defined */
+                            /* opcode C4h E1h 7Ah 2Eh  not defined */
+                            /* opcode C4h E1h 7Ah 2Fh  not defined */
+                            /* opcode C4h E1h 7Ah 30h  not defined */
+                            /* opcode C4h E1h 7Ah 31h  not defined */
+                            /* opcode C4h E1h 7Ah 32h  not defined */
+                            /* opcode C4h E1h 7Ah 33h  not defined */
+                            /* opcode C4h E1h 7Ah 34h  not defined */
+                            /* opcode C4h E1h 7Ah 35h  not defined */
+                            /* opcode C4h E1h 7Ah 36h  not defined */
+                            /* opcode C4h E1h 7Ah 37h  not defined */
+                            /* opcode C4h E1h 7Ah 38h  not defined */
+                            /* opcode C4h E1h 7Ah 39h  not defined */
+                            /* opcode C4h E1h 7Ah 3Ah  not defined */
+                            /* opcode C4h E1h 7Ah 3Bh  not defined */
+                            /* opcode C4h E1h 7Ah 3Ch  not defined */
+                            /* opcode C4h E1h 7Ah 3Dh  not defined */
+                            /* opcode C4h E1h 7Ah 3Eh  not defined */
+                            /* opcode C4h E1h 7Ah 3Fh  not defined */
+                            /* opcode C4h E1h 7Ah 40h  not defined */
+                            /* opcode C4h E1h 7Ah 41h  not defined */
+                            /* opcode C4h E1h 7Ah 42h  not defined */
+                            /* opcode C4h E1h 7Ah 43h  not defined */
+                            /* opcode C4h E1h 7Ah 44h  not defined */
+                            /* opcode C4h E1h 7Ah 45h  not defined */
+                            /* opcode C4h E1h 7Ah 46h  not defined */
+                            /* opcode C4h E1h 7Ah 47h  not defined */
+                            /* opcode C4h E1h 7Ah 48h  not defined */
+                            /* opcode C4h E1h 7Ah 49h  not defined */
+                            /* opcode C4h E1h 7Ah 4Ah  not defined */
+                            /* opcode C4h E1h 7Ah 4Bh  not defined */
+                            /* opcode C4h E1h 7Ah 4Ch  not defined */
+                            /* opcode C4h E1h 7Ah 4Dh  not defined */
+                            /* opcode C4h E1h 7Ah 4Eh  not defined */
+                            /* opcode C4h E1h 7Ah 4Fh  not defined */
+                            /* opcode C4h E1h 7Ah 50h  not defined */
+                            /* opcode C4h E1h 7Ah 51h  not defined */
+                            /* opcode C4h E1h 7Ah 52h  not defined */
+                            /* opcode C4h E1h 7Ah 53h  not defined */
+                            /* opcode C4h E1h 7Ah 54h  not defined */
+                            /* opcode C4h E1h 7Ah 55h  not defined */
+                            /* opcode C4h E1h 7Ah 56h  not defined */
+                            /* opcode C4h E1h 7Ah 57h  not defined */
+                            case 0x58: /* C4h E1h 7Ah 58h VADDSS sse(reg),sse(vsidx),sse(r/m)      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x58 mod/reg/rm */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VADDSS XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                                break;
+                            /* opcode C4h E1h 7Ah 59h  not defined */
+                            /* opcode C4h E1h 7Ah 5Ah  not defined */
+                            /* opcode C4h E1h 7Ah 5Bh  not defined */
+                            /* opcode C4h E1h 7Ah 5Ch  not defined */
+                            /* opcode C4h E1h 7Ah 5Dh  not defined */
+                            /* opcode C4h E1h 7Ah 5Eh  not defined */
+                            /* opcode C4h E1h 7Ah 5Fh  not defined */
+                            /* opcode C4h E1h 7Ah 60h  not defined */
+                            /* opcode C4h E1h 7Ah 61h  not defined */
+                            /* opcode C4h E1h 7Ah 62h  not defined */
+                            /* opcode C4h E1h 7Ah 63h  not defined */
+                            /* opcode C4h E1h 7Ah 64h  not defined */
+                            /* opcode C4h E1h 7Ah 65h  not defined */
+                            /* opcode C4h E1h 7Ah 66h  not defined */
+                            /* opcode C4h E1h 7Ah 67h  not defined */
+                            /* opcode C4h E1h 7Ah 68h  not defined */
+                            /* opcode C4h E1h 7Ah 69h  not defined */
+                            /* opcode C4h E1h 7Ah 6Ah  not defined */
+                            /* opcode C4h E1h 7Ah 6Bh  not defined */
+                            /* opcode C4h E1h 7Ah 6Ch  not defined */
+                            /* opcode C4h E1h 7Ah 6Dh  not defined */
+                            /* opcode C4h E1h 7Ah 6Eh  not defined */
+                            /* opcode C4h E1h 7Ah 6Fh  not defined */
+                            /* opcode C4h E1h 7Ah 70h  not defined */
+                            /* opcode C4h E1h 7Ah 71h  not defined */
+                            /* opcode C4h E1h 7Ah 72h  not defined */
+                            /* opcode C4h E1h 7Ah 73h  not defined */
+                            /* opcode C4h E1h 7Ah 74h  not defined */
+                            /* opcode C4h E1h 7Ah 75h  not defined */
+                            /* opcode C4h E1h 7Ah 76h  not defined */
+                            /* opcode C4h E1h 7Ah 77h  not defined */
+                            /* opcode C4h E1h 7Ah 78h  not defined */
+                            /* opcode C4h E1h 7Ah 79h  not defined */
+                            /* opcode C4h E1h 7Ah 7Ah  not defined */
+                            /* opcode C4h E1h 7Ah 7Bh  not defined */
+                            /* opcode C4h E1h 7Ah 7Ch  not defined */
+                            /* opcode C4h E1h 7Ah 7Dh  not defined */
+                            /* opcode C4h E1h 7Ah 7Eh  not defined */
+                            /* opcode C4h E1h 7Ah 7Fh  not defined */
+                            /* opcode C4h E1h 7Ah 80h  not defined */
+                            /* opcode C4h E1h 7Ah 81h  not defined */
+                            /* opcode C4h E1h 7Ah 82h  not defined */
+                            /* opcode C4h E1h 7Ah 83h  not defined */
+                            /* opcode C4h E1h 7Ah 84h  not defined */
+                            /* opcode C4h E1h 7Ah 85h  not defined */
+                            /* opcode C4h E1h 7Ah 86h  not defined */
+                            /* opcode C4h E1h 7Ah 87h  not defined */
+                            /* opcode C4h E1h 7Ah 88h  not defined */
+                            /* opcode C4h E1h 7Ah 89h  not defined */
+                            /* opcode C4h E1h 7Ah 8Ah  not defined */
+                            /* opcode C4h E1h 7Ah 8Bh  not defined */
+                            /* opcode C4h E1h 7Ah 8Ch  not defined */
+                            /* opcode C4h E1h 7Ah 8Dh  not defined */
+                            /* opcode C4h E1h 7Ah 8Eh  not defined */
+                            /* opcode C4h E1h 7Ah 8Fh  not defined */
+                            /* opcode C4h E1h 7Ah 90h  not defined */
+                            /* opcode C4h E1h 7Ah 91h  not defined */
+                            /* opcode C4h E1h 7Ah 92h  not defined */
+                            /* opcode C4h E1h 7Ah 93h  not defined */
+                            /* opcode C4h E1h 7Ah 94h  not defined */
+                            /* opcode C4h E1h 7Ah 95h  not defined */
+                            /* opcode C4h E1h 7Ah 96h  not defined */
+                            /* opcode C4h E1h 7Ah 97h  not defined */
+                            /* opcode C4h E1h 7Ah 98h  not defined */
+                            /* opcode C4h E1h 7Ah 99h  not defined */
+                            /* opcode C4h E1h 7Ah 9Ah  not defined */
+                            /* opcode C4h E1h 7Ah 9Bh  not defined */
+                            /* opcode C4h E1h 7Ah 9Ch  not defined */
+                            /* opcode C4h E1h 7Ah 9Dh  not defined */
+                            /* opcode C4h E1h 7Ah 9Eh  not defined */
+                            /* opcode C4h E1h 7Ah 9Fh  not defined */
+                            /* opcode C4h E1h 7Ah A0h  not defined */
+                            /* opcode C4h E1h 7Ah A1h  not defined */
+                            /* opcode C4h E1h 7Ah A2h  not defined */
+                            /* opcode C4h E1h 7Ah A3h  not defined */
+                            /* opcode C4h E1h 7Ah A4h  not defined */
+                            /* opcode C4h E1h 7Ah A5h  not defined */
+                            /* opcode C4h E1h 7Ah A6h  not defined */
+                            /* opcode C4h E1h 7Ah A7h  not defined */
+                            /* opcode C4h E1h 7Ah A8h  not defined */
+                            /* opcode C4h E1h 7Ah A9h  not defined */
+                            /* opcode C4h E1h 7Ah AAh  not defined */
+                            /* opcode C4h E1h 7Ah ABh  not defined */
+                            /* opcode C4h E1h 7Ah ACh  not defined */
+                            /* opcode C4h E1h 7Ah ADh  not defined */
+                            /* opcode C4h E1h 7Ah AEh  not defined */
+                            /* opcode C4h E1h 7Ah AFh  not defined */
+                            /* opcode C4h E1h 7Ah B0h  not defined */
+                            /* opcode C4h E1h 7Ah B1h  not defined */
+                            /* opcode C4h E1h 7Ah B2h  not defined */
+                            /* opcode C4h E1h 7Ah B3h  not defined */
+                            /* opcode C4h E1h 7Ah B4h  not defined */
+                            /* opcode C4h E1h 7Ah B5h  not defined */
+                            /* opcode C4h E1h 7Ah B6h  not defined */
+                            /* opcode C4h E1h 7Ah B7h  not defined */
+                            /* opcode C4h E1h 7Ah B8h  not defined */
+                            /* opcode C4h E1h 7Ah B9h  not defined */
+                            /* opcode C4h E1h 7Ah BAh  not defined */
+                            /* opcode C4h E1h 7Ah BBh  not defined */
+                            /* opcode C4h E1h 7Ah BCh  not defined */
+                            /* opcode C4h E1h 7Ah BDh  not defined */
+                            /* opcode C4h E1h 7Ah BEh  not defined */
+                            /* opcode C4h E1h 7Ah BFh  not defined */
+                            /* opcode C4h E1h 7Ah C0h  not defined */
+                            /* opcode C4h E1h 7Ah C1h  not defined */
+                            /* opcode C4h E1h 7Ah C2h  not defined */
+                            /* opcode C4h E1h 7Ah C3h  not defined */
+                            /* opcode C4h E1h 7Ah C4h  not defined */
+                            /* opcode C4h E1h 7Ah C5h  not defined */
+                            /* opcode C4h E1h 7Ah C6h  not defined */
+                            /* opcode C4h E1h 7Ah C7h  not defined */
+                            /* opcode C4h E1h 7Ah C8h  not defined */
+                            /* opcode C4h E1h 7Ah C9h  not defined */
+                            /* opcode C4h E1h 7Ah CAh  not defined */
+                            /* opcode C4h E1h 7Ah CBh  not defined */
+                            /* opcode C4h E1h 7Ah CCh  not defined */
+                            /* opcode C4h E1h 7Ah CDh  not defined */
+                            /* opcode C4h E1h 7Ah CEh  not defined */
+                            /* opcode C4h E1h 7Ah CFh  not defined */
+                            /* opcode C4h E1h 7Ah D0h  not defined */
+                            /* opcode C4h E1h 7Ah D1h  not defined */
+                            /* opcode C4h E1h 7Ah D2h  not defined */
+                            /* opcode C4h E1h 7Ah D3h  not defined */
+                            /* opcode C4h E1h 7Ah D4h  not defined */
+                            /* opcode C4h E1h 7Ah D5h  not defined */
+                            /* opcode C4h E1h 7Ah D6h  not defined */
+                            /* opcode C4h E1h 7Ah D7h  not defined */
+                            /* opcode C4h E1h 7Ah D8h  not defined */
+                            /* opcode C4h E1h 7Ah D9h  not defined */
+                            /* opcode C4h E1h 7Ah DAh  not defined */
+                            /* opcode C4h E1h 7Ah DBh  not defined */
+                            /* opcode C4h E1h 7Ah DCh  not defined */
+                            /* opcode C4h E1h 7Ah DDh  not defined */
+                            /* opcode C4h E1h 7Ah DEh  not defined */
+                            /* opcode C4h E1h 7Ah DFh  not defined */
+                            /* opcode C4h E1h 7Ah E0h  not defined */
+                            /* opcode C4h E1h 7Ah E1h  not defined */
+                            /* opcode C4h E1h 7Ah E2h  not defined */
+                            /* opcode C4h E1h 7Ah E3h  not defined */
+                            /* opcode C4h E1h 7Ah E4h  not defined */
+                            /* opcode C4h E1h 7Ah E5h  not defined */
+                            /* opcode C4h E1h 7Ah E6h  not defined */
+                            /* opcode C4h E1h 7Ah E7h  not defined */
+                            /* opcode C4h E1h 7Ah E8h  not defined */
+                            /* opcode C4h E1h 7Ah E9h  not defined */
+                            /* opcode C4h E1h 7Ah EAh  not defined */
+                            /* opcode C4h E1h 7Ah EBh  not defined */
+                            /* opcode C4h E1h 7Ah ECh  not defined */
+                            /* opcode C4h E1h 7Ah EDh  not defined */
+                            /* opcode C4h E1h 7Ah EEh  not defined */
+                            /* opcode C4h E1h 7Ah EFh  not defined */
+                            /* opcode C4h E1h 7Ah F0h  not defined */
+                            /* opcode C4h E1h 7Ah F1h  not defined */
+                            /* opcode C4h E1h 7Ah F2h  not defined */
+                            /* opcode C4h E1h 7Ah F3h  not defined */
+                            /* opcode C4h E1h 7Ah F4h  not defined */
+                            /* opcode C4h E1h 7Ah F5h  not defined */
+                            /* opcode C4h E1h 7Ah F6h  not defined */
+                            /* opcode C4h E1h 7Ah F7h  not defined */
+                            /* opcode C4h E1h 7Ah F8h  not defined */
+                            /* opcode C4h E1h 7Ah F9h  not defined */
+                            /* opcode C4h E1h 7Ah FAh  not defined */
+                            /* opcode C4h E1h 7Ah FBh  not defined */
+                            /* opcode C4h E1h 7Ah FCh  not defined */
+                            /* opcode C4h E1h 7Ah FDh  not defined */
+                            /* opcode C4h E1h 7Ah FEh  not defined */
+                            /* opcode C4h E1h 7Ah FFh  not defined */
+                            default:
+                                goto _x86decode_illegal_opcode;
+                        };
+/* End of opcodes starting with C4h E1h 7Ah */
+                        break;
+                    case 0x7B: /* C4h E1h 7Bh        spec:  */
+                        vex.V = ((~op) >> 3) & 7;
+/* Opcodes starting with C4h E1h 7Bh */
+                        op=IPFB();
+                        _x86decode_begin_code16_addr16_opcode_parse_C4E17B:
+                        switch (op) {
+                            /* opcode C4h E1h 7Bh 00h  not defined */
+                            /* opcode C4h E1h 7Bh 01h  not defined */
+                            /* opcode C4h E1h 7Bh 02h  not defined */
+                            /* opcode C4h E1h 7Bh 03h  not defined */
+                            /* opcode C4h E1h 7Bh 04h  not defined */
+                            /* opcode C4h E1h 7Bh 05h  not defined */
+                            /* opcode C4h E1h 7Bh 06h  not defined */
+                            /* opcode C4h E1h 7Bh 07h  not defined */
+                            /* opcode C4h E1h 7Bh 08h  not defined */
+                            /* opcode C4h E1h 7Bh 09h  not defined */
+                            /* opcode C4h E1h 7Bh 0Ah  not defined */
+                            /* opcode C4h E1h 7Bh 0Bh  not defined */
+                            /* opcode C4h E1h 7Bh 0Ch  not defined */
+                            /* opcode C4h E1h 7Bh 0Dh  not defined */
+                            /* opcode C4h E1h 7Bh 0Eh  not defined */
+                            /* opcode C4h E1h 7Bh 0Fh  not defined */
+                            case 0x10: /* C4h E1h 7Bh 10h        spec:  */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                _x86decode_begin_code16_addr16_opcode_parse_C4E17B10:
+/* Opcodes starting with C4h E1h 7Bh 10h */
+                                switch (mrm.byte) {
+                                    case 0x00: /* C4h E1h 7Bh 10h 00h VMOVSD sse(reg),w32(r/m) mod=0 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x01: /* C4h E1h 7Bh 10h 01h VMOVSD sse(reg),w32(r/m) mod=0 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x02: /* C4h E1h 7Bh 10h 02h VMOVSD sse(reg),w32(r/m) mod=0 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x03: /* C4h E1h 7Bh 10h 03h VMOVSD sse(reg),w32(r/m) mod=0 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x04: /* C4h E1h 7Bh 10h 04h VMOVSD sse(reg),w32(r/m) mod=0 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x05: /* C4h E1h 7Bh 10h 05h VMOVSD sse(reg),w32(r/m) mod=0 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x06: /* C4h E1h 7Bh 10h 06h VMOVSD sse(reg),w32(r/m) mod=0 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x07: /* C4h E1h 7Bh 10h 07h VMOVSD sse(reg),w32(r/m) mod=0 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x08: /* C4h E1h 7Bh 10h 08h VMOVSD sse(reg),w32(r/m) mod=0 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x09: /* C4h E1h 7Bh 10h 09h VMOVSD sse(reg),w32(r/m) mod=0 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x0A: /* C4h E1h 7Bh 10h 0Ah VMOVSD sse(reg),w32(r/m) mod=0 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x0B: /* C4h E1h 7Bh 10h 0Bh VMOVSD sse(reg),w32(r/m) mod=0 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x0C: /* C4h E1h 7Bh 10h 0Ch VMOVSD sse(reg),w32(r/m) mod=0 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x0D: /* C4h E1h 7Bh 10h 0Dh VMOVSD sse(reg),w32(r/m) mod=0 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x0E: /* C4h E1h 7Bh 10h 0Eh VMOVSD sse(reg),w32(r/m) mod=0 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x0F: /* C4h E1h 7Bh 10h 0Fh VMOVSD sse(reg),w32(r/m) mod=0 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x10: /* C4h E1h 7Bh 10h 10h VMOVSD sse(reg),w32(r/m) mod=0 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x11: /* C4h E1h 7Bh 10h 11h VMOVSD sse(reg),w32(r/m) mod=0 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x12: /* C4h E1h 7Bh 10h 12h VMOVSD sse(reg),w32(r/m) mod=0 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x13: /* C4h E1h 7Bh 10h 13h VMOVSD sse(reg),w32(r/m) mod=0 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x14: /* C4h E1h 7Bh 10h 14h VMOVSD sse(reg),w32(r/m) mod=0 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x15: /* C4h E1h 7Bh 10h 15h VMOVSD sse(reg),w32(r/m) mod=0 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x16: /* C4h E1h 7Bh 10h 16h VMOVSD sse(reg),w32(r/m) mod=0 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x17: /* C4h E1h 7Bh 10h 17h VMOVSD sse(reg),w32(r/m) mod=0 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x18: /* C4h E1h 7Bh 10h 18h VMOVSD sse(reg),w32(r/m) mod=0 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x19: /* C4h E1h 7Bh 10h 19h VMOVSD sse(reg),w32(r/m) mod=0 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x1A: /* C4h E1h 7Bh 10h 1Ah VMOVSD sse(reg),w32(r/m) mod=0 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x1B: /* C4h E1h 7Bh 10h 1Bh VMOVSD sse(reg),w32(r/m) mod=0 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x1C: /* C4h E1h 7Bh 10h 1Ch VMOVSD sse(reg),w32(r/m) mod=0 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x1D: /* C4h E1h 7Bh 10h 1Dh VMOVSD sse(reg),w32(r/m) mod=0 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x1E: /* C4h E1h 7Bh 10h 1Eh VMOVSD sse(reg),w32(r/m) mod=0 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x1F: /* C4h E1h 7Bh 10h 1Fh VMOVSD sse(reg),w32(r/m) mod=0 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x20: /* C4h E1h 7Bh 10h 20h VMOVSD sse(reg),w32(r/m) mod=0 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x21: /* C4h E1h 7Bh 10h 21h VMOVSD sse(reg),w32(r/m) mod=0 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x22: /* C4h E1h 7Bh 10h 22h VMOVSD sse(reg),w32(r/m) mod=0 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x23: /* C4h E1h 7Bh 10h 23h VMOVSD sse(reg),w32(r/m) mod=0 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x24: /* C4h E1h 7Bh 10h 24h VMOVSD sse(reg),w32(r/m) mod=0 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x25: /* C4h E1h 7Bh 10h 25h VMOVSD sse(reg),w32(r/m) mod=0 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x26: /* C4h E1h 7Bh 10h 26h VMOVSD sse(reg),w32(r/m) mod=0 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x27: /* C4h E1h 7Bh 10h 27h VMOVSD sse(reg),w32(r/m) mod=0 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x28: /* C4h E1h 7Bh 10h 28h VMOVSD sse(reg),w32(r/m) mod=0 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x29: /* C4h E1h 7Bh 10h 29h VMOVSD sse(reg),w32(r/m) mod=0 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x2A: /* C4h E1h 7Bh 10h 2Ah VMOVSD sse(reg),w32(r/m) mod=0 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x2B: /* C4h E1h 7Bh 10h 2Bh VMOVSD sse(reg),w32(r/m) mod=0 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x2C: /* C4h E1h 7Bh 10h 2Ch VMOVSD sse(reg),w32(r/m) mod=0 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x2D: /* C4h E1h 7Bh 10h 2Dh VMOVSD sse(reg),w32(r/m) mod=0 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x2E: /* C4h E1h 7Bh 10h 2Eh VMOVSD sse(reg),w32(r/m) mod=0 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x2F: /* C4h E1h 7Bh 10h 2Fh VMOVSD sse(reg),w32(r/m) mod=0 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x30: /* C4h E1h 7Bh 10h 30h VMOVSD sse(reg),w32(r/m) mod=0 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x31: /* C4h E1h 7Bh 10h 31h VMOVSD sse(reg),w32(r/m) mod=0 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x32: /* C4h E1h 7Bh 10h 32h VMOVSD sse(reg),w32(r/m) mod=0 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x33: /* C4h E1h 7Bh 10h 33h VMOVSD sse(reg),w32(r/m) mod=0 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x34: /* C4h E1h 7Bh 10h 34h VMOVSD sse(reg),w32(r/m) mod=0 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x35: /* C4h E1h 7Bh 10h 35h VMOVSD sse(reg),w32(r/m) mod=0 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x36: /* C4h E1h 7Bh 10h 36h VMOVSD sse(reg),w32(r/m) mod=0 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x37: /* C4h E1h 7Bh 10h 37h VMOVSD sse(reg),w32(r/m) mod=0 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x38: /* C4h E1h 7Bh 10h 38h VMOVSD sse(reg),w32(r/m) mod=0 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x39: /* C4h E1h 7Bh 10h 39h VMOVSD sse(reg),w32(r/m) mod=0 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x3A: /* C4h E1h 7Bh 10h 3Ah VMOVSD sse(reg),w32(r/m) mod=0 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x3B: /* C4h E1h 7Bh 10h 3Bh VMOVSD sse(reg),w32(r/m) mod=0 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x3C: /* C4h E1h 7Bh 10h 3Ch VMOVSD sse(reg),w32(r/m) mod=0 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x3D: /* C4h E1h 7Bh 10h 3Dh VMOVSD sse(reg),w32(r/m) mod=0 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x3E: /* C4h E1h 7Bh 10h 3Eh VMOVSD sse(reg),w32(r/m) mod=0 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x3F: /* C4h E1h 7Bh 10h 3Fh VMOVSD sse(reg),w32(r/m) mod=0 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x40: /* C4h E1h 7Bh 10h 40h VMOVSD sse(reg),w32(r/m) mod=1 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x41: /* C4h E1h 7Bh 10h 41h VMOVSD sse(reg),w32(r/m) mod=1 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x42: /* C4h E1h 7Bh 10h 42h VMOVSD sse(reg),w32(r/m) mod=1 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x43: /* C4h E1h 7Bh 10h 43h VMOVSD sse(reg),w32(r/m) mod=1 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x44: /* C4h E1h 7Bh 10h 44h VMOVSD sse(reg),w32(r/m) mod=1 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x45: /* C4h E1h 7Bh 10h 45h VMOVSD sse(reg),w32(r/m) mod=1 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x46: /* C4h E1h 7Bh 10h 46h VMOVSD sse(reg),w32(r/m) mod=1 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x47: /* C4h E1h 7Bh 10h 47h VMOVSD sse(reg),w32(r/m) mod=1 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x48: /* C4h E1h 7Bh 10h 48h VMOVSD sse(reg),w32(r/m) mod=1 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x49: /* C4h E1h 7Bh 10h 49h VMOVSD sse(reg),w32(r/m) mod=1 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x4A: /* C4h E1h 7Bh 10h 4Ah VMOVSD sse(reg),w32(r/m) mod=1 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x4B: /* C4h E1h 7Bh 10h 4Bh VMOVSD sse(reg),w32(r/m) mod=1 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x4C: /* C4h E1h 7Bh 10h 4Ch VMOVSD sse(reg),w32(r/m) mod=1 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x4D: /* C4h E1h 7Bh 10h 4Dh VMOVSD sse(reg),w32(r/m) mod=1 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x4E: /* C4h E1h 7Bh 10h 4Eh VMOVSD sse(reg),w32(r/m) mod=1 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x4F: /* C4h E1h 7Bh 10h 4Fh VMOVSD sse(reg),w32(r/m) mod=1 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x50: /* C4h E1h 7Bh 10h 50h VMOVSD sse(reg),w32(r/m) mod=1 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x51: /* C4h E1h 7Bh 10h 51h VMOVSD sse(reg),w32(r/m) mod=1 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x52: /* C4h E1h 7Bh 10h 52h VMOVSD sse(reg),w32(r/m) mod=1 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x53: /* C4h E1h 7Bh 10h 53h VMOVSD sse(reg),w32(r/m) mod=1 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x54: /* C4h E1h 7Bh 10h 54h VMOVSD sse(reg),w32(r/m) mod=1 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x55: /* C4h E1h 7Bh 10h 55h VMOVSD sse(reg),w32(r/m) mod=1 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x56: /* C4h E1h 7Bh 10h 56h VMOVSD sse(reg),w32(r/m) mod=1 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x57: /* C4h E1h 7Bh 10h 57h VMOVSD sse(reg),w32(r/m) mod=1 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x58: /* C4h E1h 7Bh 10h 58h VMOVSD sse(reg),w32(r/m) mod=1 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x59: /* C4h E1h 7Bh 10h 59h VMOVSD sse(reg),w32(r/m) mod=1 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x5A: /* C4h E1h 7Bh 10h 5Ah VMOVSD sse(reg),w32(r/m) mod=1 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x5B: /* C4h E1h 7Bh 10h 5Bh VMOVSD sse(reg),w32(r/m) mod=1 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x5C: /* C4h E1h 7Bh 10h 5Ch VMOVSD sse(reg),w32(r/m) mod=1 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x5D: /* C4h E1h 7Bh 10h 5Dh VMOVSD sse(reg),w32(r/m) mod=1 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x5E: /* C4h E1h 7Bh 10h 5Eh VMOVSD sse(reg),w32(r/m) mod=1 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x5F: /* C4h E1h 7Bh 10h 5Fh VMOVSD sse(reg),w32(r/m) mod=1 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x60: /* C4h E1h 7Bh 10h 60h VMOVSD sse(reg),w32(r/m) mod=1 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x61: /* C4h E1h 7Bh 10h 61h VMOVSD sse(reg),w32(r/m) mod=1 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x62: /* C4h E1h 7Bh 10h 62h VMOVSD sse(reg),w32(r/m) mod=1 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x63: /* C4h E1h 7Bh 10h 63h VMOVSD sse(reg),w32(r/m) mod=1 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x64: /* C4h E1h 7Bh 10h 64h VMOVSD sse(reg),w32(r/m) mod=1 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x65: /* C4h E1h 7Bh 10h 65h VMOVSD sse(reg),w32(r/m) mod=1 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x66: /* C4h E1h 7Bh 10h 66h VMOVSD sse(reg),w32(r/m) mod=1 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x67: /* C4h E1h 7Bh 10h 67h VMOVSD sse(reg),w32(r/m) mod=1 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x68: /* C4h E1h 7Bh 10h 68h VMOVSD sse(reg),w32(r/m) mod=1 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x69: /* C4h E1h 7Bh 10h 69h VMOVSD sse(reg),w32(r/m) mod=1 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x6A: /* C4h E1h 7Bh 10h 6Ah VMOVSD sse(reg),w32(r/m) mod=1 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x6B: /* C4h E1h 7Bh 10h 6Bh VMOVSD sse(reg),w32(r/m) mod=1 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x6C: /* C4h E1h 7Bh 10h 6Ch VMOVSD sse(reg),w32(r/m) mod=1 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x6D: /* C4h E1h 7Bh 10h 6Dh VMOVSD sse(reg),w32(r/m) mod=1 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x6E: /* C4h E1h 7Bh 10h 6Eh VMOVSD sse(reg),w32(r/m) mod=1 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x6F: /* C4h E1h 7Bh 10h 6Fh VMOVSD sse(reg),w32(r/m) mod=1 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x70: /* C4h E1h 7Bh 10h 70h VMOVSD sse(reg),w32(r/m) mod=1 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x71: /* C4h E1h 7Bh 10h 71h VMOVSD sse(reg),w32(r/m) mod=1 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x72: /* C4h E1h 7Bh 10h 72h VMOVSD sse(reg),w32(r/m) mod=1 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x73: /* C4h E1h 7Bh 10h 73h VMOVSD sse(reg),w32(r/m) mod=1 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x74: /* C4h E1h 7Bh 10h 74h VMOVSD sse(reg),w32(r/m) mod=1 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x75: /* C4h E1h 7Bh 10h 75h VMOVSD sse(reg),w32(r/m) mod=1 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x76: /* C4h E1h 7Bh 10h 76h VMOVSD sse(reg),w32(r/m) mod=1 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x77: /* C4h E1h 7Bh 10h 77h VMOVSD sse(reg),w32(r/m) mod=1 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x78: /* C4h E1h 7Bh 10h 78h VMOVSD sse(reg),w32(r/m) mod=1 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x79: /* C4h E1h 7Bh 10h 79h VMOVSD sse(reg),w32(r/m) mod=1 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x7A: /* C4h E1h 7Bh 10h 7Ah VMOVSD sse(reg),w32(r/m) mod=1 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x7B: /* C4h E1h 7Bh 10h 7Bh VMOVSD sse(reg),w32(r/m) mod=1 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x7C: /* C4h E1h 7Bh 10h 7Ch VMOVSD sse(reg),w32(r/m) mod=1 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x7D: /* C4h E1h 7Bh 10h 7Dh VMOVSD sse(reg),w32(r/m) mod=1 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x7E: /* C4h E1h 7Bh 10h 7Eh VMOVSD sse(reg),w32(r/m) mod=1 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x7F: /* C4h E1h 7Bh 10h 7Fh VMOVSD sse(reg),w32(r/m) mod=1 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x80: /* C4h E1h 7Bh 10h 80h VMOVSD sse(reg),w32(r/m) mod=2 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x81: /* C4h E1h 7Bh 10h 81h VMOVSD sse(reg),w32(r/m) mod=2 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x82: /* C4h E1h 7Bh 10h 82h VMOVSD sse(reg),w32(r/m) mod=2 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x83: /* C4h E1h 7Bh 10h 83h VMOVSD sse(reg),w32(r/m) mod=2 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x84: /* C4h E1h 7Bh 10h 84h VMOVSD sse(reg),w32(r/m) mod=2 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x85: /* C4h E1h 7Bh 10h 85h VMOVSD sse(reg),w32(r/m) mod=2 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x86: /* C4h E1h 7Bh 10h 86h VMOVSD sse(reg),w32(r/m) mod=2 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x87: /* C4h E1h 7Bh 10h 87h VMOVSD sse(reg),w32(r/m) mod=2 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x88: /* C4h E1h 7Bh 10h 88h VMOVSD sse(reg),w32(r/m) mod=2 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x89: /* C4h E1h 7Bh 10h 89h VMOVSD sse(reg),w32(r/m) mod=2 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x8A: /* C4h E1h 7Bh 10h 8Ah VMOVSD sse(reg),w32(r/m) mod=2 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x8B: /* C4h E1h 7Bh 10h 8Bh VMOVSD sse(reg),w32(r/m) mod=2 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x8C: /* C4h E1h 7Bh 10h 8Ch VMOVSD sse(reg),w32(r/m) mod=2 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x8D: /* C4h E1h 7Bh 10h 8Dh VMOVSD sse(reg),w32(r/m) mod=2 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x8E: /* C4h E1h 7Bh 10h 8Eh VMOVSD sse(reg),w32(r/m) mod=2 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x8F: /* C4h E1h 7Bh 10h 8Fh VMOVSD sse(reg),w32(r/m) mod=2 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x90: /* C4h E1h 7Bh 10h 90h VMOVSD sse(reg),w32(r/m) mod=2 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x91: /* C4h E1h 7Bh 10h 91h VMOVSD sse(reg),w32(r/m) mod=2 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x92: /* C4h E1h 7Bh 10h 92h VMOVSD sse(reg),w32(r/m) mod=2 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x93: /* C4h E1h 7Bh 10h 93h VMOVSD sse(reg),w32(r/m) mod=2 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x94: /* C4h E1h 7Bh 10h 94h VMOVSD sse(reg),w32(r/m) mod=2 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x95: /* C4h E1h 7Bh 10h 95h VMOVSD sse(reg),w32(r/m) mod=2 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x96: /* C4h E1h 7Bh 10h 96h VMOVSD sse(reg),w32(r/m) mod=2 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x97: /* C4h E1h 7Bh 10h 97h VMOVSD sse(reg),w32(r/m) mod=2 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x98: /* C4h E1h 7Bh 10h 98h VMOVSD sse(reg),w32(r/m) mod=2 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x99: /* C4h E1h 7Bh 10h 99h VMOVSD sse(reg),w32(r/m) mod=2 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x9A: /* C4h E1h 7Bh 10h 9Ah VMOVSD sse(reg),w32(r/m) mod=2 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x9B: /* C4h E1h 7Bh 10h 9Bh VMOVSD sse(reg),w32(r/m) mod=2 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x9C: /* C4h E1h 7Bh 10h 9Ch VMOVSD sse(reg),w32(r/m) mod=2 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x9D: /* C4h E1h 7Bh 10h 9Dh VMOVSD sse(reg),w32(r/m) mod=2 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x9E: /* C4h E1h 7Bh 10h 9Eh VMOVSD sse(reg),w32(r/m) mod=2 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x9F: /* C4h E1h 7Bh 10h 9Fh VMOVSD sse(reg),w32(r/m) mod=2 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA0: /* C4h E1h 7Bh 10h A0h VMOVSD sse(reg),w32(r/m) mod=2 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA1: /* C4h E1h 7Bh 10h A1h VMOVSD sse(reg),w32(r/m) mod=2 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA2: /* C4h E1h 7Bh 10h A2h VMOVSD sse(reg),w32(r/m) mod=2 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA3: /* C4h E1h 7Bh 10h A3h VMOVSD sse(reg),w32(r/m) mod=2 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA4: /* C4h E1h 7Bh 10h A4h VMOVSD sse(reg),w32(r/m) mod=2 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA5: /* C4h E1h 7Bh 10h A5h VMOVSD sse(reg),w32(r/m) mod=2 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA6: /* C4h E1h 7Bh 10h A6h VMOVSD sse(reg),w32(r/m) mod=2 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA7: /* C4h E1h 7Bh 10h A7h VMOVSD sse(reg),w32(r/m) mod=2 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA8: /* C4h E1h 7Bh 10h A8h VMOVSD sse(reg),w32(r/m) mod=2 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA9: /* C4h E1h 7Bh 10h A9h VMOVSD sse(reg),w32(r/m) mod=2 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xAA: /* C4h E1h 7Bh 10h AAh VMOVSD sse(reg),w32(r/m) mod=2 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xAB: /* C4h E1h 7Bh 10h ABh VMOVSD sse(reg),w32(r/m) mod=2 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xAC: /* C4h E1h 7Bh 10h ACh VMOVSD sse(reg),w32(r/m) mod=2 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xAD: /* C4h E1h 7Bh 10h ADh VMOVSD sse(reg),w32(r/m) mod=2 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xAE: /* C4h E1h 7Bh 10h AEh VMOVSD sse(reg),w32(r/m) mod=2 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xAF: /* C4h E1h 7Bh 10h AFh VMOVSD sse(reg),w32(r/m) mod=2 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB0: /* C4h E1h 7Bh 10h B0h VMOVSD sse(reg),w32(r/m) mod=2 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB1: /* C4h E1h 7Bh 10h B1h VMOVSD sse(reg),w32(r/m) mod=2 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB2: /* C4h E1h 7Bh 10h B2h VMOVSD sse(reg),w32(r/m) mod=2 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB3: /* C4h E1h 7Bh 10h B3h VMOVSD sse(reg),w32(r/m) mod=2 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB4: /* C4h E1h 7Bh 10h B4h VMOVSD sse(reg),w32(r/m) mod=2 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB5: /* C4h E1h 7Bh 10h B5h VMOVSD sse(reg),w32(r/m) mod=2 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB6: /* C4h E1h 7Bh 10h B6h VMOVSD sse(reg),w32(r/m) mod=2 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB7: /* C4h E1h 7Bh 10h B7h VMOVSD sse(reg),w32(r/m) mod=2 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB8: /* C4h E1h 7Bh 10h B8h VMOVSD sse(reg),w32(r/m) mod=2 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB9: /* C4h E1h 7Bh 10h B9h VMOVSD sse(reg),w32(r/m) mod=2 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xBA: /* C4h E1h 7Bh 10h BAh VMOVSD sse(reg),w32(r/m) mod=2 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xBB: /* C4h E1h 7Bh 10h BBh VMOVSD sse(reg),w32(r/m) mod=2 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xBC: /* C4h E1h 7Bh 10h BCh VMOVSD sse(reg),w32(r/m) mod=2 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xBD: /* C4h E1h 7Bh 10h BDh VMOVSD sse(reg),w32(r/m) mod=2 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xBE: /* C4h E1h 7Bh 10h BEh VMOVSD sse(reg),w32(r/m) mod=2 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xBF: /* C4h E1h 7Bh 10h BFh VMOVSD sse(reg),w32(r/m) mod=2 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVSD XMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,4,RC_REG,"w32"));
+                                        break;
+                                    case 0xC0: /* C4h E1h 7Bh 10h C0h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC1: /* C4h E1h 7Bh 10h C1h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC2: /* C4h E1h 7Bh 10h C2h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC3: /* C4h E1h 7Bh 10h C3h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC4: /* C4h E1h 7Bh 10h C4h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC5: /* C4h E1h 7Bh 10h C5h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC6: /* C4h E1h 7Bh 10h C6h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC7: /* C4h E1h 7Bh 10h C7h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC8: /* C4h E1h 7Bh 10h C8h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xC9: /* C4h E1h 7Bh 10h C9h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xCA: /* C4h E1h 7Bh 10h CAh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xCB: /* C4h E1h 7Bh 10h CBh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xCC: /* C4h E1h 7Bh 10h CCh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xCD: /* C4h E1h 7Bh 10h CDh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xCE: /* C4h E1h 7Bh 10h CEh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xCF: /* C4h E1h 7Bh 10h CFh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD0: /* C4h E1h 7Bh 10h D0h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD1: /* C4h E1h 7Bh 10h D1h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD2: /* C4h E1h 7Bh 10h D2h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD3: /* C4h E1h 7Bh 10h D3h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD4: /* C4h E1h 7Bh 10h D4h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD5: /* C4h E1h 7Bh 10h D5h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD6: /* C4h E1h 7Bh 10h D6h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD7: /* C4h E1h 7Bh 10h D7h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD8: /* C4h E1h 7Bh 10h D8h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xD9: /* C4h E1h 7Bh 10h D9h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xDA: /* C4h E1h 7Bh 10h DAh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xDB: /* C4h E1h 7Bh 10h DBh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xDC: /* C4h E1h 7Bh 10h DCh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xDD: /* C4h E1h 7Bh 10h DDh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xDE: /* C4h E1h 7Bh 10h DEh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xDF: /* C4h E1h 7Bh 10h DFh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE0: /* C4h E1h 7Bh 10h E0h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE1: /* C4h E1h 7Bh 10h E1h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE2: /* C4h E1h 7Bh 10h E2h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE3: /* C4h E1h 7Bh 10h E3h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE4: /* C4h E1h 7Bh 10h E4h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE5: /* C4h E1h 7Bh 10h E5h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE6: /* C4h E1h 7Bh 10h E6h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE7: /* C4h E1h 7Bh 10h E7h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE8: /* C4h E1h 7Bh 10h E8h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xE9: /* C4h E1h 7Bh 10h E9h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xEA: /* C4h E1h 7Bh 10h EAh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xEB: /* C4h E1h 7Bh 10h EBh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xEC: /* C4h E1h 7Bh 10h ECh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xED: /* C4h E1h 7Bh 10h EDh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xEE: /* C4h E1h 7Bh 10h EEh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xEF: /* C4h E1h 7Bh 10h EFh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF0: /* C4h E1h 7Bh 10h F0h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF1: /* C4h E1h 7Bh 10h F1h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF2: /* C4h E1h 7Bh 10h F2h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF3: /* C4h E1h 7Bh 10h F3h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF4: /* C4h E1h 7Bh 10h F4h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF5: /* C4h E1h 7Bh 10h F5h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF6: /* C4h E1h 7Bh 10h F6h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF7: /* C4h E1h 7Bh 10h F7h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF8: /* C4h E1h 7Bh 10h F8h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xF9: /* C4h E1h 7Bh 10h F9h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xFA: /* C4h E1h 7Bh 10h FAh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xFB: /* C4h E1h 7Bh 10h FBh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xFC: /* C4h E1h 7Bh 10h FCh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xFD: /* C4h E1h 7Bh 10h FDh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xFE: /* C4h E1h 7Bh 10h FEh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                    case 0xFF: /* C4h E1h 7Bh 10h FFh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVSD XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                                        break;
+                                    default:
+                                        goto _x86decode_illegal_opcode;
+                                };
+/* End of opcodes starting with C4h E1h 7Bh 10h */
+                                break;
+                            case 0x11: /* C4h E1h 7Bh 11h        spec:  */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                _x86decode_begin_code16_addr16_opcode_parse_C4E17B11:
+/* Opcodes starting with C4h E1h 7Bh 11h */
+                                switch (mrm.byte) {
+                                    case 0x00: /* C4h E1h 7Bh 11h 00h VMOVSD w32(r/m),sse(reg) mod=0 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x01: /* C4h E1h 7Bh 11h 01h VMOVSD w32(r/m),sse(reg) mod=0 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x02: /* C4h E1h 7Bh 11h 02h VMOVSD w32(r/m),sse(reg) mod=0 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x03: /* C4h E1h 7Bh 11h 03h VMOVSD w32(r/m),sse(reg) mod=0 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x04: /* C4h E1h 7Bh 11h 04h VMOVSD w32(r/m),sse(reg) mod=0 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x05: /* C4h E1h 7Bh 11h 05h VMOVSD w32(r/m),sse(reg) mod=0 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x06: /* C4h E1h 7Bh 11h 06h VMOVSD w32(r/m),sse(reg) mod=0 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x07: /* C4h E1h 7Bh 11h 07h VMOVSD w32(r/m),sse(reg) mod=0 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x08: /* C4h E1h 7Bh 11h 08h VMOVSD w32(r/m),sse(reg) mod=0 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x09: /* C4h E1h 7Bh 11h 09h VMOVSD w32(r/m),sse(reg) mod=0 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x0A: /* C4h E1h 7Bh 11h 0Ah VMOVSD w32(r/m),sse(reg) mod=0 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x0B: /* C4h E1h 7Bh 11h 0Bh VMOVSD w32(r/m),sse(reg) mod=0 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x0C: /* C4h E1h 7Bh 11h 0Ch VMOVSD w32(r/m),sse(reg) mod=0 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x0D: /* C4h E1h 7Bh 11h 0Dh VMOVSD w32(r/m),sse(reg) mod=0 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x0E: /* C4h E1h 7Bh 11h 0Eh VMOVSD w32(r/m),sse(reg) mod=0 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x0F: /* C4h E1h 7Bh 11h 0Fh VMOVSD w32(r/m),sse(reg) mod=0 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x10: /* C4h E1h 7Bh 11h 10h VMOVSD w32(r/m),sse(reg) mod=0 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x11: /* C4h E1h 7Bh 11h 11h VMOVSD w32(r/m),sse(reg) mod=0 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x12: /* C4h E1h 7Bh 11h 12h VMOVSD w32(r/m),sse(reg) mod=0 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x13: /* C4h E1h 7Bh 11h 13h VMOVSD w32(r/m),sse(reg) mod=0 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x14: /* C4h E1h 7Bh 11h 14h VMOVSD w32(r/m),sse(reg) mod=0 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x15: /* C4h E1h 7Bh 11h 15h VMOVSD w32(r/m),sse(reg) mod=0 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x16: /* C4h E1h 7Bh 11h 16h VMOVSD w32(r/m),sse(reg) mod=0 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x17: /* C4h E1h 7Bh 11h 17h VMOVSD w32(r/m),sse(reg) mod=0 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x18: /* C4h E1h 7Bh 11h 18h VMOVSD w32(r/m),sse(reg) mod=0 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x19: /* C4h E1h 7Bh 11h 19h VMOVSD w32(r/m),sse(reg) mod=0 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x1A: /* C4h E1h 7Bh 11h 1Ah VMOVSD w32(r/m),sse(reg) mod=0 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x1B: /* C4h E1h 7Bh 11h 1Bh VMOVSD w32(r/m),sse(reg) mod=0 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x1C: /* C4h E1h 7Bh 11h 1Ch VMOVSD w32(r/m),sse(reg) mod=0 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x1D: /* C4h E1h 7Bh 11h 1Dh VMOVSD w32(r/m),sse(reg) mod=0 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x1E: /* C4h E1h 7Bh 11h 1Eh VMOVSD w32(r/m),sse(reg) mod=0 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x1F: /* C4h E1h 7Bh 11h 1Fh VMOVSD w32(r/m),sse(reg) mod=0 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x20: /* C4h E1h 7Bh 11h 20h VMOVSD w32(r/m),sse(reg) mod=0 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x21: /* C4h E1h 7Bh 11h 21h VMOVSD w32(r/m),sse(reg) mod=0 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x22: /* C4h E1h 7Bh 11h 22h VMOVSD w32(r/m),sse(reg) mod=0 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x23: /* C4h E1h 7Bh 11h 23h VMOVSD w32(r/m),sse(reg) mod=0 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x24: /* C4h E1h 7Bh 11h 24h VMOVSD w32(r/m),sse(reg) mod=0 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x25: /* C4h E1h 7Bh 11h 25h VMOVSD w32(r/m),sse(reg) mod=0 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x26: /* C4h E1h 7Bh 11h 26h VMOVSD w32(r/m),sse(reg) mod=0 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x27: /* C4h E1h 7Bh 11h 27h VMOVSD w32(r/m),sse(reg) mod=0 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x28: /* C4h E1h 7Bh 11h 28h VMOVSD w32(r/m),sse(reg) mod=0 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x29: /* C4h E1h 7Bh 11h 29h VMOVSD w32(r/m),sse(reg) mod=0 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x2A: /* C4h E1h 7Bh 11h 2Ah VMOVSD w32(r/m),sse(reg) mod=0 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x2B: /* C4h E1h 7Bh 11h 2Bh VMOVSD w32(r/m),sse(reg) mod=0 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x2C: /* C4h E1h 7Bh 11h 2Ch VMOVSD w32(r/m),sse(reg) mod=0 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x2D: /* C4h E1h 7Bh 11h 2Dh VMOVSD w32(r/m),sse(reg) mod=0 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x2E: /* C4h E1h 7Bh 11h 2Eh VMOVSD w32(r/m),sse(reg) mod=0 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x2F: /* C4h E1h 7Bh 11h 2Fh VMOVSD w32(r/m),sse(reg) mod=0 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x30: /* C4h E1h 7Bh 11h 30h VMOVSD w32(r/m),sse(reg) mod=0 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x31: /* C4h E1h 7Bh 11h 31h VMOVSD w32(r/m),sse(reg) mod=0 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x32: /* C4h E1h 7Bh 11h 32h VMOVSD w32(r/m),sse(reg) mod=0 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x33: /* C4h E1h 7Bh 11h 33h VMOVSD w32(r/m),sse(reg) mod=0 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x34: /* C4h E1h 7Bh 11h 34h VMOVSD w32(r/m),sse(reg) mod=0 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x35: /* C4h E1h 7Bh 11h 35h VMOVSD w32(r/m),sse(reg) mod=0 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x36: /* C4h E1h 7Bh 11h 36h VMOVSD w32(r/m),sse(reg) mod=0 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x37: /* C4h E1h 7Bh 11h 37h VMOVSD w32(r/m),sse(reg) mod=0 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x38: /* C4h E1h 7Bh 11h 38h VMOVSD w32(r/m),sse(reg) mod=0 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x39: /* C4h E1h 7Bh 11h 39h VMOVSD w32(r/m),sse(reg) mod=0 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x3A: /* C4h E1h 7Bh 11h 3Ah VMOVSD w32(r/m),sse(reg) mod=0 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x3B: /* C4h E1h 7Bh 11h 3Bh VMOVSD w32(r/m),sse(reg) mod=0 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x3C: /* C4h E1h 7Bh 11h 3Ch VMOVSD w32(r/m),sse(reg) mod=0 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x3D: /* C4h E1h 7Bh 11h 3Dh VMOVSD w32(r/m),sse(reg) mod=0 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x3E: /* C4h E1h 7Bh 11h 3Eh VMOVSD w32(r/m),sse(reg) mod=0 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x3F: /* C4h E1h 7Bh 11h 3Fh VMOVSD w32(r/m),sse(reg) mod=0 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x40: /* C4h E1h 7Bh 11h 40h VMOVSD w32(r/m),sse(reg) mod=1 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x41: /* C4h E1h 7Bh 11h 41h VMOVSD w32(r/m),sse(reg) mod=1 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x42: /* C4h E1h 7Bh 11h 42h VMOVSD w32(r/m),sse(reg) mod=1 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x43: /* C4h E1h 7Bh 11h 43h VMOVSD w32(r/m),sse(reg) mod=1 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x44: /* C4h E1h 7Bh 11h 44h VMOVSD w32(r/m),sse(reg) mod=1 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x45: /* C4h E1h 7Bh 11h 45h VMOVSD w32(r/m),sse(reg) mod=1 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x46: /* C4h E1h 7Bh 11h 46h VMOVSD w32(r/m),sse(reg) mod=1 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x47: /* C4h E1h 7Bh 11h 47h VMOVSD w32(r/m),sse(reg) mod=1 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x48: /* C4h E1h 7Bh 11h 48h VMOVSD w32(r/m),sse(reg) mod=1 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x49: /* C4h E1h 7Bh 11h 49h VMOVSD w32(r/m),sse(reg) mod=1 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x4A: /* C4h E1h 7Bh 11h 4Ah VMOVSD w32(r/m),sse(reg) mod=1 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x4B: /* C4h E1h 7Bh 11h 4Bh VMOVSD w32(r/m),sse(reg) mod=1 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x4C: /* C4h E1h 7Bh 11h 4Ch VMOVSD w32(r/m),sse(reg) mod=1 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x4D: /* C4h E1h 7Bh 11h 4Dh VMOVSD w32(r/m),sse(reg) mod=1 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x4E: /* C4h E1h 7Bh 11h 4Eh VMOVSD w32(r/m),sse(reg) mod=1 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x4F: /* C4h E1h 7Bh 11h 4Fh VMOVSD w32(r/m),sse(reg) mod=1 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x50: /* C4h E1h 7Bh 11h 50h VMOVSD w32(r/m),sse(reg) mod=1 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x51: /* C4h E1h 7Bh 11h 51h VMOVSD w32(r/m),sse(reg) mod=1 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x52: /* C4h E1h 7Bh 11h 52h VMOVSD w32(r/m),sse(reg) mod=1 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x53: /* C4h E1h 7Bh 11h 53h VMOVSD w32(r/m),sse(reg) mod=1 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x54: /* C4h E1h 7Bh 11h 54h VMOVSD w32(r/m),sse(reg) mod=1 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x55: /* C4h E1h 7Bh 11h 55h VMOVSD w32(r/m),sse(reg) mod=1 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x56: /* C4h E1h 7Bh 11h 56h VMOVSD w32(r/m),sse(reg) mod=1 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x57: /* C4h E1h 7Bh 11h 57h VMOVSD w32(r/m),sse(reg) mod=1 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x58: /* C4h E1h 7Bh 11h 58h VMOVSD w32(r/m),sse(reg) mod=1 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x59: /* C4h E1h 7Bh 11h 59h VMOVSD w32(r/m),sse(reg) mod=1 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x5A: /* C4h E1h 7Bh 11h 5Ah VMOVSD w32(r/m),sse(reg) mod=1 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x5B: /* C4h E1h 7Bh 11h 5Bh VMOVSD w32(r/m),sse(reg) mod=1 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x5C: /* C4h E1h 7Bh 11h 5Ch VMOVSD w32(r/m),sse(reg) mod=1 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x5D: /* C4h E1h 7Bh 11h 5Dh VMOVSD w32(r/m),sse(reg) mod=1 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x5E: /* C4h E1h 7Bh 11h 5Eh VMOVSD w32(r/m),sse(reg) mod=1 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x5F: /* C4h E1h 7Bh 11h 5Fh VMOVSD w32(r/m),sse(reg) mod=1 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x60: /* C4h E1h 7Bh 11h 60h VMOVSD w32(r/m),sse(reg) mod=1 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x61: /* C4h E1h 7Bh 11h 61h VMOVSD w32(r/m),sse(reg) mod=1 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x62: /* C4h E1h 7Bh 11h 62h VMOVSD w32(r/m),sse(reg) mod=1 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x63: /* C4h E1h 7Bh 11h 63h VMOVSD w32(r/m),sse(reg) mod=1 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x64: /* C4h E1h 7Bh 11h 64h VMOVSD w32(r/m),sse(reg) mod=1 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x65: /* C4h E1h 7Bh 11h 65h VMOVSD w32(r/m),sse(reg) mod=1 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x66: /* C4h E1h 7Bh 11h 66h VMOVSD w32(r/m),sse(reg) mod=1 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x67: /* C4h E1h 7Bh 11h 67h VMOVSD w32(r/m),sse(reg) mod=1 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x68: /* C4h E1h 7Bh 11h 68h VMOVSD w32(r/m),sse(reg) mod=1 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x69: /* C4h E1h 7Bh 11h 69h VMOVSD w32(r/m),sse(reg) mod=1 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x6A: /* C4h E1h 7Bh 11h 6Ah VMOVSD w32(r/m),sse(reg) mod=1 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x6B: /* C4h E1h 7Bh 11h 6Bh VMOVSD w32(r/m),sse(reg) mod=1 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x6C: /* C4h E1h 7Bh 11h 6Ch VMOVSD w32(r/m),sse(reg) mod=1 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x6D: /* C4h E1h 7Bh 11h 6Dh VMOVSD w32(r/m),sse(reg) mod=1 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x6E: /* C4h E1h 7Bh 11h 6Eh VMOVSD w32(r/m),sse(reg) mod=1 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x6F: /* C4h E1h 7Bh 11h 6Fh VMOVSD w32(r/m),sse(reg) mod=1 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x70: /* C4h E1h 7Bh 11h 70h VMOVSD w32(r/m),sse(reg) mod=1 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x71: /* C4h E1h 7Bh 11h 71h VMOVSD w32(r/m),sse(reg) mod=1 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x72: /* C4h E1h 7Bh 11h 72h VMOVSD w32(r/m),sse(reg) mod=1 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x73: /* C4h E1h 7Bh 11h 73h VMOVSD w32(r/m),sse(reg) mod=1 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x74: /* C4h E1h 7Bh 11h 74h VMOVSD w32(r/m),sse(reg) mod=1 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x75: /* C4h E1h 7Bh 11h 75h VMOVSD w32(r/m),sse(reg) mod=1 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x76: /* C4h E1h 7Bh 11h 76h VMOVSD w32(r/m),sse(reg) mod=1 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x77: /* C4h E1h 7Bh 11h 77h VMOVSD w32(r/m),sse(reg) mod=1 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x78: /* C4h E1h 7Bh 11h 78h VMOVSD w32(r/m),sse(reg) mod=1 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x79: /* C4h E1h 7Bh 11h 79h VMOVSD w32(r/m),sse(reg) mod=1 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x7A: /* C4h E1h 7Bh 11h 7Ah VMOVSD w32(r/m),sse(reg) mod=1 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x7B: /* C4h E1h 7Bh 11h 7Bh VMOVSD w32(r/m),sse(reg) mod=1 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x7C: /* C4h E1h 7Bh 11h 7Ch VMOVSD w32(r/m),sse(reg) mod=1 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x7D: /* C4h E1h 7Bh 11h 7Dh VMOVSD w32(r/m),sse(reg) mod=1 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x7E: /* C4h E1h 7Bh 11h 7Eh VMOVSD w32(r/m),sse(reg) mod=1 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x7F: /* C4h E1h 7Bh 11h 7Fh VMOVSD w32(r/m),sse(reg) mod=1 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x80: /* C4h E1h 7Bh 11h 80h VMOVSD w32(r/m),sse(reg) mod=2 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x81: /* C4h E1h 7Bh 11h 81h VMOVSD w32(r/m),sse(reg) mod=2 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x82: /* C4h E1h 7Bh 11h 82h VMOVSD w32(r/m),sse(reg) mod=2 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x83: /* C4h E1h 7Bh 11h 83h VMOVSD w32(r/m),sse(reg) mod=2 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x84: /* C4h E1h 7Bh 11h 84h VMOVSD w32(r/m),sse(reg) mod=2 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x85: /* C4h E1h 7Bh 11h 85h VMOVSD w32(r/m),sse(reg) mod=2 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x86: /* C4h E1h 7Bh 11h 86h VMOVSD w32(r/m),sse(reg) mod=2 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x87: /* C4h E1h 7Bh 11h 87h VMOVSD w32(r/m),sse(reg) mod=2 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x88: /* C4h E1h 7Bh 11h 88h VMOVSD w32(r/m),sse(reg) mod=2 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x89: /* C4h E1h 7Bh 11h 89h VMOVSD w32(r/m),sse(reg) mod=2 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x8A: /* C4h E1h 7Bh 11h 8Ah VMOVSD w32(r/m),sse(reg) mod=2 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x8B: /* C4h E1h 7Bh 11h 8Bh VMOVSD w32(r/m),sse(reg) mod=2 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x8C: /* C4h E1h 7Bh 11h 8Ch VMOVSD w32(r/m),sse(reg) mod=2 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x8D: /* C4h E1h 7Bh 11h 8Dh VMOVSD w32(r/m),sse(reg) mod=2 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x8E: /* C4h E1h 7Bh 11h 8Eh VMOVSD w32(r/m),sse(reg) mod=2 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x8F: /* C4h E1h 7Bh 11h 8Fh VMOVSD w32(r/m),sse(reg) mod=2 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x90: /* C4h E1h 7Bh 11h 90h VMOVSD w32(r/m),sse(reg) mod=2 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x91: /* C4h E1h 7Bh 11h 91h VMOVSD w32(r/m),sse(reg) mod=2 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x92: /* C4h E1h 7Bh 11h 92h VMOVSD w32(r/m),sse(reg) mod=2 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x93: /* C4h E1h 7Bh 11h 93h VMOVSD w32(r/m),sse(reg) mod=2 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x94: /* C4h E1h 7Bh 11h 94h VMOVSD w32(r/m),sse(reg) mod=2 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x95: /* C4h E1h 7Bh 11h 95h VMOVSD w32(r/m),sse(reg) mod=2 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x96: /* C4h E1h 7Bh 11h 96h VMOVSD w32(r/m),sse(reg) mod=2 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x97: /* C4h E1h 7Bh 11h 97h VMOVSD w32(r/m),sse(reg) mod=2 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x98: /* C4h E1h 7Bh 11h 98h VMOVSD w32(r/m),sse(reg) mod=2 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x99: /* C4h E1h 7Bh 11h 99h VMOVSD w32(r/m),sse(reg) mod=2 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x9A: /* C4h E1h 7Bh 11h 9Ah VMOVSD w32(r/m),sse(reg) mod=2 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x9B: /* C4h E1h 7Bh 11h 9Bh VMOVSD w32(r/m),sse(reg) mod=2 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x9C: /* C4h E1h 7Bh 11h 9Ch VMOVSD w32(r/m),sse(reg) mod=2 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x9D: /* C4h E1h 7Bh 11h 9Dh VMOVSD w32(r/m),sse(reg) mod=2 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x9E: /* C4h E1h 7Bh 11h 9Eh VMOVSD w32(r/m),sse(reg) mod=2 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0x9F: /* C4h E1h 7Bh 11h 9Fh VMOVSD w32(r/m),sse(reg) mod=2 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA0: /* C4h E1h 7Bh 11h A0h VMOVSD w32(r/m),sse(reg) mod=2 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA1: /* C4h E1h 7Bh 11h A1h VMOVSD w32(r/m),sse(reg) mod=2 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA2: /* C4h E1h 7Bh 11h A2h VMOVSD w32(r/m),sse(reg) mod=2 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA3: /* C4h E1h 7Bh 11h A3h VMOVSD w32(r/m),sse(reg) mod=2 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA4: /* C4h E1h 7Bh 11h A4h VMOVSD w32(r/m),sse(reg) mod=2 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA5: /* C4h E1h 7Bh 11h A5h VMOVSD w32(r/m),sse(reg) mod=2 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA6: /* C4h E1h 7Bh 11h A6h VMOVSD w32(r/m),sse(reg) mod=2 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA7: /* C4h E1h 7Bh 11h A7h VMOVSD w32(r/m),sse(reg) mod=2 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA8: /* C4h E1h 7Bh 11h A8h VMOVSD w32(r/m),sse(reg) mod=2 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xA9: /* C4h E1h 7Bh 11h A9h VMOVSD w32(r/m),sse(reg) mod=2 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xAA: /* C4h E1h 7Bh 11h AAh VMOVSD w32(r/m),sse(reg) mod=2 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xAB: /* C4h E1h 7Bh 11h ABh VMOVSD w32(r/m),sse(reg) mod=2 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xAC: /* C4h E1h 7Bh 11h ACh VMOVSD w32(r/m),sse(reg) mod=2 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xAD: /* C4h E1h 7Bh 11h ADh VMOVSD w32(r/m),sse(reg) mod=2 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xAE: /* C4h E1h 7Bh 11h AEh VMOVSD w32(r/m),sse(reg) mod=2 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xAF: /* C4h E1h 7Bh 11h AFh VMOVSD w32(r/m),sse(reg) mod=2 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB0: /* C4h E1h 7Bh 11h B0h VMOVSD w32(r/m),sse(reg) mod=2 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB1: /* C4h E1h 7Bh 11h B1h VMOVSD w32(r/m),sse(reg) mod=2 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB2: /* C4h E1h 7Bh 11h B2h VMOVSD w32(r/m),sse(reg) mod=2 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB3: /* C4h E1h 7Bh 11h B3h VMOVSD w32(r/m),sse(reg) mod=2 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB4: /* C4h E1h 7Bh 11h B4h VMOVSD w32(r/m),sse(reg) mod=2 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB5: /* C4h E1h 7Bh 11h B5h VMOVSD w32(r/m),sse(reg) mod=2 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB6: /* C4h E1h 7Bh 11h B6h VMOVSD w32(r/m),sse(reg) mod=2 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB7: /* C4h E1h 7Bh 11h B7h VMOVSD w32(r/m),sse(reg) mod=2 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB8: /* C4h E1h 7Bh 11h B8h VMOVSD w32(r/m),sse(reg) mod=2 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xB9: /* C4h E1h 7Bh 11h B9h VMOVSD w32(r/m),sse(reg) mod=2 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xBA: /* C4h E1h 7Bh 11h BAh VMOVSD w32(r/m),sse(reg) mod=2 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xBB: /* C4h E1h 7Bh 11h BBh VMOVSD w32(r/m),sse(reg) mod=2 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xBC: /* C4h E1h 7Bh 11h BCh VMOVSD w32(r/m),sse(reg) mod=2 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xBD: /* C4h E1h 7Bh 11h BDh VMOVSD w32(r/m),sse(reg) mod=2 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xBE: /* C4h E1h 7Bh 11h BEh VMOVSD w32(r/m),sse(reg) mod=2 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                    case 0xBF: /* C4h E1h 7Bh 11h BFh VMOVSD w32(r/m),sse(reg) mod=2 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVSD %s,XMM%u",IPDecPrint16(mrm,disp,4,RC_REG,"w32"),mrm.reg());
+                                        break;
+                                    case 0xC0: /* C4h E1h 7Bh 11h C0h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xC1: /* C4h E1h 7Bh 11h C1h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xC2: /* C4h E1h 7Bh 11h C2h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xC3: /* C4h E1h 7Bh 11h C3h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xC4: /* C4h E1h 7Bh 11h C4h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xC5: /* C4h E1h 7Bh 11h C5h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xC6: /* C4h E1h 7Bh 11h C6h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xC7: /* C4h E1h 7Bh 11h C7h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xC8: /* C4h E1h 7Bh 11h C8h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xC9: /* C4h E1h 7Bh 11h C9h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xCA: /* C4h E1h 7Bh 11h CAh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xCB: /* C4h E1h 7Bh 11h CBh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xCC: /* C4h E1h 7Bh 11h CCh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xCD: /* C4h E1h 7Bh 11h CDh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xCE: /* C4h E1h 7Bh 11h CEh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xCF: /* C4h E1h 7Bh 11h CFh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xD0: /* C4h E1h 7Bh 11h D0h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xD1: /* C4h E1h 7Bh 11h D1h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xD2: /* C4h E1h 7Bh 11h D2h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xD3: /* C4h E1h 7Bh 11h D3h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xD4: /* C4h E1h 7Bh 11h D4h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xD5: /* C4h E1h 7Bh 11h D5h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xD6: /* C4h E1h 7Bh 11h D6h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xD7: /* C4h E1h 7Bh 11h D7h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xD8: /* C4h E1h 7Bh 11h D8h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xD9: /* C4h E1h 7Bh 11h D9h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xDA: /* C4h E1h 7Bh 11h DAh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xDB: /* C4h E1h 7Bh 11h DBh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xDC: /* C4h E1h 7Bh 11h DCh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xDD: /* C4h E1h 7Bh 11h DDh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xDE: /* C4h E1h 7Bh 11h DEh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xDF: /* C4h E1h 7Bh 11h DFh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xE0: /* C4h E1h 7Bh 11h E0h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xE1: /* C4h E1h 7Bh 11h E1h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xE2: /* C4h E1h 7Bh 11h E2h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xE3: /* C4h E1h 7Bh 11h E3h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xE4: /* C4h E1h 7Bh 11h E4h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xE5: /* C4h E1h 7Bh 11h E5h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xE6: /* C4h E1h 7Bh 11h E6h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xE7: /* C4h E1h 7Bh 11h E7h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xE8: /* C4h E1h 7Bh 11h E8h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xE9: /* C4h E1h 7Bh 11h E9h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xEA: /* C4h E1h 7Bh 11h EAh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xEB: /* C4h E1h 7Bh 11h EBh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xEC: /* C4h E1h 7Bh 11h ECh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xED: /* C4h E1h 7Bh 11h EDh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xEE: /* C4h E1h 7Bh 11h EEh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xEF: /* C4h E1h 7Bh 11h EFh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xF0: /* C4h E1h 7Bh 11h F0h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xF1: /* C4h E1h 7Bh 11h F1h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xF2: /* C4h E1h 7Bh 11h F2h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xF3: /* C4h E1h 7Bh 11h F3h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xF4: /* C4h E1h 7Bh 11h F4h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xF5: /* C4h E1h 7Bh 11h F5h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xF6: /* C4h E1h 7Bh 11h F6h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xF7: /* C4h E1h 7Bh 11h F7h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xF8: /* C4h E1h 7Bh 11h F8h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xF9: /* C4h E1h 7Bh 11h F9h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xFA: /* C4h E1h 7Bh 11h FAh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xFB: /* C4h E1h 7Bh 11h FBh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xFC: /* C4h E1h 7Bh 11h FCh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xFD: /* C4h E1h 7Bh 11h FDh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xFE: /* C4h E1h 7Bh 11h FEh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                    case 0xFF: /* C4h E1h 7Bh 11h FFh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVSD XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                                        break;
+                                    default:
+                                        goto _x86decode_illegal_opcode;
+                                };
+/* End of opcodes starting with C4h E1h 7Bh 11h */
+                                break;
+                            /* opcode C4h E1h 7Bh 12h  not defined */
+                            /* opcode C4h E1h 7Bh 13h  not defined */
+                            /* opcode C4h E1h 7Bh 14h  not defined */
+                            /* opcode C4h E1h 7Bh 15h  not defined */
+                            /* opcode C4h E1h 7Bh 16h  not defined */
+                            /* opcode C4h E1h 7Bh 17h  not defined */
+                            /* opcode C4h E1h 7Bh 18h  not defined */
+                            /* opcode C4h E1h 7Bh 19h  not defined */
+                            /* opcode C4h E1h 7Bh 1Ah  not defined */
+                            /* opcode C4h E1h 7Bh 1Bh  not defined */
+                            /* opcode C4h E1h 7Bh 1Ch  not defined */
+                            /* opcode C4h E1h 7Bh 1Dh  not defined */
+                            /* opcode C4h E1h 7Bh 1Eh  not defined */
+                            /* opcode C4h E1h 7Bh 1Fh  not defined */
+                            /* opcode C4h E1h 7Bh 20h  not defined */
+                            /* opcode C4h E1h 7Bh 21h  not defined */
+                            /* opcode C4h E1h 7Bh 22h  not defined */
+                            /* opcode C4h E1h 7Bh 23h  not defined */
+                            /* opcode C4h E1h 7Bh 24h  not defined */
+                            /* opcode C4h E1h 7Bh 25h  not defined */
+                            /* opcode C4h E1h 7Bh 26h  not defined */
+                            /* opcode C4h E1h 7Bh 27h  not defined */
+                            /* opcode C4h E1h 7Bh 28h  not defined */
+                            /* opcode C4h E1h 7Bh 29h  not defined */
+                            /* opcode C4h E1h 7Bh 2Ah  not defined */
+                            /* opcode C4h E1h 7Bh 2Bh  not defined */
+                            /* opcode C4h E1h 7Bh 2Ch  not defined */
+                            /* opcode C4h E1h 7Bh 2Dh  not defined */
+                            /* opcode C4h E1h 7Bh 2Eh  not defined */
+                            /* opcode C4h E1h 7Bh 2Fh  not defined */
+                            /* opcode C4h E1h 7Bh 30h  not defined */
+                            /* opcode C4h E1h 7Bh 31h  not defined */
+                            /* opcode C4h E1h 7Bh 32h  not defined */
+                            /* opcode C4h E1h 7Bh 33h  not defined */
+                            /* opcode C4h E1h 7Bh 34h  not defined */
+                            /* opcode C4h E1h 7Bh 35h  not defined */
+                            /* opcode C4h E1h 7Bh 36h  not defined */
+                            /* opcode C4h E1h 7Bh 37h  not defined */
+                            /* opcode C4h E1h 7Bh 38h  not defined */
+                            /* opcode C4h E1h 7Bh 39h  not defined */
+                            /* opcode C4h E1h 7Bh 3Ah  not defined */
+                            /* opcode C4h E1h 7Bh 3Bh  not defined */
+                            /* opcode C4h E1h 7Bh 3Ch  not defined */
+                            /* opcode C4h E1h 7Bh 3Dh  not defined */
+                            /* opcode C4h E1h 7Bh 3Eh  not defined */
+                            /* opcode C4h E1h 7Bh 3Fh  not defined */
+                            /* opcode C4h E1h 7Bh 40h  not defined */
+                            /* opcode C4h E1h 7Bh 41h  not defined */
+                            /* opcode C4h E1h 7Bh 42h  not defined */
+                            /* opcode C4h E1h 7Bh 43h  not defined */
+                            /* opcode C4h E1h 7Bh 44h  not defined */
+                            /* opcode C4h E1h 7Bh 45h  not defined */
+                            /* opcode C4h E1h 7Bh 46h  not defined */
+                            /* opcode C4h E1h 7Bh 47h  not defined */
+                            /* opcode C4h E1h 7Bh 48h  not defined */
+                            /* opcode C4h E1h 7Bh 49h  not defined */
+                            /* opcode C4h E1h 7Bh 4Ah  not defined */
+                            /* opcode C4h E1h 7Bh 4Bh  not defined */
+                            /* opcode C4h E1h 7Bh 4Ch  not defined */
+                            /* opcode C4h E1h 7Bh 4Dh  not defined */
+                            /* opcode C4h E1h 7Bh 4Eh  not defined */
+                            /* opcode C4h E1h 7Bh 4Fh  not defined */
+                            /* opcode C4h E1h 7Bh 50h  not defined */
+                            /* opcode C4h E1h 7Bh 51h  not defined */
+                            /* opcode C4h E1h 7Bh 52h  not defined */
+                            /* opcode C4h E1h 7Bh 53h  not defined */
+                            /* opcode C4h E1h 7Bh 54h  not defined */
+                            /* opcode C4h E1h 7Bh 55h  not defined */
+                            /* opcode C4h E1h 7Bh 56h  not defined */
+                            /* opcode C4h E1h 7Bh 57h  not defined */
+                            case 0x58: /* C4h E1h 7Bh 58h VADDSD sse(reg),sse(vsidx),sse(r/m)      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x58 mod/reg/rm */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VADDSD XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                                break;
+                            /* opcode C4h E1h 7Bh 59h  not defined */
+                            /* opcode C4h E1h 7Bh 5Ah  not defined */
+                            /* opcode C4h E1h 7Bh 5Bh  not defined */
+                            /* opcode C4h E1h 7Bh 5Ch  not defined */
+                            /* opcode C4h E1h 7Bh 5Dh  not defined */
+                            /* opcode C4h E1h 7Bh 5Eh  not defined */
+                            /* opcode C4h E1h 7Bh 5Fh  not defined */
+                            /* opcode C4h E1h 7Bh 60h  not defined */
+                            /* opcode C4h E1h 7Bh 61h  not defined */
+                            /* opcode C4h E1h 7Bh 62h  not defined */
+                            /* opcode C4h E1h 7Bh 63h  not defined */
+                            /* opcode C4h E1h 7Bh 64h  not defined */
+                            /* opcode C4h E1h 7Bh 65h  not defined */
+                            /* opcode C4h E1h 7Bh 66h  not defined */
+                            /* opcode C4h E1h 7Bh 67h  not defined */
+                            /* opcode C4h E1h 7Bh 68h  not defined */
+                            /* opcode C4h E1h 7Bh 69h  not defined */
+                            /* opcode C4h E1h 7Bh 6Ah  not defined */
+                            /* opcode C4h E1h 7Bh 6Bh  not defined */
+                            /* opcode C4h E1h 7Bh 6Ch  not defined */
+                            /* opcode C4h E1h 7Bh 6Dh  not defined */
+                            /* opcode C4h E1h 7Bh 6Eh  not defined */
+                            /* opcode C4h E1h 7Bh 6Fh  not defined */
+                            /* opcode C4h E1h 7Bh 70h  not defined */
+                            /* opcode C4h E1h 7Bh 71h  not defined */
+                            /* opcode C4h E1h 7Bh 72h  not defined */
+                            /* opcode C4h E1h 7Bh 73h  not defined */
+                            /* opcode C4h E1h 7Bh 74h  not defined */
+                            /* opcode C4h E1h 7Bh 75h  not defined */
+                            /* opcode C4h E1h 7Bh 76h  not defined */
+                            /* opcode C4h E1h 7Bh 77h  not defined */
+                            /* opcode C4h E1h 7Bh 78h  not defined */
+                            /* opcode C4h E1h 7Bh 79h  not defined */
+                            /* opcode C4h E1h 7Bh 7Ah  not defined */
+                            /* opcode C4h E1h 7Bh 7Bh  not defined */
+                            /* opcode C4h E1h 7Bh 7Ch  not defined */
+                            /* opcode C4h E1h 7Bh 7Dh  not defined */
+                            /* opcode C4h E1h 7Bh 7Eh  not defined */
+                            /* opcode C4h E1h 7Bh 7Fh  not defined */
+                            /* opcode C4h E1h 7Bh 80h  not defined */
+                            /* opcode C4h E1h 7Bh 81h  not defined */
+                            /* opcode C4h E1h 7Bh 82h  not defined */
+                            /* opcode C4h E1h 7Bh 83h  not defined */
+                            /* opcode C4h E1h 7Bh 84h  not defined */
+                            /* opcode C4h E1h 7Bh 85h  not defined */
+                            /* opcode C4h E1h 7Bh 86h  not defined */
+                            /* opcode C4h E1h 7Bh 87h  not defined */
+                            /* opcode C4h E1h 7Bh 88h  not defined */
+                            /* opcode C4h E1h 7Bh 89h  not defined */
+                            /* opcode C4h E1h 7Bh 8Ah  not defined */
+                            /* opcode C4h E1h 7Bh 8Bh  not defined */
+                            /* opcode C4h E1h 7Bh 8Ch  not defined */
+                            /* opcode C4h E1h 7Bh 8Dh  not defined */
+                            /* opcode C4h E1h 7Bh 8Eh  not defined */
+                            /* opcode C4h E1h 7Bh 8Fh  not defined */
+                            /* opcode C4h E1h 7Bh 90h  not defined */
+                            /* opcode C4h E1h 7Bh 91h  not defined */
+                            /* opcode C4h E1h 7Bh 92h  not defined */
+                            /* opcode C4h E1h 7Bh 93h  not defined */
+                            /* opcode C4h E1h 7Bh 94h  not defined */
+                            /* opcode C4h E1h 7Bh 95h  not defined */
+                            /* opcode C4h E1h 7Bh 96h  not defined */
+                            /* opcode C4h E1h 7Bh 97h  not defined */
+                            /* opcode C4h E1h 7Bh 98h  not defined */
+                            /* opcode C4h E1h 7Bh 99h  not defined */
+                            /* opcode C4h E1h 7Bh 9Ah  not defined */
+                            /* opcode C4h E1h 7Bh 9Bh  not defined */
+                            /* opcode C4h E1h 7Bh 9Ch  not defined */
+                            /* opcode C4h E1h 7Bh 9Dh  not defined */
+                            /* opcode C4h E1h 7Bh 9Eh  not defined */
+                            /* opcode C4h E1h 7Bh 9Fh  not defined */
+                            /* opcode C4h E1h 7Bh A0h  not defined */
+                            /* opcode C4h E1h 7Bh A1h  not defined */
+                            /* opcode C4h E1h 7Bh A2h  not defined */
+                            /* opcode C4h E1h 7Bh A3h  not defined */
+                            /* opcode C4h E1h 7Bh A4h  not defined */
+                            /* opcode C4h E1h 7Bh A5h  not defined */
+                            /* opcode C4h E1h 7Bh A6h  not defined */
+                            /* opcode C4h E1h 7Bh A7h  not defined */
+                            /* opcode C4h E1h 7Bh A8h  not defined */
+                            /* opcode C4h E1h 7Bh A9h  not defined */
+                            /* opcode C4h E1h 7Bh AAh  not defined */
+                            /* opcode C4h E1h 7Bh ABh  not defined */
+                            /* opcode C4h E1h 7Bh ACh  not defined */
+                            /* opcode C4h E1h 7Bh ADh  not defined */
+                            /* opcode C4h E1h 7Bh AEh  not defined */
+                            /* opcode C4h E1h 7Bh AFh  not defined */
+                            /* opcode C4h E1h 7Bh B0h  not defined */
+                            /* opcode C4h E1h 7Bh B1h  not defined */
+                            /* opcode C4h E1h 7Bh B2h  not defined */
+                            /* opcode C4h E1h 7Bh B3h  not defined */
+                            /* opcode C4h E1h 7Bh B4h  not defined */
+                            /* opcode C4h E1h 7Bh B5h  not defined */
+                            /* opcode C4h E1h 7Bh B6h  not defined */
+                            /* opcode C4h E1h 7Bh B7h  not defined */
+                            /* opcode C4h E1h 7Bh B8h  not defined */
+                            /* opcode C4h E1h 7Bh B9h  not defined */
+                            /* opcode C4h E1h 7Bh BAh  not defined */
+                            /* opcode C4h E1h 7Bh BBh  not defined */
+                            /* opcode C4h E1h 7Bh BCh  not defined */
+                            /* opcode C4h E1h 7Bh BDh  not defined */
+                            /* opcode C4h E1h 7Bh BEh  not defined */
+                            /* opcode C4h E1h 7Bh BFh  not defined */
+                            /* opcode C4h E1h 7Bh C0h  not defined */
+                            /* opcode C4h E1h 7Bh C1h  not defined */
+                            /* opcode C4h E1h 7Bh C2h  not defined */
+                            /* opcode C4h E1h 7Bh C3h  not defined */
+                            /* opcode C4h E1h 7Bh C4h  not defined */
+                            /* opcode C4h E1h 7Bh C5h  not defined */
+                            /* opcode C4h E1h 7Bh C6h  not defined */
+                            /* opcode C4h E1h 7Bh C7h  not defined */
+                            /* opcode C4h E1h 7Bh C8h  not defined */
+                            /* opcode C4h E1h 7Bh C9h  not defined */
+                            /* opcode C4h E1h 7Bh CAh  not defined */
+                            /* opcode C4h E1h 7Bh CBh  not defined */
+                            /* opcode C4h E1h 7Bh CCh  not defined */
+                            /* opcode C4h E1h 7Bh CDh  not defined */
+                            /* opcode C4h E1h 7Bh CEh  not defined */
+                            /* opcode C4h E1h 7Bh CFh  not defined */
+                            /* opcode C4h E1h 7Bh D0h  not defined */
+                            /* opcode C4h E1h 7Bh D1h  not defined */
+                            /* opcode C4h E1h 7Bh D2h  not defined */
+                            /* opcode C4h E1h 7Bh D3h  not defined */
+                            /* opcode C4h E1h 7Bh D4h  not defined */
+                            /* opcode C4h E1h 7Bh D5h  not defined */
+                            /* opcode C4h E1h 7Bh D6h  not defined */
+                            /* opcode C4h E1h 7Bh D7h  not defined */
+                            /* opcode C4h E1h 7Bh D8h  not defined */
+                            /* opcode C4h E1h 7Bh D9h  not defined */
+                            /* opcode C4h E1h 7Bh DAh  not defined */
+                            /* opcode C4h E1h 7Bh DBh  not defined */
+                            /* opcode C4h E1h 7Bh DCh  not defined */
+                            /* opcode C4h E1h 7Bh DDh  not defined */
+                            /* opcode C4h E1h 7Bh DEh  not defined */
+                            /* opcode C4h E1h 7Bh DFh  not defined */
+                            /* opcode C4h E1h 7Bh E0h  not defined */
+                            /* opcode C4h E1h 7Bh E1h  not defined */
+                            /* opcode C4h E1h 7Bh E2h  not defined */
+                            /* opcode C4h E1h 7Bh E3h  not defined */
+                            /* opcode C4h E1h 7Bh E4h  not defined */
+                            /* opcode C4h E1h 7Bh E5h  not defined */
+                            /* opcode C4h E1h 7Bh E6h  not defined */
+                            /* opcode C4h E1h 7Bh E7h  not defined */
+                            /* opcode C4h E1h 7Bh E8h  not defined */
+                            /* opcode C4h E1h 7Bh E9h  not defined */
+                            /* opcode C4h E1h 7Bh EAh  not defined */
+                            /* opcode C4h E1h 7Bh EBh  not defined */
+                            /* opcode C4h E1h 7Bh ECh  not defined */
+                            /* opcode C4h E1h 7Bh EDh  not defined */
+                            /* opcode C4h E1h 7Bh EEh  not defined */
+                            /* opcode C4h E1h 7Bh EFh  not defined */
+                            /* opcode C4h E1h 7Bh F0h  not defined */
+                            /* opcode C4h E1h 7Bh F1h  not defined */
+                            /* opcode C4h E1h 7Bh F2h  not defined */
+                            /* opcode C4h E1h 7Bh F3h  not defined */
+                            /* opcode C4h E1h 7Bh F4h  not defined */
+                            /* opcode C4h E1h 7Bh F5h  not defined */
+                            /* opcode C4h E1h 7Bh F6h  not defined */
+                            /* opcode C4h E1h 7Bh F7h  not defined */
+                            /* opcode C4h E1h 7Bh F8h  not defined */
+                            /* opcode C4h E1h 7Bh F9h  not defined */
+                            /* opcode C4h E1h 7Bh FAh  not defined */
+                            /* opcode C4h E1h 7Bh FBh  not defined */
+                            /* opcode C4h E1h 7Bh FCh  not defined */
+                            /* opcode C4h E1h 7Bh FDh  not defined */
+                            /* opcode C4h E1h 7Bh FEh  not defined */
+                            /* opcode C4h E1h 7Bh FFh  not defined */
+                            default:
+                                goto _x86decode_illegal_opcode;
+                        };
+/* End of opcodes starting with C4h E1h 7Bh */
+                        break;
                     case 0x7C: /* C4h E1h 7Ch        spec:  */
                         vex.V = ((~op) >> 3) & 7;
 /* Opcodes starting with C4h E1h 7Ch */
@@ -16699,12 +19697,24 @@ switch (op) {
                             /* opcode C4h E1h 7Ch 0Dh  not defined */
                             /* opcode C4h E1h 7Ch 0Eh  not defined */
                             /* opcode C4h E1h 7Ch 0Fh  not defined */
-                            /* opcode C4h E1h 7Ch 10h  not defined */
-                            /* opcode C4h E1h 7Ch 11h  not defined */
+                            case 0x10: /* C4h E1h 7Ch 10h VMOVUPS avx(reg),avx(r/m)      spec: vex vsize(256) vlead(0x0F) vprefix(none) 0x10 mod/reg/rm vsidx(0) */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVUPS YMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,32,RC_AVXREG,""));
+                                break;
+                            case 0x11: /* C4h E1h 7Ch 11h VMOVUPS avx(r/m),avx(reg)      spec: vex vsize(256) vlead(0x0F) vprefix(none) 0x11 mod/reg/rm vsidx(0) */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVUPS %s,YMM%u",IPDecPrint16(mrm,disp,32,RC_AVXREG,""),mrm.reg());
+                                break;
                             /* opcode C4h E1h 7Ch 12h  not defined */
                             /* opcode C4h E1h 7Ch 13h  not defined */
-                            /* opcode C4h E1h 7Ch 14h  not defined */
-                            /* opcode C4h E1h 7Ch 15h  not defined */
+                            case 0x14: /* C4h E1h 7Ch 14h VUNPCKLPS avx(reg),avx(vsidx),avx(r/m)      spec: vex vsize(256) vlead(0x0F) vprefix(none) 0x14 mod/reg/rm */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKLPS YMM%u,YMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,32,RC_AVXREG,""));
+                                break;
+                            case 0x15: /* C4h E1h 7Ch 15h VUNPCKHPS avx(reg),avx(vsidx),avx(r/m)      spec: vex vsize(256) vlead(0x0F) vprefix(none) 0x15 mod/reg/rm */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKHPS YMM%u,YMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,32,RC_AVXREG,""));
+                                break;
                             /* opcode C4h E1h 7Ch 16h  not defined */
                             /* opcode C4h E1h 7Ch 17h  not defined */
                             /* opcode C4h E1h 7Ch 18h  not defined */
@@ -16948,6 +19958,288 @@ switch (op) {
                                 goto _x86decode_illegal_opcode;
                         };
 /* End of opcodes starting with C4h E1h 7Ch */
+                        break;
+                    case 0x7D: /* C4h E1h 7Dh        spec:  */
+                        vex.V = ((~op) >> 3) & 7;
+/* Opcodes starting with C4h E1h 7Dh */
+                        op=IPFB();
+                        _x86decode_begin_code16_addr16_opcode_parse_C4E17D:
+                        switch (op) {
+                            /* opcode C4h E1h 7Dh 00h  not defined */
+                            /* opcode C4h E1h 7Dh 01h  not defined */
+                            /* opcode C4h E1h 7Dh 02h  not defined */
+                            /* opcode C4h E1h 7Dh 03h  not defined */
+                            /* opcode C4h E1h 7Dh 04h  not defined */
+                            /* opcode C4h E1h 7Dh 05h  not defined */
+                            /* opcode C4h E1h 7Dh 06h  not defined */
+                            /* opcode C4h E1h 7Dh 07h  not defined */
+                            /* opcode C4h E1h 7Dh 08h  not defined */
+                            /* opcode C4h E1h 7Dh 09h  not defined */
+                            /* opcode C4h E1h 7Dh 0Ah  not defined */
+                            /* opcode C4h E1h 7Dh 0Bh  not defined */
+                            /* opcode C4h E1h 7Dh 0Ch  not defined */
+                            /* opcode C4h E1h 7Dh 0Dh  not defined */
+                            /* opcode C4h E1h 7Dh 0Eh  not defined */
+                            /* opcode C4h E1h 7Dh 0Fh  not defined */
+                            case 0x10: /* C4h E1h 7Dh 10h VMOVUPD avx(reg),avx(r/m)      spec: vex vsize(256) vlead(0x0F) vprefix(0x66) 0x10 mod/reg/rm vsidx(0) */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVUPD YMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,32,RC_AVXREG,""));
+                                break;
+                            case 0x11: /* C4h E1h 7Dh 11h VMOVUPD avx(r/m),avx(reg)      spec: vex vsize(256) vlead(0x0F) vprefix(0x66) 0x11 mod/reg/rm vsidx(0) */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVUPD %s,YMM%u",IPDecPrint16(mrm,disp,32,RC_AVXREG,""),mrm.reg());
+                                break;
+                            /* opcode C4h E1h 7Dh 12h  not defined */
+                            /* opcode C4h E1h 7Dh 13h  not defined */
+                            case 0x14: /* C4h E1h 7Dh 14h VUNPCKLPD avx(reg),avx(vsidx),avx(r/m)      spec: vex vsize(256) vlead(0x0F) vprefix(0x66) 0x14 mod/reg/rm */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKLPD YMM%u,YMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,32,RC_AVXREG,""));
+                                break;
+                            case 0x15: /* C4h E1h 7Dh 15h VUNPCKHPD avx(reg),avx(vsidx),avx(r/m)      spec: vex vsize(256) vlead(0x0F) vprefix(0x66) 0x15 mod/reg/rm */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKHPD YMM%u,YMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,32,RC_AVXREG,""));
+                                break;
+                            /* opcode C4h E1h 7Dh 16h  not defined */
+                            /* opcode C4h E1h 7Dh 17h  not defined */
+                            /* opcode C4h E1h 7Dh 18h  not defined */
+                            /* opcode C4h E1h 7Dh 19h  not defined */
+                            /* opcode C4h E1h 7Dh 1Ah  not defined */
+                            /* opcode C4h E1h 7Dh 1Bh  not defined */
+                            /* opcode C4h E1h 7Dh 1Ch  not defined */
+                            /* opcode C4h E1h 7Dh 1Dh  not defined */
+                            /* opcode C4h E1h 7Dh 1Eh  not defined */
+                            /* opcode C4h E1h 7Dh 1Fh  not defined */
+                            /* opcode C4h E1h 7Dh 20h  not defined */
+                            /* opcode C4h E1h 7Dh 21h  not defined */
+                            /* opcode C4h E1h 7Dh 22h  not defined */
+                            /* opcode C4h E1h 7Dh 23h  not defined */
+                            /* opcode C4h E1h 7Dh 24h  not defined */
+                            /* opcode C4h E1h 7Dh 25h  not defined */
+                            /* opcode C4h E1h 7Dh 26h  not defined */
+                            /* opcode C4h E1h 7Dh 27h  not defined */
+                            /* opcode C4h E1h 7Dh 28h  not defined */
+                            /* opcode C4h E1h 7Dh 29h  not defined */
+                            /* opcode C4h E1h 7Dh 2Ah  not defined */
+                            /* opcode C4h E1h 7Dh 2Bh  not defined */
+                            /* opcode C4h E1h 7Dh 2Ch  not defined */
+                            /* opcode C4h E1h 7Dh 2Dh  not defined */
+                            /* opcode C4h E1h 7Dh 2Eh  not defined */
+                            /* opcode C4h E1h 7Dh 2Fh  not defined */
+                            /* opcode C4h E1h 7Dh 30h  not defined */
+                            /* opcode C4h E1h 7Dh 31h  not defined */
+                            /* opcode C4h E1h 7Dh 32h  not defined */
+                            /* opcode C4h E1h 7Dh 33h  not defined */
+                            /* opcode C4h E1h 7Dh 34h  not defined */
+                            /* opcode C4h E1h 7Dh 35h  not defined */
+                            /* opcode C4h E1h 7Dh 36h  not defined */
+                            /* opcode C4h E1h 7Dh 37h  not defined */
+                            /* opcode C4h E1h 7Dh 38h  not defined */
+                            /* opcode C4h E1h 7Dh 39h  not defined */
+                            /* opcode C4h E1h 7Dh 3Ah  not defined */
+                            /* opcode C4h E1h 7Dh 3Bh  not defined */
+                            /* opcode C4h E1h 7Dh 3Ch  not defined */
+                            /* opcode C4h E1h 7Dh 3Dh  not defined */
+                            /* opcode C4h E1h 7Dh 3Eh  not defined */
+                            /* opcode C4h E1h 7Dh 3Fh  not defined */
+                            /* opcode C4h E1h 7Dh 40h  not defined */
+                            /* opcode C4h E1h 7Dh 41h  not defined */
+                            /* opcode C4h E1h 7Dh 42h  not defined */
+                            /* opcode C4h E1h 7Dh 43h  not defined */
+                            /* opcode C4h E1h 7Dh 44h  not defined */
+                            /* opcode C4h E1h 7Dh 45h  not defined */
+                            /* opcode C4h E1h 7Dh 46h  not defined */
+                            /* opcode C4h E1h 7Dh 47h  not defined */
+                            /* opcode C4h E1h 7Dh 48h  not defined */
+                            /* opcode C4h E1h 7Dh 49h  not defined */
+                            /* opcode C4h E1h 7Dh 4Ah  not defined */
+                            /* opcode C4h E1h 7Dh 4Bh  not defined */
+                            /* opcode C4h E1h 7Dh 4Ch  not defined */
+                            /* opcode C4h E1h 7Dh 4Dh  not defined */
+                            /* opcode C4h E1h 7Dh 4Eh  not defined */
+                            /* opcode C4h E1h 7Dh 4Fh  not defined */
+                            /* opcode C4h E1h 7Dh 50h  not defined */
+                            /* opcode C4h E1h 7Dh 51h  not defined */
+                            /* opcode C4h E1h 7Dh 52h  not defined */
+                            /* opcode C4h E1h 7Dh 53h  not defined */
+                            /* opcode C4h E1h 7Dh 54h  not defined */
+                            /* opcode C4h E1h 7Dh 55h  not defined */
+                            /* opcode C4h E1h 7Dh 56h  not defined */
+                            /* opcode C4h E1h 7Dh 57h  not defined */
+                            case 0x58: /* C4h E1h 7Dh 58h VADDPD avx(reg),avx(vsidx),avx(r/m)      spec: vex vsize(256) vlead(0x0F) vprefix(0x66) 0x58 mod/reg/rm */
+                                IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VADDPD YMM%u,YMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,32,RC_AVXREG,""));
+                                break;
+                            /* opcode C4h E1h 7Dh 59h  not defined */
+                            /* opcode C4h E1h 7Dh 5Ah  not defined */
+                            /* opcode C4h E1h 7Dh 5Bh  not defined */
+                            /* opcode C4h E1h 7Dh 5Ch  not defined */
+                            /* opcode C4h E1h 7Dh 5Dh  not defined */
+                            /* opcode C4h E1h 7Dh 5Eh  not defined */
+                            /* opcode C4h E1h 7Dh 5Fh  not defined */
+                            /* opcode C4h E1h 7Dh 60h  not defined */
+                            /* opcode C4h E1h 7Dh 61h  not defined */
+                            /* opcode C4h E1h 7Dh 62h  not defined */
+                            /* opcode C4h E1h 7Dh 63h  not defined */
+                            /* opcode C4h E1h 7Dh 64h  not defined */
+                            /* opcode C4h E1h 7Dh 65h  not defined */
+                            /* opcode C4h E1h 7Dh 66h  not defined */
+                            /* opcode C4h E1h 7Dh 67h  not defined */
+                            /* opcode C4h E1h 7Dh 68h  not defined */
+                            /* opcode C4h E1h 7Dh 69h  not defined */
+                            /* opcode C4h E1h 7Dh 6Ah  not defined */
+                            /* opcode C4h E1h 7Dh 6Bh  not defined */
+                            /* opcode C4h E1h 7Dh 6Ch  not defined */
+                            /* opcode C4h E1h 7Dh 6Dh  not defined */
+                            /* opcode C4h E1h 7Dh 6Eh  not defined */
+                            /* opcode C4h E1h 7Dh 6Fh  not defined */
+                            /* opcode C4h E1h 7Dh 70h  not defined */
+                            /* opcode C4h E1h 7Dh 71h  not defined */
+                            /* opcode C4h E1h 7Dh 72h  not defined */
+                            /* opcode C4h E1h 7Dh 73h  not defined */
+                            /* opcode C4h E1h 7Dh 74h  not defined */
+                            /* opcode C4h E1h 7Dh 75h  not defined */
+                            /* opcode C4h E1h 7Dh 76h  not defined */
+                            /* opcode C4h E1h 7Dh 77h  not defined */
+                            /* opcode C4h E1h 7Dh 78h  not defined */
+                            /* opcode C4h E1h 7Dh 79h  not defined */
+                            /* opcode C4h E1h 7Dh 7Ah  not defined */
+                            /* opcode C4h E1h 7Dh 7Bh  not defined */
+                            /* opcode C4h E1h 7Dh 7Ch  not defined */
+                            /* opcode C4h E1h 7Dh 7Dh  not defined */
+                            /* opcode C4h E1h 7Dh 7Eh  not defined */
+                            /* opcode C4h E1h 7Dh 7Fh  not defined */
+                            /* opcode C4h E1h 7Dh 80h  not defined */
+                            /* opcode C4h E1h 7Dh 81h  not defined */
+                            /* opcode C4h E1h 7Dh 82h  not defined */
+                            /* opcode C4h E1h 7Dh 83h  not defined */
+                            /* opcode C4h E1h 7Dh 84h  not defined */
+                            /* opcode C4h E1h 7Dh 85h  not defined */
+                            /* opcode C4h E1h 7Dh 86h  not defined */
+                            /* opcode C4h E1h 7Dh 87h  not defined */
+                            /* opcode C4h E1h 7Dh 88h  not defined */
+                            /* opcode C4h E1h 7Dh 89h  not defined */
+                            /* opcode C4h E1h 7Dh 8Ah  not defined */
+                            /* opcode C4h E1h 7Dh 8Bh  not defined */
+                            /* opcode C4h E1h 7Dh 8Ch  not defined */
+                            /* opcode C4h E1h 7Dh 8Dh  not defined */
+                            /* opcode C4h E1h 7Dh 8Eh  not defined */
+                            /* opcode C4h E1h 7Dh 8Fh  not defined */
+                            /* opcode C4h E1h 7Dh 90h  not defined */
+                            /* opcode C4h E1h 7Dh 91h  not defined */
+                            /* opcode C4h E1h 7Dh 92h  not defined */
+                            /* opcode C4h E1h 7Dh 93h  not defined */
+                            /* opcode C4h E1h 7Dh 94h  not defined */
+                            /* opcode C4h E1h 7Dh 95h  not defined */
+                            /* opcode C4h E1h 7Dh 96h  not defined */
+                            /* opcode C4h E1h 7Dh 97h  not defined */
+                            /* opcode C4h E1h 7Dh 98h  not defined */
+                            /* opcode C4h E1h 7Dh 99h  not defined */
+                            /* opcode C4h E1h 7Dh 9Ah  not defined */
+                            /* opcode C4h E1h 7Dh 9Bh  not defined */
+                            /* opcode C4h E1h 7Dh 9Ch  not defined */
+                            /* opcode C4h E1h 7Dh 9Dh  not defined */
+                            /* opcode C4h E1h 7Dh 9Eh  not defined */
+                            /* opcode C4h E1h 7Dh 9Fh  not defined */
+                            /* opcode C4h E1h 7Dh A0h  not defined */
+                            /* opcode C4h E1h 7Dh A1h  not defined */
+                            /* opcode C4h E1h 7Dh A2h  not defined */
+                            /* opcode C4h E1h 7Dh A3h  not defined */
+                            /* opcode C4h E1h 7Dh A4h  not defined */
+                            /* opcode C4h E1h 7Dh A5h  not defined */
+                            /* opcode C4h E1h 7Dh A6h  not defined */
+                            /* opcode C4h E1h 7Dh A7h  not defined */
+                            /* opcode C4h E1h 7Dh A8h  not defined */
+                            /* opcode C4h E1h 7Dh A9h  not defined */
+                            /* opcode C4h E1h 7Dh AAh  not defined */
+                            /* opcode C4h E1h 7Dh ABh  not defined */
+                            /* opcode C4h E1h 7Dh ACh  not defined */
+                            /* opcode C4h E1h 7Dh ADh  not defined */
+                            /* opcode C4h E1h 7Dh AEh  not defined */
+                            /* opcode C4h E1h 7Dh AFh  not defined */
+                            /* opcode C4h E1h 7Dh B0h  not defined */
+                            /* opcode C4h E1h 7Dh B1h  not defined */
+                            /* opcode C4h E1h 7Dh B2h  not defined */
+                            /* opcode C4h E1h 7Dh B3h  not defined */
+                            /* opcode C4h E1h 7Dh B4h  not defined */
+                            /* opcode C4h E1h 7Dh B5h  not defined */
+                            /* opcode C4h E1h 7Dh B6h  not defined */
+                            /* opcode C4h E1h 7Dh B7h  not defined */
+                            /* opcode C4h E1h 7Dh B8h  not defined */
+                            /* opcode C4h E1h 7Dh B9h  not defined */
+                            /* opcode C4h E1h 7Dh BAh  not defined */
+                            /* opcode C4h E1h 7Dh BBh  not defined */
+                            /* opcode C4h E1h 7Dh BCh  not defined */
+                            /* opcode C4h E1h 7Dh BDh  not defined */
+                            /* opcode C4h E1h 7Dh BEh  not defined */
+                            /* opcode C4h E1h 7Dh BFh  not defined */
+                            /* opcode C4h E1h 7Dh C0h  not defined */
+                            /* opcode C4h E1h 7Dh C1h  not defined */
+                            /* opcode C4h E1h 7Dh C2h  not defined */
+                            /* opcode C4h E1h 7Dh C3h  not defined */
+                            /* opcode C4h E1h 7Dh C4h  not defined */
+                            /* opcode C4h E1h 7Dh C5h  not defined */
+                            /* opcode C4h E1h 7Dh C6h  not defined */
+                            /* opcode C4h E1h 7Dh C7h  not defined */
+                            /* opcode C4h E1h 7Dh C8h  not defined */
+                            /* opcode C4h E1h 7Dh C9h  not defined */
+                            /* opcode C4h E1h 7Dh CAh  not defined */
+                            /* opcode C4h E1h 7Dh CBh  not defined */
+                            /* opcode C4h E1h 7Dh CCh  not defined */
+                            /* opcode C4h E1h 7Dh CDh  not defined */
+                            /* opcode C4h E1h 7Dh CEh  not defined */
+                            /* opcode C4h E1h 7Dh CFh  not defined */
+                            /* opcode C4h E1h 7Dh D0h  not defined */
+                            /* opcode C4h E1h 7Dh D1h  not defined */
+                            /* opcode C4h E1h 7Dh D2h  not defined */
+                            /* opcode C4h E1h 7Dh D3h  not defined */
+                            /* opcode C4h E1h 7Dh D4h  not defined */
+                            /* opcode C4h E1h 7Dh D5h  not defined */
+                            /* opcode C4h E1h 7Dh D6h  not defined */
+                            /* opcode C4h E1h 7Dh D7h  not defined */
+                            /* opcode C4h E1h 7Dh D8h  not defined */
+                            /* opcode C4h E1h 7Dh D9h  not defined */
+                            /* opcode C4h E1h 7Dh DAh  not defined */
+                            /* opcode C4h E1h 7Dh DBh  not defined */
+                            /* opcode C4h E1h 7Dh DCh  not defined */
+                            /* opcode C4h E1h 7Dh DDh  not defined */
+                            /* opcode C4h E1h 7Dh DEh  not defined */
+                            /* opcode C4h E1h 7Dh DFh  not defined */
+                            /* opcode C4h E1h 7Dh E0h  not defined */
+                            /* opcode C4h E1h 7Dh E1h  not defined */
+                            /* opcode C4h E1h 7Dh E2h  not defined */
+                            /* opcode C4h E1h 7Dh E3h  not defined */
+                            /* opcode C4h E1h 7Dh E4h  not defined */
+                            /* opcode C4h E1h 7Dh E5h  not defined */
+                            /* opcode C4h E1h 7Dh E6h  not defined */
+                            /* opcode C4h E1h 7Dh E7h  not defined */
+                            /* opcode C4h E1h 7Dh E8h  not defined */
+                            /* opcode C4h E1h 7Dh E9h  not defined */
+                            /* opcode C4h E1h 7Dh EAh  not defined */
+                            /* opcode C4h E1h 7Dh EBh  not defined */
+                            /* opcode C4h E1h 7Dh ECh  not defined */
+                            /* opcode C4h E1h 7Dh EDh  not defined */
+                            /* opcode C4h E1h 7Dh EEh  not defined */
+                            /* opcode C4h E1h 7Dh EFh  not defined */
+                            /* opcode C4h E1h 7Dh F0h  not defined */
+                            /* opcode C4h E1h 7Dh F1h  not defined */
+                            /* opcode C4h E1h 7Dh F2h  not defined */
+                            /* opcode C4h E1h 7Dh F3h  not defined */
+                            /* opcode C4h E1h 7Dh F4h  not defined */
+                            /* opcode C4h E1h 7Dh F5h  not defined */
+                            /* opcode C4h E1h 7Dh F6h  not defined */
+                            /* opcode C4h E1h 7Dh F7h  not defined */
+                            /* opcode C4h E1h 7Dh F8h  not defined */
+                            /* opcode C4h E1h 7Dh F9h  not defined */
+                            /* opcode C4h E1h 7Dh FAh  not defined */
+                            /* opcode C4h E1h 7Dh FBh  not defined */
+                            /* opcode C4h E1h 7Dh FCh  not defined */
+                            /* opcode C4h E1h 7Dh FDh  not defined */
+                            /* opcode C4h E1h 7Dh FEh  not defined */
+                            /* opcode C4h E1h 7Dh FFh  not defined */
+                            default:
+                                goto _x86decode_illegal_opcode;
+                        };
+/* End of opcodes starting with C4h E1h 7Dh */
                         break;
                     /* opcode C4h E1h 80h  not defined */
                     /* opcode C4h E1h 81h  not defined */
@@ -25152,10 +28444,283 @@ switch (op) {
                     /* opcode C5h C0h 0Fh  not defined */
                     /* opcode C5h C0h 10h  not defined */
                     /* opcode C5h C0h 11h  not defined */
-                    /* opcode C5h C0h 12h  not defined */
+                    case 0x12: /* C5h C0h 12h        spec:  */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        _x86decode_begin_code16_addr16_opcode_parse_C5C012:
+/* Opcodes starting with C5h C0h 12h */
+                        switch (mrm.byte) {
+                            /* opcode C5h C0h 12h 00h  not defined */
+                            /* opcode C5h C0h 12h 01h  not defined */
+                            /* opcode C5h C0h 12h 02h  not defined */
+                            /* opcode C5h C0h 12h 03h  not defined */
+                            /* opcode C5h C0h 12h 04h  not defined */
+                            /* opcode C5h C0h 12h 05h  not defined */
+                            /* opcode C5h C0h 12h 06h  not defined */
+                            /* opcode C5h C0h 12h 07h  not defined */
+                            /* opcode C5h C0h 12h 08h  not defined */
+                            /* opcode C5h C0h 12h 09h  not defined */
+                            /* opcode C5h C0h 12h 0Ah  not defined */
+                            /* opcode C5h C0h 12h 0Bh  not defined */
+                            /* opcode C5h C0h 12h 0Ch  not defined */
+                            /* opcode C5h C0h 12h 0Dh  not defined */
+                            /* opcode C5h C0h 12h 0Eh  not defined */
+                            /* opcode C5h C0h 12h 0Fh  not defined */
+                            /* opcode C5h C0h 12h 10h  not defined */
+                            /* opcode C5h C0h 12h 11h  not defined */
+                            /* opcode C5h C0h 12h 12h  not defined */
+                            /* opcode C5h C0h 12h 13h  not defined */
+                            /* opcode C5h C0h 12h 14h  not defined */
+                            /* opcode C5h C0h 12h 15h  not defined */
+                            /* opcode C5h C0h 12h 16h  not defined */
+                            /* opcode C5h C0h 12h 17h  not defined */
+                            /* opcode C5h C0h 12h 18h  not defined */
+                            /* opcode C5h C0h 12h 19h  not defined */
+                            /* opcode C5h C0h 12h 1Ah  not defined */
+                            /* opcode C5h C0h 12h 1Bh  not defined */
+                            /* opcode C5h C0h 12h 1Ch  not defined */
+                            /* opcode C5h C0h 12h 1Dh  not defined */
+                            /* opcode C5h C0h 12h 1Eh  not defined */
+                            /* opcode C5h C0h 12h 1Fh  not defined */
+                            /* opcode C5h C0h 12h 20h  not defined */
+                            /* opcode C5h C0h 12h 21h  not defined */
+                            /* opcode C5h C0h 12h 22h  not defined */
+                            /* opcode C5h C0h 12h 23h  not defined */
+                            /* opcode C5h C0h 12h 24h  not defined */
+                            /* opcode C5h C0h 12h 25h  not defined */
+                            /* opcode C5h C0h 12h 26h  not defined */
+                            /* opcode C5h C0h 12h 27h  not defined */
+                            /* opcode C5h C0h 12h 28h  not defined */
+                            /* opcode C5h C0h 12h 29h  not defined */
+                            /* opcode C5h C0h 12h 2Ah  not defined */
+                            /* opcode C5h C0h 12h 2Bh  not defined */
+                            /* opcode C5h C0h 12h 2Ch  not defined */
+                            /* opcode C5h C0h 12h 2Dh  not defined */
+                            /* opcode C5h C0h 12h 2Eh  not defined */
+                            /* opcode C5h C0h 12h 2Fh  not defined */
+                            /* opcode C5h C0h 12h 30h  not defined */
+                            /* opcode C5h C0h 12h 31h  not defined */
+                            /* opcode C5h C0h 12h 32h  not defined */
+                            /* opcode C5h C0h 12h 33h  not defined */
+                            /* opcode C5h C0h 12h 34h  not defined */
+                            /* opcode C5h C0h 12h 35h  not defined */
+                            /* opcode C5h C0h 12h 36h  not defined */
+                            /* opcode C5h C0h 12h 37h  not defined */
+                            /* opcode C5h C0h 12h 38h  not defined */
+                            /* opcode C5h C0h 12h 39h  not defined */
+                            /* opcode C5h C0h 12h 3Ah  not defined */
+                            /* opcode C5h C0h 12h 3Bh  not defined */
+                            /* opcode C5h C0h 12h 3Ch  not defined */
+                            /* opcode C5h C0h 12h 3Dh  not defined */
+                            /* opcode C5h C0h 12h 3Eh  not defined */
+                            /* opcode C5h C0h 12h 3Fh  not defined */
+                            /* opcode C5h C0h 12h 40h  not defined */
+                            /* opcode C5h C0h 12h 41h  not defined */
+                            /* opcode C5h C0h 12h 42h  not defined */
+                            /* opcode C5h C0h 12h 43h  not defined */
+                            /* opcode C5h C0h 12h 44h  not defined */
+                            /* opcode C5h C0h 12h 45h  not defined */
+                            /* opcode C5h C0h 12h 46h  not defined */
+                            /* opcode C5h C0h 12h 47h  not defined */
+                            /* opcode C5h C0h 12h 48h  not defined */
+                            /* opcode C5h C0h 12h 49h  not defined */
+                            /* opcode C5h C0h 12h 4Ah  not defined */
+                            /* opcode C5h C0h 12h 4Bh  not defined */
+                            /* opcode C5h C0h 12h 4Ch  not defined */
+                            /* opcode C5h C0h 12h 4Dh  not defined */
+                            /* opcode C5h C0h 12h 4Eh  not defined */
+                            /* opcode C5h C0h 12h 4Fh  not defined */
+                            /* opcode C5h C0h 12h 50h  not defined */
+                            /* opcode C5h C0h 12h 51h  not defined */
+                            /* opcode C5h C0h 12h 52h  not defined */
+                            /* opcode C5h C0h 12h 53h  not defined */
+                            /* opcode C5h C0h 12h 54h  not defined */
+                            /* opcode C5h C0h 12h 55h  not defined */
+                            /* opcode C5h C0h 12h 56h  not defined */
+                            /* opcode C5h C0h 12h 57h  not defined */
+                            /* opcode C5h C0h 12h 58h  not defined */
+                            /* opcode C5h C0h 12h 59h  not defined */
+                            /* opcode C5h C0h 12h 5Ah  not defined */
+                            /* opcode C5h C0h 12h 5Bh  not defined */
+                            /* opcode C5h C0h 12h 5Ch  not defined */
+                            /* opcode C5h C0h 12h 5Dh  not defined */
+                            /* opcode C5h C0h 12h 5Eh  not defined */
+                            /* opcode C5h C0h 12h 5Fh  not defined */
+                            /* opcode C5h C0h 12h 60h  not defined */
+                            /* opcode C5h C0h 12h 61h  not defined */
+                            /* opcode C5h C0h 12h 62h  not defined */
+                            /* opcode C5h C0h 12h 63h  not defined */
+                            /* opcode C5h C0h 12h 64h  not defined */
+                            /* opcode C5h C0h 12h 65h  not defined */
+                            /* opcode C5h C0h 12h 66h  not defined */
+                            /* opcode C5h C0h 12h 67h  not defined */
+                            /* opcode C5h C0h 12h 68h  not defined */
+                            /* opcode C5h C0h 12h 69h  not defined */
+                            /* opcode C5h C0h 12h 6Ah  not defined */
+                            /* opcode C5h C0h 12h 6Bh  not defined */
+                            /* opcode C5h C0h 12h 6Ch  not defined */
+                            /* opcode C5h C0h 12h 6Dh  not defined */
+                            /* opcode C5h C0h 12h 6Eh  not defined */
+                            /* opcode C5h C0h 12h 6Fh  not defined */
+                            /* opcode C5h C0h 12h 70h  not defined */
+                            /* opcode C5h C0h 12h 71h  not defined */
+                            /* opcode C5h C0h 12h 72h  not defined */
+                            /* opcode C5h C0h 12h 73h  not defined */
+                            /* opcode C5h C0h 12h 74h  not defined */
+                            /* opcode C5h C0h 12h 75h  not defined */
+                            /* opcode C5h C0h 12h 76h  not defined */
+                            /* opcode C5h C0h 12h 77h  not defined */
+                            /* opcode C5h C0h 12h 78h  not defined */
+                            /* opcode C5h C0h 12h 79h  not defined */
+                            /* opcode C5h C0h 12h 7Ah  not defined */
+                            /* opcode C5h C0h 12h 7Bh  not defined */
+                            /* opcode C5h C0h 12h 7Ch  not defined */
+                            /* opcode C5h C0h 12h 7Dh  not defined */
+                            /* opcode C5h C0h 12h 7Eh  not defined */
+                            /* opcode C5h C0h 12h 7Fh  not defined */
+                            /* opcode C5h C0h 12h 80h  not defined */
+                            /* opcode C5h C0h 12h 81h  not defined */
+                            /* opcode C5h C0h 12h 82h  not defined */
+                            /* opcode C5h C0h 12h 83h  not defined */
+                            /* opcode C5h C0h 12h 84h  not defined */
+                            /* opcode C5h C0h 12h 85h  not defined */
+                            /* opcode C5h C0h 12h 86h  not defined */
+                            /* opcode C5h C0h 12h 87h  not defined */
+                            /* opcode C5h C0h 12h 88h  not defined */
+                            /* opcode C5h C0h 12h 89h  not defined */
+                            /* opcode C5h C0h 12h 8Ah  not defined */
+                            /* opcode C5h C0h 12h 8Bh  not defined */
+                            /* opcode C5h C0h 12h 8Ch  not defined */
+                            /* opcode C5h C0h 12h 8Dh  not defined */
+                            /* opcode C5h C0h 12h 8Eh  not defined */
+                            /* opcode C5h C0h 12h 8Fh  not defined */
+                            /* opcode C5h C0h 12h 90h  not defined */
+                            /* opcode C5h C0h 12h 91h  not defined */
+                            /* opcode C5h C0h 12h 92h  not defined */
+                            /* opcode C5h C0h 12h 93h  not defined */
+                            /* opcode C5h C0h 12h 94h  not defined */
+                            /* opcode C5h C0h 12h 95h  not defined */
+                            /* opcode C5h C0h 12h 96h  not defined */
+                            /* opcode C5h C0h 12h 97h  not defined */
+                            /* opcode C5h C0h 12h 98h  not defined */
+                            /* opcode C5h C0h 12h 99h  not defined */
+                            /* opcode C5h C0h 12h 9Ah  not defined */
+                            /* opcode C5h C0h 12h 9Bh  not defined */
+                            /* opcode C5h C0h 12h 9Ch  not defined */
+                            /* opcode C5h C0h 12h 9Dh  not defined */
+                            /* opcode C5h C0h 12h 9Eh  not defined */
+                            /* opcode C5h C0h 12h 9Fh  not defined */
+                            /* opcode C5h C0h 12h A0h  not defined */
+                            /* opcode C5h C0h 12h A1h  not defined */
+                            /* opcode C5h C0h 12h A2h  not defined */
+                            /* opcode C5h C0h 12h A3h  not defined */
+                            /* opcode C5h C0h 12h A4h  not defined */
+                            /* opcode C5h C0h 12h A5h  not defined */
+                            /* opcode C5h C0h 12h A6h  not defined */
+                            /* opcode C5h C0h 12h A7h  not defined */
+                            /* opcode C5h C0h 12h A8h  not defined */
+                            /* opcode C5h C0h 12h A9h  not defined */
+                            /* opcode C5h C0h 12h AAh  not defined */
+                            /* opcode C5h C0h 12h ABh  not defined */
+                            /* opcode C5h C0h 12h ACh  not defined */
+                            /* opcode C5h C0h 12h ADh  not defined */
+                            /* opcode C5h C0h 12h AEh  not defined */
+                            /* opcode C5h C0h 12h AFh  not defined */
+                            /* opcode C5h C0h 12h B0h  not defined */
+                            /* opcode C5h C0h 12h B1h  not defined */
+                            /* opcode C5h C0h 12h B2h  not defined */
+                            /* opcode C5h C0h 12h B3h  not defined */
+                            /* opcode C5h C0h 12h B4h  not defined */
+                            /* opcode C5h C0h 12h B5h  not defined */
+                            /* opcode C5h C0h 12h B6h  not defined */
+                            /* opcode C5h C0h 12h B7h  not defined */
+                            /* opcode C5h C0h 12h B8h  not defined */
+                            /* opcode C5h C0h 12h B9h  not defined */
+                            /* opcode C5h C0h 12h BAh  not defined */
+                            /* opcode C5h C0h 12h BBh  not defined */
+                            /* opcode C5h C0h 12h BCh  not defined */
+                            /* opcode C5h C0h 12h BDh  not defined */
+                            /* opcode C5h C0h 12h BEh  not defined */
+                            /* opcode C5h C0h 12h BFh  not defined */
+                            case 0xC0: /* C5h C0h 12h C0h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xC1: /* C5h C0h 12h C1h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xC2: /* C5h C0h 12h C2h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xC3: /* C5h C0h 12h C3h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xC4: /* C5h C0h 12h C4h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xC5: /* C5h C0h 12h C5h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xC6: /* C5h C0h 12h C6h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xC7: /* C5h C0h 12h C7h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xC8: /* C5h C0h 12h C8h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xC9: /* C5h C0h 12h C9h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xCA: /* C5h C0h 12h CAh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xCB: /* C5h C0h 12h CBh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xCC: /* C5h C0h 12h CCh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xCD: /* C5h C0h 12h CDh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xCE: /* C5h C0h 12h CEh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xCF: /* C5h C0h 12h CFh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xD0: /* C5h C0h 12h D0h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xD1: /* C5h C0h 12h D1h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xD2: /* C5h C0h 12h D2h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xD3: /* C5h C0h 12h D3h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xD4: /* C5h C0h 12h D4h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xD5: /* C5h C0h 12h D5h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xD6: /* C5h C0h 12h D6h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xD7: /* C5h C0h 12h D7h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xD8: /* C5h C0h 12h D8h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xD9: /* C5h C0h 12h D9h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xDA: /* C5h C0h 12h DAh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xDB: /* C5h C0h 12h DBh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xDC: /* C5h C0h 12h DCh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xDD: /* C5h C0h 12h DDh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xDE: /* C5h C0h 12h DEh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xDF: /* C5h C0h 12h DFh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xE0: /* C5h C0h 12h E0h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xE1: /* C5h C0h 12h E1h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xE2: /* C5h C0h 12h E2h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xE3: /* C5h C0h 12h E3h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xE4: /* C5h C0h 12h E4h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xE5: /* C5h C0h 12h E5h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xE6: /* C5h C0h 12h E6h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xE7: /* C5h C0h 12h E7h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xE8: /* C5h C0h 12h E8h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xE9: /* C5h C0h 12h E9h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xEA: /* C5h C0h 12h EAh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xEB: /* C5h C0h 12h EBh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xEC: /* C5h C0h 12h ECh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xED: /* C5h C0h 12h EDh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xEE: /* C5h C0h 12h EEh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xEF: /* C5h C0h 12h EFh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xF0: /* C5h C0h 12h F0h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xF1: /* C5h C0h 12h F1h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xF2: /* C5h C0h 12h F2h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xF3: /* C5h C0h 12h F3h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xF4: /* C5h C0h 12h F4h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xF5: /* C5h C0h 12h F5h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xF6: /* C5h C0h 12h F6h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xF7: /* C5h C0h 12h F7h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xF8: /* C5h C0h 12h F8h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xF9: /* C5h C0h 12h F9h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xFA: /* C5h C0h 12h FAh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xFB: /* C5h C0h 12h FBh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xFC: /* C5h C0h 12h FCh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xFD: /* C5h C0h 12h FDh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xFE: /* C5h C0h 12h FEh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xFF: /* C5h C0h 12h FFh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVHLPS XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                                break;
+                            default:
+                                goto _x86decode_illegal_opcode;
+                        };
+/* End of opcodes starting with C5h C0h 12h */
+                        break;
                     /* opcode C5h C0h 13h  not defined */
-                    /* opcode C5h C0h 14h  not defined */
-                    /* opcode C5h C0h 15h  not defined */
+                    case 0x14: /* C5h C0h 14h VUNPCKLPS sse(reg),sse(vsidx),sse(r/m)      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x14 mod/reg/rm */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKLPS XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                        break;
+                    case 0x15: /* C5h C0h 15h VUNPCKHPS sse(reg),sse(vsidx),sse(r/m)      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x15 mod/reg/rm */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKHPS XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                        break;
                     /* opcode C5h C0h 16h  not defined */
                     /* opcode C5h C0h 17h  not defined */
                     /* opcode C5h C0h 18h  not defined */
@@ -25405,7 +28970,6 @@ switch (op) {
             case 0xE1: /* C5h E1h   mod=3 reg=4 rm=1      spec:  */
             case 0xE9: /* C5h E9h   mod=3 reg=5 rm=1      spec:  */
             case 0xF1: /* C5h F1h   mod=3 reg=6 rm=1      spec:  */
-            case 0xF9: /* C5h F9h   mod=3 reg=7 rm=1      spec:  */
                 vex.V = ((~mrm.byte) >> 3) & 7;
 /* Opcodes starting with C5h C1h */
                 op=IPFB();
@@ -25431,8 +28995,14 @@ switch (op) {
                     /* opcode C5h C1h 11h  not defined */
                     /* opcode C5h C1h 12h  not defined */
                     /* opcode C5h C1h 13h  not defined */
-                    /* opcode C5h C1h 14h  not defined */
-                    /* opcode C5h C1h 15h  not defined */
+                    case 0x14: /* C5h C1h 14h VUNPCKLPD sse(reg),sse(vsidx),sse(r/m)      spec: vex vsize(128) vlead(0x0F) vprefix(0x66) 0x14 mod/reg/rm */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKLPD XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                        break;
+                    case 0x15: /* C5h C1h 15h VUNPCKHPD sse(reg),sse(vsidx),sse(r/m)      spec: vex vsize(128) vlead(0x0F) vprefix(0x66) 0x15 mod/reg/rm */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKHPD XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                        break;
                     /* opcode C5h C1h 16h  not defined */
                     /* opcode C5h C1h 17h  not defined */
                     /* opcode C5h C1h 18h  not defined */
@@ -25682,7 +29252,6 @@ switch (op) {
             case 0xE2: /* C5h E2h   mod=3 reg=4 rm=2      spec:  */
             case 0xEA: /* C5h EAh   mod=3 reg=5 rm=2      spec:  */
             case 0xF2: /* C5h F2h   mod=3 reg=6 rm=2      spec:  */
-            case 0xFA: /* C5h FAh   mod=3 reg=7 rm=2      spec:  */
                 vex.V = ((~mrm.byte) >> 3) & 7;
 /* Opcodes starting with C5h C2h */
                 op=IPFB();
@@ -25704,8 +29273,275 @@ switch (op) {
                     /* opcode C5h C2h 0Dh  not defined */
                     /* opcode C5h C2h 0Eh  not defined */
                     /* opcode C5h C2h 0Fh  not defined */
-                    /* opcode C5h C2h 10h  not defined */
-                    /* opcode C5h C2h 11h  not defined */
+                    case 0x10: /* C5h C2h 10h        spec:  */
+                    case 0x11: /* C5h C2h 11h        spec:  */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        _x86decode_begin_code16_addr16_opcode_parse_C5C210:
+/* Opcodes starting with C5h C2h 10h */
+                        switch (mrm.byte) {
+                            /* opcode C5h C2h 10h 00h  not defined */
+                            /* opcode C5h C2h 10h 01h  not defined */
+                            /* opcode C5h C2h 10h 02h  not defined */
+                            /* opcode C5h C2h 10h 03h  not defined */
+                            /* opcode C5h C2h 10h 04h  not defined */
+                            /* opcode C5h C2h 10h 05h  not defined */
+                            /* opcode C5h C2h 10h 06h  not defined */
+                            /* opcode C5h C2h 10h 07h  not defined */
+                            /* opcode C5h C2h 10h 08h  not defined */
+                            /* opcode C5h C2h 10h 09h  not defined */
+                            /* opcode C5h C2h 10h 0Ah  not defined */
+                            /* opcode C5h C2h 10h 0Bh  not defined */
+                            /* opcode C5h C2h 10h 0Ch  not defined */
+                            /* opcode C5h C2h 10h 0Dh  not defined */
+                            /* opcode C5h C2h 10h 0Eh  not defined */
+                            /* opcode C5h C2h 10h 0Fh  not defined */
+                            /* opcode C5h C2h 10h 10h  not defined */
+                            /* opcode C5h C2h 10h 11h  not defined */
+                            /* opcode C5h C2h 10h 12h  not defined */
+                            /* opcode C5h C2h 10h 13h  not defined */
+                            /* opcode C5h C2h 10h 14h  not defined */
+                            /* opcode C5h C2h 10h 15h  not defined */
+                            /* opcode C5h C2h 10h 16h  not defined */
+                            /* opcode C5h C2h 10h 17h  not defined */
+                            /* opcode C5h C2h 10h 18h  not defined */
+                            /* opcode C5h C2h 10h 19h  not defined */
+                            /* opcode C5h C2h 10h 1Ah  not defined */
+                            /* opcode C5h C2h 10h 1Bh  not defined */
+                            /* opcode C5h C2h 10h 1Ch  not defined */
+                            /* opcode C5h C2h 10h 1Dh  not defined */
+                            /* opcode C5h C2h 10h 1Eh  not defined */
+                            /* opcode C5h C2h 10h 1Fh  not defined */
+                            /* opcode C5h C2h 10h 20h  not defined */
+                            /* opcode C5h C2h 10h 21h  not defined */
+                            /* opcode C5h C2h 10h 22h  not defined */
+                            /* opcode C5h C2h 10h 23h  not defined */
+                            /* opcode C5h C2h 10h 24h  not defined */
+                            /* opcode C5h C2h 10h 25h  not defined */
+                            /* opcode C5h C2h 10h 26h  not defined */
+                            /* opcode C5h C2h 10h 27h  not defined */
+                            /* opcode C5h C2h 10h 28h  not defined */
+                            /* opcode C5h C2h 10h 29h  not defined */
+                            /* opcode C5h C2h 10h 2Ah  not defined */
+                            /* opcode C5h C2h 10h 2Bh  not defined */
+                            /* opcode C5h C2h 10h 2Ch  not defined */
+                            /* opcode C5h C2h 10h 2Dh  not defined */
+                            /* opcode C5h C2h 10h 2Eh  not defined */
+                            /* opcode C5h C2h 10h 2Fh  not defined */
+                            /* opcode C5h C2h 10h 30h  not defined */
+                            /* opcode C5h C2h 10h 31h  not defined */
+                            /* opcode C5h C2h 10h 32h  not defined */
+                            /* opcode C5h C2h 10h 33h  not defined */
+                            /* opcode C5h C2h 10h 34h  not defined */
+                            /* opcode C5h C2h 10h 35h  not defined */
+                            /* opcode C5h C2h 10h 36h  not defined */
+                            /* opcode C5h C2h 10h 37h  not defined */
+                            /* opcode C5h C2h 10h 38h  not defined */
+                            /* opcode C5h C2h 10h 39h  not defined */
+                            /* opcode C5h C2h 10h 3Ah  not defined */
+                            /* opcode C5h C2h 10h 3Bh  not defined */
+                            /* opcode C5h C2h 10h 3Ch  not defined */
+                            /* opcode C5h C2h 10h 3Dh  not defined */
+                            /* opcode C5h C2h 10h 3Eh  not defined */
+                            /* opcode C5h C2h 10h 3Fh  not defined */
+                            /* opcode C5h C2h 10h 40h  not defined */
+                            /* opcode C5h C2h 10h 41h  not defined */
+                            /* opcode C5h C2h 10h 42h  not defined */
+                            /* opcode C5h C2h 10h 43h  not defined */
+                            /* opcode C5h C2h 10h 44h  not defined */
+                            /* opcode C5h C2h 10h 45h  not defined */
+                            /* opcode C5h C2h 10h 46h  not defined */
+                            /* opcode C5h C2h 10h 47h  not defined */
+                            /* opcode C5h C2h 10h 48h  not defined */
+                            /* opcode C5h C2h 10h 49h  not defined */
+                            /* opcode C5h C2h 10h 4Ah  not defined */
+                            /* opcode C5h C2h 10h 4Bh  not defined */
+                            /* opcode C5h C2h 10h 4Ch  not defined */
+                            /* opcode C5h C2h 10h 4Dh  not defined */
+                            /* opcode C5h C2h 10h 4Eh  not defined */
+                            /* opcode C5h C2h 10h 4Fh  not defined */
+                            /* opcode C5h C2h 10h 50h  not defined */
+                            /* opcode C5h C2h 10h 51h  not defined */
+                            /* opcode C5h C2h 10h 52h  not defined */
+                            /* opcode C5h C2h 10h 53h  not defined */
+                            /* opcode C5h C2h 10h 54h  not defined */
+                            /* opcode C5h C2h 10h 55h  not defined */
+                            /* opcode C5h C2h 10h 56h  not defined */
+                            /* opcode C5h C2h 10h 57h  not defined */
+                            /* opcode C5h C2h 10h 58h  not defined */
+                            /* opcode C5h C2h 10h 59h  not defined */
+                            /* opcode C5h C2h 10h 5Ah  not defined */
+                            /* opcode C5h C2h 10h 5Bh  not defined */
+                            /* opcode C5h C2h 10h 5Ch  not defined */
+                            /* opcode C5h C2h 10h 5Dh  not defined */
+                            /* opcode C5h C2h 10h 5Eh  not defined */
+                            /* opcode C5h C2h 10h 5Fh  not defined */
+                            /* opcode C5h C2h 10h 60h  not defined */
+                            /* opcode C5h C2h 10h 61h  not defined */
+                            /* opcode C5h C2h 10h 62h  not defined */
+                            /* opcode C5h C2h 10h 63h  not defined */
+                            /* opcode C5h C2h 10h 64h  not defined */
+                            /* opcode C5h C2h 10h 65h  not defined */
+                            /* opcode C5h C2h 10h 66h  not defined */
+                            /* opcode C5h C2h 10h 67h  not defined */
+                            /* opcode C5h C2h 10h 68h  not defined */
+                            /* opcode C5h C2h 10h 69h  not defined */
+                            /* opcode C5h C2h 10h 6Ah  not defined */
+                            /* opcode C5h C2h 10h 6Bh  not defined */
+                            /* opcode C5h C2h 10h 6Ch  not defined */
+                            /* opcode C5h C2h 10h 6Dh  not defined */
+                            /* opcode C5h C2h 10h 6Eh  not defined */
+                            /* opcode C5h C2h 10h 6Fh  not defined */
+                            /* opcode C5h C2h 10h 70h  not defined */
+                            /* opcode C5h C2h 10h 71h  not defined */
+                            /* opcode C5h C2h 10h 72h  not defined */
+                            /* opcode C5h C2h 10h 73h  not defined */
+                            /* opcode C5h C2h 10h 74h  not defined */
+                            /* opcode C5h C2h 10h 75h  not defined */
+                            /* opcode C5h C2h 10h 76h  not defined */
+                            /* opcode C5h C2h 10h 77h  not defined */
+                            /* opcode C5h C2h 10h 78h  not defined */
+                            /* opcode C5h C2h 10h 79h  not defined */
+                            /* opcode C5h C2h 10h 7Ah  not defined */
+                            /* opcode C5h C2h 10h 7Bh  not defined */
+                            /* opcode C5h C2h 10h 7Ch  not defined */
+                            /* opcode C5h C2h 10h 7Dh  not defined */
+                            /* opcode C5h C2h 10h 7Eh  not defined */
+                            /* opcode C5h C2h 10h 7Fh  not defined */
+                            /* opcode C5h C2h 10h 80h  not defined */
+                            /* opcode C5h C2h 10h 81h  not defined */
+                            /* opcode C5h C2h 10h 82h  not defined */
+                            /* opcode C5h C2h 10h 83h  not defined */
+                            /* opcode C5h C2h 10h 84h  not defined */
+                            /* opcode C5h C2h 10h 85h  not defined */
+                            /* opcode C5h C2h 10h 86h  not defined */
+                            /* opcode C5h C2h 10h 87h  not defined */
+                            /* opcode C5h C2h 10h 88h  not defined */
+                            /* opcode C5h C2h 10h 89h  not defined */
+                            /* opcode C5h C2h 10h 8Ah  not defined */
+                            /* opcode C5h C2h 10h 8Bh  not defined */
+                            /* opcode C5h C2h 10h 8Ch  not defined */
+                            /* opcode C5h C2h 10h 8Dh  not defined */
+                            /* opcode C5h C2h 10h 8Eh  not defined */
+                            /* opcode C5h C2h 10h 8Fh  not defined */
+                            /* opcode C5h C2h 10h 90h  not defined */
+                            /* opcode C5h C2h 10h 91h  not defined */
+                            /* opcode C5h C2h 10h 92h  not defined */
+                            /* opcode C5h C2h 10h 93h  not defined */
+                            /* opcode C5h C2h 10h 94h  not defined */
+                            /* opcode C5h C2h 10h 95h  not defined */
+                            /* opcode C5h C2h 10h 96h  not defined */
+                            /* opcode C5h C2h 10h 97h  not defined */
+                            /* opcode C5h C2h 10h 98h  not defined */
+                            /* opcode C5h C2h 10h 99h  not defined */
+                            /* opcode C5h C2h 10h 9Ah  not defined */
+                            /* opcode C5h C2h 10h 9Bh  not defined */
+                            /* opcode C5h C2h 10h 9Ch  not defined */
+                            /* opcode C5h C2h 10h 9Dh  not defined */
+                            /* opcode C5h C2h 10h 9Eh  not defined */
+                            /* opcode C5h C2h 10h 9Fh  not defined */
+                            /* opcode C5h C2h 10h A0h  not defined */
+                            /* opcode C5h C2h 10h A1h  not defined */
+                            /* opcode C5h C2h 10h A2h  not defined */
+                            /* opcode C5h C2h 10h A3h  not defined */
+                            /* opcode C5h C2h 10h A4h  not defined */
+                            /* opcode C5h C2h 10h A5h  not defined */
+                            /* opcode C5h C2h 10h A6h  not defined */
+                            /* opcode C5h C2h 10h A7h  not defined */
+                            /* opcode C5h C2h 10h A8h  not defined */
+                            /* opcode C5h C2h 10h A9h  not defined */
+                            /* opcode C5h C2h 10h AAh  not defined */
+                            /* opcode C5h C2h 10h ABh  not defined */
+                            /* opcode C5h C2h 10h ACh  not defined */
+                            /* opcode C5h C2h 10h ADh  not defined */
+                            /* opcode C5h C2h 10h AEh  not defined */
+                            /* opcode C5h C2h 10h AFh  not defined */
+                            /* opcode C5h C2h 10h B0h  not defined */
+                            /* opcode C5h C2h 10h B1h  not defined */
+                            /* opcode C5h C2h 10h B2h  not defined */
+                            /* opcode C5h C2h 10h B3h  not defined */
+                            /* opcode C5h C2h 10h B4h  not defined */
+                            /* opcode C5h C2h 10h B5h  not defined */
+                            /* opcode C5h C2h 10h B6h  not defined */
+                            /* opcode C5h C2h 10h B7h  not defined */
+                            /* opcode C5h C2h 10h B8h  not defined */
+                            /* opcode C5h C2h 10h B9h  not defined */
+                            /* opcode C5h C2h 10h BAh  not defined */
+                            /* opcode C5h C2h 10h BBh  not defined */
+                            /* opcode C5h C2h 10h BCh  not defined */
+                            /* opcode C5h C2h 10h BDh  not defined */
+                            /* opcode C5h C2h 10h BEh  not defined */
+                            /* opcode C5h C2h 10h BFh  not defined */
+                            case 0xC0: /* C5h C2h 10h C0h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xC1: /* C5h C2h 10h C1h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xC2: /* C5h C2h 10h C2h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xC3: /* C5h C2h 10h C3h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xC4: /* C5h C2h 10h C4h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xC5: /* C5h C2h 10h C5h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xC6: /* C5h C2h 10h C6h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xC7: /* C5h C2h 10h C7h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xC8: /* C5h C2h 10h C8h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xC9: /* C5h C2h 10h C9h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xCA: /* C5h C2h 10h CAh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xCB: /* C5h C2h 10h CBh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xCC: /* C5h C2h 10h CCh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xCD: /* C5h C2h 10h CDh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xCE: /* C5h C2h 10h CEh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xCF: /* C5h C2h 10h CFh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xD0: /* C5h C2h 10h D0h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xD1: /* C5h C2h 10h D1h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xD2: /* C5h C2h 10h D2h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xD3: /* C5h C2h 10h D3h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xD4: /* C5h C2h 10h D4h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xD5: /* C5h C2h 10h D5h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xD6: /* C5h C2h 10h D6h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xD7: /* C5h C2h 10h D7h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xD8: /* C5h C2h 10h D8h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xD9: /* C5h C2h 10h D9h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xDA: /* C5h C2h 10h DAh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xDB: /* C5h C2h 10h DBh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xDC: /* C5h C2h 10h DCh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xDD: /* C5h C2h 10h DDh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xDE: /* C5h C2h 10h DEh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xDF: /* C5h C2h 10h DFh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xE0: /* C5h C2h 10h E0h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xE1: /* C5h C2h 10h E1h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xE2: /* C5h C2h 10h E2h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xE3: /* C5h C2h 10h E3h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xE4: /* C5h C2h 10h E4h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xE5: /* C5h C2h 10h E5h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xE6: /* C5h C2h 10h E6h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xE7: /* C5h C2h 10h E7h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xE8: /* C5h C2h 10h E8h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xE9: /* C5h C2h 10h E9h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xEA: /* C5h C2h 10h EAh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xEB: /* C5h C2h 10h EBh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xEC: /* C5h C2h 10h ECh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xED: /* C5h C2h 10h EDh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xEE: /* C5h C2h 10h EEh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xEF: /* C5h C2h 10h EFh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xF0: /* C5h C2h 10h F0h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xF1: /* C5h C2h 10h F1h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xF2: /* C5h C2h 10h F2h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xF3: /* C5h C2h 10h F3h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xF4: /* C5h C2h 10h F4h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xF5: /* C5h C2h 10h F5h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xF6: /* C5h C2h 10h F6h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xF7: /* C5h C2h 10h F7h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xF8: /* C5h C2h 10h F8h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xF9: /* C5h C2h 10h F9h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xFA: /* C5h C2h 10h FAh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xFB: /* C5h C2h 10h FBh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xFC: /* C5h C2h 10h FCh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xFD: /* C5h C2h 10h FDh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xFE: /* C5h C2h 10h FEh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xFF: /* C5h C2h 10h FFh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVSS XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                                break;
+                            default:
+                                goto _x86decode_illegal_opcode;
+                        };
+/* End of opcodes starting with C5h C2h 10h */
+                        break;
                     /* opcode C5h C2h 12h  not defined */
                     /* opcode C5h C2h 13h  not defined */
                     /* opcode C5h C2h 14h  not defined */
@@ -25959,7 +29795,6 @@ switch (op) {
             case 0xE3: /* C5h E3h   mod=3 reg=4 rm=3      spec:  */
             case 0xEB: /* C5h EBh   mod=3 reg=5 rm=3      spec:  */
             case 0xF3: /* C5h F3h   mod=3 reg=6 rm=3      spec:  */
-            case 0xFB: /* C5h FBh   mod=3 reg=7 rm=3      spec:  */
                 vex.V = ((~mrm.byte) >> 3) & 7;
 /* Opcodes starting with C5h C3h */
                 op=IPFB();
@@ -25981,8 +29816,275 @@ switch (op) {
                     /* opcode C5h C3h 0Dh  not defined */
                     /* opcode C5h C3h 0Eh  not defined */
                     /* opcode C5h C3h 0Fh  not defined */
-                    /* opcode C5h C3h 10h  not defined */
-                    /* opcode C5h C3h 11h  not defined */
+                    case 0x10: /* C5h C3h 10h        spec:  */
+                    case 0x11: /* C5h C3h 11h        spec:  */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        _x86decode_begin_code16_addr16_opcode_parse_C5C310:
+/* Opcodes starting with C5h C3h 10h */
+                        switch (mrm.byte) {
+                            /* opcode C5h C3h 10h 00h  not defined */
+                            /* opcode C5h C3h 10h 01h  not defined */
+                            /* opcode C5h C3h 10h 02h  not defined */
+                            /* opcode C5h C3h 10h 03h  not defined */
+                            /* opcode C5h C3h 10h 04h  not defined */
+                            /* opcode C5h C3h 10h 05h  not defined */
+                            /* opcode C5h C3h 10h 06h  not defined */
+                            /* opcode C5h C3h 10h 07h  not defined */
+                            /* opcode C5h C3h 10h 08h  not defined */
+                            /* opcode C5h C3h 10h 09h  not defined */
+                            /* opcode C5h C3h 10h 0Ah  not defined */
+                            /* opcode C5h C3h 10h 0Bh  not defined */
+                            /* opcode C5h C3h 10h 0Ch  not defined */
+                            /* opcode C5h C3h 10h 0Dh  not defined */
+                            /* opcode C5h C3h 10h 0Eh  not defined */
+                            /* opcode C5h C3h 10h 0Fh  not defined */
+                            /* opcode C5h C3h 10h 10h  not defined */
+                            /* opcode C5h C3h 10h 11h  not defined */
+                            /* opcode C5h C3h 10h 12h  not defined */
+                            /* opcode C5h C3h 10h 13h  not defined */
+                            /* opcode C5h C3h 10h 14h  not defined */
+                            /* opcode C5h C3h 10h 15h  not defined */
+                            /* opcode C5h C3h 10h 16h  not defined */
+                            /* opcode C5h C3h 10h 17h  not defined */
+                            /* opcode C5h C3h 10h 18h  not defined */
+                            /* opcode C5h C3h 10h 19h  not defined */
+                            /* opcode C5h C3h 10h 1Ah  not defined */
+                            /* opcode C5h C3h 10h 1Bh  not defined */
+                            /* opcode C5h C3h 10h 1Ch  not defined */
+                            /* opcode C5h C3h 10h 1Dh  not defined */
+                            /* opcode C5h C3h 10h 1Eh  not defined */
+                            /* opcode C5h C3h 10h 1Fh  not defined */
+                            /* opcode C5h C3h 10h 20h  not defined */
+                            /* opcode C5h C3h 10h 21h  not defined */
+                            /* opcode C5h C3h 10h 22h  not defined */
+                            /* opcode C5h C3h 10h 23h  not defined */
+                            /* opcode C5h C3h 10h 24h  not defined */
+                            /* opcode C5h C3h 10h 25h  not defined */
+                            /* opcode C5h C3h 10h 26h  not defined */
+                            /* opcode C5h C3h 10h 27h  not defined */
+                            /* opcode C5h C3h 10h 28h  not defined */
+                            /* opcode C5h C3h 10h 29h  not defined */
+                            /* opcode C5h C3h 10h 2Ah  not defined */
+                            /* opcode C5h C3h 10h 2Bh  not defined */
+                            /* opcode C5h C3h 10h 2Ch  not defined */
+                            /* opcode C5h C3h 10h 2Dh  not defined */
+                            /* opcode C5h C3h 10h 2Eh  not defined */
+                            /* opcode C5h C3h 10h 2Fh  not defined */
+                            /* opcode C5h C3h 10h 30h  not defined */
+                            /* opcode C5h C3h 10h 31h  not defined */
+                            /* opcode C5h C3h 10h 32h  not defined */
+                            /* opcode C5h C3h 10h 33h  not defined */
+                            /* opcode C5h C3h 10h 34h  not defined */
+                            /* opcode C5h C3h 10h 35h  not defined */
+                            /* opcode C5h C3h 10h 36h  not defined */
+                            /* opcode C5h C3h 10h 37h  not defined */
+                            /* opcode C5h C3h 10h 38h  not defined */
+                            /* opcode C5h C3h 10h 39h  not defined */
+                            /* opcode C5h C3h 10h 3Ah  not defined */
+                            /* opcode C5h C3h 10h 3Bh  not defined */
+                            /* opcode C5h C3h 10h 3Ch  not defined */
+                            /* opcode C5h C3h 10h 3Dh  not defined */
+                            /* opcode C5h C3h 10h 3Eh  not defined */
+                            /* opcode C5h C3h 10h 3Fh  not defined */
+                            /* opcode C5h C3h 10h 40h  not defined */
+                            /* opcode C5h C3h 10h 41h  not defined */
+                            /* opcode C5h C3h 10h 42h  not defined */
+                            /* opcode C5h C3h 10h 43h  not defined */
+                            /* opcode C5h C3h 10h 44h  not defined */
+                            /* opcode C5h C3h 10h 45h  not defined */
+                            /* opcode C5h C3h 10h 46h  not defined */
+                            /* opcode C5h C3h 10h 47h  not defined */
+                            /* opcode C5h C3h 10h 48h  not defined */
+                            /* opcode C5h C3h 10h 49h  not defined */
+                            /* opcode C5h C3h 10h 4Ah  not defined */
+                            /* opcode C5h C3h 10h 4Bh  not defined */
+                            /* opcode C5h C3h 10h 4Ch  not defined */
+                            /* opcode C5h C3h 10h 4Dh  not defined */
+                            /* opcode C5h C3h 10h 4Eh  not defined */
+                            /* opcode C5h C3h 10h 4Fh  not defined */
+                            /* opcode C5h C3h 10h 50h  not defined */
+                            /* opcode C5h C3h 10h 51h  not defined */
+                            /* opcode C5h C3h 10h 52h  not defined */
+                            /* opcode C5h C3h 10h 53h  not defined */
+                            /* opcode C5h C3h 10h 54h  not defined */
+                            /* opcode C5h C3h 10h 55h  not defined */
+                            /* opcode C5h C3h 10h 56h  not defined */
+                            /* opcode C5h C3h 10h 57h  not defined */
+                            /* opcode C5h C3h 10h 58h  not defined */
+                            /* opcode C5h C3h 10h 59h  not defined */
+                            /* opcode C5h C3h 10h 5Ah  not defined */
+                            /* opcode C5h C3h 10h 5Bh  not defined */
+                            /* opcode C5h C3h 10h 5Ch  not defined */
+                            /* opcode C5h C3h 10h 5Dh  not defined */
+                            /* opcode C5h C3h 10h 5Eh  not defined */
+                            /* opcode C5h C3h 10h 5Fh  not defined */
+                            /* opcode C5h C3h 10h 60h  not defined */
+                            /* opcode C5h C3h 10h 61h  not defined */
+                            /* opcode C5h C3h 10h 62h  not defined */
+                            /* opcode C5h C3h 10h 63h  not defined */
+                            /* opcode C5h C3h 10h 64h  not defined */
+                            /* opcode C5h C3h 10h 65h  not defined */
+                            /* opcode C5h C3h 10h 66h  not defined */
+                            /* opcode C5h C3h 10h 67h  not defined */
+                            /* opcode C5h C3h 10h 68h  not defined */
+                            /* opcode C5h C3h 10h 69h  not defined */
+                            /* opcode C5h C3h 10h 6Ah  not defined */
+                            /* opcode C5h C3h 10h 6Bh  not defined */
+                            /* opcode C5h C3h 10h 6Ch  not defined */
+                            /* opcode C5h C3h 10h 6Dh  not defined */
+                            /* opcode C5h C3h 10h 6Eh  not defined */
+                            /* opcode C5h C3h 10h 6Fh  not defined */
+                            /* opcode C5h C3h 10h 70h  not defined */
+                            /* opcode C5h C3h 10h 71h  not defined */
+                            /* opcode C5h C3h 10h 72h  not defined */
+                            /* opcode C5h C3h 10h 73h  not defined */
+                            /* opcode C5h C3h 10h 74h  not defined */
+                            /* opcode C5h C3h 10h 75h  not defined */
+                            /* opcode C5h C3h 10h 76h  not defined */
+                            /* opcode C5h C3h 10h 77h  not defined */
+                            /* opcode C5h C3h 10h 78h  not defined */
+                            /* opcode C5h C3h 10h 79h  not defined */
+                            /* opcode C5h C3h 10h 7Ah  not defined */
+                            /* opcode C5h C3h 10h 7Bh  not defined */
+                            /* opcode C5h C3h 10h 7Ch  not defined */
+                            /* opcode C5h C3h 10h 7Dh  not defined */
+                            /* opcode C5h C3h 10h 7Eh  not defined */
+                            /* opcode C5h C3h 10h 7Fh  not defined */
+                            /* opcode C5h C3h 10h 80h  not defined */
+                            /* opcode C5h C3h 10h 81h  not defined */
+                            /* opcode C5h C3h 10h 82h  not defined */
+                            /* opcode C5h C3h 10h 83h  not defined */
+                            /* opcode C5h C3h 10h 84h  not defined */
+                            /* opcode C5h C3h 10h 85h  not defined */
+                            /* opcode C5h C3h 10h 86h  not defined */
+                            /* opcode C5h C3h 10h 87h  not defined */
+                            /* opcode C5h C3h 10h 88h  not defined */
+                            /* opcode C5h C3h 10h 89h  not defined */
+                            /* opcode C5h C3h 10h 8Ah  not defined */
+                            /* opcode C5h C3h 10h 8Bh  not defined */
+                            /* opcode C5h C3h 10h 8Ch  not defined */
+                            /* opcode C5h C3h 10h 8Dh  not defined */
+                            /* opcode C5h C3h 10h 8Eh  not defined */
+                            /* opcode C5h C3h 10h 8Fh  not defined */
+                            /* opcode C5h C3h 10h 90h  not defined */
+                            /* opcode C5h C3h 10h 91h  not defined */
+                            /* opcode C5h C3h 10h 92h  not defined */
+                            /* opcode C5h C3h 10h 93h  not defined */
+                            /* opcode C5h C3h 10h 94h  not defined */
+                            /* opcode C5h C3h 10h 95h  not defined */
+                            /* opcode C5h C3h 10h 96h  not defined */
+                            /* opcode C5h C3h 10h 97h  not defined */
+                            /* opcode C5h C3h 10h 98h  not defined */
+                            /* opcode C5h C3h 10h 99h  not defined */
+                            /* opcode C5h C3h 10h 9Ah  not defined */
+                            /* opcode C5h C3h 10h 9Bh  not defined */
+                            /* opcode C5h C3h 10h 9Ch  not defined */
+                            /* opcode C5h C3h 10h 9Dh  not defined */
+                            /* opcode C5h C3h 10h 9Eh  not defined */
+                            /* opcode C5h C3h 10h 9Fh  not defined */
+                            /* opcode C5h C3h 10h A0h  not defined */
+                            /* opcode C5h C3h 10h A1h  not defined */
+                            /* opcode C5h C3h 10h A2h  not defined */
+                            /* opcode C5h C3h 10h A3h  not defined */
+                            /* opcode C5h C3h 10h A4h  not defined */
+                            /* opcode C5h C3h 10h A5h  not defined */
+                            /* opcode C5h C3h 10h A6h  not defined */
+                            /* opcode C5h C3h 10h A7h  not defined */
+                            /* opcode C5h C3h 10h A8h  not defined */
+                            /* opcode C5h C3h 10h A9h  not defined */
+                            /* opcode C5h C3h 10h AAh  not defined */
+                            /* opcode C5h C3h 10h ABh  not defined */
+                            /* opcode C5h C3h 10h ACh  not defined */
+                            /* opcode C5h C3h 10h ADh  not defined */
+                            /* opcode C5h C3h 10h AEh  not defined */
+                            /* opcode C5h C3h 10h AFh  not defined */
+                            /* opcode C5h C3h 10h B0h  not defined */
+                            /* opcode C5h C3h 10h B1h  not defined */
+                            /* opcode C5h C3h 10h B2h  not defined */
+                            /* opcode C5h C3h 10h B3h  not defined */
+                            /* opcode C5h C3h 10h B4h  not defined */
+                            /* opcode C5h C3h 10h B5h  not defined */
+                            /* opcode C5h C3h 10h B6h  not defined */
+                            /* opcode C5h C3h 10h B7h  not defined */
+                            /* opcode C5h C3h 10h B8h  not defined */
+                            /* opcode C5h C3h 10h B9h  not defined */
+                            /* opcode C5h C3h 10h BAh  not defined */
+                            /* opcode C5h C3h 10h BBh  not defined */
+                            /* opcode C5h C3h 10h BCh  not defined */
+                            /* opcode C5h C3h 10h BDh  not defined */
+                            /* opcode C5h C3h 10h BEh  not defined */
+                            /* opcode C5h C3h 10h BFh  not defined */
+                            case 0xC0: /* C5h C3h 10h C0h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xC1: /* C5h C3h 10h C1h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xC2: /* C5h C3h 10h C2h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xC3: /* C5h C3h 10h C3h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xC4: /* C5h C3h 10h C4h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xC5: /* C5h C3h 10h C5h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xC6: /* C5h C3h 10h C6h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xC7: /* C5h C3h 10h C7h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xC8: /* C5h C3h 10h C8h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xC9: /* C5h C3h 10h C9h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xCA: /* C5h C3h 10h CAh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xCB: /* C5h C3h 10h CBh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xCC: /* C5h C3h 10h CCh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xCD: /* C5h C3h 10h CDh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xCE: /* C5h C3h 10h CEh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xCF: /* C5h C3h 10h CFh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xD0: /* C5h C3h 10h D0h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xD1: /* C5h C3h 10h D1h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xD2: /* C5h C3h 10h D2h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xD3: /* C5h C3h 10h D3h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xD4: /* C5h C3h 10h D4h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xD5: /* C5h C3h 10h D5h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xD6: /* C5h C3h 10h D6h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xD7: /* C5h C3h 10h D7h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xD8: /* C5h C3h 10h D8h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xD9: /* C5h C3h 10h D9h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xDA: /* C5h C3h 10h DAh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xDB: /* C5h C3h 10h DBh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xDC: /* C5h C3h 10h DCh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xDD: /* C5h C3h 10h DDh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xDE: /* C5h C3h 10h DEh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xDF: /* C5h C3h 10h DFh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xE0: /* C5h C3h 10h E0h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xE1: /* C5h C3h 10h E1h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xE2: /* C5h C3h 10h E2h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xE3: /* C5h C3h 10h E3h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xE4: /* C5h C3h 10h E4h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xE5: /* C5h C3h 10h E5h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xE6: /* C5h C3h 10h E6h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xE7: /* C5h C3h 10h E7h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xE8: /* C5h C3h 10h E8h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xE9: /* C5h C3h 10h E9h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xEA: /* C5h C3h 10h EAh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xEB: /* C5h C3h 10h EBh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xEC: /* C5h C3h 10h ECh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xED: /* C5h C3h 10h EDh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xEE: /* C5h C3h 10h EEh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xEF: /* C5h C3h 10h EFh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xF0: /* C5h C3h 10h F0h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xF1: /* C5h C3h 10h F1h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xF2: /* C5h C3h 10h F2h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xF3: /* C5h C3h 10h F3h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xF4: /* C5h C3h 10h F4h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xF5: /* C5h C3h 10h F5h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xF6: /* C5h C3h 10h F6h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xF7: /* C5h C3h 10h F7h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xF8: /* C5h C3h 10h F8h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xF9: /* C5h C3h 10h F9h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xFA: /* C5h C3h 10h FAh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xFB: /* C5h C3h 10h FBh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xFC: /* C5h C3h 10h FCh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xFD: /* C5h C3h 10h FDh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xFE: /* C5h C3h 10h FEh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xFF: /* C5h C3h 10h FFh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVSD XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                                break;
+                            default:
+                                goto _x86decode_illegal_opcode;
+                        };
+/* End of opcodes starting with C5h C3h 10h */
+                        break;
                     /* opcode C5h C3h 12h  not defined */
                     /* opcode C5h C3h 13h  not defined */
                     /* opcode C5h C3h 14h  not defined */
@@ -26261,8 +30363,14 @@ switch (op) {
                     /* opcode C5h C4h 11h  not defined */
                     /* opcode C5h C4h 12h  not defined */
                     /* opcode C5h C4h 13h  not defined */
-                    /* opcode C5h C4h 14h  not defined */
-                    /* opcode C5h C4h 15h  not defined */
+                    case 0x14: /* C5h C4h 14h VUNPCKLPS avx(reg),avx(vsidx),avx(r/m)      spec: vex vsize(256) vlead(0x0F) vprefix(none) 0x14 mod/reg/rm */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKLPS YMM%u,YMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,32,RC_AVXREG,""));
+                        break;
+                    case 0x15: /* C5h C4h 15h VUNPCKHPS avx(reg),avx(vsidx),avx(r/m)      spec: vex vsize(256) vlead(0x0F) vprefix(none) 0x15 mod/reg/rm */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKHPS YMM%u,YMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,32,RC_AVXREG,""));
+                        break;
                     /* opcode C5h C4h 16h  not defined */
                     /* opcode C5h C4h 17h  not defined */
                     /* opcode C5h C4h 18h  not defined */
@@ -26512,7 +30620,6 @@ switch (op) {
             case 0xE5: /* C5h E5h   mod=3 reg=4 rm=5      spec:  */
             case 0xED: /* C5h EDh   mod=3 reg=5 rm=5      spec:  */
             case 0xF5: /* C5h F5h   mod=3 reg=6 rm=5      spec:  */
-            case 0xFD: /* C5h FDh   mod=3 reg=7 rm=5      spec:  */
                 vex.V = ((~mrm.byte) >> 3) & 7;
 /* Opcodes starting with C5h C5h */
                 op=IPFB();
@@ -26538,8 +30645,14 @@ switch (op) {
                     /* opcode C5h C5h 11h  not defined */
                     /* opcode C5h C5h 12h  not defined */
                     /* opcode C5h C5h 13h  not defined */
-                    /* opcode C5h C5h 14h  not defined */
-                    /* opcode C5h C5h 15h  not defined */
+                    case 0x14: /* C5h C5h 14h VUNPCKLPD avx(reg),avx(vsidx),avx(r/m)      spec: vex vsize(256) vlead(0x0F) vprefix(0x66) 0x14 mod/reg/rm */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKLPD YMM%u,YMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,32,RC_AVXREG,""));
+                        break;
+                    case 0x15: /* C5h C5h 15h VUNPCKHPD avx(reg),avx(vsidx),avx(r/m)      spec: vex vsize(256) vlead(0x0F) vprefix(0x66) 0x15 mod/reg/rm */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKHPD YMM%u,YMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,32,RC_AVXREG,""));
+                        break;
                     /* opcode C5h C5h 16h  not defined */
                     /* opcode C5h C5h 17h  not defined */
                     /* opcode C5h C5h 18h  not defined */
@@ -27358,12 +31471,291 @@ switch (op) {
                     /* opcode C5h F8h 0Dh  not defined */
                     /* opcode C5h F8h 0Eh  not defined */
                     /* opcode C5h F8h 0Fh  not defined */
-                    /* opcode C5h F8h 10h  not defined */
-                    /* opcode C5h F8h 11h  not defined */
-                    /* opcode C5h F8h 12h  not defined */
+                    case 0x10: /* C5h F8h 10h VMOVUPS sse(reg),sse(r/m)      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x10 mod/reg/rm vsidx(0) */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVUPS XMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                        break;
+                    case 0x11: /* C5h F8h 11h VMOVUPS sse(r/m),sse(reg)      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x11 mod/reg/rm vsidx(0) */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVUPS %s,XMM%u",IPDecPrint16(mrm,disp,16,RC_SSEREG,""),mrm.reg());
+                        break;
+                    case 0x12: /* C5h F8h 12h        spec:  */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        _x86decode_begin_code16_addr16_opcode_parse_C5F812:
+/* Opcodes starting with C5h F8h 12h */
+                        switch (mrm.byte) {
+                            /* opcode C5h F8h 12h 00h  not defined */
+                            /* opcode C5h F8h 12h 01h  not defined */
+                            /* opcode C5h F8h 12h 02h  not defined */
+                            /* opcode C5h F8h 12h 03h  not defined */
+                            /* opcode C5h F8h 12h 04h  not defined */
+                            /* opcode C5h F8h 12h 05h  not defined */
+                            /* opcode C5h F8h 12h 06h  not defined */
+                            /* opcode C5h F8h 12h 07h  not defined */
+                            /* opcode C5h F8h 12h 08h  not defined */
+                            /* opcode C5h F8h 12h 09h  not defined */
+                            /* opcode C5h F8h 12h 0Ah  not defined */
+                            /* opcode C5h F8h 12h 0Bh  not defined */
+                            /* opcode C5h F8h 12h 0Ch  not defined */
+                            /* opcode C5h F8h 12h 0Dh  not defined */
+                            /* opcode C5h F8h 12h 0Eh  not defined */
+                            /* opcode C5h F8h 12h 0Fh  not defined */
+                            /* opcode C5h F8h 12h 10h  not defined */
+                            /* opcode C5h F8h 12h 11h  not defined */
+                            /* opcode C5h F8h 12h 12h  not defined */
+                            /* opcode C5h F8h 12h 13h  not defined */
+                            /* opcode C5h F8h 12h 14h  not defined */
+                            /* opcode C5h F8h 12h 15h  not defined */
+                            /* opcode C5h F8h 12h 16h  not defined */
+                            /* opcode C5h F8h 12h 17h  not defined */
+                            /* opcode C5h F8h 12h 18h  not defined */
+                            /* opcode C5h F8h 12h 19h  not defined */
+                            /* opcode C5h F8h 12h 1Ah  not defined */
+                            /* opcode C5h F8h 12h 1Bh  not defined */
+                            /* opcode C5h F8h 12h 1Ch  not defined */
+                            /* opcode C5h F8h 12h 1Dh  not defined */
+                            /* opcode C5h F8h 12h 1Eh  not defined */
+                            /* opcode C5h F8h 12h 1Fh  not defined */
+                            /* opcode C5h F8h 12h 20h  not defined */
+                            /* opcode C5h F8h 12h 21h  not defined */
+                            /* opcode C5h F8h 12h 22h  not defined */
+                            /* opcode C5h F8h 12h 23h  not defined */
+                            /* opcode C5h F8h 12h 24h  not defined */
+                            /* opcode C5h F8h 12h 25h  not defined */
+                            /* opcode C5h F8h 12h 26h  not defined */
+                            /* opcode C5h F8h 12h 27h  not defined */
+                            /* opcode C5h F8h 12h 28h  not defined */
+                            /* opcode C5h F8h 12h 29h  not defined */
+                            /* opcode C5h F8h 12h 2Ah  not defined */
+                            /* opcode C5h F8h 12h 2Bh  not defined */
+                            /* opcode C5h F8h 12h 2Ch  not defined */
+                            /* opcode C5h F8h 12h 2Dh  not defined */
+                            /* opcode C5h F8h 12h 2Eh  not defined */
+                            /* opcode C5h F8h 12h 2Fh  not defined */
+                            /* opcode C5h F8h 12h 30h  not defined */
+                            /* opcode C5h F8h 12h 31h  not defined */
+                            /* opcode C5h F8h 12h 32h  not defined */
+                            /* opcode C5h F8h 12h 33h  not defined */
+                            /* opcode C5h F8h 12h 34h  not defined */
+                            /* opcode C5h F8h 12h 35h  not defined */
+                            /* opcode C5h F8h 12h 36h  not defined */
+                            /* opcode C5h F8h 12h 37h  not defined */
+                            /* opcode C5h F8h 12h 38h  not defined */
+                            /* opcode C5h F8h 12h 39h  not defined */
+                            /* opcode C5h F8h 12h 3Ah  not defined */
+                            /* opcode C5h F8h 12h 3Bh  not defined */
+                            /* opcode C5h F8h 12h 3Ch  not defined */
+                            /* opcode C5h F8h 12h 3Dh  not defined */
+                            /* opcode C5h F8h 12h 3Eh  not defined */
+                            /* opcode C5h F8h 12h 3Fh  not defined */
+                            /* opcode C5h F8h 12h 40h  not defined */
+                            /* opcode C5h F8h 12h 41h  not defined */
+                            /* opcode C5h F8h 12h 42h  not defined */
+                            /* opcode C5h F8h 12h 43h  not defined */
+                            /* opcode C5h F8h 12h 44h  not defined */
+                            /* opcode C5h F8h 12h 45h  not defined */
+                            /* opcode C5h F8h 12h 46h  not defined */
+                            /* opcode C5h F8h 12h 47h  not defined */
+                            /* opcode C5h F8h 12h 48h  not defined */
+                            /* opcode C5h F8h 12h 49h  not defined */
+                            /* opcode C5h F8h 12h 4Ah  not defined */
+                            /* opcode C5h F8h 12h 4Bh  not defined */
+                            /* opcode C5h F8h 12h 4Ch  not defined */
+                            /* opcode C5h F8h 12h 4Dh  not defined */
+                            /* opcode C5h F8h 12h 4Eh  not defined */
+                            /* opcode C5h F8h 12h 4Fh  not defined */
+                            /* opcode C5h F8h 12h 50h  not defined */
+                            /* opcode C5h F8h 12h 51h  not defined */
+                            /* opcode C5h F8h 12h 52h  not defined */
+                            /* opcode C5h F8h 12h 53h  not defined */
+                            /* opcode C5h F8h 12h 54h  not defined */
+                            /* opcode C5h F8h 12h 55h  not defined */
+                            /* opcode C5h F8h 12h 56h  not defined */
+                            /* opcode C5h F8h 12h 57h  not defined */
+                            /* opcode C5h F8h 12h 58h  not defined */
+                            /* opcode C5h F8h 12h 59h  not defined */
+                            /* opcode C5h F8h 12h 5Ah  not defined */
+                            /* opcode C5h F8h 12h 5Bh  not defined */
+                            /* opcode C5h F8h 12h 5Ch  not defined */
+                            /* opcode C5h F8h 12h 5Dh  not defined */
+                            /* opcode C5h F8h 12h 5Eh  not defined */
+                            /* opcode C5h F8h 12h 5Fh  not defined */
+                            /* opcode C5h F8h 12h 60h  not defined */
+                            /* opcode C5h F8h 12h 61h  not defined */
+                            /* opcode C5h F8h 12h 62h  not defined */
+                            /* opcode C5h F8h 12h 63h  not defined */
+                            /* opcode C5h F8h 12h 64h  not defined */
+                            /* opcode C5h F8h 12h 65h  not defined */
+                            /* opcode C5h F8h 12h 66h  not defined */
+                            /* opcode C5h F8h 12h 67h  not defined */
+                            /* opcode C5h F8h 12h 68h  not defined */
+                            /* opcode C5h F8h 12h 69h  not defined */
+                            /* opcode C5h F8h 12h 6Ah  not defined */
+                            /* opcode C5h F8h 12h 6Bh  not defined */
+                            /* opcode C5h F8h 12h 6Ch  not defined */
+                            /* opcode C5h F8h 12h 6Dh  not defined */
+                            /* opcode C5h F8h 12h 6Eh  not defined */
+                            /* opcode C5h F8h 12h 6Fh  not defined */
+                            /* opcode C5h F8h 12h 70h  not defined */
+                            /* opcode C5h F8h 12h 71h  not defined */
+                            /* opcode C5h F8h 12h 72h  not defined */
+                            /* opcode C5h F8h 12h 73h  not defined */
+                            /* opcode C5h F8h 12h 74h  not defined */
+                            /* opcode C5h F8h 12h 75h  not defined */
+                            /* opcode C5h F8h 12h 76h  not defined */
+                            /* opcode C5h F8h 12h 77h  not defined */
+                            /* opcode C5h F8h 12h 78h  not defined */
+                            /* opcode C5h F8h 12h 79h  not defined */
+                            /* opcode C5h F8h 12h 7Ah  not defined */
+                            /* opcode C5h F8h 12h 7Bh  not defined */
+                            /* opcode C5h F8h 12h 7Ch  not defined */
+                            /* opcode C5h F8h 12h 7Dh  not defined */
+                            /* opcode C5h F8h 12h 7Eh  not defined */
+                            /* opcode C5h F8h 12h 7Fh  not defined */
+                            /* opcode C5h F8h 12h 80h  not defined */
+                            /* opcode C5h F8h 12h 81h  not defined */
+                            /* opcode C5h F8h 12h 82h  not defined */
+                            /* opcode C5h F8h 12h 83h  not defined */
+                            /* opcode C5h F8h 12h 84h  not defined */
+                            /* opcode C5h F8h 12h 85h  not defined */
+                            /* opcode C5h F8h 12h 86h  not defined */
+                            /* opcode C5h F8h 12h 87h  not defined */
+                            /* opcode C5h F8h 12h 88h  not defined */
+                            /* opcode C5h F8h 12h 89h  not defined */
+                            /* opcode C5h F8h 12h 8Ah  not defined */
+                            /* opcode C5h F8h 12h 8Bh  not defined */
+                            /* opcode C5h F8h 12h 8Ch  not defined */
+                            /* opcode C5h F8h 12h 8Dh  not defined */
+                            /* opcode C5h F8h 12h 8Eh  not defined */
+                            /* opcode C5h F8h 12h 8Fh  not defined */
+                            /* opcode C5h F8h 12h 90h  not defined */
+                            /* opcode C5h F8h 12h 91h  not defined */
+                            /* opcode C5h F8h 12h 92h  not defined */
+                            /* opcode C5h F8h 12h 93h  not defined */
+                            /* opcode C5h F8h 12h 94h  not defined */
+                            /* opcode C5h F8h 12h 95h  not defined */
+                            /* opcode C5h F8h 12h 96h  not defined */
+                            /* opcode C5h F8h 12h 97h  not defined */
+                            /* opcode C5h F8h 12h 98h  not defined */
+                            /* opcode C5h F8h 12h 99h  not defined */
+                            /* opcode C5h F8h 12h 9Ah  not defined */
+                            /* opcode C5h F8h 12h 9Bh  not defined */
+                            /* opcode C5h F8h 12h 9Ch  not defined */
+                            /* opcode C5h F8h 12h 9Dh  not defined */
+                            /* opcode C5h F8h 12h 9Eh  not defined */
+                            /* opcode C5h F8h 12h 9Fh  not defined */
+                            /* opcode C5h F8h 12h A0h  not defined */
+                            /* opcode C5h F8h 12h A1h  not defined */
+                            /* opcode C5h F8h 12h A2h  not defined */
+                            /* opcode C5h F8h 12h A3h  not defined */
+                            /* opcode C5h F8h 12h A4h  not defined */
+                            /* opcode C5h F8h 12h A5h  not defined */
+                            /* opcode C5h F8h 12h A6h  not defined */
+                            /* opcode C5h F8h 12h A7h  not defined */
+                            /* opcode C5h F8h 12h A8h  not defined */
+                            /* opcode C5h F8h 12h A9h  not defined */
+                            /* opcode C5h F8h 12h AAh  not defined */
+                            /* opcode C5h F8h 12h ABh  not defined */
+                            /* opcode C5h F8h 12h ACh  not defined */
+                            /* opcode C5h F8h 12h ADh  not defined */
+                            /* opcode C5h F8h 12h AEh  not defined */
+                            /* opcode C5h F8h 12h AFh  not defined */
+                            /* opcode C5h F8h 12h B0h  not defined */
+                            /* opcode C5h F8h 12h B1h  not defined */
+                            /* opcode C5h F8h 12h B2h  not defined */
+                            /* opcode C5h F8h 12h B3h  not defined */
+                            /* opcode C5h F8h 12h B4h  not defined */
+                            /* opcode C5h F8h 12h B5h  not defined */
+                            /* opcode C5h F8h 12h B6h  not defined */
+                            /* opcode C5h F8h 12h B7h  not defined */
+                            /* opcode C5h F8h 12h B8h  not defined */
+                            /* opcode C5h F8h 12h B9h  not defined */
+                            /* opcode C5h F8h 12h BAh  not defined */
+                            /* opcode C5h F8h 12h BBh  not defined */
+                            /* opcode C5h F8h 12h BCh  not defined */
+                            /* opcode C5h F8h 12h BDh  not defined */
+                            /* opcode C5h F8h 12h BEh  not defined */
+                            /* opcode C5h F8h 12h BFh  not defined */
+                            case 0xC0: /* C5h F8h 12h C0h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xC1: /* C5h F8h 12h C1h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xC2: /* C5h F8h 12h C2h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xC3: /* C5h F8h 12h C3h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xC4: /* C5h F8h 12h C4h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xC5: /* C5h F8h 12h C5h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xC6: /* C5h F8h 12h C6h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xC7: /* C5h F8h 12h C7h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xC8: /* C5h F8h 12h C8h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xC9: /* C5h F8h 12h C9h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xCA: /* C5h F8h 12h CAh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xCB: /* C5h F8h 12h CBh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xCC: /* C5h F8h 12h CCh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xCD: /* C5h F8h 12h CDh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xCE: /* C5h F8h 12h CEh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xCF: /* C5h F8h 12h CFh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xD0: /* C5h F8h 12h D0h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xD1: /* C5h F8h 12h D1h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xD2: /* C5h F8h 12h D2h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xD3: /* C5h F8h 12h D3h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xD4: /* C5h F8h 12h D4h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xD5: /* C5h F8h 12h D5h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xD6: /* C5h F8h 12h D6h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xD7: /* C5h F8h 12h D7h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xD8: /* C5h F8h 12h D8h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xD9: /* C5h F8h 12h D9h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xDA: /* C5h F8h 12h DAh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xDB: /* C5h F8h 12h DBh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xDC: /* C5h F8h 12h DCh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xDD: /* C5h F8h 12h DDh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xDE: /* C5h F8h 12h DEh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xDF: /* C5h F8h 12h DFh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xE0: /* C5h F8h 12h E0h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xE1: /* C5h F8h 12h E1h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xE2: /* C5h F8h 12h E2h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xE3: /* C5h F8h 12h E3h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xE4: /* C5h F8h 12h E4h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xE5: /* C5h F8h 12h E5h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xE6: /* C5h F8h 12h E6h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xE7: /* C5h F8h 12h E7h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xE8: /* C5h F8h 12h E8h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xE9: /* C5h F8h 12h E9h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xEA: /* C5h F8h 12h EAh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xEB: /* C5h F8h 12h EBh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xEC: /* C5h F8h 12h ECh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xED: /* C5h F8h 12h EDh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xEE: /* C5h F8h 12h EEh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xEF: /* C5h F8h 12h EFh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xF0: /* C5h F8h 12h F0h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xF1: /* C5h F8h 12h F1h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xF2: /* C5h F8h 12h F2h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xF3: /* C5h F8h 12h F3h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xF4: /* C5h F8h 12h F4h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xF5: /* C5h F8h 12h F5h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xF6: /* C5h F8h 12h F6h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xF7: /* C5h F8h 12h F7h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xF8: /* C5h F8h 12h F8h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xF9: /* C5h F8h 12h F9h VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xFA: /* C5h F8h 12h FAh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xFB: /* C5h F8h 12h FBh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xFC: /* C5h F8h 12h FCh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xFD: /* C5h F8h 12h FDh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xFE: /* C5h F8h 12h FEh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                            case 0xFF: /* C5h F8h 12h FFh VMOVHLPS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3 */
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVHLPS XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                                break;
+                            default:
+                                goto _x86decode_illegal_opcode;
+                        };
+/* End of opcodes starting with C5h F8h 12h */
+                        break;
                     /* opcode C5h F8h 13h  not defined */
-                    /* opcode C5h F8h 14h  not defined */
-                    /* opcode C5h F8h 15h  not defined */
+                    case 0x14: /* C5h F8h 14h VUNPCKLPS sse(reg),sse(vsidx),sse(r/m)      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x14 mod/reg/rm */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKLPS XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                        break;
+                    case 0x15: /* C5h F8h 15h VUNPCKHPS sse(reg),sse(vsidx),sse(r/m)      spec: vex vsize(128) vlead(0x0F) vprefix(none) 0x15 mod/reg/rm */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKHPS XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                        break;
                     /* opcode C5h F8h 16h  not defined */
                     /* opcode C5h F8h 17h  not defined */
                     /* opcode C5h F8h 18h  not defined */
@@ -27608,6 +32000,1904 @@ switch (op) {
                 };
 /* End of opcodes starting with C5h F8h */
                 break;
+            case 0xF9: /* C5h F9h   mod=3 reg=7 rm=1      spec:  */
+                vex.V = ((~mrm.byte) >> 3) & 7;
+/* Opcodes starting with C5h F9h */
+                op=IPFB();
+                _x86decode_begin_code16_addr16_opcode_parse_C5F9:
+                switch (op) {
+                    /* opcode C5h F9h 00h  not defined */
+                    /* opcode C5h F9h 01h  not defined */
+                    /* opcode C5h F9h 02h  not defined */
+                    /* opcode C5h F9h 03h  not defined */
+                    /* opcode C5h F9h 04h  not defined */
+                    /* opcode C5h F9h 05h  not defined */
+                    /* opcode C5h F9h 06h  not defined */
+                    /* opcode C5h F9h 07h  not defined */
+                    /* opcode C5h F9h 08h  not defined */
+                    /* opcode C5h F9h 09h  not defined */
+                    /* opcode C5h F9h 0Ah  not defined */
+                    /* opcode C5h F9h 0Bh  not defined */
+                    /* opcode C5h F9h 0Ch  not defined */
+                    /* opcode C5h F9h 0Dh  not defined */
+                    /* opcode C5h F9h 0Eh  not defined */
+                    /* opcode C5h F9h 0Fh  not defined */
+                    case 0x10: /* C5h F9h 10h VMOVUPD sse(reg),sse(r/m)      spec: vex vsize(128) vlead(0x0F) vprefix(0x66) 0x10 mod/reg/rm vsidx(0) */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVUPD XMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                        break;
+                    case 0x11: /* C5h F9h 11h VMOVUPD sse(r/m),sse(reg)      spec: vex vsize(128) vlead(0x0F) vprefix(0x66) 0x11 mod/reg/rm vsidx(0) */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVUPD %s,XMM%u",IPDecPrint16(mrm,disp,16,RC_SSEREG,""),mrm.reg());
+                        break;
+                    /* opcode C5h F9h 12h  not defined */
+                    /* opcode C5h F9h 13h  not defined */
+                    case 0x14: /* C5h F9h 14h VUNPCKLPD sse(reg),sse(vsidx),sse(r/m)      spec: vex vsize(128) vlead(0x0F) vprefix(0x66) 0x14 mod/reg/rm */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKLPD XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                        break;
+                    case 0x15: /* C5h F9h 15h VUNPCKHPD sse(reg),sse(vsidx),sse(r/m)      spec: vex vsize(128) vlead(0x0F) vprefix(0x66) 0x15 mod/reg/rm */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKHPD XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                        break;
+                    /* opcode C5h F9h 16h  not defined */
+                    /* opcode C5h F9h 17h  not defined */
+                    /* opcode C5h F9h 18h  not defined */
+                    /* opcode C5h F9h 19h  not defined */
+                    /* opcode C5h F9h 1Ah  not defined */
+                    /* opcode C5h F9h 1Bh  not defined */
+                    /* opcode C5h F9h 1Ch  not defined */
+                    /* opcode C5h F9h 1Dh  not defined */
+                    /* opcode C5h F9h 1Eh  not defined */
+                    /* opcode C5h F9h 1Fh  not defined */
+                    /* opcode C5h F9h 20h  not defined */
+                    /* opcode C5h F9h 21h  not defined */
+                    /* opcode C5h F9h 22h  not defined */
+                    /* opcode C5h F9h 23h  not defined */
+                    /* opcode C5h F9h 24h  not defined */
+                    /* opcode C5h F9h 25h  not defined */
+                    /* opcode C5h F9h 26h  not defined */
+                    /* opcode C5h F9h 27h  not defined */
+                    /* opcode C5h F9h 28h  not defined */
+                    /* opcode C5h F9h 29h  not defined */
+                    /* opcode C5h F9h 2Ah  not defined */
+                    /* opcode C5h F9h 2Bh  not defined */
+                    /* opcode C5h F9h 2Ch  not defined */
+                    /* opcode C5h F9h 2Dh  not defined */
+                    /* opcode C5h F9h 2Eh  not defined */
+                    /* opcode C5h F9h 2Fh  not defined */
+                    /* opcode C5h F9h 30h  not defined */
+                    /* opcode C5h F9h 31h  not defined */
+                    /* opcode C5h F9h 32h  not defined */
+                    /* opcode C5h F9h 33h  not defined */
+                    /* opcode C5h F9h 34h  not defined */
+                    /* opcode C5h F9h 35h  not defined */
+                    /* opcode C5h F9h 36h  not defined */
+                    /* opcode C5h F9h 37h  not defined */
+                    /* opcode C5h F9h 38h  not defined */
+                    /* opcode C5h F9h 39h  not defined */
+                    /* opcode C5h F9h 3Ah  not defined */
+                    /* opcode C5h F9h 3Bh  not defined */
+                    /* opcode C5h F9h 3Ch  not defined */
+                    /* opcode C5h F9h 3Dh  not defined */
+                    /* opcode C5h F9h 3Eh  not defined */
+                    /* opcode C5h F9h 3Fh  not defined */
+                    /* opcode C5h F9h 40h  not defined */
+                    /* opcode C5h F9h 41h  not defined */
+                    /* opcode C5h F9h 42h  not defined */
+                    /* opcode C5h F9h 43h  not defined */
+                    /* opcode C5h F9h 44h  not defined */
+                    /* opcode C5h F9h 45h  not defined */
+                    /* opcode C5h F9h 46h  not defined */
+                    /* opcode C5h F9h 47h  not defined */
+                    /* opcode C5h F9h 48h  not defined */
+                    /* opcode C5h F9h 49h  not defined */
+                    /* opcode C5h F9h 4Ah  not defined */
+                    /* opcode C5h F9h 4Bh  not defined */
+                    /* opcode C5h F9h 4Ch  not defined */
+                    /* opcode C5h F9h 4Dh  not defined */
+                    /* opcode C5h F9h 4Eh  not defined */
+                    /* opcode C5h F9h 4Fh  not defined */
+                    /* opcode C5h F9h 50h  not defined */
+                    /* opcode C5h F9h 51h  not defined */
+                    /* opcode C5h F9h 52h  not defined */
+                    /* opcode C5h F9h 53h  not defined */
+                    /* opcode C5h F9h 54h  not defined */
+                    /* opcode C5h F9h 55h  not defined */
+                    /* opcode C5h F9h 56h  not defined */
+                    /* opcode C5h F9h 57h  not defined */
+                    case 0x58: /* C5h F9h 58h VADDPD sse(reg),sse(vsidx),sse(r/m)      spec: vex vsize(128) vlead(0x0F) vprefix(0x66) 0x58 mod/reg/rm */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VADDPD XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                        break;
+                    /* opcode C5h F9h 59h  not defined */
+                    /* opcode C5h F9h 5Ah  not defined */
+                    /* opcode C5h F9h 5Bh  not defined */
+                    /* opcode C5h F9h 5Ch  not defined */
+                    /* opcode C5h F9h 5Dh  not defined */
+                    /* opcode C5h F9h 5Eh  not defined */
+                    /* opcode C5h F9h 5Fh  not defined */
+                    /* opcode C5h F9h 60h  not defined */
+                    /* opcode C5h F9h 61h  not defined */
+                    /* opcode C5h F9h 62h  not defined */
+                    /* opcode C5h F9h 63h  not defined */
+                    /* opcode C5h F9h 64h  not defined */
+                    /* opcode C5h F9h 65h  not defined */
+                    /* opcode C5h F9h 66h  not defined */
+                    /* opcode C5h F9h 67h  not defined */
+                    /* opcode C5h F9h 68h  not defined */
+                    /* opcode C5h F9h 69h  not defined */
+                    /* opcode C5h F9h 6Ah  not defined */
+                    /* opcode C5h F9h 6Bh  not defined */
+                    /* opcode C5h F9h 6Ch  not defined */
+                    /* opcode C5h F9h 6Dh  not defined */
+                    /* opcode C5h F9h 6Eh  not defined */
+                    /* opcode C5h F9h 6Fh  not defined */
+                    /* opcode C5h F9h 70h  not defined */
+                    /* opcode C5h F9h 71h  not defined */
+                    /* opcode C5h F9h 72h  not defined */
+                    /* opcode C5h F9h 73h  not defined */
+                    /* opcode C5h F9h 74h  not defined */
+                    /* opcode C5h F9h 75h  not defined */
+                    /* opcode C5h F9h 76h  not defined */
+                    /* opcode C5h F9h 77h  not defined */
+                    /* opcode C5h F9h 78h  not defined */
+                    /* opcode C5h F9h 79h  not defined */
+                    /* opcode C5h F9h 7Ah  not defined */
+                    /* opcode C5h F9h 7Bh  not defined */
+                    /* opcode C5h F9h 7Ch  not defined */
+                    /* opcode C5h F9h 7Dh  not defined */
+                    /* opcode C5h F9h 7Eh  not defined */
+                    /* opcode C5h F9h 7Fh  not defined */
+                    /* opcode C5h F9h 80h  not defined */
+                    /* opcode C5h F9h 81h  not defined */
+                    /* opcode C5h F9h 82h  not defined */
+                    /* opcode C5h F9h 83h  not defined */
+                    /* opcode C5h F9h 84h  not defined */
+                    /* opcode C5h F9h 85h  not defined */
+                    /* opcode C5h F9h 86h  not defined */
+                    /* opcode C5h F9h 87h  not defined */
+                    /* opcode C5h F9h 88h  not defined */
+                    /* opcode C5h F9h 89h  not defined */
+                    /* opcode C5h F9h 8Ah  not defined */
+                    /* opcode C5h F9h 8Bh  not defined */
+                    /* opcode C5h F9h 8Ch  not defined */
+                    /* opcode C5h F9h 8Dh  not defined */
+                    /* opcode C5h F9h 8Eh  not defined */
+                    /* opcode C5h F9h 8Fh  not defined */
+                    /* opcode C5h F9h 90h  not defined */
+                    /* opcode C5h F9h 91h  not defined */
+                    /* opcode C5h F9h 92h  not defined */
+                    /* opcode C5h F9h 93h  not defined */
+                    /* opcode C5h F9h 94h  not defined */
+                    /* opcode C5h F9h 95h  not defined */
+                    /* opcode C5h F9h 96h  not defined */
+                    /* opcode C5h F9h 97h  not defined */
+                    /* opcode C5h F9h 98h  not defined */
+                    /* opcode C5h F9h 99h  not defined */
+                    /* opcode C5h F9h 9Ah  not defined */
+                    /* opcode C5h F9h 9Bh  not defined */
+                    /* opcode C5h F9h 9Ch  not defined */
+                    /* opcode C5h F9h 9Dh  not defined */
+                    /* opcode C5h F9h 9Eh  not defined */
+                    /* opcode C5h F9h 9Fh  not defined */
+                    /* opcode C5h F9h A0h  not defined */
+                    /* opcode C5h F9h A1h  not defined */
+                    /* opcode C5h F9h A2h  not defined */
+                    /* opcode C5h F9h A3h  not defined */
+                    /* opcode C5h F9h A4h  not defined */
+                    /* opcode C5h F9h A5h  not defined */
+                    /* opcode C5h F9h A6h  not defined */
+                    /* opcode C5h F9h A7h  not defined */
+                    /* opcode C5h F9h A8h  not defined */
+                    /* opcode C5h F9h A9h  not defined */
+                    /* opcode C5h F9h AAh  not defined */
+                    /* opcode C5h F9h ABh  not defined */
+                    /* opcode C5h F9h ACh  not defined */
+                    /* opcode C5h F9h ADh  not defined */
+                    /* opcode C5h F9h AEh  not defined */
+                    /* opcode C5h F9h AFh  not defined */
+                    /* opcode C5h F9h B0h  not defined */
+                    /* opcode C5h F9h B1h  not defined */
+                    /* opcode C5h F9h B2h  not defined */
+                    /* opcode C5h F9h B3h  not defined */
+                    /* opcode C5h F9h B4h  not defined */
+                    /* opcode C5h F9h B5h  not defined */
+                    /* opcode C5h F9h B6h  not defined */
+                    /* opcode C5h F9h B7h  not defined */
+                    /* opcode C5h F9h B8h  not defined */
+                    /* opcode C5h F9h B9h  not defined */
+                    /* opcode C5h F9h BAh  not defined */
+                    /* opcode C5h F9h BBh  not defined */
+                    /* opcode C5h F9h BCh  not defined */
+                    /* opcode C5h F9h BDh  not defined */
+                    /* opcode C5h F9h BEh  not defined */
+                    /* opcode C5h F9h BFh  not defined */
+                    /* opcode C5h F9h C0h  not defined */
+                    /* opcode C5h F9h C1h  not defined */
+                    /* opcode C5h F9h C2h  not defined */
+                    /* opcode C5h F9h C3h  not defined */
+                    /* opcode C5h F9h C4h  not defined */
+                    /* opcode C5h F9h C5h  not defined */
+                    /* opcode C5h F9h C6h  not defined */
+                    /* opcode C5h F9h C7h  not defined */
+                    /* opcode C5h F9h C8h  not defined */
+                    /* opcode C5h F9h C9h  not defined */
+                    /* opcode C5h F9h CAh  not defined */
+                    /* opcode C5h F9h CBh  not defined */
+                    /* opcode C5h F9h CCh  not defined */
+                    /* opcode C5h F9h CDh  not defined */
+                    /* opcode C5h F9h CEh  not defined */
+                    /* opcode C5h F9h CFh  not defined */
+                    /* opcode C5h F9h D0h  not defined */
+                    /* opcode C5h F9h D1h  not defined */
+                    /* opcode C5h F9h D2h  not defined */
+                    /* opcode C5h F9h D3h  not defined */
+                    /* opcode C5h F9h D4h  not defined */
+                    /* opcode C5h F9h D5h  not defined */
+                    /* opcode C5h F9h D6h  not defined */
+                    /* opcode C5h F9h D7h  not defined */
+                    /* opcode C5h F9h D8h  not defined */
+                    /* opcode C5h F9h D9h  not defined */
+                    /* opcode C5h F9h DAh  not defined */
+                    /* opcode C5h F9h DBh  not defined */
+                    /* opcode C5h F9h DCh  not defined */
+                    /* opcode C5h F9h DDh  not defined */
+                    /* opcode C5h F9h DEh  not defined */
+                    /* opcode C5h F9h DFh  not defined */
+                    /* opcode C5h F9h E0h  not defined */
+                    /* opcode C5h F9h E1h  not defined */
+                    /* opcode C5h F9h E2h  not defined */
+                    /* opcode C5h F9h E3h  not defined */
+                    /* opcode C5h F9h E4h  not defined */
+                    /* opcode C5h F9h E5h  not defined */
+                    /* opcode C5h F9h E6h  not defined */
+                    /* opcode C5h F9h E7h  not defined */
+                    /* opcode C5h F9h E8h  not defined */
+                    /* opcode C5h F9h E9h  not defined */
+                    /* opcode C5h F9h EAh  not defined */
+                    /* opcode C5h F9h EBh  not defined */
+                    /* opcode C5h F9h ECh  not defined */
+                    /* opcode C5h F9h EDh  not defined */
+                    /* opcode C5h F9h EEh  not defined */
+                    /* opcode C5h F9h EFh  not defined */
+                    /* opcode C5h F9h F0h  not defined */
+                    /* opcode C5h F9h F1h  not defined */
+                    /* opcode C5h F9h F2h  not defined */
+                    /* opcode C5h F9h F3h  not defined */
+                    /* opcode C5h F9h F4h  not defined */
+                    /* opcode C5h F9h F5h  not defined */
+                    /* opcode C5h F9h F6h  not defined */
+                    /* opcode C5h F9h F7h  not defined */
+                    /* opcode C5h F9h F8h  not defined */
+                    /* opcode C5h F9h F9h  not defined */
+                    /* opcode C5h F9h FAh  not defined */
+                    /* opcode C5h F9h FBh  not defined */
+                    /* opcode C5h F9h FCh  not defined */
+                    /* opcode C5h F9h FDh  not defined */
+                    /* opcode C5h F9h FEh  not defined */
+                    /* opcode C5h F9h FFh  not defined */
+                    default:
+                        goto _x86decode_illegal_opcode;
+                };
+/* End of opcodes starting with C5h F9h */
+                break;
+            case 0xFA: /* C5h FAh   mod=3 reg=7 rm=2      spec:  */
+                vex.V = ((~mrm.byte) >> 3) & 7;
+/* Opcodes starting with C5h FAh */
+                op=IPFB();
+                _x86decode_begin_code16_addr16_opcode_parse_C5FA:
+                switch (op) {
+                    /* opcode C5h FAh 00h  not defined */
+                    /* opcode C5h FAh 01h  not defined */
+                    /* opcode C5h FAh 02h  not defined */
+                    /* opcode C5h FAh 03h  not defined */
+                    /* opcode C5h FAh 04h  not defined */
+                    /* opcode C5h FAh 05h  not defined */
+                    /* opcode C5h FAh 06h  not defined */
+                    /* opcode C5h FAh 07h  not defined */
+                    /* opcode C5h FAh 08h  not defined */
+                    /* opcode C5h FAh 09h  not defined */
+                    /* opcode C5h FAh 0Ah  not defined */
+                    /* opcode C5h FAh 0Bh  not defined */
+                    /* opcode C5h FAh 0Ch  not defined */
+                    /* opcode C5h FAh 0Dh  not defined */
+                    /* opcode C5h FAh 0Eh  not defined */
+                    /* opcode C5h FAh 0Fh  not defined */
+                    case 0x10: /* C5h FAh 10h        spec:  */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        _x86decode_begin_code16_addr16_opcode_parse_C5FA10:
+/* Opcodes starting with C5h FAh 10h */
+                        switch (mrm.byte) {
+                            case 0x00: /* C5h FAh 10h 00h VMOVSS sse(reg),w32(r/m) mod=0 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x01: /* C5h FAh 10h 01h VMOVSS sse(reg),w32(r/m) mod=0 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x02: /* C5h FAh 10h 02h VMOVSS sse(reg),w32(r/m) mod=0 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x03: /* C5h FAh 10h 03h VMOVSS sse(reg),w32(r/m) mod=0 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x04: /* C5h FAh 10h 04h VMOVSS sse(reg),w32(r/m) mod=0 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x05: /* C5h FAh 10h 05h VMOVSS sse(reg),w32(r/m) mod=0 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x06: /* C5h FAh 10h 06h VMOVSS sse(reg),w32(r/m) mod=0 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x07: /* C5h FAh 10h 07h VMOVSS sse(reg),w32(r/m) mod=0 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x08: /* C5h FAh 10h 08h VMOVSS sse(reg),w32(r/m) mod=0 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x09: /* C5h FAh 10h 09h VMOVSS sse(reg),w32(r/m) mod=0 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x0A: /* C5h FAh 10h 0Ah VMOVSS sse(reg),w32(r/m) mod=0 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x0B: /* C5h FAh 10h 0Bh VMOVSS sse(reg),w32(r/m) mod=0 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x0C: /* C5h FAh 10h 0Ch VMOVSS sse(reg),w32(r/m) mod=0 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x0D: /* C5h FAh 10h 0Dh VMOVSS sse(reg),w32(r/m) mod=0 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x0E: /* C5h FAh 10h 0Eh VMOVSS sse(reg),w32(r/m) mod=0 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x0F: /* C5h FAh 10h 0Fh VMOVSS sse(reg),w32(r/m) mod=0 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x10: /* C5h FAh 10h 10h VMOVSS sse(reg),w32(r/m) mod=0 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x11: /* C5h FAh 10h 11h VMOVSS sse(reg),w32(r/m) mod=0 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x12: /* C5h FAh 10h 12h VMOVSS sse(reg),w32(r/m) mod=0 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x13: /* C5h FAh 10h 13h VMOVSS sse(reg),w32(r/m) mod=0 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x14: /* C5h FAh 10h 14h VMOVSS sse(reg),w32(r/m) mod=0 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x15: /* C5h FAh 10h 15h VMOVSS sse(reg),w32(r/m) mod=0 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x16: /* C5h FAh 10h 16h VMOVSS sse(reg),w32(r/m) mod=0 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x17: /* C5h FAh 10h 17h VMOVSS sse(reg),w32(r/m) mod=0 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x18: /* C5h FAh 10h 18h VMOVSS sse(reg),w32(r/m) mod=0 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x19: /* C5h FAh 10h 19h VMOVSS sse(reg),w32(r/m) mod=0 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x1A: /* C5h FAh 10h 1Ah VMOVSS sse(reg),w32(r/m) mod=0 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x1B: /* C5h FAh 10h 1Bh VMOVSS sse(reg),w32(r/m) mod=0 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x1C: /* C5h FAh 10h 1Ch VMOVSS sse(reg),w32(r/m) mod=0 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x1D: /* C5h FAh 10h 1Dh VMOVSS sse(reg),w32(r/m) mod=0 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x1E: /* C5h FAh 10h 1Eh VMOVSS sse(reg),w32(r/m) mod=0 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x1F: /* C5h FAh 10h 1Fh VMOVSS sse(reg),w32(r/m) mod=0 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x20: /* C5h FAh 10h 20h VMOVSS sse(reg),w32(r/m) mod=0 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x21: /* C5h FAh 10h 21h VMOVSS sse(reg),w32(r/m) mod=0 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x22: /* C5h FAh 10h 22h VMOVSS sse(reg),w32(r/m) mod=0 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x23: /* C5h FAh 10h 23h VMOVSS sse(reg),w32(r/m) mod=0 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x24: /* C5h FAh 10h 24h VMOVSS sse(reg),w32(r/m) mod=0 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x25: /* C5h FAh 10h 25h VMOVSS sse(reg),w32(r/m) mod=0 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x26: /* C5h FAh 10h 26h VMOVSS sse(reg),w32(r/m) mod=0 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x27: /* C5h FAh 10h 27h VMOVSS sse(reg),w32(r/m) mod=0 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x28: /* C5h FAh 10h 28h VMOVSS sse(reg),w32(r/m) mod=0 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x29: /* C5h FAh 10h 29h VMOVSS sse(reg),w32(r/m) mod=0 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x2A: /* C5h FAh 10h 2Ah VMOVSS sse(reg),w32(r/m) mod=0 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x2B: /* C5h FAh 10h 2Bh VMOVSS sse(reg),w32(r/m) mod=0 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x2C: /* C5h FAh 10h 2Ch VMOVSS sse(reg),w32(r/m) mod=0 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x2D: /* C5h FAh 10h 2Dh VMOVSS sse(reg),w32(r/m) mod=0 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x2E: /* C5h FAh 10h 2Eh VMOVSS sse(reg),w32(r/m) mod=0 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x2F: /* C5h FAh 10h 2Fh VMOVSS sse(reg),w32(r/m) mod=0 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x30: /* C5h FAh 10h 30h VMOVSS sse(reg),w32(r/m) mod=0 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x31: /* C5h FAh 10h 31h VMOVSS sse(reg),w32(r/m) mod=0 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x32: /* C5h FAh 10h 32h VMOVSS sse(reg),w32(r/m) mod=0 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x33: /* C5h FAh 10h 33h VMOVSS sse(reg),w32(r/m) mod=0 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x34: /* C5h FAh 10h 34h VMOVSS sse(reg),w32(r/m) mod=0 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x35: /* C5h FAh 10h 35h VMOVSS sse(reg),w32(r/m) mod=0 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x36: /* C5h FAh 10h 36h VMOVSS sse(reg),w32(r/m) mod=0 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x37: /* C5h FAh 10h 37h VMOVSS sse(reg),w32(r/m) mod=0 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x38: /* C5h FAh 10h 38h VMOVSS sse(reg),w32(r/m) mod=0 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x39: /* C5h FAh 10h 39h VMOVSS sse(reg),w32(r/m) mod=0 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x3A: /* C5h FAh 10h 3Ah VMOVSS sse(reg),w32(r/m) mod=0 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x3B: /* C5h FAh 10h 3Bh VMOVSS sse(reg),w32(r/m) mod=0 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x3C: /* C5h FAh 10h 3Ch VMOVSS sse(reg),w32(r/m) mod=0 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x3D: /* C5h FAh 10h 3Dh VMOVSS sse(reg),w32(r/m) mod=0 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x3E: /* C5h FAh 10h 3Eh VMOVSS sse(reg),w32(r/m) mod=0 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x3F: /* C5h FAh 10h 3Fh VMOVSS sse(reg),w32(r/m) mod=0 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x40: /* C5h FAh 10h 40h VMOVSS sse(reg),w32(r/m) mod=1 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x41: /* C5h FAh 10h 41h VMOVSS sse(reg),w32(r/m) mod=1 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x42: /* C5h FAh 10h 42h VMOVSS sse(reg),w32(r/m) mod=1 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x43: /* C5h FAh 10h 43h VMOVSS sse(reg),w32(r/m) mod=1 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x44: /* C5h FAh 10h 44h VMOVSS sse(reg),w32(r/m) mod=1 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x45: /* C5h FAh 10h 45h VMOVSS sse(reg),w32(r/m) mod=1 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x46: /* C5h FAh 10h 46h VMOVSS sse(reg),w32(r/m) mod=1 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x47: /* C5h FAh 10h 47h VMOVSS sse(reg),w32(r/m) mod=1 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x48: /* C5h FAh 10h 48h VMOVSS sse(reg),w32(r/m) mod=1 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x49: /* C5h FAh 10h 49h VMOVSS sse(reg),w32(r/m) mod=1 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x4A: /* C5h FAh 10h 4Ah VMOVSS sse(reg),w32(r/m) mod=1 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x4B: /* C5h FAh 10h 4Bh VMOVSS sse(reg),w32(r/m) mod=1 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x4C: /* C5h FAh 10h 4Ch VMOVSS sse(reg),w32(r/m) mod=1 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x4D: /* C5h FAh 10h 4Dh VMOVSS sse(reg),w32(r/m) mod=1 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x4E: /* C5h FAh 10h 4Eh VMOVSS sse(reg),w32(r/m) mod=1 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x4F: /* C5h FAh 10h 4Fh VMOVSS sse(reg),w32(r/m) mod=1 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x50: /* C5h FAh 10h 50h VMOVSS sse(reg),w32(r/m) mod=1 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x51: /* C5h FAh 10h 51h VMOVSS sse(reg),w32(r/m) mod=1 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x52: /* C5h FAh 10h 52h VMOVSS sse(reg),w32(r/m) mod=1 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x53: /* C5h FAh 10h 53h VMOVSS sse(reg),w32(r/m) mod=1 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x54: /* C5h FAh 10h 54h VMOVSS sse(reg),w32(r/m) mod=1 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x55: /* C5h FAh 10h 55h VMOVSS sse(reg),w32(r/m) mod=1 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x56: /* C5h FAh 10h 56h VMOVSS sse(reg),w32(r/m) mod=1 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x57: /* C5h FAh 10h 57h VMOVSS sse(reg),w32(r/m) mod=1 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x58: /* C5h FAh 10h 58h VMOVSS sse(reg),w32(r/m) mod=1 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x59: /* C5h FAh 10h 59h VMOVSS sse(reg),w32(r/m) mod=1 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x5A: /* C5h FAh 10h 5Ah VMOVSS sse(reg),w32(r/m) mod=1 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x5B: /* C5h FAh 10h 5Bh VMOVSS sse(reg),w32(r/m) mod=1 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x5C: /* C5h FAh 10h 5Ch VMOVSS sse(reg),w32(r/m) mod=1 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x5D: /* C5h FAh 10h 5Dh VMOVSS sse(reg),w32(r/m) mod=1 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x5E: /* C5h FAh 10h 5Eh VMOVSS sse(reg),w32(r/m) mod=1 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x5F: /* C5h FAh 10h 5Fh VMOVSS sse(reg),w32(r/m) mod=1 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x60: /* C5h FAh 10h 60h VMOVSS sse(reg),w32(r/m) mod=1 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x61: /* C5h FAh 10h 61h VMOVSS sse(reg),w32(r/m) mod=1 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x62: /* C5h FAh 10h 62h VMOVSS sse(reg),w32(r/m) mod=1 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x63: /* C5h FAh 10h 63h VMOVSS sse(reg),w32(r/m) mod=1 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x64: /* C5h FAh 10h 64h VMOVSS sse(reg),w32(r/m) mod=1 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x65: /* C5h FAh 10h 65h VMOVSS sse(reg),w32(r/m) mod=1 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x66: /* C5h FAh 10h 66h VMOVSS sse(reg),w32(r/m) mod=1 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x67: /* C5h FAh 10h 67h VMOVSS sse(reg),w32(r/m) mod=1 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x68: /* C5h FAh 10h 68h VMOVSS sse(reg),w32(r/m) mod=1 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x69: /* C5h FAh 10h 69h VMOVSS sse(reg),w32(r/m) mod=1 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x6A: /* C5h FAh 10h 6Ah VMOVSS sse(reg),w32(r/m) mod=1 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x6B: /* C5h FAh 10h 6Bh VMOVSS sse(reg),w32(r/m) mod=1 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x6C: /* C5h FAh 10h 6Ch VMOVSS sse(reg),w32(r/m) mod=1 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x6D: /* C5h FAh 10h 6Dh VMOVSS sse(reg),w32(r/m) mod=1 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x6E: /* C5h FAh 10h 6Eh VMOVSS sse(reg),w32(r/m) mod=1 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x6F: /* C5h FAh 10h 6Fh VMOVSS sse(reg),w32(r/m) mod=1 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x70: /* C5h FAh 10h 70h VMOVSS sse(reg),w32(r/m) mod=1 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x71: /* C5h FAh 10h 71h VMOVSS sse(reg),w32(r/m) mod=1 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x72: /* C5h FAh 10h 72h VMOVSS sse(reg),w32(r/m) mod=1 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x73: /* C5h FAh 10h 73h VMOVSS sse(reg),w32(r/m) mod=1 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x74: /* C5h FAh 10h 74h VMOVSS sse(reg),w32(r/m) mod=1 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x75: /* C5h FAh 10h 75h VMOVSS sse(reg),w32(r/m) mod=1 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x76: /* C5h FAh 10h 76h VMOVSS sse(reg),w32(r/m) mod=1 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x77: /* C5h FAh 10h 77h VMOVSS sse(reg),w32(r/m) mod=1 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x78: /* C5h FAh 10h 78h VMOVSS sse(reg),w32(r/m) mod=1 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x79: /* C5h FAh 10h 79h VMOVSS sse(reg),w32(r/m) mod=1 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x7A: /* C5h FAh 10h 7Ah VMOVSS sse(reg),w32(r/m) mod=1 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x7B: /* C5h FAh 10h 7Bh VMOVSS sse(reg),w32(r/m) mod=1 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x7C: /* C5h FAh 10h 7Ch VMOVSS sse(reg),w32(r/m) mod=1 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x7D: /* C5h FAh 10h 7Dh VMOVSS sse(reg),w32(r/m) mod=1 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x7E: /* C5h FAh 10h 7Eh VMOVSS sse(reg),w32(r/m) mod=1 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x7F: /* C5h FAh 10h 7Fh VMOVSS sse(reg),w32(r/m) mod=1 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x80: /* C5h FAh 10h 80h VMOVSS sse(reg),w32(r/m) mod=2 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x81: /* C5h FAh 10h 81h VMOVSS sse(reg),w32(r/m) mod=2 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x82: /* C5h FAh 10h 82h VMOVSS sse(reg),w32(r/m) mod=2 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x83: /* C5h FAh 10h 83h VMOVSS sse(reg),w32(r/m) mod=2 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x84: /* C5h FAh 10h 84h VMOVSS sse(reg),w32(r/m) mod=2 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x85: /* C5h FAh 10h 85h VMOVSS sse(reg),w32(r/m) mod=2 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x86: /* C5h FAh 10h 86h VMOVSS sse(reg),w32(r/m) mod=2 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x87: /* C5h FAh 10h 87h VMOVSS sse(reg),w32(r/m) mod=2 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x88: /* C5h FAh 10h 88h VMOVSS sse(reg),w32(r/m) mod=2 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x89: /* C5h FAh 10h 89h VMOVSS sse(reg),w32(r/m) mod=2 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x8A: /* C5h FAh 10h 8Ah VMOVSS sse(reg),w32(r/m) mod=2 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x8B: /* C5h FAh 10h 8Bh VMOVSS sse(reg),w32(r/m) mod=2 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x8C: /* C5h FAh 10h 8Ch VMOVSS sse(reg),w32(r/m) mod=2 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x8D: /* C5h FAh 10h 8Dh VMOVSS sse(reg),w32(r/m) mod=2 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x8E: /* C5h FAh 10h 8Eh VMOVSS sse(reg),w32(r/m) mod=2 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x8F: /* C5h FAh 10h 8Fh VMOVSS sse(reg),w32(r/m) mod=2 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x90: /* C5h FAh 10h 90h VMOVSS sse(reg),w32(r/m) mod=2 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x91: /* C5h FAh 10h 91h VMOVSS sse(reg),w32(r/m) mod=2 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x92: /* C5h FAh 10h 92h VMOVSS sse(reg),w32(r/m) mod=2 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x93: /* C5h FAh 10h 93h VMOVSS sse(reg),w32(r/m) mod=2 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x94: /* C5h FAh 10h 94h VMOVSS sse(reg),w32(r/m) mod=2 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x95: /* C5h FAh 10h 95h VMOVSS sse(reg),w32(r/m) mod=2 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x96: /* C5h FAh 10h 96h VMOVSS sse(reg),w32(r/m) mod=2 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x97: /* C5h FAh 10h 97h VMOVSS sse(reg),w32(r/m) mod=2 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x98: /* C5h FAh 10h 98h VMOVSS sse(reg),w32(r/m) mod=2 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x99: /* C5h FAh 10h 99h VMOVSS sse(reg),w32(r/m) mod=2 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x9A: /* C5h FAh 10h 9Ah VMOVSS sse(reg),w32(r/m) mod=2 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x9B: /* C5h FAh 10h 9Bh VMOVSS sse(reg),w32(r/m) mod=2 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x9C: /* C5h FAh 10h 9Ch VMOVSS sse(reg),w32(r/m) mod=2 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x9D: /* C5h FAh 10h 9Dh VMOVSS sse(reg),w32(r/m) mod=2 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x9E: /* C5h FAh 10h 9Eh VMOVSS sse(reg),w32(r/m) mod=2 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x9F: /* C5h FAh 10h 9Fh VMOVSS sse(reg),w32(r/m) mod=2 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA0: /* C5h FAh 10h A0h VMOVSS sse(reg),w32(r/m) mod=2 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA1: /* C5h FAh 10h A1h VMOVSS sse(reg),w32(r/m) mod=2 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA2: /* C5h FAh 10h A2h VMOVSS sse(reg),w32(r/m) mod=2 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA3: /* C5h FAh 10h A3h VMOVSS sse(reg),w32(r/m) mod=2 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA4: /* C5h FAh 10h A4h VMOVSS sse(reg),w32(r/m) mod=2 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA5: /* C5h FAh 10h A5h VMOVSS sse(reg),w32(r/m) mod=2 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA6: /* C5h FAh 10h A6h VMOVSS sse(reg),w32(r/m) mod=2 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA7: /* C5h FAh 10h A7h VMOVSS sse(reg),w32(r/m) mod=2 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA8: /* C5h FAh 10h A8h VMOVSS sse(reg),w32(r/m) mod=2 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA9: /* C5h FAh 10h A9h VMOVSS sse(reg),w32(r/m) mod=2 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xAA: /* C5h FAh 10h AAh VMOVSS sse(reg),w32(r/m) mod=2 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xAB: /* C5h FAh 10h ABh VMOVSS sse(reg),w32(r/m) mod=2 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xAC: /* C5h FAh 10h ACh VMOVSS sse(reg),w32(r/m) mod=2 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xAD: /* C5h FAh 10h ADh VMOVSS sse(reg),w32(r/m) mod=2 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xAE: /* C5h FAh 10h AEh VMOVSS sse(reg),w32(r/m) mod=2 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xAF: /* C5h FAh 10h AFh VMOVSS sse(reg),w32(r/m) mod=2 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB0: /* C5h FAh 10h B0h VMOVSS sse(reg),w32(r/m) mod=2 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB1: /* C5h FAh 10h B1h VMOVSS sse(reg),w32(r/m) mod=2 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB2: /* C5h FAh 10h B2h VMOVSS sse(reg),w32(r/m) mod=2 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB3: /* C5h FAh 10h B3h VMOVSS sse(reg),w32(r/m) mod=2 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB4: /* C5h FAh 10h B4h VMOVSS sse(reg),w32(r/m) mod=2 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB5: /* C5h FAh 10h B5h VMOVSS sse(reg),w32(r/m) mod=2 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB6: /* C5h FAh 10h B6h VMOVSS sse(reg),w32(r/m) mod=2 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB7: /* C5h FAh 10h B7h VMOVSS sse(reg),w32(r/m) mod=2 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB8: /* C5h FAh 10h B8h VMOVSS sse(reg),w32(r/m) mod=2 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB9: /* C5h FAh 10h B9h VMOVSS sse(reg),w32(r/m) mod=2 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xBA: /* C5h FAh 10h BAh VMOVSS sse(reg),w32(r/m) mod=2 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xBB: /* C5h FAh 10h BBh VMOVSS sse(reg),w32(r/m) mod=2 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xBC: /* C5h FAh 10h BCh VMOVSS sse(reg),w32(r/m) mod=2 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xBD: /* C5h FAh 10h BDh VMOVSS sse(reg),w32(r/m) mod=2 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xBE: /* C5h FAh 10h BEh VMOVSS sse(reg),w32(r/m) mod=2 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xBF: /* C5h FAh 10h BFh VMOVSS sse(reg),w32(r/m) mod=2 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVSS XMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,4,RC_REG,"w32"));
+                                break;
+                            case 0xC0: /* C5h FAh 10h C0h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xC1: /* C5h FAh 10h C1h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xC2: /* C5h FAh 10h C2h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xC3: /* C5h FAh 10h C3h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xC4: /* C5h FAh 10h C4h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xC5: /* C5h FAh 10h C5h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xC6: /* C5h FAh 10h C6h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xC7: /* C5h FAh 10h C7h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xC8: /* C5h FAh 10h C8h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xC9: /* C5h FAh 10h C9h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xCA: /* C5h FAh 10h CAh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xCB: /* C5h FAh 10h CBh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xCC: /* C5h FAh 10h CCh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xCD: /* C5h FAh 10h CDh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xCE: /* C5h FAh 10h CEh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xCF: /* C5h FAh 10h CFh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xD0: /* C5h FAh 10h D0h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xD1: /* C5h FAh 10h D1h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xD2: /* C5h FAh 10h D2h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xD3: /* C5h FAh 10h D3h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xD4: /* C5h FAh 10h D4h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xD5: /* C5h FAh 10h D5h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xD6: /* C5h FAh 10h D6h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xD7: /* C5h FAh 10h D7h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xD8: /* C5h FAh 10h D8h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xD9: /* C5h FAh 10h D9h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xDA: /* C5h FAh 10h DAh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xDB: /* C5h FAh 10h DBh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xDC: /* C5h FAh 10h DCh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xDD: /* C5h FAh 10h DDh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xDE: /* C5h FAh 10h DEh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xDF: /* C5h FAh 10h DFh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xE0: /* C5h FAh 10h E0h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xE1: /* C5h FAh 10h E1h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xE2: /* C5h FAh 10h E2h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xE3: /* C5h FAh 10h E3h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xE4: /* C5h FAh 10h E4h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xE5: /* C5h FAh 10h E5h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xE6: /* C5h FAh 10h E6h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xE7: /* C5h FAh 10h E7h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xE8: /* C5h FAh 10h E8h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xE9: /* C5h FAh 10h E9h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xEA: /* C5h FAh 10h EAh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xEB: /* C5h FAh 10h EBh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xEC: /* C5h FAh 10h ECh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xED: /* C5h FAh 10h EDh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xEE: /* C5h FAh 10h EEh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xEF: /* C5h FAh 10h EFh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xF0: /* C5h FAh 10h F0h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xF1: /* C5h FAh 10h F1h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xF2: /* C5h FAh 10h F2h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xF3: /* C5h FAh 10h F3h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xF4: /* C5h FAh 10h F4h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xF5: /* C5h FAh 10h F5h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xF6: /* C5h FAh 10h F6h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xF7: /* C5h FAh 10h F7h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xF8: /* C5h FAh 10h F8h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xF9: /* C5h FAh 10h F9h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xFA: /* C5h FAh 10h FAh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xFB: /* C5h FAh 10h FBh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xFC: /* C5h FAh 10h FCh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xFD: /* C5h FAh 10h FDh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xFE: /* C5h FAh 10h FEh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                            case 0xFF: /* C5h FAh 10h FFh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3 */
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVSS XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                                break;
+                            default:
+                                goto _x86decode_illegal_opcode;
+                        };
+/* End of opcodes starting with C5h FAh 10h */
+                        break;
+                    case 0x11: /* C5h FAh 11h        spec:  */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        _x86decode_begin_code16_addr16_opcode_parse_C5FA11:
+/* Opcodes starting with C5h FAh 11h */
+                        switch (mrm.byte) {
+                            case 0x00: /* C5h FAh 11h 00h VMOVSS w32(r/m),sse(reg) mod=0 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x01: /* C5h FAh 11h 01h VMOVSS w32(r/m),sse(reg) mod=0 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x02: /* C5h FAh 11h 02h VMOVSS w32(r/m),sse(reg) mod=0 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x03: /* C5h FAh 11h 03h VMOVSS w32(r/m),sse(reg) mod=0 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x04: /* C5h FAh 11h 04h VMOVSS w32(r/m),sse(reg) mod=0 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x05: /* C5h FAh 11h 05h VMOVSS w32(r/m),sse(reg) mod=0 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x06: /* C5h FAh 11h 06h VMOVSS w32(r/m),sse(reg) mod=0 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x07: /* C5h FAh 11h 07h VMOVSS w32(r/m),sse(reg) mod=0 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x08: /* C5h FAh 11h 08h VMOVSS w32(r/m),sse(reg) mod=0 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x09: /* C5h FAh 11h 09h VMOVSS w32(r/m),sse(reg) mod=0 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x0A: /* C5h FAh 11h 0Ah VMOVSS w32(r/m),sse(reg) mod=0 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x0B: /* C5h FAh 11h 0Bh VMOVSS w32(r/m),sse(reg) mod=0 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x0C: /* C5h FAh 11h 0Ch VMOVSS w32(r/m),sse(reg) mod=0 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x0D: /* C5h FAh 11h 0Dh VMOVSS w32(r/m),sse(reg) mod=0 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x0E: /* C5h FAh 11h 0Eh VMOVSS w32(r/m),sse(reg) mod=0 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x0F: /* C5h FAh 11h 0Fh VMOVSS w32(r/m),sse(reg) mod=0 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x10: /* C5h FAh 11h 10h VMOVSS w32(r/m),sse(reg) mod=0 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x11: /* C5h FAh 11h 11h VMOVSS w32(r/m),sse(reg) mod=0 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x12: /* C5h FAh 11h 12h VMOVSS w32(r/m),sse(reg) mod=0 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x13: /* C5h FAh 11h 13h VMOVSS w32(r/m),sse(reg) mod=0 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x14: /* C5h FAh 11h 14h VMOVSS w32(r/m),sse(reg) mod=0 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x15: /* C5h FAh 11h 15h VMOVSS w32(r/m),sse(reg) mod=0 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x16: /* C5h FAh 11h 16h VMOVSS w32(r/m),sse(reg) mod=0 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x17: /* C5h FAh 11h 17h VMOVSS w32(r/m),sse(reg) mod=0 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x18: /* C5h FAh 11h 18h VMOVSS w32(r/m),sse(reg) mod=0 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x19: /* C5h FAh 11h 19h VMOVSS w32(r/m),sse(reg) mod=0 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x1A: /* C5h FAh 11h 1Ah VMOVSS w32(r/m),sse(reg) mod=0 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x1B: /* C5h FAh 11h 1Bh VMOVSS w32(r/m),sse(reg) mod=0 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x1C: /* C5h FAh 11h 1Ch VMOVSS w32(r/m),sse(reg) mod=0 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x1D: /* C5h FAh 11h 1Dh VMOVSS w32(r/m),sse(reg) mod=0 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x1E: /* C5h FAh 11h 1Eh VMOVSS w32(r/m),sse(reg) mod=0 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x1F: /* C5h FAh 11h 1Fh VMOVSS w32(r/m),sse(reg) mod=0 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x20: /* C5h FAh 11h 20h VMOVSS w32(r/m),sse(reg) mod=0 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x21: /* C5h FAh 11h 21h VMOVSS w32(r/m),sse(reg) mod=0 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x22: /* C5h FAh 11h 22h VMOVSS w32(r/m),sse(reg) mod=0 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x23: /* C5h FAh 11h 23h VMOVSS w32(r/m),sse(reg) mod=0 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x24: /* C5h FAh 11h 24h VMOVSS w32(r/m),sse(reg) mod=0 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x25: /* C5h FAh 11h 25h VMOVSS w32(r/m),sse(reg) mod=0 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x26: /* C5h FAh 11h 26h VMOVSS w32(r/m),sse(reg) mod=0 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x27: /* C5h FAh 11h 27h VMOVSS w32(r/m),sse(reg) mod=0 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x28: /* C5h FAh 11h 28h VMOVSS w32(r/m),sse(reg) mod=0 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x29: /* C5h FAh 11h 29h VMOVSS w32(r/m),sse(reg) mod=0 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x2A: /* C5h FAh 11h 2Ah VMOVSS w32(r/m),sse(reg) mod=0 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x2B: /* C5h FAh 11h 2Bh VMOVSS w32(r/m),sse(reg) mod=0 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x2C: /* C5h FAh 11h 2Ch VMOVSS w32(r/m),sse(reg) mod=0 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x2D: /* C5h FAh 11h 2Dh VMOVSS w32(r/m),sse(reg) mod=0 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x2E: /* C5h FAh 11h 2Eh VMOVSS w32(r/m),sse(reg) mod=0 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x2F: /* C5h FAh 11h 2Fh VMOVSS w32(r/m),sse(reg) mod=0 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x30: /* C5h FAh 11h 30h VMOVSS w32(r/m),sse(reg) mod=0 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x31: /* C5h FAh 11h 31h VMOVSS w32(r/m),sse(reg) mod=0 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x32: /* C5h FAh 11h 32h VMOVSS w32(r/m),sse(reg) mod=0 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x33: /* C5h FAh 11h 33h VMOVSS w32(r/m),sse(reg) mod=0 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x34: /* C5h FAh 11h 34h VMOVSS w32(r/m),sse(reg) mod=0 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x35: /* C5h FAh 11h 35h VMOVSS w32(r/m),sse(reg) mod=0 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x36: /* C5h FAh 11h 36h VMOVSS w32(r/m),sse(reg) mod=0 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x37: /* C5h FAh 11h 37h VMOVSS w32(r/m),sse(reg) mod=0 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x38: /* C5h FAh 11h 38h VMOVSS w32(r/m),sse(reg) mod=0 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x39: /* C5h FAh 11h 39h VMOVSS w32(r/m),sse(reg) mod=0 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x3A: /* C5h FAh 11h 3Ah VMOVSS w32(r/m),sse(reg) mod=0 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x3B: /* C5h FAh 11h 3Bh VMOVSS w32(r/m),sse(reg) mod=0 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x3C: /* C5h FAh 11h 3Ch VMOVSS w32(r/m),sse(reg) mod=0 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x3D: /* C5h FAh 11h 3Dh VMOVSS w32(r/m),sse(reg) mod=0 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x3E: /* C5h FAh 11h 3Eh VMOVSS w32(r/m),sse(reg) mod=0 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x3F: /* C5h FAh 11h 3Fh VMOVSS w32(r/m),sse(reg) mod=0 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x40: /* C5h FAh 11h 40h VMOVSS w32(r/m),sse(reg) mod=1 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x41: /* C5h FAh 11h 41h VMOVSS w32(r/m),sse(reg) mod=1 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x42: /* C5h FAh 11h 42h VMOVSS w32(r/m),sse(reg) mod=1 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x43: /* C5h FAh 11h 43h VMOVSS w32(r/m),sse(reg) mod=1 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x44: /* C5h FAh 11h 44h VMOVSS w32(r/m),sse(reg) mod=1 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x45: /* C5h FAh 11h 45h VMOVSS w32(r/m),sse(reg) mod=1 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x46: /* C5h FAh 11h 46h VMOVSS w32(r/m),sse(reg) mod=1 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x47: /* C5h FAh 11h 47h VMOVSS w32(r/m),sse(reg) mod=1 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x48: /* C5h FAh 11h 48h VMOVSS w32(r/m),sse(reg) mod=1 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x49: /* C5h FAh 11h 49h VMOVSS w32(r/m),sse(reg) mod=1 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x4A: /* C5h FAh 11h 4Ah VMOVSS w32(r/m),sse(reg) mod=1 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x4B: /* C5h FAh 11h 4Bh VMOVSS w32(r/m),sse(reg) mod=1 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x4C: /* C5h FAh 11h 4Ch VMOVSS w32(r/m),sse(reg) mod=1 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x4D: /* C5h FAh 11h 4Dh VMOVSS w32(r/m),sse(reg) mod=1 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x4E: /* C5h FAh 11h 4Eh VMOVSS w32(r/m),sse(reg) mod=1 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x4F: /* C5h FAh 11h 4Fh VMOVSS w32(r/m),sse(reg) mod=1 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x50: /* C5h FAh 11h 50h VMOVSS w32(r/m),sse(reg) mod=1 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x51: /* C5h FAh 11h 51h VMOVSS w32(r/m),sse(reg) mod=1 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x52: /* C5h FAh 11h 52h VMOVSS w32(r/m),sse(reg) mod=1 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x53: /* C5h FAh 11h 53h VMOVSS w32(r/m),sse(reg) mod=1 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x54: /* C5h FAh 11h 54h VMOVSS w32(r/m),sse(reg) mod=1 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x55: /* C5h FAh 11h 55h VMOVSS w32(r/m),sse(reg) mod=1 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x56: /* C5h FAh 11h 56h VMOVSS w32(r/m),sse(reg) mod=1 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x57: /* C5h FAh 11h 57h VMOVSS w32(r/m),sse(reg) mod=1 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x58: /* C5h FAh 11h 58h VMOVSS w32(r/m),sse(reg) mod=1 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x59: /* C5h FAh 11h 59h VMOVSS w32(r/m),sse(reg) mod=1 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x5A: /* C5h FAh 11h 5Ah VMOVSS w32(r/m),sse(reg) mod=1 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x5B: /* C5h FAh 11h 5Bh VMOVSS w32(r/m),sse(reg) mod=1 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x5C: /* C5h FAh 11h 5Ch VMOVSS w32(r/m),sse(reg) mod=1 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x5D: /* C5h FAh 11h 5Dh VMOVSS w32(r/m),sse(reg) mod=1 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x5E: /* C5h FAh 11h 5Eh VMOVSS w32(r/m),sse(reg) mod=1 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x5F: /* C5h FAh 11h 5Fh VMOVSS w32(r/m),sse(reg) mod=1 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x60: /* C5h FAh 11h 60h VMOVSS w32(r/m),sse(reg) mod=1 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x61: /* C5h FAh 11h 61h VMOVSS w32(r/m),sse(reg) mod=1 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x62: /* C5h FAh 11h 62h VMOVSS w32(r/m),sse(reg) mod=1 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x63: /* C5h FAh 11h 63h VMOVSS w32(r/m),sse(reg) mod=1 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x64: /* C5h FAh 11h 64h VMOVSS w32(r/m),sse(reg) mod=1 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x65: /* C5h FAh 11h 65h VMOVSS w32(r/m),sse(reg) mod=1 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x66: /* C5h FAh 11h 66h VMOVSS w32(r/m),sse(reg) mod=1 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x67: /* C5h FAh 11h 67h VMOVSS w32(r/m),sse(reg) mod=1 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x68: /* C5h FAh 11h 68h VMOVSS w32(r/m),sse(reg) mod=1 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x69: /* C5h FAh 11h 69h VMOVSS w32(r/m),sse(reg) mod=1 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x6A: /* C5h FAh 11h 6Ah VMOVSS w32(r/m),sse(reg) mod=1 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x6B: /* C5h FAh 11h 6Bh VMOVSS w32(r/m),sse(reg) mod=1 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x6C: /* C5h FAh 11h 6Ch VMOVSS w32(r/m),sse(reg) mod=1 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x6D: /* C5h FAh 11h 6Dh VMOVSS w32(r/m),sse(reg) mod=1 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x6E: /* C5h FAh 11h 6Eh VMOVSS w32(r/m),sse(reg) mod=1 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x6F: /* C5h FAh 11h 6Fh VMOVSS w32(r/m),sse(reg) mod=1 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x70: /* C5h FAh 11h 70h VMOVSS w32(r/m),sse(reg) mod=1 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x71: /* C5h FAh 11h 71h VMOVSS w32(r/m),sse(reg) mod=1 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x72: /* C5h FAh 11h 72h VMOVSS w32(r/m),sse(reg) mod=1 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x73: /* C5h FAh 11h 73h VMOVSS w32(r/m),sse(reg) mod=1 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x74: /* C5h FAh 11h 74h VMOVSS w32(r/m),sse(reg) mod=1 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x75: /* C5h FAh 11h 75h VMOVSS w32(r/m),sse(reg) mod=1 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x76: /* C5h FAh 11h 76h VMOVSS w32(r/m),sse(reg) mod=1 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x77: /* C5h FAh 11h 77h VMOVSS w32(r/m),sse(reg) mod=1 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x78: /* C5h FAh 11h 78h VMOVSS w32(r/m),sse(reg) mod=1 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x79: /* C5h FAh 11h 79h VMOVSS w32(r/m),sse(reg) mod=1 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x7A: /* C5h FAh 11h 7Ah VMOVSS w32(r/m),sse(reg) mod=1 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x7B: /* C5h FAh 11h 7Bh VMOVSS w32(r/m),sse(reg) mod=1 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x7C: /* C5h FAh 11h 7Ch VMOVSS w32(r/m),sse(reg) mod=1 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x7D: /* C5h FAh 11h 7Dh VMOVSS w32(r/m),sse(reg) mod=1 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x7E: /* C5h FAh 11h 7Eh VMOVSS w32(r/m),sse(reg) mod=1 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x7F: /* C5h FAh 11h 7Fh VMOVSS w32(r/m),sse(reg) mod=1 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x80: /* C5h FAh 11h 80h VMOVSS w32(r/m),sse(reg) mod=2 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x81: /* C5h FAh 11h 81h VMOVSS w32(r/m),sse(reg) mod=2 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x82: /* C5h FAh 11h 82h VMOVSS w32(r/m),sse(reg) mod=2 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x83: /* C5h FAh 11h 83h VMOVSS w32(r/m),sse(reg) mod=2 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x84: /* C5h FAh 11h 84h VMOVSS w32(r/m),sse(reg) mod=2 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x85: /* C5h FAh 11h 85h VMOVSS w32(r/m),sse(reg) mod=2 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x86: /* C5h FAh 11h 86h VMOVSS w32(r/m),sse(reg) mod=2 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x87: /* C5h FAh 11h 87h VMOVSS w32(r/m),sse(reg) mod=2 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x88: /* C5h FAh 11h 88h VMOVSS w32(r/m),sse(reg) mod=2 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x89: /* C5h FAh 11h 89h VMOVSS w32(r/m),sse(reg) mod=2 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x8A: /* C5h FAh 11h 8Ah VMOVSS w32(r/m),sse(reg) mod=2 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x8B: /* C5h FAh 11h 8Bh VMOVSS w32(r/m),sse(reg) mod=2 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x8C: /* C5h FAh 11h 8Ch VMOVSS w32(r/m),sse(reg) mod=2 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x8D: /* C5h FAh 11h 8Dh VMOVSS w32(r/m),sse(reg) mod=2 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x8E: /* C5h FAh 11h 8Eh VMOVSS w32(r/m),sse(reg) mod=2 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x8F: /* C5h FAh 11h 8Fh VMOVSS w32(r/m),sse(reg) mod=2 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x90: /* C5h FAh 11h 90h VMOVSS w32(r/m),sse(reg) mod=2 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x91: /* C5h FAh 11h 91h VMOVSS w32(r/m),sse(reg) mod=2 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x92: /* C5h FAh 11h 92h VMOVSS w32(r/m),sse(reg) mod=2 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x93: /* C5h FAh 11h 93h VMOVSS w32(r/m),sse(reg) mod=2 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x94: /* C5h FAh 11h 94h VMOVSS w32(r/m),sse(reg) mod=2 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x95: /* C5h FAh 11h 95h VMOVSS w32(r/m),sse(reg) mod=2 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x96: /* C5h FAh 11h 96h VMOVSS w32(r/m),sse(reg) mod=2 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x97: /* C5h FAh 11h 97h VMOVSS w32(r/m),sse(reg) mod=2 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x98: /* C5h FAh 11h 98h VMOVSS w32(r/m),sse(reg) mod=2 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x99: /* C5h FAh 11h 99h VMOVSS w32(r/m),sse(reg) mod=2 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x9A: /* C5h FAh 11h 9Ah VMOVSS w32(r/m),sse(reg) mod=2 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x9B: /* C5h FAh 11h 9Bh VMOVSS w32(r/m),sse(reg) mod=2 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x9C: /* C5h FAh 11h 9Ch VMOVSS w32(r/m),sse(reg) mod=2 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x9D: /* C5h FAh 11h 9Dh VMOVSS w32(r/m),sse(reg) mod=2 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x9E: /* C5h FAh 11h 9Eh VMOVSS w32(r/m),sse(reg) mod=2 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x9F: /* C5h FAh 11h 9Fh VMOVSS w32(r/m),sse(reg) mod=2 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA0: /* C5h FAh 11h A0h VMOVSS w32(r/m),sse(reg) mod=2 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA1: /* C5h FAh 11h A1h VMOVSS w32(r/m),sse(reg) mod=2 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA2: /* C5h FAh 11h A2h VMOVSS w32(r/m),sse(reg) mod=2 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA3: /* C5h FAh 11h A3h VMOVSS w32(r/m),sse(reg) mod=2 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA4: /* C5h FAh 11h A4h VMOVSS w32(r/m),sse(reg) mod=2 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA5: /* C5h FAh 11h A5h VMOVSS w32(r/m),sse(reg) mod=2 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA6: /* C5h FAh 11h A6h VMOVSS w32(r/m),sse(reg) mod=2 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA7: /* C5h FAh 11h A7h VMOVSS w32(r/m),sse(reg) mod=2 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA8: /* C5h FAh 11h A8h VMOVSS w32(r/m),sse(reg) mod=2 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA9: /* C5h FAh 11h A9h VMOVSS w32(r/m),sse(reg) mod=2 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xAA: /* C5h FAh 11h AAh VMOVSS w32(r/m),sse(reg) mod=2 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xAB: /* C5h FAh 11h ABh VMOVSS w32(r/m),sse(reg) mod=2 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xAC: /* C5h FAh 11h ACh VMOVSS w32(r/m),sse(reg) mod=2 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xAD: /* C5h FAh 11h ADh VMOVSS w32(r/m),sse(reg) mod=2 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xAE: /* C5h FAh 11h AEh VMOVSS w32(r/m),sse(reg) mod=2 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xAF: /* C5h FAh 11h AFh VMOVSS w32(r/m),sse(reg) mod=2 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB0: /* C5h FAh 11h B0h VMOVSS w32(r/m),sse(reg) mod=2 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB1: /* C5h FAh 11h B1h VMOVSS w32(r/m),sse(reg) mod=2 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB2: /* C5h FAh 11h B2h VMOVSS w32(r/m),sse(reg) mod=2 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB3: /* C5h FAh 11h B3h VMOVSS w32(r/m),sse(reg) mod=2 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB4: /* C5h FAh 11h B4h VMOVSS w32(r/m),sse(reg) mod=2 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB5: /* C5h FAh 11h B5h VMOVSS w32(r/m),sse(reg) mod=2 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB6: /* C5h FAh 11h B6h VMOVSS w32(r/m),sse(reg) mod=2 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB7: /* C5h FAh 11h B7h VMOVSS w32(r/m),sse(reg) mod=2 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB8: /* C5h FAh 11h B8h VMOVSS w32(r/m),sse(reg) mod=2 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB9: /* C5h FAh 11h B9h VMOVSS w32(r/m),sse(reg) mod=2 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xBA: /* C5h FAh 11h BAh VMOVSS w32(r/m),sse(reg) mod=2 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xBB: /* C5h FAh 11h BBh VMOVSS w32(r/m),sse(reg) mod=2 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xBC: /* C5h FAh 11h BCh VMOVSS w32(r/m),sse(reg) mod=2 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xBD: /* C5h FAh 11h BDh VMOVSS w32(r/m),sse(reg) mod=2 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xBE: /* C5h FAh 11h BEh VMOVSS w32(r/m),sse(reg) mod=2 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xBF: /* C5h FAh 11h BFh VMOVSS w32(r/m),sse(reg) mod=2 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVSS %s,XMM%u",IPDecPrint16(mrm,disp,4,RC_REG,"w32"),mrm.reg());
+                                break;
+                            case 0xC0: /* C5h FAh 11h C0h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xC1: /* C5h FAh 11h C1h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xC2: /* C5h FAh 11h C2h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xC3: /* C5h FAh 11h C3h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xC4: /* C5h FAh 11h C4h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xC5: /* C5h FAh 11h C5h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xC6: /* C5h FAh 11h C6h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xC7: /* C5h FAh 11h C7h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xC8: /* C5h FAh 11h C8h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xC9: /* C5h FAh 11h C9h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xCA: /* C5h FAh 11h CAh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xCB: /* C5h FAh 11h CBh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xCC: /* C5h FAh 11h CCh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xCD: /* C5h FAh 11h CDh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xCE: /* C5h FAh 11h CEh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xCF: /* C5h FAh 11h CFh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xD0: /* C5h FAh 11h D0h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xD1: /* C5h FAh 11h D1h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xD2: /* C5h FAh 11h D2h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xD3: /* C5h FAh 11h D3h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xD4: /* C5h FAh 11h D4h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xD5: /* C5h FAh 11h D5h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xD6: /* C5h FAh 11h D6h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xD7: /* C5h FAh 11h D7h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xD8: /* C5h FAh 11h D8h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xD9: /* C5h FAh 11h D9h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xDA: /* C5h FAh 11h DAh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xDB: /* C5h FAh 11h DBh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xDC: /* C5h FAh 11h DCh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xDD: /* C5h FAh 11h DDh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xDE: /* C5h FAh 11h DEh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xDF: /* C5h FAh 11h DFh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xE0: /* C5h FAh 11h E0h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xE1: /* C5h FAh 11h E1h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xE2: /* C5h FAh 11h E2h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xE3: /* C5h FAh 11h E3h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xE4: /* C5h FAh 11h E4h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xE5: /* C5h FAh 11h E5h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xE6: /* C5h FAh 11h E6h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xE7: /* C5h FAh 11h E7h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xE8: /* C5h FAh 11h E8h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xE9: /* C5h FAh 11h E9h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xEA: /* C5h FAh 11h EAh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xEB: /* C5h FAh 11h EBh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xEC: /* C5h FAh 11h ECh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xED: /* C5h FAh 11h EDh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xEE: /* C5h FAh 11h EEh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xEF: /* C5h FAh 11h EFh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xF0: /* C5h FAh 11h F0h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xF1: /* C5h FAh 11h F1h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xF2: /* C5h FAh 11h F2h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xF3: /* C5h FAh 11h F3h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xF4: /* C5h FAh 11h F4h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xF5: /* C5h FAh 11h F5h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xF6: /* C5h FAh 11h F6h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xF7: /* C5h FAh 11h F7h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xF8: /* C5h FAh 11h F8h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xF9: /* C5h FAh 11h F9h VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xFA: /* C5h FAh 11h FAh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xFB: /* C5h FAh 11h FBh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xFC: /* C5h FAh 11h FCh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xFD: /* C5h FAh 11h FDh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xFE: /* C5h FAh 11h FEh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                            case 0xFF: /* C5h FAh 11h FFh VMOVSS sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3 */
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVSS XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                                break;
+                            default:
+                                goto _x86decode_illegal_opcode;
+                        };
+/* End of opcodes starting with C5h FAh 11h */
+                        break;
+                    /* opcode C5h FAh 12h  not defined */
+                    /* opcode C5h FAh 13h  not defined */
+                    /* opcode C5h FAh 14h  not defined */
+                    /* opcode C5h FAh 15h  not defined */
+                    /* opcode C5h FAh 16h  not defined */
+                    /* opcode C5h FAh 17h  not defined */
+                    /* opcode C5h FAh 18h  not defined */
+                    /* opcode C5h FAh 19h  not defined */
+                    /* opcode C5h FAh 1Ah  not defined */
+                    /* opcode C5h FAh 1Bh  not defined */
+                    /* opcode C5h FAh 1Ch  not defined */
+                    /* opcode C5h FAh 1Dh  not defined */
+                    /* opcode C5h FAh 1Eh  not defined */
+                    /* opcode C5h FAh 1Fh  not defined */
+                    /* opcode C5h FAh 20h  not defined */
+                    /* opcode C5h FAh 21h  not defined */
+                    /* opcode C5h FAh 22h  not defined */
+                    /* opcode C5h FAh 23h  not defined */
+                    /* opcode C5h FAh 24h  not defined */
+                    /* opcode C5h FAh 25h  not defined */
+                    /* opcode C5h FAh 26h  not defined */
+                    /* opcode C5h FAh 27h  not defined */
+                    /* opcode C5h FAh 28h  not defined */
+                    /* opcode C5h FAh 29h  not defined */
+                    /* opcode C5h FAh 2Ah  not defined */
+                    /* opcode C5h FAh 2Bh  not defined */
+                    /* opcode C5h FAh 2Ch  not defined */
+                    /* opcode C5h FAh 2Dh  not defined */
+                    /* opcode C5h FAh 2Eh  not defined */
+                    /* opcode C5h FAh 2Fh  not defined */
+                    /* opcode C5h FAh 30h  not defined */
+                    /* opcode C5h FAh 31h  not defined */
+                    /* opcode C5h FAh 32h  not defined */
+                    /* opcode C5h FAh 33h  not defined */
+                    /* opcode C5h FAh 34h  not defined */
+                    /* opcode C5h FAh 35h  not defined */
+                    /* opcode C5h FAh 36h  not defined */
+                    /* opcode C5h FAh 37h  not defined */
+                    /* opcode C5h FAh 38h  not defined */
+                    /* opcode C5h FAh 39h  not defined */
+                    /* opcode C5h FAh 3Ah  not defined */
+                    /* opcode C5h FAh 3Bh  not defined */
+                    /* opcode C5h FAh 3Ch  not defined */
+                    /* opcode C5h FAh 3Dh  not defined */
+                    /* opcode C5h FAh 3Eh  not defined */
+                    /* opcode C5h FAh 3Fh  not defined */
+                    /* opcode C5h FAh 40h  not defined */
+                    /* opcode C5h FAh 41h  not defined */
+                    /* opcode C5h FAh 42h  not defined */
+                    /* opcode C5h FAh 43h  not defined */
+                    /* opcode C5h FAh 44h  not defined */
+                    /* opcode C5h FAh 45h  not defined */
+                    /* opcode C5h FAh 46h  not defined */
+                    /* opcode C5h FAh 47h  not defined */
+                    /* opcode C5h FAh 48h  not defined */
+                    /* opcode C5h FAh 49h  not defined */
+                    /* opcode C5h FAh 4Ah  not defined */
+                    /* opcode C5h FAh 4Bh  not defined */
+                    /* opcode C5h FAh 4Ch  not defined */
+                    /* opcode C5h FAh 4Dh  not defined */
+                    /* opcode C5h FAh 4Eh  not defined */
+                    /* opcode C5h FAh 4Fh  not defined */
+                    /* opcode C5h FAh 50h  not defined */
+                    /* opcode C5h FAh 51h  not defined */
+                    /* opcode C5h FAh 52h  not defined */
+                    /* opcode C5h FAh 53h  not defined */
+                    /* opcode C5h FAh 54h  not defined */
+                    /* opcode C5h FAh 55h  not defined */
+                    /* opcode C5h FAh 56h  not defined */
+                    /* opcode C5h FAh 57h  not defined */
+                    case 0x58: /* C5h FAh 58h VADDSS sse(reg),sse(vsidx),sse(r/m)      spec: vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x58 mod/reg/rm */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VADDSS XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                        break;
+                    /* opcode C5h FAh 59h  not defined */
+                    /* opcode C5h FAh 5Ah  not defined */
+                    /* opcode C5h FAh 5Bh  not defined */
+                    /* opcode C5h FAh 5Ch  not defined */
+                    /* opcode C5h FAh 5Dh  not defined */
+                    /* opcode C5h FAh 5Eh  not defined */
+                    /* opcode C5h FAh 5Fh  not defined */
+                    /* opcode C5h FAh 60h  not defined */
+                    /* opcode C5h FAh 61h  not defined */
+                    /* opcode C5h FAh 62h  not defined */
+                    /* opcode C5h FAh 63h  not defined */
+                    /* opcode C5h FAh 64h  not defined */
+                    /* opcode C5h FAh 65h  not defined */
+                    /* opcode C5h FAh 66h  not defined */
+                    /* opcode C5h FAh 67h  not defined */
+                    /* opcode C5h FAh 68h  not defined */
+                    /* opcode C5h FAh 69h  not defined */
+                    /* opcode C5h FAh 6Ah  not defined */
+                    /* opcode C5h FAh 6Bh  not defined */
+                    /* opcode C5h FAh 6Ch  not defined */
+                    /* opcode C5h FAh 6Dh  not defined */
+                    /* opcode C5h FAh 6Eh  not defined */
+                    /* opcode C5h FAh 6Fh  not defined */
+                    /* opcode C5h FAh 70h  not defined */
+                    /* opcode C5h FAh 71h  not defined */
+                    /* opcode C5h FAh 72h  not defined */
+                    /* opcode C5h FAh 73h  not defined */
+                    /* opcode C5h FAh 74h  not defined */
+                    /* opcode C5h FAh 75h  not defined */
+                    /* opcode C5h FAh 76h  not defined */
+                    /* opcode C5h FAh 77h  not defined */
+                    /* opcode C5h FAh 78h  not defined */
+                    /* opcode C5h FAh 79h  not defined */
+                    /* opcode C5h FAh 7Ah  not defined */
+                    /* opcode C5h FAh 7Bh  not defined */
+                    /* opcode C5h FAh 7Ch  not defined */
+                    /* opcode C5h FAh 7Dh  not defined */
+                    /* opcode C5h FAh 7Eh  not defined */
+                    /* opcode C5h FAh 7Fh  not defined */
+                    /* opcode C5h FAh 80h  not defined */
+                    /* opcode C5h FAh 81h  not defined */
+                    /* opcode C5h FAh 82h  not defined */
+                    /* opcode C5h FAh 83h  not defined */
+                    /* opcode C5h FAh 84h  not defined */
+                    /* opcode C5h FAh 85h  not defined */
+                    /* opcode C5h FAh 86h  not defined */
+                    /* opcode C5h FAh 87h  not defined */
+                    /* opcode C5h FAh 88h  not defined */
+                    /* opcode C5h FAh 89h  not defined */
+                    /* opcode C5h FAh 8Ah  not defined */
+                    /* opcode C5h FAh 8Bh  not defined */
+                    /* opcode C5h FAh 8Ch  not defined */
+                    /* opcode C5h FAh 8Dh  not defined */
+                    /* opcode C5h FAh 8Eh  not defined */
+                    /* opcode C5h FAh 8Fh  not defined */
+                    /* opcode C5h FAh 90h  not defined */
+                    /* opcode C5h FAh 91h  not defined */
+                    /* opcode C5h FAh 92h  not defined */
+                    /* opcode C5h FAh 93h  not defined */
+                    /* opcode C5h FAh 94h  not defined */
+                    /* opcode C5h FAh 95h  not defined */
+                    /* opcode C5h FAh 96h  not defined */
+                    /* opcode C5h FAh 97h  not defined */
+                    /* opcode C5h FAh 98h  not defined */
+                    /* opcode C5h FAh 99h  not defined */
+                    /* opcode C5h FAh 9Ah  not defined */
+                    /* opcode C5h FAh 9Bh  not defined */
+                    /* opcode C5h FAh 9Ch  not defined */
+                    /* opcode C5h FAh 9Dh  not defined */
+                    /* opcode C5h FAh 9Eh  not defined */
+                    /* opcode C5h FAh 9Fh  not defined */
+                    /* opcode C5h FAh A0h  not defined */
+                    /* opcode C5h FAh A1h  not defined */
+                    /* opcode C5h FAh A2h  not defined */
+                    /* opcode C5h FAh A3h  not defined */
+                    /* opcode C5h FAh A4h  not defined */
+                    /* opcode C5h FAh A5h  not defined */
+                    /* opcode C5h FAh A6h  not defined */
+                    /* opcode C5h FAh A7h  not defined */
+                    /* opcode C5h FAh A8h  not defined */
+                    /* opcode C5h FAh A9h  not defined */
+                    /* opcode C5h FAh AAh  not defined */
+                    /* opcode C5h FAh ABh  not defined */
+                    /* opcode C5h FAh ACh  not defined */
+                    /* opcode C5h FAh ADh  not defined */
+                    /* opcode C5h FAh AEh  not defined */
+                    /* opcode C5h FAh AFh  not defined */
+                    /* opcode C5h FAh B0h  not defined */
+                    /* opcode C5h FAh B1h  not defined */
+                    /* opcode C5h FAh B2h  not defined */
+                    /* opcode C5h FAh B3h  not defined */
+                    /* opcode C5h FAh B4h  not defined */
+                    /* opcode C5h FAh B5h  not defined */
+                    /* opcode C5h FAh B6h  not defined */
+                    /* opcode C5h FAh B7h  not defined */
+                    /* opcode C5h FAh B8h  not defined */
+                    /* opcode C5h FAh B9h  not defined */
+                    /* opcode C5h FAh BAh  not defined */
+                    /* opcode C5h FAh BBh  not defined */
+                    /* opcode C5h FAh BCh  not defined */
+                    /* opcode C5h FAh BDh  not defined */
+                    /* opcode C5h FAh BEh  not defined */
+                    /* opcode C5h FAh BFh  not defined */
+                    /* opcode C5h FAh C0h  not defined */
+                    /* opcode C5h FAh C1h  not defined */
+                    /* opcode C5h FAh C2h  not defined */
+                    /* opcode C5h FAh C3h  not defined */
+                    /* opcode C5h FAh C4h  not defined */
+                    /* opcode C5h FAh C5h  not defined */
+                    /* opcode C5h FAh C6h  not defined */
+                    /* opcode C5h FAh C7h  not defined */
+                    /* opcode C5h FAh C8h  not defined */
+                    /* opcode C5h FAh C9h  not defined */
+                    /* opcode C5h FAh CAh  not defined */
+                    /* opcode C5h FAh CBh  not defined */
+                    /* opcode C5h FAh CCh  not defined */
+                    /* opcode C5h FAh CDh  not defined */
+                    /* opcode C5h FAh CEh  not defined */
+                    /* opcode C5h FAh CFh  not defined */
+                    /* opcode C5h FAh D0h  not defined */
+                    /* opcode C5h FAh D1h  not defined */
+                    /* opcode C5h FAh D2h  not defined */
+                    /* opcode C5h FAh D3h  not defined */
+                    /* opcode C5h FAh D4h  not defined */
+                    /* opcode C5h FAh D5h  not defined */
+                    /* opcode C5h FAh D6h  not defined */
+                    /* opcode C5h FAh D7h  not defined */
+                    /* opcode C5h FAh D8h  not defined */
+                    /* opcode C5h FAh D9h  not defined */
+                    /* opcode C5h FAh DAh  not defined */
+                    /* opcode C5h FAh DBh  not defined */
+                    /* opcode C5h FAh DCh  not defined */
+                    /* opcode C5h FAh DDh  not defined */
+                    /* opcode C5h FAh DEh  not defined */
+                    /* opcode C5h FAh DFh  not defined */
+                    /* opcode C5h FAh E0h  not defined */
+                    /* opcode C5h FAh E1h  not defined */
+                    /* opcode C5h FAh E2h  not defined */
+                    /* opcode C5h FAh E3h  not defined */
+                    /* opcode C5h FAh E4h  not defined */
+                    /* opcode C5h FAh E5h  not defined */
+                    /* opcode C5h FAh E6h  not defined */
+                    /* opcode C5h FAh E7h  not defined */
+                    /* opcode C5h FAh E8h  not defined */
+                    /* opcode C5h FAh E9h  not defined */
+                    /* opcode C5h FAh EAh  not defined */
+                    /* opcode C5h FAh EBh  not defined */
+                    /* opcode C5h FAh ECh  not defined */
+                    /* opcode C5h FAh EDh  not defined */
+                    /* opcode C5h FAh EEh  not defined */
+                    /* opcode C5h FAh EFh  not defined */
+                    /* opcode C5h FAh F0h  not defined */
+                    /* opcode C5h FAh F1h  not defined */
+                    /* opcode C5h FAh F2h  not defined */
+                    /* opcode C5h FAh F3h  not defined */
+                    /* opcode C5h FAh F4h  not defined */
+                    /* opcode C5h FAh F5h  not defined */
+                    /* opcode C5h FAh F6h  not defined */
+                    /* opcode C5h FAh F7h  not defined */
+                    /* opcode C5h FAh F8h  not defined */
+                    /* opcode C5h FAh F9h  not defined */
+                    /* opcode C5h FAh FAh  not defined */
+                    /* opcode C5h FAh FBh  not defined */
+                    /* opcode C5h FAh FCh  not defined */
+                    /* opcode C5h FAh FDh  not defined */
+                    /* opcode C5h FAh FEh  not defined */
+                    /* opcode C5h FAh FFh  not defined */
+                    default:
+                        goto _x86decode_illegal_opcode;
+                };
+/* End of opcodes starting with C5h FAh */
+                break;
+            case 0xFB: /* C5h FBh   mod=3 reg=7 rm=3      spec:  */
+                vex.V = ((~mrm.byte) >> 3) & 7;
+/* Opcodes starting with C5h FBh */
+                op=IPFB();
+                _x86decode_begin_code16_addr16_opcode_parse_C5FB:
+                switch (op) {
+                    /* opcode C5h FBh 00h  not defined */
+                    /* opcode C5h FBh 01h  not defined */
+                    /* opcode C5h FBh 02h  not defined */
+                    /* opcode C5h FBh 03h  not defined */
+                    /* opcode C5h FBh 04h  not defined */
+                    /* opcode C5h FBh 05h  not defined */
+                    /* opcode C5h FBh 06h  not defined */
+                    /* opcode C5h FBh 07h  not defined */
+                    /* opcode C5h FBh 08h  not defined */
+                    /* opcode C5h FBh 09h  not defined */
+                    /* opcode C5h FBh 0Ah  not defined */
+                    /* opcode C5h FBh 0Bh  not defined */
+                    /* opcode C5h FBh 0Ch  not defined */
+                    /* opcode C5h FBh 0Dh  not defined */
+                    /* opcode C5h FBh 0Eh  not defined */
+                    /* opcode C5h FBh 0Fh  not defined */
+                    case 0x10: /* C5h FBh 10h        spec:  */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        _x86decode_begin_code16_addr16_opcode_parse_C5FB10:
+/* Opcodes starting with C5h FBh 10h */
+                        switch (mrm.byte) {
+                            case 0x00: /* C5h FBh 10h 00h VMOVSD sse(reg),w32(r/m) mod=0 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x01: /* C5h FBh 10h 01h VMOVSD sse(reg),w32(r/m) mod=0 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x02: /* C5h FBh 10h 02h VMOVSD sse(reg),w32(r/m) mod=0 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x03: /* C5h FBh 10h 03h VMOVSD sse(reg),w32(r/m) mod=0 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x04: /* C5h FBh 10h 04h VMOVSD sse(reg),w32(r/m) mod=0 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x05: /* C5h FBh 10h 05h VMOVSD sse(reg),w32(r/m) mod=0 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x06: /* C5h FBh 10h 06h VMOVSD sse(reg),w32(r/m) mod=0 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x07: /* C5h FBh 10h 07h VMOVSD sse(reg),w32(r/m) mod=0 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x08: /* C5h FBh 10h 08h VMOVSD sse(reg),w32(r/m) mod=0 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x09: /* C5h FBh 10h 09h VMOVSD sse(reg),w32(r/m) mod=0 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x0A: /* C5h FBh 10h 0Ah VMOVSD sse(reg),w32(r/m) mod=0 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x0B: /* C5h FBh 10h 0Bh VMOVSD sse(reg),w32(r/m) mod=0 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x0C: /* C5h FBh 10h 0Ch VMOVSD sse(reg),w32(r/m) mod=0 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x0D: /* C5h FBh 10h 0Dh VMOVSD sse(reg),w32(r/m) mod=0 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x0E: /* C5h FBh 10h 0Eh VMOVSD sse(reg),w32(r/m) mod=0 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x0F: /* C5h FBh 10h 0Fh VMOVSD sse(reg),w32(r/m) mod=0 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x10: /* C5h FBh 10h 10h VMOVSD sse(reg),w32(r/m) mod=0 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x11: /* C5h FBh 10h 11h VMOVSD sse(reg),w32(r/m) mod=0 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x12: /* C5h FBh 10h 12h VMOVSD sse(reg),w32(r/m) mod=0 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x13: /* C5h FBh 10h 13h VMOVSD sse(reg),w32(r/m) mod=0 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x14: /* C5h FBh 10h 14h VMOVSD sse(reg),w32(r/m) mod=0 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x15: /* C5h FBh 10h 15h VMOVSD sse(reg),w32(r/m) mod=0 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x16: /* C5h FBh 10h 16h VMOVSD sse(reg),w32(r/m) mod=0 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x17: /* C5h FBh 10h 17h VMOVSD sse(reg),w32(r/m) mod=0 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x18: /* C5h FBh 10h 18h VMOVSD sse(reg),w32(r/m) mod=0 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x19: /* C5h FBh 10h 19h VMOVSD sse(reg),w32(r/m) mod=0 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x1A: /* C5h FBh 10h 1Ah VMOVSD sse(reg),w32(r/m) mod=0 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x1B: /* C5h FBh 10h 1Bh VMOVSD sse(reg),w32(r/m) mod=0 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x1C: /* C5h FBh 10h 1Ch VMOVSD sse(reg),w32(r/m) mod=0 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x1D: /* C5h FBh 10h 1Dh VMOVSD sse(reg),w32(r/m) mod=0 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x1E: /* C5h FBh 10h 1Eh VMOVSD sse(reg),w32(r/m) mod=0 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x1F: /* C5h FBh 10h 1Fh VMOVSD sse(reg),w32(r/m) mod=0 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x20: /* C5h FBh 10h 20h VMOVSD sse(reg),w32(r/m) mod=0 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x21: /* C5h FBh 10h 21h VMOVSD sse(reg),w32(r/m) mod=0 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x22: /* C5h FBh 10h 22h VMOVSD sse(reg),w32(r/m) mod=0 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x23: /* C5h FBh 10h 23h VMOVSD sse(reg),w32(r/m) mod=0 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x24: /* C5h FBh 10h 24h VMOVSD sse(reg),w32(r/m) mod=0 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x25: /* C5h FBh 10h 25h VMOVSD sse(reg),w32(r/m) mod=0 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x26: /* C5h FBh 10h 26h VMOVSD sse(reg),w32(r/m) mod=0 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x27: /* C5h FBh 10h 27h VMOVSD sse(reg),w32(r/m) mod=0 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x28: /* C5h FBh 10h 28h VMOVSD sse(reg),w32(r/m) mod=0 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x29: /* C5h FBh 10h 29h VMOVSD sse(reg),w32(r/m) mod=0 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x2A: /* C5h FBh 10h 2Ah VMOVSD sse(reg),w32(r/m) mod=0 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x2B: /* C5h FBh 10h 2Bh VMOVSD sse(reg),w32(r/m) mod=0 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x2C: /* C5h FBh 10h 2Ch VMOVSD sse(reg),w32(r/m) mod=0 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x2D: /* C5h FBh 10h 2Dh VMOVSD sse(reg),w32(r/m) mod=0 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x2E: /* C5h FBh 10h 2Eh VMOVSD sse(reg),w32(r/m) mod=0 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x2F: /* C5h FBh 10h 2Fh VMOVSD sse(reg),w32(r/m) mod=0 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x30: /* C5h FBh 10h 30h VMOVSD sse(reg),w32(r/m) mod=0 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x31: /* C5h FBh 10h 31h VMOVSD sse(reg),w32(r/m) mod=0 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x32: /* C5h FBh 10h 32h VMOVSD sse(reg),w32(r/m) mod=0 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x33: /* C5h FBh 10h 33h VMOVSD sse(reg),w32(r/m) mod=0 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x34: /* C5h FBh 10h 34h VMOVSD sse(reg),w32(r/m) mod=0 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x35: /* C5h FBh 10h 35h VMOVSD sse(reg),w32(r/m) mod=0 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x36: /* C5h FBh 10h 36h VMOVSD sse(reg),w32(r/m) mod=0 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x37: /* C5h FBh 10h 37h VMOVSD sse(reg),w32(r/m) mod=0 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x38: /* C5h FBh 10h 38h VMOVSD sse(reg),w32(r/m) mod=0 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x39: /* C5h FBh 10h 39h VMOVSD sse(reg),w32(r/m) mod=0 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x3A: /* C5h FBh 10h 3Ah VMOVSD sse(reg),w32(r/m) mod=0 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x3B: /* C5h FBh 10h 3Bh VMOVSD sse(reg),w32(r/m) mod=0 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x3C: /* C5h FBh 10h 3Ch VMOVSD sse(reg),w32(r/m) mod=0 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x3D: /* C5h FBh 10h 3Dh VMOVSD sse(reg),w32(r/m) mod=0 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x3E: /* C5h FBh 10h 3Eh VMOVSD sse(reg),w32(r/m) mod=0 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x3F: /* C5h FBh 10h 3Fh VMOVSD sse(reg),w32(r/m) mod=0 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x40: /* C5h FBh 10h 40h VMOVSD sse(reg),w32(r/m) mod=1 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x41: /* C5h FBh 10h 41h VMOVSD sse(reg),w32(r/m) mod=1 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x42: /* C5h FBh 10h 42h VMOVSD sse(reg),w32(r/m) mod=1 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x43: /* C5h FBh 10h 43h VMOVSD sse(reg),w32(r/m) mod=1 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x44: /* C5h FBh 10h 44h VMOVSD sse(reg),w32(r/m) mod=1 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x45: /* C5h FBh 10h 45h VMOVSD sse(reg),w32(r/m) mod=1 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x46: /* C5h FBh 10h 46h VMOVSD sse(reg),w32(r/m) mod=1 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x47: /* C5h FBh 10h 47h VMOVSD sse(reg),w32(r/m) mod=1 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x48: /* C5h FBh 10h 48h VMOVSD sse(reg),w32(r/m) mod=1 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x49: /* C5h FBh 10h 49h VMOVSD sse(reg),w32(r/m) mod=1 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x4A: /* C5h FBh 10h 4Ah VMOVSD sse(reg),w32(r/m) mod=1 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x4B: /* C5h FBh 10h 4Bh VMOVSD sse(reg),w32(r/m) mod=1 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x4C: /* C5h FBh 10h 4Ch VMOVSD sse(reg),w32(r/m) mod=1 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x4D: /* C5h FBh 10h 4Dh VMOVSD sse(reg),w32(r/m) mod=1 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x4E: /* C5h FBh 10h 4Eh VMOVSD sse(reg),w32(r/m) mod=1 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x4F: /* C5h FBh 10h 4Fh VMOVSD sse(reg),w32(r/m) mod=1 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x50: /* C5h FBh 10h 50h VMOVSD sse(reg),w32(r/m) mod=1 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x51: /* C5h FBh 10h 51h VMOVSD sse(reg),w32(r/m) mod=1 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x52: /* C5h FBh 10h 52h VMOVSD sse(reg),w32(r/m) mod=1 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x53: /* C5h FBh 10h 53h VMOVSD sse(reg),w32(r/m) mod=1 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x54: /* C5h FBh 10h 54h VMOVSD sse(reg),w32(r/m) mod=1 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x55: /* C5h FBh 10h 55h VMOVSD sse(reg),w32(r/m) mod=1 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x56: /* C5h FBh 10h 56h VMOVSD sse(reg),w32(r/m) mod=1 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x57: /* C5h FBh 10h 57h VMOVSD sse(reg),w32(r/m) mod=1 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x58: /* C5h FBh 10h 58h VMOVSD sse(reg),w32(r/m) mod=1 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x59: /* C5h FBh 10h 59h VMOVSD sse(reg),w32(r/m) mod=1 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x5A: /* C5h FBh 10h 5Ah VMOVSD sse(reg),w32(r/m) mod=1 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x5B: /* C5h FBh 10h 5Bh VMOVSD sse(reg),w32(r/m) mod=1 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x5C: /* C5h FBh 10h 5Ch VMOVSD sse(reg),w32(r/m) mod=1 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x5D: /* C5h FBh 10h 5Dh VMOVSD sse(reg),w32(r/m) mod=1 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x5E: /* C5h FBh 10h 5Eh VMOVSD sse(reg),w32(r/m) mod=1 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x5F: /* C5h FBh 10h 5Fh VMOVSD sse(reg),w32(r/m) mod=1 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x60: /* C5h FBh 10h 60h VMOVSD sse(reg),w32(r/m) mod=1 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x61: /* C5h FBh 10h 61h VMOVSD sse(reg),w32(r/m) mod=1 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x62: /* C5h FBh 10h 62h VMOVSD sse(reg),w32(r/m) mod=1 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x63: /* C5h FBh 10h 63h VMOVSD sse(reg),w32(r/m) mod=1 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x64: /* C5h FBh 10h 64h VMOVSD sse(reg),w32(r/m) mod=1 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x65: /* C5h FBh 10h 65h VMOVSD sse(reg),w32(r/m) mod=1 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x66: /* C5h FBh 10h 66h VMOVSD sse(reg),w32(r/m) mod=1 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x67: /* C5h FBh 10h 67h VMOVSD sse(reg),w32(r/m) mod=1 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x68: /* C5h FBh 10h 68h VMOVSD sse(reg),w32(r/m) mod=1 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x69: /* C5h FBh 10h 69h VMOVSD sse(reg),w32(r/m) mod=1 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x6A: /* C5h FBh 10h 6Ah VMOVSD sse(reg),w32(r/m) mod=1 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x6B: /* C5h FBh 10h 6Bh VMOVSD sse(reg),w32(r/m) mod=1 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x6C: /* C5h FBh 10h 6Ch VMOVSD sse(reg),w32(r/m) mod=1 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x6D: /* C5h FBh 10h 6Dh VMOVSD sse(reg),w32(r/m) mod=1 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x6E: /* C5h FBh 10h 6Eh VMOVSD sse(reg),w32(r/m) mod=1 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x6F: /* C5h FBh 10h 6Fh VMOVSD sse(reg),w32(r/m) mod=1 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x70: /* C5h FBh 10h 70h VMOVSD sse(reg),w32(r/m) mod=1 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x71: /* C5h FBh 10h 71h VMOVSD sse(reg),w32(r/m) mod=1 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x72: /* C5h FBh 10h 72h VMOVSD sse(reg),w32(r/m) mod=1 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x73: /* C5h FBh 10h 73h VMOVSD sse(reg),w32(r/m) mod=1 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x74: /* C5h FBh 10h 74h VMOVSD sse(reg),w32(r/m) mod=1 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x75: /* C5h FBh 10h 75h VMOVSD sse(reg),w32(r/m) mod=1 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x76: /* C5h FBh 10h 76h VMOVSD sse(reg),w32(r/m) mod=1 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x77: /* C5h FBh 10h 77h VMOVSD sse(reg),w32(r/m) mod=1 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x78: /* C5h FBh 10h 78h VMOVSD sse(reg),w32(r/m) mod=1 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x79: /* C5h FBh 10h 79h VMOVSD sse(reg),w32(r/m) mod=1 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x7A: /* C5h FBh 10h 7Ah VMOVSD sse(reg),w32(r/m) mod=1 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x7B: /* C5h FBh 10h 7Bh VMOVSD sse(reg),w32(r/m) mod=1 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x7C: /* C5h FBh 10h 7Ch VMOVSD sse(reg),w32(r/m) mod=1 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x7D: /* C5h FBh 10h 7Dh VMOVSD sse(reg),w32(r/m) mod=1 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x7E: /* C5h FBh 10h 7Eh VMOVSD sse(reg),w32(r/m) mod=1 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x7F: /* C5h FBh 10h 7Fh VMOVSD sse(reg),w32(r/m) mod=1 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x80: /* C5h FBh 10h 80h VMOVSD sse(reg),w32(r/m) mod=2 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x81: /* C5h FBh 10h 81h VMOVSD sse(reg),w32(r/m) mod=2 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x82: /* C5h FBh 10h 82h VMOVSD sse(reg),w32(r/m) mod=2 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x83: /* C5h FBh 10h 83h VMOVSD sse(reg),w32(r/m) mod=2 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x84: /* C5h FBh 10h 84h VMOVSD sse(reg),w32(r/m) mod=2 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x85: /* C5h FBh 10h 85h VMOVSD sse(reg),w32(r/m) mod=2 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x86: /* C5h FBh 10h 86h VMOVSD sse(reg),w32(r/m) mod=2 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x87: /* C5h FBh 10h 87h VMOVSD sse(reg),w32(r/m) mod=2 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x88: /* C5h FBh 10h 88h VMOVSD sse(reg),w32(r/m) mod=2 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x89: /* C5h FBh 10h 89h VMOVSD sse(reg),w32(r/m) mod=2 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x8A: /* C5h FBh 10h 8Ah VMOVSD sse(reg),w32(r/m) mod=2 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x8B: /* C5h FBh 10h 8Bh VMOVSD sse(reg),w32(r/m) mod=2 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x8C: /* C5h FBh 10h 8Ch VMOVSD sse(reg),w32(r/m) mod=2 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x8D: /* C5h FBh 10h 8Dh VMOVSD sse(reg),w32(r/m) mod=2 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x8E: /* C5h FBh 10h 8Eh VMOVSD sse(reg),w32(r/m) mod=2 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x8F: /* C5h FBh 10h 8Fh VMOVSD sse(reg),w32(r/m) mod=2 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x90: /* C5h FBh 10h 90h VMOVSD sse(reg),w32(r/m) mod=2 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x91: /* C5h FBh 10h 91h VMOVSD sse(reg),w32(r/m) mod=2 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x92: /* C5h FBh 10h 92h VMOVSD sse(reg),w32(r/m) mod=2 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x93: /* C5h FBh 10h 93h VMOVSD sse(reg),w32(r/m) mod=2 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x94: /* C5h FBh 10h 94h VMOVSD sse(reg),w32(r/m) mod=2 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x95: /* C5h FBh 10h 95h VMOVSD sse(reg),w32(r/m) mod=2 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x96: /* C5h FBh 10h 96h VMOVSD sse(reg),w32(r/m) mod=2 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x97: /* C5h FBh 10h 97h VMOVSD sse(reg),w32(r/m) mod=2 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x98: /* C5h FBh 10h 98h VMOVSD sse(reg),w32(r/m) mod=2 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x99: /* C5h FBh 10h 99h VMOVSD sse(reg),w32(r/m) mod=2 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x9A: /* C5h FBh 10h 9Ah VMOVSD sse(reg),w32(r/m) mod=2 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x9B: /* C5h FBh 10h 9Bh VMOVSD sse(reg),w32(r/m) mod=2 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x9C: /* C5h FBh 10h 9Ch VMOVSD sse(reg),w32(r/m) mod=2 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x9D: /* C5h FBh 10h 9Dh VMOVSD sse(reg),w32(r/m) mod=2 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x9E: /* C5h FBh 10h 9Eh VMOVSD sse(reg),w32(r/m) mod=2 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x9F: /* C5h FBh 10h 9Fh VMOVSD sse(reg),w32(r/m) mod=2 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA0: /* C5h FBh 10h A0h VMOVSD sse(reg),w32(r/m) mod=2 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA1: /* C5h FBh 10h A1h VMOVSD sse(reg),w32(r/m) mod=2 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA2: /* C5h FBh 10h A2h VMOVSD sse(reg),w32(r/m) mod=2 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA3: /* C5h FBh 10h A3h VMOVSD sse(reg),w32(r/m) mod=2 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA4: /* C5h FBh 10h A4h VMOVSD sse(reg),w32(r/m) mod=2 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA5: /* C5h FBh 10h A5h VMOVSD sse(reg),w32(r/m) mod=2 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA6: /* C5h FBh 10h A6h VMOVSD sse(reg),w32(r/m) mod=2 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA7: /* C5h FBh 10h A7h VMOVSD sse(reg),w32(r/m) mod=2 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA8: /* C5h FBh 10h A8h VMOVSD sse(reg),w32(r/m) mod=2 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA9: /* C5h FBh 10h A9h VMOVSD sse(reg),w32(r/m) mod=2 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xAA: /* C5h FBh 10h AAh VMOVSD sse(reg),w32(r/m) mod=2 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xAB: /* C5h FBh 10h ABh VMOVSD sse(reg),w32(r/m) mod=2 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xAC: /* C5h FBh 10h ACh VMOVSD sse(reg),w32(r/m) mod=2 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xAD: /* C5h FBh 10h ADh VMOVSD sse(reg),w32(r/m) mod=2 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xAE: /* C5h FBh 10h AEh VMOVSD sse(reg),w32(r/m) mod=2 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xAF: /* C5h FBh 10h AFh VMOVSD sse(reg),w32(r/m) mod=2 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB0: /* C5h FBh 10h B0h VMOVSD sse(reg),w32(r/m) mod=2 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB1: /* C5h FBh 10h B1h VMOVSD sse(reg),w32(r/m) mod=2 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB2: /* C5h FBh 10h B2h VMOVSD sse(reg),w32(r/m) mod=2 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB3: /* C5h FBh 10h B3h VMOVSD sse(reg),w32(r/m) mod=2 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB4: /* C5h FBh 10h B4h VMOVSD sse(reg),w32(r/m) mod=2 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB5: /* C5h FBh 10h B5h VMOVSD sse(reg),w32(r/m) mod=2 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB6: /* C5h FBh 10h B6h VMOVSD sse(reg),w32(r/m) mod=2 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB7: /* C5h FBh 10h B7h VMOVSD sse(reg),w32(r/m) mod=2 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB8: /* C5h FBh 10h B8h VMOVSD sse(reg),w32(r/m) mod=2 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB9: /* C5h FBh 10h B9h VMOVSD sse(reg),w32(r/m) mod=2 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xBA: /* C5h FBh 10h BAh VMOVSD sse(reg),w32(r/m) mod=2 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xBB: /* C5h FBh 10h BBh VMOVSD sse(reg),w32(r/m) mod=2 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xBC: /* C5h FBh 10h BCh VMOVSD sse(reg),w32(r/m) mod=2 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xBD: /* C5h FBh 10h BDh VMOVSD sse(reg),w32(r/m) mod=2 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xBE: /* C5h FBh 10h BEh VMOVSD sse(reg),w32(r/m) mod=2 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xBF: /* C5h FBh 10h BFh VMOVSD sse(reg),w32(r/m) mod=2 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0) */
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVSD XMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,4,RC_REG,"w32"));
+                                break;
+                            case 0xC0: /* C5h FBh 10h C0h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xC1: /* C5h FBh 10h C1h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xC2: /* C5h FBh 10h C2h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xC3: /* C5h FBh 10h C3h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xC4: /* C5h FBh 10h C4h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xC5: /* C5h FBh 10h C5h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xC6: /* C5h FBh 10h C6h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xC7: /* C5h FBh 10h C7h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xC8: /* C5h FBh 10h C8h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xC9: /* C5h FBh 10h C9h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xCA: /* C5h FBh 10h CAh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xCB: /* C5h FBh 10h CBh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xCC: /* C5h FBh 10h CCh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xCD: /* C5h FBh 10h CDh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xCE: /* C5h FBh 10h CEh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xCF: /* C5h FBh 10h CFh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xD0: /* C5h FBh 10h D0h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xD1: /* C5h FBh 10h D1h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xD2: /* C5h FBh 10h D2h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xD3: /* C5h FBh 10h D3h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xD4: /* C5h FBh 10h D4h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xD5: /* C5h FBh 10h D5h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xD6: /* C5h FBh 10h D6h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xD7: /* C5h FBh 10h D7h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xD8: /* C5h FBh 10h D8h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xD9: /* C5h FBh 10h D9h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xDA: /* C5h FBh 10h DAh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xDB: /* C5h FBh 10h DBh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xDC: /* C5h FBh 10h DCh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xDD: /* C5h FBh 10h DDh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xDE: /* C5h FBh 10h DEh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xDF: /* C5h FBh 10h DFh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xE0: /* C5h FBh 10h E0h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xE1: /* C5h FBh 10h E1h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xE2: /* C5h FBh 10h E2h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xE3: /* C5h FBh 10h E3h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xE4: /* C5h FBh 10h E4h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xE5: /* C5h FBh 10h E5h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xE6: /* C5h FBh 10h E6h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xE7: /* C5h FBh 10h E7h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xE8: /* C5h FBh 10h E8h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xE9: /* C5h FBh 10h E9h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xEA: /* C5h FBh 10h EAh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xEB: /* C5h FBh 10h EBh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xEC: /* C5h FBh 10h ECh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xED: /* C5h FBh 10h EDh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xEE: /* C5h FBh 10h EEh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xEF: /* C5h FBh 10h EFh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xF0: /* C5h FBh 10h F0h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xF1: /* C5h FBh 10h F1h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xF2: /* C5h FBh 10h F2h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xF3: /* C5h FBh 10h F3h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xF4: /* C5h FBh 10h F4h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xF5: /* C5h FBh 10h F5h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xF6: /* C5h FBh 10h F6h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xF7: /* C5h FBh 10h F7h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xF8: /* C5h FBh 10h F8h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xF9: /* C5h FBh 10h F9h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xFA: /* C5h FBh 10h FAh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xFB: /* C5h FBh 10h FBh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xFC: /* C5h FBh 10h FCh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xFD: /* C5h FBh 10h FDh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xFE: /* C5h FBh 10h FEh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                            case 0xFF: /* C5h FBh 10h FFh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3 */
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVSD XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                                break;
+                            default:
+                                goto _x86decode_illegal_opcode;
+                        };
+/* End of opcodes starting with C5h FBh 10h */
+                        break;
+                    case 0x11: /* C5h FBh 11h        spec:  */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        _x86decode_begin_code16_addr16_opcode_parse_C5FB11:
+/* Opcodes starting with C5h FBh 11h */
+                        switch (mrm.byte) {
+                            case 0x00: /* C5h FBh 11h 00h VMOVSD w32(r/m),sse(reg) mod=0 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x01: /* C5h FBh 11h 01h VMOVSD w32(r/m),sse(reg) mod=0 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x02: /* C5h FBh 11h 02h VMOVSD w32(r/m),sse(reg) mod=0 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x03: /* C5h FBh 11h 03h VMOVSD w32(r/m),sse(reg) mod=0 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x04: /* C5h FBh 11h 04h VMOVSD w32(r/m),sse(reg) mod=0 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x05: /* C5h FBh 11h 05h VMOVSD w32(r/m),sse(reg) mod=0 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x06: /* C5h FBh 11h 06h VMOVSD w32(r/m),sse(reg) mod=0 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x07: /* C5h FBh 11h 07h VMOVSD w32(r/m),sse(reg) mod=0 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x08: /* C5h FBh 11h 08h VMOVSD w32(r/m),sse(reg) mod=0 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x09: /* C5h FBh 11h 09h VMOVSD w32(r/m),sse(reg) mod=0 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x0A: /* C5h FBh 11h 0Ah VMOVSD w32(r/m),sse(reg) mod=0 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x0B: /* C5h FBh 11h 0Bh VMOVSD w32(r/m),sse(reg) mod=0 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x0C: /* C5h FBh 11h 0Ch VMOVSD w32(r/m),sse(reg) mod=0 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x0D: /* C5h FBh 11h 0Dh VMOVSD w32(r/m),sse(reg) mod=0 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x0E: /* C5h FBh 11h 0Eh VMOVSD w32(r/m),sse(reg) mod=0 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x0F: /* C5h FBh 11h 0Fh VMOVSD w32(r/m),sse(reg) mod=0 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x10: /* C5h FBh 11h 10h VMOVSD w32(r/m),sse(reg) mod=0 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x11: /* C5h FBh 11h 11h VMOVSD w32(r/m),sse(reg) mod=0 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x12: /* C5h FBh 11h 12h VMOVSD w32(r/m),sse(reg) mod=0 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x13: /* C5h FBh 11h 13h VMOVSD w32(r/m),sse(reg) mod=0 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x14: /* C5h FBh 11h 14h VMOVSD w32(r/m),sse(reg) mod=0 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x15: /* C5h FBh 11h 15h VMOVSD w32(r/m),sse(reg) mod=0 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x16: /* C5h FBh 11h 16h VMOVSD w32(r/m),sse(reg) mod=0 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x17: /* C5h FBh 11h 17h VMOVSD w32(r/m),sse(reg) mod=0 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x18: /* C5h FBh 11h 18h VMOVSD w32(r/m),sse(reg) mod=0 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x19: /* C5h FBh 11h 19h VMOVSD w32(r/m),sse(reg) mod=0 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x1A: /* C5h FBh 11h 1Ah VMOVSD w32(r/m),sse(reg) mod=0 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x1B: /* C5h FBh 11h 1Bh VMOVSD w32(r/m),sse(reg) mod=0 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x1C: /* C5h FBh 11h 1Ch VMOVSD w32(r/m),sse(reg) mod=0 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x1D: /* C5h FBh 11h 1Dh VMOVSD w32(r/m),sse(reg) mod=0 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x1E: /* C5h FBh 11h 1Eh VMOVSD w32(r/m),sse(reg) mod=0 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x1F: /* C5h FBh 11h 1Fh VMOVSD w32(r/m),sse(reg) mod=0 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x20: /* C5h FBh 11h 20h VMOVSD w32(r/m),sse(reg) mod=0 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x21: /* C5h FBh 11h 21h VMOVSD w32(r/m),sse(reg) mod=0 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x22: /* C5h FBh 11h 22h VMOVSD w32(r/m),sse(reg) mod=0 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x23: /* C5h FBh 11h 23h VMOVSD w32(r/m),sse(reg) mod=0 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x24: /* C5h FBh 11h 24h VMOVSD w32(r/m),sse(reg) mod=0 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x25: /* C5h FBh 11h 25h VMOVSD w32(r/m),sse(reg) mod=0 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x26: /* C5h FBh 11h 26h VMOVSD w32(r/m),sse(reg) mod=0 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x27: /* C5h FBh 11h 27h VMOVSD w32(r/m),sse(reg) mod=0 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x28: /* C5h FBh 11h 28h VMOVSD w32(r/m),sse(reg) mod=0 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x29: /* C5h FBh 11h 29h VMOVSD w32(r/m),sse(reg) mod=0 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x2A: /* C5h FBh 11h 2Ah VMOVSD w32(r/m),sse(reg) mod=0 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x2B: /* C5h FBh 11h 2Bh VMOVSD w32(r/m),sse(reg) mod=0 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x2C: /* C5h FBh 11h 2Ch VMOVSD w32(r/m),sse(reg) mod=0 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x2D: /* C5h FBh 11h 2Dh VMOVSD w32(r/m),sse(reg) mod=0 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x2E: /* C5h FBh 11h 2Eh VMOVSD w32(r/m),sse(reg) mod=0 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x2F: /* C5h FBh 11h 2Fh VMOVSD w32(r/m),sse(reg) mod=0 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x30: /* C5h FBh 11h 30h VMOVSD w32(r/m),sse(reg) mod=0 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x31: /* C5h FBh 11h 31h VMOVSD w32(r/m),sse(reg) mod=0 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x32: /* C5h FBh 11h 32h VMOVSD w32(r/m),sse(reg) mod=0 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x33: /* C5h FBh 11h 33h VMOVSD w32(r/m),sse(reg) mod=0 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x34: /* C5h FBh 11h 34h VMOVSD w32(r/m),sse(reg) mod=0 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x35: /* C5h FBh 11h 35h VMOVSD w32(r/m),sse(reg) mod=0 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x36: /* C5h FBh 11h 36h VMOVSD w32(r/m),sse(reg) mod=0 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x37: /* C5h FBh 11h 37h VMOVSD w32(r/m),sse(reg) mod=0 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x38: /* C5h FBh 11h 38h VMOVSD w32(r/m),sse(reg) mod=0 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x39: /* C5h FBh 11h 39h VMOVSD w32(r/m),sse(reg) mod=0 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x3A: /* C5h FBh 11h 3Ah VMOVSD w32(r/m),sse(reg) mod=0 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x3B: /* C5h FBh 11h 3Bh VMOVSD w32(r/m),sse(reg) mod=0 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x3C: /* C5h FBh 11h 3Ch VMOVSD w32(r/m),sse(reg) mod=0 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x3D: /* C5h FBh 11h 3Dh VMOVSD w32(r/m),sse(reg) mod=0 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x3E: /* C5h FBh 11h 3Eh VMOVSD w32(r/m),sse(reg) mod=0 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x3F: /* C5h FBh 11h 3Fh VMOVSD w32(r/m),sse(reg) mod=0 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x40: /* C5h FBh 11h 40h VMOVSD w32(r/m),sse(reg) mod=1 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x41: /* C5h FBh 11h 41h VMOVSD w32(r/m),sse(reg) mod=1 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x42: /* C5h FBh 11h 42h VMOVSD w32(r/m),sse(reg) mod=1 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x43: /* C5h FBh 11h 43h VMOVSD w32(r/m),sse(reg) mod=1 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x44: /* C5h FBh 11h 44h VMOVSD w32(r/m),sse(reg) mod=1 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x45: /* C5h FBh 11h 45h VMOVSD w32(r/m),sse(reg) mod=1 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x46: /* C5h FBh 11h 46h VMOVSD w32(r/m),sse(reg) mod=1 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x47: /* C5h FBh 11h 47h VMOVSD w32(r/m),sse(reg) mod=1 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x48: /* C5h FBh 11h 48h VMOVSD w32(r/m),sse(reg) mod=1 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x49: /* C5h FBh 11h 49h VMOVSD w32(r/m),sse(reg) mod=1 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x4A: /* C5h FBh 11h 4Ah VMOVSD w32(r/m),sse(reg) mod=1 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x4B: /* C5h FBh 11h 4Bh VMOVSD w32(r/m),sse(reg) mod=1 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x4C: /* C5h FBh 11h 4Ch VMOVSD w32(r/m),sse(reg) mod=1 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x4D: /* C5h FBh 11h 4Dh VMOVSD w32(r/m),sse(reg) mod=1 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x4E: /* C5h FBh 11h 4Eh VMOVSD w32(r/m),sse(reg) mod=1 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x4F: /* C5h FBh 11h 4Fh VMOVSD w32(r/m),sse(reg) mod=1 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x50: /* C5h FBh 11h 50h VMOVSD w32(r/m),sse(reg) mod=1 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x51: /* C5h FBh 11h 51h VMOVSD w32(r/m),sse(reg) mod=1 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x52: /* C5h FBh 11h 52h VMOVSD w32(r/m),sse(reg) mod=1 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x53: /* C5h FBh 11h 53h VMOVSD w32(r/m),sse(reg) mod=1 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x54: /* C5h FBh 11h 54h VMOVSD w32(r/m),sse(reg) mod=1 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x55: /* C5h FBh 11h 55h VMOVSD w32(r/m),sse(reg) mod=1 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x56: /* C5h FBh 11h 56h VMOVSD w32(r/m),sse(reg) mod=1 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x57: /* C5h FBh 11h 57h VMOVSD w32(r/m),sse(reg) mod=1 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x58: /* C5h FBh 11h 58h VMOVSD w32(r/m),sse(reg) mod=1 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x59: /* C5h FBh 11h 59h VMOVSD w32(r/m),sse(reg) mod=1 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x5A: /* C5h FBh 11h 5Ah VMOVSD w32(r/m),sse(reg) mod=1 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x5B: /* C5h FBh 11h 5Bh VMOVSD w32(r/m),sse(reg) mod=1 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x5C: /* C5h FBh 11h 5Ch VMOVSD w32(r/m),sse(reg) mod=1 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x5D: /* C5h FBh 11h 5Dh VMOVSD w32(r/m),sse(reg) mod=1 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x5E: /* C5h FBh 11h 5Eh VMOVSD w32(r/m),sse(reg) mod=1 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x5F: /* C5h FBh 11h 5Fh VMOVSD w32(r/m),sse(reg) mod=1 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x60: /* C5h FBh 11h 60h VMOVSD w32(r/m),sse(reg) mod=1 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x61: /* C5h FBh 11h 61h VMOVSD w32(r/m),sse(reg) mod=1 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x62: /* C5h FBh 11h 62h VMOVSD w32(r/m),sse(reg) mod=1 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x63: /* C5h FBh 11h 63h VMOVSD w32(r/m),sse(reg) mod=1 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x64: /* C5h FBh 11h 64h VMOVSD w32(r/m),sse(reg) mod=1 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x65: /* C5h FBh 11h 65h VMOVSD w32(r/m),sse(reg) mod=1 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x66: /* C5h FBh 11h 66h VMOVSD w32(r/m),sse(reg) mod=1 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x67: /* C5h FBh 11h 67h VMOVSD w32(r/m),sse(reg) mod=1 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x68: /* C5h FBh 11h 68h VMOVSD w32(r/m),sse(reg) mod=1 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x69: /* C5h FBh 11h 69h VMOVSD w32(r/m),sse(reg) mod=1 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x6A: /* C5h FBh 11h 6Ah VMOVSD w32(r/m),sse(reg) mod=1 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x6B: /* C5h FBh 11h 6Bh VMOVSD w32(r/m),sse(reg) mod=1 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x6C: /* C5h FBh 11h 6Ch VMOVSD w32(r/m),sse(reg) mod=1 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x6D: /* C5h FBh 11h 6Dh VMOVSD w32(r/m),sse(reg) mod=1 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x6E: /* C5h FBh 11h 6Eh VMOVSD w32(r/m),sse(reg) mod=1 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x6F: /* C5h FBh 11h 6Fh VMOVSD w32(r/m),sse(reg) mod=1 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x70: /* C5h FBh 11h 70h VMOVSD w32(r/m),sse(reg) mod=1 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x71: /* C5h FBh 11h 71h VMOVSD w32(r/m),sse(reg) mod=1 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x72: /* C5h FBh 11h 72h VMOVSD w32(r/m),sse(reg) mod=1 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x73: /* C5h FBh 11h 73h VMOVSD w32(r/m),sse(reg) mod=1 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x74: /* C5h FBh 11h 74h VMOVSD w32(r/m),sse(reg) mod=1 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x75: /* C5h FBh 11h 75h VMOVSD w32(r/m),sse(reg) mod=1 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x76: /* C5h FBh 11h 76h VMOVSD w32(r/m),sse(reg) mod=1 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x77: /* C5h FBh 11h 77h VMOVSD w32(r/m),sse(reg) mod=1 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x78: /* C5h FBh 11h 78h VMOVSD w32(r/m),sse(reg) mod=1 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x79: /* C5h FBh 11h 79h VMOVSD w32(r/m),sse(reg) mod=1 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x7A: /* C5h FBh 11h 7Ah VMOVSD w32(r/m),sse(reg) mod=1 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x7B: /* C5h FBh 11h 7Bh VMOVSD w32(r/m),sse(reg) mod=1 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x7C: /* C5h FBh 11h 7Ch VMOVSD w32(r/m),sse(reg) mod=1 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x7D: /* C5h FBh 11h 7Dh VMOVSD w32(r/m),sse(reg) mod=1 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x7E: /* C5h FBh 11h 7Eh VMOVSD w32(r/m),sse(reg) mod=1 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x7F: /* C5h FBh 11h 7Fh VMOVSD w32(r/m),sse(reg) mod=1 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x80: /* C5h FBh 11h 80h VMOVSD w32(r/m),sse(reg) mod=2 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x81: /* C5h FBh 11h 81h VMOVSD w32(r/m),sse(reg) mod=2 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x82: /* C5h FBh 11h 82h VMOVSD w32(r/m),sse(reg) mod=2 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x83: /* C5h FBh 11h 83h VMOVSD w32(r/m),sse(reg) mod=2 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x84: /* C5h FBh 11h 84h VMOVSD w32(r/m),sse(reg) mod=2 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x85: /* C5h FBh 11h 85h VMOVSD w32(r/m),sse(reg) mod=2 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x86: /* C5h FBh 11h 86h VMOVSD w32(r/m),sse(reg) mod=2 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x87: /* C5h FBh 11h 87h VMOVSD w32(r/m),sse(reg) mod=2 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x88: /* C5h FBh 11h 88h VMOVSD w32(r/m),sse(reg) mod=2 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x89: /* C5h FBh 11h 89h VMOVSD w32(r/m),sse(reg) mod=2 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x8A: /* C5h FBh 11h 8Ah VMOVSD w32(r/m),sse(reg) mod=2 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x8B: /* C5h FBh 11h 8Bh VMOVSD w32(r/m),sse(reg) mod=2 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x8C: /* C5h FBh 11h 8Ch VMOVSD w32(r/m),sse(reg) mod=2 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x8D: /* C5h FBh 11h 8Dh VMOVSD w32(r/m),sse(reg) mod=2 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x8E: /* C5h FBh 11h 8Eh VMOVSD w32(r/m),sse(reg) mod=2 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x8F: /* C5h FBh 11h 8Fh VMOVSD w32(r/m),sse(reg) mod=2 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x90: /* C5h FBh 11h 90h VMOVSD w32(r/m),sse(reg) mod=2 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x91: /* C5h FBh 11h 91h VMOVSD w32(r/m),sse(reg) mod=2 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x92: /* C5h FBh 11h 92h VMOVSD w32(r/m),sse(reg) mod=2 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x93: /* C5h FBh 11h 93h VMOVSD w32(r/m),sse(reg) mod=2 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x94: /* C5h FBh 11h 94h VMOVSD w32(r/m),sse(reg) mod=2 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x95: /* C5h FBh 11h 95h VMOVSD w32(r/m),sse(reg) mod=2 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x96: /* C5h FBh 11h 96h VMOVSD w32(r/m),sse(reg) mod=2 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x97: /* C5h FBh 11h 97h VMOVSD w32(r/m),sse(reg) mod=2 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x98: /* C5h FBh 11h 98h VMOVSD w32(r/m),sse(reg) mod=2 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x99: /* C5h FBh 11h 99h VMOVSD w32(r/m),sse(reg) mod=2 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x9A: /* C5h FBh 11h 9Ah VMOVSD w32(r/m),sse(reg) mod=2 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x9B: /* C5h FBh 11h 9Bh VMOVSD w32(r/m),sse(reg) mod=2 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x9C: /* C5h FBh 11h 9Ch VMOVSD w32(r/m),sse(reg) mod=2 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x9D: /* C5h FBh 11h 9Dh VMOVSD w32(r/m),sse(reg) mod=2 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x9E: /* C5h FBh 11h 9Eh VMOVSD w32(r/m),sse(reg) mod=2 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0x9F: /* C5h FBh 11h 9Fh VMOVSD w32(r/m),sse(reg) mod=2 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA0: /* C5h FBh 11h A0h VMOVSD w32(r/m),sse(reg) mod=2 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA1: /* C5h FBh 11h A1h VMOVSD w32(r/m),sse(reg) mod=2 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA2: /* C5h FBh 11h A2h VMOVSD w32(r/m),sse(reg) mod=2 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA3: /* C5h FBh 11h A3h VMOVSD w32(r/m),sse(reg) mod=2 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA4: /* C5h FBh 11h A4h VMOVSD w32(r/m),sse(reg) mod=2 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA5: /* C5h FBh 11h A5h VMOVSD w32(r/m),sse(reg) mod=2 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA6: /* C5h FBh 11h A6h VMOVSD w32(r/m),sse(reg) mod=2 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA7: /* C5h FBh 11h A7h VMOVSD w32(r/m),sse(reg) mod=2 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA8: /* C5h FBh 11h A8h VMOVSD w32(r/m),sse(reg) mod=2 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xA9: /* C5h FBh 11h A9h VMOVSD w32(r/m),sse(reg) mod=2 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xAA: /* C5h FBh 11h AAh VMOVSD w32(r/m),sse(reg) mod=2 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xAB: /* C5h FBh 11h ABh VMOVSD w32(r/m),sse(reg) mod=2 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xAC: /* C5h FBh 11h ACh VMOVSD w32(r/m),sse(reg) mod=2 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xAD: /* C5h FBh 11h ADh VMOVSD w32(r/m),sse(reg) mod=2 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xAE: /* C5h FBh 11h AEh VMOVSD w32(r/m),sse(reg) mod=2 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xAF: /* C5h FBh 11h AFh VMOVSD w32(r/m),sse(reg) mod=2 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB0: /* C5h FBh 11h B0h VMOVSD w32(r/m),sse(reg) mod=2 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB1: /* C5h FBh 11h B1h VMOVSD w32(r/m),sse(reg) mod=2 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB2: /* C5h FBh 11h B2h VMOVSD w32(r/m),sse(reg) mod=2 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB3: /* C5h FBh 11h B3h VMOVSD w32(r/m),sse(reg) mod=2 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB4: /* C5h FBh 11h B4h VMOVSD w32(r/m),sse(reg) mod=2 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB5: /* C5h FBh 11h B5h VMOVSD w32(r/m),sse(reg) mod=2 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB6: /* C5h FBh 11h B6h VMOVSD w32(r/m),sse(reg) mod=2 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB7: /* C5h FBh 11h B7h VMOVSD w32(r/m),sse(reg) mod=2 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB8: /* C5h FBh 11h B8h VMOVSD w32(r/m),sse(reg) mod=2 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xB9: /* C5h FBh 11h B9h VMOVSD w32(r/m),sse(reg) mod=2 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xBA: /* C5h FBh 11h BAh VMOVSD w32(r/m),sse(reg) mod=2 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xBB: /* C5h FBh 11h BBh VMOVSD w32(r/m),sse(reg) mod=2 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xBC: /* C5h FBh 11h BCh VMOVSD w32(r/m),sse(reg) mod=2 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xBD: /* C5h FBh 11h BDh VMOVSD w32(r/m),sse(reg) mod=2 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xBE: /* C5h FBh 11h BEh VMOVSD w32(r/m),sse(reg) mod=2 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                            case 0xBF: /* C5h FBh 11h BFh VMOVSD w32(r/m),sse(reg) mod=2 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0) */
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVSD %s,XMM%u",IPDecPrint16(mrm,disp,4,RC_REG,"w32"),mrm.reg());
+                                break;
+                            case 0xC0: /* C5h FBh 11h C0h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xC1: /* C5h FBh 11h C1h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xC2: /* C5h FBh 11h C2h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xC3: /* C5h FBh 11h C3h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xC4: /* C5h FBh 11h C4h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xC5: /* C5h FBh 11h C5h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xC6: /* C5h FBh 11h C6h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xC7: /* C5h FBh 11h C7h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xC8: /* C5h FBh 11h C8h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xC9: /* C5h FBh 11h C9h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xCA: /* C5h FBh 11h CAh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xCB: /* C5h FBh 11h CBh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xCC: /* C5h FBh 11h CCh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xCD: /* C5h FBh 11h CDh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xCE: /* C5h FBh 11h CEh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xCF: /* C5h FBh 11h CFh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xD0: /* C5h FBh 11h D0h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xD1: /* C5h FBh 11h D1h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xD2: /* C5h FBh 11h D2h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xD3: /* C5h FBh 11h D3h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xD4: /* C5h FBh 11h D4h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xD5: /* C5h FBh 11h D5h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xD6: /* C5h FBh 11h D6h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xD7: /* C5h FBh 11h D7h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xD8: /* C5h FBh 11h D8h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xD9: /* C5h FBh 11h D9h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xDA: /* C5h FBh 11h DAh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xDB: /* C5h FBh 11h DBh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xDC: /* C5h FBh 11h DCh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xDD: /* C5h FBh 11h DDh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xDE: /* C5h FBh 11h DEh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xDF: /* C5h FBh 11h DFh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xE0: /* C5h FBh 11h E0h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xE1: /* C5h FBh 11h E1h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xE2: /* C5h FBh 11h E2h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xE3: /* C5h FBh 11h E3h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xE4: /* C5h FBh 11h E4h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xE5: /* C5h FBh 11h E5h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xE6: /* C5h FBh 11h E6h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xE7: /* C5h FBh 11h E7h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xE8: /* C5h FBh 11h E8h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xE9: /* C5h FBh 11h E9h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xEA: /* C5h FBh 11h EAh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xEB: /* C5h FBh 11h EBh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xEC: /* C5h FBh 11h ECh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xED: /* C5h FBh 11h EDh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xEE: /* C5h FBh 11h EEh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xEF: /* C5h FBh 11h EFh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xF0: /* C5h FBh 11h F0h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xF1: /* C5h FBh 11h F1h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xF2: /* C5h FBh 11h F2h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xF3: /* C5h FBh 11h F3h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xF4: /* C5h FBh 11h F4h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xF5: /* C5h FBh 11h F5h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xF6: /* C5h FBh 11h F6h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xF7: /* C5h FBh 11h F7h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xF8: /* C5h FBh 11h F8h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xF9: /* C5h FBh 11h F9h VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xFA: /* C5h FBh 11h FAh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xFB: /* C5h FBh 11h FBh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xFC: /* C5h FBh 11h FCh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xFD: /* C5h FBh 11h FDh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xFE: /* C5h FBh 11h FEh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                            case 0xFF: /* C5h FBh 11h FFh VMOVSD sse(reg),sse(vsidx),sse(r/m) mod=3 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3 */
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVSD XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                                break;
+                            default:
+                                goto _x86decode_illegal_opcode;
+                        };
+/* End of opcodes starting with C5h FBh 11h */
+                        break;
+                    /* opcode C5h FBh 12h  not defined */
+                    /* opcode C5h FBh 13h  not defined */
+                    /* opcode C5h FBh 14h  not defined */
+                    /* opcode C5h FBh 15h  not defined */
+                    /* opcode C5h FBh 16h  not defined */
+                    /* opcode C5h FBh 17h  not defined */
+                    /* opcode C5h FBh 18h  not defined */
+                    /* opcode C5h FBh 19h  not defined */
+                    /* opcode C5h FBh 1Ah  not defined */
+                    /* opcode C5h FBh 1Bh  not defined */
+                    /* opcode C5h FBh 1Ch  not defined */
+                    /* opcode C5h FBh 1Dh  not defined */
+                    /* opcode C5h FBh 1Eh  not defined */
+                    /* opcode C5h FBh 1Fh  not defined */
+                    /* opcode C5h FBh 20h  not defined */
+                    /* opcode C5h FBh 21h  not defined */
+                    /* opcode C5h FBh 22h  not defined */
+                    /* opcode C5h FBh 23h  not defined */
+                    /* opcode C5h FBh 24h  not defined */
+                    /* opcode C5h FBh 25h  not defined */
+                    /* opcode C5h FBh 26h  not defined */
+                    /* opcode C5h FBh 27h  not defined */
+                    /* opcode C5h FBh 28h  not defined */
+                    /* opcode C5h FBh 29h  not defined */
+                    /* opcode C5h FBh 2Ah  not defined */
+                    /* opcode C5h FBh 2Bh  not defined */
+                    /* opcode C5h FBh 2Ch  not defined */
+                    /* opcode C5h FBh 2Dh  not defined */
+                    /* opcode C5h FBh 2Eh  not defined */
+                    /* opcode C5h FBh 2Fh  not defined */
+                    /* opcode C5h FBh 30h  not defined */
+                    /* opcode C5h FBh 31h  not defined */
+                    /* opcode C5h FBh 32h  not defined */
+                    /* opcode C5h FBh 33h  not defined */
+                    /* opcode C5h FBh 34h  not defined */
+                    /* opcode C5h FBh 35h  not defined */
+                    /* opcode C5h FBh 36h  not defined */
+                    /* opcode C5h FBh 37h  not defined */
+                    /* opcode C5h FBh 38h  not defined */
+                    /* opcode C5h FBh 39h  not defined */
+                    /* opcode C5h FBh 3Ah  not defined */
+                    /* opcode C5h FBh 3Bh  not defined */
+                    /* opcode C5h FBh 3Ch  not defined */
+                    /* opcode C5h FBh 3Dh  not defined */
+                    /* opcode C5h FBh 3Eh  not defined */
+                    /* opcode C5h FBh 3Fh  not defined */
+                    /* opcode C5h FBh 40h  not defined */
+                    /* opcode C5h FBh 41h  not defined */
+                    /* opcode C5h FBh 42h  not defined */
+                    /* opcode C5h FBh 43h  not defined */
+                    /* opcode C5h FBh 44h  not defined */
+                    /* opcode C5h FBh 45h  not defined */
+                    /* opcode C5h FBh 46h  not defined */
+                    /* opcode C5h FBh 47h  not defined */
+                    /* opcode C5h FBh 48h  not defined */
+                    /* opcode C5h FBh 49h  not defined */
+                    /* opcode C5h FBh 4Ah  not defined */
+                    /* opcode C5h FBh 4Bh  not defined */
+                    /* opcode C5h FBh 4Ch  not defined */
+                    /* opcode C5h FBh 4Dh  not defined */
+                    /* opcode C5h FBh 4Eh  not defined */
+                    /* opcode C5h FBh 4Fh  not defined */
+                    /* opcode C5h FBh 50h  not defined */
+                    /* opcode C5h FBh 51h  not defined */
+                    /* opcode C5h FBh 52h  not defined */
+                    /* opcode C5h FBh 53h  not defined */
+                    /* opcode C5h FBh 54h  not defined */
+                    /* opcode C5h FBh 55h  not defined */
+                    /* opcode C5h FBh 56h  not defined */
+                    /* opcode C5h FBh 57h  not defined */
+                    case 0x58: /* C5h FBh 58h VADDSD sse(reg),sse(vsidx),sse(r/m)      spec: vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x58 mod/reg/rm */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VADDSD XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,16,RC_SSEREG,""));
+                        break;
+                    /* opcode C5h FBh 59h  not defined */
+                    /* opcode C5h FBh 5Ah  not defined */
+                    /* opcode C5h FBh 5Bh  not defined */
+                    /* opcode C5h FBh 5Ch  not defined */
+                    /* opcode C5h FBh 5Dh  not defined */
+                    /* opcode C5h FBh 5Eh  not defined */
+                    /* opcode C5h FBh 5Fh  not defined */
+                    /* opcode C5h FBh 60h  not defined */
+                    /* opcode C5h FBh 61h  not defined */
+                    /* opcode C5h FBh 62h  not defined */
+                    /* opcode C5h FBh 63h  not defined */
+                    /* opcode C5h FBh 64h  not defined */
+                    /* opcode C5h FBh 65h  not defined */
+                    /* opcode C5h FBh 66h  not defined */
+                    /* opcode C5h FBh 67h  not defined */
+                    /* opcode C5h FBh 68h  not defined */
+                    /* opcode C5h FBh 69h  not defined */
+                    /* opcode C5h FBh 6Ah  not defined */
+                    /* opcode C5h FBh 6Bh  not defined */
+                    /* opcode C5h FBh 6Ch  not defined */
+                    /* opcode C5h FBh 6Dh  not defined */
+                    /* opcode C5h FBh 6Eh  not defined */
+                    /* opcode C5h FBh 6Fh  not defined */
+                    /* opcode C5h FBh 70h  not defined */
+                    /* opcode C5h FBh 71h  not defined */
+                    /* opcode C5h FBh 72h  not defined */
+                    /* opcode C5h FBh 73h  not defined */
+                    /* opcode C5h FBh 74h  not defined */
+                    /* opcode C5h FBh 75h  not defined */
+                    /* opcode C5h FBh 76h  not defined */
+                    /* opcode C5h FBh 77h  not defined */
+                    /* opcode C5h FBh 78h  not defined */
+                    /* opcode C5h FBh 79h  not defined */
+                    /* opcode C5h FBh 7Ah  not defined */
+                    /* opcode C5h FBh 7Bh  not defined */
+                    /* opcode C5h FBh 7Ch  not defined */
+                    /* opcode C5h FBh 7Dh  not defined */
+                    /* opcode C5h FBh 7Eh  not defined */
+                    /* opcode C5h FBh 7Fh  not defined */
+                    /* opcode C5h FBh 80h  not defined */
+                    /* opcode C5h FBh 81h  not defined */
+                    /* opcode C5h FBh 82h  not defined */
+                    /* opcode C5h FBh 83h  not defined */
+                    /* opcode C5h FBh 84h  not defined */
+                    /* opcode C5h FBh 85h  not defined */
+                    /* opcode C5h FBh 86h  not defined */
+                    /* opcode C5h FBh 87h  not defined */
+                    /* opcode C5h FBh 88h  not defined */
+                    /* opcode C5h FBh 89h  not defined */
+                    /* opcode C5h FBh 8Ah  not defined */
+                    /* opcode C5h FBh 8Bh  not defined */
+                    /* opcode C5h FBh 8Ch  not defined */
+                    /* opcode C5h FBh 8Dh  not defined */
+                    /* opcode C5h FBh 8Eh  not defined */
+                    /* opcode C5h FBh 8Fh  not defined */
+                    /* opcode C5h FBh 90h  not defined */
+                    /* opcode C5h FBh 91h  not defined */
+                    /* opcode C5h FBh 92h  not defined */
+                    /* opcode C5h FBh 93h  not defined */
+                    /* opcode C5h FBh 94h  not defined */
+                    /* opcode C5h FBh 95h  not defined */
+                    /* opcode C5h FBh 96h  not defined */
+                    /* opcode C5h FBh 97h  not defined */
+                    /* opcode C5h FBh 98h  not defined */
+                    /* opcode C5h FBh 99h  not defined */
+                    /* opcode C5h FBh 9Ah  not defined */
+                    /* opcode C5h FBh 9Bh  not defined */
+                    /* opcode C5h FBh 9Ch  not defined */
+                    /* opcode C5h FBh 9Dh  not defined */
+                    /* opcode C5h FBh 9Eh  not defined */
+                    /* opcode C5h FBh 9Fh  not defined */
+                    /* opcode C5h FBh A0h  not defined */
+                    /* opcode C5h FBh A1h  not defined */
+                    /* opcode C5h FBh A2h  not defined */
+                    /* opcode C5h FBh A3h  not defined */
+                    /* opcode C5h FBh A4h  not defined */
+                    /* opcode C5h FBh A5h  not defined */
+                    /* opcode C5h FBh A6h  not defined */
+                    /* opcode C5h FBh A7h  not defined */
+                    /* opcode C5h FBh A8h  not defined */
+                    /* opcode C5h FBh A9h  not defined */
+                    /* opcode C5h FBh AAh  not defined */
+                    /* opcode C5h FBh ABh  not defined */
+                    /* opcode C5h FBh ACh  not defined */
+                    /* opcode C5h FBh ADh  not defined */
+                    /* opcode C5h FBh AEh  not defined */
+                    /* opcode C5h FBh AFh  not defined */
+                    /* opcode C5h FBh B0h  not defined */
+                    /* opcode C5h FBh B1h  not defined */
+                    /* opcode C5h FBh B2h  not defined */
+                    /* opcode C5h FBh B3h  not defined */
+                    /* opcode C5h FBh B4h  not defined */
+                    /* opcode C5h FBh B5h  not defined */
+                    /* opcode C5h FBh B6h  not defined */
+                    /* opcode C5h FBh B7h  not defined */
+                    /* opcode C5h FBh B8h  not defined */
+                    /* opcode C5h FBh B9h  not defined */
+                    /* opcode C5h FBh BAh  not defined */
+                    /* opcode C5h FBh BBh  not defined */
+                    /* opcode C5h FBh BCh  not defined */
+                    /* opcode C5h FBh BDh  not defined */
+                    /* opcode C5h FBh BEh  not defined */
+                    /* opcode C5h FBh BFh  not defined */
+                    /* opcode C5h FBh C0h  not defined */
+                    /* opcode C5h FBh C1h  not defined */
+                    /* opcode C5h FBh C2h  not defined */
+                    /* opcode C5h FBh C3h  not defined */
+                    /* opcode C5h FBh C4h  not defined */
+                    /* opcode C5h FBh C5h  not defined */
+                    /* opcode C5h FBh C6h  not defined */
+                    /* opcode C5h FBh C7h  not defined */
+                    /* opcode C5h FBh C8h  not defined */
+                    /* opcode C5h FBh C9h  not defined */
+                    /* opcode C5h FBh CAh  not defined */
+                    /* opcode C5h FBh CBh  not defined */
+                    /* opcode C5h FBh CCh  not defined */
+                    /* opcode C5h FBh CDh  not defined */
+                    /* opcode C5h FBh CEh  not defined */
+                    /* opcode C5h FBh CFh  not defined */
+                    /* opcode C5h FBh D0h  not defined */
+                    /* opcode C5h FBh D1h  not defined */
+                    /* opcode C5h FBh D2h  not defined */
+                    /* opcode C5h FBh D3h  not defined */
+                    /* opcode C5h FBh D4h  not defined */
+                    /* opcode C5h FBh D5h  not defined */
+                    /* opcode C5h FBh D6h  not defined */
+                    /* opcode C5h FBh D7h  not defined */
+                    /* opcode C5h FBh D8h  not defined */
+                    /* opcode C5h FBh D9h  not defined */
+                    /* opcode C5h FBh DAh  not defined */
+                    /* opcode C5h FBh DBh  not defined */
+                    /* opcode C5h FBh DCh  not defined */
+                    /* opcode C5h FBh DDh  not defined */
+                    /* opcode C5h FBh DEh  not defined */
+                    /* opcode C5h FBh DFh  not defined */
+                    /* opcode C5h FBh E0h  not defined */
+                    /* opcode C5h FBh E1h  not defined */
+                    /* opcode C5h FBh E2h  not defined */
+                    /* opcode C5h FBh E3h  not defined */
+                    /* opcode C5h FBh E4h  not defined */
+                    /* opcode C5h FBh E5h  not defined */
+                    /* opcode C5h FBh E6h  not defined */
+                    /* opcode C5h FBh E7h  not defined */
+                    /* opcode C5h FBh E8h  not defined */
+                    /* opcode C5h FBh E9h  not defined */
+                    /* opcode C5h FBh EAh  not defined */
+                    /* opcode C5h FBh EBh  not defined */
+                    /* opcode C5h FBh ECh  not defined */
+                    /* opcode C5h FBh EDh  not defined */
+                    /* opcode C5h FBh EEh  not defined */
+                    /* opcode C5h FBh EFh  not defined */
+                    /* opcode C5h FBh F0h  not defined */
+                    /* opcode C5h FBh F1h  not defined */
+                    /* opcode C5h FBh F2h  not defined */
+                    /* opcode C5h FBh F3h  not defined */
+                    /* opcode C5h FBh F4h  not defined */
+                    /* opcode C5h FBh F5h  not defined */
+                    /* opcode C5h FBh F6h  not defined */
+                    /* opcode C5h FBh F7h  not defined */
+                    /* opcode C5h FBh F8h  not defined */
+                    /* opcode C5h FBh F9h  not defined */
+                    /* opcode C5h FBh FAh  not defined */
+                    /* opcode C5h FBh FBh  not defined */
+                    /* opcode C5h FBh FCh  not defined */
+                    /* opcode C5h FBh FDh  not defined */
+                    /* opcode C5h FBh FEh  not defined */
+                    /* opcode C5h FBh FFh  not defined */
+                    default:
+                        goto _x86decode_illegal_opcode;
+                };
+/* End of opcodes starting with C5h FBh */
+                break;
             case 0xFC: /* C5h FCh   mod=3 reg=7 rm=4      spec:  */
                 vex.V = ((~mrm.byte) >> 3) & 7;
 /* Opcodes starting with C5h FCh */
@@ -27630,12 +33920,24 @@ switch (op) {
                     /* opcode C5h FCh 0Dh  not defined */
                     /* opcode C5h FCh 0Eh  not defined */
                     /* opcode C5h FCh 0Fh  not defined */
-                    /* opcode C5h FCh 10h  not defined */
-                    /* opcode C5h FCh 11h  not defined */
+                    case 0x10: /* C5h FCh 10h VMOVUPS avx(reg),avx(r/m)      spec: vex vsize(256) vlead(0x0F) vprefix(none) 0x10 mod/reg/rm vsidx(0) */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVUPS YMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,32,RC_AVXREG,""));
+                        break;
+                    case 0x11: /* C5h FCh 11h VMOVUPS avx(r/m),avx(reg)      spec: vex vsize(256) vlead(0x0F) vprefix(none) 0x11 mod/reg/rm vsidx(0) */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVUPS %s,YMM%u",IPDecPrint16(mrm,disp,32,RC_AVXREG,""),mrm.reg());
+                        break;
                     /* opcode C5h FCh 12h  not defined */
                     /* opcode C5h FCh 13h  not defined */
-                    /* opcode C5h FCh 14h  not defined */
-                    /* opcode C5h FCh 15h  not defined */
+                    case 0x14: /* C5h FCh 14h VUNPCKLPS avx(reg),avx(vsidx),avx(r/m)      spec: vex vsize(256) vlead(0x0F) vprefix(none) 0x14 mod/reg/rm */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKLPS YMM%u,YMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,32,RC_AVXREG,""));
+                        break;
+                    case 0x15: /* C5h FCh 15h VUNPCKHPS avx(reg),avx(vsidx),avx(r/m)      spec: vex vsize(256) vlead(0x0F) vprefix(none) 0x15 mod/reg/rm */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKHPS YMM%u,YMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,32,RC_AVXREG,""));
+                        break;
                     /* opcode C5h FCh 16h  not defined */
                     /* opcode C5h FCh 17h  not defined */
                     /* opcode C5h FCh 18h  not defined */
@@ -27879,6 +34181,288 @@ switch (op) {
                         goto _x86decode_illegal_opcode;
                 };
 /* End of opcodes starting with C5h FCh */
+                break;
+            case 0xFD: /* C5h FDh   mod=3 reg=7 rm=5      spec:  */
+                vex.V = ((~mrm.byte) >> 3) & 7;
+/* Opcodes starting with C5h FDh */
+                op=IPFB();
+                _x86decode_begin_code16_addr16_opcode_parse_C5FD:
+                switch (op) {
+                    /* opcode C5h FDh 00h  not defined */
+                    /* opcode C5h FDh 01h  not defined */
+                    /* opcode C5h FDh 02h  not defined */
+                    /* opcode C5h FDh 03h  not defined */
+                    /* opcode C5h FDh 04h  not defined */
+                    /* opcode C5h FDh 05h  not defined */
+                    /* opcode C5h FDh 06h  not defined */
+                    /* opcode C5h FDh 07h  not defined */
+                    /* opcode C5h FDh 08h  not defined */
+                    /* opcode C5h FDh 09h  not defined */
+                    /* opcode C5h FDh 0Ah  not defined */
+                    /* opcode C5h FDh 0Bh  not defined */
+                    /* opcode C5h FDh 0Ch  not defined */
+                    /* opcode C5h FDh 0Dh  not defined */
+                    /* opcode C5h FDh 0Eh  not defined */
+                    /* opcode C5h FDh 0Fh  not defined */
+                    case 0x10: /* C5h FDh 10h VMOVUPD avx(reg),avx(r/m)      spec: vex vsize(256) vlead(0x0F) vprefix(0x66) 0x10 mod/reg/rm vsidx(0) */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVUPD YMM%u,%s",mrm.reg(),IPDecPrint16(mrm,disp,32,RC_AVXREG,""));
+                        break;
+                    case 0x11: /* C5h FDh 11h VMOVUPD avx(r/m),avx(reg)      spec: vex vsize(256) vlead(0x0F) vprefix(0x66) 0x11 mod/reg/rm vsidx(0) */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMOVUPD %s,YMM%u",IPDecPrint16(mrm,disp,32,RC_AVXREG,""),mrm.reg());
+                        break;
+                    /* opcode C5h FDh 12h  not defined */
+                    /* opcode C5h FDh 13h  not defined */
+                    case 0x14: /* C5h FDh 14h VUNPCKLPD avx(reg),avx(vsidx),avx(r/m)      spec: vex vsize(256) vlead(0x0F) vprefix(0x66) 0x14 mod/reg/rm */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKLPD YMM%u,YMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,32,RC_AVXREG,""));
+                        break;
+                    case 0x15: /* C5h FDh 15h VUNPCKHPD avx(reg),avx(vsidx),avx(r/m)      spec: vex vsize(256) vlead(0x0F) vprefix(0x66) 0x15 mod/reg/rm */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VUNPCKHPD YMM%u,YMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,32,RC_AVXREG,""));
+                        break;
+                    /* opcode C5h FDh 16h  not defined */
+                    /* opcode C5h FDh 17h  not defined */
+                    /* opcode C5h FDh 18h  not defined */
+                    /* opcode C5h FDh 19h  not defined */
+                    /* opcode C5h FDh 1Ah  not defined */
+                    /* opcode C5h FDh 1Bh  not defined */
+                    /* opcode C5h FDh 1Ch  not defined */
+                    /* opcode C5h FDh 1Dh  not defined */
+                    /* opcode C5h FDh 1Eh  not defined */
+                    /* opcode C5h FDh 1Fh  not defined */
+                    /* opcode C5h FDh 20h  not defined */
+                    /* opcode C5h FDh 21h  not defined */
+                    /* opcode C5h FDh 22h  not defined */
+                    /* opcode C5h FDh 23h  not defined */
+                    /* opcode C5h FDh 24h  not defined */
+                    /* opcode C5h FDh 25h  not defined */
+                    /* opcode C5h FDh 26h  not defined */
+                    /* opcode C5h FDh 27h  not defined */
+                    /* opcode C5h FDh 28h  not defined */
+                    /* opcode C5h FDh 29h  not defined */
+                    /* opcode C5h FDh 2Ah  not defined */
+                    /* opcode C5h FDh 2Bh  not defined */
+                    /* opcode C5h FDh 2Ch  not defined */
+                    /* opcode C5h FDh 2Dh  not defined */
+                    /* opcode C5h FDh 2Eh  not defined */
+                    /* opcode C5h FDh 2Fh  not defined */
+                    /* opcode C5h FDh 30h  not defined */
+                    /* opcode C5h FDh 31h  not defined */
+                    /* opcode C5h FDh 32h  not defined */
+                    /* opcode C5h FDh 33h  not defined */
+                    /* opcode C5h FDh 34h  not defined */
+                    /* opcode C5h FDh 35h  not defined */
+                    /* opcode C5h FDh 36h  not defined */
+                    /* opcode C5h FDh 37h  not defined */
+                    /* opcode C5h FDh 38h  not defined */
+                    /* opcode C5h FDh 39h  not defined */
+                    /* opcode C5h FDh 3Ah  not defined */
+                    /* opcode C5h FDh 3Bh  not defined */
+                    /* opcode C5h FDh 3Ch  not defined */
+                    /* opcode C5h FDh 3Dh  not defined */
+                    /* opcode C5h FDh 3Eh  not defined */
+                    /* opcode C5h FDh 3Fh  not defined */
+                    /* opcode C5h FDh 40h  not defined */
+                    /* opcode C5h FDh 41h  not defined */
+                    /* opcode C5h FDh 42h  not defined */
+                    /* opcode C5h FDh 43h  not defined */
+                    /* opcode C5h FDh 44h  not defined */
+                    /* opcode C5h FDh 45h  not defined */
+                    /* opcode C5h FDh 46h  not defined */
+                    /* opcode C5h FDh 47h  not defined */
+                    /* opcode C5h FDh 48h  not defined */
+                    /* opcode C5h FDh 49h  not defined */
+                    /* opcode C5h FDh 4Ah  not defined */
+                    /* opcode C5h FDh 4Bh  not defined */
+                    /* opcode C5h FDh 4Ch  not defined */
+                    /* opcode C5h FDh 4Dh  not defined */
+                    /* opcode C5h FDh 4Eh  not defined */
+                    /* opcode C5h FDh 4Fh  not defined */
+                    /* opcode C5h FDh 50h  not defined */
+                    /* opcode C5h FDh 51h  not defined */
+                    /* opcode C5h FDh 52h  not defined */
+                    /* opcode C5h FDh 53h  not defined */
+                    /* opcode C5h FDh 54h  not defined */
+                    /* opcode C5h FDh 55h  not defined */
+                    /* opcode C5h FDh 56h  not defined */
+                    /* opcode C5h FDh 57h  not defined */
+                    case 0x58: /* C5h FDh 58h VADDPD avx(reg),avx(vsidx),avx(r/m)      spec: vex vsize(256) vlead(0x0F) vprefix(0x66) 0x58 mod/reg/rm */
+                        IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VADDPD YMM%u,YMM%u,%s",mrm.reg(),vex.V,IPDecPrint16(mrm,disp,32,RC_AVXREG,""));
+                        break;
+                    /* opcode C5h FDh 59h  not defined */
+                    /* opcode C5h FDh 5Ah  not defined */
+                    /* opcode C5h FDh 5Bh  not defined */
+                    /* opcode C5h FDh 5Ch  not defined */
+                    /* opcode C5h FDh 5Dh  not defined */
+                    /* opcode C5h FDh 5Eh  not defined */
+                    /* opcode C5h FDh 5Fh  not defined */
+                    /* opcode C5h FDh 60h  not defined */
+                    /* opcode C5h FDh 61h  not defined */
+                    /* opcode C5h FDh 62h  not defined */
+                    /* opcode C5h FDh 63h  not defined */
+                    /* opcode C5h FDh 64h  not defined */
+                    /* opcode C5h FDh 65h  not defined */
+                    /* opcode C5h FDh 66h  not defined */
+                    /* opcode C5h FDh 67h  not defined */
+                    /* opcode C5h FDh 68h  not defined */
+                    /* opcode C5h FDh 69h  not defined */
+                    /* opcode C5h FDh 6Ah  not defined */
+                    /* opcode C5h FDh 6Bh  not defined */
+                    /* opcode C5h FDh 6Ch  not defined */
+                    /* opcode C5h FDh 6Dh  not defined */
+                    /* opcode C5h FDh 6Eh  not defined */
+                    /* opcode C5h FDh 6Fh  not defined */
+                    /* opcode C5h FDh 70h  not defined */
+                    /* opcode C5h FDh 71h  not defined */
+                    /* opcode C5h FDh 72h  not defined */
+                    /* opcode C5h FDh 73h  not defined */
+                    /* opcode C5h FDh 74h  not defined */
+                    /* opcode C5h FDh 75h  not defined */
+                    /* opcode C5h FDh 76h  not defined */
+                    /* opcode C5h FDh 77h  not defined */
+                    /* opcode C5h FDh 78h  not defined */
+                    /* opcode C5h FDh 79h  not defined */
+                    /* opcode C5h FDh 7Ah  not defined */
+                    /* opcode C5h FDh 7Bh  not defined */
+                    /* opcode C5h FDh 7Ch  not defined */
+                    /* opcode C5h FDh 7Dh  not defined */
+                    /* opcode C5h FDh 7Eh  not defined */
+                    /* opcode C5h FDh 7Fh  not defined */
+                    /* opcode C5h FDh 80h  not defined */
+                    /* opcode C5h FDh 81h  not defined */
+                    /* opcode C5h FDh 82h  not defined */
+                    /* opcode C5h FDh 83h  not defined */
+                    /* opcode C5h FDh 84h  not defined */
+                    /* opcode C5h FDh 85h  not defined */
+                    /* opcode C5h FDh 86h  not defined */
+                    /* opcode C5h FDh 87h  not defined */
+                    /* opcode C5h FDh 88h  not defined */
+                    /* opcode C5h FDh 89h  not defined */
+                    /* opcode C5h FDh 8Ah  not defined */
+                    /* opcode C5h FDh 8Bh  not defined */
+                    /* opcode C5h FDh 8Ch  not defined */
+                    /* opcode C5h FDh 8Dh  not defined */
+                    /* opcode C5h FDh 8Eh  not defined */
+                    /* opcode C5h FDh 8Fh  not defined */
+                    /* opcode C5h FDh 90h  not defined */
+                    /* opcode C5h FDh 91h  not defined */
+                    /* opcode C5h FDh 92h  not defined */
+                    /* opcode C5h FDh 93h  not defined */
+                    /* opcode C5h FDh 94h  not defined */
+                    /* opcode C5h FDh 95h  not defined */
+                    /* opcode C5h FDh 96h  not defined */
+                    /* opcode C5h FDh 97h  not defined */
+                    /* opcode C5h FDh 98h  not defined */
+                    /* opcode C5h FDh 99h  not defined */
+                    /* opcode C5h FDh 9Ah  not defined */
+                    /* opcode C5h FDh 9Bh  not defined */
+                    /* opcode C5h FDh 9Ch  not defined */
+                    /* opcode C5h FDh 9Dh  not defined */
+                    /* opcode C5h FDh 9Eh  not defined */
+                    /* opcode C5h FDh 9Fh  not defined */
+                    /* opcode C5h FDh A0h  not defined */
+                    /* opcode C5h FDh A1h  not defined */
+                    /* opcode C5h FDh A2h  not defined */
+                    /* opcode C5h FDh A3h  not defined */
+                    /* opcode C5h FDh A4h  not defined */
+                    /* opcode C5h FDh A5h  not defined */
+                    /* opcode C5h FDh A6h  not defined */
+                    /* opcode C5h FDh A7h  not defined */
+                    /* opcode C5h FDh A8h  not defined */
+                    /* opcode C5h FDh A9h  not defined */
+                    /* opcode C5h FDh AAh  not defined */
+                    /* opcode C5h FDh ABh  not defined */
+                    /* opcode C5h FDh ACh  not defined */
+                    /* opcode C5h FDh ADh  not defined */
+                    /* opcode C5h FDh AEh  not defined */
+                    /* opcode C5h FDh AFh  not defined */
+                    /* opcode C5h FDh B0h  not defined */
+                    /* opcode C5h FDh B1h  not defined */
+                    /* opcode C5h FDh B2h  not defined */
+                    /* opcode C5h FDh B3h  not defined */
+                    /* opcode C5h FDh B4h  not defined */
+                    /* opcode C5h FDh B5h  not defined */
+                    /* opcode C5h FDh B6h  not defined */
+                    /* opcode C5h FDh B7h  not defined */
+                    /* opcode C5h FDh B8h  not defined */
+                    /* opcode C5h FDh B9h  not defined */
+                    /* opcode C5h FDh BAh  not defined */
+                    /* opcode C5h FDh BBh  not defined */
+                    /* opcode C5h FDh BCh  not defined */
+                    /* opcode C5h FDh BDh  not defined */
+                    /* opcode C5h FDh BEh  not defined */
+                    /* opcode C5h FDh BFh  not defined */
+                    /* opcode C5h FDh C0h  not defined */
+                    /* opcode C5h FDh C1h  not defined */
+                    /* opcode C5h FDh C2h  not defined */
+                    /* opcode C5h FDh C3h  not defined */
+                    /* opcode C5h FDh C4h  not defined */
+                    /* opcode C5h FDh C5h  not defined */
+                    /* opcode C5h FDh C6h  not defined */
+                    /* opcode C5h FDh C7h  not defined */
+                    /* opcode C5h FDh C8h  not defined */
+                    /* opcode C5h FDh C9h  not defined */
+                    /* opcode C5h FDh CAh  not defined */
+                    /* opcode C5h FDh CBh  not defined */
+                    /* opcode C5h FDh CCh  not defined */
+                    /* opcode C5h FDh CDh  not defined */
+                    /* opcode C5h FDh CEh  not defined */
+                    /* opcode C5h FDh CFh  not defined */
+                    /* opcode C5h FDh D0h  not defined */
+                    /* opcode C5h FDh D1h  not defined */
+                    /* opcode C5h FDh D2h  not defined */
+                    /* opcode C5h FDh D3h  not defined */
+                    /* opcode C5h FDh D4h  not defined */
+                    /* opcode C5h FDh D5h  not defined */
+                    /* opcode C5h FDh D6h  not defined */
+                    /* opcode C5h FDh D7h  not defined */
+                    /* opcode C5h FDh D8h  not defined */
+                    /* opcode C5h FDh D9h  not defined */
+                    /* opcode C5h FDh DAh  not defined */
+                    /* opcode C5h FDh DBh  not defined */
+                    /* opcode C5h FDh DCh  not defined */
+                    /* opcode C5h FDh DDh  not defined */
+                    /* opcode C5h FDh DEh  not defined */
+                    /* opcode C5h FDh DFh  not defined */
+                    /* opcode C5h FDh E0h  not defined */
+                    /* opcode C5h FDh E1h  not defined */
+                    /* opcode C5h FDh E2h  not defined */
+                    /* opcode C5h FDh E3h  not defined */
+                    /* opcode C5h FDh E4h  not defined */
+                    /* opcode C5h FDh E5h  not defined */
+                    /* opcode C5h FDh E6h  not defined */
+                    /* opcode C5h FDh E7h  not defined */
+                    /* opcode C5h FDh E8h  not defined */
+                    /* opcode C5h FDh E9h  not defined */
+                    /* opcode C5h FDh EAh  not defined */
+                    /* opcode C5h FDh EBh  not defined */
+                    /* opcode C5h FDh ECh  not defined */
+                    /* opcode C5h FDh EDh  not defined */
+                    /* opcode C5h FDh EEh  not defined */
+                    /* opcode C5h FDh EFh  not defined */
+                    /* opcode C5h FDh F0h  not defined */
+                    /* opcode C5h FDh F1h  not defined */
+                    /* opcode C5h FDh F2h  not defined */
+                    /* opcode C5h FDh F3h  not defined */
+                    /* opcode C5h FDh F4h  not defined */
+                    /* opcode C5h FDh F5h  not defined */
+                    /* opcode C5h FDh F6h  not defined */
+                    /* opcode C5h FDh F7h  not defined */
+                    /* opcode C5h FDh F8h  not defined */
+                    /* opcode C5h FDh F9h  not defined */
+                    /* opcode C5h FDh FAh  not defined */
+                    /* opcode C5h FDh FBh  not defined */
+                    /* opcode C5h FDh FCh  not defined */
+                    /* opcode C5h FDh FDh  not defined */
+                    /* opcode C5h FDh FEh  not defined */
+                    /* opcode C5h FDh FFh  not defined */
+                    default:
+                        goto _x86decode_illegal_opcode;
+                };
+/* End of opcodes starting with C5h FDh */
                 break;
             default:
                 goto _x86decode_illegal_opcode;

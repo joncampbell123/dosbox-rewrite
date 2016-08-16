@@ -6417,3 +6417,52 @@ jmp2:
     vaddsd      xmm0,xmm1               ; no ymm0,ymm1 form
     vaddsd      xmm0,xmm1,xmm2          ; no ymm0,ymm1 form
 
+    vmovups     xmm0,xmm1
+    vmovups     xmm0,[si]
+    vmovups     [si],xmm1
+    vmovss      xmm0,xmm1
+    vmovss      xmm0,[si]
+    vmovss      [si],xmm1
+    vmovss      xmm0,xmm1,xmm2
+    vmovupd     xmm0,xmm1
+    vmovupd     xmm0,[si]
+    vmovupd     [si],xmm1
+    vmovsd      xmm0,xmm1
+    vmovsd      xmm0,[si]
+    vmovsd      [si],xmm1
+    vmovsd      xmm0,xmm1,xmm2
+    vmovhlps    xmm0,xmm1
+    vmovhlps    xmm0,xmm1,xmm2
+    vunpcklps   xmm0,xmm1
+    vunpcklps   xmm0,xmm1,xmm2
+    vunpcklps   xmm0,[si]
+    vunpcklps   xmm0,xmm1,[si]
+    vunpcklps   ymm0,ymm1
+    vunpcklps   ymm0,ymm1,ymm2
+    vunpcklps   ymm0,[si]
+    vunpcklps   ymm0,ymm1,[si]
+    vunpcklpd   xmm0,xmm1
+    vunpcklpd   xmm0,xmm1,xmm2
+    vunpcklpd   xmm0,[si]
+    vunpcklpd   xmm0,xmm1,[si]
+    vunpcklpd   ymm0,ymm1
+    vunpcklpd   ymm0,ymm1,ymm2
+    vunpcklpd   ymm0,[si]
+    vunpcklpd   ymm0,ymm1,[si]
+    vunpckhps   xmm0,xmm1
+    vunpckhps   xmm0,xmm1,xmm2
+    vunpckhps   xmm0,[si]
+    vunpckhps   xmm0,xmm1,[si]
+    vunpckhps   ymm0,ymm1
+    vunpckhps   ymm0,ymm1,ymm2
+    vunpckhps   ymm0,[si]
+    vunpckhps   ymm0,ymm1,[si]
+    vunpckhpd   xmm0,xmm1
+    vunpckhpd   xmm0,xmm1,xmm2
+    vunpckhpd   xmm0,[si]
+    vunpckhpd   xmm0,xmm1,[si]
+    vunpckhpd   ymm0,ymm1
+    vunpckhpd   ymm0,ymm1,ymm2
+    vunpckhpd   ymm0,[si]
+    vunpckhpd   ymm0,ymm1,[si]
+

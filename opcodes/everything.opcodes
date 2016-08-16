@@ -177,3 +177,37 @@ opcode vex vsize(256) vlead(0x0F) vprefix(0xF3) 0x58 mod/reg/rm:            "VAD
 opcode vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x58 mod/reg/rm:            "VADDSD" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(0xF2) 0x58 mod/reg/rm:            "VADDSD" avx(reg),avx(vsidx),avx(r/m)
 
+opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x10 mod/reg/rm vsidx(0):   "VMOVUPS" sse(reg),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x10 mod/reg/rm vsidx(0):   "VMOVUPS" avx(reg),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x11 mod/reg/rm vsidx(0):   "VMOVUPS" sse(r/m),sse(reg)
+opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x11 mod/reg/rm vsidx(0):   "VMOVUPS" avx(r/m),avx(reg)
+
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod==3:     "VMOVSS" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x10 mod/reg/rm mod!=3 vsidx(0):"VMOVSS" sse(reg),w32(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod==3:     "VMOVSS" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x11 mod/reg/rm mod!=3 vsidx(0):"VMOVSS" w32(r/m),sse(reg)
+
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x10 mod/reg/rm vsidx(0):   "VMOVUPD" sse(reg),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x10 mod/reg/rm vsidx(0):   "VMOVUPD" avx(reg),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x11 mod/reg/rm vsidx(0):   "VMOVUPD" sse(r/m),sse(reg)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x11 mod/reg/rm vsidx(0):   "VMOVUPD" avx(r/m),avx(reg)
+
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod==3:     "VMOVSD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x10 mod/reg/rm mod!=3 vsidx(0):"VMOVSD" sse(reg),w32(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod==3:     "VMOVSD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x11 mod/reg/rm mod!=3 vsidx(0):"VMOVSD" w32(r/m),sse(reg)
+
+opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x12 mod/reg/rm mod==3:     "VMOVHLPS" sse(reg),sse(vsidx),sse(r/m)
+
+opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x14 mod/reg/rm:            "VUNPCKLPS" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x14 mod/reg/rm:            "VUNPCKLPS" avx(reg),avx(vsidx),avx(r/m)
+
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x14 mod/reg/rm:            "VUNPCKLPD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x14 mod/reg/rm:            "VUNPCKLPD" avx(reg),avx(vsidx),avx(r/m)
+
+opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x15 mod/reg/rm:            "VUNPCKHPS" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x15 mod/reg/rm:            "VUNPCKHPS" avx(reg),avx(vsidx),avx(r/m)
+
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x15 mod/reg/rm:            "VUNPCKHPD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x15 mod/reg/rm:            "VUNPCKHPD" avx(reg),avx(vsidx),avx(r/m)
+
