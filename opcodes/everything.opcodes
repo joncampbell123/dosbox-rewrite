@@ -145,3 +145,13 @@ opcode vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x05 mod/reg/rm ib:    "VPE
 opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x0D mod/reg/rm:       "VPERMILPD" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x0D mod/reg/rm:       "VPERMILPD" avx(reg),avx(vsidx),avx(r/m)
 
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3:"VMASKMOVPS" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3:"VMASKMOVPS" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3:"VMASKMOVPD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3:"VMASKMOVPD" avx(reg),avx(vsidx),avx(r/m)
+
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3:"VMASKMOVPS" sse(r/m),sse(vsidx),sse(reg)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3:"VMASKMOVPS" avx(r/m),avx(vsidx),avx(reg)
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3:"VMASKMOVPD" sse(r/m),sse(vsidx),sse(reg)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3:"VMASKMOVPD" avx(r/m),avx(vsidx),avx(reg)
+

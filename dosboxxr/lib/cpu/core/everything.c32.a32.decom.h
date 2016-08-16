@@ -15057,10 +15057,1078 @@ switch (op) {
                             /* opcode C4h E2h 41h 29h  not defined */
                             /* opcode C4h E2h 41h 2Ah  not defined */
                             /* opcode C4h E2h 41h 2Bh  not defined */
-                            /* opcode C4h E2h 41h 2Ch  not defined */
-                            /* opcode C4h E2h 41h 2Dh  not defined */
-                            /* opcode C4h E2h 41h 2Eh  not defined */
-                            /* opcode C4h E2h 41h 2Fh  not defined */
+                            case 0x2C: /* C4h E2h 41h 2Ch        spec:  */
+                                IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                                _x86decode_begin_code32_addr32_opcode_parse_C4E2412C:
+/* Opcodes starting with C4h E2h 41h 2Ch */
+                                switch (mrm.byte) {
+                                    case 0x00: /* C4h E2h 41h 2Ch 00h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x01: /* C4h E2h 41h 2Ch 01h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x02: /* C4h E2h 41h 2Ch 02h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x03: /* C4h E2h 41h 2Ch 03h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x04: /* C4h E2h 41h 2Ch 04h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x05: /* C4h E2h 41h 2Ch 05h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x06: /* C4h E2h 41h 2Ch 06h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x07: /* C4h E2h 41h 2Ch 07h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x08: /* C4h E2h 41h 2Ch 08h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x09: /* C4h E2h 41h 2Ch 09h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x0A: /* C4h E2h 41h 2Ch 0Ah VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x0B: /* C4h E2h 41h 2Ch 0Bh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x0C: /* C4h E2h 41h 2Ch 0Ch VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x0D: /* C4h E2h 41h 2Ch 0Dh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x0E: /* C4h E2h 41h 2Ch 0Eh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x0F: /* C4h E2h 41h 2Ch 0Fh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x10: /* C4h E2h 41h 2Ch 10h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x11: /* C4h E2h 41h 2Ch 11h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x12: /* C4h E2h 41h 2Ch 12h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x13: /* C4h E2h 41h 2Ch 13h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x14: /* C4h E2h 41h 2Ch 14h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x15: /* C4h E2h 41h 2Ch 15h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x16: /* C4h E2h 41h 2Ch 16h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x17: /* C4h E2h 41h 2Ch 17h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x18: /* C4h E2h 41h 2Ch 18h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x19: /* C4h E2h 41h 2Ch 19h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x1A: /* C4h E2h 41h 2Ch 1Ah VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x1B: /* C4h E2h 41h 2Ch 1Bh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x1C: /* C4h E2h 41h 2Ch 1Ch VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x1D: /* C4h E2h 41h 2Ch 1Dh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x1E: /* C4h E2h 41h 2Ch 1Eh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x1F: /* C4h E2h 41h 2Ch 1Fh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x20: /* C4h E2h 41h 2Ch 20h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x21: /* C4h E2h 41h 2Ch 21h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x22: /* C4h E2h 41h 2Ch 22h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x23: /* C4h E2h 41h 2Ch 23h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x24: /* C4h E2h 41h 2Ch 24h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x25: /* C4h E2h 41h 2Ch 25h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x26: /* C4h E2h 41h 2Ch 26h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x27: /* C4h E2h 41h 2Ch 27h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x28: /* C4h E2h 41h 2Ch 28h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x29: /* C4h E2h 41h 2Ch 29h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x2A: /* C4h E2h 41h 2Ch 2Ah VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x2B: /* C4h E2h 41h 2Ch 2Bh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x2C: /* C4h E2h 41h 2Ch 2Ch VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x2D: /* C4h E2h 41h 2Ch 2Dh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x2E: /* C4h E2h 41h 2Ch 2Eh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x2F: /* C4h E2h 41h 2Ch 2Fh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x30: /* C4h E2h 41h 2Ch 30h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x31: /* C4h E2h 41h 2Ch 31h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x32: /* C4h E2h 41h 2Ch 32h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x33: /* C4h E2h 41h 2Ch 33h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x34: /* C4h E2h 41h 2Ch 34h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x35: /* C4h E2h 41h 2Ch 35h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x36: /* C4h E2h 41h 2Ch 36h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x37: /* C4h E2h 41h 2Ch 37h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x38: /* C4h E2h 41h 2Ch 38h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x39: /* C4h E2h 41h 2Ch 39h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x3A: /* C4h E2h 41h 2Ch 3Ah VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x3B: /* C4h E2h 41h 2Ch 3Bh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x3C: /* C4h E2h 41h 2Ch 3Ch VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x3D: /* C4h E2h 41h 2Ch 3Dh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x3E: /* C4h E2h 41h 2Ch 3Eh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x3F: /* C4h E2h 41h 2Ch 3Fh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=0 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x40: /* C4h E2h 41h 2Ch 40h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x41: /* C4h E2h 41h 2Ch 41h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x42: /* C4h E2h 41h 2Ch 42h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x43: /* C4h E2h 41h 2Ch 43h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x44: /* C4h E2h 41h 2Ch 44h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x45: /* C4h E2h 41h 2Ch 45h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x46: /* C4h E2h 41h 2Ch 46h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x47: /* C4h E2h 41h 2Ch 47h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x48: /* C4h E2h 41h 2Ch 48h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x49: /* C4h E2h 41h 2Ch 49h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x4A: /* C4h E2h 41h 2Ch 4Ah VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x4B: /* C4h E2h 41h 2Ch 4Bh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x4C: /* C4h E2h 41h 2Ch 4Ch VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x4D: /* C4h E2h 41h 2Ch 4Dh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x4E: /* C4h E2h 41h 2Ch 4Eh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x4F: /* C4h E2h 41h 2Ch 4Fh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x50: /* C4h E2h 41h 2Ch 50h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x51: /* C4h E2h 41h 2Ch 51h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x52: /* C4h E2h 41h 2Ch 52h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x53: /* C4h E2h 41h 2Ch 53h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x54: /* C4h E2h 41h 2Ch 54h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x55: /* C4h E2h 41h 2Ch 55h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x56: /* C4h E2h 41h 2Ch 56h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x57: /* C4h E2h 41h 2Ch 57h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x58: /* C4h E2h 41h 2Ch 58h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x59: /* C4h E2h 41h 2Ch 59h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x5A: /* C4h E2h 41h 2Ch 5Ah VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x5B: /* C4h E2h 41h 2Ch 5Bh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x5C: /* C4h E2h 41h 2Ch 5Ch VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x5D: /* C4h E2h 41h 2Ch 5Dh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x5E: /* C4h E2h 41h 2Ch 5Eh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x5F: /* C4h E2h 41h 2Ch 5Fh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x60: /* C4h E2h 41h 2Ch 60h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x61: /* C4h E2h 41h 2Ch 61h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x62: /* C4h E2h 41h 2Ch 62h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x63: /* C4h E2h 41h 2Ch 63h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x64: /* C4h E2h 41h 2Ch 64h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x65: /* C4h E2h 41h 2Ch 65h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x66: /* C4h E2h 41h 2Ch 66h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x67: /* C4h E2h 41h 2Ch 67h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x68: /* C4h E2h 41h 2Ch 68h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x69: /* C4h E2h 41h 2Ch 69h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x6A: /* C4h E2h 41h 2Ch 6Ah VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x6B: /* C4h E2h 41h 2Ch 6Bh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x6C: /* C4h E2h 41h 2Ch 6Ch VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x6D: /* C4h E2h 41h 2Ch 6Dh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x6E: /* C4h E2h 41h 2Ch 6Eh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x6F: /* C4h E2h 41h 2Ch 6Fh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x70: /* C4h E2h 41h 2Ch 70h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x71: /* C4h E2h 41h 2Ch 71h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x72: /* C4h E2h 41h 2Ch 72h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x73: /* C4h E2h 41h 2Ch 73h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x74: /* C4h E2h 41h 2Ch 74h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x75: /* C4h E2h 41h 2Ch 75h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x76: /* C4h E2h 41h 2Ch 76h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x77: /* C4h E2h 41h 2Ch 77h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x78: /* C4h E2h 41h 2Ch 78h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x79: /* C4h E2h 41h 2Ch 79h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x7A: /* C4h E2h 41h 2Ch 7Ah VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x7B: /* C4h E2h 41h 2Ch 7Bh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x7C: /* C4h E2h 41h 2Ch 7Ch VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x7D: /* C4h E2h 41h 2Ch 7Dh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x7E: /* C4h E2h 41h 2Ch 7Eh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x7F: /* C4h E2h 41h 2Ch 7Fh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=1 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x80: /* C4h E2h 41h 2Ch 80h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x81: /* C4h E2h 41h 2Ch 81h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x82: /* C4h E2h 41h 2Ch 82h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x83: /* C4h E2h 41h 2Ch 83h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x84: /* C4h E2h 41h 2Ch 84h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x85: /* C4h E2h 41h 2Ch 85h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x86: /* C4h E2h 41h 2Ch 86h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x87: /* C4h E2h 41h 2Ch 87h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x88: /* C4h E2h 41h 2Ch 88h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x89: /* C4h E2h 41h 2Ch 89h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x8A: /* C4h E2h 41h 2Ch 8Ah VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x8B: /* C4h E2h 41h 2Ch 8Bh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x8C: /* C4h E2h 41h 2Ch 8Ch VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x8D: /* C4h E2h 41h 2Ch 8Dh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x8E: /* C4h E2h 41h 2Ch 8Eh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x8F: /* C4h E2h 41h 2Ch 8Fh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x90: /* C4h E2h 41h 2Ch 90h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x91: /* C4h E2h 41h 2Ch 91h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x92: /* C4h E2h 41h 2Ch 92h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x93: /* C4h E2h 41h 2Ch 93h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x94: /* C4h E2h 41h 2Ch 94h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x95: /* C4h E2h 41h 2Ch 95h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x96: /* C4h E2h 41h 2Ch 96h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x97: /* C4h E2h 41h 2Ch 97h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x98: /* C4h E2h 41h 2Ch 98h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x99: /* C4h E2h 41h 2Ch 99h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x9A: /* C4h E2h 41h 2Ch 9Ah VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x9B: /* C4h E2h 41h 2Ch 9Bh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x9C: /* C4h E2h 41h 2Ch 9Ch VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x9D: /* C4h E2h 41h 2Ch 9Dh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x9E: /* C4h E2h 41h 2Ch 9Eh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x9F: /* C4h E2h 41h 2Ch 9Fh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xA0: /* C4h E2h 41h 2Ch A0h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xA1: /* C4h E2h 41h 2Ch A1h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xA2: /* C4h E2h 41h 2Ch A2h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xA3: /* C4h E2h 41h 2Ch A3h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xA4: /* C4h E2h 41h 2Ch A4h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xA5: /* C4h E2h 41h 2Ch A5h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xA6: /* C4h E2h 41h 2Ch A6h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xA7: /* C4h E2h 41h 2Ch A7h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xA8: /* C4h E2h 41h 2Ch A8h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xA9: /* C4h E2h 41h 2Ch A9h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xAA: /* C4h E2h 41h 2Ch AAh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xAB: /* C4h E2h 41h 2Ch ABh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xAC: /* C4h E2h 41h 2Ch ACh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xAD: /* C4h E2h 41h 2Ch ADh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xAE: /* C4h E2h 41h 2Ch AEh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xAF: /* C4h E2h 41h 2Ch AFh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xB0: /* C4h E2h 41h 2Ch B0h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xB1: /* C4h E2h 41h 2Ch B1h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xB2: /* C4h E2h 41h 2Ch B2h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xB3: /* C4h E2h 41h 2Ch B3h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xB4: /* C4h E2h 41h 2Ch B4h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xB5: /* C4h E2h 41h 2Ch B5h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xB6: /* C4h E2h 41h 2Ch B6h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xB7: /* C4h E2h 41h 2Ch B7h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xB8: /* C4h E2h 41h 2Ch B8h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xB9: /* C4h E2h 41h 2Ch B9h VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xBA: /* C4h E2h 41h 2Ch BAh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xBB: /* C4h E2h 41h 2Ch BBh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xBC: /* C4h E2h 41h 2Ch BCh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xBD: /* C4h E2h 41h 2Ch BDh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xBE: /* C4h E2h 41h 2Ch BEh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xBF: /* C4h E2h 41h 2Ch BFh VMASKMOVPS sse(reg),sse(vsidx),sse(r/m) mod=2 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMASKMOVPS XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint32(mrm,sib,disp,16,RC_SSEREG,""));
+                                        break;
+                                    /* opcode C4h E2h 41h 2Ch C0h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch C1h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch C2h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch C3h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch C4h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch C5h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch C6h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch C7h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch C8h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch C9h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch CAh  not defined */
+                                    /* opcode C4h E2h 41h 2Ch CBh  not defined */
+                                    /* opcode C4h E2h 41h 2Ch CCh  not defined */
+                                    /* opcode C4h E2h 41h 2Ch CDh  not defined */
+                                    /* opcode C4h E2h 41h 2Ch CEh  not defined */
+                                    /* opcode C4h E2h 41h 2Ch CFh  not defined */
+                                    /* opcode C4h E2h 41h 2Ch D0h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch D1h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch D2h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch D3h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch D4h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch D5h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch D6h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch D7h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch D8h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch D9h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch DAh  not defined */
+                                    /* opcode C4h E2h 41h 2Ch DBh  not defined */
+                                    /* opcode C4h E2h 41h 2Ch DCh  not defined */
+                                    /* opcode C4h E2h 41h 2Ch DDh  not defined */
+                                    /* opcode C4h E2h 41h 2Ch DEh  not defined */
+                                    /* opcode C4h E2h 41h 2Ch DFh  not defined */
+                                    /* opcode C4h E2h 41h 2Ch E0h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch E1h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch E2h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch E3h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch E4h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch E5h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch E6h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch E7h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch E8h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch E9h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch EAh  not defined */
+                                    /* opcode C4h E2h 41h 2Ch EBh  not defined */
+                                    /* opcode C4h E2h 41h 2Ch ECh  not defined */
+                                    /* opcode C4h E2h 41h 2Ch EDh  not defined */
+                                    /* opcode C4h E2h 41h 2Ch EEh  not defined */
+                                    /* opcode C4h E2h 41h 2Ch EFh  not defined */
+                                    /* opcode C4h E2h 41h 2Ch F0h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch F1h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch F2h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch F3h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch F4h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch F5h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch F6h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch F7h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch F8h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch F9h  not defined */
+                                    /* opcode C4h E2h 41h 2Ch FAh  not defined */
+                                    /* opcode C4h E2h 41h 2Ch FBh  not defined */
+                                    /* opcode C4h E2h 41h 2Ch FCh  not defined */
+                                    /* opcode C4h E2h 41h 2Ch FDh  not defined */
+                                    /* opcode C4h E2h 41h 2Ch FEh  not defined */
+                                    /* opcode C4h E2h 41h 2Ch FFh  not defined */
+                                    default:
+                                        goto _x86decode_illegal_opcode;
+                                };
+/* End of opcodes starting with C4h E2h 41h 2Ch */
+                                break;
+                            case 0x2D: /* C4h E2h 41h 2Dh        spec:  */
+                                IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                                _x86decode_begin_code32_addr32_opcode_parse_C4E2412D:
+/* Opcodes starting with C4h E2h 41h 2Dh */
+                                switch (mrm.byte) {
+                                    case 0x00: /* C4h E2h 41h 2Dh 00h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x01: /* C4h E2h 41h 2Dh 01h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x02: /* C4h E2h 41h 2Dh 02h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x03: /* C4h E2h 41h 2Dh 03h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x04: /* C4h E2h 41h 2Dh 04h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x05: /* C4h E2h 41h 2Dh 05h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x06: /* C4h E2h 41h 2Dh 06h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x07: /* C4h E2h 41h 2Dh 07h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x08: /* C4h E2h 41h 2Dh 08h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x09: /* C4h E2h 41h 2Dh 09h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x0A: /* C4h E2h 41h 2Dh 0Ah VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x0B: /* C4h E2h 41h 2Dh 0Bh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x0C: /* C4h E2h 41h 2Dh 0Ch VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x0D: /* C4h E2h 41h 2Dh 0Dh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x0E: /* C4h E2h 41h 2Dh 0Eh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x0F: /* C4h E2h 41h 2Dh 0Fh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x10: /* C4h E2h 41h 2Dh 10h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x11: /* C4h E2h 41h 2Dh 11h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x12: /* C4h E2h 41h 2Dh 12h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x13: /* C4h E2h 41h 2Dh 13h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x14: /* C4h E2h 41h 2Dh 14h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x15: /* C4h E2h 41h 2Dh 15h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x16: /* C4h E2h 41h 2Dh 16h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x17: /* C4h E2h 41h 2Dh 17h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x18: /* C4h E2h 41h 2Dh 18h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x19: /* C4h E2h 41h 2Dh 19h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x1A: /* C4h E2h 41h 2Dh 1Ah VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x1B: /* C4h E2h 41h 2Dh 1Bh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x1C: /* C4h E2h 41h 2Dh 1Ch VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x1D: /* C4h E2h 41h 2Dh 1Dh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x1E: /* C4h E2h 41h 2Dh 1Eh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x1F: /* C4h E2h 41h 2Dh 1Fh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x20: /* C4h E2h 41h 2Dh 20h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x21: /* C4h E2h 41h 2Dh 21h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x22: /* C4h E2h 41h 2Dh 22h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x23: /* C4h E2h 41h 2Dh 23h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x24: /* C4h E2h 41h 2Dh 24h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x25: /* C4h E2h 41h 2Dh 25h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x26: /* C4h E2h 41h 2Dh 26h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x27: /* C4h E2h 41h 2Dh 27h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x28: /* C4h E2h 41h 2Dh 28h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x29: /* C4h E2h 41h 2Dh 29h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x2A: /* C4h E2h 41h 2Dh 2Ah VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x2B: /* C4h E2h 41h 2Dh 2Bh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x2C: /* C4h E2h 41h 2Dh 2Ch VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x2D: /* C4h E2h 41h 2Dh 2Dh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x2E: /* C4h E2h 41h 2Dh 2Eh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x2F: /* C4h E2h 41h 2Dh 2Fh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x30: /* C4h E2h 41h 2Dh 30h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x31: /* C4h E2h 41h 2Dh 31h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x32: /* C4h E2h 41h 2Dh 32h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x33: /* C4h E2h 41h 2Dh 33h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x34: /* C4h E2h 41h 2Dh 34h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x35: /* C4h E2h 41h 2Dh 35h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x36: /* C4h E2h 41h 2Dh 36h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x37: /* C4h E2h 41h 2Dh 37h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x38: /* C4h E2h 41h 2Dh 38h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x39: /* C4h E2h 41h 2Dh 39h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x3A: /* C4h E2h 41h 2Dh 3Ah VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x3B: /* C4h E2h 41h 2Dh 3Bh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x3C: /* C4h E2h 41h 2Dh 3Ch VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x3D: /* C4h E2h 41h 2Dh 3Dh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x3E: /* C4h E2h 41h 2Dh 3Eh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x3F: /* C4h E2h 41h 2Dh 3Fh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=0 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x40: /* C4h E2h 41h 2Dh 40h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x41: /* C4h E2h 41h 2Dh 41h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x42: /* C4h E2h 41h 2Dh 42h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x43: /* C4h E2h 41h 2Dh 43h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x44: /* C4h E2h 41h 2Dh 44h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x45: /* C4h E2h 41h 2Dh 45h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x46: /* C4h E2h 41h 2Dh 46h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x47: /* C4h E2h 41h 2Dh 47h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x48: /* C4h E2h 41h 2Dh 48h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x49: /* C4h E2h 41h 2Dh 49h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x4A: /* C4h E2h 41h 2Dh 4Ah VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x4B: /* C4h E2h 41h 2Dh 4Bh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x4C: /* C4h E2h 41h 2Dh 4Ch VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x4D: /* C4h E2h 41h 2Dh 4Dh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x4E: /* C4h E2h 41h 2Dh 4Eh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x4F: /* C4h E2h 41h 2Dh 4Fh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x50: /* C4h E2h 41h 2Dh 50h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x51: /* C4h E2h 41h 2Dh 51h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x52: /* C4h E2h 41h 2Dh 52h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x53: /* C4h E2h 41h 2Dh 53h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x54: /* C4h E2h 41h 2Dh 54h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x55: /* C4h E2h 41h 2Dh 55h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x56: /* C4h E2h 41h 2Dh 56h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x57: /* C4h E2h 41h 2Dh 57h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x58: /* C4h E2h 41h 2Dh 58h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x59: /* C4h E2h 41h 2Dh 59h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x5A: /* C4h E2h 41h 2Dh 5Ah VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x5B: /* C4h E2h 41h 2Dh 5Bh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x5C: /* C4h E2h 41h 2Dh 5Ch VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x5D: /* C4h E2h 41h 2Dh 5Dh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x5E: /* C4h E2h 41h 2Dh 5Eh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x5F: /* C4h E2h 41h 2Dh 5Fh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x60: /* C4h E2h 41h 2Dh 60h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x61: /* C4h E2h 41h 2Dh 61h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x62: /* C4h E2h 41h 2Dh 62h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x63: /* C4h E2h 41h 2Dh 63h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x64: /* C4h E2h 41h 2Dh 64h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x65: /* C4h E2h 41h 2Dh 65h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x66: /* C4h E2h 41h 2Dh 66h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x67: /* C4h E2h 41h 2Dh 67h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x68: /* C4h E2h 41h 2Dh 68h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x69: /* C4h E2h 41h 2Dh 69h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x6A: /* C4h E2h 41h 2Dh 6Ah VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x6B: /* C4h E2h 41h 2Dh 6Bh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x6C: /* C4h E2h 41h 2Dh 6Ch VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x6D: /* C4h E2h 41h 2Dh 6Dh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x6E: /* C4h E2h 41h 2Dh 6Eh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x6F: /* C4h E2h 41h 2Dh 6Fh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x70: /* C4h E2h 41h 2Dh 70h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x71: /* C4h E2h 41h 2Dh 71h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x72: /* C4h E2h 41h 2Dh 72h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x73: /* C4h E2h 41h 2Dh 73h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x74: /* C4h E2h 41h 2Dh 74h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x75: /* C4h E2h 41h 2Dh 75h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x76: /* C4h E2h 41h 2Dh 76h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x77: /* C4h E2h 41h 2Dh 77h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x78: /* C4h E2h 41h 2Dh 78h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x79: /* C4h E2h 41h 2Dh 79h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x7A: /* C4h E2h 41h 2Dh 7Ah VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x7B: /* C4h E2h 41h 2Dh 7Bh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x7C: /* C4h E2h 41h 2Dh 7Ch VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x7D: /* C4h E2h 41h 2Dh 7Dh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x7E: /* C4h E2h 41h 2Dh 7Eh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x7F: /* C4h E2h 41h 2Dh 7Fh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=1 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x80: /* C4h E2h 41h 2Dh 80h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x81: /* C4h E2h 41h 2Dh 81h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x82: /* C4h E2h 41h 2Dh 82h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x83: /* C4h E2h 41h 2Dh 83h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x84: /* C4h E2h 41h 2Dh 84h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x85: /* C4h E2h 41h 2Dh 85h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x86: /* C4h E2h 41h 2Dh 86h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x87: /* C4h E2h 41h 2Dh 87h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x88: /* C4h E2h 41h 2Dh 88h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x89: /* C4h E2h 41h 2Dh 89h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x8A: /* C4h E2h 41h 2Dh 8Ah VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x8B: /* C4h E2h 41h 2Dh 8Bh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x8C: /* C4h E2h 41h 2Dh 8Ch VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x8D: /* C4h E2h 41h 2Dh 8Dh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x8E: /* C4h E2h 41h 2Dh 8Eh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x8F: /* C4h E2h 41h 2Dh 8Fh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x90: /* C4h E2h 41h 2Dh 90h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x91: /* C4h E2h 41h 2Dh 91h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x92: /* C4h E2h 41h 2Dh 92h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x93: /* C4h E2h 41h 2Dh 93h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x94: /* C4h E2h 41h 2Dh 94h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x95: /* C4h E2h 41h 2Dh 95h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x96: /* C4h E2h 41h 2Dh 96h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x97: /* C4h E2h 41h 2Dh 97h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x98: /* C4h E2h 41h 2Dh 98h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x99: /* C4h E2h 41h 2Dh 99h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x9A: /* C4h E2h 41h 2Dh 9Ah VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x9B: /* C4h E2h 41h 2Dh 9Bh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x9C: /* C4h E2h 41h 2Dh 9Ch VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x9D: /* C4h E2h 41h 2Dh 9Dh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x9E: /* C4h E2h 41h 2Dh 9Eh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x9F: /* C4h E2h 41h 2Dh 9Fh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xA0: /* C4h E2h 41h 2Dh A0h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xA1: /* C4h E2h 41h 2Dh A1h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xA2: /* C4h E2h 41h 2Dh A2h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xA3: /* C4h E2h 41h 2Dh A3h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xA4: /* C4h E2h 41h 2Dh A4h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xA5: /* C4h E2h 41h 2Dh A5h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xA6: /* C4h E2h 41h 2Dh A6h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xA7: /* C4h E2h 41h 2Dh A7h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xA8: /* C4h E2h 41h 2Dh A8h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xA9: /* C4h E2h 41h 2Dh A9h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xAA: /* C4h E2h 41h 2Dh AAh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xAB: /* C4h E2h 41h 2Dh ABh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xAC: /* C4h E2h 41h 2Dh ACh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xAD: /* C4h E2h 41h 2Dh ADh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xAE: /* C4h E2h 41h 2Dh AEh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xAF: /* C4h E2h 41h 2Dh AFh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xB0: /* C4h E2h 41h 2Dh B0h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xB1: /* C4h E2h 41h 2Dh B1h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xB2: /* C4h E2h 41h 2Dh B2h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xB3: /* C4h E2h 41h 2Dh B3h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xB4: /* C4h E2h 41h 2Dh B4h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xB5: /* C4h E2h 41h 2Dh B5h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xB6: /* C4h E2h 41h 2Dh B6h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xB7: /* C4h E2h 41h 2Dh B7h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xB8: /* C4h E2h 41h 2Dh B8h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xB9: /* C4h E2h 41h 2Dh B9h VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xBA: /* C4h E2h 41h 2Dh BAh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xBB: /* C4h E2h 41h 2Dh BBh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xBC: /* C4h E2h 41h 2Dh BCh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xBD: /* C4h E2h 41h 2Dh BDh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xBE: /* C4h E2h 41h 2Dh BEh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xBF: /* C4h E2h 41h 2Dh BFh VMASKMOVPD sse(reg),sse(vsidx),sse(r/m) mod=2 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMASKMOVPD XMM%u,XMM%u,%s",mrm.reg(),vex.V,IPDecPrint32(mrm,sib,disp,16,RC_SSEREG,""));
+                                        break;
+                                    /* opcode C4h E2h 41h 2Dh C0h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh C1h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh C2h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh C3h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh C4h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh C5h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh C6h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh C7h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh C8h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh C9h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh CAh  not defined */
+                                    /* opcode C4h E2h 41h 2Dh CBh  not defined */
+                                    /* opcode C4h E2h 41h 2Dh CCh  not defined */
+                                    /* opcode C4h E2h 41h 2Dh CDh  not defined */
+                                    /* opcode C4h E2h 41h 2Dh CEh  not defined */
+                                    /* opcode C4h E2h 41h 2Dh CFh  not defined */
+                                    /* opcode C4h E2h 41h 2Dh D0h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh D1h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh D2h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh D3h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh D4h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh D5h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh D6h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh D7h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh D8h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh D9h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh DAh  not defined */
+                                    /* opcode C4h E2h 41h 2Dh DBh  not defined */
+                                    /* opcode C4h E2h 41h 2Dh DCh  not defined */
+                                    /* opcode C4h E2h 41h 2Dh DDh  not defined */
+                                    /* opcode C4h E2h 41h 2Dh DEh  not defined */
+                                    /* opcode C4h E2h 41h 2Dh DFh  not defined */
+                                    /* opcode C4h E2h 41h 2Dh E0h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh E1h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh E2h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh E3h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh E4h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh E5h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh E6h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh E7h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh E8h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh E9h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh EAh  not defined */
+                                    /* opcode C4h E2h 41h 2Dh EBh  not defined */
+                                    /* opcode C4h E2h 41h 2Dh ECh  not defined */
+                                    /* opcode C4h E2h 41h 2Dh EDh  not defined */
+                                    /* opcode C4h E2h 41h 2Dh EEh  not defined */
+                                    /* opcode C4h E2h 41h 2Dh EFh  not defined */
+                                    /* opcode C4h E2h 41h 2Dh F0h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh F1h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh F2h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh F3h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh F4h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh F5h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh F6h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh F7h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh F8h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh F9h  not defined */
+                                    /* opcode C4h E2h 41h 2Dh FAh  not defined */
+                                    /* opcode C4h E2h 41h 2Dh FBh  not defined */
+                                    /* opcode C4h E2h 41h 2Dh FCh  not defined */
+                                    /* opcode C4h E2h 41h 2Dh FDh  not defined */
+                                    /* opcode C4h E2h 41h 2Dh FEh  not defined */
+                                    /* opcode C4h E2h 41h 2Dh FFh  not defined */
+                                    default:
+                                        goto _x86decode_illegal_opcode;
+                                };
+/* End of opcodes starting with C4h E2h 41h 2Dh */
+                                break;
+                            case 0x2E: /* C4h E2h 41h 2Eh        spec:  */
+                                IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                                _x86decode_begin_code32_addr32_opcode_parse_C4E2412E:
+/* Opcodes starting with C4h E2h 41h 2Eh */
+                                switch (mrm.byte) {
+                                    case 0x00: /* C4h E2h 41h 2Eh 00h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x01: /* C4h E2h 41h 2Eh 01h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x02: /* C4h E2h 41h 2Eh 02h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x03: /* C4h E2h 41h 2Eh 03h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x04: /* C4h E2h 41h 2Eh 04h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x05: /* C4h E2h 41h 2Eh 05h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x06: /* C4h E2h 41h 2Eh 06h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x07: /* C4h E2h 41h 2Eh 07h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x08: /* C4h E2h 41h 2Eh 08h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x09: /* C4h E2h 41h 2Eh 09h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x0A: /* C4h E2h 41h 2Eh 0Ah VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x0B: /* C4h E2h 41h 2Eh 0Bh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x0C: /* C4h E2h 41h 2Eh 0Ch VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x0D: /* C4h E2h 41h 2Eh 0Dh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x0E: /* C4h E2h 41h 2Eh 0Eh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x0F: /* C4h E2h 41h 2Eh 0Fh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x10: /* C4h E2h 41h 2Eh 10h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x11: /* C4h E2h 41h 2Eh 11h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x12: /* C4h E2h 41h 2Eh 12h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x13: /* C4h E2h 41h 2Eh 13h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x14: /* C4h E2h 41h 2Eh 14h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x15: /* C4h E2h 41h 2Eh 15h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x16: /* C4h E2h 41h 2Eh 16h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x17: /* C4h E2h 41h 2Eh 17h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x18: /* C4h E2h 41h 2Eh 18h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x19: /* C4h E2h 41h 2Eh 19h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x1A: /* C4h E2h 41h 2Eh 1Ah VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x1B: /* C4h E2h 41h 2Eh 1Bh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x1C: /* C4h E2h 41h 2Eh 1Ch VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x1D: /* C4h E2h 41h 2Eh 1Dh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x1E: /* C4h E2h 41h 2Eh 1Eh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x1F: /* C4h E2h 41h 2Eh 1Fh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x20: /* C4h E2h 41h 2Eh 20h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x21: /* C4h E2h 41h 2Eh 21h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x22: /* C4h E2h 41h 2Eh 22h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x23: /* C4h E2h 41h 2Eh 23h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x24: /* C4h E2h 41h 2Eh 24h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x25: /* C4h E2h 41h 2Eh 25h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x26: /* C4h E2h 41h 2Eh 26h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x27: /* C4h E2h 41h 2Eh 27h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x28: /* C4h E2h 41h 2Eh 28h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x29: /* C4h E2h 41h 2Eh 29h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x2A: /* C4h E2h 41h 2Eh 2Ah VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x2B: /* C4h E2h 41h 2Eh 2Bh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x2C: /* C4h E2h 41h 2Eh 2Ch VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x2D: /* C4h E2h 41h 2Eh 2Dh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x2E: /* C4h E2h 41h 2Eh 2Eh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x2F: /* C4h E2h 41h 2Eh 2Fh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x30: /* C4h E2h 41h 2Eh 30h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x31: /* C4h E2h 41h 2Eh 31h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x32: /* C4h E2h 41h 2Eh 32h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x33: /* C4h E2h 41h 2Eh 33h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x34: /* C4h E2h 41h 2Eh 34h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x35: /* C4h E2h 41h 2Eh 35h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x36: /* C4h E2h 41h 2Eh 36h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x37: /* C4h E2h 41h 2Eh 37h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x38: /* C4h E2h 41h 2Eh 38h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x39: /* C4h E2h 41h 2Eh 39h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x3A: /* C4h E2h 41h 2Eh 3Ah VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x3B: /* C4h E2h 41h 2Eh 3Bh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x3C: /* C4h E2h 41h 2Eh 3Ch VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x3D: /* C4h E2h 41h 2Eh 3Dh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x3E: /* C4h E2h 41h 2Eh 3Eh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x3F: /* C4h E2h 41h 2Eh 3Fh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=0 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x40: /* C4h E2h 41h 2Eh 40h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x41: /* C4h E2h 41h 2Eh 41h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x42: /* C4h E2h 41h 2Eh 42h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x43: /* C4h E2h 41h 2Eh 43h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x44: /* C4h E2h 41h 2Eh 44h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x45: /* C4h E2h 41h 2Eh 45h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x46: /* C4h E2h 41h 2Eh 46h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x47: /* C4h E2h 41h 2Eh 47h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x48: /* C4h E2h 41h 2Eh 48h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x49: /* C4h E2h 41h 2Eh 49h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x4A: /* C4h E2h 41h 2Eh 4Ah VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x4B: /* C4h E2h 41h 2Eh 4Bh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x4C: /* C4h E2h 41h 2Eh 4Ch VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x4D: /* C4h E2h 41h 2Eh 4Dh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x4E: /* C4h E2h 41h 2Eh 4Eh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x4F: /* C4h E2h 41h 2Eh 4Fh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x50: /* C4h E2h 41h 2Eh 50h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x51: /* C4h E2h 41h 2Eh 51h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x52: /* C4h E2h 41h 2Eh 52h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x53: /* C4h E2h 41h 2Eh 53h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x54: /* C4h E2h 41h 2Eh 54h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x55: /* C4h E2h 41h 2Eh 55h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x56: /* C4h E2h 41h 2Eh 56h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x57: /* C4h E2h 41h 2Eh 57h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x58: /* C4h E2h 41h 2Eh 58h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x59: /* C4h E2h 41h 2Eh 59h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x5A: /* C4h E2h 41h 2Eh 5Ah VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x5B: /* C4h E2h 41h 2Eh 5Bh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x5C: /* C4h E2h 41h 2Eh 5Ch VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x5D: /* C4h E2h 41h 2Eh 5Dh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x5E: /* C4h E2h 41h 2Eh 5Eh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x5F: /* C4h E2h 41h 2Eh 5Fh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x60: /* C4h E2h 41h 2Eh 60h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x61: /* C4h E2h 41h 2Eh 61h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x62: /* C4h E2h 41h 2Eh 62h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x63: /* C4h E2h 41h 2Eh 63h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x64: /* C4h E2h 41h 2Eh 64h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x65: /* C4h E2h 41h 2Eh 65h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x66: /* C4h E2h 41h 2Eh 66h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x67: /* C4h E2h 41h 2Eh 67h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x68: /* C4h E2h 41h 2Eh 68h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x69: /* C4h E2h 41h 2Eh 69h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x6A: /* C4h E2h 41h 2Eh 6Ah VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x6B: /* C4h E2h 41h 2Eh 6Bh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x6C: /* C4h E2h 41h 2Eh 6Ch VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x6D: /* C4h E2h 41h 2Eh 6Dh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x6E: /* C4h E2h 41h 2Eh 6Eh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x6F: /* C4h E2h 41h 2Eh 6Fh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x70: /* C4h E2h 41h 2Eh 70h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x71: /* C4h E2h 41h 2Eh 71h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x72: /* C4h E2h 41h 2Eh 72h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x73: /* C4h E2h 41h 2Eh 73h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x74: /* C4h E2h 41h 2Eh 74h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x75: /* C4h E2h 41h 2Eh 75h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x76: /* C4h E2h 41h 2Eh 76h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x77: /* C4h E2h 41h 2Eh 77h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x78: /* C4h E2h 41h 2Eh 78h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x79: /* C4h E2h 41h 2Eh 79h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x7A: /* C4h E2h 41h 2Eh 7Ah VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x7B: /* C4h E2h 41h 2Eh 7Bh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x7C: /* C4h E2h 41h 2Eh 7Ch VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x7D: /* C4h E2h 41h 2Eh 7Dh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x7E: /* C4h E2h 41h 2Eh 7Eh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x7F: /* C4h E2h 41h 2Eh 7Fh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=1 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x80: /* C4h E2h 41h 2Eh 80h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x81: /* C4h E2h 41h 2Eh 81h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x82: /* C4h E2h 41h 2Eh 82h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x83: /* C4h E2h 41h 2Eh 83h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x84: /* C4h E2h 41h 2Eh 84h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x85: /* C4h E2h 41h 2Eh 85h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x86: /* C4h E2h 41h 2Eh 86h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x87: /* C4h E2h 41h 2Eh 87h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x88: /* C4h E2h 41h 2Eh 88h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x89: /* C4h E2h 41h 2Eh 89h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x8A: /* C4h E2h 41h 2Eh 8Ah VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x8B: /* C4h E2h 41h 2Eh 8Bh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x8C: /* C4h E2h 41h 2Eh 8Ch VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x8D: /* C4h E2h 41h 2Eh 8Dh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x8E: /* C4h E2h 41h 2Eh 8Eh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x8F: /* C4h E2h 41h 2Eh 8Fh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x90: /* C4h E2h 41h 2Eh 90h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x91: /* C4h E2h 41h 2Eh 91h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x92: /* C4h E2h 41h 2Eh 92h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x93: /* C4h E2h 41h 2Eh 93h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x94: /* C4h E2h 41h 2Eh 94h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x95: /* C4h E2h 41h 2Eh 95h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x96: /* C4h E2h 41h 2Eh 96h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x97: /* C4h E2h 41h 2Eh 97h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x98: /* C4h E2h 41h 2Eh 98h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x99: /* C4h E2h 41h 2Eh 99h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x9A: /* C4h E2h 41h 2Eh 9Ah VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x9B: /* C4h E2h 41h 2Eh 9Bh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x9C: /* C4h E2h 41h 2Eh 9Ch VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x9D: /* C4h E2h 41h 2Eh 9Dh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x9E: /* C4h E2h 41h 2Eh 9Eh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x9F: /* C4h E2h 41h 2Eh 9Fh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xA0: /* C4h E2h 41h 2Eh A0h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xA1: /* C4h E2h 41h 2Eh A1h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xA2: /* C4h E2h 41h 2Eh A2h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xA3: /* C4h E2h 41h 2Eh A3h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xA4: /* C4h E2h 41h 2Eh A4h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xA5: /* C4h E2h 41h 2Eh A5h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xA6: /* C4h E2h 41h 2Eh A6h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xA7: /* C4h E2h 41h 2Eh A7h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xA8: /* C4h E2h 41h 2Eh A8h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xA9: /* C4h E2h 41h 2Eh A9h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xAA: /* C4h E2h 41h 2Eh AAh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xAB: /* C4h E2h 41h 2Eh ABh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xAC: /* C4h E2h 41h 2Eh ACh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xAD: /* C4h E2h 41h 2Eh ADh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xAE: /* C4h E2h 41h 2Eh AEh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xAF: /* C4h E2h 41h 2Eh AFh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xB0: /* C4h E2h 41h 2Eh B0h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xB1: /* C4h E2h 41h 2Eh B1h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xB2: /* C4h E2h 41h 2Eh B2h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xB3: /* C4h E2h 41h 2Eh B3h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xB4: /* C4h E2h 41h 2Eh B4h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xB5: /* C4h E2h 41h 2Eh B5h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xB6: /* C4h E2h 41h 2Eh B6h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xB7: /* C4h E2h 41h 2Eh B7h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xB8: /* C4h E2h 41h 2Eh B8h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xB9: /* C4h E2h 41h 2Eh B9h VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xBA: /* C4h E2h 41h 2Eh BAh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xBB: /* C4h E2h 41h 2Eh BBh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xBC: /* C4h E2h 41h 2Eh BCh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xBD: /* C4h E2h 41h 2Eh BDh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xBE: /* C4h E2h 41h 2Eh BEh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xBF: /* C4h E2h 41h 2Eh BFh VMASKMOVPS sse(r/m),sse(vsidx),sse(reg) mod=2 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMASKMOVPS %s,XMM%u,XMM%u",IPDecPrint32(mrm,sib,disp,16,RC_SSEREG,""),vex.V,mrm.reg());
+                                        break;
+                                    /* opcode C4h E2h 41h 2Eh C0h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh C1h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh C2h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh C3h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh C4h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh C5h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh C6h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh C7h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh C8h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh C9h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh CAh  not defined */
+                                    /* opcode C4h E2h 41h 2Eh CBh  not defined */
+                                    /* opcode C4h E2h 41h 2Eh CCh  not defined */
+                                    /* opcode C4h E2h 41h 2Eh CDh  not defined */
+                                    /* opcode C4h E2h 41h 2Eh CEh  not defined */
+                                    /* opcode C4h E2h 41h 2Eh CFh  not defined */
+                                    /* opcode C4h E2h 41h 2Eh D0h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh D1h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh D2h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh D3h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh D4h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh D5h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh D6h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh D7h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh D8h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh D9h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh DAh  not defined */
+                                    /* opcode C4h E2h 41h 2Eh DBh  not defined */
+                                    /* opcode C4h E2h 41h 2Eh DCh  not defined */
+                                    /* opcode C4h E2h 41h 2Eh DDh  not defined */
+                                    /* opcode C4h E2h 41h 2Eh DEh  not defined */
+                                    /* opcode C4h E2h 41h 2Eh DFh  not defined */
+                                    /* opcode C4h E2h 41h 2Eh E0h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh E1h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh E2h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh E3h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh E4h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh E5h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh E6h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh E7h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh E8h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh E9h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh EAh  not defined */
+                                    /* opcode C4h E2h 41h 2Eh EBh  not defined */
+                                    /* opcode C4h E2h 41h 2Eh ECh  not defined */
+                                    /* opcode C4h E2h 41h 2Eh EDh  not defined */
+                                    /* opcode C4h E2h 41h 2Eh EEh  not defined */
+                                    /* opcode C4h E2h 41h 2Eh EFh  not defined */
+                                    /* opcode C4h E2h 41h 2Eh F0h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh F1h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh F2h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh F3h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh F4h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh F5h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh F6h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh F7h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh F8h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh F9h  not defined */
+                                    /* opcode C4h E2h 41h 2Eh FAh  not defined */
+                                    /* opcode C4h E2h 41h 2Eh FBh  not defined */
+                                    /* opcode C4h E2h 41h 2Eh FCh  not defined */
+                                    /* opcode C4h E2h 41h 2Eh FDh  not defined */
+                                    /* opcode C4h E2h 41h 2Eh FEh  not defined */
+                                    /* opcode C4h E2h 41h 2Eh FFh  not defined */
+                                    default:
+                                        goto _x86decode_illegal_opcode;
+                                };
+/* End of opcodes starting with C4h E2h 41h 2Eh */
+                                break;
+                            case 0x2F: /* C4h E2h 41h 2Fh        spec:  */
+                                IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                                _x86decode_begin_code32_addr32_opcode_parse_C4E2412F:
+/* Opcodes starting with C4h E2h 41h 2Fh */
+                                switch (mrm.byte) {
+                                    case 0x00: /* C4h E2h 41h 2Fh 00h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x01: /* C4h E2h 41h 2Fh 01h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x02: /* C4h E2h 41h 2Fh 02h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x03: /* C4h E2h 41h 2Fh 03h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x04: /* C4h E2h 41h 2Fh 04h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x05: /* C4h E2h 41h 2Fh 05h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x06: /* C4h E2h 41h 2Fh 06h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x07: /* C4h E2h 41h 2Fh 07h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x08: /* C4h E2h 41h 2Fh 08h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x09: /* C4h E2h 41h 2Fh 09h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x0A: /* C4h E2h 41h 2Fh 0Ah VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x0B: /* C4h E2h 41h 2Fh 0Bh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x0C: /* C4h E2h 41h 2Fh 0Ch VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x0D: /* C4h E2h 41h 2Fh 0Dh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x0E: /* C4h E2h 41h 2Fh 0Eh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x0F: /* C4h E2h 41h 2Fh 0Fh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x10: /* C4h E2h 41h 2Fh 10h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x11: /* C4h E2h 41h 2Fh 11h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x12: /* C4h E2h 41h 2Fh 12h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x13: /* C4h E2h 41h 2Fh 13h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x14: /* C4h E2h 41h 2Fh 14h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x15: /* C4h E2h 41h 2Fh 15h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x16: /* C4h E2h 41h 2Fh 16h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x17: /* C4h E2h 41h 2Fh 17h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x18: /* C4h E2h 41h 2Fh 18h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x19: /* C4h E2h 41h 2Fh 19h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x1A: /* C4h E2h 41h 2Fh 1Ah VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x1B: /* C4h E2h 41h 2Fh 1Bh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x1C: /* C4h E2h 41h 2Fh 1Ch VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x1D: /* C4h E2h 41h 2Fh 1Dh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x1E: /* C4h E2h 41h 2Fh 1Eh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x1F: /* C4h E2h 41h 2Fh 1Fh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x20: /* C4h E2h 41h 2Fh 20h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x21: /* C4h E2h 41h 2Fh 21h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x22: /* C4h E2h 41h 2Fh 22h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x23: /* C4h E2h 41h 2Fh 23h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x24: /* C4h E2h 41h 2Fh 24h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x25: /* C4h E2h 41h 2Fh 25h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x26: /* C4h E2h 41h 2Fh 26h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x27: /* C4h E2h 41h 2Fh 27h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x28: /* C4h E2h 41h 2Fh 28h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x29: /* C4h E2h 41h 2Fh 29h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x2A: /* C4h E2h 41h 2Fh 2Ah VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x2B: /* C4h E2h 41h 2Fh 2Bh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x2C: /* C4h E2h 41h 2Fh 2Ch VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x2D: /* C4h E2h 41h 2Fh 2Dh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x2E: /* C4h E2h 41h 2Fh 2Eh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x2F: /* C4h E2h 41h 2Fh 2Fh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x30: /* C4h E2h 41h 2Fh 30h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x31: /* C4h E2h 41h 2Fh 31h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x32: /* C4h E2h 41h 2Fh 32h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x33: /* C4h E2h 41h 2Fh 33h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x34: /* C4h E2h 41h 2Fh 34h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x35: /* C4h E2h 41h 2Fh 35h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x36: /* C4h E2h 41h 2Fh 36h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x37: /* C4h E2h 41h 2Fh 37h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x38: /* C4h E2h 41h 2Fh 38h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x39: /* C4h E2h 41h 2Fh 39h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x3A: /* C4h E2h 41h 2Fh 3Ah VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x3B: /* C4h E2h 41h 2Fh 3Bh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x3C: /* C4h E2h 41h 2Fh 3Ch VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x3D: /* C4h E2h 41h 2Fh 3Dh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x3E: /* C4h E2h 41h 2Fh 3Eh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x3F: /* C4h E2h 41h 2Fh 3Fh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=0 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x40: /* C4h E2h 41h 2Fh 40h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x41: /* C4h E2h 41h 2Fh 41h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x42: /* C4h E2h 41h 2Fh 42h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x43: /* C4h E2h 41h 2Fh 43h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x44: /* C4h E2h 41h 2Fh 44h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x45: /* C4h E2h 41h 2Fh 45h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x46: /* C4h E2h 41h 2Fh 46h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x47: /* C4h E2h 41h 2Fh 47h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x48: /* C4h E2h 41h 2Fh 48h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x49: /* C4h E2h 41h 2Fh 49h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x4A: /* C4h E2h 41h 2Fh 4Ah VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x4B: /* C4h E2h 41h 2Fh 4Bh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x4C: /* C4h E2h 41h 2Fh 4Ch VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x4D: /* C4h E2h 41h 2Fh 4Dh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x4E: /* C4h E2h 41h 2Fh 4Eh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x4F: /* C4h E2h 41h 2Fh 4Fh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x50: /* C4h E2h 41h 2Fh 50h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x51: /* C4h E2h 41h 2Fh 51h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x52: /* C4h E2h 41h 2Fh 52h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x53: /* C4h E2h 41h 2Fh 53h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x54: /* C4h E2h 41h 2Fh 54h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x55: /* C4h E2h 41h 2Fh 55h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x56: /* C4h E2h 41h 2Fh 56h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x57: /* C4h E2h 41h 2Fh 57h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x58: /* C4h E2h 41h 2Fh 58h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x59: /* C4h E2h 41h 2Fh 59h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x5A: /* C4h E2h 41h 2Fh 5Ah VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x5B: /* C4h E2h 41h 2Fh 5Bh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x5C: /* C4h E2h 41h 2Fh 5Ch VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x5D: /* C4h E2h 41h 2Fh 5Dh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x5E: /* C4h E2h 41h 2Fh 5Eh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x5F: /* C4h E2h 41h 2Fh 5Fh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x60: /* C4h E2h 41h 2Fh 60h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x61: /* C4h E2h 41h 2Fh 61h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x62: /* C4h E2h 41h 2Fh 62h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x63: /* C4h E2h 41h 2Fh 63h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x64: /* C4h E2h 41h 2Fh 64h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x65: /* C4h E2h 41h 2Fh 65h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x66: /* C4h E2h 41h 2Fh 66h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x67: /* C4h E2h 41h 2Fh 67h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x68: /* C4h E2h 41h 2Fh 68h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x69: /* C4h E2h 41h 2Fh 69h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x6A: /* C4h E2h 41h 2Fh 6Ah VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x6B: /* C4h E2h 41h 2Fh 6Bh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x6C: /* C4h E2h 41h 2Fh 6Ch VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x6D: /* C4h E2h 41h 2Fh 6Dh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x6E: /* C4h E2h 41h 2Fh 6Eh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x6F: /* C4h E2h 41h 2Fh 6Fh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x70: /* C4h E2h 41h 2Fh 70h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x71: /* C4h E2h 41h 2Fh 71h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x72: /* C4h E2h 41h 2Fh 72h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x73: /* C4h E2h 41h 2Fh 73h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x74: /* C4h E2h 41h 2Fh 74h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x75: /* C4h E2h 41h 2Fh 75h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x76: /* C4h E2h 41h 2Fh 76h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x77: /* C4h E2h 41h 2Fh 77h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x78: /* C4h E2h 41h 2Fh 78h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x79: /* C4h E2h 41h 2Fh 79h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x7A: /* C4h E2h 41h 2Fh 7Ah VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x7B: /* C4h E2h 41h 2Fh 7Bh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x7C: /* C4h E2h 41h 2Fh 7Ch VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x7D: /* C4h E2h 41h 2Fh 7Dh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x7E: /* C4h E2h 41h 2Fh 7Eh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x7F: /* C4h E2h 41h 2Fh 7Fh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=1 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x80: /* C4h E2h 41h 2Fh 80h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=0 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x81: /* C4h E2h 41h 2Fh 81h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=0 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x82: /* C4h E2h 41h 2Fh 82h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=0 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x83: /* C4h E2h 41h 2Fh 83h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=0 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x84: /* C4h E2h 41h 2Fh 84h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=0 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x85: /* C4h E2h 41h 2Fh 85h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=0 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x86: /* C4h E2h 41h 2Fh 86h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=0 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x87: /* C4h E2h 41h 2Fh 87h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=0 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x88: /* C4h E2h 41h 2Fh 88h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=1 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x89: /* C4h E2h 41h 2Fh 89h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=1 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x8A: /* C4h E2h 41h 2Fh 8Ah VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=1 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x8B: /* C4h E2h 41h 2Fh 8Bh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=1 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x8C: /* C4h E2h 41h 2Fh 8Ch VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=1 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x8D: /* C4h E2h 41h 2Fh 8Dh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=1 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x8E: /* C4h E2h 41h 2Fh 8Eh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=1 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x8F: /* C4h E2h 41h 2Fh 8Fh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=1 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x90: /* C4h E2h 41h 2Fh 90h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=2 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x91: /* C4h E2h 41h 2Fh 91h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=2 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x92: /* C4h E2h 41h 2Fh 92h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=2 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x93: /* C4h E2h 41h 2Fh 93h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=2 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x94: /* C4h E2h 41h 2Fh 94h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=2 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x95: /* C4h E2h 41h 2Fh 95h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=2 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x96: /* C4h E2h 41h 2Fh 96h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=2 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x97: /* C4h E2h 41h 2Fh 97h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=2 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x98: /* C4h E2h 41h 2Fh 98h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=3 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x99: /* C4h E2h 41h 2Fh 99h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=3 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x9A: /* C4h E2h 41h 2Fh 9Ah VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=3 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x9B: /* C4h E2h 41h 2Fh 9Bh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=3 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x9C: /* C4h E2h 41h 2Fh 9Ch VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=3 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x9D: /* C4h E2h 41h 2Fh 9Dh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=3 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x9E: /* C4h E2h 41h 2Fh 9Eh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=3 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x9F: /* C4h E2h 41h 2Fh 9Fh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=3 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xA0: /* C4h E2h 41h 2Fh A0h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=4 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xA1: /* C4h E2h 41h 2Fh A1h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=4 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xA2: /* C4h E2h 41h 2Fh A2h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=4 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xA3: /* C4h E2h 41h 2Fh A3h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=4 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xA4: /* C4h E2h 41h 2Fh A4h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=4 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xA5: /* C4h E2h 41h 2Fh A5h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=4 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xA6: /* C4h E2h 41h 2Fh A6h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=4 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xA7: /* C4h E2h 41h 2Fh A7h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=4 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xA8: /* C4h E2h 41h 2Fh A8h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=5 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xA9: /* C4h E2h 41h 2Fh A9h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=5 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xAA: /* C4h E2h 41h 2Fh AAh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=5 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xAB: /* C4h E2h 41h 2Fh ABh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=5 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xAC: /* C4h E2h 41h 2Fh ACh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=5 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xAD: /* C4h E2h 41h 2Fh ADh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=5 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xAE: /* C4h E2h 41h 2Fh AEh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=5 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xAF: /* C4h E2h 41h 2Fh AFh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=5 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xB0: /* C4h E2h 41h 2Fh B0h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=6 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xB1: /* C4h E2h 41h 2Fh B1h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=6 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xB2: /* C4h E2h 41h 2Fh B2h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=6 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xB3: /* C4h E2h 41h 2Fh B3h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=6 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xB4: /* C4h E2h 41h 2Fh B4h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=6 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xB5: /* C4h E2h 41h 2Fh B5h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=6 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xB6: /* C4h E2h 41h 2Fh B6h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=6 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xB7: /* C4h E2h 41h 2Fh B7h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=6 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xB8: /* C4h E2h 41h 2Fh B8h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=7 rm=0      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xB9: /* C4h E2h 41h 2Fh B9h VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=7 rm=1      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xBA: /* C4h E2h 41h 2Fh BAh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=7 rm=2      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xBB: /* C4h E2h 41h 2Fh BBh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=7 rm=3      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xBC: /* C4h E2h 41h 2Fh BCh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=7 rm=4      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xBD: /* C4h E2h 41h 2Fh BDh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=7 rm=5      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xBE: /* C4h E2h 41h 2Fh BEh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=7 rm=6      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xBF: /* C4h E2h 41h 2Fh BFh VMASKMOVPD sse(r/m),sse(vsidx),sse(reg) mod=2 reg=7 rm=7      spec: vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMASKMOVPD %s,XMM%u,XMM%u",IPDecPrint32(mrm,sib,disp,16,RC_SSEREG,""),vex.V,mrm.reg());
+                                        break;
+                                    /* opcode C4h E2h 41h 2Fh C0h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh C1h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh C2h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh C3h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh C4h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh C5h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh C6h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh C7h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh C8h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh C9h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh CAh  not defined */
+                                    /* opcode C4h E2h 41h 2Fh CBh  not defined */
+                                    /* opcode C4h E2h 41h 2Fh CCh  not defined */
+                                    /* opcode C4h E2h 41h 2Fh CDh  not defined */
+                                    /* opcode C4h E2h 41h 2Fh CEh  not defined */
+                                    /* opcode C4h E2h 41h 2Fh CFh  not defined */
+                                    /* opcode C4h E2h 41h 2Fh D0h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh D1h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh D2h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh D3h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh D4h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh D5h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh D6h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh D7h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh D8h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh D9h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh DAh  not defined */
+                                    /* opcode C4h E2h 41h 2Fh DBh  not defined */
+                                    /* opcode C4h E2h 41h 2Fh DCh  not defined */
+                                    /* opcode C4h E2h 41h 2Fh DDh  not defined */
+                                    /* opcode C4h E2h 41h 2Fh DEh  not defined */
+                                    /* opcode C4h E2h 41h 2Fh DFh  not defined */
+                                    /* opcode C4h E2h 41h 2Fh E0h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh E1h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh E2h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh E3h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh E4h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh E5h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh E6h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh E7h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh E8h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh E9h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh EAh  not defined */
+                                    /* opcode C4h E2h 41h 2Fh EBh  not defined */
+                                    /* opcode C4h E2h 41h 2Fh ECh  not defined */
+                                    /* opcode C4h E2h 41h 2Fh EDh  not defined */
+                                    /* opcode C4h E2h 41h 2Fh EEh  not defined */
+                                    /* opcode C4h E2h 41h 2Fh EFh  not defined */
+                                    /* opcode C4h E2h 41h 2Fh F0h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh F1h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh F2h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh F3h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh F4h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh F5h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh F6h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh F7h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh F8h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh F9h  not defined */
+                                    /* opcode C4h E2h 41h 2Fh FAh  not defined */
+                                    /* opcode C4h E2h 41h 2Fh FBh  not defined */
+                                    /* opcode C4h E2h 41h 2Fh FCh  not defined */
+                                    /* opcode C4h E2h 41h 2Fh FDh  not defined */
+                                    /* opcode C4h E2h 41h 2Fh FEh  not defined */
+                                    /* opcode C4h E2h 41h 2Fh FFh  not defined */
+                                    default:
+                                        goto _x86decode_illegal_opcode;
+                                };
+/* End of opcodes starting with C4h E2h 41h 2Fh */
+                                break;
                             /* opcode C4h E2h 41h 30h  not defined */
                             /* opcode C4h E2h 41h 31h  not defined */
                             /* opcode C4h E2h 41h 32h  not defined */
@@ -15340,10 +16408,1078 @@ switch (op) {
                             /* opcode C4h E2h 45h 29h  not defined */
                             /* opcode C4h E2h 45h 2Ah  not defined */
                             /* opcode C4h E2h 45h 2Bh  not defined */
-                            /* opcode C4h E2h 45h 2Ch  not defined */
-                            /* opcode C4h E2h 45h 2Dh  not defined */
-                            /* opcode C4h E2h 45h 2Eh  not defined */
-                            /* opcode C4h E2h 45h 2Fh  not defined */
+                            case 0x2C: /* C4h E2h 45h 2Ch        spec:  */
+                                IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                                _x86decode_begin_code32_addr32_opcode_parse_C4E2452C:
+/* Opcodes starting with C4h E2h 45h 2Ch */
+                                switch (mrm.byte) {
+                                    case 0x00: /* C4h E2h 45h 2Ch 00h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=0 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x01: /* C4h E2h 45h 2Ch 01h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=0 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x02: /* C4h E2h 45h 2Ch 02h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=0 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x03: /* C4h E2h 45h 2Ch 03h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=0 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x04: /* C4h E2h 45h 2Ch 04h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=0 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x05: /* C4h E2h 45h 2Ch 05h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=0 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x06: /* C4h E2h 45h 2Ch 06h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=0 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x07: /* C4h E2h 45h 2Ch 07h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=0 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x08: /* C4h E2h 45h 2Ch 08h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=1 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x09: /* C4h E2h 45h 2Ch 09h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=1 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x0A: /* C4h E2h 45h 2Ch 0Ah VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=1 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x0B: /* C4h E2h 45h 2Ch 0Bh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=1 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x0C: /* C4h E2h 45h 2Ch 0Ch VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=1 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x0D: /* C4h E2h 45h 2Ch 0Dh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=1 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x0E: /* C4h E2h 45h 2Ch 0Eh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=1 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x0F: /* C4h E2h 45h 2Ch 0Fh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=1 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x10: /* C4h E2h 45h 2Ch 10h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=2 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x11: /* C4h E2h 45h 2Ch 11h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=2 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x12: /* C4h E2h 45h 2Ch 12h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=2 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x13: /* C4h E2h 45h 2Ch 13h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=2 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x14: /* C4h E2h 45h 2Ch 14h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=2 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x15: /* C4h E2h 45h 2Ch 15h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=2 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x16: /* C4h E2h 45h 2Ch 16h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=2 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x17: /* C4h E2h 45h 2Ch 17h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=2 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x18: /* C4h E2h 45h 2Ch 18h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=3 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x19: /* C4h E2h 45h 2Ch 19h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=3 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x1A: /* C4h E2h 45h 2Ch 1Ah VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=3 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x1B: /* C4h E2h 45h 2Ch 1Bh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=3 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x1C: /* C4h E2h 45h 2Ch 1Ch VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=3 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x1D: /* C4h E2h 45h 2Ch 1Dh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=3 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x1E: /* C4h E2h 45h 2Ch 1Eh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=3 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x1F: /* C4h E2h 45h 2Ch 1Fh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=3 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x20: /* C4h E2h 45h 2Ch 20h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=4 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x21: /* C4h E2h 45h 2Ch 21h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=4 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x22: /* C4h E2h 45h 2Ch 22h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=4 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x23: /* C4h E2h 45h 2Ch 23h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=4 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x24: /* C4h E2h 45h 2Ch 24h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=4 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x25: /* C4h E2h 45h 2Ch 25h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=4 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x26: /* C4h E2h 45h 2Ch 26h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=4 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x27: /* C4h E2h 45h 2Ch 27h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=4 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x28: /* C4h E2h 45h 2Ch 28h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=5 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x29: /* C4h E2h 45h 2Ch 29h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=5 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x2A: /* C4h E2h 45h 2Ch 2Ah VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=5 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x2B: /* C4h E2h 45h 2Ch 2Bh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=5 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x2C: /* C4h E2h 45h 2Ch 2Ch VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=5 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x2D: /* C4h E2h 45h 2Ch 2Dh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=5 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x2E: /* C4h E2h 45h 2Ch 2Eh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=5 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x2F: /* C4h E2h 45h 2Ch 2Fh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=5 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x30: /* C4h E2h 45h 2Ch 30h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=6 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x31: /* C4h E2h 45h 2Ch 31h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=6 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x32: /* C4h E2h 45h 2Ch 32h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=6 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x33: /* C4h E2h 45h 2Ch 33h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=6 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x34: /* C4h E2h 45h 2Ch 34h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=6 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x35: /* C4h E2h 45h 2Ch 35h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=6 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x36: /* C4h E2h 45h 2Ch 36h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=6 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x37: /* C4h E2h 45h 2Ch 37h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=6 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x38: /* C4h E2h 45h 2Ch 38h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=7 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x39: /* C4h E2h 45h 2Ch 39h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=7 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x3A: /* C4h E2h 45h 2Ch 3Ah VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=7 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x3B: /* C4h E2h 45h 2Ch 3Bh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=7 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x3C: /* C4h E2h 45h 2Ch 3Ch VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=7 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x3D: /* C4h E2h 45h 2Ch 3Dh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=7 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x3E: /* C4h E2h 45h 2Ch 3Eh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=7 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x3F: /* C4h E2h 45h 2Ch 3Fh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=0 reg=7 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x40: /* C4h E2h 45h 2Ch 40h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=0 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x41: /* C4h E2h 45h 2Ch 41h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=0 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x42: /* C4h E2h 45h 2Ch 42h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=0 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x43: /* C4h E2h 45h 2Ch 43h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=0 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x44: /* C4h E2h 45h 2Ch 44h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=0 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x45: /* C4h E2h 45h 2Ch 45h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=0 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x46: /* C4h E2h 45h 2Ch 46h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=0 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x47: /* C4h E2h 45h 2Ch 47h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=0 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x48: /* C4h E2h 45h 2Ch 48h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=1 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x49: /* C4h E2h 45h 2Ch 49h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=1 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x4A: /* C4h E2h 45h 2Ch 4Ah VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=1 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x4B: /* C4h E2h 45h 2Ch 4Bh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=1 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x4C: /* C4h E2h 45h 2Ch 4Ch VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=1 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x4D: /* C4h E2h 45h 2Ch 4Dh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=1 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x4E: /* C4h E2h 45h 2Ch 4Eh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=1 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x4F: /* C4h E2h 45h 2Ch 4Fh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=1 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x50: /* C4h E2h 45h 2Ch 50h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=2 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x51: /* C4h E2h 45h 2Ch 51h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=2 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x52: /* C4h E2h 45h 2Ch 52h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=2 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x53: /* C4h E2h 45h 2Ch 53h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=2 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x54: /* C4h E2h 45h 2Ch 54h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=2 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x55: /* C4h E2h 45h 2Ch 55h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=2 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x56: /* C4h E2h 45h 2Ch 56h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=2 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x57: /* C4h E2h 45h 2Ch 57h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=2 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x58: /* C4h E2h 45h 2Ch 58h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=3 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x59: /* C4h E2h 45h 2Ch 59h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=3 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x5A: /* C4h E2h 45h 2Ch 5Ah VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=3 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x5B: /* C4h E2h 45h 2Ch 5Bh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=3 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x5C: /* C4h E2h 45h 2Ch 5Ch VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=3 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x5D: /* C4h E2h 45h 2Ch 5Dh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=3 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x5E: /* C4h E2h 45h 2Ch 5Eh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=3 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x5F: /* C4h E2h 45h 2Ch 5Fh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=3 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x60: /* C4h E2h 45h 2Ch 60h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=4 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x61: /* C4h E2h 45h 2Ch 61h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=4 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x62: /* C4h E2h 45h 2Ch 62h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=4 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x63: /* C4h E2h 45h 2Ch 63h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=4 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x64: /* C4h E2h 45h 2Ch 64h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=4 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x65: /* C4h E2h 45h 2Ch 65h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=4 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x66: /* C4h E2h 45h 2Ch 66h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=4 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x67: /* C4h E2h 45h 2Ch 67h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=4 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x68: /* C4h E2h 45h 2Ch 68h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=5 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x69: /* C4h E2h 45h 2Ch 69h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=5 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x6A: /* C4h E2h 45h 2Ch 6Ah VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=5 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x6B: /* C4h E2h 45h 2Ch 6Bh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=5 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x6C: /* C4h E2h 45h 2Ch 6Ch VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=5 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x6D: /* C4h E2h 45h 2Ch 6Dh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=5 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x6E: /* C4h E2h 45h 2Ch 6Eh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=5 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x6F: /* C4h E2h 45h 2Ch 6Fh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=5 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x70: /* C4h E2h 45h 2Ch 70h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=6 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x71: /* C4h E2h 45h 2Ch 71h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=6 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x72: /* C4h E2h 45h 2Ch 72h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=6 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x73: /* C4h E2h 45h 2Ch 73h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=6 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x74: /* C4h E2h 45h 2Ch 74h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=6 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x75: /* C4h E2h 45h 2Ch 75h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=6 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x76: /* C4h E2h 45h 2Ch 76h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=6 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x77: /* C4h E2h 45h 2Ch 77h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=6 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x78: /* C4h E2h 45h 2Ch 78h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=7 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x79: /* C4h E2h 45h 2Ch 79h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=7 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x7A: /* C4h E2h 45h 2Ch 7Ah VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=7 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x7B: /* C4h E2h 45h 2Ch 7Bh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=7 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x7C: /* C4h E2h 45h 2Ch 7Ch VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=7 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x7D: /* C4h E2h 45h 2Ch 7Dh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=7 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x7E: /* C4h E2h 45h 2Ch 7Eh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=7 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x7F: /* C4h E2h 45h 2Ch 7Fh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=1 reg=7 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x80: /* C4h E2h 45h 2Ch 80h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=0 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x81: /* C4h E2h 45h 2Ch 81h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=0 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x82: /* C4h E2h 45h 2Ch 82h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=0 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x83: /* C4h E2h 45h 2Ch 83h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=0 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x84: /* C4h E2h 45h 2Ch 84h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=0 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x85: /* C4h E2h 45h 2Ch 85h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=0 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x86: /* C4h E2h 45h 2Ch 86h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=0 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x87: /* C4h E2h 45h 2Ch 87h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=0 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x88: /* C4h E2h 45h 2Ch 88h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=1 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x89: /* C4h E2h 45h 2Ch 89h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=1 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x8A: /* C4h E2h 45h 2Ch 8Ah VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=1 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x8B: /* C4h E2h 45h 2Ch 8Bh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=1 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x8C: /* C4h E2h 45h 2Ch 8Ch VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=1 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x8D: /* C4h E2h 45h 2Ch 8Dh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=1 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x8E: /* C4h E2h 45h 2Ch 8Eh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=1 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x8F: /* C4h E2h 45h 2Ch 8Fh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=1 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x90: /* C4h E2h 45h 2Ch 90h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=2 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x91: /* C4h E2h 45h 2Ch 91h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=2 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x92: /* C4h E2h 45h 2Ch 92h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=2 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x93: /* C4h E2h 45h 2Ch 93h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=2 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x94: /* C4h E2h 45h 2Ch 94h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=2 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x95: /* C4h E2h 45h 2Ch 95h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=2 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x96: /* C4h E2h 45h 2Ch 96h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=2 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x97: /* C4h E2h 45h 2Ch 97h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=2 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x98: /* C4h E2h 45h 2Ch 98h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=3 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x99: /* C4h E2h 45h 2Ch 99h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=3 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x9A: /* C4h E2h 45h 2Ch 9Ah VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=3 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x9B: /* C4h E2h 45h 2Ch 9Bh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=3 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x9C: /* C4h E2h 45h 2Ch 9Ch VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=3 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x9D: /* C4h E2h 45h 2Ch 9Dh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=3 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x9E: /* C4h E2h 45h 2Ch 9Eh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=3 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0x9F: /* C4h E2h 45h 2Ch 9Fh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=3 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xA0: /* C4h E2h 45h 2Ch A0h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=4 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xA1: /* C4h E2h 45h 2Ch A1h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=4 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xA2: /* C4h E2h 45h 2Ch A2h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=4 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xA3: /* C4h E2h 45h 2Ch A3h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=4 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xA4: /* C4h E2h 45h 2Ch A4h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=4 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xA5: /* C4h E2h 45h 2Ch A5h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=4 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xA6: /* C4h E2h 45h 2Ch A6h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=4 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xA7: /* C4h E2h 45h 2Ch A7h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=4 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xA8: /* C4h E2h 45h 2Ch A8h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=5 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xA9: /* C4h E2h 45h 2Ch A9h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=5 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xAA: /* C4h E2h 45h 2Ch AAh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=5 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xAB: /* C4h E2h 45h 2Ch ABh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=5 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xAC: /* C4h E2h 45h 2Ch ACh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=5 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xAD: /* C4h E2h 45h 2Ch ADh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=5 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xAE: /* C4h E2h 45h 2Ch AEh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=5 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xAF: /* C4h E2h 45h 2Ch AFh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=5 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xB0: /* C4h E2h 45h 2Ch B0h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=6 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xB1: /* C4h E2h 45h 2Ch B1h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=6 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xB2: /* C4h E2h 45h 2Ch B2h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=6 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xB3: /* C4h E2h 45h 2Ch B3h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=6 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xB4: /* C4h E2h 45h 2Ch B4h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=6 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xB5: /* C4h E2h 45h 2Ch B5h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=6 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xB6: /* C4h E2h 45h 2Ch B6h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=6 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xB7: /* C4h E2h 45h 2Ch B7h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=6 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xB8: /* C4h E2h 45h 2Ch B8h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=7 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xB9: /* C4h E2h 45h 2Ch B9h VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=7 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xBA: /* C4h E2h 45h 2Ch BAh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=7 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xBB: /* C4h E2h 45h 2Ch BBh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=7 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xBC: /* C4h E2h 45h 2Ch BCh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=7 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xBD: /* C4h E2h 45h 2Ch BDh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=7 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xBE: /* C4h E2h 45h 2Ch BEh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=7 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                    case 0xBF: /* C4h E2h 45h 2Ch BFh VMASKMOVPS avx(reg),avx(vsidx),avx(r/m) mod=2 reg=7 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2C mod/reg/rm mod!=3 */
+                                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMASKMOVPS YMM%u,YMM%u,%s",mrm.reg(),vex.V,IPDecPrint32(mrm,sib,disp,32,RC_AVXREG,""));
+                                        break;
+                                    /* opcode C4h E2h 45h 2Ch C0h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch C1h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch C2h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch C3h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch C4h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch C5h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch C6h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch C7h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch C8h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch C9h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch CAh  not defined */
+                                    /* opcode C4h E2h 45h 2Ch CBh  not defined */
+                                    /* opcode C4h E2h 45h 2Ch CCh  not defined */
+                                    /* opcode C4h E2h 45h 2Ch CDh  not defined */
+                                    /* opcode C4h E2h 45h 2Ch CEh  not defined */
+                                    /* opcode C4h E2h 45h 2Ch CFh  not defined */
+                                    /* opcode C4h E2h 45h 2Ch D0h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch D1h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch D2h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch D3h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch D4h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch D5h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch D6h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch D7h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch D8h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch D9h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch DAh  not defined */
+                                    /* opcode C4h E2h 45h 2Ch DBh  not defined */
+                                    /* opcode C4h E2h 45h 2Ch DCh  not defined */
+                                    /* opcode C4h E2h 45h 2Ch DDh  not defined */
+                                    /* opcode C4h E2h 45h 2Ch DEh  not defined */
+                                    /* opcode C4h E2h 45h 2Ch DFh  not defined */
+                                    /* opcode C4h E2h 45h 2Ch E0h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch E1h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch E2h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch E3h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch E4h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch E5h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch E6h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch E7h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch E8h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch E9h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch EAh  not defined */
+                                    /* opcode C4h E2h 45h 2Ch EBh  not defined */
+                                    /* opcode C4h E2h 45h 2Ch ECh  not defined */
+                                    /* opcode C4h E2h 45h 2Ch EDh  not defined */
+                                    /* opcode C4h E2h 45h 2Ch EEh  not defined */
+                                    /* opcode C4h E2h 45h 2Ch EFh  not defined */
+                                    /* opcode C4h E2h 45h 2Ch F0h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch F1h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch F2h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch F3h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch F4h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch F5h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch F6h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch F7h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch F8h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch F9h  not defined */
+                                    /* opcode C4h E2h 45h 2Ch FAh  not defined */
+                                    /* opcode C4h E2h 45h 2Ch FBh  not defined */
+                                    /* opcode C4h E2h 45h 2Ch FCh  not defined */
+                                    /* opcode C4h E2h 45h 2Ch FDh  not defined */
+                                    /* opcode C4h E2h 45h 2Ch FEh  not defined */
+                                    /* opcode C4h E2h 45h 2Ch FFh  not defined */
+                                    default:
+                                        goto _x86decode_illegal_opcode;
+                                };
+/* End of opcodes starting with C4h E2h 45h 2Ch */
+                                break;
+                            case 0x2D: /* C4h E2h 45h 2Dh        spec:  */
+                                IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                                _x86decode_begin_code32_addr32_opcode_parse_C4E2452D:
+/* Opcodes starting with C4h E2h 45h 2Dh */
+                                switch (mrm.byte) {
+                                    case 0x00: /* C4h E2h 45h 2Dh 00h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=0 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x01: /* C4h E2h 45h 2Dh 01h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=0 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x02: /* C4h E2h 45h 2Dh 02h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=0 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x03: /* C4h E2h 45h 2Dh 03h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=0 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x04: /* C4h E2h 45h 2Dh 04h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=0 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x05: /* C4h E2h 45h 2Dh 05h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=0 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x06: /* C4h E2h 45h 2Dh 06h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=0 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x07: /* C4h E2h 45h 2Dh 07h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=0 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x08: /* C4h E2h 45h 2Dh 08h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=1 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x09: /* C4h E2h 45h 2Dh 09h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=1 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x0A: /* C4h E2h 45h 2Dh 0Ah VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=1 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x0B: /* C4h E2h 45h 2Dh 0Bh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=1 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x0C: /* C4h E2h 45h 2Dh 0Ch VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=1 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x0D: /* C4h E2h 45h 2Dh 0Dh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=1 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x0E: /* C4h E2h 45h 2Dh 0Eh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=1 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x0F: /* C4h E2h 45h 2Dh 0Fh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=1 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x10: /* C4h E2h 45h 2Dh 10h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=2 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x11: /* C4h E2h 45h 2Dh 11h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=2 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x12: /* C4h E2h 45h 2Dh 12h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=2 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x13: /* C4h E2h 45h 2Dh 13h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=2 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x14: /* C4h E2h 45h 2Dh 14h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=2 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x15: /* C4h E2h 45h 2Dh 15h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=2 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x16: /* C4h E2h 45h 2Dh 16h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=2 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x17: /* C4h E2h 45h 2Dh 17h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=2 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x18: /* C4h E2h 45h 2Dh 18h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=3 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x19: /* C4h E2h 45h 2Dh 19h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=3 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x1A: /* C4h E2h 45h 2Dh 1Ah VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=3 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x1B: /* C4h E2h 45h 2Dh 1Bh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=3 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x1C: /* C4h E2h 45h 2Dh 1Ch VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=3 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x1D: /* C4h E2h 45h 2Dh 1Dh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=3 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x1E: /* C4h E2h 45h 2Dh 1Eh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=3 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x1F: /* C4h E2h 45h 2Dh 1Fh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=3 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x20: /* C4h E2h 45h 2Dh 20h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=4 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x21: /* C4h E2h 45h 2Dh 21h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=4 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x22: /* C4h E2h 45h 2Dh 22h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=4 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x23: /* C4h E2h 45h 2Dh 23h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=4 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x24: /* C4h E2h 45h 2Dh 24h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=4 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x25: /* C4h E2h 45h 2Dh 25h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=4 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x26: /* C4h E2h 45h 2Dh 26h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=4 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x27: /* C4h E2h 45h 2Dh 27h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=4 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x28: /* C4h E2h 45h 2Dh 28h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=5 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x29: /* C4h E2h 45h 2Dh 29h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=5 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x2A: /* C4h E2h 45h 2Dh 2Ah VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=5 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x2B: /* C4h E2h 45h 2Dh 2Bh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=5 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x2C: /* C4h E2h 45h 2Dh 2Ch VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=5 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x2D: /* C4h E2h 45h 2Dh 2Dh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=5 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x2E: /* C4h E2h 45h 2Dh 2Eh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=5 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x2F: /* C4h E2h 45h 2Dh 2Fh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=5 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x30: /* C4h E2h 45h 2Dh 30h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=6 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x31: /* C4h E2h 45h 2Dh 31h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=6 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x32: /* C4h E2h 45h 2Dh 32h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=6 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x33: /* C4h E2h 45h 2Dh 33h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=6 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x34: /* C4h E2h 45h 2Dh 34h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=6 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x35: /* C4h E2h 45h 2Dh 35h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=6 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x36: /* C4h E2h 45h 2Dh 36h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=6 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x37: /* C4h E2h 45h 2Dh 37h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=6 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x38: /* C4h E2h 45h 2Dh 38h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=7 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x39: /* C4h E2h 45h 2Dh 39h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=7 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x3A: /* C4h E2h 45h 2Dh 3Ah VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=7 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x3B: /* C4h E2h 45h 2Dh 3Bh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=7 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x3C: /* C4h E2h 45h 2Dh 3Ch VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=7 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x3D: /* C4h E2h 45h 2Dh 3Dh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=7 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x3E: /* C4h E2h 45h 2Dh 3Eh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=7 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x3F: /* C4h E2h 45h 2Dh 3Fh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=0 reg=7 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x40: /* C4h E2h 45h 2Dh 40h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=0 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x41: /* C4h E2h 45h 2Dh 41h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=0 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x42: /* C4h E2h 45h 2Dh 42h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=0 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x43: /* C4h E2h 45h 2Dh 43h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=0 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x44: /* C4h E2h 45h 2Dh 44h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=0 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x45: /* C4h E2h 45h 2Dh 45h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=0 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x46: /* C4h E2h 45h 2Dh 46h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=0 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x47: /* C4h E2h 45h 2Dh 47h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=0 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x48: /* C4h E2h 45h 2Dh 48h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=1 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x49: /* C4h E2h 45h 2Dh 49h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=1 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x4A: /* C4h E2h 45h 2Dh 4Ah VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=1 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x4B: /* C4h E2h 45h 2Dh 4Bh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=1 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x4C: /* C4h E2h 45h 2Dh 4Ch VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=1 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x4D: /* C4h E2h 45h 2Dh 4Dh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=1 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x4E: /* C4h E2h 45h 2Dh 4Eh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=1 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x4F: /* C4h E2h 45h 2Dh 4Fh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=1 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x50: /* C4h E2h 45h 2Dh 50h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=2 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x51: /* C4h E2h 45h 2Dh 51h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=2 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x52: /* C4h E2h 45h 2Dh 52h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=2 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x53: /* C4h E2h 45h 2Dh 53h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=2 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x54: /* C4h E2h 45h 2Dh 54h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=2 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x55: /* C4h E2h 45h 2Dh 55h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=2 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x56: /* C4h E2h 45h 2Dh 56h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=2 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x57: /* C4h E2h 45h 2Dh 57h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=2 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x58: /* C4h E2h 45h 2Dh 58h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=3 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x59: /* C4h E2h 45h 2Dh 59h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=3 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x5A: /* C4h E2h 45h 2Dh 5Ah VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=3 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x5B: /* C4h E2h 45h 2Dh 5Bh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=3 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x5C: /* C4h E2h 45h 2Dh 5Ch VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=3 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x5D: /* C4h E2h 45h 2Dh 5Dh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=3 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x5E: /* C4h E2h 45h 2Dh 5Eh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=3 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x5F: /* C4h E2h 45h 2Dh 5Fh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=3 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x60: /* C4h E2h 45h 2Dh 60h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=4 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x61: /* C4h E2h 45h 2Dh 61h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=4 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x62: /* C4h E2h 45h 2Dh 62h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=4 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x63: /* C4h E2h 45h 2Dh 63h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=4 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x64: /* C4h E2h 45h 2Dh 64h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=4 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x65: /* C4h E2h 45h 2Dh 65h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=4 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x66: /* C4h E2h 45h 2Dh 66h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=4 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x67: /* C4h E2h 45h 2Dh 67h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=4 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x68: /* C4h E2h 45h 2Dh 68h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=5 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x69: /* C4h E2h 45h 2Dh 69h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=5 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x6A: /* C4h E2h 45h 2Dh 6Ah VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=5 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x6B: /* C4h E2h 45h 2Dh 6Bh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=5 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x6C: /* C4h E2h 45h 2Dh 6Ch VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=5 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x6D: /* C4h E2h 45h 2Dh 6Dh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=5 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x6E: /* C4h E2h 45h 2Dh 6Eh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=5 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x6F: /* C4h E2h 45h 2Dh 6Fh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=5 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x70: /* C4h E2h 45h 2Dh 70h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=6 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x71: /* C4h E2h 45h 2Dh 71h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=6 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x72: /* C4h E2h 45h 2Dh 72h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=6 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x73: /* C4h E2h 45h 2Dh 73h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=6 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x74: /* C4h E2h 45h 2Dh 74h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=6 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x75: /* C4h E2h 45h 2Dh 75h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=6 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x76: /* C4h E2h 45h 2Dh 76h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=6 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x77: /* C4h E2h 45h 2Dh 77h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=6 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x78: /* C4h E2h 45h 2Dh 78h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=7 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x79: /* C4h E2h 45h 2Dh 79h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=7 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x7A: /* C4h E2h 45h 2Dh 7Ah VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=7 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x7B: /* C4h E2h 45h 2Dh 7Bh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=7 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x7C: /* C4h E2h 45h 2Dh 7Ch VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=7 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x7D: /* C4h E2h 45h 2Dh 7Dh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=7 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x7E: /* C4h E2h 45h 2Dh 7Eh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=7 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x7F: /* C4h E2h 45h 2Dh 7Fh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=1 reg=7 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x80: /* C4h E2h 45h 2Dh 80h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=0 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x81: /* C4h E2h 45h 2Dh 81h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=0 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x82: /* C4h E2h 45h 2Dh 82h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=0 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x83: /* C4h E2h 45h 2Dh 83h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=0 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x84: /* C4h E2h 45h 2Dh 84h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=0 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x85: /* C4h E2h 45h 2Dh 85h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=0 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x86: /* C4h E2h 45h 2Dh 86h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=0 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x87: /* C4h E2h 45h 2Dh 87h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=0 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x88: /* C4h E2h 45h 2Dh 88h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=1 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x89: /* C4h E2h 45h 2Dh 89h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=1 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x8A: /* C4h E2h 45h 2Dh 8Ah VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=1 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x8B: /* C4h E2h 45h 2Dh 8Bh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=1 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x8C: /* C4h E2h 45h 2Dh 8Ch VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=1 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x8D: /* C4h E2h 45h 2Dh 8Dh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=1 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x8E: /* C4h E2h 45h 2Dh 8Eh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=1 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x8F: /* C4h E2h 45h 2Dh 8Fh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=1 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x90: /* C4h E2h 45h 2Dh 90h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=2 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x91: /* C4h E2h 45h 2Dh 91h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=2 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x92: /* C4h E2h 45h 2Dh 92h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=2 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x93: /* C4h E2h 45h 2Dh 93h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=2 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x94: /* C4h E2h 45h 2Dh 94h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=2 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x95: /* C4h E2h 45h 2Dh 95h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=2 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x96: /* C4h E2h 45h 2Dh 96h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=2 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x97: /* C4h E2h 45h 2Dh 97h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=2 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x98: /* C4h E2h 45h 2Dh 98h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=3 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x99: /* C4h E2h 45h 2Dh 99h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=3 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x9A: /* C4h E2h 45h 2Dh 9Ah VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=3 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x9B: /* C4h E2h 45h 2Dh 9Bh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=3 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x9C: /* C4h E2h 45h 2Dh 9Ch VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=3 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x9D: /* C4h E2h 45h 2Dh 9Dh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=3 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x9E: /* C4h E2h 45h 2Dh 9Eh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=3 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0x9F: /* C4h E2h 45h 2Dh 9Fh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=3 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xA0: /* C4h E2h 45h 2Dh A0h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=4 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xA1: /* C4h E2h 45h 2Dh A1h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=4 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xA2: /* C4h E2h 45h 2Dh A2h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=4 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xA3: /* C4h E2h 45h 2Dh A3h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=4 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xA4: /* C4h E2h 45h 2Dh A4h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=4 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xA5: /* C4h E2h 45h 2Dh A5h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=4 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xA6: /* C4h E2h 45h 2Dh A6h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=4 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xA7: /* C4h E2h 45h 2Dh A7h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=4 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xA8: /* C4h E2h 45h 2Dh A8h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=5 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xA9: /* C4h E2h 45h 2Dh A9h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=5 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xAA: /* C4h E2h 45h 2Dh AAh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=5 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xAB: /* C4h E2h 45h 2Dh ABh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=5 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xAC: /* C4h E2h 45h 2Dh ACh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=5 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xAD: /* C4h E2h 45h 2Dh ADh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=5 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xAE: /* C4h E2h 45h 2Dh AEh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=5 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xAF: /* C4h E2h 45h 2Dh AFh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=5 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xB0: /* C4h E2h 45h 2Dh B0h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=6 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xB1: /* C4h E2h 45h 2Dh B1h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=6 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xB2: /* C4h E2h 45h 2Dh B2h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=6 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xB3: /* C4h E2h 45h 2Dh B3h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=6 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xB4: /* C4h E2h 45h 2Dh B4h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=6 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xB5: /* C4h E2h 45h 2Dh B5h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=6 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xB6: /* C4h E2h 45h 2Dh B6h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=6 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xB7: /* C4h E2h 45h 2Dh B7h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=6 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xB8: /* C4h E2h 45h 2Dh B8h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=7 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xB9: /* C4h E2h 45h 2Dh B9h VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=7 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xBA: /* C4h E2h 45h 2Dh BAh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=7 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xBB: /* C4h E2h 45h 2Dh BBh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=7 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xBC: /* C4h E2h 45h 2Dh BCh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=7 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xBD: /* C4h E2h 45h 2Dh BDh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=7 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xBE: /* C4h E2h 45h 2Dh BEh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=7 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                    case 0xBF: /* C4h E2h 45h 2Dh BFh VMASKMOVPD avx(reg),avx(vsidx),avx(r/m) mod=2 reg=7 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2D mod/reg/rm mod!=3 */
+                                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMASKMOVPD YMM%u,YMM%u,%s",mrm.reg(),vex.V,IPDecPrint32(mrm,sib,disp,32,RC_AVXREG,""));
+                                        break;
+                                    /* opcode C4h E2h 45h 2Dh C0h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh C1h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh C2h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh C3h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh C4h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh C5h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh C6h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh C7h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh C8h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh C9h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh CAh  not defined */
+                                    /* opcode C4h E2h 45h 2Dh CBh  not defined */
+                                    /* opcode C4h E2h 45h 2Dh CCh  not defined */
+                                    /* opcode C4h E2h 45h 2Dh CDh  not defined */
+                                    /* opcode C4h E2h 45h 2Dh CEh  not defined */
+                                    /* opcode C4h E2h 45h 2Dh CFh  not defined */
+                                    /* opcode C4h E2h 45h 2Dh D0h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh D1h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh D2h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh D3h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh D4h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh D5h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh D6h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh D7h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh D8h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh D9h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh DAh  not defined */
+                                    /* opcode C4h E2h 45h 2Dh DBh  not defined */
+                                    /* opcode C4h E2h 45h 2Dh DCh  not defined */
+                                    /* opcode C4h E2h 45h 2Dh DDh  not defined */
+                                    /* opcode C4h E2h 45h 2Dh DEh  not defined */
+                                    /* opcode C4h E2h 45h 2Dh DFh  not defined */
+                                    /* opcode C4h E2h 45h 2Dh E0h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh E1h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh E2h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh E3h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh E4h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh E5h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh E6h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh E7h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh E8h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh E9h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh EAh  not defined */
+                                    /* opcode C4h E2h 45h 2Dh EBh  not defined */
+                                    /* opcode C4h E2h 45h 2Dh ECh  not defined */
+                                    /* opcode C4h E2h 45h 2Dh EDh  not defined */
+                                    /* opcode C4h E2h 45h 2Dh EEh  not defined */
+                                    /* opcode C4h E2h 45h 2Dh EFh  not defined */
+                                    /* opcode C4h E2h 45h 2Dh F0h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh F1h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh F2h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh F3h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh F4h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh F5h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh F6h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh F7h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh F8h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh F9h  not defined */
+                                    /* opcode C4h E2h 45h 2Dh FAh  not defined */
+                                    /* opcode C4h E2h 45h 2Dh FBh  not defined */
+                                    /* opcode C4h E2h 45h 2Dh FCh  not defined */
+                                    /* opcode C4h E2h 45h 2Dh FDh  not defined */
+                                    /* opcode C4h E2h 45h 2Dh FEh  not defined */
+                                    /* opcode C4h E2h 45h 2Dh FFh  not defined */
+                                    default:
+                                        goto _x86decode_illegal_opcode;
+                                };
+/* End of opcodes starting with C4h E2h 45h 2Dh */
+                                break;
+                            case 0x2E: /* C4h E2h 45h 2Eh        spec:  */
+                                IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                                _x86decode_begin_code32_addr32_opcode_parse_C4E2452E:
+/* Opcodes starting with C4h E2h 45h 2Eh */
+                                switch (mrm.byte) {
+                                    case 0x00: /* C4h E2h 45h 2Eh 00h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=0 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x01: /* C4h E2h 45h 2Eh 01h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=0 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x02: /* C4h E2h 45h 2Eh 02h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=0 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x03: /* C4h E2h 45h 2Eh 03h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=0 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x04: /* C4h E2h 45h 2Eh 04h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=0 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x05: /* C4h E2h 45h 2Eh 05h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=0 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x06: /* C4h E2h 45h 2Eh 06h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=0 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x07: /* C4h E2h 45h 2Eh 07h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=0 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x08: /* C4h E2h 45h 2Eh 08h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=1 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x09: /* C4h E2h 45h 2Eh 09h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=1 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x0A: /* C4h E2h 45h 2Eh 0Ah VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=1 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x0B: /* C4h E2h 45h 2Eh 0Bh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=1 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x0C: /* C4h E2h 45h 2Eh 0Ch VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=1 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x0D: /* C4h E2h 45h 2Eh 0Dh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=1 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x0E: /* C4h E2h 45h 2Eh 0Eh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=1 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x0F: /* C4h E2h 45h 2Eh 0Fh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=1 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x10: /* C4h E2h 45h 2Eh 10h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=2 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x11: /* C4h E2h 45h 2Eh 11h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=2 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x12: /* C4h E2h 45h 2Eh 12h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=2 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x13: /* C4h E2h 45h 2Eh 13h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=2 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x14: /* C4h E2h 45h 2Eh 14h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=2 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x15: /* C4h E2h 45h 2Eh 15h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=2 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x16: /* C4h E2h 45h 2Eh 16h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=2 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x17: /* C4h E2h 45h 2Eh 17h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=2 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x18: /* C4h E2h 45h 2Eh 18h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=3 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x19: /* C4h E2h 45h 2Eh 19h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=3 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x1A: /* C4h E2h 45h 2Eh 1Ah VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=3 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x1B: /* C4h E2h 45h 2Eh 1Bh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=3 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x1C: /* C4h E2h 45h 2Eh 1Ch VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=3 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x1D: /* C4h E2h 45h 2Eh 1Dh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=3 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x1E: /* C4h E2h 45h 2Eh 1Eh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=3 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x1F: /* C4h E2h 45h 2Eh 1Fh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=3 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x20: /* C4h E2h 45h 2Eh 20h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=4 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x21: /* C4h E2h 45h 2Eh 21h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=4 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x22: /* C4h E2h 45h 2Eh 22h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=4 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x23: /* C4h E2h 45h 2Eh 23h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=4 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x24: /* C4h E2h 45h 2Eh 24h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=4 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x25: /* C4h E2h 45h 2Eh 25h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=4 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x26: /* C4h E2h 45h 2Eh 26h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=4 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x27: /* C4h E2h 45h 2Eh 27h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=4 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x28: /* C4h E2h 45h 2Eh 28h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=5 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x29: /* C4h E2h 45h 2Eh 29h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=5 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x2A: /* C4h E2h 45h 2Eh 2Ah VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=5 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x2B: /* C4h E2h 45h 2Eh 2Bh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=5 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x2C: /* C4h E2h 45h 2Eh 2Ch VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=5 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x2D: /* C4h E2h 45h 2Eh 2Dh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=5 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x2E: /* C4h E2h 45h 2Eh 2Eh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=5 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x2F: /* C4h E2h 45h 2Eh 2Fh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=5 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x30: /* C4h E2h 45h 2Eh 30h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=6 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x31: /* C4h E2h 45h 2Eh 31h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=6 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x32: /* C4h E2h 45h 2Eh 32h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=6 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x33: /* C4h E2h 45h 2Eh 33h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=6 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x34: /* C4h E2h 45h 2Eh 34h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=6 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x35: /* C4h E2h 45h 2Eh 35h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=6 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x36: /* C4h E2h 45h 2Eh 36h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=6 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x37: /* C4h E2h 45h 2Eh 37h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=6 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x38: /* C4h E2h 45h 2Eh 38h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=7 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x39: /* C4h E2h 45h 2Eh 39h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=7 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x3A: /* C4h E2h 45h 2Eh 3Ah VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=7 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x3B: /* C4h E2h 45h 2Eh 3Bh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=7 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x3C: /* C4h E2h 45h 2Eh 3Ch VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=7 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x3D: /* C4h E2h 45h 2Eh 3Dh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=7 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x3E: /* C4h E2h 45h 2Eh 3Eh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=7 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x3F: /* C4h E2h 45h 2Eh 3Fh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=0 reg=7 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x40: /* C4h E2h 45h 2Eh 40h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=0 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x41: /* C4h E2h 45h 2Eh 41h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=0 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x42: /* C4h E2h 45h 2Eh 42h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=0 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x43: /* C4h E2h 45h 2Eh 43h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=0 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x44: /* C4h E2h 45h 2Eh 44h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=0 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x45: /* C4h E2h 45h 2Eh 45h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=0 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x46: /* C4h E2h 45h 2Eh 46h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=0 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x47: /* C4h E2h 45h 2Eh 47h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=0 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x48: /* C4h E2h 45h 2Eh 48h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=1 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x49: /* C4h E2h 45h 2Eh 49h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=1 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x4A: /* C4h E2h 45h 2Eh 4Ah VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=1 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x4B: /* C4h E2h 45h 2Eh 4Bh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=1 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x4C: /* C4h E2h 45h 2Eh 4Ch VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=1 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x4D: /* C4h E2h 45h 2Eh 4Dh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=1 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x4E: /* C4h E2h 45h 2Eh 4Eh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=1 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x4F: /* C4h E2h 45h 2Eh 4Fh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=1 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x50: /* C4h E2h 45h 2Eh 50h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=2 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x51: /* C4h E2h 45h 2Eh 51h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=2 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x52: /* C4h E2h 45h 2Eh 52h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=2 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x53: /* C4h E2h 45h 2Eh 53h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=2 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x54: /* C4h E2h 45h 2Eh 54h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=2 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x55: /* C4h E2h 45h 2Eh 55h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=2 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x56: /* C4h E2h 45h 2Eh 56h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=2 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x57: /* C4h E2h 45h 2Eh 57h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=2 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x58: /* C4h E2h 45h 2Eh 58h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=3 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x59: /* C4h E2h 45h 2Eh 59h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=3 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x5A: /* C4h E2h 45h 2Eh 5Ah VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=3 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x5B: /* C4h E2h 45h 2Eh 5Bh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=3 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x5C: /* C4h E2h 45h 2Eh 5Ch VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=3 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x5D: /* C4h E2h 45h 2Eh 5Dh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=3 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x5E: /* C4h E2h 45h 2Eh 5Eh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=3 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x5F: /* C4h E2h 45h 2Eh 5Fh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=3 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x60: /* C4h E2h 45h 2Eh 60h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=4 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x61: /* C4h E2h 45h 2Eh 61h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=4 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x62: /* C4h E2h 45h 2Eh 62h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=4 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x63: /* C4h E2h 45h 2Eh 63h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=4 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x64: /* C4h E2h 45h 2Eh 64h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=4 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x65: /* C4h E2h 45h 2Eh 65h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=4 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x66: /* C4h E2h 45h 2Eh 66h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=4 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x67: /* C4h E2h 45h 2Eh 67h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=4 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x68: /* C4h E2h 45h 2Eh 68h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=5 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x69: /* C4h E2h 45h 2Eh 69h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=5 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x6A: /* C4h E2h 45h 2Eh 6Ah VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=5 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x6B: /* C4h E2h 45h 2Eh 6Bh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=5 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x6C: /* C4h E2h 45h 2Eh 6Ch VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=5 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x6D: /* C4h E2h 45h 2Eh 6Dh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=5 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x6E: /* C4h E2h 45h 2Eh 6Eh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=5 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x6F: /* C4h E2h 45h 2Eh 6Fh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=5 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x70: /* C4h E2h 45h 2Eh 70h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=6 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x71: /* C4h E2h 45h 2Eh 71h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=6 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x72: /* C4h E2h 45h 2Eh 72h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=6 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x73: /* C4h E2h 45h 2Eh 73h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=6 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x74: /* C4h E2h 45h 2Eh 74h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=6 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x75: /* C4h E2h 45h 2Eh 75h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=6 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x76: /* C4h E2h 45h 2Eh 76h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=6 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x77: /* C4h E2h 45h 2Eh 77h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=6 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x78: /* C4h E2h 45h 2Eh 78h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=7 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x79: /* C4h E2h 45h 2Eh 79h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=7 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x7A: /* C4h E2h 45h 2Eh 7Ah VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=7 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x7B: /* C4h E2h 45h 2Eh 7Bh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=7 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x7C: /* C4h E2h 45h 2Eh 7Ch VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=7 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x7D: /* C4h E2h 45h 2Eh 7Dh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=7 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x7E: /* C4h E2h 45h 2Eh 7Eh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=7 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x7F: /* C4h E2h 45h 2Eh 7Fh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=1 reg=7 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x80: /* C4h E2h 45h 2Eh 80h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=0 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x81: /* C4h E2h 45h 2Eh 81h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=0 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x82: /* C4h E2h 45h 2Eh 82h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=0 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x83: /* C4h E2h 45h 2Eh 83h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=0 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x84: /* C4h E2h 45h 2Eh 84h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=0 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x85: /* C4h E2h 45h 2Eh 85h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=0 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x86: /* C4h E2h 45h 2Eh 86h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=0 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x87: /* C4h E2h 45h 2Eh 87h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=0 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x88: /* C4h E2h 45h 2Eh 88h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=1 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x89: /* C4h E2h 45h 2Eh 89h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=1 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x8A: /* C4h E2h 45h 2Eh 8Ah VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=1 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x8B: /* C4h E2h 45h 2Eh 8Bh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=1 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x8C: /* C4h E2h 45h 2Eh 8Ch VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=1 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x8D: /* C4h E2h 45h 2Eh 8Dh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=1 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x8E: /* C4h E2h 45h 2Eh 8Eh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=1 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x8F: /* C4h E2h 45h 2Eh 8Fh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=1 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x90: /* C4h E2h 45h 2Eh 90h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=2 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x91: /* C4h E2h 45h 2Eh 91h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=2 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x92: /* C4h E2h 45h 2Eh 92h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=2 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x93: /* C4h E2h 45h 2Eh 93h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=2 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x94: /* C4h E2h 45h 2Eh 94h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=2 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x95: /* C4h E2h 45h 2Eh 95h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=2 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x96: /* C4h E2h 45h 2Eh 96h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=2 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x97: /* C4h E2h 45h 2Eh 97h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=2 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x98: /* C4h E2h 45h 2Eh 98h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=3 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x99: /* C4h E2h 45h 2Eh 99h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=3 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x9A: /* C4h E2h 45h 2Eh 9Ah VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=3 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x9B: /* C4h E2h 45h 2Eh 9Bh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=3 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x9C: /* C4h E2h 45h 2Eh 9Ch VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=3 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x9D: /* C4h E2h 45h 2Eh 9Dh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=3 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x9E: /* C4h E2h 45h 2Eh 9Eh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=3 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0x9F: /* C4h E2h 45h 2Eh 9Fh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=3 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xA0: /* C4h E2h 45h 2Eh A0h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=4 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xA1: /* C4h E2h 45h 2Eh A1h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=4 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xA2: /* C4h E2h 45h 2Eh A2h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=4 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xA3: /* C4h E2h 45h 2Eh A3h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=4 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xA4: /* C4h E2h 45h 2Eh A4h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=4 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xA5: /* C4h E2h 45h 2Eh A5h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=4 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xA6: /* C4h E2h 45h 2Eh A6h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=4 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xA7: /* C4h E2h 45h 2Eh A7h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=4 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xA8: /* C4h E2h 45h 2Eh A8h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=5 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xA9: /* C4h E2h 45h 2Eh A9h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=5 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xAA: /* C4h E2h 45h 2Eh AAh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=5 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xAB: /* C4h E2h 45h 2Eh ABh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=5 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xAC: /* C4h E2h 45h 2Eh ACh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=5 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xAD: /* C4h E2h 45h 2Eh ADh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=5 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xAE: /* C4h E2h 45h 2Eh AEh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=5 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xAF: /* C4h E2h 45h 2Eh AFh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=5 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xB0: /* C4h E2h 45h 2Eh B0h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=6 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xB1: /* C4h E2h 45h 2Eh B1h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=6 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xB2: /* C4h E2h 45h 2Eh B2h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=6 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xB3: /* C4h E2h 45h 2Eh B3h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=6 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xB4: /* C4h E2h 45h 2Eh B4h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=6 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xB5: /* C4h E2h 45h 2Eh B5h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=6 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xB6: /* C4h E2h 45h 2Eh B6h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=6 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xB7: /* C4h E2h 45h 2Eh B7h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=6 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xB8: /* C4h E2h 45h 2Eh B8h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=7 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xB9: /* C4h E2h 45h 2Eh B9h VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=7 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xBA: /* C4h E2h 45h 2Eh BAh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=7 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xBB: /* C4h E2h 45h 2Eh BBh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=7 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xBC: /* C4h E2h 45h 2Eh BCh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=7 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xBD: /* C4h E2h 45h 2Eh BDh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=7 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xBE: /* C4h E2h 45h 2Eh BEh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=7 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                    case 0xBF: /* C4h E2h 45h 2Eh BFh VMASKMOVPS avx(r/m),avx(vsidx),avx(reg) mod=2 reg=7 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2E mod/reg/rm mod!=3 */
+                                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMASKMOVPS %s,YMM%u,YMM%u",IPDecPrint32(mrm,sib,disp,32,RC_AVXREG,""),vex.V,mrm.reg());
+                                        break;
+                                    /* opcode C4h E2h 45h 2Eh C0h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh C1h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh C2h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh C3h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh C4h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh C5h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh C6h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh C7h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh C8h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh C9h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh CAh  not defined */
+                                    /* opcode C4h E2h 45h 2Eh CBh  not defined */
+                                    /* opcode C4h E2h 45h 2Eh CCh  not defined */
+                                    /* opcode C4h E2h 45h 2Eh CDh  not defined */
+                                    /* opcode C4h E2h 45h 2Eh CEh  not defined */
+                                    /* opcode C4h E2h 45h 2Eh CFh  not defined */
+                                    /* opcode C4h E2h 45h 2Eh D0h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh D1h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh D2h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh D3h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh D4h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh D5h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh D6h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh D7h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh D8h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh D9h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh DAh  not defined */
+                                    /* opcode C4h E2h 45h 2Eh DBh  not defined */
+                                    /* opcode C4h E2h 45h 2Eh DCh  not defined */
+                                    /* opcode C4h E2h 45h 2Eh DDh  not defined */
+                                    /* opcode C4h E2h 45h 2Eh DEh  not defined */
+                                    /* opcode C4h E2h 45h 2Eh DFh  not defined */
+                                    /* opcode C4h E2h 45h 2Eh E0h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh E1h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh E2h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh E3h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh E4h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh E5h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh E6h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh E7h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh E8h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh E9h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh EAh  not defined */
+                                    /* opcode C4h E2h 45h 2Eh EBh  not defined */
+                                    /* opcode C4h E2h 45h 2Eh ECh  not defined */
+                                    /* opcode C4h E2h 45h 2Eh EDh  not defined */
+                                    /* opcode C4h E2h 45h 2Eh EEh  not defined */
+                                    /* opcode C4h E2h 45h 2Eh EFh  not defined */
+                                    /* opcode C4h E2h 45h 2Eh F0h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh F1h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh F2h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh F3h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh F4h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh F5h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh F6h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh F7h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh F8h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh F9h  not defined */
+                                    /* opcode C4h E2h 45h 2Eh FAh  not defined */
+                                    /* opcode C4h E2h 45h 2Eh FBh  not defined */
+                                    /* opcode C4h E2h 45h 2Eh FCh  not defined */
+                                    /* opcode C4h E2h 45h 2Eh FDh  not defined */
+                                    /* opcode C4h E2h 45h 2Eh FEh  not defined */
+                                    /* opcode C4h E2h 45h 2Eh FFh  not defined */
+                                    default:
+                                        goto _x86decode_illegal_opcode;
+                                };
+/* End of opcodes starting with C4h E2h 45h 2Eh */
+                                break;
+                            case 0x2F: /* C4h E2h 45h 2Fh        spec:  */
+                                IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                                _x86decode_begin_code32_addr32_opcode_parse_C4E2452F:
+/* Opcodes starting with C4h E2h 45h 2Fh */
+                                switch (mrm.byte) {
+                                    case 0x00: /* C4h E2h 45h 2Fh 00h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=0 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x01: /* C4h E2h 45h 2Fh 01h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=0 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x02: /* C4h E2h 45h 2Fh 02h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=0 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x03: /* C4h E2h 45h 2Fh 03h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=0 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x04: /* C4h E2h 45h 2Fh 04h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=0 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x05: /* C4h E2h 45h 2Fh 05h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=0 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x06: /* C4h E2h 45h 2Fh 06h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=0 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x07: /* C4h E2h 45h 2Fh 07h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=0 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x08: /* C4h E2h 45h 2Fh 08h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=1 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x09: /* C4h E2h 45h 2Fh 09h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=1 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x0A: /* C4h E2h 45h 2Fh 0Ah VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=1 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x0B: /* C4h E2h 45h 2Fh 0Bh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=1 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x0C: /* C4h E2h 45h 2Fh 0Ch VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=1 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x0D: /* C4h E2h 45h 2Fh 0Dh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=1 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x0E: /* C4h E2h 45h 2Fh 0Eh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=1 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x0F: /* C4h E2h 45h 2Fh 0Fh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=1 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x10: /* C4h E2h 45h 2Fh 10h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=2 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x11: /* C4h E2h 45h 2Fh 11h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=2 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x12: /* C4h E2h 45h 2Fh 12h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=2 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x13: /* C4h E2h 45h 2Fh 13h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=2 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x14: /* C4h E2h 45h 2Fh 14h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=2 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x15: /* C4h E2h 45h 2Fh 15h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=2 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x16: /* C4h E2h 45h 2Fh 16h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=2 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x17: /* C4h E2h 45h 2Fh 17h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=2 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x18: /* C4h E2h 45h 2Fh 18h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=3 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x19: /* C4h E2h 45h 2Fh 19h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=3 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x1A: /* C4h E2h 45h 2Fh 1Ah VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=3 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x1B: /* C4h E2h 45h 2Fh 1Bh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=3 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x1C: /* C4h E2h 45h 2Fh 1Ch VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=3 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x1D: /* C4h E2h 45h 2Fh 1Dh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=3 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x1E: /* C4h E2h 45h 2Fh 1Eh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=3 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x1F: /* C4h E2h 45h 2Fh 1Fh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=3 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x20: /* C4h E2h 45h 2Fh 20h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=4 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x21: /* C4h E2h 45h 2Fh 21h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=4 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x22: /* C4h E2h 45h 2Fh 22h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=4 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x23: /* C4h E2h 45h 2Fh 23h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=4 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x24: /* C4h E2h 45h 2Fh 24h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=4 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x25: /* C4h E2h 45h 2Fh 25h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=4 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x26: /* C4h E2h 45h 2Fh 26h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=4 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x27: /* C4h E2h 45h 2Fh 27h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=4 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x28: /* C4h E2h 45h 2Fh 28h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=5 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x29: /* C4h E2h 45h 2Fh 29h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=5 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x2A: /* C4h E2h 45h 2Fh 2Ah VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=5 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x2B: /* C4h E2h 45h 2Fh 2Bh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=5 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x2C: /* C4h E2h 45h 2Fh 2Ch VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=5 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x2D: /* C4h E2h 45h 2Fh 2Dh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=5 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x2E: /* C4h E2h 45h 2Fh 2Eh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=5 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x2F: /* C4h E2h 45h 2Fh 2Fh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=5 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x30: /* C4h E2h 45h 2Fh 30h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=6 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x31: /* C4h E2h 45h 2Fh 31h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=6 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x32: /* C4h E2h 45h 2Fh 32h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=6 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x33: /* C4h E2h 45h 2Fh 33h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=6 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x34: /* C4h E2h 45h 2Fh 34h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=6 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x35: /* C4h E2h 45h 2Fh 35h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=6 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x36: /* C4h E2h 45h 2Fh 36h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=6 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x37: /* C4h E2h 45h 2Fh 37h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=6 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x38: /* C4h E2h 45h 2Fh 38h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=7 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x39: /* C4h E2h 45h 2Fh 39h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=7 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x3A: /* C4h E2h 45h 2Fh 3Ah VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=7 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x3B: /* C4h E2h 45h 2Fh 3Bh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=7 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x3C: /* C4h E2h 45h 2Fh 3Ch VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=7 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x3D: /* C4h E2h 45h 2Fh 3Dh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=7 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x3E: /* C4h E2h 45h 2Fh 3Eh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=7 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x3F: /* C4h E2h 45h 2Fh 3Fh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=0 reg=7 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x40: /* C4h E2h 45h 2Fh 40h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=0 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x41: /* C4h E2h 45h 2Fh 41h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=0 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x42: /* C4h E2h 45h 2Fh 42h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=0 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x43: /* C4h E2h 45h 2Fh 43h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=0 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x44: /* C4h E2h 45h 2Fh 44h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=0 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x45: /* C4h E2h 45h 2Fh 45h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=0 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x46: /* C4h E2h 45h 2Fh 46h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=0 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x47: /* C4h E2h 45h 2Fh 47h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=0 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x48: /* C4h E2h 45h 2Fh 48h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=1 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x49: /* C4h E2h 45h 2Fh 49h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=1 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x4A: /* C4h E2h 45h 2Fh 4Ah VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=1 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x4B: /* C4h E2h 45h 2Fh 4Bh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=1 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x4C: /* C4h E2h 45h 2Fh 4Ch VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=1 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x4D: /* C4h E2h 45h 2Fh 4Dh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=1 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x4E: /* C4h E2h 45h 2Fh 4Eh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=1 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x4F: /* C4h E2h 45h 2Fh 4Fh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=1 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x50: /* C4h E2h 45h 2Fh 50h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=2 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x51: /* C4h E2h 45h 2Fh 51h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=2 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x52: /* C4h E2h 45h 2Fh 52h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=2 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x53: /* C4h E2h 45h 2Fh 53h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=2 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x54: /* C4h E2h 45h 2Fh 54h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=2 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x55: /* C4h E2h 45h 2Fh 55h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=2 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x56: /* C4h E2h 45h 2Fh 56h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=2 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x57: /* C4h E2h 45h 2Fh 57h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=2 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x58: /* C4h E2h 45h 2Fh 58h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=3 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x59: /* C4h E2h 45h 2Fh 59h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=3 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x5A: /* C4h E2h 45h 2Fh 5Ah VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=3 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x5B: /* C4h E2h 45h 2Fh 5Bh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=3 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x5C: /* C4h E2h 45h 2Fh 5Ch VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=3 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x5D: /* C4h E2h 45h 2Fh 5Dh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=3 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x5E: /* C4h E2h 45h 2Fh 5Eh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=3 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x5F: /* C4h E2h 45h 2Fh 5Fh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=3 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x60: /* C4h E2h 45h 2Fh 60h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=4 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x61: /* C4h E2h 45h 2Fh 61h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=4 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x62: /* C4h E2h 45h 2Fh 62h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=4 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x63: /* C4h E2h 45h 2Fh 63h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=4 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x64: /* C4h E2h 45h 2Fh 64h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=4 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x65: /* C4h E2h 45h 2Fh 65h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=4 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x66: /* C4h E2h 45h 2Fh 66h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=4 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x67: /* C4h E2h 45h 2Fh 67h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=4 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x68: /* C4h E2h 45h 2Fh 68h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=5 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x69: /* C4h E2h 45h 2Fh 69h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=5 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x6A: /* C4h E2h 45h 2Fh 6Ah VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=5 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x6B: /* C4h E2h 45h 2Fh 6Bh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=5 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x6C: /* C4h E2h 45h 2Fh 6Ch VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=5 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x6D: /* C4h E2h 45h 2Fh 6Dh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=5 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x6E: /* C4h E2h 45h 2Fh 6Eh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=5 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x6F: /* C4h E2h 45h 2Fh 6Fh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=5 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x70: /* C4h E2h 45h 2Fh 70h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=6 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x71: /* C4h E2h 45h 2Fh 71h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=6 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x72: /* C4h E2h 45h 2Fh 72h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=6 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x73: /* C4h E2h 45h 2Fh 73h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=6 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x74: /* C4h E2h 45h 2Fh 74h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=6 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x75: /* C4h E2h 45h 2Fh 75h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=6 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x76: /* C4h E2h 45h 2Fh 76h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=6 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x77: /* C4h E2h 45h 2Fh 77h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=6 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x78: /* C4h E2h 45h 2Fh 78h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=7 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x79: /* C4h E2h 45h 2Fh 79h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=7 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x7A: /* C4h E2h 45h 2Fh 7Ah VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=7 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x7B: /* C4h E2h 45h 2Fh 7Bh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=7 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x7C: /* C4h E2h 45h 2Fh 7Ch VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=7 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x7D: /* C4h E2h 45h 2Fh 7Dh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=7 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x7E: /* C4h E2h 45h 2Fh 7Eh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=7 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x7F: /* C4h E2h 45h 2Fh 7Fh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=1 reg=7 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x80: /* C4h E2h 45h 2Fh 80h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=0 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x81: /* C4h E2h 45h 2Fh 81h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=0 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x82: /* C4h E2h 45h 2Fh 82h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=0 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x83: /* C4h E2h 45h 2Fh 83h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=0 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x84: /* C4h E2h 45h 2Fh 84h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=0 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x85: /* C4h E2h 45h 2Fh 85h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=0 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x86: /* C4h E2h 45h 2Fh 86h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=0 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x87: /* C4h E2h 45h 2Fh 87h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=0 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x88: /* C4h E2h 45h 2Fh 88h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=1 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x89: /* C4h E2h 45h 2Fh 89h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=1 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x8A: /* C4h E2h 45h 2Fh 8Ah VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=1 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x8B: /* C4h E2h 45h 2Fh 8Bh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=1 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x8C: /* C4h E2h 45h 2Fh 8Ch VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=1 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x8D: /* C4h E2h 45h 2Fh 8Dh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=1 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x8E: /* C4h E2h 45h 2Fh 8Eh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=1 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x8F: /* C4h E2h 45h 2Fh 8Fh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=1 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x90: /* C4h E2h 45h 2Fh 90h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=2 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x91: /* C4h E2h 45h 2Fh 91h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=2 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x92: /* C4h E2h 45h 2Fh 92h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=2 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x93: /* C4h E2h 45h 2Fh 93h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=2 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x94: /* C4h E2h 45h 2Fh 94h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=2 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x95: /* C4h E2h 45h 2Fh 95h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=2 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x96: /* C4h E2h 45h 2Fh 96h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=2 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x97: /* C4h E2h 45h 2Fh 97h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=2 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x98: /* C4h E2h 45h 2Fh 98h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=3 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x99: /* C4h E2h 45h 2Fh 99h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=3 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x9A: /* C4h E2h 45h 2Fh 9Ah VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=3 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x9B: /* C4h E2h 45h 2Fh 9Bh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=3 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x9C: /* C4h E2h 45h 2Fh 9Ch VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=3 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x9D: /* C4h E2h 45h 2Fh 9Dh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=3 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x9E: /* C4h E2h 45h 2Fh 9Eh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=3 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0x9F: /* C4h E2h 45h 2Fh 9Fh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=3 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xA0: /* C4h E2h 45h 2Fh A0h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=4 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xA1: /* C4h E2h 45h 2Fh A1h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=4 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xA2: /* C4h E2h 45h 2Fh A2h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=4 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xA3: /* C4h E2h 45h 2Fh A3h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=4 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xA4: /* C4h E2h 45h 2Fh A4h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=4 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xA5: /* C4h E2h 45h 2Fh A5h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=4 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xA6: /* C4h E2h 45h 2Fh A6h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=4 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xA7: /* C4h E2h 45h 2Fh A7h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=4 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xA8: /* C4h E2h 45h 2Fh A8h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=5 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xA9: /* C4h E2h 45h 2Fh A9h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=5 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xAA: /* C4h E2h 45h 2Fh AAh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=5 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xAB: /* C4h E2h 45h 2Fh ABh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=5 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xAC: /* C4h E2h 45h 2Fh ACh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=5 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xAD: /* C4h E2h 45h 2Fh ADh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=5 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xAE: /* C4h E2h 45h 2Fh AEh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=5 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xAF: /* C4h E2h 45h 2Fh AFh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=5 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xB0: /* C4h E2h 45h 2Fh B0h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=6 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xB1: /* C4h E2h 45h 2Fh B1h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=6 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xB2: /* C4h E2h 45h 2Fh B2h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=6 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xB3: /* C4h E2h 45h 2Fh B3h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=6 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xB4: /* C4h E2h 45h 2Fh B4h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=6 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xB5: /* C4h E2h 45h 2Fh B5h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=6 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xB6: /* C4h E2h 45h 2Fh B6h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=6 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xB7: /* C4h E2h 45h 2Fh B7h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=6 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xB8: /* C4h E2h 45h 2Fh B8h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=7 rm=0      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xB9: /* C4h E2h 45h 2Fh B9h VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=7 rm=1      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xBA: /* C4h E2h 45h 2Fh BAh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=7 rm=2      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xBB: /* C4h E2h 45h 2Fh BBh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=7 rm=3      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xBC: /* C4h E2h 45h 2Fh BCh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=7 rm=4      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xBD: /* C4h E2h 45h 2Fh BDh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=7 rm=5      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xBE: /* C4h E2h 45h 2Fh BEh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=7 rm=6      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                    case 0xBF: /* C4h E2h 45h 2Fh BFh VMASKMOVPD avx(r/m),avx(vsidx),avx(reg) mod=2 reg=7 rm=7      spec: vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2F mod/reg/rm mod!=3 */
+                                        ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VMASKMOVPD %s,YMM%u,YMM%u",IPDecPrint32(mrm,sib,disp,32,RC_AVXREG,""),vex.V,mrm.reg());
+                                        break;
+                                    /* opcode C4h E2h 45h 2Fh C0h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh C1h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh C2h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh C3h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh C4h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh C5h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh C6h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh C7h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh C8h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh C9h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh CAh  not defined */
+                                    /* opcode C4h E2h 45h 2Fh CBh  not defined */
+                                    /* opcode C4h E2h 45h 2Fh CCh  not defined */
+                                    /* opcode C4h E2h 45h 2Fh CDh  not defined */
+                                    /* opcode C4h E2h 45h 2Fh CEh  not defined */
+                                    /* opcode C4h E2h 45h 2Fh CFh  not defined */
+                                    /* opcode C4h E2h 45h 2Fh D0h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh D1h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh D2h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh D3h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh D4h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh D5h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh D6h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh D7h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh D8h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh D9h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh DAh  not defined */
+                                    /* opcode C4h E2h 45h 2Fh DBh  not defined */
+                                    /* opcode C4h E2h 45h 2Fh DCh  not defined */
+                                    /* opcode C4h E2h 45h 2Fh DDh  not defined */
+                                    /* opcode C4h E2h 45h 2Fh DEh  not defined */
+                                    /* opcode C4h E2h 45h 2Fh DFh  not defined */
+                                    /* opcode C4h E2h 45h 2Fh E0h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh E1h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh E2h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh E3h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh E4h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh E5h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh E6h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh E7h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh E8h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh E9h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh EAh  not defined */
+                                    /* opcode C4h E2h 45h 2Fh EBh  not defined */
+                                    /* opcode C4h E2h 45h 2Fh ECh  not defined */
+                                    /* opcode C4h E2h 45h 2Fh EDh  not defined */
+                                    /* opcode C4h E2h 45h 2Fh EEh  not defined */
+                                    /* opcode C4h E2h 45h 2Fh EFh  not defined */
+                                    /* opcode C4h E2h 45h 2Fh F0h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh F1h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh F2h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh F3h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh F4h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh F5h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh F6h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh F7h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh F8h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh F9h  not defined */
+                                    /* opcode C4h E2h 45h 2Fh FAh  not defined */
+                                    /* opcode C4h E2h 45h 2Fh FBh  not defined */
+                                    /* opcode C4h E2h 45h 2Fh FCh  not defined */
+                                    /* opcode C4h E2h 45h 2Fh FDh  not defined */
+                                    /* opcode C4h E2h 45h 2Fh FEh  not defined */
+                                    /* opcode C4h E2h 45h 2Fh FFh  not defined */
+                                    default:
+                                        goto _x86decode_illegal_opcode;
+                                };
+/* End of opcodes starting with C4h E2h 45h 2Fh */
+                                break;
                             /* opcode C4h E2h 45h 30h  not defined */
                             /* opcode C4h E2h 45h 31h  not defined */
                             /* opcode C4h E2h 45h 32h  not defined */

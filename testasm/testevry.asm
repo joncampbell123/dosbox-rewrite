@@ -6372,3 +6372,14 @@ jmp2:
     vpermilps   ymm1,[si],4
     vpermilps   ymm1,[ebx*4+esi+0x12345678],4
 
+    ; this instruction does not have mod == 3 form
+    vmaskmovps  xmm1,xmm2,[si]
+    vmaskmovps  ymm1,ymm2,[si]
+    vmaskmovpd  xmm1,xmm2,[si]
+    vmaskmovpd  ymm1,ymm2,[si]
+
+    vmaskmovps  [si],xmm1,xmm2
+    vmaskmovps  [si],ymm1,ymm2
+    vmaskmovpd  [si],xmm1,xmm2
+    vmaskmovpd  [si],ymm1,ymm2
+
