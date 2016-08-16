@@ -27,6 +27,7 @@
 #include "dosboxxr/lib/util/case_groups.h"
 #include "cpudec86common.h"
 
+#ifndef ONLY_EVERYTHING
 void IPDec_necv20(x86_offset_t ip);
 void IPDec_8086(x86_offset_t ip);
 void IPDec_80186(x86_offset_t ip);
@@ -63,6 +64,7 @@ void IPDec_AMDAthlon(x86_offset_t ip);
 void IPDec_AMDAthlon_generic(x86_offset_t ip);
 void IPDec_IntelCore(x86_offset_t ip);
 void IPDec_IntelCore_generic(x86_offset_t ip);
+#endif
 void IPDec_Everything(x86_offset_t ip);
 void IPDec_Everything_generic(x86_offset_t ip);
 
@@ -74,7 +76,11 @@ bool                    exe_code32 = false;
 
 #include "dosboxxr/lib/cpu/ipdec_pre_core.h"
 
+#ifdef ONLY_EVERYTHING
+static void (*IPDec)(x86_offset_t ip) = IPDec_Everything;
+#else
 static void (*IPDec)(x86_offset_t ip) = IPDec_8086;
+#endif
 
 int main(int argc,char **argv) {
     const char *src_file = NULL,*arg;
@@ -97,6 +103,10 @@ int main(int argc,char **argv) {
             else if (!strcmp(arg,"cpu")) {
                 const char *a = argv[i++];
 
+#ifdef ONLY_EVERYTHING
+                if (0)
+                    { }
+#else
                 if (!strcmp(a,"intel8086") || !strcmp(a,"8086") || !strcmp(a,"8088"))
                     IPDec = IPDec_8086;
                 else if (!strcmp(a,"intel80186") || !strcmp(a,"intel186") || !strcmp(a,"186"))
@@ -169,6 +179,7 @@ int main(int argc,char **argv) {
                     IPDec = IPDec_IntelCore;
                 else if (!strcmp(a,"intelcoreg"))
                     IPDec = IPDec_IntelCore_generic;
+#endif
                 else if (!strcmp(a,"everything"))
                     IPDec = IPDec_Everything;
                 else if (!strcmp(a,"everythingg"))

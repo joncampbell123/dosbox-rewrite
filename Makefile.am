@@ -64,6 +64,7 @@ OPCC=bin/tools/opcc
 noinst_PROGRAMS = \
 	bin/tools/opcc \
 	bin/tools/cpudec86 \
+	bin/tools/cpudec86e \
 	bin/tools/cpudetect \
 	bin/test/cpumodregrm \
 	bin/test/cpumemreftypes
@@ -171,10 +172,21 @@ bin_tools_cpudec86_SOURCES = \
 	tools/cpudec/cpudec86_everything.cpp \
 	tools/cpudec/cpudec86_everything_generic.cpp
 
+bin_tools_cpudec86e_SOURCES = \
+	tools/cpudec/cpudec86.cpp \
+	tools/cpudec/cpudec86_everything.cpp \
+	tools/cpudec/cpudec86_everything_generic.cpp
+
 bin_tools_cpudec86_CXXFLAGS = $(AM_CXXFLAGS) -Itools/cpudec
 bin_tools_cpudec86_DEPENDENCIES = \
 	dosboxxr/lib/cpu/libcpu.a $(OPCC_H)
 bin_tools_cpudec86_LDADD = \
+	dosboxxr/lib/cpu/libcpu.a
+
+bin_tools_cpudec86e_CXXFLAGS = $(AM_CXXFLAGS) -Itools/cpudec -DONLY_EVERYTHING=1
+bin_tools_cpudec86e_DEPENDENCIES = \
+	dosboxxr/lib/cpu/libcpu.a $(OPCC_H)
+bin_tools_cpudec86e_LDADD = \
 	dosboxxr/lib/cpu/libcpu.a
 
 bin_tools_cpudetect_SOURCES = tools/cpudetect/cpudetect.cpp
