@@ -19570,7 +19570,14 @@ switch (op) {
                             /* opcode C4h E3h 45h 15h  not defined */
                             /* opcode C4h E3h 45h 16h  not defined */
                             /* opcode C4h E3h 45h 17h  not defined */
-                            /* opcode C4h E3h 45h 18h  not defined */
+                            case 0x18: /* C4h E3h 45h 18h VINSERTF128 avx(reg),avx(vsidx),sse(r/m),i      spec: vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x18 mod/reg/rm ib */
+                                if (addr32)
+                                    IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                                else
+                                    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                imm=IPFB();
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VINSERTF128 YMM%u,YMM%u,%s,0x%02lX",mrm.reg(),vex.V,IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""),(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
+                                break;
                             /* opcode C4h E3h 45h 19h  not defined */
                             /* opcode C4h E3h 45h 1Ah  not defined */
                             /* opcode C4h E3h 45h 1Bh  not defined */
@@ -19900,7 +19907,14 @@ switch (op) {
                             /* opcode C4h E3h 7Dh 15h  not defined */
                             /* opcode C4h E3h 7Dh 16h  not defined */
                             /* opcode C4h E3h 7Dh 17h  not defined */
-                            /* opcode C4h E3h 7Dh 18h  not defined */
+                            case 0x18: /* C4h E3h 7Dh 18h VINSERTF128 avx(reg),avx(vsidx),sse(r/m),i      spec: vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x18 mod/reg/rm ib */
+                                if (addr32)
+                                    IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);
+                                else
+                                    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+                                imm=IPFB();
+                                ipw += snprintf(ipw,(size_t)(ipwf-ipw),"VINSERTF128 YMM%u,YMM%u,%s,0x%02lX",mrm.reg(),vex.V,IPDecPrint1632(addr32,mrm,sib,disp,16,RC_SSEREG,""),(unsigned long)((uint32_t)imm)&(code32?0xFFFFFFFFUL:0xFFFFUL));
+                                break;
                             case 0x19: /* C4h E3h 7Dh 19h VEXTRACTF128 sse(r/m),avx(reg),i      spec: vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x19 mod/reg/rm ib vsidx(0) */
                                 if (addr32)
                                     IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);

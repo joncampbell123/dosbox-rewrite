@@ -6386,3 +6386,6 @@ jmp2:
     vextractf128 xmm1,ymm2,3
     vextractf128 [si],ymm2,3
 
+    vinsertf128 ymm1,ymm2,xmm3,4
+    vinsertf128 ymm1,ymm2,[si],4
+
