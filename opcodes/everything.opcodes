@@ -211,3 +211,8 @@ opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x15 mod/reg/rm:            "VUN
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x15 mod/reg/rm:            "VUNPCKHPD" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x15 mod/reg/rm:            "VUNPCKHPD" avx(reg),avx(vsidx),avx(r/m)
 
+opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x16 mod/reg/rm mod==3:     "VMOVLHPS" sse(reg),sse(vsidx),sse(r/m)
+
+opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x16 mod/reg/rm mod!=3:     "VMOVHPS" sse(reg),sse(vsidx),w64(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x17 mod/reg/rm mod!=3:     "VMOVHPS" w64(r/m),sse(reg)
+

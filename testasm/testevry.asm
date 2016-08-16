@@ -6465,4 +6465,8 @@ jmp2:
     vunpckhpd   ymm0,ymm1,ymm2
     vunpckhpd   ymm0,[si]
     vunpckhpd   ymm0,ymm1,[si]
+    vmovlhps    xmm0,xmm1
+    vmovlhps    xmm0,xmm1,xmm2
+    vmovhps     xmm0,xmm1,[si]
+    vmovhps     [si],xmm1
 
