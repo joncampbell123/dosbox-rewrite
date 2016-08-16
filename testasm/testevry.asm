@@ -6487,4 +6487,8 @@ jmp2:
     vmovapd     ymm0,[si]
     vmovapd     [si],xmm0
     vmovapd     [si],ymm0
+    vmovntps    [si],xmm0
+    vmovntps    [si],ymm0
+    vmovntpd    [si],xmm0
+    vmovntpd    [si],ymm0
 
