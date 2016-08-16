@@ -1631,10 +1631,10 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
     bool emit_prefix_goto = false;
     unsigned int immc = 0;
 
-    if (submap->vex_decompose_here != 0) {
-        // the v3-v0 bits are in the last opcode byte, in the same place
+    if (submap->vex_decompose_here == 3)
         fprintf(out_fp,"%s        vex.V = ((~op) >> 3) & 7;\n",indent_str.c_str());
-    }
+    else if (submap->vex_decompose_here == 2)
+        fprintf(out_fp,"%s        vex.V = ((~mrm.byte) >> 3) & 7;\n",indent_str.c_str());
 
     if (!(flags & OUTCODE_GEN_SKIP_MRM)) {
         if (submap->modregrm) {
