@@ -159,3 +159,11 @@ opcode vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x19 mod/reg/rm ib vsidx(0)
 
 opcode vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x18 mod/reg/rm ib:    "VINSERTF128" avx(reg),avx(vsidx),sse(r/m),i
 
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x18 mod/reg/rm mod!=3 vsidx(0):"VBROADCASTSS" sse(reg),w32(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x18 mod/reg/rm mod!=3 vsidx(0):"VBROADCASTSS" avx(reg),w32(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x19 mod/reg/rm mod!=3 vsidx(0):"VBROADCASTSD" avx(reg),w64(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x1A mod/reg/rm mod!=3 vsidx(0):"VBROADCASTF128" avx(reg),sse(r/m)
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x18 mod/reg/rm mod==3 vsidx(0):"VBROADCASTSS" sse(reg),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x18 mod/reg/rm mod==3 vsidx(0):"VBROADCASTSS" avx(reg),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x19 mod/reg/rm mod==3 vsidx(0):"VBROADCASTSD" avx(reg),sse(r/m)
+

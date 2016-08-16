@@ -6389,3 +6389,16 @@ jmp2:
     vinsertf128 ymm1,ymm2,xmm3,4
     vinsertf128 ymm1,ymm2,[si],4
 
+    ; shut up and encode these instructions!
+    cpu AVX, CLMUL, AES, XSAVE, SSE4.2, SSE4.1, SSSE3, SSE3, SSE2, SSE, MMX, FPU, SMM, Prot, Priv, FMA, AVX2, FMA4, SSE4
+    cpu Sandybridge
+    cpu AVX2
+
+    vbroadcastss xmm1,[si]
+    vbroadcastss ymm1,[si]
+    vbroadcastsd ymm1,[si]
+    vbroadcastf128 ymm1,[si]
+    vbroadcastss xmm1,xmm2
+    vbroadcastss ymm1,xmm2
+    vbroadcastsd ymm1,xmm2
+
