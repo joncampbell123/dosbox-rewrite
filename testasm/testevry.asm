@@ -6408,3 +6408,8 @@ jmp2:
     vaddpd      xmm0,xmm1
     vaddpd      xmm0,xmm1,xmm2
 
+    vaddss      xmm0,xmm1
+    vaddss      xmm0,xmm1,xmm2
+    vaddsd      xmm0,xmm1
+    vaddsd      xmm0,xmm1,xmm2
+

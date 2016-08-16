@@ -172,3 +172,8 @@ opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x58 mod/reg/rm:            "VAD
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x58 mod/reg/rm:            "VADDPD" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x58 mod/reg/rm:            "VADDPD" avx(reg),avx(vsidx),avx(r/m)
 
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x58 mod/reg/rm:            "VADDSS" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0xF3) 0x58 mod/reg/rm:            "VADDSS" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x58 mod/reg/rm:            "VADDSD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0xF2) 0x58 mod/reg/rm:            "VADDSD" avx(reg),avx(vsidx),avx(r/m)
+
