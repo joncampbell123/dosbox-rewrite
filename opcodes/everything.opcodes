@@ -214,33 +214,33 @@ opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x15 mod/reg/rm:            "VUN
 opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x16 mod/reg/rm mod==3:     "VMOVLHPS" sse(reg),sse(vsidx),sse(r/m)
 
 opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x16 mod/reg/rm mod!=3:     "VMOVHPS" sse(reg),sse(vsidx),w64(r/m)
-opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x17 mod/reg/rm mod!=3:     "VMOVHPS" w64(r/m),sse(reg)
+opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x17 mod/reg/rm mod!=3 vsidx(0):"VMOVHPS" w64(r/m),sse(reg)
 
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x16 mod/reg/rm mod!=3:     "VMOVHPD" sse(reg),sse(vsidx),w64(r/m)
-opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x17 mod/reg/rm mod!=3:     "VMOVHPD" w64(r/m),sse(reg)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x17 mod/reg/rm mod!=3 vsidx(0):"VMOVHPD" w64(r/m),sse(reg)
 
-opcode vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x16 mod/reg/rm:            "VMOVSHDUP" sse(reg),sse(r/m)
-opcode vex vsize(256) vlead(0x0F) vprefix(0xF3) 0x16 mod/reg/rm:            "VMOVSHDUP" avx(reg),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x16 mod/reg/rm vsidx(0):   "VMOVSHDUP" sse(reg),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0xF3) 0x16 mod/reg/rm vsidx(0):   "VMOVSHDUP" avx(reg),avx(r/m)
 
-opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x28 mod/reg/rm:            "VMOVAPS" sse(reg),sse(r/m)
-opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x29 mod/reg/rm:            "VMOVAPS" sse(r/m),sse(reg)
-opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x28 mod/reg/rm:            "VMOVAPS" avx(reg),avx(r/m)
-opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x29 mod/reg/rm:            "VMOVAPS" avx(r/m),avx(reg)
+opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x28 mod/reg/rm vsidx(0):   "VMOVAPS" sse(reg),sse(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x29 mod/reg/rm vsidx(0):   "VMOVAPS" sse(r/m),sse(reg)
+opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x28 mod/reg/rm vsidx(0):   "VMOVAPS" avx(reg),avx(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x29 mod/reg/rm vsidx(0):   "VMOVAPS" avx(r/m),avx(reg)
 
-opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x28 mod/reg/rm:            "VMOVAPD" sse(reg),sse(r/m)
-opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x29 mod/reg/rm:            "VMOVAPD" sse(r/m),sse(reg)
-opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x28 mod/reg/rm:            "VMOVAPD" avx(reg),avx(r/m)
-opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x29 mod/reg/rm:            "VMOVAPD" avx(r/m),avx(reg)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x28 mod/reg/rm vsidx(0):   "VMOVAPD" sse(reg),sse(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x29 mod/reg/rm vsidx(0):   "VMOVAPD" sse(r/m),sse(reg)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x28 mod/reg/rm vsidx(0):   "VMOVAPD" avx(reg),avx(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x29 mod/reg/rm vsidx(0):   "VMOVAPD" avx(r/m),avx(reg)
 
-opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x2B mod/reg/rm mod!=3:     "VMOVNTPS" sse(r/m),sse(reg)
-opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x2B mod/reg/rm mod!=3:     "VMOVNTPS" avx(r/m),avx(reg)
+opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x2B mod/reg/rm mod!=3 vsidx(0):"VMOVNTPS" sse(r/m),sse(reg)
+opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x2B mod/reg/rm mod!=3 vsidx(0):"VMOVNTPS" avx(r/m),avx(reg)
 
-opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x2B mod/reg/rm mod!=3:     "VMOVNTPD" sse(r/m),sse(reg)
-opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x2B mod/reg/rm mod!=3:     "VMOVNTPD" avx(r/m),avx(reg)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x2B mod/reg/rm mod!=3 vsidx(0):"VMOVNTPD" sse(r/m),sse(reg)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x2B mod/reg/rm mod!=3 vsidx(0):"VMOVNTPD" avx(r/m),avx(reg)
 
-opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x2E mod/reg/rm:            "VUCOMISS" sse(reg),sse(r/m)
-opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x2E mod/reg/rm:            "VUCOMISD" sse(reg),sse(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x2E mod/reg/rm vsidx(0):   "VUCOMISS" sse(reg),sse(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x2E mod/reg/rm vsidx(0):   "VUCOMISD" sse(reg),sse(r/m)
 
-opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x2F mod/reg/rm:            "VCOMISS" sse(reg),sse(r/m)
-opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x2F mod/reg/rm:            "VCOMISD" sse(reg),sse(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x2F mod/reg/rm vsidx(0):   "VCOMISS" sse(reg),sse(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x2F mod/reg/rm vsidx(0):   "VCOMISD" sse(reg),sse(r/m)
 
