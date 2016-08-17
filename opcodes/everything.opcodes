@@ -277,3 +277,6 @@ opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x09 mod/reg/rm:       "VPS
 opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x0A mod/reg/rm:       "VPSIGND" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x0A mod/reg/rm:       "VPSIGND" avx(reg),avx(vsidx),avx(r/m)
 
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x0B mod/reg/rm:       "VPMULHRSW" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x0B mod/reg/rm:       "VPMULHRSW" avx(reg),avx(vsidx),avx(r/m)
+

@@ -6543,4 +6543,8 @@ jmp2:
     vpsignd     xmm0,xmm1,[si]
     vpsignd     ymm0,ymm1,ymm2
     vpsignd     ymm0,ymm1,[si]
+    vpmulhrsw   xmm1,xmm2,xmm3
+    vpmulhrsw   xmm1,xmm2,[si]
+    vpmulhrsw   ymm1,ymm2,ymm3
+    vpmulhrsw   ymm1,ymm2,[si]
 
