@@ -6519,4 +6519,16 @@ jmp2:
     vpmaddubsw  xmm0,xmm1,[si]
     vpmaddubsw  ymm0,ymm1,ymm2
     vpmaddubsw  ymm0,ymm1,[si]
+    vphsubw     xmm0,xmm1,xmm2
+    vphsubw     xmm0,xmm1,[si]
+    vphsubw     ymm0,ymm1,ymm2
+    vphsubw     ymm0,ymm1,[si]
+    vphsubd     xmm0,xmm1,xmm2
+    vphsubd     xmm0,xmm1,[si]
+    vphsubd     ymm0,ymm1,ymm2
+    vphsubd     ymm0,ymm1,[si]
+    vphsubsw    xmm0,xmm1,xmm2
+    vphsubsw    xmm0,xmm1,[si]
+    vphsubsw    ymm0,ymm1,ymm2
+    vphsubsw    ymm0,ymm1,[si]
 

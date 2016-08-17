@@ -259,3 +259,12 @@ opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x03 mod/reg/rm:       "VPH
 opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x04 mod/reg/rm:       "VPMADDUBSW" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x04 mod/reg/rm:       "VPMADDUBSW" avx(reg),avx(vsidx),avx(r/m)
 
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x05 mod/reg/rm:       "VPHSUBW" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x05 mod/reg/rm:       "VPHSUBW" avx(reg),avx(vsidx),avx(r/m)
+
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x06 mod/reg/rm:       "VPHSUBD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x06 mod/reg/rm:       "VPHSUBD" avx(reg),avx(vsidx),avx(r/m)
+
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x07 mod/reg/rm:       "VPHSUBSW" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x07 mod/reg/rm:       "VPHSUBSW" avx(reg),avx(vsidx),avx(r/m)
+
