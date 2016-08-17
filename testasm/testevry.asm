@@ -6547,4 +6547,8 @@ jmp2:
     vpmulhrsw   xmm1,xmm2,[si]
     vpmulhrsw   ymm1,ymm2,ymm3
     vpmulhrsw   ymm1,ymm2,[si]
+    vpblendvb   xmm1,xmm2,xmm3,xmm4
+    vpblendvb   xmm1,xmm2,[si],xmm4
+    vpblendvb   ymm1,ymm2,ymm3,ymm4
+    vpblendvb   ymm1,ymm2,[si],ymm4
 

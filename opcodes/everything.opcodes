@@ -280,3 +280,6 @@ opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x0A mod/reg/rm:       "VPS
 opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x0B mod/reg/rm:       "VPMULHRSW" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x0B mod/reg/rm:       "VPMULHRSW" avx(reg),avx(vsidx),avx(r/m)
 
+opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x4C mod/reg/rm ib:    "VPBLENDVB" sse(reg),sse(vsidx),sse(r/m),sse(i[7:4])
+opcode vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x4C mod/reg/rm ib:    "VPBLENDVB" avx(reg),avx(vsidx),avx(r/m),avx(i[7:4])
+

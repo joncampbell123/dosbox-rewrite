@@ -106,7 +106,8 @@ enum opccDispArg {
     OPDARG_imm,         // (i)
     OPDARG_mem_imm,     // (mem[i])
     OPDARG_immval,      // (some immediate value)
-    OPDARG_vexsidx      // VEX source register index
+    OPDARG_vexsidx,     // VEX source register index
+    OPDARG_i74          // bits 7:4 of immediate value
 };
 
 enum opccDispArgType {
@@ -154,7 +155,7 @@ enum {
 
 class OpCodeDisplayArg {
 public:
-    OpCodeDisplayArg() : arg(OPDARG_NONE), argtype(OPDARGTYPE_NONE), argreg(OPREG_NONE), suffix(OPSUFFIX_NONE), ip_relative(false), index(0), immval(0) { }
+    OpCodeDisplayArg() : arg(OPDARG_NONE), argtype(OPDARGTYPE_NONE), argreg(OPREG_NONE), suffix(OPSUFFIX_NONE), ip_relative(false), index(0), immval(0), imm_bitoff(0), imm_bitwidth(0) { }
 public:
     enum opccDispArg        arg;
     enum opccDispArgType    argtype;
@@ -163,6 +164,7 @@ public:
     bool                    ip_relative; // NTS: relative to the value of IP after decoding instruction
     uint8_t                 index;
     uint64_t                immval;
+    uint8_t                 imm_bitoff,imm_bitwidth; // if the immediate value is only some of the bits
 public:
     inline bool operator==(const OpCodeDisplayArg &r) const {
         if (arg != r.arg) return false;
@@ -1187,6 +1189,26 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
                     arg.arg = OPDARG_imm;
                     arg.index = 1;
                 }
+                else if (!strncmp(s,"i[",2)) { // i[msb:lsb] bits msb to lsb inclusive
+                    int upper=0,lower=0;
+
+                    arg.argtype = OPDARGTYPE_WORD;
+                    arg.arg = OPDARG_imm;
+
+                    s += 2;
+                    upper = (int)strtol(s,&s,0);
+                    if (*s == ':') {
+                        lower = (int)strtol(s+1,&s,0);
+                    }
+
+                    if (lower > upper) {
+                        fprintf(stderr,"Invalid immediate bit range\n");
+                        return false;
+                    }
+
+                    arg.imm_bitwidth = (upper+1-lower);
+                    arg.imm_bitoff = lower;
+                }
                 else if (!strcmp(s,"b(i)")) {
                     arg.argtype = OPDARGTYPE_BYTE;
                     arg.arg = OPDARG_imm;
@@ -1429,6 +1451,10 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
                     arg.argtype = OPDARGTYPE_SSE;
                     arg.arg = OPDARG_vexsidx;
                 }
+                else if (!strcmp(s,"sse(i[7:4])")) {
+                    arg.argtype = OPDARGTYPE_SSE;
+                    arg.arg = OPDARG_i74;
+                }
                 else if (!strcmp(s,"avx(reg)")) {
                     arg.argtype = OPDARGTYPE_AVX;
                     arg.arg = OPDARG_reg;
@@ -1440,6 +1466,10 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
                 else if (!strcmp(s,"avx(vsidx)")) {
                     arg.argtype = OPDARGTYPE_AVX;
                     arg.arg = OPDARG_vexsidx;
+                }
+                else if (!strcmp(s,"avx(i[7:4])")) {
+                    arg.argtype = OPDARGTYPE_AVX;
+                    arg.arg = OPDARG_i74;
                 }
                 else {
                     fprintf(stderr,"Unknown format spec %s\n",s);
@@ -2170,11 +2200,22 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                     if (arg.index < submap->immarg.size())
                         argt = submap->immarg[arg.index];
 
+                    const char *imn_str = imn[arg.index];
+
+                    char imn_str_printf[64];
+
+                    if (arg.imm_bitwidth != 0) {
+                        /* we need to take the variable and bit shift & mask it */
+                        sprintf(imn_str_printf,"((%s >> %u) & ((1 << %u) - 1))",
+                            imn_str,arg.imm_bitoff,arg.imm_bitwidth);
+                        imn_str = imn_str_printf;
+                    }
+
                     switch (argt) {
                         case OPARG_IB:
                         case OPARG_IBS:
                             fprintf(out_fp,"0x%%02lX");
-                            sprintf(tmp,",(unsigned long)((uint%u_t)%s)",codewidth,imn[arg.index]);
+                            sprintf(tmp,",(unsigned long)((uint%u_t)%s)",codewidth,imn_str);
                             fmtargs += tmp;
                             if (generic1632) fmtargs += "&(code32?0xFFFFFFFFUL:0xFFFFUL)";
                             break;
@@ -2190,7 +2231,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                                     fprintf(out_fp,"0x%%04lX");
                             }
 
-                            sprintf(tmp,",(unsigned long)((uint%u_t)%s)",addrwidth,imn[arg.index]);
+                            sprintf(tmp,",(unsigned long)((uint%u_t)%s)",addrwidth,imn_str);
                             if (generic1632) fmtargs += "&(addr32?0xFFFFFFFFUL:0xFFFFUL)";
                             fmtargs += tmp;
                             break;
@@ -2207,21 +2248,21 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                                     fprintf(out_fp,"0x%%04lX");
                             }
 
-                            sprintf(tmp,",(unsigned long)((uint%u_t)%s)",codewidth,imn[arg.index]);
+                            sprintf(tmp,",(unsigned long)((uint%u_t)%s)",codewidth,imn_str);
                             fmtargs += tmp;
                             if (generic1632) fmtargs += "&(code32?0xFFFFFFFFUL:0xFFFFUL)";
                             break;
                         case OPARG_IW16:
                         case OPARG_IW16S:
                             fprintf(out_fp,"0x%%04lX");
-                            sprintf(tmp,",(unsigned long)((uint%u_t)%s)",codewidth,imn[arg.index]);
+                            sprintf(tmp,",(unsigned long)((uint%u_t)%s)",codewidth,imn_str);
                             fmtargs += tmp;
                             if (generic1632) fmtargs += "&0xFFFFUL";
                             break;
                         case OPARG_IW32:
                         case OPARG_IW32S:
                             fprintf(out_fp,"0x%%08lX");
-                            sprintf(tmp,",(unsigned long)((uint%u_t)%s)",codewidth,imn[arg.index]);
+                            sprintf(tmp,",(unsigned long)((uint%u_t)%s)",codewidth,imn_str);
                             fmtargs += tmp;
                             if (generic1632) fmtargs += "&0xFFFFFFFFUL";
                             break;
@@ -2231,6 +2272,95 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                 }
                 else if (arg.arg == OPDARG_vexsidx) {
                     const char *regname = "vex.V";
+                    char regn[32];
+
+                    if (arg.argreg != OPREG_NONE) {
+                        sprintf(regn,"%u",arg.argreg);
+                        regname = regn;
+                    }
+
+                    switch (arg.argtype) {
+                        case OPDARGTYPE_BYTE:
+                            fprintf(out_fp,"%%s");
+                            fmtargs += ",CPUregsN[1][";
+                            fmtargs += regname;
+                            fmtargs += "]";
+                            break;
+                        case OPDARGTYPE_WORD:
+                            fprintf(out_fp,"%%s");
+                            if (generic1632) {
+                                fmtargs += ",CPUregsN[code32?4:2][";
+                            }
+                            else {
+                                if (codewidth == 32)
+                                    fmtargs += ",CPUregsN[4][";
+                                else
+                                    fmtargs += ",CPUregsN[2][";
+                            }
+                            fmtargs += regname;
+                            fmtargs += "]";
+                            break;
+                        case OPDARGTYPE_WORD16:
+                            fprintf(out_fp,"%%s");
+                            fmtargs += ",CPUregsN[2][";
+                            fmtargs += regname;
+                            fmtargs += "]";
+                            break;
+                        case OPDARGTYPE_WORD32:
+                            fprintf(out_fp,"%%s");
+                            fmtargs += ",CPUregsN[4][";
+                            fmtargs += regname;
+                            fmtargs += "]";
+                            break;
+                        case OPDARGTYPE_FPUREG:
+                            fprintf(out_fp,"ST(%%u)");
+                            fmtargs += ",";
+                            fmtargs += regname;
+                            break;
+                        case OPDARGTYPE_SREG:
+                            // todo: use CPUsregs_80386[] if 386 or higher
+                            //       else use CPUsregs_8086[]
+                            fprintf(out_fp,"%%s");
+                            fmtargs += ",CPUsregs_80386[";
+                            fmtargs += regname;
+                            fmtargs += "]";
+                            break;
+                        case OPDARGTYPE_CREG:
+                            fprintf(out_fp,"CR%%u");
+                            fmtargs += ",";
+                            fmtargs += regname;
+                            break;
+                        case OPDARGTYPE_DREG:
+                            fprintf(out_fp,"DR%%u");
+                            fmtargs += ",";
+                            fmtargs += regname;
+                            break;
+                         case OPDARGTYPE_TREG:
+                            fprintf(out_fp,"TR%%u");
+                            fmtargs += ",";
+                            fmtargs += regname;
+                            break;
+                        case OPDARGTYPE_MMX:
+                            fprintf(out_fp,"MM%%u");
+                            fmtargs += ",";
+                            fmtargs += regname;
+                            break;
+                        case OPDARGTYPE_SSE:
+                            fprintf(out_fp,"XMM%%u");
+                            fmtargs += ",";
+                            fmtargs += regname;
+                            break;
+                        case OPDARGTYPE_AVX:
+                            fprintf(out_fp,"YMM%%u");
+                            fmtargs += ",";
+                            fmtargs += regname;
+                            break;
+			default:
+			    break;
+                    }
+                }
+                else if (arg.arg == OPDARG_i74) {
+                    const char *regname = "(imm>>4)&15";
                     char regn[32];
 
                     if (arg.argreg != OPREG_NONE) {
