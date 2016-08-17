@@ -6607,4 +6607,6 @@ jmp2:
     vpcmpeqq    xmm1,xmm2,[si]
     vpcmpeqq    ymm1,ymm2,ymm3
     vpcmpeqq    ymm1,ymm2,[si]
+    vmovntdqa   xmm1,[si]
+    vmovntdqa   ymm1,[si]
 

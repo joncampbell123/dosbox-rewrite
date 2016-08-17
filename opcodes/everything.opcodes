@@ -320,3 +320,6 @@ opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x28 mod/reg/rm:       "VPM
 opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x29 mod/reg/rm:       "VPCMPEQQ" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x29 mod/reg/rm:       "VPCMPEQQ" avx(reg),avx(vsidx),avx(r/m)
 
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2A mod/reg/rm vsidx(0):"VMOVNTDQA" sse(reg),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2A mod/reg/rm vsidx(0):"VMOVNTDQA" avx(reg),avx(r/m)
+
