@@ -6511,4 +6511,8 @@ jmp2:
     vphaddd     xmm0,xmm1,[si]
     vphaddd     ymm0,ymm1,ymm2
     vphaddd     ymm0,ymm1,[si]
+    vphaddsw    xmm0,xmm1,xmm2
+    vphaddsw    xmm0,xmm1,[si]
+    vphaddsw    ymm0,ymm1,ymm2
+    vphaddsw    ymm0,ymm1,[si]
 
