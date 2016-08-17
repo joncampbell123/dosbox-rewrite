@@ -6575,4 +6575,28 @@ jmp2:
     vpabsd      xmm1,[si]
     vpabsd      ymm1,ymm2
     vpabsd      ymm1,[si]
+    vpmovsxbw   xmm1,xmm2
+    vpmovsxbw   xmm1,[si]
+    vpmovsxbw   ymm1,xmm2
+    vpmovsxbw   ymm1,[si]
+    vpmovsxbd   xmm1,xmm2
+    vpmovsxbd   xmm1,[si]
+    vpmovsxbd   ymm1,xmm2
+    vpmovsxbd   ymm1,[si]
+    vpmovsxbq   xmm1,xmm2
+    vpmovsxbq   xmm1,[si]
+    vpmovsxbq   ymm1,xmm2
+    vpmovsxbq   ymm1,[si]
+    vpmovsxwd   xmm1,xmm2
+    vpmovsxwd   xmm1,[si]
+    vpmovsxwd   ymm1,xmm2
+    vpmovsxwd   ymm1,[si]
+    vpmovsxwq   xmm1,xmm2
+    vpmovsxwq   xmm1,[si]
+    vpmovsxwq   ymm1,xmm2
+    vpmovsxwq   ymm1,[si]
+    vpmovsxdq   xmm1,xmm2
+    vpmovsxdq   xmm1,[si]
+    vpmovsxdq   ymm1,xmm2
+    vpmovsxdq   ymm1,[si]
 
