@@ -6551,4 +6551,12 @@ jmp2:
     vpblendvb   xmm1,xmm2,[si],xmm4
     vpblendvb   ymm1,ymm2,ymm3,ymm4
     vpblendvb   ymm1,ymm2,[si],ymm4
+    vblendvps   xmm1,xmm2,xmm3,xmm4
+    vblendvps   xmm1,xmm2,[si],xmm4
+    vblendvps   ymm1,ymm2,ymm3,ymm4
+    vblendvps   ymm1,ymm2,[si],ymm4
+    vblendvpd   xmm1,xmm2,xmm3,xmm4
+    vblendvpd   xmm1,xmm2,[si],xmm4
+    vblendvpd   ymm1,ymm2,ymm3,ymm4
+    vblendvpd   ymm1,ymm2,[si],ymm4
 
