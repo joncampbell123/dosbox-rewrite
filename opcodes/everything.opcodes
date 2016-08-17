@@ -268,3 +268,12 @@ opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x06 mod/reg/rm:       "VPH
 opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x07 mod/reg/rm:       "VPHSUBSW" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x07 mod/reg/rm:       "VPHSUBSW" avx(reg),avx(vsidx),avx(r/m)
 
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x08 mod/reg/rm:       "VPSIGNB" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x08 mod/reg/rm:       "VPSIGNB" avx(reg),avx(vsidx),avx(r/m)
+
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x09 mod/reg/rm:       "VPSIGNW" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x09 mod/reg/rm:       "VPSIGNW" avx(reg),avx(vsidx),avx(r/m)
+
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x0A mod/reg/rm:       "VPSIGND" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x0A mod/reg/rm:       "VPSIGND" avx(reg),avx(vsidx),avx(r/m)
+

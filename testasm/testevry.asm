@@ -6531,4 +6531,16 @@ jmp2:
     vphsubsw    xmm0,xmm1,[si]
     vphsubsw    ymm0,ymm1,ymm2
     vphsubsw    ymm0,ymm1,[si]
+    vpsignb     xmm0,xmm1,xmm2
+    vpsignb     xmm0,xmm1,[si]
+    vpsignb     ymm0,ymm1,ymm2
+    vpsignb     ymm0,ymm1,[si]
+    vpsignw     xmm0,xmm1,xmm2
+    vpsignw     xmm0,xmm1,[si]
+    vpsignw     ymm0,ymm1,ymm2
+    vpsignw     ymm0,ymm1,[si]
+    vpsignd     xmm0,xmm1,xmm2
+    vpsignd     xmm0,xmm1,[si]
+    vpsignd     ymm0,ymm1,ymm2
+    vpsignd     ymm0,ymm1,[si]
 
