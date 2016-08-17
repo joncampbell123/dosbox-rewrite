@@ -6559,4 +6559,8 @@ jmp2:
     vblendvpd   xmm1,xmm2,[si],xmm4
     vblendvpd   ymm1,ymm2,ymm3,ymm4
     vblendvpd   ymm1,ymm2,[si],ymm4
+    vptest      xmm1,xmm2
+    vptest      xmm1,[si]
+    vptest      ymm1,ymm2
+    vptest      ymm1,[si]
 
