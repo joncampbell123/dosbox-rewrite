@@ -6563,4 +6563,16 @@ jmp2:
     vptest      xmm1,[si]
     vptest      ymm1,ymm2
     vptest      ymm1,[si]
+    vpabsb      xmm1,xmm2
+    vpabsb      xmm1,[si]
+    vpabsb      ymm1,ymm2
+    vpabsb      ymm1,[si]
+    vpabsw      xmm1,xmm2
+    vpabsw      xmm1,[si]
+    vpabsw      ymm1,ymm2
+    vpabsw      ymm1,[si]
+    vpabsd      xmm1,xmm2
+    vpabsd      xmm1,[si]
+    vpabsd      ymm1,ymm2
+    vpabsd      ymm1,[si]
 

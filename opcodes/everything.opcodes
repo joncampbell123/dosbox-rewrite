@@ -292,3 +292,12 @@ opcode vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x4B mod/reg/rm ib:    "VBL
 opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x17 mod/reg/rm vsidx(0):"VPTEST" sse(reg),sse(r/m)
 opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x17 mod/reg/rm vsidx(0):"VPTEST" avx(reg),avx(r/m)
 
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x1C mod/reg/rm vsidx(0):"VPABSB" sse(reg),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x1C mod/reg/rm vsidx(0):"VPABSB" avx(reg),avx(r/m)
+
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x1D mod/reg/rm vsidx(0):"VPABSW" sse(reg),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x1D mod/reg/rm vsidx(0):"VPABSW" avx(reg),avx(r/m)
+
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x1E mod/reg/rm vsidx(0):"VPABSD" sse(reg),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x1E mod/reg/rm vsidx(0):"VPABSD" avx(reg),avx(r/m)
+
