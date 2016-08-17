@@ -238,3 +238,9 @@ opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x2B mod/reg/rm mod!=3:     "VMO
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x2B mod/reg/rm mod!=3:     "VMOVNTPD" sse(r/m),sse(reg)
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x2B mod/reg/rm mod!=3:     "VMOVNTPD" avx(r/m),avx(reg)
 
+opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x2E mod/reg/rm:            "VUCOMISS" sse(reg),sse(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x2E mod/reg/rm:            "VUCOMISD" sse(reg),sse(r/m)
+
+opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x2F mod/reg/rm:            "VCOMISS" sse(reg),sse(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x2F mod/reg/rm:            "VCOMISD" sse(reg),sse(r/m)
+
