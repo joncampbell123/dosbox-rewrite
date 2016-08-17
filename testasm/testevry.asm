@@ -6603,4 +6603,8 @@ jmp2:
     vpmuldq     xmm1,xmm2,[si]
     vpmuldq     ymm1,ymm2,ymm3
     vpmuldq     ymm1,ymm2,[si]
+    vpcmpeqq    xmm1,xmm2,xmm3
+    vpcmpeqq    xmm1,xmm2,[si]
+    vpcmpeqq    ymm1,ymm2,ymm3
+    vpcmpeqq    ymm1,ymm2,[si]
 
