@@ -247,3 +247,9 @@ opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x2F mod/reg/rm vsidx(0):   "VCO
 opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x00 mod/reg/rm:       "VPSHUFB" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x00 mod/reg/rm:       "VPSHUFB" avx(reg),avx(vsidx),avx(r/m)
 
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x01 mod/reg/rm:       "VPHADDW" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x01 mod/reg/rm:       "VPHADDW" avx(reg),avx(vsidx),avx(r/m)
+
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x02 mod/reg/rm:       "VPHADDD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x02 mod/reg/rm:       "VPHADDD" avx(reg),avx(vsidx),avx(r/m)
+

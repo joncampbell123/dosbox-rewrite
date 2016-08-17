@@ -6503,4 +6503,12 @@ jmp2:
     vpshufb     xmm0,xmm1,[si]
     vpshufb     ymm0,ymm1,ymm2
     vpshufb     ymm0,ymm1,[si]
+    vphaddw     xmm0,xmm1,xmm2
+    vphaddw     xmm0,xmm1,[si]
+    vphaddw     ymm0,ymm1,ymm2
+    vphaddw     ymm0,ymm1,[si]
+    vphaddd     xmm0,xmm1,xmm2
+    vphaddd     xmm0,xmm1,[si]
+    vphaddd     ymm0,ymm1,ymm2
+    vphaddd     ymm0,ymm1,[si]
 
