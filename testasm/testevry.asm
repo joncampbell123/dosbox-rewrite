@@ -6599,4 +6599,8 @@ jmp2:
     vpmovsxdq   xmm1,[si]
     vpmovsxdq   ymm1,xmm2
     vpmovsxdq   ymm1,[si]
+    vpmuldq     xmm1,xmm2,xmm3
+    vpmuldq     xmm1,xmm2,[si]
+    vpmuldq     ymm1,ymm2,ymm3
+    vpmuldq     ymm1,ymm2,[si]
 
