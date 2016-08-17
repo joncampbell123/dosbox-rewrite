@@ -244,3 +244,6 @@ opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x2E mod/reg/rm vsidx(0):   "VUC
 opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x2F mod/reg/rm vsidx(0):   "VCOMISS" sse(reg),sse(r/m)
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x2F mod/reg/rm vsidx(0):   "VCOMISD" sse(reg),sse(r/m)
 
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x00 mod/reg/rm:       "VPSHUFB" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x00 mod/reg/rm:       "VPSHUFB" avx(reg),avx(vsidx),avx(r/m)
+

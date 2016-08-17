@@ -6499,4 +6499,8 @@ jmp2:
     vcomiss     xmm0,[si]
     vcomisd     xmm0,xmm1
     vcomisd     xmm0,[si]
+    vpshufb     xmm0,xmm1,xmm2
+    vpshufb     xmm0,xmm1,[si]
+    vpshufb     ymm0,ymm1,ymm2
+    vpshufb     ymm0,ymm1,[si]
 
