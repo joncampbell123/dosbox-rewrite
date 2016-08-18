@@ -6893,4 +6893,12 @@ jmp2:
     vpunpcklqdq xmm1,xmm2,[si]
     vpunpcklqdq ymm1,ymm2,ymm3
     vpunpcklqdq ymm1,ymm2,[si]
+    vpacksswb   xmm1,xmm2,xmm3
+    vpacksswb   xmm1,xmm2,[si]
+    vpacksswb   ymm1,ymm2,ymm3
+    vpacksswb   ymm1,ymm2,[si]
+    vpackssdw   xmm1,xmm2,xmm3
+    vpackssdw   xmm1,xmm2,[si]
+    vpackssdw   ymm1,ymm2,ymm3
+    vpackssdw   ymm1,ymm2,[si]
 

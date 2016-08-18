@@ -525,3 +525,9 @@ opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x62 mod/reg/rm:            "VPU
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x6C mod/reg/rm:            "VPUNPCKLQDQ" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x6C mod/reg/rm:            "VPUNPCKLQDQ" avx(reg),avx(vsidx),avx(r/m)
 
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x63 mod/reg/rm:            "VPACKSSWB" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x63 mod/reg/rm:            "VPACKSSWB" avx(reg),avx(vsidx),avx(r/m)
+
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x6B mod/reg/rm:            "VPACKSSDW" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x6B mod/reg/rm:            "VPACKSSDW" avx(reg),avx(vsidx),avx(r/m)
+
