@@ -6637,4 +6637,8 @@ jmp2:
     vpmovzxdq   xmm1,[si]
     vpmovzxdq   ymm1,xmm2
     vpmovzxdq   ymm1,[si]
+    vpcmpgtq    xmm1,xmm2,xmm3
+    vpcmpgtq    xmm1,xmm2,[si]
+    vpcmpgtq    ymm1,ymm2,ymm3
+    vpcmpgtq    ymm1,ymm2,[si]
 
