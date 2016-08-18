@@ -7073,4 +7073,7 @@ jmp2:
     vpmullw     xmm1,xmm2,[si]
     vpmullw     ymm1,ymm2,ymm3
     vpmullw     ymm1,ymm2,[si]
+    vmovq       xmm1,xmm2
+    vmovq       xmm1,[si]
+    vmovq       [si],xmm2
 
