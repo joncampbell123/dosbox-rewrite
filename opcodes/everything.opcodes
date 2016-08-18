@@ -746,4 +746,8 @@ opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0x8C mod/reg/rm: "VPM
 opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0x8C mod/reg/rm: "VPMASKMOVQ" avx(reg),avx(vsidx),avx(r/m)
 opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0x8E mod/reg/rm: "VPMASKMOVQ" sse(r/m),sse(vsidx),sse(reg)
 opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0x8E mod/reg/rm: "VPMASKMOVQ" avx(r/m),avx(vsidx),avx(reg)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x16 mod/reg/rm:       "VPERMPS" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) vw(1) 0x01 mod/reg/rm ib vsidx(0):"VPERMPD" avx(reg),avx(r/m),i
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x36 mod/reg/rm:       "VPERMD" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) vw(1) 0x00 mod/reg/rm ib vsidx(0):"VPERMQ" avx(reg),avx(r/m),i
 
