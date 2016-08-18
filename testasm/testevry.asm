@@ -7084,4 +7084,8 @@ jmp2:
     vpsubusw    xmm1,xmm2,[si]
     vpsubusw    ymm1,ymm2,ymm3
     vpsubusw    ymm1,ymm2,[si]
+    vpminub     xmm1,xmm2,xmm3
+    vpminub     xmm1,xmm2,[si]
+    vpminub     ymm1,ymm2,ymm3
+    vpminub     ymm1,ymm2,[si]
 

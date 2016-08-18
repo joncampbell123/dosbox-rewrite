@@ -665,3 +665,6 @@ opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xD8 mod/reg/rm:            "VPS
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xD9 mod/reg/rm:            "VPSUBUSW" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xD9 mod/reg/rm:            "VPSUBUSW" avx(reg),avx(vsidx),avx(r/m)
 
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xDA mod/reg/rm:            "VPMINUB" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xDA mod/reg/rm:            "VPMINUB" avx(reg),avx(vsidx),avx(r/m)
+
