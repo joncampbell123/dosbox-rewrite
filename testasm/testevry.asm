@@ -7007,4 +7007,16 @@ jmp2:
     vpsllq      ymm1,ymm2,[si]
     vpsllq      ymm1,ymm2,3
     vpslldq     ymm1,ymm2,3
+    vpcmpeqb    xmm1,xmm2,xmm3
+    vpcmpeqb    xmm1,xmm2,[si]
+    vpcmpeqb    ymm1,ymm2,ymm3
+    vpcmpeqb    ymm1,ymm2,[si]
+    vpcmpeqw    xmm1,xmm2,xmm3
+    vpcmpeqw    xmm1,xmm2,[si]
+    vpcmpeqw    ymm1,ymm2,ymm3
+    vpcmpeqw    ymm1,ymm2,[si]
+    vpcmpeqd    xmm1,xmm2,xmm3
+    vpcmpeqd    xmm1,xmm2,[si]
+    vpcmpeqd    ymm1,ymm2,ymm3
+    vpcmpeqd    ymm1,ymm2,[si]
 

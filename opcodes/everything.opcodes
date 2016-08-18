@@ -614,3 +614,10 @@ opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x73 mod/reg/rm /6 ib mod==3:"VP
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x73 mod/reg/rm /7 ib mod==3:"VPSLLDQ" sse(vsidx),sse(r/m),i
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x73 mod/reg/rm /7 ib mod==3:"VPSLLDQ" avx(vsidx),avx(r/m),i
 
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x74 mod/reg/rm:            "VPCMPEQB" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x74 mod/reg/rm:            "VPCMPEQB" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x75 mod/reg/rm:            "VPCMPEQW" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x75 mod/reg/rm:            "VPCMPEQW" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x76 mod/reg/rm:            "VPCMPEQD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x76 mod/reg/rm:            "VPCMPEQD" avx(reg),avx(vsidx),avx(r/m)
+
