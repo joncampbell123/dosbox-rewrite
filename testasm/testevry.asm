@@ -6724,4 +6724,10 @@ jmp2:
     vpinsrd     xmm1,xmm2,[si],4
     vinsertps   xmm1,xmm2,xmm3,4
     vinsertps   xmm1,xmm2,[si],4
+    vdpps       xmm1,xmm2,xmm3,4
+    vdpps       xmm1,xmm2,[si],4
+    vdpps       ymm1,ymm2,ymm3,4
+    vdpps       ymm1,ymm2,[si],4
+    vdppd       xmm1,xmm2,xmm3,4
+    vdppd       xmm1,xmm2,[si],4
 

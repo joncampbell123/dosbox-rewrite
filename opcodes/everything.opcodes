@@ -404,3 +404,7 @@ opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x22 mod/reg/rm ib:    "VPI
 
 opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x21 mod/reg/rm ib:    "VINSERTPS" sse(reg),sse(vsidx),sse(r/m),i
 
+opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x40 mod/reg/rm ib:    "VDPPS" sse(reg),sse(vsidx),sse(r/m),i
+opcode vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x40 mod/reg/rm ib:    "VDPPS" avx(reg),avx(vsidx),avx(r/m),i
+opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x41 mod/reg/rm ib:    "VDPPD" sse(reg),sse(vsidx),sse(r/m),i
+
