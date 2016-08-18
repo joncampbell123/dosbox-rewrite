@@ -7065,4 +7065,8 @@ jmp2:
     vaddsubps   xmm1,xmm2,[si]
     vaddsubps   ymm1,ymm2,ymm3
     vaddsubps   ymm1,ymm2,[si]
+    vpaddq      xmm1,xmm2,xmm3
+    vpaddq      xmm1,xmm2,[si]
+    vpaddq      ymm1,ymm2,ymm3
+    vpaddq      ymm1,ymm2,[si]
 
