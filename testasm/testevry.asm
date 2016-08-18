@@ -6819,4 +6819,6 @@ jmp2:
     vcvtsi2ss   xmm1,xmm2,[si]
     vmovntps    [si],xmm1
     vmovntps    [si],ymm1
+    vmovntpd    [si],xmm1
+    vmovntpd    [si],ymm1
 

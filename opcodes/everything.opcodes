@@ -473,4 +473,6 @@ opcode vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x2A mod/reg/rm:            "VCV
 
 opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x2B mod/reg/rm vsidx(0):   "VMOVNTPS" sse(r/m),sse(reg)
 opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x2B mod/reg/rm vsidx(0):   "VMOVNTPS" avx(r/m),avx(reg)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x2B mod/reg/rm vsidx(0):   "VMOVNTPD" sse(r/m),sse(reg)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x2B mod/reg/rm vsidx(0):   "VMOVNTPD" avx(r/m),avx(reg)
 
