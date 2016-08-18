@@ -592,11 +592,6 @@ opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xE2 mod/reg/rm:            "VPS
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x72 mod/reg/rm /4 ib mod==3:"VPSRAD" sse(vsidx),sse(r/m),i
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x72 mod/reg/rm /4 ib mod==3:"VPSRAD" avx(vsidx),avx(r/m),i
 
-opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xE3 mod/reg/rm:            "VPSRAQ" sse(reg),sse(vsidx),sse(r/m)
-opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xE3 mod/reg/rm:            "VPSRAQ" avx(reg),avx(vsidx),sse(r/m)
-opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x73 mod/reg/rm /4 ib mod==3:"VPSRAQ" sse(vsidx),sse(r/m),i
-opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x73 mod/reg/rm /4 ib mod==3:"VPSRAQ" avx(vsidx),avx(r/m),i
-
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xF1 mod/reg/rm:            "VPSLLW" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xF1 mod/reg/rm:            "VPSLLW" avx(reg),avx(vsidx),sse(r/m)
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x71 mod/reg/rm /6 ib mod==3:"VPSLLW" sse(vsidx),sse(r/m),i
@@ -677,4 +672,8 @@ opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xDE mod/reg/rm:            "VPM
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xDE mod/reg/rm:            "VPMAXUB" avx(reg),avx(vsidx),avx(r/m)
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xDF mod/reg/rm:            "VPANDN" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xDF mod/reg/rm:            "VPANDN" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xE0 mod/reg/rm:            "VPAVGB" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xE0 mod/reg/rm:            "VPAVGB" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xE3 mod/reg/rm:            "VPAVGW" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xE3 mod/reg/rm:            "VPAVGW" avx(reg),avx(vsidx),avx(r/m)
 

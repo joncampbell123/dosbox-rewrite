@@ -7108,4 +7108,12 @@ jmp2:
     vpandn      xmm1,xmm2,[si]
     vpandn      ymm1,ymm2,ymm3
     vpandn      ymm1,ymm2,[si]
+    vpavgb      xmm1,xmm2,xmm3
+    vpavgb      xmm1,xmm2,[si]
+    vpavgb      ymm1,ymm2,ymm3
+    vpavgb      ymm1,ymm2,[si]
+    vpavgw      xmm1,xmm2,xmm3
+    vpavgw      xmm1,xmm2,[si]
+    vpavgw      ymm1,ymm2,ymm3
+    vpavgw      ymm1,ymm2,[si]
 
