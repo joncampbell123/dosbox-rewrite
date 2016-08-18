@@ -6811,4 +6811,8 @@ jmp2:
     vmulss      xmm1,xmm2,[si]
     vmulsd      xmm1,xmm2,xmm3
     vmulsd      xmm1,xmm2,[si]
+    vcvtps2pd   xmm1,xmm2
+    vcvtps2pd   xmm1,[si]
+    vcvtps2pd   ymm1,xmm2
+    vcvtps2pd   ymm1,[si]
 
