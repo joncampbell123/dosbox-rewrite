@@ -370,3 +370,9 @@ opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x40 mod/reg/rm:       "VPM
 
 opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x41 mod/reg/rm vsidx(0):"VPHMINPOSUW" sse(reg),sse(r/m)
 
+opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x08 mod/reg/rm ib vsidx(0):"VROUNDPS" sse(reg),sse(r/m),i
+opcode vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x08 mod/reg/rm ib vsidx(0):"VROUNDPS" avx(reg),avx(r/m),i
+
+opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x09 mod/reg/rm ib vsidx(0):"VROUNDPD" sse(reg),sse(r/m),i
+opcode vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x09 mod/reg/rm ib vsidx(0):"VROUNDPD" avx(reg),avx(r/m),i
+

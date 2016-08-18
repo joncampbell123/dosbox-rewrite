@@ -6679,4 +6679,12 @@ jmp2:
     vpmulld     ymm1,ymm2,[si]
     vphminposuw xmm1,xmm2
     vphminposuw xmm1,[si]
+    vroundps    xmm1,xmm2,3
+    vroundps    xmm1,[si],3
+    vroundps    ymm1,ymm2,3
+    vroundps    ymm1,[si],3
+    vroundpd    xmm1,xmm2,3
+    vroundpd    xmm1,[si],3
+    vroundpd    ymm1,ymm2,3
+    vroundpd    ymm1,[si],3
 
