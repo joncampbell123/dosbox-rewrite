@@ -646,3 +646,8 @@ opcode vex vsize(256) vlead(0x0F) vprefix(none) 0xC6 mod/reg/rm ib:         "VSH
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xC6 mod/reg/rm ib:         "VSHUFPD" sse(reg),sse(vsidx),sse(r/m),i
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xC6 mod/reg/rm ib:         "VSHUFPD" avx(reg),avx(vsidx),avx(r/m),i
 
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xD0 mod/reg/rm:            "VADDSUBPD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xD0 mod/reg/rm:            "VADDSUBPD" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF2) 0xD0 mod/reg/rm:            "VADDSUBPS" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0xF2) 0xD0 mod/reg/rm:            "VADDSUBPS" avx(reg),avx(vsidx),avx(r/m)
+

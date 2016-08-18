@@ -7057,4 +7057,12 @@ jmp2:
     vshufpd     xmm1,xmm2,[si],4
     vshufpd     ymm1,ymm2,ymm3,4
     vshufpd     ymm1,ymm2,[si],4
+    vaddsubpd   xmm1,xmm2,xmm3
+    vaddsubpd   xmm1,xmm2,[si]
+    vaddsubpd   ymm1,ymm2,ymm3
+    vaddsubpd   ymm1,ymm2,[si]
+    vaddsubps   xmm1,xmm2,xmm3
+    vaddsubps   xmm1,xmm2,[si]
+    vaddsubps   ymm1,ymm2,ymm3
+    vaddsubps   ymm1,ymm2,[si]
 
