@@ -432,3 +432,7 @@ opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x52 mod/reg/rm vsidx(0):   "VRS
 opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x52 mod/reg/rm vsidx(0):   "VRSQRTPS" avx(reg),avx(r/m)
 opcode vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x52 mod/reg/rm:            "VRSQRTSS" sse(reg),sse(vsidx),sse(r/m)
 
+opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x53 mod/reg/rm vsidx(0):   "VRCPPS" sse(reg),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x53 mod/reg/rm vsidx(0):   "VRCPPS" avx(reg),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x53 mod/reg/rm:            "VRCPSS" sse(reg),sse(vsidx),sse(r/m)
+

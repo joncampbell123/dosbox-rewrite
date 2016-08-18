@@ -6749,4 +6749,10 @@ jmp2:
     vrsqrtps    ymm1,[si]
     vrsqrtss    xmm1,xmm2,xmm3
     vrsqrtss    xmm1,xmm2,[si]
+    vrcpps      xmm1,xmm2
+    vrcpps      xmm1,[si]
+    vrcpps      ymm1,ymm2
+    vrcpps      ymm1,[si]
+    vrcpss      xmm1,xmm2,xmm3
+    vrcpss      xmm1,xmm2,[si]
 
