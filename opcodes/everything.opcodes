@@ -436,3 +436,8 @@ opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x53 mod/reg/rm vsidx(0):   "VRC
 opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x53 mod/reg/rm vsidx(0):   "VRCPPS" avx(reg),avx(r/m)
 opcode vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x53 mod/reg/rm:            "VRCPSS" sse(reg),sse(vsidx),sse(r/m)
 
+opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x54 mod/reg/rm:            "VANDPS" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x54 mod/reg/rm:            "VANDPS" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x54 mod/reg/rm:            "VANDPD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x54 mod/reg/rm:            "VANDPD" avx(reg),avx(vsidx),avx(r/m)
+

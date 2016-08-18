@@ -6755,4 +6755,12 @@ jmp2:
     vrcpps      ymm1,[si]
     vrcpss      xmm1,xmm2,xmm3
     vrcpss      xmm1,xmm2,[si]
+    vandps      xmm1,xmm2,xmm3
+    vandps      xmm1,xmm2,[si]
+    vandps      ymm1,ymm2,ymm3
+    vandps      ymm1,ymm2,[si]
+    vandpd      xmm1,xmm2,xmm3
+    vandpd      xmm1,xmm2,[si]
+    vandpd      ymm1,ymm2,ymm3
+    vandpd      ymm1,ymm2,[si]
 
