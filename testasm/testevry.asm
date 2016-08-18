@@ -6716,4 +6716,10 @@ jmp2:
     vpextrd     [si],xmm2,3
     vextractps  eax,xmm1,2
     vextractps  [si],xmm1,2
+    vpinsrb     xmm1,xmm2,ecx,4
+    vpinsrb     xmm1,xmm2,[si],4
+    vpinsrw     xmm1,xmm2,ecx,4
+    vpinsrw     xmm1,xmm2,[si],4
+    vpinsrd     xmm1,xmm2,ecx,4
+    vpinsrd     xmm1,xmm2,[si],4
 
