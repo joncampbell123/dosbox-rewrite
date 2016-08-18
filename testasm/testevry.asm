@@ -7260,3 +7260,6 @@ jmp2:
     vpermq      ymm1,ymm2,3
     vpermq      ymm1,[si],3
 
+    vperm2i128  ymm1,ymm2,ymm3,4
+    vperm2i128  ymm1,ymm2,[si],4
+
