@@ -676,4 +676,8 @@ opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xE0 mod/reg/rm:            "VPA
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xE0 mod/reg/rm:            "VPAVGB" avx(reg),avx(vsidx),avx(r/m)
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xE3 mod/reg/rm:            "VPAVGW" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xE3 mod/reg/rm:            "VPAVGW" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xE4 mod/reg/rm:            "VPMULHUW" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xE4 mod/reg/rm:            "VPMULHUW" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xE5 mod/reg/rm:            "VPMULHW" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xE5 mod/reg/rm:            "VPMULHW" avx(reg),avx(vsidx),avx(r/m)
 
