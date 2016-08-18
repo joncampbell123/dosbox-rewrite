@@ -736,4 +736,6 @@ opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x58 mod/reg/rm vsidx(0):"V
 opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x59 mod/reg/rm vsidx(0):"VPBROADCASTQ" sse(reg),sse(r/m)
 opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x59 mod/reg/rm vsidx(0):"VPBROADCASTQ" avx(reg),sse(r/m)
 opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x5A mod/reg/rm vsidx(0) mod!=3:"VBROADCASTI128" avx(reg),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x38 mod/reg/rm ib:    "VINSERTI128" avx(reg),avx(vsidx),sse(r/m),i
+opcode vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x39 mod/reg/rm vsidx(0) ib:"VEXTRACTI128" sse(r/m),avx(reg),i
 

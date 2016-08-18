@@ -7231,4 +7231,8 @@ jmp2:
     vpbroadcastq ymm1,xmm2
 ;    vpbroadcastq ymm1,[si]         FIXME: broken in v1.2.0 yasm
     vbroadcasti128 ymm1,[si]
+    vinserti128 ymm1,ymm2,xmm3,4
+    vinserti128 ymm1,ymm1,[si],4
+    vextracti128 xmm1,ymm2,3
+    vextracti128 [si],ymm2,3
 
