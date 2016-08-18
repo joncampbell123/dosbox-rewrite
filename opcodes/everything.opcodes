@@ -713,4 +713,12 @@ opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xF5 mod/reg/rm:            "VPM
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xF6 mod/reg/rm:            "VPSADBW" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xF6 mod/reg/rm:            "VPSADBW" avx(reg),avx(vsidx),avx(r/m)
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xF7 mod/reg/rm vsidx(0) mod==3:"VMASKMOVDQU" sse(reg),sse(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xF8 mod/reg/rm:            "VPSUBB" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xF8 mod/reg/rm:            "VPSUBB" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xF9 mod/reg/rm:            "VPSUBW" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xF9 mod/reg/rm:            "VPSUBW" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xFA mod/reg/rm:            "VPSUBD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xFA mod/reg/rm:            "VPSUBD" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xFB mod/reg/rm:            "VPSUBQ" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xFB mod/reg/rm:            "VPSUBQ" avx(reg),avx(vsidx),avx(r/m)
 

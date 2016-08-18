@@ -7185,4 +7185,20 @@ jmp2:
     vpsadbw     ymm1,ymm2,ymm3
     vpsadbw     ymm1,ymm2,[si]
     vmaskmovdqu xmm1,xmm2
+    vpsubb      xmm1,xmm2,xmm3
+    vpsubb      xmm1,xmm2,[si]
+    vpsubb      ymm1,ymm2,ymm3
+    vpsubb      ymm1,ymm2,[si]
+    vpsubw      xmm1,xmm2,xmm3
+    vpsubw      xmm1,xmm2,[si]
+    vpsubw      ymm1,ymm2,ymm3
+    vpsubw      ymm1,ymm2,[si]
+    vpsubd      xmm1,xmm2,xmm3
+    vpsubd      xmm1,xmm2,[si]
+    vpsubd      ymm1,ymm2,ymm3
+    vpsubd      ymm1,ymm2,[si]
+    vpsubq      xmm1,xmm2,xmm3
+    vpsubq      xmm1,xmm2,[si]
+    vpsubq      ymm1,ymm2,ymm3
+    vpsubq      ymm1,ymm2,[si]
 
