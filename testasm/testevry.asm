@@ -6657,4 +6657,20 @@ jmp2:
     vpminud     xmm1,xmm2,[si]
     vpminud     ymm1,ymm2,ymm3
     vpminud     ymm1,ymm2,[si]
+    vpmaxsb     xmm1,xmm2,xmm3
+    vpmaxsb     xmm1,xmm2,[si]
+    vpmaxsb     ymm1,ymm2,ymm3
+    vpmaxsb     ymm1,ymm2,[si]
+    vpmaxsd     xmm1,xmm2,xmm3
+    vpmaxsd     xmm1,xmm2,[si]
+    vpmaxsd     ymm1,ymm2,ymm3
+    vpmaxsd     ymm1,ymm2,[si]
+    vpmaxuw     xmm1,xmm2,xmm3
+    vpmaxuw     xmm1,xmm2,[si]
+    vpmaxuw     ymm1,ymm2,ymm3
+    vpmaxuw     ymm1,ymm2,[si]
+    vpmaxud     xmm1,xmm2,xmm3
+    vpmaxud     xmm1,xmm2,[si]
+    vpmaxud     ymm1,ymm2,ymm3
+    vpmaxud     ymm1,ymm2,[si]
 
