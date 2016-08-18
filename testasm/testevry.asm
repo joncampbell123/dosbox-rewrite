@@ -6787,4 +6787,12 @@ jmp2:
     vxorpd      xmm1,xmm2,[si]
     vxorpd      ymm1,ymm2,ymm3
     vxorpd      ymm1,ymm2,[si]
+    vaddps      xmm1,xmm2,xmm3
+    vaddps      xmm1,xmm2,[si]
+    vaddps      ymm1,ymm2,ymm3
+    vaddps      ymm1,ymm2,[si]
+    vaddpd      xmm1,xmm2,xmm3
+    vaddpd      xmm1,xmm2,[si]
+    vaddpd      ymm1,ymm2,ymm3
+    vaddpd      ymm1,ymm2,[si]
 
