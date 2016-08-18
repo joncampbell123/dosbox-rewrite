@@ -6825,4 +6825,8 @@ jmp2:
     vucomiss    xmm1,[si]
     vucomisd    xmm1,xmm2
     vucomisd    xmm1,[si]
+    vcomiss     xmm1,xmm2
+    vcomiss     xmm1,[si]
+    vcomisd     xmm1,xmm2
+    vcomisd     xmm1,[si]
 
