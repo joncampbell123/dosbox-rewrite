@@ -541,3 +541,12 @@ opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x66 mod/reg/rm:            "VPC
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x67 mod/reg/rm:            "VPACKUSWB" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x67 mod/reg/rm:            "VPACKUSWB" avx(reg),avx(vsidx),avx(r/m)
 
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x68 mod/reg/rm:            "VPUNPCKHBW" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x68 mod/reg/rm:            "VPUNPCKHBW" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x69 mod/reg/rm:            "VPUNPCKHWD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x69 mod/reg/rm:            "VPUNPCKHWD" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x6A mod/reg/rm:            "VPUNPCKHDQ" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x6A mod/reg/rm:            "VPUNPCKHDQ" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x6D mod/reg/rm:            "VPUNPCKHQDQ" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x6D mod/reg/rm:            "VPUNPCKHQDQ" avx(reg),avx(vsidx),avx(r/m)
+

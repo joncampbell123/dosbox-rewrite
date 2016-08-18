@@ -6917,4 +6917,20 @@ jmp2:
     vpackuswb   xmm1,xmm2,[si]
     vpackuswb   ymm1,ymm2,ymm3
     vpackuswb   ymm1,ymm2,[si]
+    vpunpckhbw  xmm1,xmm2,xmm3
+    vpunpckhbw  xmm1,xmm2,[si]
+    vpunpckhbw  ymm1,ymm2,ymm3
+    vpunpckhbw  ymm1,ymm2,[si]
+    vpunpckhwd  xmm1,xmm2,xmm3
+    vpunpckhwd  xmm1,xmm2,[si]
+    vpunpckhwd  ymm1,ymm2,ymm3
+    vpunpckhwd  ymm1,ymm2,[si]
+    vpunpckhdq  xmm1,xmm2,xmm3
+    vpunpckhdq  xmm1,xmm2,[si]
+    vpunpckhdq  ymm1,ymm2,ymm3
+    vpunpckhdq  ymm1,ymm2,[si]
+    vpunpckhqdq xmm1,xmm2,xmm3
+    vpunpckhqdq xmm1,xmm2,[si]
+    vpunpckhqdq ymm1,ymm2,ymm3
+    vpunpckhqdq ymm1,ymm2,[si]
 
