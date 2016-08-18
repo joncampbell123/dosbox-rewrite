@@ -6987,4 +6987,24 @@ jmp2:
     vpsrad      ymm1,ymm2,xmm3
     vpsrad      ymm1,ymm2,[si]
     vpsrad      ymm1,ymm2,3
+    vpsllw      xmm1,xmm2,xmm3
+    vpsllw      xmm1,xmm2,[si]
+    vpsllw      xmm1,xmm2,3
+    vpslld      xmm1,xmm2,xmm3
+    vpslld      xmm1,xmm2,[si]
+    vpslld      xmm1,xmm2,3
+    vpsllq      xmm1,xmm2,xmm3
+    vpsllq      xmm1,xmm2,[si]
+    vpsllq      xmm1,xmm2,3
+    vpslldq     xmm1,xmm2,3
+    vpsllw      ymm1,ymm2,xmm3
+    vpsllw      ymm1,ymm2,[si]
+    vpsllw      ymm1,ymm2,3
+    vpslld      ymm1,ymm2,xmm3
+    vpslld      ymm1,ymm2,[si]
+    vpslld      ymm1,ymm2,3
+    vpsllq      ymm1,ymm2,xmm3
+    vpsllq      ymm1,ymm2,[si]
+    vpsllq      ymm1,ymm2,3
+    vpslldq     ymm1,ymm2,3
 
