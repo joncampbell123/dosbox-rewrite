@@ -6913,4 +6913,8 @@ jmp2:
     vpcmpgtd    xmm1,xmm2,[si]
     vpcmpgtd    ymm1,ymm2,ymm3
     vpcmpgtd    ymm1,ymm2,[si]
+    vpackuswb   xmm1,xmm2,xmm3
+    vpackuswb   xmm1,xmm2,[si]
+    vpackuswb   ymm1,ymm2,ymm3
+    vpackuswb   ymm1,ymm2,[si]
 

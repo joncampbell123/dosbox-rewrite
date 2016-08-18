@@ -538,3 +538,6 @@ opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x65 mod/reg/rm:            "VPC
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x66 mod/reg/rm:            "VPCMPGTD" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x66 mod/reg/rm:            "VPCMPGTD" avx(reg),avx(vsidx),avx(r/m)
 
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x67 mod/reg/rm:            "VPACKUSWB" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x67 mod/reg/rm:            "VPACKUSWB" avx(reg),avx(vsidx),avx(r/m)
+
