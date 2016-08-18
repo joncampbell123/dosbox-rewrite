@@ -7162,4 +7162,12 @@ jmp2:
     vpaddsw     xmm1,xmm2,[si]
     vpaddsw     ymm1,ymm2,ymm3
     vpaddsw     ymm1,ymm2,[si]
+    vpmaxsw     xmm1,xmm2,xmm3
+    vpmaxsw     xmm1,xmm2,[si]
+    vpmaxsw     ymm1,ymm2,ymm3
+    vpmaxsw     ymm1,ymm2,[si]
+    vpxor       xmm1,xmm2,xmm3
+    vpxor       xmm1,xmm2,[si]
+    vpxor       ymm1,ymm2,ymm3
+    vpxor       ymm1,ymm2,[si]
 

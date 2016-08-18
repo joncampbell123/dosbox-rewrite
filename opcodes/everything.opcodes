@@ -700,4 +700,8 @@ opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xEC mod/reg/rm:            "VPA
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xEC mod/reg/rm:            "VPADDSB" avx(reg),avx(vsidx),avx(r/m)
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xED mod/reg/rm:            "VPADDSW" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xED mod/reg/rm:            "VPADDSW" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xEE mod/reg/rm:            "VPMAXSW" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xEE mod/reg/rm:            "VPMAXSW" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xEF mod/reg/rm:            "VPXOR" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xEF mod/reg/rm:            "VPXOR" avx(reg),avx(vsidx),avx(r/m)
 
