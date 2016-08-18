@@ -365,3 +365,8 @@ opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x3E mod/reg/rm:       "VPM
 opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x3F mod/reg/rm:       "VPMAXUD" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x3F mod/reg/rm:       "VPMAXUD" avx(reg),avx(vsidx),avx(r/m)
 
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x40 mod/reg/rm:       "VPMULLD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x40 mod/reg/rm:       "VPMULLD" avx(reg),avx(vsidx),avx(r/m)
+
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x41 mod/reg/rm vsidx(0):"VPHMINPOSUW" sse(reg),sse(r/m)
+

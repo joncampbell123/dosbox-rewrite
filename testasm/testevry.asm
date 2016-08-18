@@ -6673,4 +6673,10 @@ jmp2:
     vpmaxud     xmm1,xmm2,[si]
     vpmaxud     ymm1,ymm2,ymm3
     vpmaxud     ymm1,ymm2,[si]
+    vpmulld     xmm1,xmm2,xmm3
+    vpmulld     xmm1,xmm2,[si]
+    vpmulld     ymm1,ymm2,ymm3
+    vpmulld     ymm1,ymm2,[si]
+    vphminposuw xmm1,xmm2
+    vphminposuw xmm1,[si]
 
