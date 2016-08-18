@@ -6815,4 +6815,6 @@ jmp2:
     vcvtps2pd   xmm1,[si]
     vcvtps2pd   ymm1,xmm2
     vcvtps2pd   ymm1,[si]
+    vcvtsi2ss   xmm1,xmm2,eax
+    vcvtsi2ss   xmm1,xmm2,[si]
 

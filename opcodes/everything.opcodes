@@ -469,3 +469,5 @@ opcode vex vsize(256) vlead(0x0F) vprefix(0xF2) 0x59 mod/reg/rm:            "VMU
 opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x5A mod/reg/rm vsidx(0):   "VCVTPS2PD" sse(reg),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x5A mod/reg/rm vsidx(0):   "VCVTPS2PD" avx(reg),sse(r/m)
 
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x2A mod/reg/rm:            "VCVTSI2SS" sse(reg),sse(vsidx),w32(r/m)
+
