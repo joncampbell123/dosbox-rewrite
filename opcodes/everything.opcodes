@@ -654,3 +654,6 @@ opcode vex vsize(256) vlead(0x0F) vprefix(0xF2) 0xD0 mod/reg/rm:            "VAD
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xD4 mod/reg/rm:            "VPADDQ" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xD4 mod/reg/rm:            "VPADDQ" avx(reg),avx(vsidx),avx(r/m)
 
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xD5 mod/reg/rm:            "VPMULLW" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xD5 mod/reg/rm:            "VPMULLW" avx(reg),avx(vsidx),avx(r/m)
+

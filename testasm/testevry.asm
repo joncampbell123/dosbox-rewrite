@@ -7069,4 +7069,8 @@ jmp2:
     vpaddq      xmm1,xmm2,[si]
     vpaddq      ymm1,ymm2,ymm3
     vpaddq      ymm1,ymm2,[si]
+    vpmullw     xmm1,xmm2,xmm3
+    vpmullw     xmm1,xmm2,[si]
+    vpmullw     ymm1,ymm2,ymm3
+    vpmullw     ymm1,ymm2,[si]
 
