@@ -686,4 +686,6 @@ opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xE6 mod/reg/rm vsidx(0):   "VCV
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xE6 mod/reg/rm vsidx(0):   "VCVTTPD2DQ" sse(reg),avx(r/m)
 opcode vex vsize(128) vlead(0x0F) vprefix(0xF3) 0xE6 mod/reg/rm vsidx(0):   "VCVTDQ2PD" sse(reg),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(0xF3) 0xE6 mod/reg/rm vsidx(0):   "VCVTDQ2PD" avx(reg),sse(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xE7 mod/reg/rm vsidx(0) mod!=3:"VMOVNTDQ" sse(r/m),sse(reg)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xE7 mod/reg/rm vsidx(0) mod!=3:"VMOVNTDQ" avx(r/m),avx(reg)
 

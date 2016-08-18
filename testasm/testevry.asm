@@ -7136,4 +7136,6 @@ jmp2:
     vcvtdq2pd   xmm1,[si]
     vcvtdq2pd   ymm1,xmm2
     vcvtdq2pd   ymm1,dqword [si]
+    vmovntdq    [si],xmm1
+    vmovntdq    [si],ymm1
 
