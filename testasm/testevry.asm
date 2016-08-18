@@ -6853,4 +6853,16 @@ jmp2:
     vminss      xmm1,xmm2,[si]
     vminsd      xmm1,xmm2,xmm3
     vminsd      xmm1,xmm2,[si]
+    vdivps      xmm1,xmm2,xmm3
+    vdivps      xmm1,xmm2,[si]
+    vdivps      ymm1,ymm2,ymm3
+    vdivps      ymm1,ymm2,[si]
+    vdivpd      xmm1,xmm2,xmm3
+    vdivpd      xmm1,xmm2,[si]
+    vdivpd      ymm1,ymm2,ymm3
+    vdivpd      ymm1,ymm2,[si]
+    vdivss      xmm1,xmm2,xmm3
+    vdivss      xmm1,xmm2,[si]
+    vdivsd      xmm1,xmm2,xmm3
+    vdivsd      xmm1,xmm2,[si]
 

@@ -496,3 +496,13 @@ opcode vex vsize(256) vlead(0x0F) vprefix(0xF3) 0x5D mod/reg/rm:            "VMI
 opcode vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x5D mod/reg/rm:            "VMINSD" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(0xF2) 0x5D mod/reg/rm:            "VMINSD" avx(reg),avx(vsidx),avx(r/m)
 
+opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x5E mod/reg/rm:            "VDIVPS" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x5E mod/reg/rm:            "VDIVPS" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x5E mod/reg/rm:            "VDIVPD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x5E mod/reg/rm:            "VDIVPD" avx(reg),avx(vsidx),avx(r/m)
+
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x5E mod/reg/rm:            "VDIVSS" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0xF3) 0x5E mod/reg/rm:            "VDIVSS" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x5E mod/reg/rm:            "VDIVSD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0xF2) 0x5E mod/reg/rm:            "VDIVSD" avx(reg),avx(vsidx),avx(r/m)
+
