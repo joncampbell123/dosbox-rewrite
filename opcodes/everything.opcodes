@@ -402,3 +402,5 @@ opcode vex vsize(128) vlead(0x0F)      vprefix(0x66) 0xC4 mod/reg/rm ib mod==3:"
 opcode vex vsize(128) vlead(0x0F)      vprefix(0x66) 0xC4 mod/reg/rm ib mod!=3:"VPINSRW" sse(reg),sse(vsidx),w16(r/m),i
 opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x22 mod/reg/rm ib:    "VPINSRD" sse(reg),sse(vsidx),w32(r/m),i
 
+opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x21 mod/reg/rm ib:    "VINSERTPS" sse(reg),sse(vsidx),sse(r/m),i
+

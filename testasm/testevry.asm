@@ -6722,4 +6722,6 @@ jmp2:
     vpinsrw     xmm1,xmm2,[si],4
     vpinsrd     xmm1,xmm2,ecx,4
     vpinsrd     xmm1,xmm2,[si],4
+    vinsertps   xmm1,xmm2,xmm3,4
+    vinsertps   xmm1,xmm2,[si],4
 
