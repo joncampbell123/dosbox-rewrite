@@ -6933,4 +6933,8 @@ jmp2:
     vpunpckhqdq xmm1,xmm2,[si]
     vpunpckhqdq ymm1,ymm2,ymm3
     vpunpckhqdq ymm1,ymm2,[si]
+    vmovd       xmm1,eax
+    vmovd       xmm1,[si]
+    vmovd       eax,xmm1
+    vmovd       [si],xmm1
 
