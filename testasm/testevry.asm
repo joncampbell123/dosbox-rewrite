@@ -6641,4 +6641,20 @@ jmp2:
     vpcmpgtq    xmm1,xmm2,[si]
     vpcmpgtq    ymm1,ymm2,ymm3
     vpcmpgtq    ymm1,ymm2,[si]
+    vpminsb     xmm1,xmm2,xmm3
+    vpminsb     xmm1,xmm2,[si]
+    vpminsb     ymm1,ymm2,ymm3
+    vpminsb     ymm1,ymm2,[si]
+    vpminsd     xmm1,xmm2,xmm3
+    vpminsd     xmm1,xmm2,[si]
+    vpminsd     ymm1,ymm2,ymm3
+    vpminsd     ymm1,ymm2,[si]
+    vpminuw     xmm1,xmm2,xmm3
+    vpminuw     xmm1,xmm2,[si]
+    vpminuw     ymm1,ymm2,ymm3
+    vpminuw     ymm1,ymm2,[si]
+    vpminud     xmm1,xmm2,xmm3
+    vpminud     xmm1,xmm2,[si]
+    vpminud     ymm1,ymm2,ymm3
+    vpminud     ymm1,ymm2,[si]
 

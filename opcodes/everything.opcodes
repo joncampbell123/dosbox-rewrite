@@ -347,3 +347,12 @@ opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x35 mod/reg/rm vsidx(0):"V
 opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x37 mod/reg/rm:       "VPCMPGTQ" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x37 mod/reg/rm:       "VPCMPGTQ" avx(reg),avx(vsidx),avx(r/m)
 
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x38 mod/reg/rm:       "VPMINSB" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x38 mod/reg/rm:       "VPMINSB" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x39 mod/reg/rm:       "VPMINSD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x39 mod/reg/rm:       "VPMINSD" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x3A mod/reg/rm:       "VPMINUW" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x3A mod/reg/rm:       "VPMINUW" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x3B mod/reg/rm:       "VPMINUD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x3B mod/reg/rm:       "VPMINUD" avx(reg),avx(vsidx),avx(r/m)
+
