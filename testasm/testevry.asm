@@ -6877,4 +6877,20 @@ jmp2:
     vmaxss      xmm1,xmm2,[si]
     vmaxsd      xmm1,xmm2,xmm3
     vmaxsd      xmm1,xmm2,[si]
+    vpunpcklbw  xmm1,xmm2,xmm3
+    vpunpcklbw  xmm1,xmm2,[si]
+    vpunpcklbw  ymm1,ymm2,ymm3
+    vpunpcklbw  ymm1,ymm2,[si]
+    vpunpcklwd  xmm1,xmm2,xmm3
+    vpunpcklwd  xmm1,xmm2,[si]
+    vpunpcklwd  ymm1,ymm2,ymm3
+    vpunpcklwd  ymm1,ymm2,[si]
+    vpunpckldq  xmm1,xmm2,xmm3
+    vpunpckldq  xmm1,xmm2,[si]
+    vpunpckldq  ymm1,ymm2,ymm3
+    vpunpckldq  ymm1,ymm2,[si]
+    vpunpcklqdq xmm1,xmm2,xmm3
+    vpunpcklqdq xmm1,xmm2,[si]
+    vpunpcklqdq ymm1,ymm2,ymm3
+    vpunpcklqdq ymm1,ymm2,[si]
 
