@@ -7146,4 +7146,12 @@ jmp2:
     vpsubsw     xmm1,xmm2,[si]
     vpsubsw     ymm1,ymm2,ymm3
     vpsubsw     ymm1,ymm2,[si]
+    vpminsw     xmm1,xmm2,xmm3
+    vpminsw     xmm1,xmm2,[si]
+    vpminsw     ymm1,ymm2,ymm3
+    vpminsw     ymm1,ymm2,[si]
+    vpor        xmm1,xmm2,xmm3
+    vpor        xmm1,xmm2,[si]
+    vpor        ymm1,ymm2,ymm3
+    vpor        ymm1,ymm2,[si]
 

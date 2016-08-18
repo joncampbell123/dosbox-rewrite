@@ -692,4 +692,8 @@ opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xE8 mod/reg/rm:            "VPS
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xE8 mod/reg/rm:            "VPSUBSB" avx(reg),avx(vsidx),avx(r/m)
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xE9 mod/reg/rm:            "VPSUBSW" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xE9 mod/reg/rm:            "VPSUBSW" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xEA mod/reg/rm:            "VPMINSW" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xEA mod/reg/rm:            "VPMINSW" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xEB mod/reg/rm:            "VPOR" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xEB mod/reg/rm:            "VPOR" avx(reg),avx(vsidx),avx(r/m)
 
