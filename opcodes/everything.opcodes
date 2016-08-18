@@ -389,3 +389,8 @@ opcode vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x0E mod/reg/rm ib:    "VPB
 opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x0F mod/reg/rm ib:    "VPALIGNR" sse(reg),sse(vsidx),sse(r/m),i
 opcode vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x0F mod/reg/rm ib:    "VPALIGNR" avx(reg),avx(vsidx),avx(r/m),i
 
+opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x14 mod/reg/rm ib vsidx(0):"VPEXTRB" w32(r/m),sse(reg),i
+opcode vex vsize(128) vlead(0x0F)      vprefix(0x66) 0xC5 mod/reg/rm ib vsidx(0):"VPEXTRW" w32(reg),sse(r/m),i
+opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x15 mod/reg/rm ib vsidx(0):"VPEXTRW" w32(r/m),sse(reg),i
+opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x16 mod/reg/rm ib vsidx(0):"VPEXTRD" w32(r/m),sse(reg),i
+

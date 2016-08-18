@@ -6707,4 +6707,11 @@ jmp2:
     vpalignr    xmm1,xmm2,[si],4
     vpalignr    ymm1,ymm2,ymm3,4
     vpalignr    ymm1,ymm2,[si],4
+    vpextrb     eax,xmm2,3
+    vpextrb     [si],xmm2,3
+    vpextrw     eax,xmm1,2
+    vpextrw     eax,xmm2,3
+    vpextrw     [si],xmm2,3
+    vpextrd     eax,xmm2,3
+    vpextrd     [si],xmm2,3
 
