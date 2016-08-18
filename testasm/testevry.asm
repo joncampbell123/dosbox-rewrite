@@ -7035,4 +7035,6 @@ jmp2:
     vhsubps     xmm1,xmm2,[si]
     vhsubps     ymm1,ymm2,ymm3
     vhsubps     ymm1,ymm2,[si]
+    vldmxcsr    [si]
+    vstmxcsr    [si]
 
