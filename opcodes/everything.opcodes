@@ -696,4 +696,8 @@ opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xEA mod/reg/rm:            "VPM
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xEA mod/reg/rm:            "VPMINSW" avx(reg),avx(vsidx),avx(r/m)
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xEB mod/reg/rm:            "VPOR" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xEB mod/reg/rm:            "VPOR" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xEC mod/reg/rm:            "VPADDSB" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xEC mod/reg/rm:            "VPADDSB" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xED mod/reg/rm:            "VPADDSW" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xED mod/reg/rm:            "VPADDSW" avx(reg),avx(vsidx),avx(r/m)
 
