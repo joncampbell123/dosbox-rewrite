@@ -7201,4 +7201,16 @@ jmp2:
     vpsubq      xmm1,xmm2,[si]
     vpsubq      ymm1,ymm2,ymm3
     vpsubq      ymm1,ymm2,[si]
+    vpaddb      xmm1,xmm2,xmm3
+    vpaddb      xmm1,xmm2,[si]
+    vpaddb      ymm1,ymm2,ymm3
+    vpaddb      ymm1,ymm2,[si]
+    vpaddw      xmm1,xmm2,xmm3
+    vpaddw      xmm1,xmm2,[si]
+    vpaddw      ymm1,ymm2,ymm3
+    vpaddw      ymm1,ymm2,[si]
+    vpaddd      xmm1,xmm2,xmm3
+    vpaddd      xmm1,xmm2,[si]
+    vpaddd      ymm1,ymm2,ymm3
+    vpaddd      ymm1,ymm2,[si]
 
