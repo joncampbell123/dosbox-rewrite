@@ -6703,4 +6703,8 @@ jmp2:
     vpblendw    xmm1,xmm2,[si],4
     vpblendw    ymm1,ymm2,ymm3,4
     vpblendw    ymm1,ymm2,[si],4
+    vpalignr    xmm1,xmm2,xmm3,4
+    vpalignr    xmm1,xmm2,[si],4
+    vpalignr    ymm1,ymm2,ymm3,4
+    vpalignr    ymm1,ymm2,[si],4
 

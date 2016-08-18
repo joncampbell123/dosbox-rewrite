@@ -386,3 +386,6 @@ opcode vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x0D mod/reg/rm ib:    "VBL
 opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x0E mod/reg/rm ib:    "VPBLENDW" sse(reg),sse(vsidx),sse(r/m),i
 opcode vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x0E mod/reg/rm ib:    "VPBLENDW" avx(reg),avx(vsidx),avx(r/m),i
 
+opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x0F mod/reg/rm ib:    "VPALIGNR" sse(reg),sse(vsidx),sse(r/m),i
+opcode vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x0F mod/reg/rm ib:    "VPALIGNR" avx(reg),avx(vsidx),avx(r/m),i
+
