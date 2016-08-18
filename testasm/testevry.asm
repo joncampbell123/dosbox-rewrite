@@ -2999,9 +2999,6 @@ jmp1:
     lgs     ax,[0x1234]
     lgs     ax,[bx+si+0x1234]
     lgs     bx,[bx+di-0x44]
-    db      0x0F,0xB5,0xC0  ; LGS AX,AX (illegal, YASM won't encode it)
-    db      0x0F,0xB5,0xC1  ; LGS AX,CX
-    db      0x0F,0xB5,0xC8  ; LGS CX,AX
     lgs     eax,[esi]
     lgs     eax,[ebx+esi]
     a32 lgs eax,[0x12345678]
@@ -3014,9 +3011,6 @@ jmp1:
     lfs     ax,[0x1234]
     lfs     ax,[bx+si+0x1234]
     lfs     bx,[bx+di-0x44]
-    db      0x0F,0xB4,0xC0  ; LFS AX,AX (illegal, YASM won't encode it)
-    db      0x0F,0xB4,0xC1  ; LFS AX,CX
-    db      0x0F,0xB4,0xC8  ; LFS CX,AX
     lfs     eax,[esi]
     lfs     eax,[ebx+esi]
     a32 lfs eax,[0x12345678]
@@ -3029,9 +3023,6 @@ jmp1:
     lss     ax,[0x1234]
     lss     ax,[bx+si+0x1234]
     lss     bx,[bx+di-0x44]
-    db      0x0F,0xB2,0xC0  ; LSS AX,AX (illegal, YASM won't encode it)
-    db      0x0F,0xB2,0xC1  ; LSS AX,CX
-    db      0x0F,0xB2,0xC8  ; LSS CX,AX
     lss     eax,[esi]
     lss     eax,[ebx+esi]
     a32 lss eax,[0x12345678]
@@ -3044,9 +3035,6 @@ jmp1:
     les     ax,[0x1234]
     les     ax,[bx+si+0x1234]
     les     bx,[bx+di-0x44]
-    db      0xC4,0xC0       ; LES AX,AX (illegal, YASM won't encode it)
-    db      0xC4,0xC1       ; LES AX,CX
-    db      0xC4,0xC8       ; LES CX,AX
     les     eax,[esi]
     les     eax,[ebx+esi]
     a32 les eax,[0x12345678]
@@ -3059,9 +3047,6 @@ jmp1:
     lds     ax,[0x1234]
     lds     ax,[bx+si+0x1234]
     lds     bx,[bx+di-0x44]
-    db      0xC5,0xC0       ; LDS AX,AX (illegal, YASM won't encode it)
-    db      0xC5,0xC1       ; LDS AX,CX
-    db      0xC5,0xC8       ; LDS CX,AX
     lds     eax,[esi]
     lds     eax,[ebx+esi]
     a32 lds eax,[0x12345678]
