@@ -6975,4 +6975,16 @@ jmp2:
     vpsrlq      ymm1,ymm2,[si]
     vpsrlq      ymm1,ymm2,3
     vpsrldq     ymm1,ymm2,3
+    vpsraw      xmm1,xmm2,xmm3
+    vpsraw      xmm1,xmm2,[si]
+    vpsraw      xmm1,xmm2,3
+    vpsrad      xmm1,xmm2,xmm3
+    vpsrad      xmm1,xmm2,[si]
+    vpsrad      xmm1,xmm2,3
+    vpsraw      ymm1,ymm2,xmm3
+    vpsraw      ymm1,ymm2,[si]
+    vpsraw      ymm1,ymm2,3
+    vpsrad      ymm1,ymm2,xmm3
+    vpsrad      ymm1,ymm2,[si]
+    vpsrad      ymm1,ymm2,3
 
