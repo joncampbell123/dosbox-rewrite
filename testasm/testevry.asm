@@ -6821,4 +6821,8 @@ jmp2:
     vmovntps    [si],ymm1
     vmovntpd    [si],xmm1
     vmovntpd    [si],ymm1
+    vucomiss    xmm1,xmm2
+    vucomiss    xmm1,[si]
+    vucomisd    xmm1,xmm2
+    vucomisd    xmm1,[si]
 
