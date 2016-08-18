@@ -7124,4 +7124,16 @@ jmp2:
     vpmulhw     xmm1,xmm2,[si]
     vpmulhw     ymm1,ymm2,ymm3
     vpmulhw     ymm1,ymm2,[si]
+    vcvtpd2dq   xmm1,xmm2
+    vcvtpd2dq   xmm1,dqword [si]
+    vcvtpd2dq   xmm1,ymm2
+    vcvtpd2dq   xmm1,yword [si]
+    vcvttpd2dq  xmm1,xmm2
+    vcvttpd2dq  xmm1,dqword [si]
+    vcvttpd2dq  xmm1,ymm2
+    vcvttpd2dq  xmm1,yword [si]
+    vcvtdq2pd   xmm1,xmm2
+    vcvtdq2pd   xmm1,[si]
+    vcvtdq2pd   ymm1,xmm2
+    vcvtdq2pd   ymm1,dqword [si]
 

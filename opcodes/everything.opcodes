@@ -680,4 +680,10 @@ opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xE4 mod/reg/rm:            "VPM
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xE4 mod/reg/rm:            "VPMULHUW" avx(reg),avx(vsidx),avx(r/m)
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xE5 mod/reg/rm:            "VPMULHW" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xE5 mod/reg/rm:            "VPMULHW" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF2) 0xE6 mod/reg/rm vsidx(0):   "VCVTPD2DQ" sse(reg),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0xF2) 0xE6 mod/reg/rm vsidx(0):   "VCVTPD2DQ" sse(reg),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xE6 mod/reg/rm vsidx(0):   "VCVTTPD2DQ" sse(reg),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xE6 mod/reg/rm vsidx(0):   "VCVTTPD2DQ" sse(reg),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF3) 0xE6 mod/reg/rm vsidx(0):   "VCVTDQ2PD" sse(reg),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0xF3) 0xE6 mod/reg/rm vsidx(0):   "VCVTDQ2PD" avx(reg),sse(r/m)
 
