@@ -7138,4 +7138,12 @@ jmp2:
     vcvtdq2pd   ymm1,dqword [si]
     vmovntdq    [si],xmm1
     vmovntdq    [si],ymm1
+    vpsubsb     xmm1,xmm2,xmm3
+    vpsubsb     xmm1,xmm2,[si]
+    vpsubsb     ymm1,ymm2,ymm3
+    vpsubsb     ymm1,ymm2,[si]
+    vpsubsw     xmm1,xmm2,xmm3
+    vpsubsw     xmm1,xmm2,[si]
+    vpsubsw     ymm1,ymm2,ymm3
+    vpsubsw     ymm1,ymm2,[si]
 
