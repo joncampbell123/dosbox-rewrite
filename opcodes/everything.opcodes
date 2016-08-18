@@ -706,4 +706,6 @@ opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xEF mod/reg/rm:            "VPX
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xEF mod/reg/rm:            "VPXOR" avx(reg),avx(vsidx),avx(r/m)
 opcode vex vsize(128) vlead(0x0F) vprefix(0xF2) 0xF0 mod/reg/rm vsidx(0) mod!=3:"VLDDQU" sse(reg),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(0xF2) 0xF0 mod/reg/rm vsidx(0) mod!=3:"VLDDQU" avx(reg),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xF4 mod/reg/rm:            "VPMULUDQ" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xF4 mod/reg/rm:            "VPMULUDQ" avx(reg),avx(vsidx),avx(r/m)
 

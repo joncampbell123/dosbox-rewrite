@@ -7172,4 +7172,8 @@ jmp2:
     vpxor       ymm1,ymm2,[si]
     vlddqu      xmm1,[si]
     vlddqu      ymm1,[si]
+    vpmuludq    xmm1,xmm2,xmm3
+    vpmuludq    xmm1,xmm2,[si]
+    vpmuludq    ymm1,ymm2,ymm3
+    vpmuludq    ymm1,ymm2,[si]
 
