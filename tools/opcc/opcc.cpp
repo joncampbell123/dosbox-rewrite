@@ -321,7 +321,7 @@ public:
     OpByte() : isprefix(false), segoverride(OPSEG_NONE), modregrm(false), reg_from_opcode(false),
         already(false), addrsz32(false), opsz32(false), suffix(OPSUFFIX_NONE), opmap_valid(false),
         mprefix(0), mprefix_exists_here(false), amd3dnowsuffix(-1), amd3dnow_here(false), final(false), illegal(false),
-        vex(false), vexsize(0), vexlead(OP_VEX_LEAD_NONE), vexsidx(-1), vexprefix(OP_VEX_PREFIX_NONE),
+        vex(false), vexsize(0), vexlead(OP_VEX_LEAD_NONE), vexsidx(-1), vw(0), vexprefix(OP_VEX_PREFIX_NONE),
         vex_decompose_here(0) {
     }
     ~OpByte() {
@@ -384,6 +384,7 @@ public:
         if (vexsize != r.vexsize) return false;
         if (opsz32 != r.opsz32) return false;
         if (vex != r.vex) return false;
+        if (vw != r.vw) return false;
 
         if (opmap_valid) {
             assert(r.opmap_valid);
@@ -430,6 +431,7 @@ public:
     bool            illegal;
     bool            final;
     bool            vex;
+    bool            vw;
     unsigned int    vexsize;
     uint8_t         vexlead;
     int             vexsidx;
@@ -452,6 +454,7 @@ static void opcc_chomp(char *s) {
 class parse_opcode_state {
 public:
     parse_opcode_state() {
+        vw = 0;
         vexsidx = -1;
         oprange_min = -1;
         oprange_max = -1; // last byte of opcode takes the range (min,max) inclusive
@@ -495,6 +498,7 @@ public:
     int                     amd3dnowsuffix; // AMD 3DNow! suffix byte (after mod/reg/rm)
     int                     vexprefix;
     int                     vexsidx;
+    bool                    vw;
 public:
     string                  format_str;
     string                  name;
@@ -593,6 +597,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
                     submap->vexsidx = st.vexsidx;
                     submap->final = true;
                     submap->vex = st.vex;
+                    submap->vw = st.vw;
                 }
             }
         }
@@ -643,6 +648,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
                         submap->vexsidx = st.vexsidx;
                         submap->final = true;
                         submap->vex = st.vex;
+                        submap->vw = st.vw;
                     }
                 }
             }
@@ -690,6 +696,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
             map->name = st.name;
             map->final = true;
             map->vex = st.vex;
+            map->vw = st.vw;
         }
     }
     else {
@@ -718,6 +725,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
         map->name = st.name;
         map->final = true;
         map->vex = st.vex;
+        map->vw = st.vw;
 
         if (st.amd3dnowsuffix >= 0) {
             fprintf(stderr,"AMD 3DNow! opcode encoding requires mod/reg/rm field\n");
@@ -833,6 +841,15 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
             }
 
             st.mrm_reg_match = b;
+        }
+        else if (!strncmp(s,"vw(",3)) {
+            s += 3;
+
+            st.vw = (int)strtol(s,&s,0);
+            if (st.vw < 0 || st.vw > 1) {
+                fprintf(stderr,"vex W bit must be 0 or 1\n");
+                return false;
+            }
         }
         else if (!strncmp(s,"vsidx(",6)) {
             s += 6;
@@ -1516,7 +1533,7 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
         //        Or is it OK to use either 2-byte or 3-byte VEX encoding to represent the same instruction?
 
         /* if a 2-byte VEX form is possible, encode it */
-        if (st.vexlead == OP_VEX_LEAD_0F) {
+        if (st.vexlead == OP_VEX_LEAD_0F && st.vw == 0) {
             st.op = origopsz + 2;
             st.ops[0] = 0xC5;
             st.ops[1] = 0x00; // placeholder
@@ -1561,7 +1578,7 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
                 // bits 6-3: v3-v0 bits (inverted)
                 // bit    2: L bit (256-wide SIMD)
                 // bits 1-0: implied prefix
-                st.ops[2] = 0x00 + ((v^15) << 3) + (st.vexsize == 256 ? 4 : 0) + st.vexprefix;
+                st.ops[2] = 0x00 + (st.vw ? 0x80 : 0x00) + ((v^15) << 3) + (st.vexsize == 256 ? 4 : 0) + st.vexprefix;
 
                 // do it
                 if (true/*16-bit*/ && !parse_opcode_def_gen1(/*&*/st,/*&*/opmap16))
