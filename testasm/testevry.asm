@@ -6734,4 +6734,6 @@ jmp2:
     vmpsadbw    xmm1,xmm2,[si],4
     vmpsadbw    ymm1,ymm2,ymm3,4
     vmpsadbw    ymm1,ymm2,[si],4
+    vpcmpestrm  xmm1,xmm2,3
+    vpcmpestrm  xmm1,[si],3
 

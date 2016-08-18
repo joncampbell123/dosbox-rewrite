@@ -411,3 +411,5 @@ opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x41 mod/reg/rm ib:    "VDP
 opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x42 mod/reg/rm ib:    "VMPSADBW" sse(reg),sse(vsidx),sse(r/m),i
 opcode vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x42 mod/reg/rm ib:    "VMPSADBW" avx(reg),avx(vsidx),avx(r/m),i
 
+opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x60 mod/reg/rm ib vsidx(0):"VPCMPESTRM" sse(reg),sse(r/m),i
+
