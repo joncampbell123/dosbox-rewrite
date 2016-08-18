@@ -6763,4 +6763,12 @@ jmp2:
     vandpd      xmm1,xmm2,[si]
     vandpd      ymm1,ymm2,ymm3
     vandpd      ymm1,ymm2,[si]
+    vandnps     xmm1,xmm2,xmm3
+    vandnps     xmm1,xmm2,[si]
+    vandnps     ymm1,ymm2,ymm3
+    vandnps     ymm1,ymm2,[si]
+    vandnpd     xmm1,xmm2,xmm3
+    vandnpd     xmm1,xmm2,[si]
+    vandnpd     ymm1,ymm2,ymm3
+    vandnpd     ymm1,ymm2,[si]
 
