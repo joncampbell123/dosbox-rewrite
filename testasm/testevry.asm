@@ -7037,4 +7037,16 @@ jmp2:
     vhsubps     ymm1,ymm2,[si]
     vldmxcsr    [si]
     vstmxcsr    [si]
+    vcmpps      xmm1,xmm2,xmm3,4
+    vcmpps      xmm1,xmm2,[si],4
+    vcmpps      ymm1,ymm2,ymm3,4
+    vcmpps      ymm1,ymm2,[si],4
+    vcmppd      xmm1,xmm2,xmm3,4
+    vcmppd      xmm1,xmm2,[si],4
+    vcmppd      ymm1,ymm2,ymm3,4
+    vcmppd      ymm1,ymm2,[si],4
+    vcmpss      xmm1,xmm2,xmm3,4
+    vcmpss      xmm1,xmm2,[si],4
+    vcmpsd      xmm1,xmm2,xmm3,4
+    vcmpsd      xmm1,xmm2,[si],4
 

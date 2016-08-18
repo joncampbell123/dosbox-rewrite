@@ -634,3 +634,10 @@ opcode vex vsize(256) vlead(0x0F) vprefix(0xF2) 0x7D mod/reg/rm:            "VHS
 opcode vex vsize(128) vlead(0x0F) vprefix(none) 0xAE mod/reg/rm /2 mod!=3 vsidx(0):"VLDMXCSR" w32(r/m)
 opcode vex vsize(128) vlead(0x0F) vprefix(none) 0xAE mod/reg/rm /3 mod!=3 vsidx(0):"VSTMXCSR" w32(r/m)
 
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xC2 mod/reg/rm ib:         "VCMPPD" sse(reg),sse(vsidx),sse(r/m),i
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xC2 mod/reg/rm ib:         "VCMPPD" avx(reg),avx(vsidx),avx(r/m),i
+opcode vex vsize(128) vlead(0x0F) vprefix(none) 0xC2 mod/reg/rm ib:         "VCMPPS" sse(reg),sse(vsidx),sse(r/m),i
+opcode vex vsize(256) vlead(0x0F) vprefix(none) 0xC2 mod/reg/rm ib:         "VCMPPS" avx(reg),avx(vsidx),avx(r/m),i
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF2) 0xC2 mod/reg/rm ib:         "VCMPSD" sse(reg),sse(vsidx),sse(r/m),i
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF3) 0xC2 mod/reg/rm ib:         "VCMPSS" sse(reg),sse(vsidx),sse(r/m),i
+
