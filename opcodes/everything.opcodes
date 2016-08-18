@@ -621,3 +621,13 @@ opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x75 mod/reg/rm:            "VPC
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x76 mod/reg/rm:            "VPCMPEQD" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x76 mod/reg/rm:            "VPCMPEQD" avx(reg),avx(vsidx),avx(r/m)
 
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x7C mod/reg/rm:            "VHADDPD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x7C mod/reg/rm:            "VHADDPD" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x7C mod/reg/rm:            "VHADDPS" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0xF2) 0x7C mod/reg/rm:            "VHADDPS" avx(reg),avx(vsidx),avx(r/m)
+
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x7D mod/reg/rm:            "VHSUBPD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x7D mod/reg/rm:            "VHSUBPD" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x7D mod/reg/rm:            "VHSUBPS" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0xF2) 0x7D mod/reg/rm:            "VHSUBPS" avx(reg),avx(vsidx),avx(r/m)
+

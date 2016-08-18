@@ -7019,4 +7019,20 @@ jmp2:
     vpcmpeqd    xmm1,xmm2,[si]
     vpcmpeqd    ymm1,ymm2,ymm3
     vpcmpeqd    ymm1,ymm2,[si]
+    vhaddpd     xmm1,xmm2,xmm3
+    vhaddpd     xmm1,xmm2,[si]
+    vhaddpd     ymm1,ymm2,ymm3
+    vhaddpd     ymm1,ymm2,[si]
+    vhaddps     xmm1,xmm2,xmm3
+    vhaddps     xmm1,xmm2,[si]
+    vhaddps     ymm1,ymm2,ymm3
+    vhaddps     ymm1,ymm2,[si]
+    vhsubpd     xmm1,xmm2,xmm3
+    vhsubpd     xmm1,xmm2,[si]
+    vhsubpd     ymm1,ymm2,ymm3
+    vhsubpd     ymm1,ymm2,[si]
+    vhsubps     xmm1,xmm2,xmm3
+    vhsubps     xmm1,xmm2,[si]
+    vhsubps     ymm1,ymm2,ymm3
+    vhsubps     ymm1,ymm2,[si]
 
