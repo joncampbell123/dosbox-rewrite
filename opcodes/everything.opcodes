@@ -476,3 +476,13 @@ opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x2B mod/reg/rm vsidx(0):   "VMO
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x2B mod/reg/rm vsidx(0):   "VMOVNTPD" sse(r/m),sse(reg)
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x2B mod/reg/rm vsidx(0):   "VMOVNTPD" avx(r/m),avx(reg)
 
+opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x5C mod/reg/rm:            "VSUBPS" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x5C mod/reg/rm:            "VSUBPS" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x5C mod/reg/rm:            "VSUBPD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x5C mod/reg/rm:            "VSUBPD" avx(reg),avx(vsidx),avx(r/m)
+
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x5C mod/reg/rm:            "VSUBSS" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0xF3) 0x5C mod/reg/rm:            "VSUBSS" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x5C mod/reg/rm:            "VSUBSD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0xF2) 0x5C mod/reg/rm:            "VSUBSD" avx(reg),avx(vsidx),avx(r/m)
+

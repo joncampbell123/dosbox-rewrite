@@ -6829,4 +6829,16 @@ jmp2:
     vcomiss     xmm1,[si]
     vcomisd     xmm1,xmm2
     vcomisd     xmm1,[si]
+    vsubps      xmm1,xmm2,xmm3
+    vsubps      xmm1,xmm2,[si]
+    vsubps      ymm1,ymm2,ymm3
+    vsubps      ymm1,ymm2,[si]
+    vsubpd      xmm1,xmm2,xmm3
+    vsubpd      xmm1,xmm2,[si]
+    vsubpd      ymm1,ymm2,ymm3
+    vsubpd      ymm1,ymm2,[si]
+    vsubss      xmm1,xmm2,xmm3
+    vsubss      xmm1,xmm2,[si]
+    vsubsd      xmm1,xmm2,xmm3
+    vsubsd      xmm1,xmm2,[si]
 
