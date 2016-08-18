@@ -6779,4 +6779,12 @@ jmp2:
     vorpd       xmm1,xmm2,[si]
     vorpd       ymm1,ymm2,ymm3
     vorpd       ymm1,ymm2,[si]
+    vxorps      xmm1,xmm2,xmm3
+    vxorps      xmm1,xmm2,[si]
+    vxorps      ymm1,ymm2,ymm3
+    vxorps      ymm1,ymm2,[si]
+    vxorpd      xmm1,xmm2,xmm3
+    vxorpd      xmm1,xmm2,[si]
+    vxorpd      ymm1,ymm2,ymm3
+    vxorpd      ymm1,ymm2,[si]
 
