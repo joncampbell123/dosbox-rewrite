@@ -6795,4 +6795,8 @@ jmp2:
     vaddpd      xmm1,xmm2,[si]
     vaddpd      ymm1,ymm2,ymm3
     vaddpd      ymm1,ymm2,[si]
+    vaddss      xmm1,xmm2,xmm3
+    vaddss      xmm1,xmm2,[si]
+    vaddsd      xmm1,xmm2,xmm3
+    vaddsd      xmm1,xmm2,[si]
 
