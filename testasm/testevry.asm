@@ -6738,4 +6738,8 @@ jmp2:
     vpcmpestrm  xmm1,[si],3
     vpcmpestri  xmm1,xmm2,3
     vpcmpestri  xmm1,[si],3
+    vpcmpistrm  xmm1,xmm2,3
+    vpcmpistrm  xmm1,[si],3
+    vpcmpistri  xmm1,xmm2,3
+    vpcmpistri  xmm1,[si],3
 

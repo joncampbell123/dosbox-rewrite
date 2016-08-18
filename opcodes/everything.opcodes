@@ -413,4 +413,6 @@ opcode vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x42 mod/reg/rm ib:    "VMP
 
 opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x60 mod/reg/rm ib vsidx(0):"VPCMPESTRM" sse(reg),sse(r/m),i
 opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x61 mod/reg/rm ib vsidx(0):"VPCMPESTRI" sse(reg),sse(r/m),i
+opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x62 mod/reg/rm ib vsidx(0):"VPCMPISTRM" sse(reg),sse(r/m),i
+opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x63 mod/reg/rm ib vsidx(0):"VPCMPISTRI" sse(reg),sse(r/m),i
 
