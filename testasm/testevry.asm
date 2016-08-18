@@ -7088,4 +7088,24 @@ jmp2:
     vpminub     xmm1,xmm2,[si]
     vpminub     ymm1,ymm2,ymm3
     vpminub     ymm1,ymm2,[si]
+    vpand       xmm1,xmm2,xmm3
+    vpand       xmm1,xmm2,[si]
+    vpand       ymm1,ymm2,ymm3
+    vpand       ymm1,ymm2,[si]
+    vpaddusb    xmm1,xmm2,xmm3
+    vpaddusb    xmm1,xmm2,[si]
+    vpaddusb    ymm1,ymm2,ymm3
+    vpaddusb    ymm1,ymm2,[si]
+    vpaddusw    xmm1,xmm2,xmm3
+    vpaddusw    xmm1,xmm2,[si]
+    vpaddusw    ymm1,ymm2,ymm3
+    vpaddusw    ymm1,ymm2,[si]
+    vpmaxub     xmm1,xmm2,xmm3
+    vpmaxub     xmm1,xmm2,[si]
+    vpmaxub     ymm1,ymm2,ymm3
+    vpmaxub     ymm1,ymm2,[si]
+    vpandn      xmm1,xmm2,xmm3
+    vpandn      xmm1,xmm2,[si]
+    vpandn      ymm1,ymm2,ymm3
+    vpandn      ymm1,ymm2,[si]
 

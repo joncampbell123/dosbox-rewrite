@@ -667,4 +667,14 @@ opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xD9 mod/reg/rm:            "VPS
 
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xDA mod/reg/rm:            "VPMINUB" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xDA mod/reg/rm:            "VPMINUB" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xDB mod/reg/rm:            "VPAND" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xDB mod/reg/rm:            "VPAND" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xDC mod/reg/rm:            "VPADDUSB" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xDC mod/reg/rm:            "VPADDUSB" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xDD mod/reg/rm:            "VPADDUSW" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xDD mod/reg/rm:            "VPADDUSW" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xDE mod/reg/rm:            "VPMAXUB" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xDE mod/reg/rm:            "VPMAXUB" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xDF mod/reg/rm:            "VPANDN" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xDF mod/reg/rm:            "VPANDN" avx(reg),avx(vsidx),avx(r/m)
 
