@@ -326,3 +326,21 @@ opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2A mod/reg/rm vsidx(0):"V
 opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x2B mod/reg/rm:       "VPACKUSDW" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x2B mod/reg/rm:       "VPACKUSDW" avx(reg),avx(vsidx),avx(r/m)
 
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x30 mod/reg/rm vsidx(0):"VPMOVZXBW" sse(reg),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x30 mod/reg/rm vsidx(0):"VPMOVZXBW" avx(reg),sse(r/m)
+
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x31 mod/reg/rm vsidx(0):"VPMOVZXBD" sse(reg),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x31 mod/reg/rm vsidx(0):"VPMOVZXBD" avx(reg),sse(r/m)
+
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x32 mod/reg/rm vsidx(0):"VPMOVZXBQ" sse(reg),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x32 mod/reg/rm vsidx(0):"VPMOVZXBQ" avx(reg),sse(r/m)
+
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x33 mod/reg/rm vsidx(0):"VPMOVZXWD" sse(reg),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x33 mod/reg/rm vsidx(0):"VPMOVZXWD" avx(reg),sse(r/m)
+
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x34 mod/reg/rm vsidx(0):"VPMOVZXWQ" sse(reg),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x34 mod/reg/rm vsidx(0):"VPMOVZXWQ" avx(reg),sse(r/m)
+
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x35 mod/reg/rm vsidx(0):"VPMOVZXDQ" sse(reg),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x35 mod/reg/rm vsidx(0):"VPMOVZXDQ" avx(reg),sse(r/m)
+

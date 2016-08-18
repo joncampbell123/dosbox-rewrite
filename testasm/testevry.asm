@@ -6613,4 +6613,28 @@ jmp2:
     vpackusdw   xmm1,xmm2,[si]
     vpackusdw   ymm1,ymm2,ymm3
     vpackusdw   ymm1,ymm2,[si]
+    vpmovzxbw   xmm1,xmm2
+    vpmovzxbw   xmm1,[si]
+    vpmovzxbw   ymm1,xmm2
+    vpmovzxbw   ymm1,[si]
+    vpmovzxbd   xmm1,xmm2
+    vpmovzxbd   xmm1,[si]
+    vpmovzxbd   ymm1,xmm2
+    vpmovzxbd   ymm1,[si]
+    vpmovzxbq   ymm1,xmm2
+    vpmovzxbq   ymm1,[si]
+    vpmovzxbq   xmm1,xmm2
+    vpmovzxbq   xmm1,[si]
+    vpmovzxwd   xmm1,xmm2
+    vpmovzxwd   xmm1,[si]
+    vpmovzxwd   ymm1,xmm2
+    vpmovzxwd   ymm1,[si]
+    vpmovzxwq   xmm1,xmm2
+    vpmovzxwq   xmm1,[si]
+    vpmovzxwq   ymm1,xmm2
+    vpmovzxwq   ymm1,[si]
+    vpmovzxdq   xmm1,xmm2
+    vpmovzxdq   xmm1,[si]
+    vpmovzxdq   ymm1,xmm2
+    vpmovzxdq   ymm1,[si]
 
