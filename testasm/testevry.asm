@@ -6901,4 +6901,16 @@ jmp2:
     vpackssdw   xmm1,xmm2,[si]
     vpackssdw   ymm1,ymm2,ymm3
     vpackssdw   ymm1,ymm2,[si]
+    vpcmpgtb    xmm1,xmm2,xmm3
+    vpcmpgtb    xmm1,xmm2,[si]
+    vpcmpgtb    ymm1,ymm2,ymm3
+    vpcmpgtb    ymm1,ymm2,[si]
+    vpcmpgtw    xmm1,xmm2,xmm3
+    vpcmpgtw    xmm1,xmm2,[si]
+    vpcmpgtw    ymm1,ymm2,ymm3
+    vpcmpgtw    ymm1,ymm2,[si]
+    vpcmpgtd    xmm1,xmm2,xmm3
+    vpcmpgtd    xmm1,xmm2,[si]
+    vpcmpgtd    ymm1,ymm2,ymm3
+    vpcmpgtd    ymm1,ymm2,[si]
 

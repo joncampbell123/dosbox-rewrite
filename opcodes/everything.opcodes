@@ -531,3 +531,10 @@ opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x63 mod/reg/rm:            "VPA
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x6B mod/reg/rm:            "VPACKSSDW" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x6B mod/reg/rm:            "VPACKSSDW" avx(reg),avx(vsidx),avx(r/m)
 
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x64 mod/reg/rm:            "VPCMPGTB" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x64 mod/reg/rm:            "VPCMPGTB" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x65 mod/reg/rm:            "VPCMPGTW" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x65 mod/reg/rm:            "VPCMPGTW" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x66 mod/reg/rm:            "VPCMPGTD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x66 mod/reg/rm:            "VPCMPGTD" avx(reg),avx(vsidx),avx(r/m)
+
