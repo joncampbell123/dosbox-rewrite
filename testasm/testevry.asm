@@ -6799,4 +6799,16 @@ jmp2:
     vaddss      xmm1,xmm2,[si]
     vaddsd      xmm1,xmm2,xmm3
     vaddsd      xmm1,xmm2,[si]
+    vmulps      xmm1,xmm2,xmm3
+    vmulps      xmm1,xmm2,[si]
+    vmulps      ymm1,ymm2,ymm3
+    vmulps      ymm1,ymm2,[si]
+    vmulpd      xmm1,xmm2,xmm3
+    vmulpd      xmm1,xmm2,[si]
+    vmulpd      ymm1,ymm2,ymm3
+    vmulpd      ymm1,ymm2,[si]
+    vmulss      xmm1,xmm2,xmm3
+    vmulss      xmm1,xmm2,[si]
+    vmulsd      xmm1,xmm2,xmm3
+    vmulsd      xmm1,xmm2,[si]
 

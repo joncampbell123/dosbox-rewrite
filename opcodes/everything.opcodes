@@ -456,3 +456,13 @@ opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x57 mod/reg/rm:            "VXO
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x57 mod/reg/rm:            "VXORPD" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x57 mod/reg/rm:            "VXORPD" avx(reg),avx(vsidx),avx(r/m)
 
+opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x59 mod/reg/rm:            "VMULPS" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x59 mod/reg/rm:            "VMULPS" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x59 mod/reg/rm:            "VMULPD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x59 mod/reg/rm:            "VMULPD" avx(reg),avx(vsidx),avx(r/m)
+
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x59 mod/reg/rm:            "VMULSS" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0xF3) 0x59 mod/reg/rm:            "VMULSS" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x59 mod/reg/rm:            "VMULSD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0xF2) 0x59 mod/reg/rm:            "VMULSD" avx(reg),avx(vsidx),avx(r/m)
+
