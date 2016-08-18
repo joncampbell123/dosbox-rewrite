@@ -6730,4 +6730,8 @@ jmp2:
     vdpps       ymm1,ymm2,[si],4
     vdppd       xmm1,xmm2,xmm3,4
     vdppd       xmm1,xmm2,[si],4
+    vmpsadbw    xmm1,xmm2,xmm3,4
+    vmpsadbw    xmm1,xmm2,[si],4
+    vmpsadbw    ymm1,ymm2,ymm3,4
+    vmpsadbw    ymm1,ymm2,[si],4
 
