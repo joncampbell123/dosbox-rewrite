@@ -7214,3 +7214,21 @@ jmp2:
     vpaddd      ymm1,ymm2,ymm3
     vpaddd      ymm1,ymm2,[si]
 
+    vpbroadcastb xmm1,xmm2
+    vpbroadcastb xmm1,[si]
+    vpbroadcastb ymm1,xmm2
+    vpbroadcastb ymm1,[si]
+    vpbroadcastw xmm1,xmm2
+    vpbroadcastw xmm1,[si]
+    vpbroadcastw ymm1,xmm2
+    vpbroadcastw ymm1,[si]
+    vpbroadcastd xmm1,xmm2
+    vpbroadcastd xmm1,[si]
+    vpbroadcastd ymm1,xmm2
+    vpbroadcastd ymm1,[si]
+    vpbroadcastq xmm1,xmm2
+;    vpbroadcastq xmm1,[si]         FIXME: broken in v1.2.0 yasm
+    vpbroadcastq ymm1,xmm2
+;    vpbroadcastq ymm1,[si]         FIXME: broken in v1.2.0 yasm
+    vbroadcasti128 ymm1,[si]
+

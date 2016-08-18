@@ -727,4 +727,13 @@ opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xFD mod/reg/rm:            "VPA
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xFD mod/reg/rm:            "VPADDW" avx(reg),avx(vsidx),avx(r/m)
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xFE mod/reg/rm:            "VPADDD" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xFE mod/reg/rm:            "VPADDD" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x78 mod/reg/rm vsidx(0):"VPBROADCASTB" sse(reg),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x78 mod/reg/rm vsidx(0):"VPBROADCASTB" avx(reg),sse(r/m)
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x79 mod/reg/rm vsidx(0):"VPBROADCASTW" sse(reg),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x79 mod/reg/rm vsidx(0):"VPBROADCASTW" avx(reg),sse(r/m)
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x58 mod/reg/rm vsidx(0):"VPBROADCASTD" sse(reg),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x58 mod/reg/rm vsidx(0):"VPBROADCASTD" avx(reg),sse(r/m)
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x59 mod/reg/rm vsidx(0):"VPBROADCASTQ" sse(reg),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x59 mod/reg/rm vsidx(0):"VPBROADCASTQ" avx(reg),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x5A mod/reg/rm vsidx(0) mod!=3:"VBROADCASTI128" avx(reg),sse(r/m)
 
