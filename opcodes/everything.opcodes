@@ -394,3 +394,5 @@ opcode vex vsize(128) vlead(0x0F)      vprefix(0x66) 0xC5 mod/reg/rm ib vsidx(0)
 opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x15 mod/reg/rm ib vsidx(0):"VPEXTRW" w32(r/m),sse(reg),i
 opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x16 mod/reg/rm ib vsidx(0):"VPEXTRD" w32(r/m),sse(reg),i
 
+opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x17 mod/reg/rm ib vsidx(0):"VEXTRACTPS" w32(r/m),sse(reg),i
+

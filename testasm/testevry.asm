@@ -6714,4 +6714,6 @@ jmp2:
     vpextrw     [si],xmm2,3
     vpextrd     eax,xmm2,3
     vpextrd     [si],xmm2,3
+    vextractps  eax,xmm1,2
+    vextractps  [si],xmm1,2
 
