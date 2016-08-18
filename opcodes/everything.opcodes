@@ -506,3 +506,13 @@ opcode vex vsize(256) vlead(0x0F) vprefix(0xF3) 0x5E mod/reg/rm:            "VDI
 opcode vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x5E mod/reg/rm:            "VDIVSD" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(0xF2) 0x5E mod/reg/rm:            "VDIVSD" avx(reg),avx(vsidx),avx(r/m)
 
+opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x5F mod/reg/rm:            "VMAXPS" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x5F mod/reg/rm:            "VMAXPS" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x5F mod/reg/rm:            "VMAXPD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x5F mod/reg/rm:            "VMAXPD" avx(reg),avx(vsidx),avx(r/m)
+
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x5F mod/reg/rm:            "VMAXSS" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0xF3) 0x5F mod/reg/rm:            "VMAXSS" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x5F mod/reg/rm:            "VMAXSD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0xF2) 0x5F mod/reg/rm:            "VMAXSD" avx(reg),avx(vsidx),avx(r/m)
+
