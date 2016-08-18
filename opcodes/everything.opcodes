@@ -446,3 +446,8 @@ opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x55 mod/reg/rm:            "VAN
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x55 mod/reg/rm:            "VANDNPD" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x55 mod/reg/rm:            "VANDNPD" avx(reg),avx(vsidx),avx(r/m)
 
+opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x56 mod/reg/rm:            "VORPS" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x56 mod/reg/rm:            "VORPS" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x56 mod/reg/rm:            "VORPD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x56 mod/reg/rm:            "VORPD" avx(reg),avx(vsidx),avx(r/m)
+

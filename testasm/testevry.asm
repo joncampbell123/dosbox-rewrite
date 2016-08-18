@@ -6771,4 +6771,12 @@ jmp2:
     vandnpd     xmm1,xmm2,[si]
     vandnpd     ymm1,ymm2,ymm3
     vandnpd     ymm1,ymm2,[si]
+    vorps       xmm1,xmm2,xmm3
+    vorps       xmm1,xmm2,[si]
+    vorps       ymm1,ymm2,ymm3
+    vorps       ymm1,ymm2,[si]
+    vorpd       xmm1,xmm2,xmm3
+    vorpd       xmm1,xmm2,[si]
+    vorpd       ymm1,ymm2,ymm3
+    vorpd       ymm1,ymm2,[si]
 
