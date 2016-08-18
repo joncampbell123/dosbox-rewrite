@@ -6964,6 +6964,7 @@ jmp2:
     vpsrlq      xmm1,xmm2,xmm3
     vpsrlq      xmm1,xmm2,[si]
     vpsrlq      xmm1,xmm2,3
+    vpsrldq     xmm1,xmm2,3
     vpsrlw      ymm1,ymm2,xmm3
     vpsrlw      ymm1,ymm2,[si]
     vpsrlw      ymm1,ymm2,3
@@ -6973,4 +6974,5 @@ jmp2:
     vpsrlq      ymm1,ymm2,xmm3
     vpsrlq      ymm1,ymm2,[si]
     vpsrlq      ymm1,ymm2,3
+    vpsrldq     ymm1,ymm2,3
 

@@ -579,4 +579,6 @@ opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xD3 mod/reg/rm:            "VPS
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xD3 mod/reg/rm:            "VPSRLQ" avx(reg),avx(vsidx),sse(r/m)
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x73 mod/reg/rm /2 ib mod==3:"VPSRLQ" sse(vsidx),sse(r/m),i
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x73 mod/reg/rm /2 ib mod==3:"VPSRLQ" avx(vsidx),avx(r/m),i
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x73 mod/reg/rm /3 ib mod==3:"VPSRLDQ" sse(vsidx),sse(r/m),i
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x73 mod/reg/rm /3 ib mod==3:"VPSRLDQ" avx(vsidx),avx(r/m),i
 
