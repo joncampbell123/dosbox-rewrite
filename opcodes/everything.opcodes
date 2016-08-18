@@ -565,3 +565,18 @@ opcode vex vsize(256) vlead(0x0F) vprefix(0xF3) 0x70 mod/reg/rm ib vsidx(0):"VPS
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x70 mod/reg/rm ib vsidx(0):"VPSHUFD" sse(reg),sse(r/m),i
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x70 mod/reg/rm ib vsidx(0):"VPSHUFD" avx(reg),avx(r/m),i
 
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xD1 mod/reg/rm:            "VPSRLW" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xD1 mod/reg/rm:            "VPSRLW" avx(reg),avx(vsidx),sse(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x71 mod/reg/rm /2 ib mod==3:"VPSRLW" sse(vsidx),sse(r/m),i
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x71 mod/reg/rm /2 ib mod==3:"VPSRLW" avx(vsidx),avx(r/m),i
+
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xD2 mod/reg/rm:            "VPSRLD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xD2 mod/reg/rm:            "VPSRLD" avx(reg),avx(vsidx),sse(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x72 mod/reg/rm /2 ib mod==3:"VPSRLD" sse(vsidx),sse(r/m),i
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x72 mod/reg/rm /2 ib mod==3:"VPSRLD" avx(vsidx),avx(r/m),i
+
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xD3 mod/reg/rm:            "VPSRLQ" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xD3 mod/reg/rm:            "VPSRLQ" avx(reg),avx(vsidx),sse(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x73 mod/reg/rm /2 ib mod==3:"VPSRLQ" sse(vsidx),sse(r/m),i
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x73 mod/reg/rm /2 ib mod==3:"VPSRLQ" avx(vsidx),avx(r/m),i
+

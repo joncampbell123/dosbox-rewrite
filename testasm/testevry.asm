@@ -6955,4 +6955,22 @@ jmp2:
     vpshufd     xmm1,[si],3
     vpshufd     ymm1,ymm2,3
     vpshufd     ymm1,[si],3
+    vpsrlw      xmm1,xmm2,xmm3
+    vpsrlw      xmm1,xmm2,[si]
+    vpsrlw      xmm1,xmm2,3
+    vpsrld      xmm1,xmm2,xmm3
+    vpsrld      xmm1,xmm2,[si]
+    vpsrld      xmm1,xmm2,3
+    vpsrlq      xmm1,xmm2,xmm3
+    vpsrlq      xmm1,xmm2,[si]
+    vpsrlq      xmm1,xmm2,3
+    vpsrlw      ymm1,ymm2,xmm3
+    vpsrlw      ymm1,ymm2,[si]
+    vpsrlw      ymm1,ymm2,3
+    vpsrld      ymm1,ymm2,xmm3
+    vpsrld      ymm1,ymm2,[si]
+    vpsrld      ymm1,ymm2,3
+    vpsrlq      ymm1,ymm2,xmm3
+    vpsrlq      ymm1,ymm2,[si]
+    vpsrlq      ymm1,ymm2,3
 
