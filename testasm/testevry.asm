@@ -6841,4 +6841,16 @@ jmp2:
     vsubss      xmm1,xmm2,[si]
     vsubsd      xmm1,xmm2,xmm3
     vsubsd      xmm1,xmm2,[si]
+    vminps      xmm1,xmm2,xmm3
+    vminps      xmm1,xmm2,[si]
+    vminps      ymm1,ymm2,ymm3
+    vminps      ymm1,ymm2,[si]
+    vminpd      xmm1,xmm2,xmm3
+    vminpd      xmm1,xmm2,[si]
+    vminpd      ymm1,ymm2,ymm3
+    vminpd      ymm1,ymm2,[si]
+    vminss      xmm1,xmm2,xmm3
+    vminss      xmm1,xmm2,[si]
+    vminsd      xmm1,xmm2,xmm3
+    vminsd      xmm1,xmm2,[si]
 
