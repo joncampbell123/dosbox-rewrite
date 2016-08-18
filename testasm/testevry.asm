@@ -6699,4 +6699,8 @@ jmp2:
     vblendpd    xmm1,xmm2,[si],4
     vblendpd    ymm1,ymm2,ymm3,4
     vblendpd    ymm1,ymm2,[si],4
+    vpblendw    xmm1,xmm2,xmm3,4
+    vpblendw    xmm1,xmm2,[si],4
+    vpblendw    ymm1,ymm2,ymm3,4
+    vpblendw    ymm1,ymm2,[si],4
 
