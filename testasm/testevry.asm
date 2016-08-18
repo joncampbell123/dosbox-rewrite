@@ -7180,4 +7180,9 @@ jmp2:
     vpmaddwd    xmm1,xmm2,[si]
     vpmaddwd    ymm1,ymm2,ymm3
     vpmaddwd    ymm1,ymm2,[si]
+    vpsadbw     xmm1,xmm2,xmm3
+    vpsadbw     xmm1,xmm2,[si]
+    vpsadbw     ymm1,ymm2,ymm3
+    vpsadbw     ymm1,ymm2,[si]
+    vmaskmovdqu xmm1,xmm2
 

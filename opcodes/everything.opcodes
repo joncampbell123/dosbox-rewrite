@@ -710,4 +710,7 @@ opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xF4 mod/reg/rm:            "VPM
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xF4 mod/reg/rm:            "VPMULUDQ" avx(reg),avx(vsidx),avx(r/m)
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xF5 mod/reg/rm:            "VPMADDWD" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xF5 mod/reg/rm:            "VPMADDWD" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xF6 mod/reg/rm:            "VPSADBW" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xF6 mod/reg/rm:            "VPSADBW" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xF7 mod/reg/rm vsidx(0) mod==3:"VMASKMOVDQU" sse(reg),sse(r/m)
 
