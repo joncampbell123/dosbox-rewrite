@@ -6743,4 +6743,10 @@ jmp2:
     vsqrtpd     ymm1,[si]
     vsqrtsd     xmm1,xmm2,xmm3
     vsqrtsd     xmm1,xmm2,[si]
+    vrsqrtps    xmm1,xmm2
+    vrsqrtps    xmm1,[si]
+    vrsqrtps    ymm1,ymm2
+    vrsqrtps    ymm1,[si]
+    vrsqrtss    xmm1,xmm2,xmm3
+    vrsqrtss    xmm1,xmm2,[si]
 
