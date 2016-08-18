@@ -660,3 +660,8 @@ opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xD5 mod/reg/rm:            "VPM
 opcode vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x7E mod/reg/rm vsidx(0):   "VMOVQ" sse(reg),sse(r/m)
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xD6 mod/reg/rm vsidx(0):   "VMOVQ" sse(r/m),sse(reg)
 
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xD8 mod/reg/rm:            "VPSUBUSB" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xD8 mod/reg/rm:            "VPSUBUSB" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0xD9 mod/reg/rm:            "VPSUBUSW" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0xD9 mod/reg/rm:            "VPSUBUSW" avx(reg),avx(vsidx),avx(r/m)
+

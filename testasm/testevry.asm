@@ -7076,4 +7076,12 @@ jmp2:
     vmovq       xmm1,xmm2
     vmovq       xmm1,[si]
     vmovq       [si],xmm2
+    vpsubusb    xmm1,xmm2,xmm3
+    vpsubusb    xmm1,xmm2,[si]
+    vpsubusb    ymm1,ymm2,ymm3
+    vpsubusb    ymm1,ymm2,[si]
+    vpsubusw    xmm1,xmm2,xmm3
+    vpsubusw    xmm1,xmm2,[si]
+    vpsubusw    ymm1,ymm2,ymm3
+    vpsubusw    ymm1,ymm2,[si]
 
