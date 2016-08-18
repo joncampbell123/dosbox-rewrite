@@ -379,3 +379,8 @@ opcode vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x09 mod/reg/rm ib vsidx(0)
 opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x0A mod/reg/rm ib:    "VROUNDSS" sse(reg),sse(vsidx),sse(r/m),i
 opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x0B mod/reg/rm ib:    "VROUNDSD" sse(reg),sse(vsidx),sse(r/m),i
 
+opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x0C mod/reg/rm ib:    "VBLENDPS" sse(reg),sse(vsidx),sse(r/m),i
+opcode vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x0C mod/reg/rm ib:    "VBLENDPS" avx(reg),avx(vsidx),avx(r/m),i
+opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x0D mod/reg/rm ib:    "VBLENDPD" sse(reg),sse(vsidx),sse(r/m),i
+opcode vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x0D mod/reg/rm ib:    "VBLENDPD" avx(reg),avx(vsidx),avx(r/m),i
+

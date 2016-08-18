@@ -6691,4 +6691,12 @@ jmp2:
     vroundss    xmm1,xmm2,[si],4
     vroundsd    xmm1,xmm2,xmm3,4
     vroundsd    xmm1,xmm2,[si],4
+    vblendps    xmm1,xmm2,xmm3,4
+    vblendps    xmm1,xmm2,[si],4
+    vblendps    ymm1,ymm2,ymm3,4
+    vblendps    ymm1,ymm2,[si],4
+    vblendpd    xmm1,xmm2,xmm3,4
+    vblendpd    xmm1,xmm2,[si],4
+    vblendpd    ymm1,ymm2,ymm3,4
+    vblendpd    ymm1,ymm2,[si],4
 
