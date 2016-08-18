@@ -7049,4 +7049,12 @@ jmp2:
     vcmpss      xmm1,xmm2,[si],4
     vcmpsd      xmm1,xmm2,xmm3,4
     vcmpsd      xmm1,xmm2,[si],4
+    vshufps     xmm1,xmm2,xmm3,4
+    vshufps     xmm1,xmm2,[si],4
+    vshufps     ymm1,ymm2,ymm3,4
+    vshufps     ymm1,ymm2,[si],4
+    vshufpd     xmm1,xmm2,xmm3,4
+    vshufpd     xmm1,xmm2,[si],4
+    vshufpd     ymm1,ymm2,ymm3,4
+    vshufpd     ymm1,ymm2,[si],4
 
