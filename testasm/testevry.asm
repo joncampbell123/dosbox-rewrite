@@ -6731,4 +6731,8 @@ jmp2:
     vmovmskps   eax,ymm2
     vmovmskpd   eax,xmm2
     vmovmskpd   eax,ymm2
+    vsqrtps     xmm1,xmm2
+    vsqrtps     xmm1,[si]
+    vsqrtps     ymm1,ymm2
+    vsqrtps     ymm1,[si]
 
