@@ -423,4 +423,8 @@ opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x50 mod/reg/rm vsidx(0) mod==3:
 
 opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x51 mod/reg/rm vsidx(0):   "VSQRTPS" sse(reg),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x51 mod/reg/rm vsidx(0):   "VSQRTPS" avx(reg),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x51 mod/reg/rm:            "VSQRTSS" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x51 mod/reg/rm vsidx(0):   "VSQRTPD" sse(reg),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x51 mod/reg/rm vsidx(0):   "VSQRTPD" avx(reg),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x51 mod/reg/rm:            "VSQRTSD" sse(reg),sse(vsidx),sse(r/m)
 
