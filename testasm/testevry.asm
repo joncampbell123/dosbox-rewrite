@@ -6687,4 +6687,8 @@ jmp2:
     vroundpd    xmm1,[si],3
     vroundpd    ymm1,ymm2,3
     vroundpd    ymm1,[si],3
+    vroundss    xmm1,xmm2,xmm3,4
+    vroundss    xmm1,xmm2,[si],4
+    vroundsd    xmm1,xmm2,xmm3,4
+    vroundsd    xmm1,xmm2,[si],4
 
