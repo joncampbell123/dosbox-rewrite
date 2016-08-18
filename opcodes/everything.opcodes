@@ -418,4 +418,6 @@ opcode vex vsize(128) vlead(0x0F,0x3A) vprefix(0x66) 0x63 mod/reg/rm ib vsidx(0)
 
 opcode vex vsize(128) vlead(0x0F) vprefix(none) 0x50 mod/reg/rm vsidx(0) mod==3:"VMOVMSKPS" w32(reg),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(none) 0x50 mod/reg/rm vsidx(0) mod==3:"VMOVMSKPS" w32(reg),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x50 mod/reg/rm vsidx(0) mod==3:"VMOVMSKPD" w32(reg),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x50 mod/reg/rm vsidx(0) mod==3:"VMOVMSKPD" w32(reg),avx(r/m)
 

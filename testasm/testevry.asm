@@ -6744,4 +6744,6 @@ jmp2:
     vpcmpistri  xmm1,[si],3
     vmovmskps   eax,xmm2
     vmovmskps   eax,ymm2
+    vmovmskpd   eax,xmm2
+    vmovmskpd   eax,ymm2
 
