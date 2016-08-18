@@ -738,4 +738,12 @@ opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x59 mod/reg/rm vsidx(0):"V
 opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x5A mod/reg/rm vsidx(0) mod!=3:"VBROADCASTI128" avx(reg),sse(r/m)
 opcode vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x38 mod/reg/rm ib:    "VINSERTI128" avx(reg),avx(vsidx),sse(r/m),i
 opcode vex vsize(256) vlead(0x0F,0x3A) vprefix(0x66) 0x39 mod/reg/rm vsidx(0) ib:"VEXTRACTI128" sse(r/m),avx(reg),i
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x8C mod/reg/rm:       "VPMASKMOVD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x8C mod/reg/rm:       "VPMASKMOVD" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) 0x8E mod/reg/rm:       "VPMASKMOVD" sse(r/m),sse(vsidx),sse(reg)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) 0x8E mod/reg/rm:       "VPMASKMOVD" avx(r/m),avx(vsidx),avx(reg)
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0x8C mod/reg/rm: "VPMASKMOVQ" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0x8C mod/reg/rm: "VPMASKMOVQ" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0x8E mod/reg/rm: "VPMASKMOVQ" sse(r/m),sse(vsidx),sse(reg)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0x8E mod/reg/rm: "VPMASKMOVQ" avx(r/m),avx(vsidx),avx(reg)
 

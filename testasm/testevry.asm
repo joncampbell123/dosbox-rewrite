@@ -7236,3 +7236,18 @@ jmp2:
     vextracti128 xmm1,ymm2,3
     vextracti128 [si],ymm2,3
 
+; ignoring VGATHER...
+
+    vpmaskmovd  xmm1,xmm2,xmm3
+    vpmaskmovd  xmm1,xmm2,[si]
+    vpmaskmovd  [si],xmm2,xmm3
+    vpmaskmovd  ymm1,ymm2,ymm3
+    vpmaskmovd  ymm1,ymm2,[si]
+    vpmaskmovd  [si],ymm2,ymm3
+    vpmaskmovq  xmm1,xmm2,xmm3
+    vpmaskmovq  xmm1,xmm2,[si]
+    vpmaskmovq  [si],xmm2,xmm3
+    vpmaskmovq  ymm1,ymm2,ymm3
+    vpmaskmovq  ymm1,ymm2,[si]
+    vpmaskmovq  [si],ymm2,ymm3
+
