@@ -6943,4 +6943,16 @@ jmp2:
     vmovdqa     ymm1,ymm2
     vmovdqa     ymm1,[si]
     vmovdqa     [si],ymm2
+    vpshuflw    xmm1,xmm2,3
+    vpshuflw    xmm1,[si],3
+    vpshuflw    ymm1,ymm2,3
+    vpshuflw    ymm1,[si],3
+    vpshufhw    xmm1,xmm2,3
+    vpshufhw    xmm1,[si],3
+    vpshufhw    ymm1,ymm2,3
+    vpshufhw    ymm1,[si],3
+    vpshufd     xmm1,xmm2,3
+    vpshufd     xmm1,[si],3
+    vpshufd     ymm1,ymm2,3
+    vpshufd     ymm1,[si],3
 

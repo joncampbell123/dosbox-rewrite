@@ -558,3 +558,10 @@ opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x6F mod/reg/rm vsidx(0):   "VMO
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x7F mod/reg/rm vsidx(0):   "VMOVDQA" sse(r/m),sse(reg)
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x7F mod/reg/rm vsidx(0):   "VMOVDQA" avx(r/m),avx(reg)
 
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF2) 0x70 mod/reg/rm ib vsidx(0):"VPSHUFLW" sse(reg),sse(r/m),i
+opcode vex vsize(256) vlead(0x0F) vprefix(0xF2) 0x70 mod/reg/rm ib vsidx(0):"VPSHUFLW" avx(reg),avx(r/m),i
+opcode vex vsize(128) vlead(0x0F) vprefix(0xF3) 0x70 mod/reg/rm ib vsidx(0):"VPSHUFHW" sse(reg),sse(r/m),i
+opcode vex vsize(256) vlead(0x0F) vprefix(0xF3) 0x70 mod/reg/rm ib vsidx(0):"VPSHUFHW" avx(reg),avx(r/m),i
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x70 mod/reg/rm ib vsidx(0):"VPSHUFD" sse(reg),sse(r/m),i
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x70 mod/reg/rm ib vsidx(0):"VPSHUFD" avx(reg),avx(r/m),i
+
