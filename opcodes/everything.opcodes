@@ -550,6 +550,11 @@ opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x6A mod/reg/rm:            "VPU
 opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x6D mod/reg/rm:            "VPUNPCKHQDQ" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x6D mod/reg/rm:            "VPUNPCKHQDQ" avx(reg),avx(vsidx),avx(r/m)
 
-opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x6E mod/reg/rm:            "VMOVD" sse(reg),w32(r/m)
-opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x7E mod/reg/rm:            "VMOVD" w32(r/m),sse(reg)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x6E mod/reg/rm vsidx(0):   "VMOVD" sse(reg),w32(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x7E mod/reg/rm vsidx(0):   "VMOVD" w32(r/m),sse(reg)
+
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x6F mod/reg/rm vsidx(0):   "VMOVDQA" sse(reg),sse(r/m)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x6F mod/reg/rm vsidx(0):   "VMOVDQA" avx(reg),avx(r/m)
+opcode vex vsize(128) vlead(0x0F) vprefix(0x66) 0x7F mod/reg/rm vsidx(0):   "VMOVDQA" sse(r/m),sse(reg)
+opcode vex vsize(256) vlead(0x0F) vprefix(0x66) 0x7F mod/reg/rm vsidx(0):   "VMOVDQA" avx(r/m),avx(reg)
 

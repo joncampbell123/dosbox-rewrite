@@ -6937,4 +6937,10 @@ jmp2:
     vmovd       xmm1,[si]
     vmovd       eax,xmm1
     vmovd       [si],xmm1
+    vmovdqa     xmm1,xmm2
+    vmovdqa     xmm1,[si]
+    vmovdqa     [si],xmm2
+    vmovdqa     ymm1,ymm2
+    vmovdqa     ymm1,[si]
+    vmovdqa     [si],ymm2
 
