@@ -7406,3 +7406,32 @@ jmp2:
     vphaddubq   xmm1,xmm2
     vphaddubq   xmm1,[si]
 
+    cpu         fma4
+
+    vfmadd132ps xmm1,xmm2,xmm3
+    vfmadd132ps xmm1,xmm2,[si]
+    vfmadd132ps ymm1,ymm2,ymm3
+    vfmadd132ps ymm1,ymm2,[si]
+    vfmadd132pd xmm1,xmm2,xmm3
+    vfmadd132pd xmm1,xmm2,[si]
+    vfmadd132pd ymm1,ymm2,ymm3
+    vfmadd132pd ymm1,ymm2,[si]
+
+    vfmadd213ps xmm1,xmm2,xmm3
+    vfmadd213ps xmm1,xmm2,[si]
+    vfmadd213ps ymm1,ymm2,ymm3
+    vfmadd213ps ymm1,ymm2,[si]
+    vfmadd213pd xmm1,xmm2,xmm3
+    vfmadd213pd xmm1,xmm2,[si]
+    vfmadd213pd ymm1,ymm2,ymm3
+    vfmadd213pd ymm1,ymm2,[si]
+
+    vfmadd231ps xmm1,xmm2,xmm3
+    vfmadd231ps xmm1,xmm2,[si]
+    vfmadd231ps ymm1,ymm2,ymm3
+    vfmadd231ps ymm1,ymm2,[si]
+    vfmadd231pd xmm1,xmm2,xmm3
+    vfmadd231pd xmm1,xmm2,[si]
+    vfmadd231pd ymm1,ymm2,ymm3
+    vfmadd231pd ymm1,ymm2,[si]
+
