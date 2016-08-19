@@ -107,7 +107,9 @@ enum opccDispArg {
     OPDARG_mem_imm,     // (mem[i])
     OPDARG_immval,      // (some immediate value)
     OPDARG_vexsidx,     // VEX source register index
-    OPDARG_i74          // bits 7:4 of immediate value
+    OPDARG_i74,         // bits 7:4 of immediate value
+    OPDARG_vm32x,       // (rm) except 32-bit SIB addressing makes index register xmm (SSE) register
+    OPDARG_vm32y        // (rm) except 32-bit SIB addressing makes index register ymm (AVX) register
 };
 
 enum opccDispArgType {
@@ -1488,6 +1490,14 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
                     arg.argtype = OPDARGTYPE_AVX;
                     arg.arg = OPDARG_i74;
                 }
+                else if (!strcmp(s,"vm32x(r/m)")) {
+                    arg.argtype = OPDARGTYPE_SSE;
+                    arg.arg = OPDARG_vm32x;
+                }
+                else if (!strcmp(s,"vm32y(r/m)")) {
+                    arg.argtype = OPDARGTYPE_AVX;
+                    arg.arg = OPDARG_vm32y;
+                }
                 else {
                     fprintf(stderr,"Unknown format spec %s\n",s);
                     return false;
@@ -2008,7 +2018,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
 			    break;
                     }
                 }
-                else if (arg.arg == OPDARG_rm) {
+                else if (arg.arg == OPDARG_rm || arg.arg == OPDARG_vm32x || arg.arg == OPDARG_vm32y) {
                     const char *szp;
                     const char *rc = "RC_REG";
                     const char *suffix = codewidth == 32 ? "d" : "w";
@@ -2112,6 +2122,12 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                         fmtargs += suffix;
                         fmtargs += "\"";
                     }
+
+                    if (arg.arg == OPDARG_vm32x)
+                        fmtargs += ",MRM_VSIB_X";
+                    else if (arg.arg == OPDARG_vm32y)
+                        fmtargs += ",MRM_VSIB_Y";
+
                     fmtargs += ")";
                 }
                 else if (arg.arg == OPDARG_reg) {

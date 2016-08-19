@@ -142,7 +142,7 @@ const char *CPU0F01ops[8] = {
 };
 
 // print 16-bit code form of mod/reg/rm with displacement
-const char *IPDecPrint16(const x86ModRegRm &mrm,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass,const char *suffix) {
+const char *IPDecPrint16(const x86ModRegRm &mrm,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass,const char *suffix,const IPDecMRMMode mrm_mode) {
     static char tmp[64];
     char *w=tmp,*wf=tmp+sizeof(tmp)-1;
 
@@ -183,7 +183,7 @@ const char *IPDecPrint16(const x86ModRegRm &mrm,const x86_offset_t ofs,const uns
     return tmp;
 }
 
-const char *IPDecPrint32(const x86ModRegRm &mrm,const x86ScaleIndexBase &sib,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass,const char *suffix) {
+const char *IPDecPrint32(const x86ModRegRm &mrm,const x86ScaleIndexBase &sib,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass,const char *suffix,const IPDecMRMMode mrm_mode) {
     bool ex=false;
     static char tmp[128];
     char *w=tmp,*wf=tmp+sizeof(tmp)-1;
@@ -214,7 +214,14 @@ const char *IPDecPrint32(const x86ModRegRm &mrm,const x86ScaleIndexBase &sib,con
             if (sib.index() != 4) {
                 if (ex) *w++ = '+';
                 ex=true;
-                w += snprintf(w,(size_t)(wf-w),"%s",CPUregs32[sib.index()]);
+
+                if (mrm_mode == MRM_VSIB_X)
+                    w += snprintf(w,(size_t)(wf-w),"XMM%u",sib.index());
+                else if (mrm_mode == MRM_VSIB_Y)
+                    w += snprintf(w,(size_t)(wf-w),"YMM%u",sib.index());
+                else
+                    w += snprintf(w,(size_t)(wf-w),"%s",CPUregs32[sib.index()]);
+
                 if (sib.scale() != 0) w += snprintf(w,(size_t)(wf-w),"*%u",1U << sib.scale());
             }
 
@@ -253,10 +260,10 @@ const char *IPDecPrint32(const x86ModRegRm &mrm,const x86ScaleIndexBase &sib,con
     return tmp;
 }
 
-const char *IPDecPrint1632(const bool addr32,const x86ModRegRm &mrm,const x86ScaleIndexBase &sib,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass,const char *suffix) {
+const char *IPDecPrint1632(const bool addr32,const x86ModRegRm &mrm,const x86ScaleIndexBase &sib,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass,const char *suffix,const IPDecMRMMode mrm_mode) {
     if (addr32)
-        return IPDecPrint32(mrm,sib,ofs,sz,regclass,suffix);
+        return IPDecPrint32(mrm,sib,ofs,sz,regclass,suffix,mrm_mode);
     else
-        return IPDecPrint16(mrm,ofs,sz,regclass,suffix);
+        return IPDecPrint16(mrm,ofs,sz,regclass,suffix,mrm_mode);
 }
 

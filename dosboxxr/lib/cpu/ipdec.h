@@ -11,6 +11,12 @@ enum IPDecRegClass {
     RC_AVXREG
 };
 
+enum IPDecMRMMode {
+    MRM_NORMAL=0,   // normal [reg+disp] or [scale*index+base] encoding
+    MRM_VSIB_X,     // VSIB [reg+disp] or [scale*xmmindex+base] encoding
+    MRM_VSIB_Y      // VSIB [reg+disp] or [scale*ymmindex+base] encoding
+};
+
 extern const char *CPUregs32[8];
 extern const char *CPUregs16[8];
 extern const char *CPUregs8[8];
@@ -49,7 +55,7 @@ static inline uint32_t IPDec32abs(uint32_t v) {
     return v;
 }
 
-const char *IPDecPrint16(const x86ModRegRm &mrm,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass,const char *suffix);
-const char *IPDecPrint32(const x86ModRegRm &mrm,const x86ScaleIndexBase &sib,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass,const char *suffix);
-const char *IPDecPrint1632(const bool addr32,const x86ModRegRm &mrm,const x86ScaleIndexBase &sib,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass,const char *suffix);
+const char *IPDecPrint16(const x86ModRegRm &mrm,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass,const char *suffix,const IPDecMRMMode mrm_mode=MRM_NORMAL);
+const char *IPDecPrint32(const x86ModRegRm &mrm,const x86ScaleIndexBase &sib,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass,const char *suffix,const IPDecMRMMode mrm_mode=MRM_NORMAL);
+const char *IPDecPrint1632(const bool addr32,const x86ModRegRm &mrm,const x86ScaleIndexBase &sib,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass,const char *suffix,const IPDecMRMMode mrm_mode=MRM_NORMAL);
 
