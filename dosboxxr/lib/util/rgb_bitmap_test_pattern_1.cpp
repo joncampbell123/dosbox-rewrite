@@ -145,7 +145,8 @@ void test_pattern_1_render(rgb_bitmap_info &bitmap) {
         test_pattern_1_render<uint16_t>(bitmap);
     else {
         fprintf(stderr,"WARNING: test_pattern_1_render() unsupported bytes per pixel %u (%u bits)\n",
-            bitmap.bytes_per_pixel,bitmap.bytes_per_pixel*8);
+            (unsigned int)bitmap.bytes_per_pixel,
+            (unsigned int)(bitmap.bytes_per_pixel*8));
     }
 }
 
