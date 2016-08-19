@@ -309,23 +309,23 @@ OBJCXXFLAGS=0
 AC_SUBST(HAS_OBJCXX)
 HAS_OBJCXX=0
 if test "$IS_MAC_OSX" = 1; then
-	old_CXXFLAGS=$CXXFLAGS
-	old_CFLAGS=$CFLAGS
-	AC_MSG_CHECKING([that your C++ compiler can handle Objective C++])
-	EXT=" -ObjC++"
-	CXXFLAGS+="$ext"
-	CFLAGS+="$ext"
-	AC_TRY_COMPILE([ ],[ ],
-		[
-			AC_MSG_RESULT([yes])
-			OBJCXXFLAGS=" -ObjC++"
-			HAS_OBJCXX=1
-		],
-		[
-			AC_MSG_RESULT([no])
-		])
-	CXXFLAGS=$old_CXXFLAGS
-	CFLAGS=$old_CFLAGS
+    old_CXXFLAGS=$CXXFLAGS
+    old_CFLAGS=$CFLAGS
+    AC_MSG_CHECKING([that your C++ compiler can handle Objective C++])
+    EXT=" -ObjC++"
+    CXXFLAGS+="$ext"
+    CFLAGS+="$ext"
+    AC_TRY_COMPILE([ ],[ ],
+        [
+            AC_MSG_RESULT([yes])
+            OBJCXXFLAGS=" -ObjC++"
+            HAS_OBJCXX=1
+        ],
+        [
+            AC_MSG_RESULT([no])
+        ])
+    CXXFLAGS=$old_CXXFLAGS
+    CFLAGS=$old_CFLAGS
 fi
 AM_CONDITIONAL([HAS_OBJCXX],[test $HAS_OBJCXX = 1])
 AC_DEFINE_UNQUOTED([HAS_OBJCXX],[$HAS_OBJCXX],[Has Objective C++])
@@ -446,10 +446,10 @@ AC_MSG_CHECKING([for O_BINARY])
 AC_TRY_LINK(
     [
         #include <unistd.h>
-	#include <fcntl.h>
+    #include <fcntl.h>
     ],
     [
-    	int fd = open("test",O_BINARY|O_RDONLY);
+        int fd = open("test",O_BINARY|O_RDONLY);
     ],
     [
         AC_MSG_RESULT([yes])
@@ -469,7 +469,7 @@ AC_TRY_LINK(
     [
     ],
     [
-    	__asm__("");
+        __asm__("");
     ],
     [
         AC_MSG_RESULT([yes])
