@@ -7289,3 +7289,34 @@ jmp2:
     vpsravd     ymm1,ymm2,ymm3
     vpsravd     ymm1,ymm2,[si]
 
+    ; stuff with VSIB encoding??
+    vgatherdpd  xmm1,[ecx+xmm2],xmm3
+    vgatherqpd  xmm1,[ecx+xmm2],xmm3
+    vgatherdpd  ymm1,[ecx+xmm2],ymm3
+    vgatherqpd  ymm1,[ecx+ymm2],ymm3
+
+    vgatherdpd  xmm1,[ecx+xmm2*2],xmm3
+    vgatherqpd  xmm1,[ecx+xmm2*2],xmm3
+    vgatherdpd  ymm1,[ecx+xmm2*2],ymm3
+    vgatherqpd  ymm1,[ecx+ymm2*2],ymm3
+
+    vgatherdpd  xmm1,[ecx+xmm2*4],xmm3
+    vgatherqpd  xmm1,[ecx+xmm2*4],xmm3
+    vgatherdpd  ymm1,[ecx+xmm2*4],ymm3
+    vgatherqpd  ymm1,[ecx+ymm2*4],ymm3
+
+    vgatherdpd  xmm1,[ecx+xmm2+0x12345678],xmm3
+    vgatherqpd  xmm1,[ecx+xmm2+0x12345678],xmm3
+    vgatherdpd  ymm1,[ecx+xmm2+0x12345678],ymm3
+    vgatherqpd  ymm1,[ecx+ymm2+0x12345678],ymm3
+
+    vgatherdpd  xmm1,[ecx+xmm2*2+0x12345678],xmm3
+    vgatherqpd  xmm1,[ecx+xmm2*2+0x12345678],xmm3
+    vgatherdpd  ymm1,[ecx+xmm2*2+0x12345678],ymm3
+    vgatherqpd  ymm1,[ecx+ymm2*2+0x12345678],ymm3
+
+    vgatherdpd  xmm1,[ecx+xmm2*4+0x12345678],xmm3
+    vgatherqpd  xmm1,[ecx+xmm2*4+0x12345678],xmm3
+    vgatherdpd  ymm1,[ecx+xmm2*4+0x12345678],ymm3
+    vgatherqpd  ymm1,[ecx+ymm2*4+0x12345678],ymm3
+
