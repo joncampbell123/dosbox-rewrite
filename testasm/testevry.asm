@@ -7401,4 +7401,8 @@ jmp2:
     vphaddbd    xmm1,[si]
     vphaddubd   xmm1,xmm2
     vphaddubd   xmm1,[si]
+    vphaddbq    xmm1,xmm2
+    vphaddbq    xmm1,[si]
+    vphaddubq   xmm1,xmm2
+    vphaddubq   xmm1,[si]
 

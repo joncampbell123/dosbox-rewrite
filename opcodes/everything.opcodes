@@ -803,4 +803,6 @@ opcode xop xopmap(9) xopw(0) xopsize(128) xoppp(0) 0xC1 mod/reg/rm xopsidx(0):"V
 opcode xop xopmap(9) xopw(0) xopsize(128) xoppp(0) 0xD1 mod/reg/rm xopsidx(0):"VPHADDUBW" sse(reg),sse(r/m)
 opcode xop xopmap(9) xopw(0) xopsize(128) xoppp(0) 0xC2 mod/reg/rm xopsidx(0):"VPHADDBD" sse(reg),sse(r/m)
 opcode xop xopmap(9) xopw(0) xopsize(128) xoppp(0) 0xD2 mod/reg/rm xopsidx(0):"VPHADDUBD" sse(reg),sse(r/m)
+opcode xop xopmap(9) xopw(0) xopsize(128) xoppp(0) 0xC3 mod/reg/rm xopsidx(0):"VPHADDBQ" sse(reg),sse(r/m)
+opcode xop xopmap(9) xopw(0) xopsize(128) xoppp(0) 0xD3 mod/reg/rm xopsidx(0):"VPHADDUBQ" sse(reg),sse(r/m)
 
