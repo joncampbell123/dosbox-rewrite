@@ -7263,3 +7263,8 @@ jmp2:
     vperm2i128  ymm1,ymm2,ymm3,4
     vperm2i128  ymm1,ymm2,[si],4
 
+    vpblendd    xmm1,xmm2,xmm3,4
+    vpblendd    xmm1,xmm2,[si],4
+    vpblendd    ymm1,ymm2,ymm3,4
+    vpblendd    ymm1,ymm2,[si],4
+
