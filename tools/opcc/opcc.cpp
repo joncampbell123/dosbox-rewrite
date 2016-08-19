@@ -201,29 +201,29 @@ const char *suffix_str(enum opccSuffix c,const unsigned int opsize) {
             return "f80";
         case OPSUFFIX_FLOATBCD:
             return "fbcd";
-	default:
-	    break;
+        default:
+            break;
     }
 
     return "";
 }
 
-FILE *in_fp = NULL;
-string in_path;
+FILE*                   in_fp = NULL;
+string                  in_path;
 
-FILE *out_fp = NULL;
-string out_path;
+FILE*                   out_fp = NULL;
+string                  out_path;
 
-enum opccMode cc_mode = MOD_DECOMPILE;
+enum opccMode           cc_mode = MOD_DECOMPILE;
 
-bool    mprefix_exists = false;
+bool                    mprefix_exists = false;
 
-int     sel_code_width = 16;
-int     sel_addr_width = 16;
+int                     sel_code_width = 16;
+int                     sel_addr_width = 16;
 
-bool    generic_case_1632 = false;
-bool    generic1632 = false;
-bool    c32vars = false;
+bool                    generic_case_1632 = false;
+bool                    generic1632 = false;
+bool                    c32vars = false;
  
 static void help() {
     fprintf(stderr,"opcc [options]\n");
@@ -335,12 +335,12 @@ public:
         for (size_t i=0;i < 256;i++) free_opmap_code(i);
     }
     void free_opmap_code(size_t i) {
-    	if (opmap_valid) {
+        if (opmap_valid) {
             if (opmap[i] != NULL) {
                 delete opmap[i];
                 opmap[i] = NULL;
             }
-	}
+        }
     }
     void init_opmap(void) {
         if (!opmap_valid) {
@@ -1937,8 +1937,8 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                 else            fprintf(out_fp,"%s        imm=IPFDWsigned();\n",indent_str.c_str());
                 immc++;
                 break;
-	    default:
-		break;
+            default:
+                break;
         };
     }
 
@@ -2136,8 +2136,8 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                             fmtargs += tmp;
                             if (generic1632) fmtargs += "&0xFFFFFFFFUL";
                             break;
-			default:
-			    break;
+                        default:
+                            break;
                     };
 
                     switch (arg.argtype) {
@@ -2174,8 +2174,8 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                         case OPDARGTYPE_FPUSTATE:
                             fprintf(out_fp,"fstate");
                             break;
-			default:
-			    break;
+                        default:
+                            break;
                     }
                 }
                 else if (arg.arg == OPDARG_rm || arg.arg == OPDARG_vm32x || arg.arg == OPDARG_vm32y) {
@@ -2256,8 +2256,8 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                             rc = "RC_AVXREG";
                             suffix = "";
                             break;
-			default:
-			    break;
+                        default:
+                            break;
                     }
 
                     fprintf(out_fp,"%%s");
@@ -2380,8 +2380,8 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                             fmtargs += ",";
                             fmtargs += regname;
                             break;
-			default:
-			    break;
+                        default:
+                            break;
                     }
                 }
                 else if (arg.arg == OPDARG_imm) {
@@ -2459,8 +2459,8 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                             fmtargs += tmp;
                             if (generic1632) fmtargs += "&0xFFFFFFFFUL";
                             break;
-			default:
-			    break;
+                        default:
+                            break;
                     };
                 }
                 else if (arg.arg == OPDARG_vexsidx) {
@@ -2548,8 +2548,8 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                             fmtargs += ",";
                             fmtargs += regname;
                             break;
-			default:
-			    break;
+                        default:
+                            break;
                     }
                 }
                 else if (arg.arg == OPDARG_i74) {
@@ -2637,8 +2637,8 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                             fmtargs += ",";
                             fmtargs += regname;
                             break;
-			default:
-			    break;
+                        default:
+                            break;
                     }
                 }
                 else if (arg.arg == OPDARG_xopsidx) {
@@ -2726,8 +2726,8 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                             fmtargs += ",";
                             fmtargs += regname;
                             break;
-			default:
-			    break;
+                        default:
+                            break;
                     }
                 }
 
