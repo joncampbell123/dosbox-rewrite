@@ -828,4 +828,7 @@ opcode xop xopmap(9) xopw(0) xopsize(128) xoppp(0) 0xC2 mod/reg/rm xopsidx(0):"V
 opcode xop xopmap(9) xopw(0) xopsize(128) xoppp(0) 0xD2 mod/reg/rm xopsidx(0):"VPHADDUBD" sse(reg),sse(r/m)
 opcode xop xopmap(9) xopw(0) xopsize(128) xoppp(0) 0xC3 mod/reg/rm xopsidx(0):"VPHADDBQ" sse(reg),sse(r/m)
 opcode xop xopmap(9) xopw(0) xopsize(128) xoppp(0) 0xD3 mod/reg/rm xopsidx(0):"VPHADDUBQ" sse(reg),sse(r/m)
+opcode xop xopmap(9) xopw(0) xopsize(128) xoppp(0) 0xE1 mod/reg/rm xopsidx(0):"VPHSUBBW" sse(reg),sse(r/m)
+opcode xop xopmap(9) xopw(0) xopsize(128) xoppp(0) 0xE2 mod/reg/rm xopsidx(0):"VPHSUBWD" sse(reg),sse(r/m)
+opcode xop xopmap(9) xopw(0) xopsize(128) xoppp(0) 0xE3 mod/reg/rm xopsidx(0):"VPHSUBDQ" sse(reg),sse(r/m)
 

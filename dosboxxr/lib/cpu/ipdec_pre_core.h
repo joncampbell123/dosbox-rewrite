@@ -51,6 +51,8 @@ static inline x86_offset_t IPFmrmdisplace32(x86ModRegRm &mrm) {
 
 // 16-bit addressing
 static inline void IPFB_mrm_sib_disp_a16_read(x86ModRegRm &mrm,x86ScaleIndexBase &sib,x86_offset_t &disp) {
+    (void)sib; // unused
+
     IPFModRegRm(mrm);
     disp = IPFmrmdisplace16(mrm);
 }

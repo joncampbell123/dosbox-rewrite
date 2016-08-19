@@ -146,6 +146,8 @@ const char *IPDecPrint16(const x86ModRegRm &mrm,const x86_offset_t ofs,const uns
     static char tmp[64];
     char *w=tmp,*wf=tmp+sizeof(tmp)-1;
 
+    (void)mrm_mode; // unused
+
     switch (mrm.mod()) {
         case 0: // [indirect] or [displacement]
             if (mrm.rm() == 6)
