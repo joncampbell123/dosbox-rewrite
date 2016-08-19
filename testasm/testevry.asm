@@ -7360,3 +7360,9 @@ jmp2:
     vpgatherqq  xmm1,[ecx+xmm2*4+0x12345678],xmm3
     vpgatherqq  ymm1,[ecx+ymm2*4+0x12345678],ymm3
 
+    cpu         fma
+    cpu         xop
+
+    vpmacsww    xmm1,xmm2,xmm3,xmm4
+    vpmacsww    xmm1,xmm2,[eax*4+ebx+0x12345678],xmm4
+

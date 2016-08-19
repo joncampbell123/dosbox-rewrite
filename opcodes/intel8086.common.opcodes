@@ -226,7 +226,11 @@ opcode 0x0F:                                    "POP"w w(cs)                ; Se
 opcode 0x17:                                    "POP"w w(ss)                ; Segment Register                          000<reg>111 reg=2
 opcode 0x1F:                                    "POP"w w(ds)                ; Segment Register                          000<reg>111 reg=3
 opcode range(0x58,0x5F) reg=op02:               "POP"w w(reg)               ; Register                                  01011<reg> reg=0-7
+#ifdef CORE_XOP_ENCODING
+opcode 0x8F mod/reg/rm mod!=3:                  "POP"w w(r/m)               ; Register/Memory                           10001111 <mod/reg/rm> reg=000
+#else
 opcode 0x8F mod/reg/rm:                         "POP"w w(r/m)               ; Register/Memory                           10001111 <mod/reg/rm> reg=000
+#endif
 
 ; push/pop flags
 opcode 0x9C:                                    "PUSHF"w                    ; Push Flags                                10011100
