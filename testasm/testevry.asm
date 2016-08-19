@@ -7435,3 +7435,16 @@ jmp2:
     vfmadd231pd ymm1,ymm2,ymm3
     vfmadd231pd ymm1,ymm2,[si]
 
+    vfmadd132ss xmm1,xmm2,xmm3
+    vfmadd132ss xmm1,xmm2,[si]
+    vfmadd132sd xmm1,xmm2,xmm3
+    vfmadd132sd xmm1,xmm2,[si]
+    vfmadd213ss xmm1,xmm2,xmm3
+    vfmadd213ss xmm1,xmm2,[si]
+    vfmadd213sd xmm1,xmm2,xmm3
+    vfmadd213sd xmm1,xmm2,[si]
+    vfmadd231ss xmm1,xmm2,xmm3
+    vfmadd231ss xmm1,xmm2,[si]
+    vfmadd231sd xmm1,xmm2,xmm3
+    vfmadd231sd xmm1,xmm2,[si]
+

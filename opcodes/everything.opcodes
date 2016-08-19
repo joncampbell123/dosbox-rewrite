@@ -802,6 +802,13 @@ opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) vw(0) 0xB8 mod/reg/rm: "VFM
 opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0xB8 mod/reg/rm: "VFMADD231PD" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0xB8 mod/reg/rm: "VFMADD231PD" avx(reg),avx(vsidx),avx(r/m)
 
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) vw(0) 0x99 mod/reg/rm: "VFMADD132SS" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) vw(0) 0xA9 mod/reg/rm: "VFMADD213SS" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) vw(0) 0xB9 mod/reg/rm: "VFMADD231SS" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0x99 mod/reg/rm: "VFMADD132SD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0xA9 mod/reg/rm: "VFMADD213SD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0xB9 mod/reg/rm: "VFMADD231SD" sse(reg),sse(vsidx),sse(r/m)
+
 ; AMD XOP
 opcode xop xopmap(8) xopw(0) xopsize(128) xoppp(0) 0x95 mod/reg/rm ib:      "VPMACSWW" sse(reg),sse(xopsidx),sse(r/m),sse(i[7:4])
 opcode xop xopmap(8) xopw(0) xopsize(128) xoppp(0) 0x85 mod/reg/rm ib:      "VPMACSSWW" sse(reg),sse(xopsidx),sse(r/m),sse(i[7:4])
