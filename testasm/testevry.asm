@@ -7276,4 +7276,12 @@ jmp2:
     vpsllvq     xmm1,xmm2,[si]
     vpsllvq     ymm1,ymm2,ymm3
     vpsllvq     ymm1,ymm2,[si]
+    vpsrlvd     xmm1,xmm2,xmm3
+    vpsrlvd     xmm1,xmm2,[si]
+    vpsrlvd     ymm1,ymm2,ymm3
+    vpsrlvd     ymm1,ymm2,[si]
+    vpsrlvq     xmm1,xmm2,xmm3
+    vpsrlvq     xmm1,xmm2,[si]
+    vpsrlvq     ymm1,ymm2,ymm3
+    vpsrlvq     ymm1,ymm2,[si]
 
