@@ -47,7 +47,7 @@ void free_bitmap() {
 }
 
 void freeall() {
-	free_bitmap();
+    free_bitmap();
 }
 
 int main() {
@@ -119,7 +119,7 @@ int main() {
 
     while (!quit) {
         if (redraw) {
-	        render_test_pattern_rgb_gradients(fb_bitmap);
+            render_test_pattern_rgb_gradients(fb_bitmap);
             redraw = 0;
         }
     }
@@ -127,6 +127,6 @@ int main() {
     munmap(fb_map,fb_fix.smem_len);
     close(fb_fd);
     tcsetattr(0/*STDIN*/,TCSANOW,&fb_old_termios);
-	return 0;
+    return 0;
 }
 

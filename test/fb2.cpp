@@ -249,6 +249,6 @@ int main() {
     tcsetattr(0/*STDIN*/,TCSANOW,&fb_old_termios);
     free_src_bitmap();
     fb_bitmap.clear();
-	return 0;
+    return 0;
 }
 
