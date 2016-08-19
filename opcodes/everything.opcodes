@@ -787,5 +787,6 @@ opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0x90 mod/reg/rm mod!=
 opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0x91 mod/reg/rm mod!=3: "VPGATHERQQ" avx(reg),vm32y(r/m),avx(vsidx)
 
 ; AMD XOP
-opcode xop xopmap(8) xopw(0) xopsize(128) xoppp(0) 0x95 mod/reg/rm ib:         "VPMACSWW" sse(reg),sse(xopsidx),sse(r/m),sse(i[7:4])
+opcode xop xopmap(8) xopw(0) xopsize(128) xoppp(0) 0x95 mod/reg/rm ib:      "VPMACSWW" sse(reg),sse(xopsidx),sse(r/m),sse(i[7:4])
+opcode xop xopmap(8) xopw(0) xopsize(128) xoppp(0) 0x85 mod/reg/rm ib:      "VPMACSSWW" sse(reg),sse(xopsidx),sse(r/m),sse(i[7:4])
 

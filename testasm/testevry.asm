@@ -7364,5 +7364,7 @@ jmp2:
     cpu         xop
 
     vpmacsww    xmm1,xmm2,xmm3,xmm4
-    vpmacsww    xmm1,xmm2,[eax*4+ebx+0x12345678],xmm4
+    vpmacsww    xmm1,xmm2,[si],xmm4
+    vpmacssww   xmm1,xmm2,xmm3,xmm4
+    vpmacssww   xmm1,xmm2,[si],xmm4
 
