@@ -44,7 +44,7 @@ int main() {
  dpy = XOpenDisplay(NULL);
  
  if(dpy == NULL) {
- 	printf("\n\tcannot connect to X server\n\n");
+     printf("\n\tcannot connect to X server\n\n");
         exit(0);
  }
         
@@ -53,11 +53,11 @@ int main() {
  vi = glXChooseVisual(dpy, 0, att);
 
  if(vi == NULL) {
-	printf("\n\tno appropriate visual found\n\n");
+    printf("\n\tno appropriate visual found\n\n");
         exit(0);
  } 
  else {
-	printf("\n\tvisual %p selected\n", (void *)vi->visualid); /* %p creates hexadecimal output like in glxinfo */
+    printf("\n\tvisual %p selected\n", (void *)vi->visualid); /* %p creates hexadecimal output like in glxinfo */
  }
 
 
@@ -77,21 +77,21 @@ int main() {
  glEnable(GL_DEPTH_TEST); 
  
  while(1) {
- 	XNextEvent(dpy, &xev);
+     XNextEvent(dpy, &xev);
         
         if(xev.type == Expose) {
-        	XGetWindowAttributes(dpy, win, &gwa);
+            XGetWindowAttributes(dpy, win, &gwa);
                 glViewport(0, 0, gwa.width, gwa.height);
-        	DrawAQuad(); 
+            DrawAQuad(); 
                 glXSwapBuffers(dpy, win);
         }
                 
-	else if(xev.type == KeyPress) {
-        	glXMakeCurrent(dpy, None, NULL);
- 		glXDestroyContext(dpy, glc);
- 		XDestroyWindow(dpy, win);
- 		XCloseDisplay(dpy);
- 		exit(0);
+    else if(xev.type == KeyPress) {
+            glXMakeCurrent(dpy, None, NULL);
+         glXDestroyContext(dpy, glc);
+         XDestroyWindow(dpy, win);
+         XCloseDisplay(dpy);
+         exit(0);
         }
     } /* this closes while(1) { */
 } /* this is the } which closes int main(int argc, char *argv[]) { */

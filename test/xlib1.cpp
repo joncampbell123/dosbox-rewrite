@@ -79,28 +79,28 @@ int main(int argc,char **argv) {
 
     demo.dump_rgba_format();
 
-	/* wait for events */
-	while (!demo.quit) {
+    /* wait for events */
+    while (!demo.quit) {
         demo.common_handle_events();
         if (demo.quit) break;
 
-		if (demo.redraw) {
+        if (demo.redraw) {
             render_test_pattern_rgb_gradients(demo.bitmap);
             demo.redraw = 0;
             demo.need_update();
-		}
-		if (demo.update) {
-			demo.update_to_X11();
-			demo.update = 0;
-		}
+        }
+        if (demo.update) {
+            demo.update_to_X11();
+            demo.update = 0;
+        }
 
         // NTS: Use XFlush() if doing animation.
         //      XSync() flushes AND waits for X server to complete.
-		XSync(demo.display,False);
-	}
+        XSync(demo.display,False);
+    }
 
-	/* also a lot involved for cleanup */
+    /* also a lot involved for cleanup */
     demo.exit();
-	return 0;
+    return 0;
 }
 

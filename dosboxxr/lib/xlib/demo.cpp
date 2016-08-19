@@ -60,11 +60,11 @@ bool XlibDemo::is_idle(void) {
 }
 
 void XlibDemo::update_window_attributes(void) {
-	XGetWindowAttributes(display, window, &gwa);
+    XGetWindowAttributes(display, window, &gwa);
 }
 
 int XlibDemo::init_xbitmap_common_pre(unsigned int width,unsigned int height,unsigned int align,unsigned int &alloc_width) {
-	close_bitmap();
+    close_bitmap();
     if (width == 0 || height == 0) return 0;
 
     alloc_width = width;
@@ -73,11 +73,11 @@ int XlibDemo::init_xbitmap_common_pre(unsigned int width,unsigned int height,uns
         alloc_width -= alloc_width % align;
     }
 
-	if ((gc=XCreateGC(display, (Drawable)window, 0, NULL)) == NULL) {
-		fprintf(stderr,"Cannot create drawable\n");
-		close_bitmap();
-		return 0;
-	}
+    if ((gc=XCreateGC(display, (Drawable)window, 0, NULL)) == NULL) {
+        fprintf(stderr,"Cannot create drawable\n");
+        close_bitmap();
+        return 0;
+    }
 
     return 1;
 }
@@ -91,13 +91,13 @@ int XlibDemo::init_shm(unsigned int width,unsigned int height,unsigned int align
     if (!init_xbitmap_common_pre(width,height,align,/*&*/alloc_width))
         return 0;
 
-	using_shm = 1;
-	memset(&shminfo,0,sizeof(shminfo));
-	if ((image=XShmCreateImage(display, visual, depth, ZPixmap, NULL, &shminfo, alloc_width, height)) == NULL) {
-		fprintf(stderr,"Cannot create SHM image\n");
-		close_bitmap();
-		return 0;
-	}
+    using_shm = 1;
+    memset(&shminfo,0,sizeof(shminfo));
+    if ((image=XShmCreateImage(display, visual, depth, ZPixmap, NULL, &shminfo, alloc_width, height)) == NULL) {
+        fprintf(stderr,"Cannot create SHM image\n");
+        close_bitmap();
+        return 0;
+    }
 
     bitmap.clear();
     bitmap.width = width;
@@ -106,36 +106,36 @@ int XlibDemo::init_shm(unsigned int width,unsigned int height,unsigned int align
     bitmap.bytes_per_pixel = (image->bits_per_pixel + 7) / 8;
     bitmap.update_length_from_stride_and_height();
     if (!bitmap.is_dim_valid()) {
-		close_bitmap();
+        close_bitmap();
         return 0;
     }
 
-	if ((shminfo.shmid=shmget(IPC_PRIVATE, bitmap.length, IPC_CREAT | 0777)) < 0) {
-		fprintf(stderr,"Cannot get SHM ID for image\n");
-		shminfo.shmid = 0;
-		close_bitmap();
-		return 0;
-	}
+    if ((shminfo.shmid=shmget(IPC_PRIVATE, bitmap.length, IPC_CREAT | 0777)) < 0) {
+        fprintf(stderr,"Cannot get SHM ID for image\n");
+        shminfo.shmid = 0;
+        close_bitmap();
+        return 0;
+    }
 
-	if ((shminfo.shmaddr=image->data=(char*)shmat(shminfo.shmid, 0, 0)) == MAP_FAILED) {
-		fprintf(stderr,"Cannot mmap for image\n");
-		shminfo.shmaddr = NULL;
-		image->data = NULL;
-		close_bitmap();
-		return 0;
-	}
-	shminfo.readOnly = 0;
+    if ((shminfo.shmaddr=image->data=(char*)shmat(shminfo.shmid, 0, 0)) == MAP_FAILED) {
+        fprintf(stderr,"Cannot mmap for image\n");
+        shminfo.shmaddr = NULL;
+        image->data = NULL;
+        close_bitmap();
+        return 0;
+    }
+    shminfo.readOnly = 0;
     bitmap.base = (unsigned char*)image->data;
     bitmap.canvas = (unsigned char*)image->data;
 
     XShmAttach(display, &shminfo);
-	XSync(display, 0);
+    XSync(display, 0);
 
     bitmap.rgbinfo.r.setByMask(image->red_mask);
     bitmap.rgbinfo.g.setByMask(image->green_mask);
     bitmap.rgbinfo.b.setByMask(image->blue_mask);
     bitmap.rgbinfo.a.setByMask(~(image->red_mask+image->green_mask+image->blue_mask)); // alpha = anything not covered by R,G,B
-	return 1;
+    return 1;
 }
 
 int XlibDemo::init_norm(unsigned int width,unsigned int height,unsigned int align) {
@@ -144,12 +144,12 @@ int XlibDemo::init_norm(unsigned int width,unsigned int height,unsigned int alig
     if (!init_xbitmap_common_pre(width,height,align,/*&*/alloc_width))
         return 0;
 
-	using_shm = 0;
-	if ((image=XCreateImage(display, visual, depth, ZPixmap, 0, NULL, alloc_width, height, 32, 0)) == NULL) {
-		fprintf(stderr,"Cannot create image\n");
-		close_bitmap();
-		return 0;
-	}
+    using_shm = 0;
+    if ((image=XCreateImage(display, visual, depth, ZPixmap, 0, NULL, alloc_width, height, 32, 0)) == NULL) {
+        fprintf(stderr,"Cannot create image\n");
+        close_bitmap();
+        return 0;
+    }
 
     bitmap.clear();
     bitmap.width = width;
@@ -158,16 +158,16 @@ int XlibDemo::init_norm(unsigned int width,unsigned int height,unsigned int alig
     bitmap.bytes_per_pixel = (image->bits_per_pixel + 7) / 8;
     bitmap.update_length_from_stride_and_height();
     if (!bitmap.is_dim_valid()) {
-		close_bitmap();
+        close_bitmap();
         return 0;
     }
 
-	if ((image->data=(char*)mmap(NULL,bitmap.length,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS,-1,0)) == MAP_FAILED) {
-		fprintf(stderr,"Cannot mmap for image\n");
-		image->data = NULL;
-		close_bitmap();
-		return 0;
-	}
+    if ((image->data=(char*)mmap(NULL,bitmap.length,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS,-1,0)) == MAP_FAILED) {
+        fprintf(stderr,"Cannot mmap for image\n");
+        image->data = NULL;
+        close_bitmap();
+        return 0;
+    }
     bitmap.base = (unsigned char*)image->data;
     bitmap.canvas = (unsigned char*)image->data;
 
@@ -175,37 +175,37 @@ int XlibDemo::init_norm(unsigned int width,unsigned int height,unsigned int alig
     bitmap.rgbinfo.g.setByMask(image->green_mask);
     bitmap.rgbinfo.b.setByMask(image->blue_mask);
     bitmap.rgbinfo.a.setByMask(~(image->red_mask+image->green_mask+image->blue_mask)); // alpha = anything not covered by R,G,B
-	return 1;
+    return 1;
 }
 
 void XlibDemo::close_bitmap(void) {
-	if (shminfo.shmid != 0) {
-		XShmDetach(display, &shminfo);
-		shmctl(shminfo.shmid, IPC_RMID, 0); /* the buffer will persist until X closes it */
-	}
-	if (image != NULL) {
-		if (using_shm) {
-			if (image->data != NULL) {
-				shmdt(image->data);
-				image->data = NULL;
-			}
-		}
-		else {
-			if (image->data != NULL) {
-				munmap(image->data, bitmap.length);
-				image->data = NULL;
-			}
-		}
-		XDestroyImage(image);
-		image = NULL;
-	}
-	if (gc != NULL) {
-		XFreeGC(display, gc);
-		gc = NULL;
-	}
-	shminfo.shmid = 0;
+    if (shminfo.shmid != 0) {
+        XShmDetach(display, &shminfo);
+        shmctl(shminfo.shmid, IPC_RMID, 0); /* the buffer will persist until X closes it */
+    }
+    if (image != NULL) {
+        if (using_shm) {
+            if (image->data != NULL) {
+                shmdt(image->data);
+                image->data = NULL;
+            }
+        }
+        else {
+            if (image->data != NULL) {
+                munmap(image->data, bitmap.length);
+                image->data = NULL;
+            }
+        }
+        XDestroyImage(image);
+        image = NULL;
+    }
+    if (gc != NULL) {
+        XFreeGC(display, gc);
+        gc = NULL;
+    }
+    shminfo.shmid = 0;
     bitmap.clear();
-	using_shm = 0;
+    using_shm = 0;
 }
 
 int XlibDemo::set_bitmap_size(void) {
@@ -242,13 +242,13 @@ void XlibDemo::dump_rgba_format(void) {
 }
 
 void XlibDemo::update_to_X11(void) {
-	if (image == NULL || bitmap.width == 0 || bitmap.height == 0)
-		return;
+    if (image == NULL || bitmap.width == 0 || bitmap.height == 0)
+        return;
 
-	if (using_shm)
-		XShmPutImage(display, window, gc, image, 0, 0, 0, 0, bitmap.width, bitmap.height, 0);
-	else
-		XPutImage(display, window, gc, image, 0, 0, 0, 0, bitmap.width, bitmap.height);
+    if (using_shm)
+        XShmPutImage(display, window, gc, image, 0, 0, 0, 0, bitmap.width, bitmap.height, 0);
+    else
+        XPutImage(display, window, gc, image, 0, 0, 0, 0, bitmap.width, bitmap.height);
 }
 
 int XlibDemo::init(void) {
@@ -273,26 +273,26 @@ int XlibDemo::init(void) {
             (unsigned long)depth,
             screen_index);
 
-	if ((visual=DefaultVisualOfScreen(screen)) == NULL) {
-		fprintf(stderr,"Cannot get default visual\n");
+    if ((visual=DefaultVisualOfScreen(screen)) == NULL) {
+        fprintf(stderr,"Cannot get default visual\n");
         exit();
-		return 1;
-	}
+        return 1;
+    }
 
-	cmap = XCreateColormap(display, root_window, visual, AllocNone);
+    cmap = XCreateColormap(display, root_window, visual, AllocNone);
 
-	swa.colormap = cmap;
-	swa.event_mask = ExposureMask | KeyPressMask | KeyReleaseMask; /* send us expose events, keypress/keyrelease events */
+    swa.colormap = cmap;
+    swa.event_mask = ExposureMask | KeyPressMask | KeyReleaseMask; /* send us expose events, keypress/keyrelease events */
 
-	window = XCreateWindow(display, root_window, 0, 0, 640, 480, 0, depth, InputOutput, visual, CWEventMask, &swa);
+    window = XCreateWindow(display, root_window, 0, 0, 640, 480, 0, depth, InputOutput, visual, CWEventMask, &swa);
 
-	XMapWindow(display, window);
-	XMoveWindow(display, window, 0, 0);
-	XStoreName(display, window, "Hello world");
+    XMapWindow(display, window);
+    XMoveWindow(display, window, 0, 0);
+    XStoreName(display, window, "Hello world");
     update_window_attributes();
 
-	/* we want to respond to WM_DELETE_WINDOW */
-	wmDelete = XInternAtom(display,"WM_DELETE_WINDOW", True);
+    /* we want to respond to WM_DELETE_WINDOW */
+    wmDelete = XInternAtom(display,"WM_DELETE_WINDOW", True);
     if (wmDelete != None) XSetWMProtocols(display, window, &wmDelete, 1); /* please send us WM_DELETE_WINDOW event */
 
     return 1;

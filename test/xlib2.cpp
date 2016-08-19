@@ -141,8 +141,8 @@ int main(int argc,char **argv) {
     demo.dump_rgba_format();
     test_pattern_1_render(/*&*/src_bitmap);
 
-	/* wait for events */
-	while (!demo.quit) {
+    /* wait for events */
+    while (!demo.quit) {
         demo.common_handle_events();
         if (demo.quit) break;
 
@@ -177,7 +177,7 @@ int main(int argc,char **argv) {
             demo.got_event = false;
         }
 
-		if (demo.redraw) {
+        if (demo.redraw) {
             if (resize_src_mode) {
                 free_src_bitmap();
                 if (!init_src_bitmap(demo.bitmap.width,demo.bitmap.height))
@@ -190,20 +190,20 @@ int main(int argc,char **argv) {
 
             demo.redraw = 0;
             demo.need_update();
-		}
-		if (demo.update) {
-			demo.update_to_X11();
-			demo.update = 0;
-		}
+        }
+        if (demo.update) {
+            demo.update_to_X11();
+            demo.update = 0;
+        }
 
         // NTS: Use XFlush() if doing animation.
         //      XSync() flushes AND waits for X server to complete.
-		XSync(demo.display,False);
-	}
+        XSync(demo.display,False);
+    }
 
-	/* also a lot involved for cleanup */
+    /* also a lot involved for cleanup */
     free_src_bitmap();
     demo.exit();
-	return 0;
+    return 0;
 }
 
