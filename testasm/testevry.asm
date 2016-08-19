@@ -7393,3 +7393,8 @@ jmp2:
     vpmadcsswd  xmm1,xmm2,xmm3,xmm4
     vpmadcsswd  xmm1,xmm2,[si],xmm4
 
+    vphaddbw    xmm1,xmm2
+    vphaddbw    xmm1,[si]
+    vphaddubw   xmm1,xmm2
+    vphaddubw   xmm1,[si]
+
