@@ -7320,3 +7320,33 @@ jmp2:
     vgatherdpd  ymm1,[ecx+xmm2*4+0x12345678],ymm3
     vgatherqpd  ymm1,[ecx+ymm2*4+0x12345678],ymm3
 
+    vgatherdps  xmm1,[ecx+xmm2],xmm3
+    vgatherqps  xmm1,[ecx+xmm2],xmm3
+    vgatherdps  ymm1,[ecx+ymm2],ymm3
+    vgatherqps  xmm1,[ecx+ymm2],xmm3
+
+    vgatherdps  xmm1,[ecx+xmm2*2],xmm3
+    vgatherqps  xmm1,[ecx+xmm2*2],xmm3
+    vgatherdps  ymm1,[ecx+ymm2*2],ymm3
+    vgatherqps  xmm1,[ecx+ymm2*2],xmm3
+
+    vgatherdps  xmm1,[ecx+xmm2*4],xmm3
+    vgatherqps  xmm1,[ecx+xmm2*4],xmm3
+    vgatherdps  ymm1,[ecx+ymm2*4],ymm3
+    vgatherqps  xmm1,[ecx+ymm2*4],xmm3
+
+    vgatherdps  xmm1,[ecx+xmm2+0x12345678],xmm3
+    vgatherqps  xmm1,[ecx+xmm2+0x12345678],xmm3
+    vgatherdps  ymm1,[ecx+ymm2+0x12345678],ymm3
+    vgatherqps  xmm1,[ecx+ymm2+0x12345678],xmm3
+
+    vgatherdps  xmm1,[ecx+xmm2*2+0x12345678],xmm3
+    vgatherqps  xmm1,[ecx+xmm2*2+0x12345678],xmm3
+    vgatherdps  ymm1,[ecx+ymm2*2+0x12345678],ymm3
+    vgatherqps  xmm1,[ecx+ymm2*2+0x12345678],xmm3
+
+    vgatherdps  xmm1,[ecx+xmm2*4+0x12345678],xmm3
+    vgatherqps  xmm1,[ecx+xmm2*4+0x12345678],xmm3
+    vgatherdps  ymm1,[ecx+ymm2*4+0x12345678],ymm3
+    vgatherqps  xmm1,[ecx+ymm2*4+0x12345678],xmm3
+

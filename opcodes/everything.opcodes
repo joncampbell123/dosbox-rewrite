@@ -770,3 +770,8 @@ opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0x92 mod/reg/rm mod!=
 opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0x93 mod/reg/rm mod!=3: "VGATHERQPD" sse(reg),vm32x(r/m),sse(vsidx)
 opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0x93 mod/reg/rm mod!=3: "VGATHERQPD" avx(reg),vm32y(r/m),avx(vsidx)
 
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) vw(0) 0x92 mod/reg/rm mod!=3: "VGATHERDPS" sse(reg),vm32x(r/m),sse(vsidx)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) vw(0) 0x92 mod/reg/rm mod!=3: "VGATHERDPS" avx(reg),vm32y(r/m),avx(vsidx)
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) vw(0) 0x93 mod/reg/rm mod!=3: "VGATHERQPS" sse(reg),vm32x(r/m),sse(vsidx)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) vw(0) 0x93 mod/reg/rm mod!=3: "VGATHERQPS" sse(reg),vm32y(r/m),sse(vsidx)
+
