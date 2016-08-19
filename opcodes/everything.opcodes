@@ -789,4 +789,14 @@ opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0x91 mod/reg/rm mod!=
 ; AMD XOP
 opcode xop xopmap(8) xopw(0) xopsize(128) xoppp(0) 0x95 mod/reg/rm ib:      "VPMACSWW" sse(reg),sse(xopsidx),sse(r/m),sse(i[7:4])
 opcode xop xopmap(8) xopw(0) xopsize(128) xoppp(0) 0x85 mod/reg/rm ib:      "VPMACSSWW" sse(reg),sse(xopsidx),sse(r/m),sse(i[7:4])
+opcode xop xopmap(8) xopw(0) xopsize(128) xoppp(0) 0x96 mod/reg/rm ib:      "VPMACSWD" sse(reg),sse(xopsidx),sse(r/m),sse(i[7:4])
+opcode xop xopmap(8) xopw(0) xopsize(128) xoppp(0) 0x86 mod/reg/rm ib:      "VPMACSSWD" sse(reg),sse(xopsidx),sse(r/m),sse(i[7:4])
+opcode xop xopmap(8) xopw(0) xopsize(128) xoppp(0) 0x9E mod/reg/rm ib:      "VPMACSDD" sse(reg),sse(xopsidx),sse(r/m),sse(i[7:4])
+opcode xop xopmap(8) xopw(0) xopsize(128) xoppp(0) 0x8E mod/reg/rm ib:      "VPMACSSDD" sse(reg),sse(xopsidx),sse(r/m),sse(i[7:4])
+opcode xop xopmap(8) xopw(0) xopsize(128) xoppp(0) 0x97 mod/reg/rm ib:      "VPMACSDQL" sse(reg),sse(xopsidx),sse(r/m),sse(i[7:4])
+opcode xop xopmap(8) xopw(0) xopsize(128) xoppp(0) 0x87 mod/reg/rm ib:      "VPMACSSDQL" sse(reg),sse(xopsidx),sse(r/m),sse(i[7:4])
+opcode xop xopmap(8) xopw(0) xopsize(128) xoppp(0) 0x9F mod/reg/rm ib:      "VPMACSDQH" sse(reg),sse(xopsidx),sse(r/m),sse(i[7:4])
+opcode xop xopmap(8) xopw(0) xopsize(128) xoppp(0) 0x8F mod/reg/rm ib:      "VPMACSSDQH" sse(reg),sse(xopsidx),sse(r/m),sse(i[7:4])
+opcode xop xopmap(8) xopw(0) xopsize(128) xoppp(0) 0xB6 mod/reg/rm ib:      "VPMADCSWD" sse(reg),sse(xopsidx),sse(r/m),sse(i[7:4])
+opcode xop xopmap(8) xopw(0) xopsize(128) xoppp(0) 0xA6 mod/reg/rm ib:      "VPMADCSSWD" sse(reg),sse(xopsidx),sse(r/m),sse(i[7:4])
 
