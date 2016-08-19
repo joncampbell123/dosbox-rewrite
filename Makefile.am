@@ -179,13 +179,13 @@ bin_tools_cpudec86e_SOURCES = \
 
 bin_tools_cpudec86_CXXFLAGS = $(AM_CXXFLAGS) -Itools/cpudec
 bin_tools_cpudec86_DEPENDENCIES = \
-	dosboxxr/lib/cpu/libcpu.a $(OPCC_H)
+	dosboxxr/lib/cpu/libcpu.a $(OPCC_DECOM_H)
 bin_tools_cpudec86_LDADD = \
 	dosboxxr/lib/cpu/libcpu.a
 
 bin_tools_cpudec86e_CXXFLAGS = $(AM_CXXFLAGS) -Itools/cpudec -DONLY_EVERYTHING=1
 bin_tools_cpudec86e_DEPENDENCIES = \
-	dosboxxr/lib/cpu/libcpu.a $(OPCC_H)
+	dosboxxr/lib/cpu/libcpu.a $(OPCC_DECOM_H)
 bin_tools_cpudec86e_LDADD = \
 	dosboxxr/lib/cpu/libcpu.a
 
@@ -331,7 +331,7 @@ bin_test_cpumemreftypes_CXXFLAGS = $(AM_CXXFLAGS)
 bin_test_cpumemreftypes_DEPENDENCIES =
 bin_test_cpumemreftypes_LDADD =
 
-OPCC_H = \
+OPCC_DECOM_H = \
 	dosboxxr/lib/cpu/core/intel8088.c16.a16.decom.h \
 	\
 	dosboxxr/lib/cpu/core/necv20.c16.a16.decom.h \
@@ -408,6 +408,13 @@ OPCC_H = \
 	dosboxxr/lib/cpu/core/everything.cxx.axx.decom.h \
 	dosboxxr/lib/cpu/core/everything.c32.a32.decom.h
 
+OPCC_EMU_H = \
+	dosboxxr/lib/cpu/core/intel8088.c16.a16.emu.h \
+	\
+	dosboxxr/lib/cpu/core/everything.c16.a16.emu.h \
+	dosboxxr/lib/cpu/core/everything.cxx.axx.emu.h \
+	dosboxxr/lib/cpu/core/everything.c32.a32.emu.h
+
 testasm/test1.bin: testasm/test1.asm
 	yasm -o $@ -f bin $<
 
@@ -483,6 +490,8 @@ dosboxxr/lib/cpu/core/intel8088.opcodes.p: opcodes/intel8088.opcodes
 	$(BUILD_CPP) -E -I. opcodes/intel8088.opcodes $@
 dosboxxr/lib/cpu/core/intel8088.c16.a16.decom.h: dosboxxr/lib/cpu/core/intel8088.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intel8088.opcodes.p -o $@ -m decompile -gc1632
+dosboxxr/lib/cpu/core/intel8088.c16.a16.emu.h: dosboxxr/lib/cpu/core/intel8088.opcodes.p $(OPCC)$(EXEEXT)
+	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/intel8088.opcodes.p -o $@ -m execute -gc1632
 
 dosboxxr/lib/cpu/core/intel80186.opcodes.p: opcodes/intel80186.opcodes
 	$(BUILD_CPP) -E -I. opcodes/intel80186.opcodes $@
@@ -646,7 +655,13 @@ dosboxxr/lib/cpu/core/everything.cxx.axx.decom.h: dosboxxr/lib/cpu/core/everythi
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/everything.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -g
 dosboxxr/lib/cpu/core/everything.c32.a32.decom.h: dosboxxr/lib/cpu/core/everything.opcodes.p $(OPCC)$(EXEEXT)
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/everything.opcodes.p -o $@ -m decompile -c 32 -a 32 -c32vars -gc1632
+dosboxxr/lib/cpu/core/everything.c16.a16.emu.h: dosboxxr/lib/cpu/core/everything.opcodes.p $(OPCC)$(EXEEXT)
+	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/everything.opcodes.p -o $@ -m execute -c 16 -a 16 -c32vars -gc1632
+dosboxxr/lib/cpu/core/everything.cxx.axx.emu.h: dosboxxr/lib/cpu/core/everything.opcodes.p $(OPCC)$(EXEEXT)
+	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/everything.opcodes.p -o $@ -m execute -c 32 -a 32 -c32vars -g
+dosboxxr/lib/cpu/core/everything.c32.a32.emu.h: dosboxxr/lib/cpu/core/everything.opcodes.p $(OPCC)$(EXEEXT)
+	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/everything.opcodes.p -o $@ -m execute -c 32 -a 32 -c32vars -gc1632
 
 # grrr how do I get automake to run opcc first before compiling other parts?
-opcodes: $(OPCC_H)
+opcodes: $(OPCC_DECOM_H) $(OPCC_EMU_H)
 
