@@ -78,6 +78,51 @@ if test $c11 = 0; then
     AC_MSG_ERROR([This code base requires a C++11 capable compiler])
 fi
 
+# we also want -Wall
+AC_MSG_CHECKING([support for -Wall])
+CXXFLAGS+=" -Wall"
+CFLAGS+=" -Wall"
+AC_TRY_COMPILE([ ], [ ],
+    [
+        AC_MSG_RESULT([yes])
+        c11=1
+    ],
+    [
+        AC_MSG_RESULT([no])
+        CXXFLAGS=$old_CXXFLAGS
+        CFLAGS=$old_CFLAGS
+    ])
+
+# we also want -Wextra
+AC_MSG_CHECKING([support for -Wextra])
+CXXFLAGS+=" -Wall"
+CFLAGS+=" -Wall"
+AC_TRY_COMPILE([ ], [ ],
+    [
+        AC_MSG_RESULT([yes])
+        c11=1
+    ],
+    [
+        AC_MSG_RESULT([no])
+        CXXFLAGS=$old_CXXFLAGS
+        CFLAGS=$old_CFLAGS
+    ])
+
+# we also want -pedantic
+AC_MSG_CHECKING([support for -pedantic])
+CXXFLAGS+=" -Wall"
+CFLAGS+=" -Wall"
+AC_TRY_COMPILE([ ], [ ],
+    [
+        AC_MSG_RESULT([yes])
+        c11=1
+    ],
+    [
+        AC_MSG_RESULT([no])
+        CXXFLAGS=$old_CXXFLAGS
+        CFLAGS=$old_CFLAGS
+    ])
+
 # use MMX, SSE, SSE2, AVX if available (TODO: Only if target is i686 or x86_64)
 # not for ALL code, just the optimized rendering code.
 old_CXXFLAGS=$CXXFLAGS
