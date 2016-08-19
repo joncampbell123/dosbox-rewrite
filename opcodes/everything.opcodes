@@ -801,4 +801,6 @@ opcode xop xopmap(8) xopw(0) xopsize(128) xoppp(0) 0xB6 mod/reg/rm ib:      "VPM
 opcode xop xopmap(8) xopw(0) xopsize(128) xoppp(0) 0xA6 mod/reg/rm ib:      "VPMADCSSWD" sse(reg),sse(xopsidx),sse(r/m),sse(i[7:4])
 opcode xop xopmap(9) xopw(0) xopsize(128) xoppp(0) 0xC1 mod/reg/rm xopsidx(0):"VPHADDBW" sse(reg),sse(r/m)
 opcode xop xopmap(9) xopw(0) xopsize(128) xoppp(0) 0xD1 mod/reg/rm xopsidx(0):"VPHADDUBW" sse(reg),sse(r/m)
+opcode xop xopmap(9) xopw(0) xopsize(128) xoppp(0) 0xC2 mod/reg/rm xopsidx(0):"VPHADDBD" sse(reg),sse(r/m)
+opcode xop xopmap(9) xopw(0) xopsize(128) xoppp(0) 0xD2 mod/reg/rm xopsidx(0):"VPHADDUBD" sse(reg),sse(r/m)
 
