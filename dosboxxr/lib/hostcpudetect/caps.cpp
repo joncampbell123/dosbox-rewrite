@@ -170,36 +170,36 @@ void HostCPUCaps::detect() {
 
     /* each flag is separated by a space */
     while (*value != 0) {
-	    if (*value == ' ') {
-		    value++;
-		    continue;
-	    }
+        if (*value == ' ') {
+            value++;
+            continue;
+        }
 
-	    char *n = strchr(value,' ');
-	    if (n != NULL) {
-		    *n++ = 0; // only one space. overwrite with NUL to cut the string.
-	    }
-	    else {
-		    n = value+strlen(value);
-	    }
+        char *n = strchr(value,' ');
+        if (n != NULL) {
+            *n++ = 0; // only one space. overwrite with NUL to cut the string.
+        }
+        else {
+            n = value+strlen(value);
+        }
 
-	    if (!strcmp(value,"MMX"))
-		    mmx = 1;
-	    else if (!strcmp(value,"SSE"))
-		    sse = 1;
-	    else if (!strcmp(value,"SSE2"))
-		    sse2 = 1;
-	    else if (!strcmp(value,"SSE3"))
-		    sse3 = 1;
-	    else if (!strcmp(value,"SSSE3"))
-		    ssse3 = sse3 = 1; // FIXME, right?
-	    else if (!strcmp(value,"AVX1.0"))
-		    avx = 1;
-	    else if (!strcmp(value,"AVX2"))
-		    avx2 = 1;
+        if (!strcmp(value,"MMX"))
+            mmx = 1;
+        else if (!strcmp(value,"SSE"))
+            sse = 1;
+        else if (!strcmp(value,"SSE2"))
+            sse2 = 1;
+        else if (!strcmp(value,"SSE3"))
+            sse3 = 1;
+        else if (!strcmp(value,"SSSE3"))
+            ssse3 = sse3 = 1; // FIXME, right?
+        else if (!strcmp(value,"AVX1.0"))
+            avx = 1;
+        else if (!strcmp(value,"AVX2"))
+            avx2 = 1;
 
-	    // next flag
-	    value = n;
+        // next flag
+        value = n;
     }
 
     line[0] = 0;
@@ -208,24 +208,24 @@ void HostCPUCaps::detect() {
 
     /* each flag is separated by a space */
     while (*value != 0) {
-	    if (*value == ' ') {
-		    value++;
-		    continue;
-	    }
+        if (*value == ' ') {
+            value++;
+            continue;
+        }
 
-	    char *n = strchr(value,' ');
-	    if (n != NULL) {
-		    *n++ = 0; // only one space. overwrite with NUL to cut the string.
-	    }
-	    else {
-		    n = value+strlen(value);
-	    }
+        char *n = strchr(value,' ');
+        if (n != NULL) {
+            *n++ = 0; // only one space. overwrite with NUL to cut the string.
+        }
+        else {
+            n = value+strlen(value);
+        }
 
-	    if (!strcmp(value,"AVX2"))
-		    avx2 = 1;
+        if (!strcmp(value,"AVX2"))
+            avx2 = 1;
 
-	    // next flag
-	    value = n;
+        // next flag
+        value = n;
     }
 # elif IS_LINUX
 /*------------------ x86/x86_64 we can use procfs cpuinfo ------------*/

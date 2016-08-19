@@ -24,9 +24,9 @@ template <class T> void stretchblt_neighbor(const rgb_bitmap_info &dbmp,const rg
     // due to the nature of this code, additional padding is required.
     // this code may write 1 byte past the last pixel.
     if (sizeof(T) == 3 && (sbmp.stride < ((sbmp.width*3)+1) || dbmp.stride < ((dbmp.width*3)+1))) {
-	fprintf(stderr,"stretchblt neighbor 24bpp case: stride is too small to safely generate. Optimized code can access 1 pixel past end of canvas\n");
-	fprintf(stderr,"Please update your code to add stride padding or at least 1 scanline in height padding.\n");
-	return;
+        fprintf(stderr,"stretchblt neighbor 24bpp case: stride is too small to safely generate. Optimized code can access 1 pixel past end of canvas\n");
+        fprintf(stderr,"Please update your code to add stride padding or at least 1 scanline in height padding.\n");
+        return;
     }
 
     render_scale_from_sd_nearest(/*&*/stepx,dbmp.width,sbmp.width);
