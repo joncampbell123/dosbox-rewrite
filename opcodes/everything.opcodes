@@ -765,8 +765,8 @@ opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) vw(0) 0x46 mod/reg/rm: "VPS
 opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) vw(0) 0x46 mod/reg/rm: "VPSRAVD" avx(reg),avx(vsidx),avx(r/m)
 
 ; opcodes that use VSIB
-opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0x92 mod/reg/rm: "VGATHERDPD" sse(reg),sse(r/m),sse(vsidx)
-opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0x92 mod/reg/rm: "VGATHERDPD" avx(reg),avx(r/m),avx(vsidx)
-opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0x93 mod/reg/rm: "VGATHERQPD" sse(reg),sse(r/m),sse(vsidx)
-opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0x93 mod/reg/rm: "VGATHERQPD" avx(reg),avx(r/m),avx(vsidx)
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0x92 mod/reg/rm mod!=3: "VGATHERDPD" sse(reg),sse(r/m),sse(vsidx)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0x92 mod/reg/rm mod!=3: "VGATHERDPD" avx(reg),avx(r/m),avx(vsidx)
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0x93 mod/reg/rm mod!=3: "VGATHERQPD" sse(reg),sse(r/m),sse(vsidx)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0x93 mod/reg/rm mod!=3: "VGATHERQPD" avx(reg),avx(r/m),avx(vsidx)
 
