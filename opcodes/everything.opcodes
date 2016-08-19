@@ -761,4 +761,6 @@ opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) vw(0) 0x45 mod/reg/rm: "VPS
 opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) vw(0) 0x45 mod/reg/rm: "VPSRLVD" avx(reg),avx(vsidx),avx(r/m)
 opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0x45 mod/reg/rm: "VPSRLVQ" sse(reg),sse(vsidx),sse(r/m)
 opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0x45 mod/reg/rm: "VPSRLVQ" avx(reg),avx(vsidx),avx(r/m)
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) vw(0) 0x46 mod/reg/rm: "VPSRAVD" sse(reg),sse(vsidx),sse(r/m)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) vw(0) 0x46 mod/reg/rm: "VPSRAVD" avx(reg),avx(vsidx),avx(r/m)
 

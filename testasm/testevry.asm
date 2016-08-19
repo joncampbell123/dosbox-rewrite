@@ -7284,4 +7284,8 @@ jmp2:
     vpsrlvq     xmm1,xmm2,[si]
     vpsrlvq     ymm1,ymm2,ymm3
     vpsrlvq     ymm1,ymm2,[si]
+    vpsravd     xmm1,xmm2,xmm3
+    vpsravd     xmm1,xmm2,[si]
+    vpsravd     ymm1,ymm2,ymm3
+    vpsravd     ymm1,ymm2,[si]
 
