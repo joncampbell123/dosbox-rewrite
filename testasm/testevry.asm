@@ -7350,3 +7350,13 @@ jmp2:
     vgatherdps  ymm1,[ecx+ymm2*4+0x12345678],ymm3
     vgatherqps  xmm1,[ecx+ymm2*4+0x12345678],xmm3
 
+    vpgatherdd  xmm1,[ecx+xmm2*4+0x12345678],xmm3
+    vpgatherdd  ymm1,[ecx+ymm2*4+0x12345678],ymm3
+    vpgatherqd  xmm1,[ecx+xmm2*4+0x12345678],xmm3
+    vpgatherqd  xmm1,[ecx+ymm2*4+0x12345678],xmm3
+
+    vpgatherdq  xmm1,[ecx+xmm2*4+0x12345678],xmm3
+    vpgatherdq  ymm1,[ecx+xmm2*4+0x12345678],ymm3
+    vpgatherqq  xmm1,[ecx+xmm2*4+0x12345678],xmm3
+    vpgatherqq  ymm1,[ecx+ymm2*4+0x12345678],ymm3
+

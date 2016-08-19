@@ -775,3 +775,13 @@ opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) vw(0) 0x92 mod/reg/rm mod!=
 opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) vw(0) 0x93 mod/reg/rm mod!=3: "VGATHERQPS" sse(reg),vm32x(r/m),sse(vsidx)
 opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) vw(0) 0x93 mod/reg/rm mod!=3: "VGATHERQPS" sse(reg),vm32y(r/m),sse(vsidx)
 
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) vw(0) 0x90 mod/reg/rm mod!=3: "VPGATHERDD" sse(reg),vm32x(r/m),sse(vsidx)
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) vw(0) 0x91 mod/reg/rm mod!=3: "VPGATHERQD" sse(reg),vm32x(r/m),sse(vsidx)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) vw(0) 0x90 mod/reg/rm mod!=3: "VPGATHERDD" avx(reg),vm32y(r/m),avx(vsidx)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) vw(0) 0x91 mod/reg/rm mod!=3: "VPGATHERQD" sse(reg),vm32y(r/m),sse(vsidx)
+
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0x90 mod/reg/rm mod!=3: "VPGATHERDQ" sse(reg),vm32x(r/m),sse(vsidx)
+opcode vex vsize(128) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0x91 mod/reg/rm mod!=3: "VPGATHERQQ" sse(reg),vm32x(r/m),sse(vsidx)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0x90 mod/reg/rm mod!=3: "VPGATHERDQ" avx(reg),vm32x(r/m),avx(vsidx)
+opcode vex vsize(256) vlead(0x0F,0x38) vprefix(0x66) vw(1) 0x91 mod/reg/rm mod!=3: "VPGATHERQQ" avx(reg),vm32y(r/m),avx(vsidx)
+
