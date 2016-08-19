@@ -36,13 +36,10 @@ struct termios                  fb_run_termios;
 
 volatile int                    quit = 0;
 
-void free_bitmap();
-
 void sigma(int x) {
-    if ((++quit) >= 10) abort();
-}
+    (void)x; // unused
 
-void init_bitmap(unsigned int width,unsigned int height,unsigned int align=32) {
+    if ((++quit) >= 10) abort();
 }
 
 void free_bitmap() {
@@ -100,8 +97,11 @@ int main() {
             fb_bitmap.rgbinfo.g.shift, fb_bitmap.rgbinfo.g.bwidth, fb_bitmap.rgbinfo.g.bmask,
             fb_bitmap.rgbinfo.b.shift, fb_bitmap.rgbinfo.b.bwidth, fb_bitmap.rgbinfo.b.bmask,
             fb_bitmap.rgbinfo.a.shift, fb_bitmap.rgbinfo.a.bwidth, fb_bitmap.rgbinfo.a.bmask,
-            fb_bitmap.width,           fb_bitmap.height,           fb_bitmap.stride,
-            fb_bitmap.length,          fb_bitmap.bytes_per_pixel);
+            (unsigned int)fb_bitmap.width,
+            (unsigned int)fb_bitmap.height,
+            (unsigned int)fb_bitmap.stride,
+            (unsigned int)fb_bitmap.length,
+            (unsigned int)fb_bitmap.bytes_per_pixel);
 
     if (!fb_bitmap.is_valid()) {
         fprintf(stderr,"Framebuffer not valid\n");

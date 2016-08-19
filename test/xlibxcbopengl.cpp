@@ -190,7 +190,7 @@ int setup_and_run(Display* display, xcb_connection_t *connection, int default_sc
     return retval;
 }
 
-int main(int argc, char* argv[])
+int main()
 {
     Display *display;
     int default_screen;
