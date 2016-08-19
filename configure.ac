@@ -95,8 +95,8 @@ AC_TRY_COMPILE([ ], [ ],
 
 # we also want -Wextra
 AC_MSG_CHECKING([support for -Wextra])
-CXXFLAGS+=" -Wall"
-CFLAGS+=" -Wall"
+CXXFLAGS+=" -Wextra"
+CFLAGS+=" -Wextra"
 AC_TRY_COMPILE([ ], [ ],
     [
         AC_MSG_RESULT([yes])
@@ -110,8 +110,24 @@ AC_TRY_COMPILE([ ], [ ],
 
 # we also want -pedantic
 AC_MSG_CHECKING([support for -pedantic])
-CXXFLAGS+=" -Wall"
-CFLAGS+=" -Wall"
+CXXFLAGS+=" -pedantic"
+CFLAGS+=" -pedantic"
+AC_TRY_COMPILE([ ], [ ],
+    [
+        AC_MSG_RESULT([yes])
+        c11=1
+    ],
+    [
+        AC_MSG_RESULT([no])
+        CXXFLAGS=$old_CXXFLAGS
+        CFLAGS=$old_CFLAGS
+    ])
+
+# we also want -Wno-unused-label
+# our opcode compiler output triggers this warning too much.
+AC_MSG_CHECKING([support for -Wno-unused-label])
+CXXFLAGS+=" -Wno-unused-label"
+CFLAGS+=" -Wno-unused-label"
 AC_TRY_COMPILE([ ], [ ],
     [
         AC_MSG_RESULT([yes])
