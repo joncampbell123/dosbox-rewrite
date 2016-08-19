@@ -7268,3 +7268,12 @@ jmp2:
     vpblendd    ymm1,ymm2,ymm3,4
     vpblendd    ymm1,ymm2,[si],4
 
+    vpsllvd     xmm1,xmm2,xmm3
+    vpsllvd     xmm1,xmm2,[si]
+    vpsllvd     ymm1,ymm2,ymm3
+    vpsllvd     ymm1,ymm2,[si]
+    vpsllvq     xmm1,xmm2,xmm3
+    vpsllvq     xmm1,xmm2,[si]
+    vpsllvq     ymm1,ymm2,ymm3
+    vpsllvq     ymm1,ymm2,[si]
+
