@@ -45,6 +45,8 @@ void init_bitmap(unsigned int width,unsigned int height,unsigned int align=32) {
 	if (xcb_bitmap_shmid >= 0)
 		return;
 
+    (void)align; // unused. we should be using this though.
+
     xcb_bitmap.clear();
     xcb_bitmap.width = width;
     xcb_bitmap.height = height;

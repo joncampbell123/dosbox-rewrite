@@ -31,7 +31,7 @@
 
 static rgb_bitmap_info          src_bitmap;
 
-int                             method = 0;
+unsigned int                    method = 0;
 
 int                             fb_fd = -1;
 unsigned char*                  fb_map = NULL;
@@ -44,6 +44,8 @@ struct termios                  fb_run_termios;
 volatile int                    quit = 0;
 
 void sigma(int x) {
+    (void)x; // unused
+
     if ((++quit) >= 10) abort();
 }
 
@@ -148,8 +150,11 @@ int main() {
             fb_bitmap.rgbinfo.g.shift, fb_bitmap.rgbinfo.g.bwidth, fb_bitmap.rgbinfo.g.bmask,
             fb_bitmap.rgbinfo.b.shift, fb_bitmap.rgbinfo.b.bwidth, fb_bitmap.rgbinfo.b.bmask,
             fb_bitmap.rgbinfo.a.shift, fb_bitmap.rgbinfo.a.bwidth, fb_bitmap.rgbinfo.a.bmask,
-            fb_bitmap.width,           fb_bitmap.height,           fb_bitmap.stride,
-            fb_bitmap.length,          fb_bitmap.bytes_per_pixel);
+            (unsigned int)fb_bitmap.width,
+            (unsigned int)fb_bitmap.height,
+            (unsigned int)fb_bitmap.stride,
+            (unsigned int)fb_bitmap.length,
+            (unsigned int)fb_bitmap.bytes_per_pixel);
 
     if (!fb_bitmap.is_valid()) {
         fprintf(stderr,"Framebuffer not valid\n");
