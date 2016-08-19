@@ -107,6 +107,7 @@ enum opccDispArg {
     OPDARG_mem_imm,     // (mem[i])
     OPDARG_immval,      // (some immediate value)
     OPDARG_vexsidx,     // VEX source register index
+    OPDARG_xopsidx,     // XOP source register index
     OPDARG_i74,         // bits 7:4 of immediate value
     OPDARG_vm32x,       // (rm) except 32-bit SIB addressing makes index register xmm (SSE) register
     OPDARG_vm32y        // (rm) except 32-bit SIB addressing makes index register ymm (AVX) register
@@ -324,7 +325,8 @@ public:
         already(false), addrsz32(false), opsz32(false), suffix(OPSUFFIX_NONE), opmap_valid(false),
         mprefix(0), mprefix_exists_here(false), amd3dnowsuffix(-1), amd3dnow_here(false), final(false), illegal(false),
         vex(false), vexsize(0), vexlead(OP_VEX_LEAD_NONE), vexsidx(-1), vw(0), vexprefix(OP_VEX_PREFIX_NONE),
-        vex_decompose_here(0) {
+        vex_decompose_here(0), xop(false), xopmap(0), xopw(0), xopsize(0), xoppp(0), xopsidx(-1),
+        xop_decompose_here(0) {
     }
     ~OpByte() {
         free_opmap();
@@ -373,6 +375,7 @@ public:
         if (immarg != r.immarg) return false;
         if (disparg != r.disparg) return false;
         if (vex_decompose_here != r.vex_decompose_here) return false;
+        if (xop_decompose_here != r.xop_decompose_here) return false;
         if (mprefix_exists_here != r.mprefix_exists_here) return false;
         if (amd3dnowsuffix != r.amd3dnowsuffix) return false;
         if (amd3dnow_here != r.amd3dnow_here) return false;
@@ -380,12 +383,16 @@ public:
         if (vexprefix != r.vexprefix) return false;
         if (addrsz32 != r.addrsz32) return false;
         if (vexsidx != r.vexsidx) return false;
+        if (xopsidx != r.xopsidx) return false;
         if (mprefix != r.mprefix) return false;
         if (illegal != r.illegal) return false;
         if (vexlead != r.vexlead) return false;
         if (vexsize != r.vexsize) return false;
+        if (xopmap != r.xopmap) return false;
         if (opsz32 != r.opsz32) return false;
+        if (xopw != r.xopw) return false;
         if (vex != r.vex) return false;
+        if (xop != r.xop) return false;
         if (vw != r.vw) return false;
 
         if (opmap_valid) {
@@ -433,12 +440,19 @@ public:
     bool            illegal;
     bool            final;
     bool            vex;
+    bool            xop;
     bool            vw;
+    bool            xopw;
+    uint8_t         xoppp;
+    uint8_t         xopmap;
+    unsigned int    xopsize;
     unsigned int    vexsize;
     uint8_t         vexlead;
     int             vexsidx;
+    int             xopsidx;
     int             vexprefix;
     uint8_t         vex_decompose_here;
+    uint8_t         xop_decompose_here;
 public:
     OpByte*         opmap[256];
     bool            opmap_valid;
@@ -457,6 +471,7 @@ class parse_opcode_state {
 public:
     parse_opcode_state() {
         vw = 0;
+        xopsidx = -1;
         vexsidx = -1;
         oprange_min = -1;
         oprange_max = -1; // last byte of opcode takes the range (min,max) inclusive
@@ -474,9 +489,14 @@ public:
         addrsz32 = false;
         illegal = false;
         opsz32 = false;
+        xopsize = 0;
         vexsize = 0;
         mprefix = 0;
         vex = false;
+        xop = false;
+        xopmap = 0;
+        xoppp = 0;
+        xopw = 0;
         op = 0;
     }
 public:
@@ -488,7 +508,12 @@ public:
     bool                    addrsz32;
     bool                    illegal;
     bool                    opsz32;
+    bool                    xopw;
     bool                    vex;
+    bool                    xop;
+    uint8_t                 xoppp;
+    uint8_t                 xopmap;
+    unsigned int            xopsize;
     unsigned int            vexsize;
     uint8_t                 vexlead;
     int                     oprange_min;
@@ -500,6 +525,7 @@ public:
     int                     amd3dnowsuffix; // AMD 3DNow! suffix byte (after mod/reg/rm)
     int                     vexprefix;
     int                     vexsidx;
+    int                     xopsidx;
     bool                    vw;
 public:
     string                  format_str;
@@ -544,6 +570,10 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
                 map->vex_decompose_here = 3; // 3-byte form
             else if (st.ops[0] == 0xC5 && i == 1)
                 map->vex_decompose_here = 2; // 2-byte form
+        }
+        else if (st.xop) {
+            if (st.ops[0] == 0x8F && i == 2)
+                map->xop_decompose_here = 3;
         }
     }
 
@@ -597,8 +627,14 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
                     submap->vexsize = st.vexsize;
                     submap->vexlead = st.vexlead;
                     submap->vexsidx = st.vexsidx;
+                    submap->xopsidx = st.xopsidx;
+                    submap->xopsize = st.xopsize;
+                    submap->xopmap = st.xopmap;
+                    submap->xoppp = st.xoppp;
+                    submap->xopw = st.xopw;
                     submap->final = true;
                     submap->vex = st.vex;
+                    submap->xop = st.xop;
                     submap->vw = st.vw;
                 }
             }
@@ -648,8 +684,14 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
                         submap->vexsize = st.vexsize;
                         submap->vexlead = st.vexlead;
                         submap->vexsidx = st.vexsidx;
+                        submap->xopsidx = st.xopsidx;
+                        submap->xopsize = st.xopsize;
+                        submap->xopmap = st.xopmap;
+                        submap->xoppp = st.xoppp;
+                        submap->xopw = st.xopw;
                         submap->final = true;
                         submap->vex = st.vex;
+                        submap->xop = st.xop;
                         submap->vw = st.vw;
                     }
                 }
@@ -694,10 +736,16 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
             map->vexsize = st.vexsize;
             map->vexlead = st.vexlead;
             map->vexsidx = st.vexsidx;
+            map->xopsidx = st.xopsidx;
+            map->xopsize = st.xopsize;
             map->suffix = st.suffix;
+            map->xopmap = st.xopmap;
+            map->xoppp = st.xoppp;
+            map->xopw = st.xopw;
             map->name = st.name;
             map->final = true;
             map->vex = st.vex;
+            map->xop = st.xop;
             map->vw = st.vw;
         }
     }
@@ -722,11 +770,17 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
         map->vexsize = st.vexsize;
         map->vexlead = st.vexlead;
         map->vexsidx = st.vexsidx;
+        map->xopsidx = st.xopsidx;
         map->mprefix = st.mprefix;
+        map->xopsize = st.xopsize;
         map->suffix = st.suffix;
+        map->xopmap = st.xopmap;
+        map->xoppp = st.xoppp;
+        map->xopw = st.xopw;
         map->name = st.name;
         map->final = true;
         map->vex = st.vex;
+        map->xop = st.xop;
         map->vw = st.vw;
 
         if (st.amd3dnowsuffix >= 0) {
@@ -853,6 +907,15 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
                 return false;
             }
         }
+        else if (!strncmp(s,"xopsidx(",8)) {
+            s += 8;
+
+            st.xopsidx = (int)strtol(s,&s,0);
+            if (st.xopsidx < -1 || st.xopsidx > 7) {
+                fprintf(stderr,"xop source register index must be 0..7, or -1 to indicate no match\n");
+                return false;
+            }
+        }
         else if (!strncmp(s,"vsidx(",6)) {
             s += 6;
 
@@ -868,6 +931,38 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
             st.vexsize = (int)strtoul(s,&s,0);
             if (!(st.vexsize == 128 || st.vexsize == 256)) {
                 fprintf(stderr,"vex size must be 128, 256\n");
+                return false;
+            }
+        }
+        else if (!strncmp(s,"xoppp(",6)) {
+            s += 6;
+
+            st.xoppp = (int)strtoul(s,&s,0);
+            if (st.xoppp > 3) {
+                fprintf(stderr,"xoppp out of range\n");
+                return false;
+            }
+        }
+        else if (!strncmp(s,"xopsize(",8)) {
+            s += 8;
+
+            st.xopsize = (int)strtoul(s,&s,0);
+            if (!(st.xopsize == 128 || st.xopsize == 256)) {
+                fprintf(stderr,"xopsize must be 128 or 256\n");
+                return false;
+            }
+        }
+        else if (!strncmp(s,"xopw(",5)) {
+            s += 5;
+
+            st.xopw = (int)strtoul(s,&s,0) > 0;
+        }
+        else if (!strncmp(s,"xopmap(",7)) {
+            s += 7;
+
+            st.xopmap = (int)strtoul(s,&s,0);
+            if (st.xopmap > 31) {
+                fprintf(stderr,"invalid xopmap value\n");
                 return false;
             }
         }
@@ -919,6 +1014,18 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
                 fprintf(stderr,"vex lead must be 0x0F, 0x0F,0x38, or 0x0F,0x3A\n");
                 return false;
             }
+        }
+        else if (!strcmp(s,"xop")) {
+            if (st.op != 0) {
+                fprintf(stderr,"xop declaration must appear first before opcode bytes\n");
+                return false;
+            }
+            else if (st.xop) {
+                fprintf(stderr,"xop declaration specified more than once\n");
+                return false;
+            }
+
+            st.xop = true;
         }
         else if (!strcmp(s,"vex")) {
             if (st.op != 0) {
@@ -1470,6 +1577,10 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
                     arg.argtype = OPDARGTYPE_SSE;
                     arg.arg = OPDARG_vexsidx;
                 }
+                else if (!strcmp(s,"sse(xopsidx)")) {
+                    arg.argtype = OPDARGTYPE_SSE;
+                    arg.arg = OPDARG_xopsidx;
+                }
                 else if (!strcmp(s,"sse(i[7:4])")) {
                     arg.argtype = OPDARGTYPE_SSE;
                     arg.arg = OPDARG_i74;
@@ -1485,6 +1596,10 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
                 else if (!strcmp(s,"avx(vsidx)")) {
                     arg.argtype = OPDARGTYPE_AVX;
                     arg.arg = OPDARG_vexsidx;
+                }
+                else if (!strcmp(s,"avx(xopsidx)")) {
+                    arg.argtype = OPDARGTYPE_AVX;
+                    arg.arg = OPDARG_xopsidx;
                 }
                 else if (!strcmp(s,"avx(i[7:4])")) {
                     arg.argtype = OPDARGTYPE_AVX;
@@ -1527,7 +1642,50 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
         }
     }
 
-    if (st.vex) {
+    if (st.xop) {
+        unsigned char origop[20];
+        unsigned int origopsz;
+
+        memcpy(origop,st.ops,st.op);
+        origopsz = st.op;
+
+        if (st.oprange_min >= 0 || st.oprange_max >= 0) {
+            fprintf(stderr,"Opcode ranges and XOP encoding not supported at this time\n");
+            return false;
+        }
+
+        /* 3-byte XOP */
+        {
+            st.op = origopsz + 3;
+            st.ops[0] = 0x8F;
+            st.ops[1] = 0x00; // placeholder
+            st.ops[2] = 0x00; // placeholder
+            memcpy(st.ops+3,origop,origopsz);
+
+            for (unsigned int v=0;v < 8;v++) {
+                if (st.xopsidx >= 0 && st.xopsidx != v)
+                    continue;
+
+                // bit    7: R=0 (inverted)
+                // bit    6: X=0 (inverted)
+                // bit    5: B=0 (inverted)
+                // bits 4-0: map_select (xopmap)
+                st.ops[1] = 0xE0 + st.xopmap;
+                // bit    7: W
+                // bits 6-3: v3-v0 bits (inverted)
+                // bit    2: L bit (256-wide SIMD)
+                // bits 1-0: prefix
+                st.ops[2] = 0x00 + (st.xopw ? 0x80 : 0x00) + ((v^15) << 3) + (st.xopsize == 256 ? 4 : 0) + st.xoppp;
+
+                // do it
+                if (true/*16-bit*/ && !parse_opcode_def_gen1(/*&*/st,/*&*/opmap16))
+                    return false;
+                if (true/*32-bit*/ && !parse_opcode_def_gen1(/*&*/st,/*&*/opmap32))
+                    return false;
+            }
+        }
+    }
+    else if (st.vex) {
         unsigned char origop[20];
         unsigned int origopsz;
 
@@ -1692,6 +1850,8 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
         fprintf(out_fp,"%s        vex.V = ((~op) >> 3) & 7;\n",indent_str.c_str());
     else if (submap->vex_decompose_here == 2)
         fprintf(out_fp,"%s        vex.V = ((~mrm.byte) >> 3) & 7;\n",indent_str.c_str());
+    else if (submap->xop_decompose_here == 3)
+        fprintf(out_fp,"%s        vex.V = ((~op) >> 3) & 7;/*NTS: Just re-use the VEX.V field*/\n",indent_str.c_str());
 
     if (!(flags & OUTCODE_GEN_SKIP_MRM)) {
         if (submap->modregrm) {
@@ -2394,6 +2554,95 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                 }
                 else if (arg.arg == OPDARG_i74) {
                     const char *regname = "(imm>>4)&15";
+                    char regn[32];
+
+                    if (arg.argreg != OPREG_NONE) {
+                        sprintf(regn,"%u",arg.argreg);
+                        regname = regn;
+                    }
+
+                    switch (arg.argtype) {
+                        case OPDARGTYPE_BYTE:
+                            fprintf(out_fp,"%%s");
+                            fmtargs += ",CPUregsN[1][";
+                            fmtargs += regname;
+                            fmtargs += "]";
+                            break;
+                        case OPDARGTYPE_WORD:
+                            fprintf(out_fp,"%%s");
+                            if (generic1632) {
+                                fmtargs += ",CPUregsN[code32?4:2][";
+                            }
+                            else {
+                                if (codewidth == 32)
+                                    fmtargs += ",CPUregsN[4][";
+                                else
+                                    fmtargs += ",CPUregsN[2][";
+                            }
+                            fmtargs += regname;
+                            fmtargs += "]";
+                            break;
+                        case OPDARGTYPE_WORD16:
+                            fprintf(out_fp,"%%s");
+                            fmtargs += ",CPUregsN[2][";
+                            fmtargs += regname;
+                            fmtargs += "]";
+                            break;
+                        case OPDARGTYPE_WORD32:
+                            fprintf(out_fp,"%%s");
+                            fmtargs += ",CPUregsN[4][";
+                            fmtargs += regname;
+                            fmtargs += "]";
+                            break;
+                        case OPDARGTYPE_FPUREG:
+                            fprintf(out_fp,"ST(%%u)");
+                            fmtargs += ",";
+                            fmtargs += regname;
+                            break;
+                        case OPDARGTYPE_SREG:
+                            // todo: use CPUsregs_80386[] if 386 or higher
+                            //       else use CPUsregs_8086[]
+                            fprintf(out_fp,"%%s");
+                            fmtargs += ",CPUsregs_80386[";
+                            fmtargs += regname;
+                            fmtargs += "]";
+                            break;
+                        case OPDARGTYPE_CREG:
+                            fprintf(out_fp,"CR%%u");
+                            fmtargs += ",";
+                            fmtargs += regname;
+                            break;
+                        case OPDARGTYPE_DREG:
+                            fprintf(out_fp,"DR%%u");
+                            fmtargs += ",";
+                            fmtargs += regname;
+                            break;
+                         case OPDARGTYPE_TREG:
+                            fprintf(out_fp,"TR%%u");
+                            fmtargs += ",";
+                            fmtargs += regname;
+                            break;
+                        case OPDARGTYPE_MMX:
+                            fprintf(out_fp,"MM%%u");
+                            fmtargs += ",";
+                            fmtargs += regname;
+                            break;
+                        case OPDARGTYPE_SSE:
+                            fprintf(out_fp,"XMM%%u");
+                            fmtargs += ",";
+                            fmtargs += regname;
+                            break;
+                        case OPDARGTYPE_AVX:
+                            fprintf(out_fp,"YMM%%u");
+                            fmtargs += ",";
+                            fmtargs += regname;
+                            break;
+			default:
+			    break;
+                    }
+                }
+                else if (arg.arg == OPDARG_xopsidx) {
+                    const char *regname = "vex.V"; // NTS: we re-use the VEX struct
                     char regn[32];
 
                     if (arg.argreg != OPREG_NONE) {
