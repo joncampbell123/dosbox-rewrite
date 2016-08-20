@@ -507,7 +507,7 @@ static SSE_REALIGN LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LP
                 stretchblt_modes[method].render(/*&*/gdi_bitmap,/*&*/src_bitmap);
 
             InvalidateRect(hwndMain,NULL,FALSE); // DWM compositor-based versions set WM_PAINT such that only the affected area will repaint
-            break;
+            return DefWindowProc(hwnd,uMsg,wParam,lParam);
         case WM_SIZE:
             if (!init_bitmap(LOWORD(lParam),HIWORD(lParam)))
                 fprintf(stderr,"WARNING WM_RESIZE init_bitmap(%u,%u) failed\n",
