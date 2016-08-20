@@ -23,6 +23,8 @@
 #include "dosboxxr/lib/util/rgb_bitmap_test_pattern_gradients.h"
 #include "dosboxxr/lib/graphics/stretchblt_general.h"
 
+HMENU                           menuDisplayModes = NULL;
+
 IDirectDraw*                    ddraw = NULL;
 DWORD                           ddrawCooperativeLevel = 0;
 
@@ -299,6 +301,72 @@ void update_screen() {
     }
 }
 
+#define MAX_DISPLAY_MODES 1024
+
+#ifndef DM_DISPLAYFIXEDOUTPUT
+# define DM_DISPLAYFIXEDOUTPUT   0x20000000L
+#endif
+
+#ifndef DMDFO_DEFAULT
+# define DMDFO_DEFAULT           0
+#endif
+
+#ifndef DMDFO_STRETCH
+# define DMDFO_STRETCH           1
+#endif
+
+#ifndef DMDFO_CENTER
+# define DMDFO_CENTER            2
+#endif
+
+DDSURFACEDESC displayModes[MAX_DISPLAY_MODES];
+int displayModesCount = 0;
+
+HRESULT WINAPI populateDisplayModesEnumCallback(LPDDSURFACEDESC lpDD,LPVOID lpContent) {
+    (void)lpContent; // unused
+
+    if (displayModesCount < MAX_DISPLAY_MODES)
+        displayModes[displayModesCount++] = *lpDD;
+
+    return DDENUMRET_OK;
+}
+
+void populateDisplayModes(void) {
+    char tmp[128],*w,*wf;
+    DDSURFACEDESC devmode;
+    int index;
+
+    if (menuDisplayModes != NULL) return;
+    menuDisplayModes = CreatePopupMenu();
+    if (menuDisplayModes == NULL) return;
+    displayModesCount = 0;
+    if (ddraw == NULL) return;
+    ddraw->EnumDisplayModes(DDEDM_REFRESHRATES|DDEDM_STANDARDVGAMODES,NULL,NULL,populateDisplayModesEnumCallback);
+
+    for (index=0;index < (int)displayModesCount;index++) {
+        devmode = displayModes[index];
+
+        w = tmp;
+        wf = tmp + sizeof(tmp) - 1;
+
+        w += snprintf(w,(size_t)(wf-w),"%ux%u",
+                (unsigned int)devmode.dwWidth,
+                (unsigned int)devmode.dwHeight);
+        w += snprintf(w,(size_t)(wf-w)," x %ubpp",
+                (unsigned int)devmode.ddpfPixelFormat.dwRGBBitCount);
+
+        if (devmode.dwFlags & DDSD_REFRESHRATE) {
+            w += snprintf(w,(size_t)(wf-w)," @%uHz",
+                    (unsigned int)devmode.dwRefreshRate);
+        }
+
+        AppendMenu(menuDisplayModes,MF_ENABLED|MF_STRING,4000+index,tmp);
+    }
+
+    if (displayModesCount == 0) AppendMenu(menuDisplayModes,MF_DISABLED|MF_GRAYED|MF_STRING,0,"(none)");
+}
+
+
 static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
     switch (uMsg) {
         case WM_CREATE:
@@ -340,8 +408,31 @@ static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 
             InvalidateRect(hwndMain,NULL,FALSE); // DWM compositor-based versions set WM_PAINT such that only the affected area will repaint
             break;
+        case WM_RBUTTONUP:
+            populateDisplayModes();
+            if (menuDisplayModes != NULL) {
+                POINT pt;
+
+                GetCursorPos(&pt);
+                TrackPopupMenu(menuDisplayModes,TPM_LEFTALIGN|TPM_TOPALIGN|TPM_RIGHTBUTTON,pt.x,pt.y,0,hwnd,NULL);
+            }
+            break;
         case WM_COMMAND:
-            return DefWindowProc(hwnd,uMsg,wParam,lParam);
+            if (wParam >= 4000 && wParam < (WPARAM)(4000+displayModesCount)) {
+                DDSURFACEDESC devmode = displayModes[wParam-4000];
+                HRESULT hr;
+
+                fprintf(stderr,"Setting display to %u x %u x %ubpp\n",
+                    (unsigned int)devmode.dwWidth,
+                    (unsigned int)devmode.dwHeight,
+                    (unsigned int)devmode.ddpfPixelFormat.dwRGBBitCount);
+                if ((hr=ddraw->SetDisplayMode(devmode.dwWidth,devmode.dwHeight,devmode.ddpfPixelFormat.dwRGBBitCount)) != DD_OK)
+                    fprintf(stderr,"Failed to set display mode\n");
+            }
+            else {
+                return DefWindowProc(hwnd,uMsg,wParam,lParam);
+            }
+            break;
         case WM_KEYDOWN:
             switch (wParam) {
                 case VK_ESCAPE:
