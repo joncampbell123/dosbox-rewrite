@@ -32,8 +32,8 @@ IDirectDrawSurface*             ddsurfaceGDI = NULL;    // Microsoft is very unc
 IDirectDrawSurface*             ddsurfaceBMP = NULL;
 
 HWND                            hwndMain = NULL;
-const char*                     hwndMainClass = "WINGDICLASS";
-const char*                     hwndMainTitle = "WinGDI test 1";
+const char*                     hwndMainClass = "WINDX1CLASS";
+const char*                     hwndMainTitle = "WinDirectDraw test 1";
 HINSTANCE                       myInstance;
 
 bool                            gdi_no_dpiaware = false;
@@ -114,6 +114,8 @@ int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
 
     free_bitmap();
     if (w == 0 || h == 0) return 0;
+
+    (void)align; // unused
 
     /* what screen format? we need to add padding to width just in case 24bpp */
     memset(&dispsurf,0,sizeof(dispsurf));
@@ -303,9 +305,9 @@ static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
             break;
         case WM_PAINT: {
             PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hwnd,&ps);
-            update_screen();
+            BeginPaint(hwnd,&ps);
             EndPaint(hwnd,&ps);
+            update_screen();
             } break;
         case WM_DISPLAYCHANGE:
             announce_fmt = true;
