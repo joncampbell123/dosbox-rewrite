@@ -358,7 +358,9 @@ void update_screen(HDC targetDC) {
         fprintf(stderr,"update_screen() warning BitBlt failed\n");
 }
 
-DEVMODE displayModes[128];
+#define MAX_DISPLAY_MODES 1024
+
+DEVMODE displayModes[MAX_DISPLAY_MODES];
 int displayModesCount = 0;
 
 void populateDisplayModes(void) {
@@ -373,7 +375,7 @@ void populateDisplayModes(void) {
     index = 0;
 
     do {
-        if (index >= 128) break;
+        if (index >= MAX_DISPLAY_MODES) break;
         memset(&devmode,0,sizeof(devmode));
         devmode.dmSize = sizeof(devmode);
         if (!EnumDisplaySettings(NULL,(DWORD)index,&devmode)) break;
