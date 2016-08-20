@@ -87,7 +87,8 @@ if HAVE_X11
 if HAVE_OPENGL
 if HAVE_OPENGL_GLU
 noinst_PROGRAMS += \
-	bin/test/xlibopengl
+	bin/test/xlibopengl \
+	bin/test/xlibopengl2
 endif
 endif
 endif
@@ -202,6 +203,19 @@ bin_test_xlibopengl_SOURCES = test/xlibopengl.cpp
 bin_test_xlibopengl_CXXFLAGS = $(AM_CXXFLAGS) $(X11_CFLAGS) $(OPENGL_CFLAGS) $(OPENGL_GLU_CFLAGS)
 bin_test_xlibopengl_DEPENDENCIES =
 bin_test_xlibopengl_LDADD = $(X11_LDFLAGS) $(OPENGL_LDFLAGS) $(OPENGL_GLU_LDFLAGS)
+
+bin_test_xlibopengl2_SOURCES = test/xlibopengl2.cpp
+bin_test_xlibopengl2_CXXFLAGS = $(AM_CXXFLAGS) $(X11_CFLAGS) $(OPENGL_CFLAGS) $(OPENGL_GLU_CFLAGS)
+bin_test_xlibopengl2_DEPENDENCIES = \
+	dosboxxr/lib/hostcpudetect/libhostcpudetect.a \
+	dosboxxr/lib/util/libutil.a \
+	dosboxxr/lib/text/libtext.a \
+	dosboxxr/lib/xlib/libxlibdemo.a
+bin_test_xlibopengl2_LDADD = $(X11_LDFLAGS) $(OPENGL_LDFLAGS) $(OPENGL_GLU_LDFLAGS) \
+	dosboxxr/lib/hostcpudetect/libhostcpudetect.a \
+	dosboxxr/lib/util/libutil.a \
+	dosboxxr/lib/text/libtext.a \
+	dosboxxr/lib/xlib/libxlibdemo.a
 
 bin_test_xlibxcbopengl_SOURCES = test/xlibxcbopengl.cpp
 bin_test_xlibxcbopengl_CXXFLAGS = $(AM_CXXFLAGS) $(X11_CFLAGS) $(OPENGL_CFLAGS) $(OPENGL_GLU_CFLAGS) $(X11_XCB_CFLAGS)
