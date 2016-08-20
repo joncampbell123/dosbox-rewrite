@@ -507,6 +507,7 @@ int main(int argc,char **argv) {
         ddclipperPrimary = NULL;
     }
     if (ddraw != NULL) {
+        ddraw->RestoreDisplayMode();
         ddraw->Release();
         ddraw = NULL;
     }
