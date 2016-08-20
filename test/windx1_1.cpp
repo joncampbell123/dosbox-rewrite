@@ -110,6 +110,72 @@ void free_bitmap(void) {
     }
 }
 
+void free_dx_primary_surface(void) {
+    if (ddclipperPrimary != NULL) {
+        ddclipperPrimary->Release();
+        ddclipperPrimary = NULL;
+    }
+    if (ddsurfacePrimary != NULL) {
+        ddsurfacePrimary->Release();
+        ddsurfacePrimary = NULL;
+    }
+    if (ddsurfaceGDI != NULL) {
+        ddsurfaceGDI->Release();
+        ddsurfaceGDI = NULL;
+    }
+}
+
+bool init_dx_primary_surface(void) {
+    HRESULT hr;
+
+    if (ddsurfacePrimary != NULL || ddclipperPrimary != NULL)
+        return true;
+
+    if (hwndMain == NULL) {
+        fprintf(stderr,"Bug: attempt to init DX primary surface without creating window first\n");
+        return false;
+    }
+
+    /* create a primary surface so that we can blt to the screen. I don't intend to lock the display surface, I only intend
+       to hardware blit to it. Also, trying to directly access the screen in Windows Vista and higher causes the DWM compositor
+       to blank the screen and fallback to a compat mode, which is visually unappealing. */
+    /* NTS: Past experience from 1997-1999 says that even creating a primary surface this way won't work if you're using
+       ancient SVGA graphics cards with bank-switched RAM and no linear framebuffer (like a TSENG ET4000). But that
+       wasn't really a problem back then with games who knew how to fallback to Windows GDI anyway. */
+    {
+        DDSURFACEDESC ddsurf;
+
+        memset(&ddsurf,0,sizeof(ddsurf));
+        ddsurf.dwSize = sizeof(ddsurf);
+        ddsurf.dwFlags = DDSD_CAPS;
+        ddsurf.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE;
+        if ((hr=ddraw->CreateSurface(&ddsurf,&ddsurfacePrimary,NULL)) != DD_OK) {
+            fprintf(stderr,"Unable to create primary surface (screen), HR=0x%08lx\n",hr);
+            return false;
+        }
+    }
+
+    if ((hr=ddraw->CreateClipper(0,&ddclipperPrimary,NULL)) != DD_OK) {
+        fprintf(stderr,"Failed to create clipper, HR=0x%08lx\n",hr);
+        return false;
+    }
+    if ((hr=ddclipperPrimary->SetHWnd(0,hwndMain)) != DD_OK) {
+        fprintf(stderr,"Failed to set clipper to main window, HR=0x%08lx\n",hr);
+        return false;
+    }
+    if ((hr=ddsurfacePrimary->SetClipper(ddclipperPrimary)) != DD_OK) {
+        fprintf(stderr,"Failed to set clipper to primary surface, HR=0x%08lx\n",hr);
+        return false;
+    }
+
+    /* Okay, now try to get GDI surface.
+       I don't expect this to work. Feh. */
+    if (ddsurfaceGDI == NULL && (hr=ddraw->GetGDISurface(&ddsurfaceGDI)) != DD_OK)
+        fprintf(stderr,"Oh, gee, couldn't get the GDI surface (HR=0x%08lx), oh golly what a surprise (not)\n",hr);
+
+    return true;
+}
+
 int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
     DDSURFACEDESC ddsurf,dispsurf;
     HRESULT hr;
@@ -241,43 +307,8 @@ void update_screen() {
             fprintf(stderr,"Unable to restore surface hr=0x%08lx.\n",hr);
             unlock_bitmap();
             free_bitmap();
-
-            if (ddsurfacePrimary != NULL) {
-                ddsurfacePrimary->Release();
-                ddsurfacePrimary = NULL;
-            }
-            if (ddsurfaceGDI != NULL) {
-                ddsurfaceGDI->Release();
-                ddsurfaceGDI = NULL;
-            }
-            if (ddsurfaceBMP != NULL) {
-                ddsurfaceBMP->Release();
-                ddsurfaceBMP = NULL;
-            }
-
-            /* create a primary surface so that we can blt to the screen. I don't intend to lock the display surface, I only intend
-               to hardware blit to it. Also, trying to directly access the screen in Windows Vista and higher causes the DWM compositor
-               to blank the screen and fallback to a compat mode, which is visually unappealing. */
-            /* NTS: Past experience from 1997-1999 says that even creating a primary surface this way won't work if you're using
-               ancient SVGA graphics cards with bank-switched RAM and no linear framebuffer (like a TSENG ET4000). But that
-               wasn't really a problem back then with games who knew how to fallback to Windows GDI anyway. */
-            {
-                DDSURFACEDESC ddsurf;
-
-                memset(&ddsurf,0,sizeof(ddsurf));
-                ddsurf.dwSize = sizeof(ddsurf);
-                ddsurf.dwFlags = DDSD_CAPS;
-                ddsurf.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE;
-                if ((hr=ddraw->CreateSurface(&ddsurf,&ddsurfacePrimary,NULL)) != DD_OK) {
-                    fprintf(stderr,"Unable to create primary surface (screen), HR=0x%08lx\n",hr);
-                    return;
-                }
-            }
-
-            /* Okay, now try to get GDI surface.
-               I don't expect this to work. Feh. */
-            if ((hr=ddraw->GetGDISurface(&ddsurfaceGDI)) != DD_OK)
-                fprintf(stderr,"Oh, gee, couldn't get the GDI surface (HR=0x%08lx), oh golly what a surprise (not)\n",hr);
+            free_dx_primary_surface();
+            init_dx_primary_surface();
 
             RECT rct;
             GetClientRect(hwndMain,&rct);
@@ -377,14 +408,19 @@ static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
             EndPaint(hwnd,&ps);
             update_screen();
             } break;
-        case WM_DISPLAYCHANGE:
+        case WM_DISPLAYCHANGE: {
             announce_fmt = true;
-            if (dx_bitmap.width == 0 || dx_bitmap.height == 0) {
-                RECT rct;
-                GetClientRect(hwnd,&rct);
-                dx_bitmap.width = rct.right;
-                dx_bitmap.height = rct.bottom;
-            }
+
+            unlock_bitmap();
+            free_bitmap();
+            free_dx_primary_surface();
+            init_dx_primary_surface();
+
+            RECT rct;
+            GetClientRect(hwndMain,&rct);
+            dx_bitmap.width = rct.right;
+            dx_bitmap.height = rct.bottom;
+
             if (!init_bitmap(dx_bitmap.width,dx_bitmap.height))
                 fprintf(stderr,"WARNING WM_RESIZE init_bitmap(%u,%u) failed\n",
                     dx_bitmap.width,dx_bitmap.height);
@@ -395,7 +431,7 @@ static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
             }
 
             InvalidateRect(hwndMain,NULL,FALSE); // DWM compositor-based versions set WM_PAINT such that only the affected area will repaint
-            return DefWindowProc(hwnd,uMsg,wParam,lParam);
+            } return DefWindowProc(hwnd,uMsg,wParam,lParam);
         case WM_SIZE:
             if (!init_bitmap(LOWORD(lParam),HIWORD(lParam)))
                 fprintf(stderr,"WARNING WM_RESIZE init_bitmap(%u,%u) failed\n",
@@ -428,6 +464,27 @@ static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
                     (unsigned int)devmode.ddpfPixelFormat.dwRGBBitCount);
                 if ((hr=ddraw->SetDisplayMode(devmode.dwWidth,devmode.dwHeight,devmode.ddpfPixelFormat.dwRGBBitCount)) != DD_OK)
                     fprintf(stderr,"Failed to set display mode\n");
+
+                unlock_bitmap();
+                free_bitmap();
+                free_dx_primary_surface();
+                init_dx_primary_surface();
+
+                RECT rct;
+                GetClientRect(hwndMain,&rct);
+                dx_bitmap.width = rct.right;
+                dx_bitmap.height = rct.bottom;
+
+                if (!init_bitmap(dx_bitmap.width,dx_bitmap.height))
+                    fprintf(stderr,"WARNING WM_RESIZE init_bitmap(%u,%u) failed\n",
+                            dx_bitmap.width,dx_bitmap.height);
+
+                if (lock_bitmap()) {
+                    render_test_pattern_rgb_gradients(dx_bitmap);
+                    unlock_bitmap();
+                }
+
+                InvalidateRect(hwndMain,NULL,FALSE); // DWM compositor-based versions set WM_PAINT such that only the affected area will repaint
             }
             else {
                 return DefWindowProc(hwnd,uMsg,wParam,lParam);
@@ -496,30 +553,6 @@ int main(int argc,char **argv) {
         return 1;
     }
 
-    /* create a primary surface so that we can blt to the screen. I don't intend to lock the display surface, I only intend
-       to hardware blit to it. Also, trying to directly access the screen in Windows Vista and higher causes the DWM compositor
-       to blank the screen and fallback to a compat mode, which is visually unappealing. */
-    /* NTS: Past experience from 1997-1999 says that even creating a primary surface this way won't work if you're using
-            ancient SVGA graphics cards with bank-switched RAM and no linear framebuffer (like a TSENG ET4000). But that
-            wasn't really a problem back then with games who knew how to fallback to Windows GDI anyway. */
-    {
-        DDSURFACEDESC ddsurf;
-
-        memset(&ddsurf,0,sizeof(ddsurf));
-        ddsurf.dwSize = sizeof(ddsurf);
-        ddsurf.dwFlags = DDSD_CAPS;
-        ddsurf.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE;
-        if ((hr=ddraw->CreateSurface(&ddsurf,&ddsurfacePrimary,NULL)) != DD_OK) {
-            fprintf(stderr,"Unable to create primary surface (screen), HR=0x%08lx\n",hr);
-            return 1;
-        }
-    }
-
-    /* Okay, now try to get GDI surface.
-       I don't expect this to work. Feh. */
-    if ((hr=ddraw->GetGDISurface(&ddsurfaceGDI)) != DD_OK)
-        fprintf(stderr,"Oh, gee, couldn't get the GDI surface (HR=0x%08lx), oh golly what a surprise (not)\n",hr);
-
     myInstance = GetModuleHandle(NULL);
 
     memset(&wnd,0,sizeof(wnd));
@@ -550,6 +583,11 @@ int main(int argc,char **argv) {
         return 1;
     }
 
+    if (!init_dx_primary_surface()) {
+        fprintf(stderr,"Failed to init primary surface\n");
+        return 1;
+    }
+
     GetClientRect(hwndMain,&rect);
     if (!init_bitmap(rect.right,rect.bottom)) {
         fprintf(stderr,"nit_bitmap() failed for %ux%u\n",(unsigned int)rect.right,(unsigned int)rect.bottom);
@@ -560,19 +598,6 @@ int main(int argc,char **argv) {
         unlock_bitmap();
     }
 
-    if ((hr=ddraw->CreateClipper(0,&ddclipperPrimary,NULL)) != DD_OK) {
-        fprintf(stderr,"Failed to create clipper, HR=0x%08lx\n",hr);
-        return 1;
-    }
-    if ((hr=ddclipperPrimary->SetHWnd(0,hwndMain)) != DD_OK) {
-        fprintf(stderr,"Failed to set clipper to main window, HR=0x%08lx\n",hr);
-        return 1;
-    }
-    if ((hr=ddsurfacePrimary->SetClipper(ddclipperPrimary)) != DD_OK) {
-        fprintf(stderr,"Failed to set clipper to primary surface, HR=0x%08lx\n",hr);
-        return 1;
-    }
-
     ShowWindow(hwndMain,SW_SHOW);
     UpdateWindow(hwndMain);
 
@@ -581,22 +606,8 @@ int main(int argc,char **argv) {
         DispatchMessage(&msg);
     }
 
-    if (ddsurfacePrimary != NULL) {
-        ddsurfacePrimary->Release();
-        ddsurfacePrimary = NULL;
-    }
-    if (ddsurfaceGDI != NULL) {
-        ddsurfaceGDI->Release();
-        ddsurfaceGDI = NULL;
-    }
-    if (ddsurfaceBMP != NULL) {
-        ddsurfaceBMP->Release();
-        ddsurfaceBMP = NULL;
-    }
-    if (ddclipperPrimary != NULL) {
-        ddclipperPrimary->Release();
-        ddclipperPrimary = NULL;
-    }
+    free_dx_primary_surface();
+    free_bitmap();
     if (ddraw != NULL) {
         ddraw->RestoreDisplayMode();
         ddraw->Release();
