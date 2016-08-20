@@ -266,6 +266,24 @@ int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
     dx_bitmap.rgbinfo.b.setByMask(ddsurf.ddpfPixelFormat.dwBBitMask);
     dx_bitmap.rgbinfo.a.setByMask(ddsurf.ddpfPixelFormat.dwRGBAlphaBitMask);
 
+    // 24bpp check: make sure the pitch (stride) is larger than width*3
+    if (ddsurf.ddpfPixelFormat.dwRGBBitCount == 24 && dx_bitmap.stride <= (dx_bitmap.width*3)) {
+        fprintf(stderr,"DirectX did not provide a surface with a stride padded enough for 24bpp\n");
+        free_bitmap();
+        return 0;
+    }
+
+    // check that we didn't catch DirectX mid-mode-change.
+    // NTS: Apparently switching from 32bpp to 24bpp in Windows XP can cause an easily-hittable
+    //      window of opportunity to create a primary surface with the stride of a 24bpp screen
+    //      and the specification of a 32bpp screen. Needless to say, if we don't catch this,
+    //      we will crash when we start to draw again.
+    if ((dx_bitmap.width * dx_bitmap.bytes_per_pixel) > dx_bitmap.stride) {
+        fprintf(stderr,"DirectX did not provide a valid surface pitch (Windows XP DirectX 24/32bpp mode change bug?)\n");
+        free_bitmap();
+        return 0;
+    }
+
     // the catch with DirectX is that we cannot keep the pointer in the dx bitmap at all times,
     // because of the need to lock the surface. be aware of that. Until you lock the surface,
     // our dx_bitmap is technically invalid. I'm not going to just leave it locked because we
