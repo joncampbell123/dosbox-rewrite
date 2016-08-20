@@ -250,7 +250,7 @@ int main() {
                 break;
             }
         }
-    } /* this closes while(1) { */
+    }
 
     free_src_texture();
     free_src_bitmap();
