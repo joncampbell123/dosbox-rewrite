@@ -75,6 +75,11 @@ noinst_PROGRAMS += \
 	bin/test/wingdi2
 endif
 
+if HAVE_WINDOWS_H
+noinst_PROGRAMS += \
+	bin/test/windx1_1
+endif
+
 if IS_MAC_OSX
 if HAS_OBJCXX
 noinst_PROGRAMS += \
@@ -313,6 +318,13 @@ bin_test_cocoa2_LDADD = \
 	dosboxxr/lib/util/libutil.a \
 	dosboxxr/lib/xlib/libxlibdemo.a
 bin_test_cocoa2_LDFLAGS = $(AM_LDFLAGS) -framework CoreFoundation -framework CoreServices -framework Cocoa -framework Carbon
+
+bin_test_windx1_1_SOURCES = test/windx1_1.cpp
+bin_test_windx1_1_CXXFLAGS = $(AM_CXXFLAGS) -Idosboxxr/ext/directx
+bin_test_windx1_1_DEPENDENCIES = \
+	dosboxxr/lib/util/libutil.a
+bin_test_windx1_1_LDADD = $(X11_LDFLAGS) \
+	dosboxxr/lib/util/libutil.a -lkernel32 -lgdi32 -lddraw
 
 bin_test_wingdi1_SOURCES = test/wingdi1.cpp
 bin_test_wingdi1_CXXFLAGS = $(AM_CXXFLAGS)
