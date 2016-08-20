@@ -109,11 +109,20 @@ void free_bitmap(void) {
 }
 
 int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
-    DDSURFACEDESC ddsurf;
+    DDSURFACEDESC ddsurf,dispsurf;
     HRESULT hr;
 
     free_bitmap();
     if (w == 0 || h == 0) return 0;
+
+    /* what screen format? we need to add padding to width just in case 24bpp */
+    memset(&dispsurf,0,sizeof(dispsurf));
+    dispsurf.dwSize = sizeof(dispsurf);
+    if ((hr=ddraw->GetDisplayMode(&dispsurf)) != DD_OK) {
+        fprintf(stderr,"Failed to query display mode HR=0x%08lx\n",hr);
+        free_bitmap();
+        return 0;
+    }
 
     memset(&ddsurf,0,sizeof(ddsurf));
     ddsurf.dwSize = sizeof(ddsurf);
@@ -121,6 +130,12 @@ int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
     ddsurf.ddsCaps.dwCaps = DDSCAPS_OFFSCREENPLAIN;
     ddsurf.dwWidth = w;
     ddsurf.dwHeight = h;
+
+    /* if 24bpp, need extra padding */
+    if (dispsurf.ddpfPixelFormat.dwRGBBitCount == 24) {
+        fprintf(stderr,"Adding additional width for 24bpp safety margin\n");
+        ddsurf.dwWidth++;
+    }
 
     if ((hr=ddraw->CreateSurface(&ddsurf,&ddsurfaceBMP,NULL)) != DD_OK) {
         fprintf(stderr,"Failed to create BMP surface HR=0x%08lx\n",hr);
@@ -170,8 +185,8 @@ int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
     }
 
     dx_bitmap.clear();
-    dx_bitmap.width = ddsurf.dwWidth;
-    dx_bitmap.height = ddsurf.dwHeight;
+    dx_bitmap.width = w;
+    dx_bitmap.height = h;
     dx_bitmap.bytes_per_pixel = (ddsurf.ddpfPixelFormat.dwRGBBitCount + 7) / 8;
     dx_bitmap.stride = ddsurf.lPitch;
     dx_bitmap.update_length_from_stride_and_height();
@@ -191,6 +206,7 @@ int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
 }
 
 void update_screen() {
+    IDirectDrawSurface *dst;
     RECT dstRect;
     HRESULT hr;
     POINT pt;
@@ -204,16 +220,81 @@ void update_screen() {
     OffsetRect(&dstRect,pt.x,pt.y);
 
     if (ddsurfaceGDI != NULL)
-        hr = ddsurfaceGDI->Blt(&dstRect,ddsurfaceBMP,NULL,0,NULL);
+        dst = ddsurfaceGDI;
     else if (ddsurfacePrimary != NULL)
-        hr = ddsurfacePrimary->Blt(&dstRect,ddsurfaceBMP,NULL,0,NULL);
-    else {
-        hr = DD_OK;
-        fprintf(stderr,"Neither primary nor surface ready\n");
-    }
+        dst = ddsurfacePrimary;
+    else
+        dst = NULL;
 
-    if (hr != DD_OK)
+    if (dst != NULL)
+        hr = dst->Blt(&dstRect,ddsurfaceBMP,NULL,0,NULL);
+    else
+        hr = DD_OK;
+
+    if (hr == DDERR_SURFACELOST) {
+        fprintf(stderr,"Whoops, the primary surface was lost.\n");
+        if ((hr=dst->Restore()) != DD_OK) {
+            fprintf(stderr,"Unable to restore surface hr=0x%08lx.\n",hr);
+            unlock_bitmap();
+            free_bitmap();
+
+            if (ddsurfacePrimary != NULL) {
+                ddsurfacePrimary->Release();
+                ddsurfacePrimary = NULL;
+            }
+            if (ddsurfaceGDI != NULL) {
+                ddsurfaceGDI->Release();
+                ddsurfaceGDI = NULL;
+            }
+            if (ddsurfaceBMP != NULL) {
+                ddsurfaceBMP->Release();
+                ddsurfaceBMP = NULL;
+            }
+
+            /* create a primary surface so that we can blt to the screen. I don't intend to lock the display surface, I only intend
+               to hardware blit to it. Also, trying to directly access the screen in Windows Vista and higher causes the DWM compositor
+               to blank the screen and fallback to a compat mode, which is visually unappealing. */
+            /* NTS: Past experience from 1997-1999 says that even creating a primary surface this way won't work if you're using
+               ancient SVGA graphics cards with bank-switched RAM and no linear framebuffer (like a TSENG ET4000). But that
+               wasn't really a problem back then with games who knew how to fallback to Windows GDI anyway. */
+            {
+                DDSURFACEDESC ddsurf;
+
+                memset(&ddsurf,0,sizeof(ddsurf));
+                ddsurf.dwSize = sizeof(ddsurf);
+                ddsurf.dwFlags = DDSD_CAPS;
+                ddsurf.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE;
+                if ((hr=ddraw->CreateSurface(&ddsurf,&ddsurfacePrimary,NULL)) != DD_OK) {
+                    fprintf(stderr,"Unable to create primary surface (screen), HR=0x%08lx\n",hr);
+                    return;
+                }
+            }
+
+            /* Okay, now try to get GDI surface.
+               I don't expect this to work. Feh. */
+            if ((hr=ddraw->GetGDISurface(&ddsurfaceGDI)) != DD_OK)
+                fprintf(stderr,"Oh, gee, couldn't get the GDI surface (HR=0x%08lx), oh golly what a surprise (not)\n",hr);
+
+            RECT rct;
+            GetClientRect(hwndMain,&rct);
+            dx_bitmap.width = rct.right;
+            dx_bitmap.height = rct.bottom;
+
+            if (!init_bitmap(dx_bitmap.width,dx_bitmap.height))
+                fprintf(stderr,"WARNING WM_RESIZE init_bitmap(%u,%u) failed\n",
+                    dx_bitmap.width,dx_bitmap.height);
+
+            if (lock_bitmap()) {
+                render_test_pattern_rgb_gradients(dx_bitmap);
+                unlock_bitmap();
+            }
+
+            InvalidateRect(hwndMain,NULL,FALSE); // DWM compositor-based versions set WM_PAINT such that only the affected area will repaint
+        }
+    }
+    else if (hr != DD_OK) {
         fprintf(stderr,"DirectX blit failed, HR=0x%08lx\n",hr);
+    }
 }
 
 static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
