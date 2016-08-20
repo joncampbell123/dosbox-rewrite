@@ -141,7 +141,7 @@ int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
         }
 
         // copy down bits/pixel. leave the BITMAPINFOHEADER intact */
-        // On Windows Vista/7/8 
+        // On Windows Vista/7/8
         dibBitsPerPixel = dibBmpInfo->bmiHeader.biBitCount;
 
         if (announce_fmt) {
@@ -406,6 +406,20 @@ static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
             update_screen(hdc);
             EndPaint(hwnd,&ps);
             } break;
+        case WM_DISPLAYCHANGE:
+            announce_fmt = true;
+            if (gdi_bitmap.width == 0 || gdi_bitmap.height == 0) {
+                RECT rct;
+                GetClientRect(hwnd,&rct);
+                gdi_bitmap.width = rct.right;
+                gdi_bitmap.height = rct.bottom;
+            }
+            if (!init_bitmap(gdi_bitmap.width,gdi_bitmap.height))
+                fprintf(stderr,"WARNING WM_RESIZE init_bitmap(%u,%u) failed\n",
+                    gdi_bitmap.width,gdi_bitmap.height);
+            render_test_pattern_rgb_gradients(gdi_bitmap);
+            InvalidateRect(hwndMain,NULL,FALSE); // DWM compositor-based versions set WM_PAINT such that only the affected area will repaint
+            break;
         case WM_SIZE:
             if (!init_bitmap(LOWORD(lParam),HIWORD(lParam)))
                 fprintf(stderr,"WARNING WM_RESIZE init_bitmap(%u,%u) failed\n",
