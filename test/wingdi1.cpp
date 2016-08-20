@@ -361,11 +361,27 @@ void update_screen(HDC targetDC) {
 
 #define MAX_DISPLAY_MODES 1024
 
+#ifndef DM_DISPLAYFIXEDOUTPUT
+# define DM_DISPLAYFIXEDOUTPUT   0x20000000L
+#endif
+
+#ifndef DMDFO_DEFAULT
+# define DMDFO_DEFAULT           0
+#endif
+
+#ifndef DMDFO_STRETCH
+# define DMDFO_STRETCH           1
+#endif
+
+#ifndef DMDFO_CENTER
+# define DMDFO_CENTER            2
+#endif
+
 DEVMODE displayModes[MAX_DISPLAY_MODES];
 int displayModesCount = 0;
 
 void populateDisplayModes(void) {
-    char tmp[128];
+    char tmp[128],*w,*wf;
     DEVMODE devmode;
     int count=0,index;
 
@@ -381,12 +397,35 @@ void populateDisplayModes(void) {
         devmode.dmSize = sizeof(devmode);
         if (!EnumDisplaySettings(NULL,(DWORD)index,&devmode)) break;
 
-        sprintf(tmp,"%ux%u%c x %ubpp %uHz",
-            (unsigned int)devmode.dmPelsWidth,
-            (unsigned int)devmode.dmPelsHeight,
-            (devmode.dmDisplayFlags&DM_INTERLACED)?'i':'p',
-            (unsigned int)devmode.dmBitsPerPel,
-            (unsigned int)devmode.dmDisplayFrequency);
+        w = tmp;
+        wf = tmp + sizeof(tmp) - 1;
+
+        if (devmode.dmFields & DM_PELSWIDTH) {
+            w += snprintf(w,(size_t)(wf-w),"%ux%u",
+                    (unsigned int)devmode.dmPelsWidth,
+                    (unsigned int)devmode.dmPelsHeight);
+        }
+        if ((devmode.dmFields & DM_DISPLAYFLAGS) && w < wf)
+            *w++ = (devmode.dmDisplayFlags&DM_INTERLACED)?'i':'p';
+        if (devmode.dmFields & DM_BITSPERPEL) {
+            w += snprintf(w,(size_t)(wf-w)," x %ubpp",
+                    (unsigned int)devmode.dmBitsPerPel);
+        }
+        if (devmode.dmFields & DM_DISPLAYFREQUENCY) {
+            w += snprintf(w,(size_t)(wf-w)," @%uHz",
+                    (unsigned int)devmode.dmDisplayFrequency);
+        }
+        if (devmode.dmFields & DM_DISPLAYFIXEDOUTPUT) {
+            if (devmode.dmDisplayFixedOutput == DMDFO_CENTER)
+                w += snprintf(w,(size_t)(wf-w)," fixed-centered");
+            else if (devmode.dmDisplayFixedOutput == DMDFO_STRETCH)
+                w += snprintf(w,(size_t)(wf-w)," fixed-stretched");
+            else if (devmode.dmDisplayFixedOutput == DMDFO_DEFAULT) /* which apparently means "fixed-stretched" but preserve aspect ratio */
+                w += snprintf(w,(size_t)(wf-w)," fixed-default");
+        }
+        else {
+            /* which apparently means "fixed-stretchedd" but preserve aspect ratio */
+        }
 
         AppendMenu(menuDisplayModes,MF_ENABLED|MF_STRING,4000+displayModesCount,tmp);
         displayModes[displayModesCount++] = devmode;
