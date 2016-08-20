@@ -149,10 +149,10 @@ int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
 
                 fprintf(stderr,"  BI_BITFIELDS: %ubpp red=0x%08lx green=0x%08lx blue=0x%08lx alpha=0x%08lx\n",
                         dibBmpInfo->bmiHeader.biBitCount,
-                        v4->bV4RedMask,
-                        v4->bV4GreenMask,
-                        v4->bV4BlueMask,
-                        v4->bV4AlphaMask);
+                        (unsigned long)v4->bV4RedMask,
+                        (unsigned long)v4->bV4GreenMask,
+                        (unsigned long)v4->bV4BlueMask,
+                        (unsigned long)v4->bV4AlphaMask);
             }
             else {
                 fprintf(stderr,"  BI_RGB: %ubpp\n",
@@ -301,7 +301,7 @@ int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
 
         if (announce_fmt)
             fprintf(stderr,"Using GDI RGB bitfields %ubpp red=0x%08lx green=0x%08lx blue=0x%08lx alpha=0x%08lx\n",
-                dibBitsPerPixel,v4->bV4RedMask,v4->bV4GreenMask,v4->bV4BlueMask,v4->bV4AlphaMask);
+                (unsigned int)dibBitsPerPixel,(unsigned long)v4->bV4RedMask,(unsigned long)v4->bV4GreenMask,(unsigned long)v4->bV4BlueMask,(unsigned long)v4->bV4AlphaMask);
 
         gdi_bitmap.rgbinfo.r.setByMask(v4->bV4RedMask);
         gdi_bitmap.rgbinfo.g.setByMask(v4->bV4GreenMask);
