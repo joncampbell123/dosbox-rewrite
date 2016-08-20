@@ -538,7 +538,7 @@ int main(int argc,char **argv) {
     }
 
     if (sizeof(rgb24bpp_t) != 3)
-        fprintf(stderr,"WARNING: uint24_t is not 3 bytes long, it is %zu bytes\n",sizeof(rgb24bpp_t));
+        fprintf(stderr,"WARNING: uint24_t is not 3 bytes long, it is %u bytes\n",(unsigned int)sizeof(rgb24bpp_t));
 
     /* Please don't scale me in the name of "DPI awareness" */
     if (!gdi_no_dpiaware)
@@ -576,7 +576,7 @@ int main(int argc,char **argv) {
 
     GetClientRect(hwndMain,&rect);
     if (!init_bitmap(rect.right,rect.bottom)) {
-        fprintf(stderr,"nit_bitmap() failed for %ux%u\n",rect.right,rect.bottom);
+        fprintf(stderr,"nit_bitmap() failed for %ux%u\n",(unsigned int)rect.right,(unsigned int)rect.bottom);
         return 1;
     }
     if (!init_src_bitmap(640,480)) {
