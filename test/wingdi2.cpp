@@ -528,8 +528,23 @@ static SSE_REALIGN LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LP
             break;
         case WM_COMMAND:
             if (wParam >= 4000 && wParam < (WPARAM)(4000+displayModesCount)) {
-                ChangeDisplaySettings(&displayModes[wParam-4000],CDS_FULLSCREEN);
+                LONG ret = ChangeDisplaySettings(&displayModes[wParam-4000],CDS_FULLSCREEN);
                 change_display_back = true;
+
+                if (ret == DISP_CHANGE_BADDUALVIEW)
+                    MessageBox(hwnd,"","Failed, bad dual view",MB_OK);
+                else if (ret == DISP_CHANGE_BADFLAGS)
+                    MessageBox(hwnd,"","Failed, bad flags",MB_OK);
+                else if (ret == DISP_CHANGE_BADMODE)
+                    MessageBox(hwnd,"","Failed, bad mode",MB_OK);
+                else if (ret == DISP_CHANGE_BADPARAM)
+                    MessageBox(hwnd,"","Failed, bad param",MB_OK);
+                else if (ret == DISP_CHANGE_FAILED)
+                    MessageBox(hwnd,"","Failed, failed",MB_OK);
+                else if (ret == DISP_CHANGE_NOTUPDATED)
+                    MessageBox(hwnd,"","Failed, not updated",MB_OK);
+                else if (ret == DISP_CHANGE_RESTART)
+                    MessageBox(hwnd,"","Failed, need restart",MB_OK);
             }
             else {
                 return DefWindowProc(hwnd,uMsg,wParam,lParam);
