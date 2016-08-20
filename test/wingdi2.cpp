@@ -24,26 +24,28 @@
 
 static rgb_bitmap_info          src_bitmap;
 
-HWND                hwndMain = NULL;
-const char*            hwndMainClass = "WINGDICLASS";
-const char*            hwndMainTitle = "WinGDI test 1";
-HINSTANCE            myInstance;
+HMENU                           menuDisplayModes = NULL;
 
-HDC                dibDC = NULL;
-BITMAPINFO*            dibBmpInfo;
-unsigned char            dibBmpInfoRaw[sizeof(BITMAPV4HEADER) + (256*sizeof(RGBQUAD))];
-HBITMAP                dibOldBitmap = NULL,dibBitmap = NULL;    // you can't free a bitmap if it's selected into a DC
-unsigned int            dibBitsPerPixel = 0;
-unsigned char*            dibBits = NULL;
+HWND                            hwndMain = NULL;
+const char*                     hwndMainClass = "WINGDICLASS";
+const char*                     hwndMainTitle = "WinGDI test 1";
+HINSTANCE                       myInstance;
 
-bool                gdi_no_dpiaware = false;
-unsigned int            gdi_force_depth = 0;
+HDC                             dibDC = NULL;
+BITMAPINFO*                     dibBmpInfo;
+unsigned char                   dibBmpInfoRaw[sizeof(BITMAPV4HEADER) + (256*sizeof(RGBQUAD))];
+HBITMAP                         dibOldBitmap = NULL,dibBitmap = NULL;    // you can't free a bitmap if it's selected into a DC
+unsigned int                    dibBitsPerPixel = 0;
+unsigned char*                  dibBits = NULL;
+
+bool                            gdi_no_dpiaware = false;
+unsigned int                    gdi_force_depth = 0;
 
 rgb_bitmap_info                 gdi_bitmap;
-bool                announce_fmt = true;
-bool                use_bitfields = false;
-bool                rgba_order = false;
-bool                no24bpp_pad = false;
+bool                            announce_fmt = true;
+bool                            use_bitfields = false;
+bool                            rgba_order = false;
+bool                            no24bpp_pad = false;
 
 static size_t                   method = 0;
 static bool                     resize_src_mode = false;
@@ -414,6 +416,42 @@ void update_screen(HDC targetDC) {
         fprintf(stderr,"update_screen() warning BitBlt failed\n");
 }
 
+DEVMODE displayModes[128];
+int displayModesCount = 0;
+
+void populateDisplayModes(void) {
+    char tmp[128];
+    DEVMODE devmode;
+    int count=0,index;
+
+    if (menuDisplayModes != NULL) return;
+    menuDisplayModes = CreatePopupMenu();
+    if (menuDisplayModes == NULL) return;
+    displayModesCount = 0;
+    index = 0;
+
+    do {
+        if (index >= 128) break;
+        memset(&devmode,0,sizeof(devmode));
+        devmode.dmSize = sizeof(devmode);
+        if (!EnumDisplaySettings(NULL,(DWORD)index,&devmode)) break;
+
+        sprintf(tmp,"%ux%u%c x %ubpp %uHz",
+            (unsigned int)devmode.dmPelsWidth,
+            (unsigned int)devmode.dmPelsHeight,
+            (devmode.dmDisplayFlags&DM_INTERLACED)?'i':'p',
+            (unsigned int)devmode.dmBitsPerPel,
+            (unsigned int)devmode.dmDisplayFrequency);
+
+        AppendMenu(menuDisplayModes,MF_ENABLED|MF_STRING,4000+displayModesCount,tmp);
+        displayModes[displayModesCount++] = devmode;
+        index++;
+        count++;
+    } while(1);
+
+    if (count == 0) AppendMenu(menuDisplayModes,MF_DISABLED|MF_GRAYED|MF_STRING,0,"(none)");
+}
+
 // NTS: GCC/MinGW assumes 16-byte stack alignment. Windows uses 4-byte stack alignment.
 //      If supported by the compiler, we tell the compiler to force realignment in this function.
 //      Failure to do so will cause random crashes when other code called from this point attempts
@@ -444,6 +482,14 @@ static SSE_REALIGN LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LP
                 stretchblt_modes[method].render(/*&*/gdi_bitmap,/*&*/src_bitmap);
 
             InvalidateRect(hwndMain,NULL,FALSE); // DWM compositor-based versions set WM_PAINT such that only the affected area will repaint
+            break;
+        case WM_COMMAND:
+            if (wParam >= 4000 && wParam < (WPARAM)(4000+displayModesCount)) {
+                ChangeDisplaySettings(&displayModes[wParam-4000],CDS_FULLSCREEN);
+            }
+            else {
+                return DefWindowProc(hwnd,uMsg,wParam,lParam);
+            }
             break;
         case WM_KEYDOWN:
             switch (wParam) {
@@ -482,6 +528,15 @@ static SSE_REALIGN LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LP
 
                     InvalidateRect(hwnd,NULL,FALSE);
                     break;
+            }
+            break;
+        case WM_RBUTTONUP:
+            populateDisplayModes();
+            if (menuDisplayModes != NULL) {
+                POINT pt;
+
+                GetCursorPos(&pt);
+                TrackPopupMenu(menuDisplayModes,TPM_LEFTALIGN|TPM_TOPALIGN|TPM_RIGHTBUTTON,pt.x,pt.y,0,hwnd,NULL);
             }
             break;
         case WM_DESTROY:
@@ -607,5 +662,11 @@ int main(int argc,char **argv) {
 
     free_src_bitmap();
     free_bitmap();
+
+    if (menuDisplayModes != NULL) {
+        DestroyMenu(menuDisplayModes);
+        menuDisplayModes = NULL;
+    }
+
     return 0;
 }
