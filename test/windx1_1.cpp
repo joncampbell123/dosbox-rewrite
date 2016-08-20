@@ -476,6 +476,10 @@ static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
                 DDSURFACEDESC devmode = displayModes[wParam-4000];
                 HRESULT hr;
 
+                unlock_bitmap();
+                free_bitmap();
+                free_dx_primary_surface();
+
                 fprintf(stderr,"Setting display to %u x %u x %ubpp\n",
                     (unsigned int)devmode.dwWidth,
                     (unsigned int)devmode.dwHeight,
@@ -483,9 +487,6 @@ static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
                 if ((hr=ddraw->SetDisplayMode(devmode.dwWidth,devmode.dwHeight,devmode.ddpfPixelFormat.dwRGBBitCount)) != DD_OK)
                     fprintf(stderr,"Failed to set display mode\n");
 
-                unlock_bitmap();
-                free_bitmap();
-                free_dx_primary_surface();
                 init_dx_primary_surface();
 
                 RECT rct;
