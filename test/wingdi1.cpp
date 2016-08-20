@@ -43,6 +43,7 @@ bool                            announce_fmt = true;
 bool                            use_bitfields = false;
 bool                            rgba_order = false;
 bool                            no24bpp_pad = false;
+bool                            change_display_back = false;
 
 void win32_dpi_aware(void) { // Windows 7? DPI scaling, disable it
     HRESULT WINAPI (*__SetProcessDpiAwareness)(unsigned int aware);
@@ -430,6 +431,7 @@ static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
         case WM_COMMAND:
             if (wParam >= 4000 && wParam < (WPARAM)(4000+displayModesCount)) {
                 ChangeDisplaySettings(&displayModes[wParam-4000],CDS_FULLSCREEN);
+                change_display_back = true;
             }
             else {
                 return DefWindowProc(hwnd,uMsg,wParam,lParam);
@@ -558,6 +560,9 @@ int main(int argc,char **argv) {
         DestroyMenu(menuDisplayModes);
         menuDisplayModes = NULL;
     }
+
+    if (change_display_back)
+        ChangeDisplaySettings(NULL,0);
 
     return 0;
 }

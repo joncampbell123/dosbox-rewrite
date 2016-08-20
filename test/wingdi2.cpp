@@ -46,6 +46,7 @@ bool                            announce_fmt = true;
 bool                            use_bitfields = false;
 bool                            rgba_order = false;
 bool                            no24bpp_pad = false;
+bool                            change_display_back = false;
 
 static size_t                   method = 0;
 static bool                     resize_src_mode = false;
@@ -528,6 +529,7 @@ static SSE_REALIGN LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LP
         case WM_COMMAND:
             if (wParam >= 4000 && wParam < (WPARAM)(4000+displayModesCount)) {
                 ChangeDisplaySettings(&displayModes[wParam-4000],CDS_FULLSCREEN);
+                change_display_back = true;
             }
             else {
                 return DefWindowProc(hwnd,uMsg,wParam,lParam);
@@ -709,6 +711,9 @@ int main(int argc,char **argv) {
         DestroyMenu(menuDisplayModes);
         menuDisplayModes = NULL;
     }
+
+    if (change_display_back)
+        ChangeDisplaySettings(NULL,0);
 
     return 0;
 }
