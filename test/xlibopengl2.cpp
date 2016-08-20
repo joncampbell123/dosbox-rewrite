@@ -145,7 +145,8 @@ void DrawAQuad() {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     }
 
-    /* OpenGL texture width vs our stride compensation */
+    /* NTS: We can't always give right edge texture coordinate 1.0 because OpenGL doesn't understand our bitmap
+     *      stride vs width difference. So compute the right edge texture coordinate now. */
     double tx = (double)src_bitmap.width / (src_bitmap.stride / src_bitmap.bytes_per_pixel);
 
     glBegin(GL_QUADS);
@@ -158,109 +159,105 @@ void DrawAQuad() {
     glTexCoord2f(0., 0.);
     glVertex3f(-1.,  1., 0.);
     glEnd();
-} 
- 
+}
+
 int main() {
-
- dpy = XOpenDisplay(NULL);
- 
- if(dpy == NULL) {
-     printf("\n\tcannot connect to X server\n\n");
+    dpy = XOpenDisplay(NULL);
+    if (dpy == NULL) {
+        printf("\n\tcannot connect to X server\n\n");
         exit(0);
- }
-        
- root = DefaultRootWindow(dpy);
+    }
 
- vi = glXChooseVisual(dpy, 0, att);
+    root = DefaultRootWindow(dpy);
 
- if(vi == NULL) {
-    printf("\n\tno appropriate visual found\n\n");
+    vi = glXChooseVisual(dpy, 0, att);
+
+    if (vi == NULL) {
+        printf("\n\tno appropriate visual found\n\n");
         exit(0);
- } 
- else {
-    printf("\n\tvisual %p selected\n", (void *)vi->visualid); /* %p creates hexadecimal output like in glxinfo */
- }
+    }
+    else {
+        printf("\n\tvisual %p selected\n", (void *)vi->visualid); /* %p creates hexadecimal output like in glxinfo */
+    }
 
+    cmap = XCreateColormap(dpy, root, vi->visual, AllocNone);
 
- cmap = XCreateColormap(dpy, root, vi->visual, AllocNone);
+    swa.colormap = cmap;
+    swa.event_mask = ExposureMask | KeyPressMask;
 
- swa.colormap = cmap;
- swa.event_mask = ExposureMask | KeyPressMask;
- 
- win = XCreateWindow(dpy, root, 0, 0, 640, 480, 0, vi->depth, InputOutput, vi->visual, CWColormap | CWEventMask, &swa);
+    win = XCreateWindow(dpy, root, 0, 0, 640, 480, 0, vi->depth, InputOutput, vi->visual, CWColormap | CWEventMask, &swa);
 
- XMapWindow(dpy, win);
- XStoreName(dpy, win, "VERY SIMPLE APPLICATION");
- 
- glc = glXCreateContext(dpy, vi, NULL, GL_TRUE);
- glXMakeCurrent(dpy, win, glc);
- 
- glEnable(GL_DEPTH_TEST); 
- 
- hostCPUcaps.detect();
+    XMapWindow(dpy, win);
+    XStoreName(dpy, win, "VERY SIMPLE APPLICATION");
 
- if (!init_src_bitmap(640,480))
-     return 1;
+    glc = glXCreateContext(dpy, vi, NULL, GL_TRUE);
+    glXMakeCurrent(dpy, win, glc);
 
- test_pattern_1_render(/*&*/src_bitmap);
- init_src_texture();
+    glEnable(GL_DEPTH_TEST);
 
- while(1) {
-     XNextEvent(dpy, &xev);
-        
-        if(xev.type == Expose) {
+    hostCPUcaps.detect();
+
+    if (!init_src_bitmap(640,480))
+        return 1;
+
+    test_pattern_1_render(/*&*/src_bitmap);
+    init_src_texture();
+
+    while (1) {
+        XNextEvent(dpy, &xev);
+
+        if (xev.type == Expose) {
             XGetWindowAttributes(dpy, win, &gwa);
-                glViewport(0, 0, gwa.width, gwa.height);
+            glViewport(0, 0, gwa.width, gwa.height);
 
+            if (resize_src_mode) {
+                free_src_texture();
+                free_src_bitmap();
+                init_src_bitmap(gwa.width,gwa.height);
+                test_pattern_1_render(/*&*/src_bitmap);
+                init_src_texture();
+            }
+
+            DrawAQuad();
+            glXSwapBuffers(dpy, win);
+        }
+        else if (xev.type == KeyPress) {
+            char buffer[80];
+            KeySym sym=0;
+
+            XLookupString(&xev.xkey, buffer, sizeof(buffer), &sym, NULL);
+
+            if (sym == XK_s) {
+                resize_src_mode = !resize_src_mode;
                 if (resize_src_mode) {
+                    XGetWindowAttributes(dpy, win, &gwa);
+                    glViewport(0, 0, gwa.width, gwa.height);
                     free_src_texture();
                     free_src_bitmap();
                     init_src_bitmap(gwa.width,gwa.height);
                     test_pattern_1_render(/*&*/src_bitmap);
                     init_src_texture();
-                }
-
-            DrawAQuad(); 
-                glXSwapBuffers(dpy, win);
-        }
-                
-    else if(xev.type == KeyPress) {
-                char buffer[80];
-                KeySym sym=0;
-
-                XLookupString(&xev.xkey, buffer, sizeof(buffer), &sym, NULL);
-
-                if (sym == XK_s) {
-                    resize_src_mode = !resize_src_mode;
-                    if (resize_src_mode) {
-                        XGetWindowAttributes(dpy, win, &gwa);
-                        glViewport(0, 0, gwa.width, gwa.height);
-                        free_src_texture();
-                        free_src_bitmap();
-                        init_src_bitmap(gwa.width,gwa.height);
-                        test_pattern_1_render(/*&*/src_bitmap);
-                        init_src_texture();
-                        DrawAQuad(); 
-                        glXSwapBuffers(dpy, win);
-                    }
-                }
-                else if (sym == XK_space) {
-                    linear_blur = !linear_blur;
-                    DrawAQuad(); 
+                    DrawAQuad();
                     glXSwapBuffers(dpy, win);
                 }
-                else if (sym == XK_Escape) {
-                    break;
-                }
+            }
+            else if (sym == XK_space) {
+                linear_blur = !linear_blur;
+                DrawAQuad();
+                glXSwapBuffers(dpy, win);
+            }
+            else if (sym == XK_Escape) {
+                break;
+            }
         }
     } /* this closes while(1) { */
 
- free_src_texture();
- free_src_bitmap();
+    free_src_texture();
+    free_src_bitmap();
 
- glXMakeCurrent(dpy, None, NULL);
-         glXDestroyContext(dpy, glc);
-         XDestroyWindow(dpy, win);
-         XCloseDisplay(dpy);
-} /* this is the } which closes int main(int argc, char *argv[]) { */
+    glXMakeCurrent(dpy, None, NULL);
+    glXDestroyContext(dpy, glc);
+    XDestroyWindow(dpy, win);
+    XCloseDisplay(dpy);
+}
 
