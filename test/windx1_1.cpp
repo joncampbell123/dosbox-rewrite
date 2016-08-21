@@ -220,6 +220,12 @@ int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
     if (align < 4) align = 4;
     align = (align+3) & (~3); // round up
 
+    /* if 24bpp, may need extra padding */
+    if (ddsurf.ddpfPixelFormat.dwRGBBitCount == 24 && (w&3) == 0) {
+        ddsurf.dwWidth += 4; // NTS: only because DirectX in Windows XP appears to ignore our pitch spec when creating the surface. Also width must be multiple of 4.
+        ddsurf.lPitch = ((ddsurf.ddpfPixelFormat.dwRGBBitCount+7)/8) * ddsurf.dwWidth;
+    }
+
     if (align > 0) {
         // try to encourage DirectX to set the pitch by our alignment.
         // Not that it works (from actual testing) but let's try anyway.
@@ -227,13 +233,26 @@ int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
         ddsurf.lPitch -= ddsurf.lPitch % align;
     }
 
-    /* if 24bpp, may need extra padding */
-    if (ddsurf.ddpfPixelFormat.dwRGBBitCount == 24 && (w&3) == 0) {
-        ddsurf.dwWidth += 4; // NTS: only because DirectX in Windows XP appears to ignore our pitch spec when creating the surface. Also width must be multiple of 4.
-        ddsurf.lPitch = ((ddsurf.ddpfPixelFormat.dwRGBBitCount+7)/8) * ddsurf.dwWidth;
-    }
+    hr = ddraw->CreateSurface(&ddsurf,&ddsurfaceBMP,NULL);
+    if (hr == DDERR_INVALIDPARAMS && ddsurf.ddpfPixelFormat.dwRGBBitCount == 24) {
+        // NTS: Apparently creating an offscreen surface wider than the screen is not supported by DirectX on Windows 95/98.
+        //      We need the extra padding, so if we can't pad horizontally try padding vertically.
+        fprintf(stderr,"Windows 9x/ME DirectX screen compenstation\n");
 
-    if ((hr=ddraw->CreateSurface(&ddsurf,&ddsurfaceBMP,NULL)) != DD_OK) {
+        ddsurf.dwHeight = h + 1;
+        ddsurf.dwWidth = (w+3) & (~3); // NTS: Windows XP does weird things with 24bpp if width not a multiple of 4, including resetting lPitch to width * 3 ha ha!
+        ddsurf.lPitch = ((ddsurf.ddpfPixelFormat.dwRGBBitCount+7)/8) * ddsurf.dwWidth;
+
+        if (align > 0) {
+            // try to encourage DirectX to set the pitch by our alignment.
+            // Not that it works (from actual testing) but let's try anyway.
+            ddsurf.lPitch += align - 1;
+            ddsurf.lPitch -= ddsurf.lPitch % align;
+        }
+
+        hr = ddraw->CreateSurface(&ddsurf,&ddsurfaceBMP,NULL);
+    }
+    if (hr != DD_OK) {
         fprintf(stderr,"Failed to create BMP surface HR=0x%08lx\n",hr);
         free_bitmap();
         return 0;
@@ -292,11 +311,15 @@ int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
     dx_bitmap.rgbinfo.b.setByMask(ddsurf.ddpfPixelFormat.dwBBitMask);
     dx_bitmap.rgbinfo.a.setByMask(ddsurf.ddpfPixelFormat.dwRGBAlphaBitMask);
 
-    // 24bpp check: make sure the pitch (stride) is larger than width*3
-    if (ddsurf.ddpfPixelFormat.dwRGBBitCount == 24 && dx_bitmap.stride <= (dx_bitmap.width*3)) {
-        fprintf(stderr,"DirectX did not provide a surface with a stride padded enough for 24bpp\n");
-        free_bitmap();
-        return 0;
+    // 24bpp check: make sure the pitch (stride) is larger than width*3, or we were able to get at least one extra scanline
+    if (ddsurf.ddpfPixelFormat.dwRGBBitCount == 24) {
+        if (dx_bitmap.height == ddsurf.dwHeight) {
+            if (dx_bitmap.stride <= (dx_bitmap.width*3)) {
+                fprintf(stderr,"DirectX did not provide a surface with a stride padded enough for 24bpp\n");
+                free_bitmap();
+                return 0;
+            }
+        }
     }
 
     // check that we didn't catch DirectX mid-mode-change.
@@ -421,6 +444,9 @@ void populateDisplayModes(void) {
     if (menuDisplayModes == NULL) return;
     displayModesCount = 0;
     if (ddraw == NULL) return;
+
+    // NTS: Windows 95 OSR2 (with Anapa VESA drivers) will not enumerate any modes this way.
+    //      But you can use GDI functions to make mode changes.
     ddraw->EnumDisplayModes(DDEDM_REFRESHRATES|DDEDM_STANDARDVGAMODES,NULL,NULL,populateDisplayModesEnumCallback);
 
     for (index=0;index < (int)displayModesCount;index++) {
