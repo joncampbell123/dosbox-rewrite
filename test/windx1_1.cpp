@@ -228,7 +228,7 @@ int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
     }
 
     /* if 24bpp, may need extra padding */
-    if (ddsurf.ddpfPixelFormat.dwRGBBitCount == 24) {
+    if (ddsurf.ddpfPixelFormat.dwRGBBitCount == 24 && (w&3) == 0) {
         ddsurf.dwWidth += 4; // NTS: only because DirectX in Windows XP appears to ignore our pitch spec when creating the surface. Also width must be multiple of 4.
         ddsurf.lPitch = ((ddsurf.ddpfPixelFormat.dwRGBBitCount+7)/8) * ddsurf.dwWidth;
     }
