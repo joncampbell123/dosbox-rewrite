@@ -511,6 +511,8 @@ static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
                     (unsigned int)devmode.ddpfPixelFormat.dwRGBBitCount);
                 if ((hr=ddraw->SetDisplayMode(devmode.dwWidth,devmode.dwHeight,devmode.ddpfPixelFormat.dwRGBBitCount)) != DD_OK)
                     fprintf(stderr,"Failed to set display mode HR=0x%08lx\n",hr);
+                if (hr == DDERR_NOEXCLUSIVEMODE)
+                    fprintf(stderr,"Sorry, Windows demands we set the cooperative mode to Exclusive\n"); // Windows 9x/ME behavior for NORMAL cooperative mode DirectX apps
             }
             else {
                 return DefWindowProc(hwnd,uMsg,wParam,lParam);
