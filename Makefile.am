@@ -77,7 +77,8 @@ endif
 
 if HAVE_WINDOWS_H
 noinst_PROGRAMS += \
-	bin/test/windx1_1
+	bin/test/windx1_1 \
+    bin/test/windx2_1
 endif
 
 if IS_MAC_OSX
@@ -325,6 +326,13 @@ bin_test_windx1_1_DEPENDENCIES = \
 	dosboxxr/lib/util/libutil.a
 bin_test_windx1_1_LDADD = $(X11_LDFLAGS) \
 	dosboxxr/lib/util/libutil.a -lkernel32 -lgdi32 -lddraw
+
+bin_test_windx2_1_SOURCES = test/windx2_1.cpp
+bin_test_windx2_1_CXXFLAGS = $(AM_CXXFLAGS) -Idosboxxr/ext/directx
+bin_test_windx2_1_DEPENDENCIES = \
+	dosboxxr/lib/util/libutil.a
+bin_test_windx2_1_LDADD = $(X11_LDFLAGS) \
+	dosboxxr/lib/util/libutil.a -lkernel32 -lgdi32 -lddraw -ldxguid
 
 bin_test_wingdi1_SOURCES = test/wingdi1.cpp
 bin_test_wingdi1_CXXFLAGS = $(AM_CXXFLAGS)
