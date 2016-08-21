@@ -27,12 +27,14 @@ HMENU                           menuDisplayModes = NULL;
 
 IDirectDraw*                    ddraw = NULL;
 DWORD                           ddrawCooperativeLevel = 0;
+bool                            hasSetMode = false; // NTS: Windows XP acts funny if a program goes into exclusive fullscreen without having set a video mode
 
 IDirectDrawClipper*             ddclipperPrimary = NULL;
 IDirectDrawSurface*             ddsurfacePrimary = NULL;
 IDirectDrawSurface*             ddsurfaceGDI = NULL;    // Microsoft is very unclear about this: You can only get the GDI surface in fullscreen/exclusive. BUT, you can create a primary surface of the screen!
 IDirectDrawSurface*             ddsurfaceBMP = NULL;
 
+DWORD                           hwndMainStyle;
 HWND                            hwndMain = NULL;
 const char*                     hwndMainClass = "WINDX1CLASS";
 const char*                     hwndMainTitle = "WinDirectDraw test 1";
@@ -429,6 +431,10 @@ void update_screen() {
 # define DMDFO_CENTER            2
 #endif
 
+#ifndef SWP_FRAMECHANGED
+# define SWP_FRAMECHANGED  0x0020
+#endif
+
 DDSURFACEDESC displayModes[MAX_DISPLAY_MODES];
 int displayModesCount = 0;
 
@@ -441,6 +447,70 @@ HRESULT WINAPI populateDisplayModesEnumCallback(LPDDSURFACEDESC lpDD,LPVOID lpCo
     return DDENUMRET_OK;
 }
 
+void leave_exclusive_mode(void) {
+    HRESULT hr;
+    DWORD want;
+
+    want = (DDSCL_ALLOWMODEX | DDSCL_EXCLUSIVE | DDSCL_FULLSCREEN);
+    if ((ddrawCooperativeLevel & want) == want) {
+        DWORD dowant = (ddrawCooperativeLevel & (~want)) | DDSCL_NORMAL;
+        if ((hr=ddraw->SetCooperativeLevel(hwndMain,dowant)) == DD_OK) {
+            fprintf(stderr,"Switched cooperative mode to normal\n");
+            ddrawCooperativeLevel = dowant;
+        }
+        else {
+            fprintf(stderr,"Failed to switch cooperative mode to normal\n");
+        }
+    }
+
+    LONG style;
+    if (ddrawCooperativeLevel & DDSCL_FULLSCREEN)
+        style = hwndMainStyle & ~(WS_BORDER|WS_CAPTION|WS_DLGFRAME|WS_HSCROLL|WS_MAXIMIZEBOX|WS_MINIMIZEBOX|WS_SIZEBOX|WS_SYSMENU|WS_THICKFRAME);
+    else 
+        style = hwndMainStyle;
+
+    SetWindowLong(hwndMain,GWL_STYLE,style);
+    SetWindowPos(hwndMain,NULL,0,0,0,0,SWP_FRAMECHANGED|SWP_NOMOVE|SWP_NOSIZE|SWP_NOZORDER);
+
+    SetForegroundWindow(hwndMain);
+    SetFocus(hwndMain);
+    SetWindowPos(hwndMain,HWND_TOP,0,0,0,0,SWP_SHOWWINDOW|SWP_NOSIZE|SWP_NOMOVE);
+    ShowWindow(hwndMain,SW_SHOWNORMAL);
+    InvalidateRect(hwndMain,NULL,FALSE);
+}
+
+void try_exclusive_mode(void) {
+    HRESULT hr;
+    DWORD want;
+
+    want = (DDSCL_ALLOWMODEX | DDSCL_EXCLUSIVE | DDSCL_FULLSCREEN);
+    if ((ddrawCooperativeLevel & want) != want) {
+        DWORD dowant = (ddrawCooperativeLevel & (~DDSCL_NORMAL)) | want;
+        if ((hr=ddraw->SetCooperativeLevel(hwndMain,dowant)) == DD_OK) {
+            fprintf(stderr,"Switched cooperative mode to exclusive/fullscreen\n");
+            ddrawCooperativeLevel = dowant;
+        }
+        else {
+            fprintf(stderr,"Failed to switch cooperative mode to exclusive\n");
+        }
+    }
+
+    LONG style;
+    if (ddrawCooperativeLevel & DDSCL_FULLSCREEN)
+        style = hwndMainStyle & ~(WS_BORDER|WS_CAPTION|WS_DLGFRAME|WS_HSCROLL|WS_MAXIMIZEBOX|WS_MINIMIZEBOX|WS_SIZEBOX|WS_SYSMENU|WS_THICKFRAME);
+    else 
+        style = hwndMainStyle;
+
+    SetWindowLong(hwndMain,GWL_STYLE,style);
+    SetWindowPos(hwndMain,NULL,0,0,0,0,SWP_FRAMECHANGED|SWP_NOMOVE|SWP_NOSIZE|SWP_NOZORDER);
+
+    SetForegroundWindow(hwndMain);
+    SetFocus(hwndMain);
+    SetWindowPos(hwndMain,HWND_TOP,0,0,0,0,SWP_SHOWWINDOW|SWP_NOSIZE|SWP_NOMOVE);
+    ShowWindow(hwndMain,SW_SHOWMAXIMIZED);
+    InvalidateRect(hwndMain,NULL,FALSE);
+}
+
 void populateDisplayModes(void) {
     char tmp[128],*w,*wf;
     DDSURFACEDESC devmode;
@@ -451,6 +521,10 @@ void populateDisplayModes(void) {
     if (menuDisplayModes == NULL) return;
     displayModesCount = 0;
     if (ddraw == NULL) return;
+
+    AppendMenu(menuDisplayModes,MF_ENABLED|MF_STRING,5000,"Enter exclusive mode");
+    AppendMenu(menuDisplayModes,MF_ENABLED|MF_STRING,5001,"Leave exclusive mode");
+    AppendMenu(menuDisplayModes,MF_SEPARATOR,0,"");
 
     // NTS: Windows 95 OSR2 (with Anapa VESA drivers) will not enumerate any modes this way.
     //      But you can use GDI functions to make mode changes.
@@ -544,8 +618,27 @@ static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
                     (unsigned int)devmode.ddpfPixelFormat.dwRGBBitCount);
                 if ((hr=ddraw->SetDisplayMode(devmode.dwWidth,devmode.dwHeight,devmode.ddpfPixelFormat.dwRGBBitCount)) != DD_OK)
                     fprintf(stderr,"Failed to set display mode HR=0x%08lx\n",hr);
-                if (hr == DDERR_NOEXCLUSIVEMODE)
+                if (hr == DDERR_NOEXCLUSIVEMODE) {
                     fprintf(stderr,"Sorry, Windows demands we set the cooperative mode to Exclusive\n"); // Windows 9x/ME behavior for NORMAL cooperative mode DirectX apps
+                    try_exclusive_mode();
+                    if ((hr=ddraw->SetDisplayMode(devmode.dwWidth,devmode.dwHeight,devmode.ddpfPixelFormat.dwRGBBitCount)) != DD_OK)
+                        fprintf(stderr,"Failed to set display mode HR=0x%08lx\n",hr);
+                }
+
+                if (hr == DD_OK) {
+                    hasSetMode = true;
+                    InvalidateRect(hwndMain,NULL,FALSE);
+                    update_screen();
+                }
+            }
+            else if (wParam == 5000) {
+                if (hasSetMode) {
+                    try_exclusive_mode();
+                    update_screen();
+                }
+            }
+            else if (wParam == 5001) {
+                leave_exclusive_mode();
             }
             else {
                 return DefWindowProc(hwnd,uMsg,wParam,lParam);
@@ -634,7 +727,7 @@ int main(int argc,char **argv) {
     AdjustWindowRect(&rect,WS_OVERLAPPEDWINDOW,FALSE);
 
     hwndMain = CreateWindow(hwndMainClass,hwndMainTitle,
-        WS_OVERLAPPEDWINDOW,
+        hwndMainStyle=WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT,CW_USEDEFAULT,
         rect.right - rect.left,rect.bottom - rect.top,
         NULL,NULL,
