@@ -447,6 +447,13 @@ HRESULT WINAPI populateDisplayModesEnumCallback(LPDDSURFACEDESC lpDD,LPVOID lpCo
     return DDENUMRET_OK;
 }
 
+void clearDisplayModes(void) {
+    if (menuDisplayModes != NULL) {
+        DestroyMenu(menuDisplayModes);
+        menuDisplayModes = NULL;
+    }
+}
+
 void leave_exclusive_mode(void) {
     HRESULT hr;
     DWORD want;
@@ -477,6 +484,8 @@ void leave_exclusive_mode(void) {
     SetWindowPos(hwndMain,HWND_TOP,0,0,0,0,SWP_SHOWWINDOW|SWP_NOSIZE|SWP_NOMOVE);
     ShowWindow(hwndMain,SW_SHOWNORMAL);
     InvalidateRect(hwndMain,NULL,FALSE);
+
+    clearDisplayModes();
 }
 
 void try_exclusive_mode(void) {
@@ -509,6 +518,8 @@ void try_exclusive_mode(void) {
     SetWindowPos(hwndMain,HWND_TOP,0,0,0,0,SWP_SHOWWINDOW|SWP_NOSIZE|SWP_NOMOVE);
     ShowWindow(hwndMain,SW_SHOWMAXIMIZED);
     InvalidateRect(hwndMain,NULL,FALSE);
+
+    clearDisplayModes();
 }
 
 void populateDisplayModes(void) {
@@ -632,10 +643,8 @@ static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
                 }
             }
             else if (wParam == 5000) {
-                if (hasSetMode) {
-                    try_exclusive_mode();
-                    update_screen();
-                }
+                try_exclusive_mode();
+                update_screen();
             }
             else if (wParam == 5001) {
                 leave_exclusive_mode();
@@ -766,6 +775,11 @@ int main(int argc,char **argv) {
         ddraw->RestoreDisplayMode();
         ddraw->Release();
         ddraw = NULL;
+    }
+
+    if (menuDisplayModes != NULL) {
+        DestroyMenu(menuDisplayModes);
+        menuDisplayModes = NULL;
     }
 
     return 0;
