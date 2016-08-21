@@ -658,6 +658,7 @@ static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
                 if ((hr=ddraw->SetDisplayMode(devmode.dwWidth,devmode.dwHeight,devmode.ddpfPixelFormat.dwRGBBitCount)) != DD_OK)
                     fprintf(stderr,"Failed to set display mode HR=0x%08lx\n",hr);
                 if (hr == DDERR_NOEXCLUSIVEMODE) {
+                    // NTS: Windows 95/98/ME DirectX demands we enter Exclusive cooperative mode before it allows mode changes that change bit depth
                     fprintf(stderr,"Sorry, Windows demands we set the cooperative mode to Exclusive\n"); // Windows 9x/ME behavior for NORMAL cooperative mode DirectX apps
                     try_exclusive_mode();
                     if ((hr=ddraw->SetDisplayMode(devmode.dwWidth,devmode.dwHeight,devmode.ddpfPixelFormat.dwRGBBitCount)) != DD_OK)
@@ -666,6 +667,8 @@ static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 
                 if (hr == DD_OK) {
                     if (is_exclusive_mode()) {
+                        // NTS: When we're in Exclusive Fullscreen mode, Windows doesn't broadcast WM_DISPLAYCHANGE or WM_PAINT the way it normally does while we're active.
+                        //      So for our display code to work we have to poke and prod the window manager and make our window fullscreen, with focus.
                         unlock_bitmap();
                         free_bitmap();
                         free_dx_primary_surface();
