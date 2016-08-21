@@ -535,6 +535,7 @@ void populateDisplayModes(void) {
 
     AppendMenu(menuDisplayModes,MF_ENABLED|MF_STRING,5000,"Enter exclusive mode");
     AppendMenu(menuDisplayModes,MF_ENABLED|MF_STRING,5001,"Leave exclusive mode");
+    AppendMenu(menuDisplayModes,MF_ENABLED|MF_STRING,5002,"Restore display mode");
     AppendMenu(menuDisplayModes,MF_SEPARATOR,0,"");
 
     // NTS: Windows 95 OSR2 (with Anapa VESA drivers) will not enumerate any modes this way.
@@ -648,6 +649,10 @@ static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
             }
             else if (wParam == 5001) {
                 leave_exclusive_mode();
+            }
+            else if (wParam == 5002) {
+                leave_exclusive_mode();
+                ddraw->RestoreDisplayMode();
             }
             else {
                 return DefWindowProc(hwnd,uMsg,wParam,lParam);
