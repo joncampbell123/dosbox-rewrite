@@ -209,16 +209,28 @@ int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
     //         the buffer, and crash.
     memset(&ddsurf,0,sizeof(ddsurf));
     ddsurf.dwSize = sizeof(ddsurf);
-    ddsurf.dwFlags = DDSD_WIDTH | DDSD_HEIGHT | DDSD_CAPS | DDSD_PIXELFORMAT;
+    ddsurf.dwFlags = DDSD_WIDTH | DDSD_HEIGHT | DDSD_CAPS | DDSD_PIXELFORMAT | DDSD_PITCH;
     ddsurf.ddpfPixelFormat = dispsurf.ddpfPixelFormat;
     ddsurf.ddsCaps.dwCaps = DDSCAPS_OFFSCREENPLAIN;
-    ddsurf.dwWidth = w;
+    ddsurf.dwWidth = (w+3) & (~3); // NTS: Windows XP does weird things with 24bpp if width not a multiple of 4, including resetting lPitch to width * 3 ha ha!
     ddsurf.dwHeight = h;
+    ddsurf.lPitch = ((ddsurf.ddpfPixelFormat.dwRGBBitCount+7)/8) * ddsurf.dwWidth;
 
-    /* if 24bpp, need extra padding */
-    if (dispsurf.ddpfPixelFormat.dwRGBBitCount == 24) {
-        fprintf(stderr,"Adding additional width for 24bpp safety margin\n");
-        ddsurf.dwWidth++;
+    // DirectX demands at least DWORD alignment
+    if (align < 4) align = 4;
+    align = (align+3) & (~3); // round up
+
+    if (align > 0) {
+        // try to encourage DirectX to set the pitch by our alignment.
+        // Not that it works (from actual testing) but let's try anyway.
+        ddsurf.lPitch += align - 1;
+        ddsurf.lPitch -= ddsurf.lPitch % align;
+    }
+
+    /* if 24bpp, may need extra padding */
+    if (ddsurf.ddpfPixelFormat.dwRGBBitCount == 24) {
+        ddsurf.dwWidth += 4; // NTS: only because DirectX in Windows XP appears to ignore our pitch spec when creating the surface. Also width must be multiple of 4.
+        ddsurf.lPitch = ((ddsurf.ddpfPixelFormat.dwRGBBitCount+7)/8) * ddsurf.dwWidth;
     }
 
     if ((hr=ddraw->CreateSurface(&ddsurf,&ddsurfaceBMP,NULL)) != DD_OK) {
@@ -310,16 +322,23 @@ int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
 void update_screen() {
     IDirectDrawSurface *dst;
     RECT dstRect;
+    RECT srcRect;
     HRESULT hr;
     POINT pt;
 
     // NTS: dx_bitmap.is_valid() is not a valid test because base==canvas==NULL unless surface is locked
     if (ddsurfaceBMP == NULL) return;
 
+    // NTS: We must provide a source rect, else Windows XP in 24bpp mode will conveniently choose to render the
+    //      right half (where extra padding+junk exist) rather than from the left side. Provide a source rect
+    //      to make it 100% clear which part of the surface we want blitted to screen.
     pt.x = pt.y = 0;
     ClientToScreen(hwndMain,&pt);
     GetClientRect(hwndMain,&dstRect);
     OffsetRect(&dstRect,pt.x,pt.y);
+    srcRect.top = srcRect.left = 0;
+    srcRect.right = dx_bitmap.width;
+    srcRect.bottom = dx_bitmap.height;
 
     if (ddsurfaceGDI != NULL)
         dst = ddsurfaceGDI;
@@ -329,7 +348,7 @@ void update_screen() {
         dst = NULL;
 
     if (dst != NULL)
-        hr = dst->Blt(&dstRect,ddsurfaceBMP,NULL,0,NULL);
+        hr = dst->Blt(&dstRect,ddsurfaceBMP,&srcRect,0,NULL);
     else
         hr = DD_OK;
 
