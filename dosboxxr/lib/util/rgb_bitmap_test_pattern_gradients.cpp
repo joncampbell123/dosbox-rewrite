@@ -42,9 +42,13 @@ template <> void render_test_pattern_rgb_gradients<rgb24bpp_t>(rgb_bitmap_info &
 
     // due to the nature of this code, additional padding is required.
     // this code may write 1 byte past the last pixel.
-    if (bmp.stride < ((bmp.width*3)+1)) {
-        fprintf(stderr,"Test pattern gradients 24bpp case: stride is too small to safely generate. Optimized code can access 1 pixel past end of canvas\n");
-        fprintf(stderr,"Please update your code to add stride padding or at least 1 scanline in height padding.\n");
+    if ((bmp.stride*bmp.height) >= bmp.length && (bmp.width*3) >= bmp.stride) {
+        fprintf(stderr,"Test pattern 1 24bpp case: at least one pixel of padding is required. (%ux%u) >= %u && (%u*3) >= %u\n",
+            (unsigned int)bmp.stride,
+            (unsigned int)bmp.height,
+            (unsigned int)bmp.length,
+            (unsigned int)bmp.width,
+            (unsigned int)bmp.stride);
         return;
     }
 
