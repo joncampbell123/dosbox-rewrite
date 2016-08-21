@@ -454,6 +454,13 @@ void clearDisplayModes(void) {
     }
 }
 
+bool is_exclusive_mode(void) {
+    DWORD want;
+
+    want = (DDSCL_ALLOWMODEX | DDSCL_EXCLUSIVE | DDSCL_FULLSCREEN);
+    return ((ddrawCooperativeLevel & want) == want);
+}
+
 void leave_exclusive_mode(void) {
     HRESULT hr;
     DWORD want;
@@ -574,6 +581,26 @@ static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
             PAINTSTRUCT ps;
             BeginPaint(hwnd,&ps);
             EndPaint(hwnd,&ps);
+
+            if (ddsurfacePrimary == NULL) {
+                unlock_bitmap();
+                free_bitmap();
+                free_dx_primary_surface();
+                init_dx_primary_surface();
+
+                RECT rct;
+                GetClientRect(hwndMain,&rct);
+
+                if (!init_bitmap(rct.right,rct.bottom))
+                    fprintf(stderr,"WARNING WM_RESIZE init_bitmap(%u,%u) failed\n",
+                            (unsigned int)rct.right,(unsigned int)rct.bottom);
+
+                if (lock_bitmap()) {
+                    render_test_pattern_rgb_gradients(dx_bitmap);
+                    unlock_bitmap();
+                }
+            }
+
             update_screen();
             } break;
         case WM_DISPLAYCHANGE: {
@@ -638,9 +665,28 @@ static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
                 }
 
                 if (hr == DD_OK) {
+                    if (is_exclusive_mode()) {
+                        unlock_bitmap();
+                        free_bitmap();
+                        free_dx_primary_surface();
+                        init_dx_primary_surface();
+
+                        RECT rct;
+                        GetClientRect(hwndMain,&rct);
+
+                        if (!init_bitmap(rct.right,rct.bottom))
+                            fprintf(stderr,"WARNING WM_RESIZE init_bitmap(%u,%u) failed\n",
+                                    (unsigned int)rct.right,(unsigned int)rct.bottom);
+
+                        if (lock_bitmap()) {
+                            render_test_pattern_rgb_gradients(dx_bitmap);
+                            unlock_bitmap();
+                        }
+
+                        InvalidateRect(hwndMain,NULL,FALSE); // DWM compositor-based versions set WM_PAINT such that only the affected area will repaint
+                        try_exclusive_mode();
+                    }
                     hasSetMode = true;
-                    InvalidateRect(hwndMain,NULL,FALSE);
-                    update_screen();
                 }
             }
             else if (wParam == 5000) {
