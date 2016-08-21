@@ -194,9 +194,23 @@ int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
         return 0;
     }
 
+    fprintf(stderr,"Screen is %u x %u x %ubpp\n",
+        (unsigned int)dispsurf.dwWidth,
+        (unsigned int)dispsurf.dwHeight,
+        (unsigned int)dispsurf.ddpfPixelFormat.dwRGBBitCount);
+
+    // NTS: We used to let DirectX auto-choose the primary surface depth for us, but... it turns out
+    //      some versions of Windows have problems here when the screen has just changed bit depth.
+    //      But GetDisplayMode() returns the new bit depth, so we can provide it anyway.
+    //
+    // Case 1: Windows XP: Changing from a higher to lower bit depth: CreateSurface with OFFSCREENPLAIN
+    //         will make a surface with the stride and allocation of the new bit depth but the RGB bits
+    //         per pixel of the old bit depth. Blind adherence to the bit depth will mean that we overrun
+    //         the buffer, and crash.
     memset(&ddsurf,0,sizeof(ddsurf));
     ddsurf.dwSize = sizeof(ddsurf);
-    ddsurf.dwFlags = DDSD_WIDTH | DDSD_HEIGHT | DDSD_CAPS;
+    ddsurf.dwFlags = DDSD_WIDTH | DDSD_HEIGHT | DDSD_CAPS | DDSD_PIXELFORMAT;
+    ddsurf.ddpfPixelFormat = dispsurf.ddpfPixelFormat;
     ddsurf.ddsCaps.dwCaps = DDSCAPS_OFFSCREENPLAIN;
     ddsurf.dwWidth = w;
     ddsurf.dwHeight = h;
@@ -330,12 +344,10 @@ void update_screen() {
 
             RECT rct;
             GetClientRect(hwndMain,&rct);
-            dx_bitmap.width = rct.right;
-            dx_bitmap.height = rct.bottom;
 
-            if (!init_bitmap(dx_bitmap.width,dx_bitmap.height))
+            if (!init_bitmap(rct.right,rct.bottom))
                 fprintf(stderr,"WARNING WM_RESIZE init_bitmap(%u,%u) failed\n",
-                    dx_bitmap.width,dx_bitmap.height);
+                        (unsigned int)rct.right,(unsigned int)rct.bottom);
 
             if (lock_bitmap()) {
                 render_test_pattern_rgb_gradients(dx_bitmap);
@@ -436,12 +448,10 @@ static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 
             RECT rct;
             GetClientRect(hwndMain,&rct);
-            dx_bitmap.width = rct.right;
-            dx_bitmap.height = rct.bottom;
 
-            if (!init_bitmap(dx_bitmap.width,dx_bitmap.height))
+            if (!init_bitmap(rct.right,rct.bottom))
                 fprintf(stderr,"WARNING WM_RESIZE init_bitmap(%u,%u) failed\n",
-                    dx_bitmap.width,dx_bitmap.height);
+                        (unsigned int)rct.right,(unsigned int)rct.bottom);
 
             if (lock_bitmap()) {
                 render_test_pattern_rgb_gradients(dx_bitmap);
@@ -476,34 +486,12 @@ static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
                 DDSURFACEDESC devmode = displayModes[wParam-4000];
                 HRESULT hr;
 
-                unlock_bitmap();
-                free_bitmap();
-                free_dx_primary_surface();
-
                 fprintf(stderr,"Setting display to %u x %u x %ubpp\n",
                     (unsigned int)devmode.dwWidth,
                     (unsigned int)devmode.dwHeight,
                     (unsigned int)devmode.ddpfPixelFormat.dwRGBBitCount);
                 if ((hr=ddraw->SetDisplayMode(devmode.dwWidth,devmode.dwHeight,devmode.ddpfPixelFormat.dwRGBBitCount)) != DD_OK)
-                    fprintf(stderr,"Failed to set display mode\n");
-
-                init_dx_primary_surface();
-
-                RECT rct;
-                GetClientRect(hwndMain,&rct);
-                dx_bitmap.width = rct.right;
-                dx_bitmap.height = rct.bottom;
-
-                if (!init_bitmap(dx_bitmap.width,dx_bitmap.height))
-                    fprintf(stderr,"WARNING WM_RESIZE init_bitmap(%u,%u) failed\n",
-                            dx_bitmap.width,dx_bitmap.height);
-
-                if (lock_bitmap()) {
-                    render_test_pattern_rgb_gradients(dx_bitmap);
-                    unlock_bitmap();
-                }
-
-                InvalidateRect(hwndMain,NULL,FALSE); // DWM compositor-based versions set WM_PAINT such that only the affected area will repaint
+                    fprintf(stderr,"Failed to set display mode HR=0x%08lx\n",hr);
             }
             else {
                 return DefWindowProc(hwnd,uMsg,wParam,lParam);
