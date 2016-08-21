@@ -40,7 +40,7 @@ const char*                     hwndMainClass = "WINDX1CLASS";
 const char*                     hwndMainTitle = "WinDirectDraw test 1";
 HINSTANCE                       myInstance;
 
-bool                            gdi_no_dpiaware = false;
+bool                            gdi_no_dpiaware = true; /* Windows 7 and higher: It's better if we DON'T signal DPI awareness. Some modesetting stuff won't work right otherwise */
 
 rgb_bitmap_info                 dx_bitmap;
 bool                            announce_fmt = true;
@@ -740,6 +740,9 @@ int main(int argc,char **argv) {
 
             if (!strcmp(a,"nodpiaware")) {
                 gdi_no_dpiaware = true;
+            }
+            else if (!strcmp(a,"dpiaware")) {
+                gdi_no_dpiaware = false;
             }
             else {
                 fprintf(stderr,"Unhandled switch %s\n",a);
