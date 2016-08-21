@@ -304,12 +304,19 @@ int init_bitmap(unsigned int w,unsigned int h,unsigned int align=32) {
     dx_bitmap.height = h;
     dx_bitmap.bytes_per_pixel = (ddsurf.ddpfPixelFormat.dwRGBBitCount + 7) / 8;
     dx_bitmap.stride = ddsurf.lPitch;
-    dx_bitmap.update_length_from_stride_and_height();
+    dx_bitmap.length = ddsurf.lPitch * ddsurf.dwHeight;
 
     dx_bitmap.rgbinfo.r.setByMask(ddsurf.ddpfPixelFormat.dwRBitMask);
     dx_bitmap.rgbinfo.g.setByMask(ddsurf.ddpfPixelFormat.dwGBitMask);
     dx_bitmap.rgbinfo.b.setByMask(ddsurf.ddpfPixelFormat.dwBBitMask);
     dx_bitmap.rgbinfo.a.setByMask(ddsurf.ddpfPixelFormat.dwRGBAlphaBitMask);
+
+    // check!
+    if (dx_bitmap.length < (dx_bitmap.height * dx_bitmap.stride)) {
+        fprintf(stderr,"DirectX did not provide a surface with sufficient height\n");
+        free_bitmap();
+        return 0;
+    }
 
     // 24bpp check: make sure the pitch (stride) is larger than width*3, or we were able to get at least one extra scanline
     if (ddsurf.ddpfPixelFormat.dwRGBBitCount == 24) {
