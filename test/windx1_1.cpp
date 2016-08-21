@@ -45,6 +45,8 @@ bool                            gdi_no_dpiaware = true; /* Windows 7 and higher:
 rgb_bitmap_info                 dx_bitmap;
 bool                            announce_fmt = true;
 
+unsigned int                    pattern = 0;
+
 void win32_dpi_aware(void) { // Windows 7? DPI scaling, disable it
     HRESULT WINAPI (*__SetProcessDpiAwareness)(unsigned int aware);
     HMODULE dll;
@@ -63,6 +65,17 @@ void win32_dpi_aware(void) { // Windows 7? DPI scaling, disable it
 
     FreeLibrary(dll);
     return;
+}
+
+void render_pattern(rgb_bitmap_info &bmp) {
+    switch (pattern) {
+        case 0:
+            render_test_pattern_rgb_gradients(bmp);
+            break;
+        case 1:
+            test_pattern_1_render(bmp);
+            break;
+    }
 }
 
 bool lock_bitmap(void) {
@@ -401,7 +414,7 @@ void update_screen() {
                         (unsigned int)rct.right,(unsigned int)rct.bottom);
 
             if (lock_bitmap()) {
-                render_test_pattern_rgb_gradients(dx_bitmap);
+                render_pattern(dx_bitmap);
                 unlock_bitmap();
             }
 
@@ -596,7 +609,7 @@ static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
                             (unsigned int)rct.right,(unsigned int)rct.bottom);
 
                 if (lock_bitmap()) {
-                    render_test_pattern_rgb_gradients(dx_bitmap);
+                    render_pattern(dx_bitmap);
                     unlock_bitmap();
                 }
             }
@@ -619,7 +632,7 @@ static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
                         (unsigned int)rct.right,(unsigned int)rct.bottom);
 
             if (lock_bitmap()) {
-                render_test_pattern_rgb_gradients(dx_bitmap);
+                render_pattern(dx_bitmap);
                 unlock_bitmap();
             }
 
@@ -631,7 +644,7 @@ static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
                     LOWORD(lParam),HIWORD(lParam));
 
             if (lock_bitmap()) {
-                render_test_pattern_rgb_gradients(dx_bitmap);
+                render_pattern(dx_bitmap);
                 unlock_bitmap();
             }
 
@@ -682,7 +695,7 @@ static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
                                     (unsigned int)rct.right,(unsigned int)rct.bottom);
 
                         if (lock_bitmap()) {
-                            render_test_pattern_rgb_gradients(dx_bitmap);
+                            render_pattern(dx_bitmap);
                             unlock_bitmap();
                         }
 
@@ -711,6 +724,17 @@ static LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
             switch (wParam) {
                 case VK_ESCAPE:
                     PostMessage(hwnd,WM_CLOSE,0,0);
+                    break;
+                case VK_SPACE:
+                    if ((++pattern) >= 2)
+                        pattern = 0;
+
+                    if (lock_bitmap()) {
+                        render_pattern(dx_bitmap);
+                        unlock_bitmap();
+                    }
+
+                    InvalidateRect(hwndMain,NULL,FALSE); // DWM compositor-based versions set WM_PAINT such that only the affected area will repaint
                     break;
             }
             break;
@@ -814,7 +838,7 @@ int main(int argc,char **argv) {
         return 1;
     }
     if (lock_bitmap()) {
-        render_test_pattern_rgb_gradients(dx_bitmap);
+        render_pattern(dx_bitmap);
         unlock_bitmap();
     }
 
