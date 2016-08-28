@@ -713,5 +713,9 @@ dosboxxr/lib/cpu/core/everything.c32.a32.emu.h: dosboxxr/lib/cpu/core/everything
 	$(OPCC)$(EXEEXT) -i dosboxxr/lib/cpu/core/everything.opcodes.p -o $@ -m execute -c 32 -a 32 -c32vars -gc1632
 
 # grrr how do I get automake to run opcc first before compiling other parts?
-opcodes: $(OPCC_DECOM_H) $(OPCC_EMU_H)
+opcodes: opcodes-dec opcodes-emu
+
+opcodes-dec: $(OPCC_DECOM_H)
+
+opcodes-emu: $(OPCC_EMU_H)
 
