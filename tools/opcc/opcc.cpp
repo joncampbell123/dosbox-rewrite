@@ -1877,13 +1877,25 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
     if (!(flags & OUTCODE_GEN_SKIP_MRM)) {
         if (submap->modregrm) {
             if (generic1632) {
-                fprintf(out_fp,"%s        if (addr32)\n",indent_str.c_str());
-                fprintf(out_fp,"%s            IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);\n",indent_str.c_str());
-                fprintf(out_fp,"%s        else\n",indent_str.c_str());
-                fprintf(out_fp,"%s            IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);\n",indent_str.c_str());
+                if (cc_mode == MOD_EXECUTE) {
+                    fprintf(out_fp,"%s        if (addr32) {\n",indent_str.c_str());
+                    fprintf(out_fp,"%s            IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);\n",indent_str.c_str());
+                    fprintf(out_fp,"%s            IPFB_LEA32(mrm,sib,disp);\n",indent_str.c_str());
+                    fprintf(out_fp,"%s        } else {\n",indent_str.c_str());
+                    fprintf(out_fp,"%s            IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);\n",indent_str.c_str());
+                    fprintf(out_fp,"%s            IPFB_LEA16(mrm,sib,disp);\n",indent_str.c_str());
+                    fprintf(out_fp,"%s        }\n",indent_str.c_str());
+                }
+                else {
+                    fprintf(out_fp,"%s        if (addr32)\n",indent_str.c_str());
+                    fprintf(out_fp,"%s            IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);\n",indent_str.c_str());
+                    fprintf(out_fp,"%s        else\n",indent_str.c_str());
+                    fprintf(out_fp,"%s            IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);\n",indent_str.c_str());
+                }
             }
             else {
                 fprintf(out_fp,"%s        IPFB_mrm_sib_disp_a%u_read(mrm,sib,disp);\n",indent_str.c_str(),addrwidth);
+                if (cc_mode == MOD_EXECUTE) fprintf(out_fp,"%s        IPFB_LEA%u(mrm,sib,disp);\n",indent_str.c_str(),addrwidth);
             }
         }
     }
@@ -2145,7 +2157,6 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                                 fprintf(out_fp,"%u",addrwidth == 16 ? 1 : 0);
                         }
                         else {
-                            // TODO, needs to be a compiler warning "unknown placeholder"
                             fprintf(stderr,"WARNING: unknown placeholder '%s'\n",ph.c_str());
                         }
                     }
@@ -2939,13 +2950,25 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
          * 0x0F 0x0F mod/reg/rm <opcode> */
         fprintf(out_fp,"%s/* AMD 3DNow! encoding 0x0F 0x0F mod/reg/rm <opcode> */\n",indent_str.c_str());
         if (generic1632) {
-            fprintf(out_fp,"%sif (addr32)\n",indent_str.c_str());
-            fprintf(out_fp,"%s    IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);\n",indent_str.c_str());
-            fprintf(out_fp,"%selse\n",indent_str.c_str());
-            fprintf(out_fp,"%s    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);\n",indent_str.c_str());
+            if (cc_mode == MOD_EXECUTE) {
+                fprintf(out_fp,"%sif (addr32) {\n",indent_str.c_str());
+                fprintf(out_fp,"%s    IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);\n",indent_str.c_str());
+                fprintf(out_fp,"%s    IPFB_LEA32(mrm,sib,disp);\n",indent_str.c_str());
+                fprintf(out_fp,"%s} else {\n",indent_str.c_str());
+                fprintf(out_fp,"%s    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);\n",indent_str.c_str());
+                fprintf(out_fp,"%s    IPFB_LEA16(mrm,sib,disp);\n",indent_str.c_str());
+                fprintf(out_fp,"%s}\n",indent_str.c_str());
+            }
+            else {
+                fprintf(out_fp,"%sif (addr32)\n",indent_str.c_str());
+                fprintf(out_fp,"%s    IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);\n",indent_str.c_str());
+                fprintf(out_fp,"%selse\n",indent_str.c_str());
+                fprintf(out_fp,"%s    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);\n",indent_str.c_str());
+            }
         }
         else {
             fprintf(out_fp,"%sIPFB_mrm_sib_disp_a%u_read(mrm,sib,disp);\n",indent_str.c_str(),addrwidth);
+            if (cc_mode == MOD_EXECUTE) fprintf(out_fp,"%sIPFB_LEA%u(mrm,sib,disp);\n",indent_str.c_str(),addrwidth);
         }
 
         fprintf(out_fp,"%sswitch (op=IPFB()) {\n",indent_str.c_str());

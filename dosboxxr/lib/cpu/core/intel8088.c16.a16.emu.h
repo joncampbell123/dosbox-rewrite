@@ -23,15 +23,19 @@
 switch (op=IPFB()) {
     case 0x00: /* 00h ADDb b(r/m),b(reg)      spec: 0x00 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x01: /* 01h ADDw w(r/m),w(reg)      spec: 0x01 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x02: /* 02h ADDb b(reg),b(r/m)      spec: 0x02 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x03: /* 03h ADDw w(reg),w(r/m)      spec: 0x03 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x04: /* 04h ADDb b(a),i      spec: 0x04 ib */
         imm=IPFB();
@@ -45,15 +49,19 @@ switch (op=IPFB()) {
         break;
     case 0x08: /* 08h ORb b(r/m),b(reg)      spec: 0x08 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x09: /* 09h ORw w(r/m),w(reg)      spec: 0x09 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x0A: /* 0Ah ORb b(reg),b(r/m)      spec: 0x0A mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x0B: /* 0Bh ORw w(reg),w(r/m)      spec: 0x0B mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x0C: /* 0Ch ORb b(a),i      spec: 0x0C ib */
         imm=IPFB();
@@ -67,15 +75,19 @@ switch (op=IPFB()) {
         break;
     case 0x10: /* 10h ADCb b(r/m),b(reg)      spec: 0x10 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x11: /* 11h ADCw w(r/m),w(reg)      spec: 0x11 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x12: /* 12h ADCb b(reg),b(r/m)      spec: 0x12 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x13: /* 13h ADCw w(reg),w(r/m)      spec: 0x13 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x14: /* 14h ADCb b(a),i      spec: 0x14 ib */
         imm=IPFB();
@@ -89,15 +101,19 @@ switch (op=IPFB()) {
         break;
     case 0x18: /* 18h SBBb b(r/m),b(reg)      spec: 0x18 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x19: /* 19h SBBw w(r/m),w(reg)      spec: 0x19 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x1A: /* 1Ah SBBb b(reg),b(r/m)      spec: 0x1A mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x1B: /* 1Bh SBBw w(reg),w(r/m)      spec: 0x1B mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x1C: /* 1Ch SBBb b(a),i      spec: 0x1C ib */
         imm=IPFB();
@@ -111,15 +127,19 @@ switch (op=IPFB()) {
         break;
     case 0x20: /* 20h ANDb b(r/m),b(reg)      spec: 0x20 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x21: /* 21h ANDw w(r/m),w(reg)      spec: 0x21 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x22: /* 22h ANDb b(reg),b(r/m)      spec: 0x22 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x23: /* 23h ANDw w(reg),w(r/m)      spec: 0x23 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x24: /* 24h ANDb b(a),i      spec: 0x24 ib */
         imm=IPFB();
@@ -133,15 +153,19 @@ switch (op=IPFB()) {
         break;
     case 0x28: /* 28h SUBb b(r/m),b(reg)      spec: 0x28 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x29: /* 29h SUBw w(r/m),w(reg)      spec: 0x29 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x2A: /* 2Ah SUBb b(reg),b(r/m)      spec: 0x2A mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x2B: /* 2Bh SUBw w(reg),w(r/m)      spec: 0x2B mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x2C: /* 2Ch SUBb b(a),i      spec: 0x2C ib */
         imm=IPFB();
@@ -155,15 +179,19 @@ switch (op=IPFB()) {
         break;
     case 0x30: /* 30h XORb b(r/m),b(reg)      spec: 0x30 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x31: /* 31h XORw w(r/m),w(reg)      spec: 0x31 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x32: /* 32h XORb b(reg),b(r/m)      spec: 0x32 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x33: /* 33h XORw w(reg),w(r/m)      spec: 0x33 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x34: /* 34h XORb b(a),i      spec: 0x34 ib */
         imm=IPFB();
@@ -177,15 +205,19 @@ switch (op=IPFB()) {
         break;
     case 0x38: /* 38h CMPb b(r/m),b(reg)      spec: 0x38 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x39: /* 39h CMPw w(r/m),w(reg)      spec: 0x39 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x3A: /* 3Ah CMPb b(reg),b(r/m)      spec: 0x3A mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x3B: /* 3Bh CMPw w(reg),w(r/m)      spec: 0x3B mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x3C: /* 3Ch CMPb b(a),i      spec: 0x3C ib */
         imm=IPFB();
@@ -300,6 +332,7 @@ switch (op=IPFB()) {
     case 0x80: /* 80h        spec:  */
     case 0x82: /* 82h        spec:  */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
 /* Opcodes starting with 80h */
         switch (mrm.reg()) {
             case 0: /* 80h 00h ADDb b(r/m),i reg=0      spec: 0x80 mod/reg/rm /0 ib */
@@ -333,6 +366,7 @@ switch (op=IPFB()) {
         break;
     case 0x81: /* 81h        spec:  */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
 /* Opcodes starting with 81h */
         switch (mrm.reg()) {
             case 0: /* 81h 00h ADDw w(r/m),i reg=0      spec: 0x81 mod/reg/rm /0 iw */
@@ -366,6 +400,7 @@ switch (op=IPFB()) {
         break;
     case 0x83: /* 83h        spec:  */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
 /* Opcodes starting with 83h */
         switch (mrm.reg()) {
             case 0: /* 83h 00h ADDw w(r/m),i reg=0      spec: 0x83 mod/reg/rm /0 ibs */
@@ -399,39 +434,51 @@ switch (op=IPFB()) {
         break;
     case 0x84: /* 84h TESTb b(r/m),b(reg)      spec: 0x84 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x85: /* 85h TESTw w(r/m),w(reg)      spec: 0x85 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x86: /* 86h XCHGb b(r/m),b(reg)      spec: 0x86 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x87: /* 87h XCHGw w(r/m),w(reg)      spec: 0x87 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x88: /* 88h MOVb b(r/m),b(reg)      spec: 0x88 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x89: /* 89h MOVw w(r/m),w(reg)      spec: 0x89 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x8A: /* 8Ah MOVb b(reg),b(r/m)      spec: 0x8A mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x8B: /* 8Bh MOVw w(reg),w(r/m)      spec: 0x8B mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x8C: /* 8Ch MOVw w(r/m),seg(reg)      spec: 0x8C mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x8D: /* 8Dh LEAw w(reg),w(r/m)      spec: 0x8D mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x8E: /* 8Eh MOVw seg(reg),w(r/m)      spec: 0x8E mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x8F: /* 8Fh POPw w(r/m)      spec: 0x8F mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0x90: /* 90h NOP       spec: 0x90 */
         break;
@@ -528,12 +575,15 @@ switch (op=IPFB()) {
         break;
     case 0xC4: /* C4h LESw w(reg),w(r/m)      spec: 0xC4 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0xC5: /* C5h LDSw w(reg),w(r/m)      spec: 0xC5 mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
         break;
     case 0xC6: /* C6h        spec:  */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
 /* Opcodes starting with C6h */
         switch (mrm.reg()) {
             case 0: /* C6h 00h MOVb b(r/m),i reg=0      spec: 0xC6 mod/reg/rm /0 ib */
@@ -553,6 +603,7 @@ switch (op=IPFB()) {
         break;
     case 0xC7: /* C7h        spec:  */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
 /* Opcodes starting with C7h */
         switch (mrm.reg()) {
             case 0: /* C7h 00h MOVw w(r/m),i reg=0      spec: 0xC7 mod/reg/rm /0 iw */
@@ -588,6 +639,7 @@ switch (op=IPFB()) {
         break;
     case 0xD0: /* D0h        spec:  */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
 /* Opcodes starting with D0h */
         switch (mrm.reg()) {
             case 0: /* D0h 00h ROLb b(r/m),1 reg=0      spec: 0xD0 mod/reg/rm /0 */
@@ -613,6 +665,7 @@ switch (op=IPFB()) {
         break;
     case 0xD1: /* D1h        spec:  */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
 /* Opcodes starting with D1h */
         switch (mrm.reg()) {
             case 0: /* D1h 00h ROLw w(r/m),1 reg=0      spec: 0xD1 mod/reg/rm /0 */
@@ -638,6 +691,7 @@ switch (op=IPFB()) {
         break;
     case 0xD2: /* D2h        spec:  */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
 /* Opcodes starting with D2h */
         switch (mrm.reg()) {
             case 0: /* D2h 00h ROLb b(r/m),b(c) reg=0      spec: 0xD2 mod/reg/rm /0 */
@@ -663,6 +717,7 @@ switch (op=IPFB()) {
         break;
     case 0xD3: /* D3h        spec:  */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
 /* Opcodes starting with D3h */
         switch (mrm.reg()) {
             case 0: /* D3h 00h ROLw w(r/m),b(c) reg=0      spec: 0xD3 mod/reg/rm /0 */
@@ -698,6 +753,7 @@ switch (op=IPFB()) {
         break;
     case 0xD8: /* D8h        spec:  */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
 /* Opcodes starting with D8h */
         switch (mrm.byte) {
             case 0x00: /* D8h 00h FADDf32 f32(r/m) mod=0 reg=0 rm=0      spec: 0xD8 mod/reg/rm /0 mod!=3 */
@@ -979,6 +1035,7 @@ switch (op=IPFB()) {
         break;
     case 0xD9: /* D9h        spec:  */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
 /* Opcodes starting with D9h */
         switch (mrm.byte) {
             case 0x00: /* D9h 00h FLDf32 f32(r/m) mod=0 reg=0 rm=0      spec: 0xD9 mod/reg/rm /0 mod!=3 */
@@ -1277,6 +1334,7 @@ switch (op=IPFB()) {
         break;
     case 0xDA: /* DAh        spec:  */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
 /* Opcodes starting with DAh */
         switch (mrm.byte) {
             case 0x00: /* DAh 00h FADDd w32(r/m) mod=0 reg=0 rm=0      spec: 0xDA mod/reg/rm /0 mod!=3 */
@@ -1556,6 +1614,7 @@ switch (op=IPFB()) {
         break;
     case 0xDB: /* DBh        spec:  */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
 /* Opcodes starting with DBh */
         switch (mrm.byte) {
             case 0x00: /* DBh 00h FLDd w32(r/m) mod=0 reg=0 rm=0      spec: 0xDB mod/reg/rm /0 mod!=3 */
@@ -1830,6 +1889,7 @@ switch (op=IPFB()) {
         break;
     case 0xDC: /* DCh        spec:  */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
 /* Opcodes starting with DCh */
         switch (mrm.byte) {
             case 0x00: /* DCh 00h FADDf64 f64(r/m) mod=0 reg=0 rm=0      spec: 0xDC mod/reg/rm /0 mod!=3 */
@@ -2109,6 +2169,7 @@ switch (op=IPFB()) {
         break;
     case 0xDD: /* DDh        spec:  */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
 /* Opcodes starting with DDh */
         switch (mrm.byte) {
             case 0x00: /* DDh 00h FLDf64 f64(r/m) mod=0 reg=0 rm=0      spec: 0xDD mod/reg/rm /0 mod!=3 */
@@ -2383,6 +2444,7 @@ switch (op=IPFB()) {
         break;
     case 0xDE: /* DEh        spec:  */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
 /* Opcodes starting with DEh */
         switch (mrm.byte) {
             case 0x00: /* DEh 00h FADDw w16(r/m) mod=0 reg=0 rm=0      spec: 0xDE mod/reg/rm /0 mod!=3 */
@@ -2663,6 +2725,7 @@ switch (op=IPFB()) {
         break;
     case 0xDF: /* DFh        spec:  */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
 /* Opcodes starting with DFh */
         switch (mrm.byte) {
             case 0x00: /* DFh 00h FLDw w16(r/m) mod=0 reg=0 rm=0      spec: 0xDF mod/reg/rm /0 mod!=3 */
@@ -2991,6 +3054,7 @@ switch (op=IPFB()) {
         break;
     case 0xF6: /* F6h        spec:  */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
 /* Opcodes starting with F6h */
         switch (mrm.reg()) {
             case 0: /* F6h 00h TESTb b(r/m),i reg=0      spec: 0xF6 mod/reg/rm /0 ib */
@@ -3016,6 +3080,7 @@ switch (op=IPFB()) {
         break;
     case 0xF7: /* F7h        spec:  */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
 /* Opcodes starting with F7h */
         switch (mrm.reg()) {
             case 0: /* F7h 00h TESTw w(r/m),i reg=0      spec: 0xF7 mod/reg/rm /0 iw */
@@ -3053,6 +3118,7 @@ switch (op=IPFB()) {
         break;
     case 0xFE: /* FEh        spec:  */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
 /* Opcodes starting with FEh */
         switch (mrm.reg()) {
             case 0: /* FEh 00h INCb b(r/m) reg=0      spec: 0xFE mod/reg/rm /0 */
@@ -3072,6 +3138,7 @@ switch (op=IPFB()) {
         break;
     case 0xFF: /* FFh        spec:  */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
+        IPFB_LEA16(mrm,sib,disp);
 /* Opcodes starting with FFh */
         switch (mrm.reg()) {
             case 0: /* FFh 00h INCw w(r/m) reg=0      spec: 0xFF mod/reg/rm /0 */
