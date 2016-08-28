@@ -2108,6 +2108,18 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                             else
                                 fprintf(out_fp,"0x%lXUL",codewidth == 32 ? 0xFFFFFFFFUL : 0xFFFFUL);
                         }
+                        else if (ph == "code32") {
+                            if (generic1632)
+                                fprintf(out_fp,"code32");
+                            else
+                                fprintf(out_fp,"%u",codewidth == 32 ? 1 : 0);
+                        }
+                        else if (ph == "code16") {
+                            if (generic1632)
+                                fprintf(out_fp,"!code32");
+                            else
+                                fprintf(out_fp,"%u",codewidth == 16 ? 1 : 0);
+                        }
                         else if (ph == "addrwidth") { // becomes an integer value
                             if (generic1632)
                                 fprintf(out_fp,"(addr32?32:16)");
@@ -2120,9 +2132,21 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                             else
                                 fprintf(out_fp,"0x%lXUL",addrwidth == 32 ? 0xFFFFFFFFUL : 0xFFFFUL);
                         }
+                        else if (ph == "addr32") {
+                            if (generic1632)
+                                fprintf(out_fp,"addr32");
+                            else
+                                fprintf(out_fp,"%u",addrwidth == 32 ? 1 : 0);
+                        }
+                        else if (ph == "addr16") {
+                            if (generic1632)
+                                fprintf(out_fp,"!addr32");
+                            else
+                                fprintf(out_fp,"%u",addrwidth == 16 ? 1 : 0);
+                        }
                         else {
                             // TODO, needs to be a compiler warning "unknown placeholder"
-                            fprintf(out_fp,"/*%s*/",ph.c_str());
+                            fprintf(stderr,"WARNING: unknown placeholder '%s'\n",ph.c_str());
                         }
                     }
                     else {
