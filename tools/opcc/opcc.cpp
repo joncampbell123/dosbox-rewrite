@@ -381,6 +381,7 @@ public:
         if (amd3dnow_here != r.amd3dnow_here) return false;
         if (opmap_valid != r.opmap_valid) return false;
         if (vexprefix != r.vexprefix) return false;
+        if (exec_code != r.exec_code) return false;
         if (addrsz32 != r.addrsz32) return false;
         if (vexsidx != r.vexsidx) return false;
         if (xopsidx != r.xopsidx) return false;
@@ -415,6 +416,7 @@ public:
         return true;
     }
 public:
+    vector<string>  exec_code;  // executable code (pre-filtering)
     // opbyte [mod/reg/rm [sib] [disp]] [immediate]
     string          format_str;
     string          name;       // JMP, etc.
@@ -458,7 +460,8 @@ public:
     bool            opmap_valid;
 };
 
-OpByte      opmap16,opmap32;
+vector<OpByte*>     last_opcodes;
+OpByte              opmap16,opmap32;
 
 // C/C++ implementation of Perl's chomp function.
 // static copy to differentiate from target system vs build system.
@@ -609,6 +612,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
                         return false;
                     }
 
+                    last_opcodes.push_back(submap);
                     submap->modregrm = false;
                     submap->disparg = st.disparg;
                     submap->format_str = st.format_str;
@@ -666,6 +670,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
                             return false;
                         }
 
+                        last_opcodes.push_back(submap);
                         submap->modregrm = false;
                         submap->disparg = st.disparg;
                         submap->format_str = st.format_str;
@@ -721,6 +726,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
                 return false;
             }
 
+            last_opcodes.push_back(map);
             map->illegal = st.illegal;
             map->opsz32 = st.opsz32;
             map->addrsz32 = st.addrsz32;
@@ -755,6 +761,7 @@ bool parse_opcode_def_gen1(parse_opcode_state &st,OpByte& maproot) {
             return false;
         }
 
+        last_opcodes.push_back(map);
         map->illegal = st.illegal;
         map->opsz32 = st.opsz32;
         map->addrsz32 = st.addrsz32;
@@ -1642,6 +1649,7 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
         }
     }
 
+    last_opcodes.clear();
     if (st.xop) {
         unsigned char origop[20];
         unsigned int origopsz;
@@ -1819,6 +1827,19 @@ bool parse_opcodelist(void) {
             if (!parse_opcode_def(line,lineno,s)) {
                 fprintf(stderr," (%lu): %s\n",lineno,parse_line);
                 return false;
+            }
+        }
+        else if (!strncmp(s,"emucode:",8)) {
+            s += 8;
+            while (*s == '\t' || *s == ' ') s++;
+            if (last_opcodes.empty()) {
+                fprintf(stderr,"Emulator code must follow opcode\n");
+                return false;
+            }
+
+            for (size_t i=0;i < last_opcodes.size();i++) {
+                OpByte *b = last_opcodes[i];
+                b->exec_code.push_back(s);
             }
         }
         else {
@@ -2058,7 +2079,61 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
         }
     }
     else {
-        if (cc_mode == MOD_DECOMPILE && !submap->name.empty()) {
+        if (cc_mode == MOD_EXECUTE && !submap->name.empty()) {
+            for (size_t i=0;i < submap->exec_code.size();i++) {
+                string &line = submap->exec_code[i];
+                const char *line_s = line.c_str();
+                const char *e;
+                string ph;
+
+                fprintf(out_fp,"%s        ",indent_str.c_str());
+                while (*line_s != 0) {
+                    if (*line_s == '@') {
+                        line_s++;
+                        e = strchr(line_s,'@');
+                        if (e == NULL) e = line_s + strlen(line_s);
+                        ph = string(line_s,(size_t)(e-line_s));
+                        line_s = e;
+                        if (*line_s == '@') line_s++;
+
+                        if (ph == "codewidth") { // becomes an integer value
+                            if (generic1632)
+                                fprintf(out_fp,"(code32?32:16)");
+                            else
+                                fprintf(out_fp,"%u",codewidth);
+                        }
+                        else if (ph == "codewidthmask") { // becomes an integer value
+                            if (generic1632)
+                                fprintf(out_fp,"(code32?0xFFFFFFFFUL:0xFFFFUL)");
+                            else
+                                fprintf(out_fp,"0x%lXUL",codewidth == 32 ? 0xFFFFFFFFUL : 0xFFFFUL);
+                        }
+                        else if (ph == "addrwidth") { // becomes an integer value
+                            if (generic1632)
+                                fprintf(out_fp,"(addr32?32:16)");
+                            else
+                                fprintf(out_fp,"%u",addrwidth);
+                        }
+                        else if (ph == "addrwidthmask") { // becomes an integer value
+                            if (generic1632)
+                                fprintf(out_fp,"(addr32?0xFFFFFFFFUL:0xFFFFUL)");
+                            else
+                                fprintf(out_fp,"0x%lXUL",addrwidth == 32 ? 0xFFFFFFFFUL : 0xFFFFUL);
+                        }
+                        else {
+                            // TODO, needs to be a compiler warning "unknown placeholder"
+                            fprintf(out_fp,"/*%s*/",ph.c_str());
+                        }
+                    }
+                    else {
+                        fprintf(out_fp,"%c",*line_s);
+                        line_s++;
+                    }
+                }
+                fprintf(out_fp,"\n");
+            }
+        }
+        else if (cc_mode == MOD_DECOMPILE && !submap->name.empty()) {
             string fmtargs;
             char tmp[128];
 
