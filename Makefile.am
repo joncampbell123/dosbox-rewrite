@@ -67,7 +67,8 @@ noinst_PROGRAMS = \
 	bin/tools/cpudec86e \
 	bin/tools/cpudetect \
 	bin/test/cpumodregrm \
-	bin/test/cpumemreftypes
+	bin/test/cpumemreftypes \
+	bin/tools/cpustep86
 
 if HAVE_WINDOWS_H
 noinst_PROGRAMS += \
@@ -139,6 +140,16 @@ noinst_PROGRAMS += \
 	bin/test/fb2
 endif
 endif
+
+bin_tools_cpustep86_SOURCES = \
+	tools/cpustep/cpustep86.cpp \
+	tools/cpustep/cpudec86_everything.cpp \
+	tools/cpustep/cpustep86_everything.cpp
+bin_tools_cpustep86_CXXFLAGS = $(AM_CXXFLAGS) -Itools/cpustep
+bin_tools_cpustep86_DEPENDENCIES = \
+	dosboxxr/lib/cpu/libcpu.a $(OPCC_DECOM_H)
+bin_tools_cpustep86_LDADD = \
+	dosboxxr/lib/cpu/libcpu.a
 
 bin_tools_cpudec86_SOURCES = \
 	tools/cpudec/cpudec86.cpp \
@@ -522,7 +533,10 @@ testasm/testssse3.bin: testasm/testssse3.asm
 testasm/testevry.bin: testasm/testevry.asm
 	yasm -o $@ -f bin $<
 
-test-bins: testasm/test1.bin testasm/test2.bin testasm/test3.bin testasm/test3e.bin testasm/test4.bin testasm/test4e.bin testasm/test5.bin testasm/test5pro.bin testasm/test5mmx.bin testasm/testp2.bin testasm/testp3.bin testasm/testp4.bin testasm/testp4p.bin testasm/testv20.bin testasm/testc6mx.bin testasm/test3dn1.bin testasm/test3dn2.bin testasm/testssse3.bin testasm/testevry.bin
+testasm/testemu1.bin: testasm/testemu1.asm
+	yasm -o $@ -f bin $<
+
+test-bins: testasm/test1.bin testasm/test2.bin testasm/test3.bin testasm/test3e.bin testasm/test4.bin testasm/test4e.bin testasm/test5.bin testasm/test5pro.bin testasm/test5mmx.bin testasm/testp2.bin testasm/testp3.bin testasm/testp4.bin testasm/testp4p.bin testasm/testv20.bin testasm/testc6mx.bin testasm/test3dn1.bin testasm/test3dn2.bin testasm/testssse3.bin testasm/testevry.bin testasm/testemu1.bin
 
 bin/tools/opcc$(EXEEXT): tools/opcc/opcc.cpp
 	$(BUILD_CXX) -o $@ $<

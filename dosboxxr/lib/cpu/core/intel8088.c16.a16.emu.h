@@ -555,6 +555,7 @@ switch (op=IPFB()) {
     case 0xB6: /* B6h MOVb b(reg),i reg=6      spec: range(0xB0,0xB7) ib reg=op02 */
     case 0xB7: /* B7h MOVb b(reg),i reg=7      spec: range(0xB0,0xB7) ib reg=op02 */
         imm=IPFB();
+        *(cpuref_regs_8[(op&7)]) = (uint8_t)(imm);
         break;
     case 0xB8: /* B8h MOVw w(reg),i reg=0      spec: range(0xB8,0xBF) iw reg=op02 */
     case 0xB9: /* B9h MOVw w(reg),i reg=1      spec: range(0xB8,0xBF) iw reg=op02 */
@@ -565,6 +566,8 @@ switch (op=IPFB()) {
     case 0xBE: /* BEh MOVw w(reg),i reg=6      spec: range(0xB8,0xBF) iw reg=op02 */
     case 0xBF: /* BFh MOVw w(reg),i reg=7      spec: range(0xB8,0xBF) iw reg=op02 */
         imm=IPFcodeW();
+        if (16 == 32) *(cpuref_regs_32[(op&7)]) = (uint32_t)(imm);
+        else if (16 == 16) *(cpuref_regs_16[(op&7)]) = (uint16_t)(imm);
         break;
     case 0xC0: /* C0h RETw i      spec: 0xC0 iw16 */
     case 0xC2: /* C2h RETw i      spec: 0xC2 iw16 */

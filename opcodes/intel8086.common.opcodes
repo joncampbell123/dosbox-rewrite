@@ -182,7 +182,10 @@ opcode 0xA1 iwa:                                "MOV"w w(a),w(mem[i])       ; Me
 opcode 0xA2 iwa:                                "MOV"b b(mem[i]),b(a)       ; Accumulator to Memory                     1010001w w=0
 opcode 0xA3 iwa:                                "MOV"w b(mem[i]),w(a)       ; Accumulator to Memory                     1010001w w=1
 opcode range(0xB0,0xB7) ib reg=op02:            "MOV"b b(reg),i             ; Immediate to Register                     1011wreg w=0 reg=0-7
+emucode:                                        *(cpuref_regs_8[@reg@]) = (uint8_t)(@i@);
 opcode range(0xB8,0xBF) iw reg=op02:            "MOV"w w(reg),i             ; Immediate to Register                     1011wreg w=1 reg=0-7
+emucode:                                        if (@codewidth@ == 32) *(cpuref_regs_32[@reg@]) = (uint32_t)(@i@);
+emucode:                                        else if (@codewidth@ == 16) *(cpuref_regs_16[@reg@]) = (uint16_t)(@i@);
 opcode 0xC6 mod/reg/rm /0 ib:                   "MOV"b b(r/m),i             ; Immediate to Register/Memory              1100011w w=0 reg=0
 opcode 0xC7 mod/reg/rm /0 iw:                   "MOV"w w(r/m),i             ; Immediate to Register/Memory              1100011w w=1 reg=0
 ; MOV sreg
