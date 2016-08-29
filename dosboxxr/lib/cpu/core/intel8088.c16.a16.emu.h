@@ -471,6 +471,8 @@ switch (op=IPFB()) {
     case 0x8D: /* 8Dh LEAw w(reg),w(r/m)      spec: 0x8D mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
         IPFB_LEA16(mrm,sib,disp);
+        if (16 == 32) *(cpuref_regs_32[mrm.reg()]) = (uint32_t)(disp);
+        else if (16 == 16) *(cpuref_regs_16[mrm.reg()]) = (uint16_t)(disp);
         break;
     case 0x8E: /* 8Eh MOVw seg(reg),w(r/m)      spec: 0x8E mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);

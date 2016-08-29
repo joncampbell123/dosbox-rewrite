@@ -154,6 +154,8 @@ opcode 0x9E:                                    "SAHF"b                     ; St
 
 ; LEA
 opcode 0x8D mod/reg/rm:                         "LEA"w w(reg),w(r/m)        ; Load EA (effective address) to Register   10001101
+emucode:                                        if (@codewidth@ == 32) *(cpuref_regs_32[@reg@]) = (uint32_t)(@disp@);
+emucode:                                        else if (@codewidth@ == 16) *(cpuref_regs_16[@reg@]) = (uint16_t)(@disp@);
 
 #ifdef CORE_VEX_ENCODING
 ; LDS/LES leaving mod==3 open for VEX encoding

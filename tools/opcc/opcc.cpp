@@ -2177,6 +2177,9 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                             else
                                 fprintf(out_fp,"mrm.reg()");
                         }
+                        else if (ph == "disp") {
+                            fprintf(out_fp,"disp");
+                        }
                         else {
                             fprintf(stderr,"WARNING: unknown placeholder '%s'\n",ph.c_str());
                         }
