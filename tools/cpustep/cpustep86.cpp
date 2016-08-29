@@ -155,7 +155,7 @@ int main(int argc,char **argv) {
             unsigned char *i_ptr = exe_ip_ptr;
             unsigned int bip;
 
-            printf(">>>> A=0x%08lX B=0x%08lX C=0x%08lX D=0x%08lX SP=0x%08lX BP=0x%08lX SI=0x%08lX DI=0x%08lX\n",
+            printf(">>>> A=0x%08lX B=0x%08lX C=0x%08lX D=0x%08lX SP=0x%08lX BP=0x%08lX SI=0x%08lX DI=0x%08lX F=0x%08lx\n",
                 (unsigned long)cpu.eax(),
                 (unsigned long)cpu.ebx(),
                 (unsigned long)cpu.ecx(),
@@ -163,7 +163,8 @@ int main(int argc,char **argv) {
                 (unsigned long)cpu.esp(),
                 (unsigned long)cpu.ebp(),
                 (unsigned long)cpu.esi(),
-                (unsigned long)cpu.edi());
+                (unsigned long)cpu.edi(),
+                (unsigned long)cpu.eflags());
 
             IPDec(exe_ip);
             printf("%04X: ",IPDecIP);

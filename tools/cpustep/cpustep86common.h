@@ -65,14 +65,20 @@ enum x86_cpu_regorder_t {
     CPU_REGI_DI
 };
 
+#define CPU_FLAG_CF             (1U << 0U)
+#define CPU_FLAG_IF             (1U << 9U)
+#define CPU_FLAG_DF             (1U << 10U)
+
 struct x86_cpu_state {
     x86_cpu_state() {
         size_t i;
 
+        regflag.d = 0;
         for (i=0;i < 8;i++) reg[i].d = 0;
     }
 public: // state
     x86_cpu_regpack         reg[8];
+    x86_cpu_regpack         regflag;
 public: // 8-bit regs
     inline uint8_t &al(void) { return reg[CPU_REGI_AX].b.l; }
     inline uint8_t &bl(void) { return reg[CPU_REGI_BX].b.l; }
@@ -91,6 +97,7 @@ public: // 16-bit regs
     inline uint16_t &bp(void) { return reg[CPU_REGI_BP].w.w; }
     inline uint16_t &si(void) { return reg[CPU_REGI_SI].w.w; }
     inline uint16_t &di(void) { return reg[CPU_REGI_DI].w.w; }
+    inline uint16_t &flags(void) { return regflag.w.w; }
 public: // 32-bit regs
     inline uint32_t &eax(void) { return reg[CPU_REGI_AX].d; }
     inline uint32_t &ebx(void) { return reg[CPU_REGI_BX].d; }
@@ -100,6 +107,7 @@ public: // 32-bit regs
     inline uint32_t &ebp(void) { return reg[CPU_REGI_BP].d; }
     inline uint32_t &esi(void) { return reg[CPU_REGI_SI].d; }
     inline uint32_t &edi(void) { return reg[CPU_REGI_DI].d; }
+    inline uint32_t &eflags(void) { return regflag.d; }
 };
 
 extern x86_cpu_state               cpu;

@@ -81,12 +81,19 @@ opcode 0xFF mod/reg/rm /1:                      "DEC"w w(r/m)               ; Re
 ; OTHER
 opcode 0xF4:                                    "HLT"                       ; Halt                                      11110100
 opcode 0xF5:                                    "CMC"                       ; Complement Carry                          11110101
+emucode:                                        CPU_CMC();
 opcode 0xF8:                                    "CLC"                       ; Clear Carry                               11111000
+emucode:                                        CPU_CLC();
 opcode 0xF9:                                    "STC"                       ; Set Carry                                 11111001
+emucode:                                        CPU_STC();
 opcode 0xFA:                                    "CLI"                       ; Clear Interrupt                           11111010
+emucode:                                        CPU_CLI();
 opcode 0xFB:                                    "STI"                       ; Set Interrupt                             11111011
+emucode:                                        CPU_STI();
 opcode 0xFC:                                    "CLD"                       ; Clear Direction                           11111100
+emucode:                                        CPU_CLD();
 opcode 0xFD:                                    "STD"                       ; Set Direction                             11111101
+emucode:                                        CPU_STD();
 
 ; INC
 opcode range(0x40,0x47) reg=op02:               "INC"w w(reg)               ; Register                                  01000<reg> reg=0-7

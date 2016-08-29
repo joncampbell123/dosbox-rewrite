@@ -26,6 +26,34 @@
 
 #include "dosboxxr/lib/cpu/ipdec_pre_core.h"
 
+static inline void CPU_CMC(void) {
+    cpu.flags() ^= CPU_FLAG_CF;
+}
+
+static inline void CPU_CLC(void) {
+    cpu.flags() &= ~CPU_FLAG_CF;
+}
+
+static inline void CPU_STC(void) {
+    cpu.flags() |= CPU_FLAG_CF;
+}
+
+static inline void CPU_CLI(void) {
+    cpu.flags() &= ~CPU_FLAG_IF;
+}
+
+static inline void CPU_STI(void) {
+    cpu.flags() |= CPU_FLAG_IF;
+}
+
+static inline void CPU_CLD(void) {
+    cpu.flags() &= ~CPU_FLAG_DF;
+}
+
+static inline void CPU_STD(void) {
+    cpu.flags() |= CPU_FLAG_DF;
+}
+
 void IPExec_Everything(x86_offset_t ip) {
     bool code32=exe_code32;
     bool addr32=exe_code32;
