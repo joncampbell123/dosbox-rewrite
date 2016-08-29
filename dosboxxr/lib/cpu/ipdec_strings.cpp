@@ -227,9 +227,14 @@ const char *IPDecPrint32(const x86ModRegRm &mrm,const x86ScaleIndexBase &sib,con
                 if (sib.scale() != 0) w += snprintf(w,(size_t)(wf-w),"*%u",1U << sib.scale());
             }
 
-            if (ex) *w++ = '+';
-            ex=true;
-            w += snprintf(w,(size_t)(wf-w),"%s",CPUregs32[sib.base()]);
+            if (mrm.mod() == 0 && sib.base() == 5) {
+                // no base
+            }
+            else {
+                if (ex) *w++ = '+';
+                ex=true;
+                w += snprintf(w,(size_t)(wf-w),"%s",CPUregs32[sib.base()]);
+            }
         }
         else if (mrm.rm() == 5 && mrm.mod() == 0) { // direct offset
             // do nothing, we have the offset already

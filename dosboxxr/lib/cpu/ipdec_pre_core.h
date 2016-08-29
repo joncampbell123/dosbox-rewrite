@@ -33,14 +33,20 @@ static inline x86_offset_t IPFmrmdisplace16(x86ModRegRm &mrm) {
 }
 
 // given mod/reg/rm fetch displacement (32-bit code)
-static inline x86_offset_t IPFmrmdisplace32(x86ModRegRm &mrm) {
+static inline x86_offset_t IPFmrmdisplace32(x86ModRegRm &mrm,x86ScaleIndexBase &sib) {
     switch (mrm.mod()) {
         case 0:
             if (mrm.rm() == 5) return IPFDW();
+            if (mrm.rm() == 4) {
+                sib.byte = IPFB();
+                if (sib.base() == 5) return IPFDW();
+            }
             return 0;
         case 1:
+            if (mrm.rm() == 4) sib.byte = IPFB();
             return IPFBsigned();
         case 2:
+            if (mrm.rm() == 4) sib.byte = IPFB();
             return IPFDW();
 //        case 3:
 //            return 0;
@@ -59,7 +65,6 @@ static inline void IPFB_mrm_sib_disp_a16_read(x86ModRegRm &mrm,x86ScaleIndexBase
 
 static inline void IPFB_mrm_sib_disp_a32_read(x86ModRegRm &mrm,x86ScaleIndexBase &sib,x86_offset_t &disp) {
     IPFModRegRm(mrm);
-    if (mrm.has_a32_SIB()) sib.byte = IPFB();
-    disp = IPFmrmdisplace32(mrm);
+    disp = IPFmrmdisplace32(mrm,sib);
 }
 
