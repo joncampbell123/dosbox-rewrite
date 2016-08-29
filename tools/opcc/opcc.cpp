@@ -2114,6 +2114,12 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                             else
                                 fprintf(out_fp,"%u",codewidth);
                         }
+                        else if (ph == "codewidthbytes") { // becomes an integer value
+                            if (generic1632)
+                                fprintf(out_fp,"(code32?4:2)");
+                            else
+                                fprintf(out_fp,"%u",codewidth>>3);
+                        }
                         else if (ph == "codewidthmask") { // becomes an integer value
                             if (generic1632)
                                 fprintf(out_fp,"(code32?0xFFFFFFFFUL:0xFFFFUL)");
@@ -2137,6 +2143,12 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                                 fprintf(out_fp,"(addr32?32:16)");
                             else
                                 fprintf(out_fp,"%u",addrwidth);
+                        }
+                        else if (ph == "addrwidthbytes") { // becomes an integer value
+                            if (generic1632)
+                                fprintf(out_fp,"(addr32?4:2)");
+                            else
+                                fprintf(out_fp,"%u",addrwidth>>3);
                         }
                         else if (ph == "addrwidthmask") { // becomes an integer value
                             if (generic1632)
