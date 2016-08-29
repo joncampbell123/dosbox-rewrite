@@ -2168,6 +2168,15 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                             else
                                 fprintf(out_fp,"%u",addrwidth == 16 ? 1 : 0);
                         }
+                        else if (ph == "i") {
+                            fprintf(out_fp,"imm");
+                        }
+                        else if (ph == "reg") {
+                            if (submap->reg_from_opcode)
+                                fprintf(out_fp,"(op&7)");
+                            else
+                                fprintf(out_fp,"mrm.reg()");
+                        }
                         else {
                             fprintf(stderr,"WARNING: unknown placeholder '%s'\n",ph.c_str());
                         }
@@ -2177,7 +2186,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                         line_s++;
                     }
                 }
-                fprintf(out_fp,"\n");
+                fprintf(out_fp,";\n");
             }
         }
         else if (cc_mode == MOD_DECOMPILE && !submap->name.empty()) {
