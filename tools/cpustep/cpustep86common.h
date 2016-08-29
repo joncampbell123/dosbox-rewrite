@@ -116,6 +116,18 @@ extern uint8_t * const cpuref_regs_8[8];
 extern uint16_t * const cpuref_regs_16[8];
 extern uint32_t * const cpuref_regs_32[8];
 
+static inline uint8_t &cpuref_reg_8(const uint8_t x) {
+    return *cpuref_regs_8[x];
+}
+
+static inline uint16_t &cpuref_reg_16(const uint8_t x) {
+    return cpu.reg[x].w.w;
+}
+
+static inline uint32_t &cpuref_reg_32(const uint8_t x) {
+    return cpu.reg[x].d;
+}
+
 static inline void IPFB_LEA16(x86ModRegRm &mrm,x86ScaleIndexBase &sib,x86_offset_t &disp) {
     (void)sib; // unused
 
@@ -147,17 +159,17 @@ static inline void IPFB_LEA32(x86ModRegRm &mrm,x86ScaleIndexBase &sib,x86_offset
             return;
 
         if (mrm.rm() == 4) { // offset += [indexreg<<scale + basereg]
-            if (sib.index() != 4) disp += (x86_offset_t)(*cpuref_regs_32[sib.index()]) << (x86_offset_t)sib.scale();
+            if (sib.index() != 4) disp += (x86_offset_t)cpu.reg[sib.index()].d << (x86_offset_t)sib.scale();
 
             if (mrm.mod() == 0 && sib.base() == 5) {
                 /* nothing */
             }
             else {
-                disp += (x86_offset_t)(*cpuref_regs_32[sib.base()]);
+                disp += (x86_offset_t)cpu.reg[sib.base()].d;
             }
         }
         else { // offset += [r/m reg]
-            disp += (x86_offset_t)(*cpuref_regs_32[mrm.rm()]);
+            disp += (x86_offset_t)cpu.reg[mrm.rm()].d;
         }
     }
 }
