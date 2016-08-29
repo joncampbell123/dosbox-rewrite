@@ -148,7 +148,13 @@ static inline void IPFB_LEA32(x86ModRegRm &mrm,x86ScaleIndexBase &sib,x86_offset
 
         if (mrm.rm() == 4) { // offset += [indexreg<<scale + basereg]
             if (sib.index() != 4) disp += (x86_offset_t)(*cpuref_regs_32[sib.index()]) << (x86_offset_t)sib.scale();
-            disp += (x86_offset_t)(*cpuref_regs_32[sib.base()]);
+
+            if (mrm.mod() == 0 && sib.base() == 5) {
+                /* nothing */
+            }
+            else {
+                disp += (x86_offset_t)(*cpuref_regs_32[sib.base()]);
+            }
         }
         else { // offset += [r/m reg]
             disp += (x86_offset_t)(*cpuref_regs_32[mrm.rm()]);
