@@ -573,6 +573,13 @@ AC_CHECK_HEADER([avxintrin.h],[HAVE_AVXINTRIN_H=1],[HAVE_AVXINTRIN_H=0])
 AM_CONDITIONAL([HAVE_AVXINTRIN_H],[test $HAVE_AVXINTRIN_H = 1])
 AC_DEFINE_UNQUOTED([HAVE_AVXINTRIN_H],[$HAVE_AVXINTRIN_H],[Has avxintrin.h])
 
+# Does your compiler have limits.h
+HAVE_LIMITS_H=0
+AC_SUBST(HAVE_LIMITS_H)
+AC_CHECK_HEADER([limits.h],[HAVE_LIMITS_H=1],[HAVE_LIMITS_H=0])
+AM_CONDITIONAL([HAVE_LIMITS_H],[test $HAVE_LIMITS_H = 1])
+AC_DEFINE_UNQUOTED([HAVE_LIMITS_H],[$HAVE_LIMITS_H],[Has limits.h])
+
 # Does your compiler have arm_neon.h (ARM NEON intrinsics)?
 # GCC (well, the header) won't let us try unless we specify -mfpu=neon
 old_CXXFLAGS=$CXXFLAGS
