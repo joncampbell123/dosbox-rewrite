@@ -471,8 +471,8 @@ switch (op=IPFB()) {
     case 0x8D: /* 8Dh LEAw w(reg),w(r/m)      spec: 0x8D mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
         IPFB_LEA16(mrm,sib,disp);
-        if (16 == 32) *(cpuref_regs_32[mrm.reg()]) = (uint32_t)(disp);
-        else if (16 == 16) *(cpuref_regs_16[mrm.reg()]) = (uint16_t)(disp);
+        if (16 == 32) cpuref_reg_32(mrm.reg()) = (uint32_t)(disp);
+        else if (16 == 16) cpuref_reg_16(mrm.reg()) = (uint16_t)(disp);
         break;
     case 0x8E: /* 8Eh MOVw seg(reg),w(r/m)      spec: 0x8E mod/reg/rm */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
@@ -557,7 +557,7 @@ switch (op=IPFB()) {
     case 0xB6: /* B6h MOVb b(reg),i reg=6      spec: range(0xB0,0xB7) ib reg=op02 */
     case 0xB7: /* B7h MOVb b(reg),i reg=7      spec: range(0xB0,0xB7) ib reg=op02 */
         imm=IPFB();
-        *(cpuref_regs_8[(op&7)]) = (uint8_t)(imm);
+        cpuref_reg_8((op&7)) = (uint8_t)(imm);
         break;
     case 0xB8: /* B8h MOVw w(reg),i reg=0      spec: range(0xB8,0xBF) iw reg=op02 */
     case 0xB9: /* B9h MOVw w(reg),i reg=1      spec: range(0xB8,0xBF) iw reg=op02 */
@@ -568,8 +568,8 @@ switch (op=IPFB()) {
     case 0xBE: /* BEh MOVw w(reg),i reg=6      spec: range(0xB8,0xBF) iw reg=op02 */
     case 0xBF: /* BFh MOVw w(reg),i reg=7      spec: range(0xB8,0xBF) iw reg=op02 */
         imm=IPFcodeW();
-        if (16 == 32) *(cpuref_regs_32[(op&7)]) = (uint32_t)(imm);
-        else if (16 == 16) *(cpuref_regs_16[(op&7)]) = (uint16_t)(imm);
+        if (16 == 32) cpuref_reg_32((op&7)) = (uint32_t)(imm);
+        else if (16 == 16) cpuref_reg_16((op&7)) = (uint16_t)(imm);
         break;
     case 0xC0: /* C0h RETw i      spec: 0xC0 iw16 */
     case 0xC2: /* C2h RETw i      spec: 0xC2 iw16 */
@@ -3056,6 +3056,7 @@ switch (op=IPFB()) {
     case 0xF4: /* F4h HLT       spec: 0xF4 */
         break;
     case 0xF5: /* F5h CMC       spec: 0xF5 */
+        CPU_CMC();
         break;
     case 0xF6: /* F6h        spec:  */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
@@ -3110,16 +3111,22 @@ switch (op=IPFB()) {
 /* End of opcodes starting with F7h */
         break;
     case 0xF8: /* F8h CLC       spec: 0xF8 */
+        CPU_CLC();
         break;
     case 0xF9: /* F9h STC       spec: 0xF9 */
+        CPU_STC();
         break;
     case 0xFA: /* FAh CLI       spec: 0xFA */
+        CPU_CLI();
         break;
     case 0xFB: /* FBh STI       spec: 0xFB */
+        CPU_STI();
         break;
     case 0xFC: /* FCh CLD       spec: 0xFC */
+        CPU_CLD();
         break;
     case 0xFD: /* FDh STD       spec: 0xFD */
+        CPU_STD();
         break;
     case 0xFE: /* FEh        spec:  */
         IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);
