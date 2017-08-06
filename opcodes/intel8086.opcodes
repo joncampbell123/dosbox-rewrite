@@ -4,6 +4,7 @@
 ; word(...)             instruction refers to word-sized resource (16-bit or 32-bit depending on CPU mode and 66h prefix)
 ; word16(...)           instruction refers to 16-bit word-size resource
 ; word32(...)           instruction refers to 32-bit word-size resource
+; word48(...)           instruction refers to 48-bit word-size resource
 ; word64(...)           instruction refers to 64-bit word-size resource
 ; int(...)              instruction refers to word-sized resource treated as signed 16-bit value
 ; int8(...)             instruction refers to byte-sized resource treated as signed 8-bit value
@@ -48,6 +49,10 @@
 ;                       ib = byte value, unsigned
 ;                       iws = word value, signed (word is 16 or 32-bit depending on CPU mode and 66h prefix)
 ;                       iw = word value, unsigned
+;                       iw16s = 16-bit word value
+;                       iw16 = 16-bit word value
+;                       iw32s = 32-bit word value
+;                       iw32 = 32-bit word value
 ;                       iop = unsigned value according to opsize
 ;                       iops = signed value according to opsize
 
