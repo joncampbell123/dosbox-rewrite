@@ -24,6 +24,23 @@
 ; d                     data (DL/DX/EDX/RDX)
 ; S                     source (SI/ESI/RSI)
 ; D                     dest (DI/EDI/RDI)
+; al ah bl bh cl ch dl dh  8-bit registers, directly by name
+; ax bx cx dx si di bp sp  16-bit registers, directly by name
+; eax ebx ecx edx esi edi ebp esp  32-bit registers, directly by name
+; cr(reg)               386 control register
+; dr(reg)               386 debug register
+; tr(reg)               386 test register
+; msw                   286 machine status word (lower 16 bits of CR0 on 386)
+; cc                    flags register (entire contents)
+; cc(carry)             carry flag
+; cc(overflow)          overflow flag
+; cc(parity)            parity flag
+; cc(aux)               aux flag (also called adjust in other refs?)
+; cc(zero)              zero flag
+; cc(sign)              sign flag
+; cc(trap)              trap flag
+; cc(intenable)         interrupt enable flag
+; cc(dir)               direction flag
 ; stackptr              stack pointer (SP/ESP/RSP)
 ; frameptr              frame pointer (BP/EBP/RBP)
 ; i                     immediate value (from opcode bytes)
