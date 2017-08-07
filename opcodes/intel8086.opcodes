@@ -89,7 +89,7 @@ symbol                                                      ; MUST BE FIRST. Req
     enum                undefined                           ; undefined opcode
     opname              "(undefined)"                       ;
     exception           #UD                                 ; causes Undefined Opcode exception unconditionally
-end
+end                                                         ;
 ;-----------------------------------------------------------;
 
 ;-----------------------------------------------------------;
@@ -182,7 +182,7 @@ end                                                         ;
 prefix                                                      ; LOCK prefix
     encoding            0xF0                                ;
     prefixname          "LOCK"                              ; shown in debugger
-    flag                lock=1                              ; flag to set in decompiler
+    state               lock=1                              ; flag to set in decompiler
 end                                                         ;
 ;-----------------------------------------------------------;
 
