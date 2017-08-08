@@ -111,7 +111,7 @@ end                                                         ;
                                                             ;
 opcode                                                      ; ADD reg, r/m
     encoding            range(0x02-0x03) mod/reg/rm         ; 0x02 or 0x03  000000dw d=direction==1 w=wordsize
-    opsize              ternary(opbyte&1?word:byte)              ; word size (ex. AX/EAX/RAX) if a & 1, else byte size (ex. AL)
+    opsize              ternary(opbyte&1?word:byte)         ; word size (ex. AX/EAX/RAX) if a & 1, else byte size (ex. AL)
     symbol              add__reg_rm                         ; ADD instruction
 end                                                         ;
 ;-----------------------------------------------------------;
