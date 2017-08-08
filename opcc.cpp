@@ -116,6 +116,16 @@ static void opcc_eat_comments(char *s) {
     *t = 0; // SNIP
 }
 
+static bool line_get(void) {
+    if (line == NULL) return false;
+    if (fgets(line,sizeof(line)-1,source_fp) == NULL) return false;
+    source_file_line++;
+
+    opcc_chomp(line);
+    opcc_eat_comments(line);
+    return true;
+}
+
 static int parse_argv(int argc,char **argv) {
     char *a;
     int i;
@@ -190,7 +200,7 @@ int main(int argc,char **argv) {
         fprintf(stderr,"Unable to open input\n");
         return 1;
     }
-    source_file_line = 1;
+    source_file_line = 0;
 
     // open output file/stdout
     if (dest_stdout)
@@ -209,12 +219,7 @@ int main(int argc,char **argv) {
 
     // parse!
     memset(line,0,sizeof(line));
-    while (!feof(source_fp)) {
-        if (fgets(line,sizeof(line)-1,source_fp) == NULL) break;
-        opcc_chomp(line);
-        opcc_eat_comments(line);
-
-        source_file_line++;
+    while (line_get()) {
     }
 
     fclose(source_fp);
