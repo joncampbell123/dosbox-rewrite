@@ -89,7 +89,7 @@ void OPCC_Symbol_Init(void) {
     assert(Symbols.size() == symbol_stop);
     assert(OPCC_SymbolToIndex(OPCC_Symbol_New("stop")) == symbol_stop);
 
-    // auto-create "stop" symbol. this tells the state machine to stop.
+    // auto-create "undefined" symbol. disassembler can show "unknown", emulator can throw #UD exception unless 8088 emulation which is then a NO-OP
     assert(Symbols.size() == symbol_undefined);
     assert(OPCC_SymbolToIndex(OPCC_Symbol_New("undefined")) == symbol_undefined);
 }

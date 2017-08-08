@@ -85,21 +85,6 @@
 ;    Intel 8088 datasheet, 8086/8088 Instruction Set Summary
 
 ;-----------------------------------------------------------;
-symbol                                                      ; MUST BE FIRST. Required to be first by opcc
-    enum                undefined                           ; undefined opcode
-    opname              "(undefined)"                       ;
-    exception           #UD                                 ; causes Undefined Opcode exception unconditionally
-end                                                         ;
-;-----------------------------------------------------------;
-
-;-----------------------------------------------------------;
-symbol                                                      ; 8086 undefined opcode. No exception
-    enum                undefined_silent                    ;
-    opname              "(undefined silent)"                ;
-end                                                         ;
-;-----------------------------------------------------------;
-
-;-----------------------------------------------------------;
 symbol                                                      ;
     enum                add__rm_reg                         ; ADD r/m, reg
     opname              "ADD"                               ; instruction name shown in debugger
