@@ -41,6 +41,8 @@ public:
 std::vector<OPCC_Symbol>        Symbols;
 std::map<std::string,size_t>    SymbolsByEnum;
 
+static OPCC_Symbol              Symbol_none;
+
 OPCC_Symbol &OPCC_Symbol_New(const char *enum_name) {
     const size_t index = Symbols.size();
 
@@ -55,7 +57,16 @@ OPCC_Symbol &OPCC_Symbol_New(const char *enum_name) {
     return v;
 }
 
-OPCC_Symbol &OPCC_Symbol_LookupOrCreate(const char *s) {
+OPCC_Symbol &OPCC_Symbol_Create(const char *s) {
+    auto i = SymbolsByEnum.find(s);
+
+    if (i != SymbolsByEnum.end())
+        return Symbol_none;
+
+    return OPCC_Symbol_New(s);
+}
+
+OPCC_Symbol &OPCC_Symbol_Lookup(const char *s) {
     auto i = SymbolsByEnum.find(s);
 
     if (i != SymbolsByEnum.end()) {
@@ -63,7 +74,7 @@ OPCC_Symbol &OPCC_Symbol_LookupOrCreate(const char *s) {
         return Symbols[i->second];
     }
 
-    return OPCC_Symbol_New(s);
+    return Symbol_none;
 }
 
 size_t OPCC_SymbolToIndex(const OPCC_Symbol &s) {
