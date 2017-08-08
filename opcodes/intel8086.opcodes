@@ -94,8 +94,8 @@ symbol                                                      ;
 end                                                         ;
                                                             ;
 opcode                                                      ; ADD r/m, reg
-    encoding            a=0x00-0x01 mod/reg/rm              ; 0x00 or 0x01  000000dw d=direction==0 w=wordsize
-    opsize              a & 1 ? word : byte                 ; word size (ex. AX/EAX/RAX) if a & 1, else byte size (ex. AL)
+    encoding            range(0x00-0x01) mod/reg/rm         ; 0x00 or 0x01  000000dw d=direction==0 w=wordsize
+    opsize              ternary(opbyte&1?word:byte)         ; word size (ex. AX/EAX/RAX) if a & 1, else byte size (ex. AL)
     symbol              add__rm_reg                         ; ADD instruction
 end                                                         ;
 ;-----------------------------------------------------------;
@@ -110,8 +110,8 @@ symbol                                                      ;
 end                                                         ;
                                                             ;
 opcode                                                      ; ADD reg, r/m
-    encoding            a=0x02-0x03 mod/reg/rm              ; 0x02 or 0x03  000000dw d=direction==1 w=wordsize
-    opsize              a & 1 ? word : byte                 ; word size (ex. AX/EAX/RAX) if a & 1, else byte size (ex. AL)
+    encoding            range(0x02-0x03) mod/reg/rm         ; 0x02 or 0x03  000000dw d=direction==1 w=wordsize
+    opsize              ternary(opbyte&1?word:byte)              ; word size (ex. AX/EAX/RAX) if a & 1, else byte size (ex. AL)
     symbol              add__reg_rm                         ; ADD instruction
 end                                                         ;
 ;-----------------------------------------------------------;
@@ -128,8 +128,8 @@ end                                                         ;
 
 ;-----------------------------------------------------------;
 opcode                                                      ; ADD accum, immediate
-    encoding            a=0x04-0x05 iop                     ; 0x04 or 0x05  0000010w w=wordsize  followed by immediate value
-    opsize              a & 1 ? word : byte                 ; word size (AX/EAX/RAX) if a & 1, else byte size (AL)
+    encoding            range(0x04-0x05) iop                ; 0x04 or 0x05  0000010w w=wordsize  followed by immediate value
+    opsize              ternary(opbyte&1?word:byte)         ; word size (AX/EAX/RAX) if a & 1, else byte size (AL)
     reg                 a                                   ; reg=accumulator
     symbol              add__reg_imm                        ; ADD instruction
 end                                                         ;
@@ -147,18 +147,18 @@ end                                                         ;
 
 ;-----------------------------------------------------------;
 opcode                                                      ; ADD r/m, immediate
-    encoding            a=0x80-0x81 mod/reg/rm iop          ; 0x80 or 0x81  1000000w w=wordsize  mod/reg/rm  followed by immediate value
+    encoding            range(0x80-0x81) mod/reg/rm iop     ; 0x80 or 0x81  1000000w w=wordsize  mod/reg/rm  followed by immediate value
     encoding-constraint reg==0                              ; reg field of mod/reg/rm must be zero
-    opsize              a & 1 ? word : byte                 ; word size (AX/EAX/RAX) if a & 1, else byte size (AL)
+    opsize              ternary(opbyte&1?word:byte)         ; word size (AX/EAX/RAX) if a & 1, else byte size (AL)
     symbol              add__rm_imm                         ; ADD instruction
 end                                                         ;
 ;-----------------------------------------------------------;
 
 ;-----------------------------------------------------------;
 opcode                                                      ; ADD r/m, immediate
-    encoding            a=0x82-0x83 mod/reg/rm ibs          ; 0x82 or 0x83  1000001w w=wordsize  mod/reg/rm  followed by immediate value (signed byte to be sign-extended)
+    encoding            range(0x82-0x83) mod/reg/rm ibs     ; 0x82 or 0x83  1000001w w=wordsize  mod/reg/rm  followed by immediate value (signed byte to be sign-extended)
     encoding-constraint reg==0                              ; reg field of mod/reg/rm must be zero
-    opsize              a & 1 ? word : byte                 ; word size (AX/EAX/RAX) if a & 1, else byte size (AL)
+    opsize              ternary(opbyte&1?word:byte)         ; word size (AX/EAX/RAX) if a & 1, else byte size (AL)
     symbol              add__rm_imm                         ; ADD instruction
 end                                                         ;
 ;-----------------------------------------------------------;
