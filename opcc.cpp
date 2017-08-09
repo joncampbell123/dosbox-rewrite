@@ -192,6 +192,40 @@ static bool line_get(void) {
     return true;
 }
 
+bool isunquotednamechar(char c) {
+    return isalpha(c) || isdigit(c) || c == '_';
+}
+
+static std::string line_get_unquoted_name(void) {
+    char *start;
+
+    line_skip_whitespace();
+    start = line_parse;
+
+    while (*line_parse && isunquotednamechar(*line_parse))
+        line_parse++;
+
+    assert(start <= line_parse);
+    return std::string(start,(size_t)(line_parse - start));
+}
+
+static std::string line_get_name(void) {
+    line_skip_whitespace();
+
+    if (*line_parse == '\"') {
+        char *start = ++line_parse;
+        while (*line_parse && *line_parse != '\"')
+            line_parse++;
+
+        char *end = line_parse;
+        assert(start <= end);
+        if (*line_parse == '\"') line_parse++;
+        return std::string(start,(size_t)(end - start));
+    }
+
+    return line_get_unquoted_name();
+}
+
 // WARNING: recursive
 static Token line_get_token(void) {
     char *start;
@@ -232,12 +266,25 @@ static Token line_get_token(void) {
             }
             else if (!strcmp(start,"enum")) {
                 r.token = Token::Enum;
+                /* what follows is an enum name */
+                r.string = line_get_unquoted_name();
+                if (r.string.empty()) {
+                    r.token = Token::Error;
+                    r.error_source = start;
+                    return r;
+                }
             }
             else if (!strcmp(start,"opcode")) {
                 r.token = Token::Opcode;
             }
             else if (!strcmp(start,"opname")) {
                 r.token = Token::Opname;
+                r.string = line_get_name(); // quoted or unquoted
+                if (r.string.empty()) {
+                    r.token = Token::Error;
+                    r.error_source = start;
+                    return r;
+                }
             }
             else if (!strcmp(start,"opsize")) {
                 r.token = Token::Opsize;
@@ -350,6 +397,61 @@ void fprintf_error_pos(FILE *fp,const Token &t,const char *msg...) {
     fprintf(fp,"line %ld, col %u: at %s\n",t.line,t.pos,t.error_source.c_str());
 }
 
+/* symbol
+ *    ...
+ * end
+ *
+ * at entry to this function, the line containing "symbol" has been parsed.
+ * it's up to us to fetch lines until we hit "end" */
+bool parse_symbol_block(void) {
+    bool ret = true,end = false;
+    Token t;
+
+    t.pos = 1;
+    t.line = source_file_line;
+    while (line_get()) {
+        t = line_get_token();
+
+        if (t.token == Token::Error) {
+            fprintf_error_pos(stderr,t,"Error in ");
+            ret = false;
+            break;
+        }
+        else if (t.token == Token::End) {
+            end = true;
+        }
+        else if (t.token == Token::Enum) {
+            /* enum   <name> */
+            /* name is given in "string" */
+            assert(!t.string.empty());
+
+            fprintf(stderr,"enum: '%s'\n",t.string.c_str());
+        }
+        else if (t.token == Token::Opname) {
+            /* enum   <name> */
+            /* name is given in "string" */
+            assert(!t.string.empty());
+
+            fprintf(stderr,"opname: '%s'\n",t.string.c_str());
+        }
+        else if (t.token == Token::None) {
+            continue;
+        }
+        else {
+            fprintf_error_pos(stderr,t,"Unexpected token at ");
+            ret = false;
+            break;
+        }
+    }
+
+    if (ret && !end) {
+        fprintf_error_pos(stderr,t,"No End token, stopping parsing at ");
+        ret = false;
+    }
+
+    return ret;
+}
+
 int main(int argc,char **argv) {
     int ret = 0;
 
@@ -396,8 +498,19 @@ int main(int argc,char **argv) {
         else if (t.token == Token::None) {
             continue;
         }
+        else if (t.token == Token::Symbol) {
+            /* no additional tokens on the same line should exist */
+            t = line_get_token();
+            if (t.token != Token::None)
+                fprintf_error_pos(stderr,t,"Extra tokens ignored at ");
+
+            if (!parse_symbol_block()) {
+                ret = 1;
+                break;
+            }
+        }
         else {
-            fprintf_error_pos(stderr,t,"Unexpected token at ",t.line,t.pos);
+            fprintf_error_pos(stderr,t,"Unexpected token at ");
             ret = 1;
             break;
         }
