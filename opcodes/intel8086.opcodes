@@ -147,8 +147,7 @@ end                                                         ;
 
 ;-----------------------------------------------------------;
 opcode                                                      ; ADD r/m, immediate
-    encoding            range(0x80-0x81) mod/reg/rm iop     ; 0x80 or 0x81  1000000w w=wordsize  mod/reg/rm  followed by immediate value
-    encoding-constraint reg==0                              ; reg field of mod/reg/rm must be zero
+    encoding            range(0x80-0x81) mod/reg/rm /0 iop  ; 0x80 or 0x81  1000000w w=wordsize  mod/reg/rm  followed by immediate value
     opsize              ternary(opbyte&1?word:byte)         ; word size (AX/EAX/RAX) if a & 1, else byte size (AL)
     symbol              add__rm_imm                         ; ADD instruction
 end                                                         ;
@@ -156,8 +155,7 @@ end                                                         ;
 
 ;-----------------------------------------------------------;
 opcode                                                      ; ADD r/m, immediate
-    encoding            range(0x82-0x83) mod/reg/rm ibs     ; 0x82 or 0x83  1000001w w=wordsize  mod/reg/rm  followed by immediate value (signed byte to be sign-extended)
-    encoding-constraint reg==0                              ; reg field of mod/reg/rm must be zero
+    encoding            range(0x82-0x83) mod/reg/rm /0 ibs  ; 0x82 or 0x83  1000001w w=wordsize  mod/reg/rm  followed by immediate value (signed byte to be sign-extended)
     opsize              ternary(opbyte&1?word:byte)         ; word size (AX/EAX/RAX) if a & 1, else byte size (AL)
     symbol              add__rm_imm                         ; ADD instruction
 end                                                         ;

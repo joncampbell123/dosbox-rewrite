@@ -12,6 +12,53 @@
 #include <vector>
 #include <map>
 
+struct Token {
+    enum TokenValue {
+        None=0,
+        Error,
+        End,
+        Enum,
+        Opcode,
+        Opname,         // string = opname
+        Display,
+        Reads,
+        Writes,
+        Comma,
+        Opsize,
+        ModRegRm,
+        Range,
+        Ternary,
+        OpByte,
+        Byte,
+        Word,
+        Immediate,      // "i"
+        Mod,
+        Reg,
+        Rm,
+        Iop,
+        Ibs,
+        RegSpec,        // Intel-ism for value of reg field in combo opcodes i.e. reg == 0 spec by /0
+        HexValue,
+        PrefixName,
+        Encoding,
+        State,
+        Symbol,
+        AssignSign,     // =
+        EqualsSign,     // ==
+        NotEqualsSign   // !=
+    };
+
+    std::string         string,string2;
+    std::string         error_source;
+    uint64_t            value;
+    enum TokenValue     token;
+    long                line;
+    unsigned int        pos;
+
+    Token() : value(0), token(None), line(0), pos(0) {
+    }
+};
+
 std::string         source_file;
 long                source_file_line=1;
 bool                source_stdin=false;
@@ -122,19 +169,114 @@ static void opcc_chomp(char *s) {
 }
 
 static void opcc_eat_comments(char *s) {
-    char *t = strrchr(s,';');
+    char *t = strchr(s,';');
     if (t == NULL) return;
     *t = 0; // SNIP
+}
+
+static char *line_parse = line;
+
+static void line_skip_whitespace(void) {
+    while (*line_parse == ' ' || *line_parse == '\t') line_parse++;
 }
 
 static bool line_get(void) {
     if (line == NULL) return false;
     if (fgets(line,sizeof(line)-1,source_fp) == NULL) return false;
     source_file_line++;
+    line_parse = line;
 
     opcc_chomp(line);
     opcc_eat_comments(line);
     return true;
+}
+
+// WARNING: recursive
+static Token line_get_token(void) {
+    char *start;
+    Token r;
+
+    r.line = source_file_line;
+    line_skip_whitespace();
+    r.pos = (unsigned int)(line_parse + 1 - line);
+    if (*line_parse == 0)
+        return r;
+
+    start = line_parse;
+    if (isalpha(*line_parse)) {
+        /* read until whitespace or open parens */
+        while (*line_parse && !(*line_parse == ' ' || *line_parse == '\t' || *line_parse == '(')) line_parse++;
+
+        if (*line_parse == '(') {
+            // TODO
+            r.token = Token::Error;
+            r.error_source = start;
+            return r;
+        }
+        else {
+            if (*line_parse != 0) {
+                *line_parse++ = 0;
+                line_skip_whitespace();
+            }
+
+            // sorry, I'm not going out of my way to make it case insensitive
+                 if (!strcmp(start,"display")) {
+                r.token = Token::Display;
+            }
+            else if (!strcmp(start,"encoding")) {
+                r.token = Token::Encoding;
+            }
+            else if (!strcmp(start,"end")) {
+                r.token = Token::End;
+            }
+            else if (!strcmp(start,"enum")) {
+                r.token = Token::Enum;
+            }
+            else if (!strcmp(start,"opcode")) {
+                r.token = Token::Opcode;
+            }
+            else if (!strcmp(start,"opname")) {
+                r.token = Token::Opname;
+            }
+            else if (!strcmp(start,"opsize")) {
+                r.token = Token::Opsize;
+            }
+            else if (!strcmp(start,"reads")) {
+                r.token = Token::Reads;
+            }
+            else if (!strcmp(start,"symbol")) {
+                r.token = Token::Symbol;
+            }
+            else if (!strcmp(start,"writes")) {
+                r.token = Token::Writes;
+            }
+            else {
+                r.token = Token::Error;
+                r.error_source = start;
+                return r;
+            }
+        }
+    }
+    else if (isdigit(*line_parse)) {
+        r.value = (uint64_t)strtoull(line_parse,&line_parse,0);
+    }
+    else if (*line_parse == '/') { // Intel-ism for specifying the value of reg in mod/reg/rm   /0 /1 /2 /3 /4 /5 /6 /7
+        line_parse++;
+        if (!isdigit(*line_parse)) {
+            r.token = Token::Error;
+            r.error_source = start;
+            return r;
+        }
+        r.value = (uint64_t)strtoull(line_parse,&line_parse,0);
+    }
+    else {
+        r.token = Token::Error;
+        r.error_source = start;
+        return r;
+    }
+
+    line_skip_whitespace();
+    return r;
 }
 
 static int parse_argv(int argc,char **argv) {
@@ -198,6 +340,8 @@ static int parse_argv(int argc,char **argv) {
 }
 
 int main(int argc,char **argv) {
+    int ret = 0;
+
     if (parse_argv(argc,argv))
         return 1;
 
@@ -231,10 +375,25 @@ int main(int argc,char **argv) {
     // parse!
     memset(line,0,sizeof(line));
     while (line_get()) {
+        Token t = line_get_token();
+
+        if (t.token == Token::Error) {
+            fprintf(stderr,"Error in line %ld, col %u: at %s\n",t.line,t.pos,t.error_source.c_str());
+            ret = 1;
+            break;
+        }
+        else if (t.token == Token::None) {
+            continue;
+        }
+        else {
+            fprintf(stderr,"Unexpected token at line %ld, col %u.\n",t.line,t.pos);
+            ret = 1;
+            break;
+        }
     }
 
     fclose(source_fp);
     fclose(dest_fp);
-    return 0;
+    return ret;
 }
 
