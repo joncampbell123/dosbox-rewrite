@@ -41,6 +41,8 @@ struct Token {
         RegSpec,        // Intel-ism for value of reg field in combo opcodes i.e. reg == 0 spec by /0
         HexValue,
         PrefixName,
+        ParensOpen,
+        ParensClose,
         Encoding,
         State,
         Symbol,
@@ -90,6 +92,16 @@ std::vector<OPCC_Symbol>        Symbols;
 std::map<std::string,size_t>    SymbolsByEnum;
 
 static OPCC_Symbol              Symbol_none;
+
+void fprintf_error_pos(FILE *fp,const Token &t,const char *msg...) {
+    va_list va;
+
+    va_start(va,msg);
+    vfprintf(fp,msg,va);
+    va_end(va);
+
+    fprintf(fp,"line %ld, col %u: at %s\n",t.line,t.pos,t.error_source.c_str());
+}
 
 OPCC_Symbol &OPCC_Symbol_New(const char *enum_name) {
     const size_t index = Symbols.size();
@@ -240,31 +252,77 @@ static Token line_get_token(void) {
     start = line_parse;
     if (isalpha(*line_parse)) {
         /* read until whitespace or open parens */
-        while (*line_parse && !(*line_parse == ' ' || *line_parse == '\t' || *line_parse == '(')) line_parse++;
+        while (*line_parse && !(*line_parse == ' ' || *line_parse == '\t' || *line_parse == '(' || *line_parse == ')' || *line_parse == ',')) line_parse++;
 
         if (*line_parse == '(') {
-            // TODO
+            /* this is where recursion comes in! */
+            bool closeparens = false;
+            Token st;
+
+            std::string funcname = std::string(start,(size_t)(line_parse - start));
+
+            line_parse++;
+            line_skip_whitespace();
             r.token = Token::Error;
-            r.error_source = start;
-            return r;
-        }
-        else {
-            if (*line_parse != 0) {
-                *line_parse++ = 0;
-                line_skip_whitespace();
+
+            if (funcname == "opsize") {
+                /* opsize(reg), opsize(rm), etc */
+                st = line_get_token();
+                if (st.token == Token::Error) {
+                    fprintf_error_pos(stderr,st,"Error in parenthesis ");
+                }
+                else if (
+                    st.token == Token::Reg ||
+                    st.token == Token::Rm) {
+                    r.token = Token::Opsize;
+                    r.value = (uint64_t)st.token;
+                }
+                else {
+                    fprintf_error_pos(stderr,st,"Unexpected token ");
+                }
+
+                /* should close with parenthesis */
+                if (!closeparens && r.token != Token::Error) {
+                    st = line_get_token();
+                    if (st.token != Token::ParensClose) {
+                        fprintf_error_pos(stderr,st,"Failure to close parenthesis ");
+                        r.token = Token::Error;
+                    }
+                    else {
+                        closeparens = true;
+                    }
+                }
+            }
+            else {
+                fprintf_error_pos(stderr,r,"Unknown function '%s' ",start);
             }
 
+            if (r.token != Token::Error && !closeparens) {
+                fprintf_error_pos(stderr,st,"Failure to close parenthesis ");
+                r.token = Token::Error;
+            }
+
+            if (r.token == Token::Error)
+                r.error_source = start;
+        }
+        else {
+            std::string tokenname = std::string(start,(size_t)(line_parse - start));
+
+            line_skip_whitespace();
+
+//            fprintf(stderr,"token '%s'\n",tokenname.c_str());
+
             // sorry, I'm not going out of my way to make it case insensitive
-                 if (!strcmp(start,"display")) {
+                 if (tokenname == "display") {
                 r.token = Token::Display;
             }
-            else if (!strcmp(start,"encoding")) {
+            else if (tokenname == "encoding") {
                 r.token = Token::Encoding;
             }
-            else if (!strcmp(start,"end")) {
+            else if (tokenname == "end") {
                 r.token = Token::End;
             }
-            else if (!strcmp(start,"enum")) {
+            else if (tokenname == "enum") {
                 r.token = Token::Enum;
                 /* what follows is an enum name */
                 r.string = line_get_unquoted_name();
@@ -274,10 +332,10 @@ static Token line_get_token(void) {
                     return r;
                 }
             }
-            else if (!strcmp(start,"opcode")) {
+            else if (tokenname == "opcode") {
                 r.token = Token::Opcode;
             }
-            else if (!strcmp(start,"opname")) {
+            else if (tokenname == "opname") {
                 r.token = Token::Opname;
                 r.string = line_get_name(); // quoted or unquoted
                 if (r.string.empty()) {
@@ -286,16 +344,23 @@ static Token line_get_token(void) {
                     return r;
                 }
             }
-            else if (!strcmp(start,"opsize")) {
+            else if (tokenname == "opsize") {
                 r.token = Token::Opsize;
+                r.value = (uint64_t)Token::None;
             }
-            else if (!strcmp(start,"reads")) {
+            else if (tokenname == "reads") {
                 r.token = Token::Reads;
             }
-            else if (!strcmp(start,"symbol")) {
+            else if (tokenname == "symbol") {
                 r.token = Token::Symbol;
             }
-            else if (!strcmp(start,"writes")) {
+            else if (tokenname == "rm") {
+                r.token = Token::Rm;
+            }
+            else if (tokenname == "reg") {
+                r.token = Token::Reg;
+            }
+            else if (tokenname == "writes") {
                 r.token = Token::Writes;
             }
             else {
@@ -316,6 +381,18 @@ static Token line_get_token(void) {
             return r;
         }
         r.value = (uint64_t)strtoull(line_parse,&line_parse,0);
+    }
+    else if (*line_parse == ',') {
+        r.token = Token::Comma;
+        line_parse++;
+    }
+    else if (*line_parse == '(') {
+        r.token = Token::ParensOpen;
+        line_parse++;
+    }
+    else if (*line_parse == ')') {
+        r.token = Token::ParensClose;
+        line_parse++;
     }
     else {
         r.token = Token::Error;
@@ -387,16 +464,6 @@ static int parse_argv(int argc,char **argv) {
     return 0;
 }
 
-void fprintf_error_pos(FILE *fp,const Token &t,const char *msg...) {
-    va_list va;
-
-    va_start(va,msg);
-    vfprintf(fp,msg,va);
-    va_end(va);
-
-    fprintf(fp,"line %ld, col %u: at %s\n",t.line,t.pos,t.error_source.c_str());
-}
-
 /* symbol
  *    ...
  * end
@@ -433,6 +500,39 @@ bool parse_symbol_block(void) {
             assert(!t.string.empty());
 
             fprintf(stderr,"opname: '%s'\n",t.string.c_str());
+        }
+        else if (t.token == Token::Display) {
+            std::vector<Token> dsp;
+            Token st;
+
+            /* display    (opcode spec) */
+            do {
+                st = line_get_token();
+                if (st.token == Token::Error || st.token == Token::None)
+                    break;
+                else if (st.token == Token::Opsize) { /* opsize(reg) */
+                    fprintf(stderr,"opsize(token=%llu)\n",(unsigned long long)st.value);
+                }
+                else {
+                    st.token = Token::Error;
+                    break;
+                }
+
+                /* after the spec, I require a comma, or end of line */
+                st = line_get_token();
+                if (st.token == Token::Error || st.token == Token::None)
+                    break;
+                if (st.token != Token::Comma) {
+                    st.token = Token::Error;
+                    break;
+                }
+            } while (1);
+
+            if (st.token == Token::Error) {
+                fprintf_error_pos(stderr,t,"Error in ");
+                ret = false;
+                break;
+            }
         }
         else if (t.token == Token::None) {
             continue;
