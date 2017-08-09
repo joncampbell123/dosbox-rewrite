@@ -2,6 +2,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <string.h>
 #include <unistd.h>
 #include <assert.h>
@@ -339,6 +340,16 @@ static int parse_argv(int argc,char **argv) {
     return 0;
 }
 
+void fprintf_error_pos(FILE *fp,const Token &t,const char *msg...) {
+    va_list va;
+
+    va_start(va,msg);
+    vfprintf(fp,msg,va);
+    va_end(va);
+
+    fprintf(fp,"line %ld, col %u: at %s\n",t.line,t.pos,t.error_source.c_str());
+}
+
 int main(int argc,char **argv) {
     int ret = 0;
 
@@ -378,7 +389,7 @@ int main(int argc,char **argv) {
         Token t = line_get_token();
 
         if (t.token == Token::Error) {
-            fprintf(stderr,"Error in line %ld, col %u: at %s\n",t.line,t.pos,t.error_source.c_str());
+            fprintf_error_pos(stderr,t,"Error in ");
             ret = 1;
             break;
         }
@@ -386,7 +397,7 @@ int main(int argc,char **argv) {
             continue;
         }
         else {
-            fprintf(stderr,"Unexpected token at line %ld, col %u.\n",t.line,t.pos);
+            fprintf_error_pos(stderr,t,"Unexpected token at ",t.line,t.pos);
             ret = 1;
             break;
         }
