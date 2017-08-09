@@ -25,7 +25,7 @@ struct Token {
         Reads,
         Writes,
         Comma,
-        Opsize,
+        Opsize,         // opsize(reg), opsize(rm), opsize(cpureg), etc. token of param in value
         ModRegRm,
         Range,
         Ternary,
@@ -273,7 +273,8 @@ static Token line_get_token(void) {
                 }
                 else if (
                     st.token == Token::Reg ||
-                    st.token == Token::Rm) {
+                    st.token == Token::Rm ||
+                    st.token == Token::Immediate) {
                     r.token = Token::Opsize;
                     r.value = (uint64_t)st.token;
                 }
@@ -359,6 +360,9 @@ static Token line_get_token(void) {
             }
             else if (tokenname == "reg") {
                 r.token = Token::Reg;
+            }
+            else if (tokenname == "i") {
+                r.token = Token::Immediate;
             }
             else if (tokenname == "writes") {
                 r.token = Token::Writes;
@@ -486,6 +490,7 @@ bool parse_symbol_block(void) {
         }
         else if (t.token == Token::End) {
             end = true;
+            break;
         }
         else if (t.token == Token::Enum) {
             /* enum   <name> */
@@ -501,7 +506,9 @@ bool parse_symbol_block(void) {
 
             fprintf(stderr,"opname: '%s'\n",t.string.c_str());
         }
-        else if (t.token == Token::Display) {
+        else if (t.token == Token::Display ||
+                 t.token == Token::Writes ||
+                 t.token == Token::Reads) {
             std::vector<Token> dsp;
             Token st;
 
@@ -533,6 +540,61 @@ bool parse_symbol_block(void) {
                 ret = false;
                 break;
             }
+        }
+        else if (t.token == Token::None) {
+            continue;
+        }
+        else {
+            fprintf_error_pos(stderr,t,"Unexpected token at ");
+            ret = false;
+            break;
+        }
+    }
+
+    if (ret && !end) {
+        fprintf_error_pos(stderr,t,"No End token, stopping parsing at ");
+        ret = false;
+    }
+
+    return ret;
+}
+
+/* opcode
+ *    ...
+ * end
+ *
+ * at entry to this function, the line containing "opcode" has been parsed.
+ * it's up to us to fetch lines until we hit "end" */
+bool parse_opcode_block(void) {
+    bool ret = true,end = false;
+    Token t;
+
+    t.pos = 1;
+    t.line = source_file_line;
+    while (line_get()) {
+        t = line_get_token();
+
+        if (t.token == Token::Error) {
+            fprintf_error_pos(stderr,t,"Error in ");
+            ret = false;
+            break;
+        }
+        else if (t.token == Token::End) {
+            end = true;
+            break;
+        }
+        else if (t.token == Token::Enum) {
+            /* enum   <name> */
+            /* name is given in "string" */
+            assert(!t.string.empty());
+
+            fprintf(stderr,"enum: '%s'\n",t.string.c_str());
+        }
+        else if (t.token == Token::Encoding) {
+            // TODO
+        }
+        else if (t.token == Token::Opsize) {
+            // TODO
         }
         else if (t.token == Token::None) {
             continue;
@@ -605,6 +667,17 @@ int main(int argc,char **argv) {
                 fprintf_error_pos(stderr,t,"Extra tokens ignored at ");
 
             if (!parse_symbol_block()) {
+                ret = 1;
+                break;
+            }
+        }
+        else if (t.token == Token::Opcode) {
+            /* no additional tokens on the same line should exist */
+            t = line_get_token();
+            if (t.token != Token::None)
+                fprintf_error_pos(stderr,t,"Extra tokens ignored at ");
+
+            if (!parse_opcode_block()) {
                 ret = 1;
                 break;
             }
