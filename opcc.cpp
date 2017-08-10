@@ -874,6 +874,7 @@ int main(int argc,char **argv) {
     fprintf(dest_fp,"/* Symbols parsed: */\n");
     for (size_t si=0;si < Symbols.size();si++) Symbols[si].fprintf_debug(dest_fp);
     fprintf(dest_fp,"/* -------------------------------------- */\n");
+    fprintf(dest_fp,"\n");
 
     fclose(source_fp);
     fclose(dest_fp);
