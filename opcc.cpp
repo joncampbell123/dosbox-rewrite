@@ -982,7 +982,7 @@ bool parse_opcode_block(void) {
                 MAIN,
                 MODREGRM,
                 MODREGRM_CLARIFY,
-                MAIN_TAIL,      // only for 3dnow! opcodes
+                MAIN_TAIL,      // only for 3dnow! opcode encoding (0x0F 0x0F mod/reg/rm OPCODE)
                 IMMEDIATE
             };
             int state = PREFIX;
