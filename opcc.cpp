@@ -76,6 +76,11 @@ struct Token {
             sv.fprintf_debug(fp);
             fprintf(fp,")");
         }
+        else if (token == Range) {
+            fprintf(fp,"range(");
+            fprintf(fp,"0x%llX-0x%llX",(unsigned long long)value,(unsigned long long)value2);
+            fprintf(fp,")");
+        }
         else if (token == Ternary) {
             fprintf(fp,"ternary(");
             {
@@ -102,8 +107,14 @@ struct Token {
             }
             fprintf(fp,")");
         }
+        else if (token == ModRegRm)
+            fprintf(fp,"mod/reg/rm");
         else if (token == HexValue)
             fprintf(fp,"0x%llX",(unsigned long long)value);
+        else if (token == Iop)
+            fprintf(fp,"iop");
+        else if (token == Ibs)
+            fprintf(fp,"ibs");
         else if (token == QuestionMark)
             fprintf(fp,"?");
         else if (token == ColonMark)
@@ -261,7 +272,7 @@ OPCC_Symbol &OPCC_IndexToSymbol(const size_t i) {
 
 class OPCC_Opcode {
 public:
-    OPCC_Opcode() : Symbol_Index(~((size_t)0)) {
+    OPCC_Opcode() : reg_match(-1), Symbol_Index(~((size_t)0)) {
     }
     ~OPCC_Opcode() {
     }
@@ -274,12 +285,25 @@ public:
             (std::string("\"")+sym.opname_string+"\"").c_str());
 
         if (opsize.token != Token::None) {
-            fprintf(fp,"/* Opsize: ");
+            fprintf(fp,"/*   Opsize: ");
             opsize.fprintf_debug(fp);
+            fprintf(fp," */\n");
+        }
+        if (!encoding.empty()) {
+            fprintf(fp,"/*   Encoding: ");
+            for (size_t ei=0;ei < encoding.size();ei++) {
+                if (ei != 0) fprintf(fp," ");
+                encoding[ei].fprintf_debug(fp);
+
+                if (encoding[ei].token == Token::ModRegRm && reg_match >= 0)
+                    fprintf(fp," /%d",reg_match);
+            }
             fprintf(fp," */\n");
         }
     }
 public:
+    std::vector<Token>          encoding;   // encoding tokens (range, HexValue, mod/reg/rm, immediate)
+    signed char                 reg_match;  // opcode matches reg value (group opcode)
     size_t                      Symbol_Index;
     Token                       opsize;
 };
@@ -958,6 +982,7 @@ bool parse_opcode_block(void) {
                 MAIN,
                 MODREGRM,
                 MODREGRM_CLARIFY,
+                MAIN_TAIL,      // only for 3dnow! opcodes
                 IMMEDIATE
             };
             int state = PREFIX;
@@ -974,17 +999,25 @@ bool parse_opcode_block(void) {
                     break;
                 }
                 else if (st.token == Token::Range && state <= MAIN) {
+                    opcode.encoding.push_back(st);
                     state = MAIN;
                 }
+                else if (st.token == Token::Range && state >= MODREGRM && state <= MAIN_TAIL) {
+                    opcode.encoding.push_back(st);
+                    state = MAIN_TAIL;
+                }
                 else if (st.token == Token::ModRegRm && state >= MAIN && state < MODREGRM) {
+                    opcode.encoding.push_back(st);
                     state = MODREGRM;
                 }
-                else if (st.token == Token::RegSpec && state >= MODREGRM && state <= MODREGRM_CLARIFY) {
+                else if (st.token == Token::RegSpec && state >= MODREGRM && state <= MODREGRM_CLARIFY && opcode.reg_match < 0) {
+                    opcode.reg_match = (signed char)st.value;
                     state = MODREGRM_CLARIFY;
                 }
                 else if (
                    (st.token == Token::Iop || st.token == Token::Ibs
                     ) && state >= MAIN && state <= IMMEDIATE) {
+                    opcode.encoding.push_back(st);
                     state = IMMEDIATE;
                 }
                 else {
