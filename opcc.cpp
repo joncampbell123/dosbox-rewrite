@@ -61,6 +61,27 @@ struct Token {
 
     Token() : value(0), token(None), line(0), pos(0) {
     }
+
+    void fprintf_debug(FILE *fp) {
+        if (token == Opsize) {
+            Token sv;
+
+            sv.token = (enum TokenValue)value;
+
+            fprintf(fp,"opsize(");
+            sv.fprintf_debug(fp);
+            fprintf(fp,")");
+        }
+        else if (token == Immediate)
+            fprintf(fp,"i");
+        else if (token == Reg)
+            fprintf(fp,"reg");
+        else if (token == Rm)
+            fprintf(fp,"rm");
+        else {
+            fprintf(fp,"???");
+        }
+    }
 };
 
 std::string         source_file;
@@ -85,8 +106,42 @@ public:
     ~OPCC_Symbol() {
     }
 public:
-    std::string         enum_string;                // enum         (name used in enum for C++ code)
-    std::string         opname_string;              // opname       (string displayed in debugger)
+    void fprintf_debug(FILE *fp) {
+        fprintf(fp,"/* %-24s %-20s */\n",
+            enum_string.c_str(),
+            (std::string("\"")+opname_string+"\"").c_str());
+
+        if (!display.empty()) {
+            fprintf(fp,"/*   display: ");
+            for (size_t i=0;i < display.size();i++) {
+                if (i != 0) fprintf(fp,", ");
+                display[i].fprintf_debug(fp);
+            }
+            fprintf(fp," */\n");
+        }
+
+        if (!reads.empty()) {
+            fprintf(fp,"/*   reads:   ");
+            for (size_t i=0;i < reads.size();i++) {
+                if (i != 0) fprintf(fp,", ");
+                reads[i].fprintf_debug(fp);
+            }
+            fprintf(fp," */\n");
+        }
+
+        if (!writes.empty()) {
+            fprintf(fp,"/*   writes:  ");
+            for (size_t i=0;i < writes.size();i++) {
+                if (i != 0) fprintf(fp,", ");
+                writes[i].fprintf_debug(fp);
+            }
+            fprintf(fp," */\n");
+        }
+    }
+public:
+    std::string                 enum_string;                // enum         (name used in enum for C++ code)
+    std::string                 opname_string;              // opname       (string displayed in debugger)
+    std::vector<Token>          display,reads,writes;
 };
 
 std::vector<OPCC_Symbol>        Symbols;
@@ -493,6 +548,7 @@ static int parse_argv(int argc,char **argv) {
  * it's up to us to fetch lines until we hit "end" */
 bool parse_symbol_block(void) {
     bool ret = true,end = false;
+    OPCC_Symbol sym;
     Token t;
 
     t.pos = 1;
@@ -514,14 +570,26 @@ bool parse_symbol_block(void) {
             /* name is given in "string" */
             assert(!t.string.empty());
 
-            fprintf(stderr,"enum: '%s'\n",t.string.c_str());
+            if (sym.enum_string.empty())
+                sym.enum_string = t.string;
+            else {
+                fprintf_error_pos(stderr,t,"Enum can only be specified once ");
+                ret = false;
+                break;
+            }
         }
         else if (t.token == Token::Opname) {
             /* enum   <name> */
             /* name is given in "string" */
             assert(!t.string.empty());
 
-            fprintf(stderr,"opname: '%s'\n",t.string.c_str());
+            if (sym.opname_string.empty())
+                sym.opname_string = t.string;
+            else {
+                fprintf_error_pos(stderr,t,"Opname can only be specified once ");
+                ret = false;
+                break;
+            }
         }
         else if (t.token == Token::Display ||
                  t.token == Token::Writes ||
@@ -530,12 +598,23 @@ bool parse_symbol_block(void) {
             Token st;
 
             /* display    (opcode spec) */
+            /* writes     (opcode spec) */
+            /* reads      (opcode spec) */
             do {
                 st = line_get_token();
                 if (st.token == Token::Error || st.token == Token::None)
                     break;
                 else if (st.token == Token::Opsize) { /* opsize(reg) */
-                    fprintf(stderr,"opsize(token=%llu)\n",(unsigned long long)st.value);
+                    assert(st.value != (uint64_t)Token::None);
+
+                         if (t.token == Token::Display)
+                        sym.display.push_back(st);
+                    else if (t.token == Token::Writes)
+                        sym.writes.push_back(st);
+                    else if (t.token == Token::Reads)
+                        sym.reads.push_back(st);
+                    else
+                        abort();
                 }
                 else {
                     st.token = Token::Error;
@@ -571,6 +650,26 @@ bool parse_symbol_block(void) {
     if (ret && !end) {
         fprintf_error_pos(stderr,t,"No End token, stopping parsing at ");
         ret = false;
+    }
+
+    if (sym.enum_string.empty()) {
+        fprintf_error_pos(stderr,t,"No enum string provided ");
+        ret = false;
+    }
+    else if (sym.opname_string.empty()) {
+        fprintf_error_pos(stderr,t,"No opname string provided ");
+        ret = false;
+    }
+    else {
+        OPCC_Symbol &x = OPCC_Symbol_Lookup(sym.enum_string.c_str());
+        if (&x != &Symbol_none) {
+            fprintf_error_pos(stderr,t,"Enum string already exists ");
+            ret = false;
+            return ret;
+        }
+
+        if (ret)
+            /*OPCC_Symbol&*/OPCC_Symbol_New(sym.enum_string.c_str()) = sym;
     }
 
     return ret;
@@ -770,6 +869,11 @@ int main(int argc,char **argv) {
             break;
         }
     }
+
+    // show symbols
+    fprintf(dest_fp,"/* Symbols parsed: */\n");
+    for (size_t si=0;si < Symbols.size();si++) Symbols[si].fprintf_debug(dest_fp);
+    fprintf(dest_fp,"/* -------------------------------------- */\n");
 
     fclose(source_fp);
     fclose(dest_fp);
