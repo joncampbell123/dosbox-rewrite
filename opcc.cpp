@@ -45,34 +45,76 @@ struct Token {
         PrefixName,
         ParensOpen,
         ParensClose,
+        And,
         Encoding,
         State,
         Symbol,
         AssignSign,     // =
         EqualsSign,     // ==
-        NotEqualsSign   // !=
+        NotEqualsSign,  // !=
+        QuestionMark,
+        ColonMark
     };
 
     std::string         string,string2;
     std::string         error_source;
-    uint64_t            value,value2,value3;
+    uint64_t            value,value2,value3,value4,value5;
+    std::vector<Token>  subtoken;
     enum TokenValue     token;
     long                line;
     unsigned int        pos;
 
-    Token() : value(0), value2(0), value3(0), token(None), line(0), pos(0) {
+    Token() : value(0), value2(0), value3(0), value4(0), value5(0), token(None), line(0), pos(0) {
     }
 
     void fprintf_debug(FILE *fp) {
         if (token == Opsize) {
-            Token sv;
-
-            sv.token = (enum TokenValue)value;
+            Token sv; sv.token = (enum TokenValue)value;
 
             fprintf(fp,"opsize(");
             sv.fprintf_debug(fp);
             fprintf(fp,")");
         }
+        else if (token == Ternary) {
+            fprintf(fp,"ternary(");
+            {
+                Token sv; sv.token = (enum TokenValue)value;
+                sv.fprintf_debug(fp);
+            }
+            {
+                Token sv; sv.token = (enum TokenValue)value2;
+                sv.fprintf_debug(fp);
+            }
+            {
+                Token sv; sv.token = HexValue; sv.value = value3;
+                sv.fprintf_debug(fp);
+            }
+            fprintf(fp,"?");
+            {
+                Token sv; sv.token = (enum TokenValue)value4;
+                sv.fprintf_debug(fp);
+            }
+            fprintf(fp,":");
+            {
+                Token sv; sv.token = (enum TokenValue)value5;
+                sv.fprintf_debug(fp);
+            }
+            fprintf(fp,")");
+        }
+        else if (token == HexValue)
+            fprintf(fp,"0x%llX",(unsigned long long)value);
+        else if (token == QuestionMark)
+            fprintf(fp,"?");
+        else if (token == ColonMark)
+            fprintf(fp,":");
+        else if (token == And)
+            fprintf(fp,"&");
+        else if (token == Byte)
+            fprintf(fp,"byte");
+        else if (token == Word)
+            fprintf(fp,"word");
+        else if (token == OpByte)
+            fprintf(fp,"opbyte");
         else if (token == Immediate)
             fprintf(fp,"i");
         else if (token == Reg)
@@ -229,9 +271,16 @@ public:
         fprintf(fp,"/* Opcode: %-24s %-20s */\n",
             sym.enum_string.c_str(),
             (std::string("\"")+sym.opname_string+"\"").c_str());
+
+        if (opsize.token != Token::None) {
+            fprintf(fp,"/* Opsize: ");
+            opsize.fprintf_debug(fp);
+            fprintf(fp," */\n");
+        }
     }
 public:
     size_t                      Symbol_Index;
+    Token                       opsize;
 };
 
 std::vector<OPCC_Opcode>        Opcodes;
@@ -336,7 +385,10 @@ static Token line_get_token(void) {
     start = line_parse;
     if (isalpha(*line_parse)) {
         /* read until whitespace or open parens */
-        while (*line_parse && !(*line_parse == ' ' || *line_parse == '\t' || *line_parse == '(' || *line_parse == ')' || *line_parse == ',')) line_parse++;
+        while (*line_parse &&
+          !(*line_parse == ' ' || *line_parse == '\t' || *line_parse == '(' ||
+            *line_parse == ')' || *line_parse == ','  || *line_parse == '&' ||
+            *line_parse == '?' || *line_parse == ':')) line_parse++;
 
         if (*line_parse == '(') {
             /* this is where recursion comes in! */
@@ -364,6 +416,86 @@ static Token line_get_token(void) {
                 }
                 else {
                     fprintf_error_pos(stderr,st,"Unexpected token ");
+                }
+
+                /* should close with parenthesis */
+                if (!closeparens && r.token != Token::Error) {
+                    st = line_get_token();
+                    if (st.token != Token::ParensClose) {
+                        fprintf_error_pos(stderr,st,"Failure to close parenthesis ");
+                        r.token = Token::Error;
+                    }
+                    else {
+                        closeparens = true;
+                    }
+                }
+            }
+            else if (funcname == "ternary") {
+                /* ternary(opbyte&1?truecond:falsecond) */
+                st = line_get_token();
+                if (st.token == Token::Error) {
+                    fprintf_error_pos(stderr,st,"Error in ternary test ");
+                    r.token = Token::Error;
+                }
+                else if (st.token == Token::OpByte) {
+                    r.value = (uint64_t)st.token;
+
+                    st = line_get_token();
+                    if (st.token == Token::And) {
+                        r.value2 = (uint64_t)st.token;
+
+                        st = line_get_token();
+                        if (st.token == Token::HexValue) {
+                            r.value3 = (uint64_t)st.value;
+
+                            st = line_get_token();
+                            if (st.token == Token::QuestionMark) {
+                                st = line_get_token();
+                                if (st.token == Token::Word ||
+                                    st.token == Token::Byte) {
+                                    r.value4 = (uint64_t)st.token;
+
+                                    st = line_get_token();
+                                    if (st.token == Token::ColonMark) {
+                                        st = line_get_token();
+                                        if (st.token == Token::Word ||
+                                            st.token == Token::Byte) {
+                                            r.value5 = (uint64_t)st.token;
+                                            r.token = Token::Ternary;
+                                        }
+                                        else {
+                                            fprintf_error_pos(stderr,st,"Invalid ternary test ");
+                                            r.token = Token::Error;
+                                        }
+                                    }
+                                    else {
+                                        fprintf_error_pos(stderr,st,"Invalid ternary test ");
+                                        r.token = Token::Error;
+                                    }
+                                }
+                                else {
+                                    fprintf_error_pos(stderr,st,"Invalid ternary test ");
+                                    r.token = Token::Error;
+                                }
+                            }
+                            else {
+                                fprintf_error_pos(stderr,st,"Invalid ternary test ");
+                                r.token = Token::Error;
+                            }
+                        }
+                        else {
+                            fprintf_error_pos(stderr,st,"Invalid ternary test ");
+                            r.token = Token::Error;
+                        }
+                    }
+                    else {
+                        fprintf_error_pos(stderr,st,"Invalid ternary test ");
+                        r.token = Token::Error;
+                    }
+                }
+                else {
+                    fprintf_error_pos(stderr,st,"Invalid ternary test ");
+                    r.token = Token::Error;
                 }
 
                 /* should close with parenthesis */
@@ -406,6 +538,15 @@ static Token line_get_token(void) {
             }
             else if (tokenname == "end") {
                 r.token = Token::End;
+            }
+            else if (tokenname == "opbyte") {
+                r.token = Token::OpByte;
+            }
+            else if (tokenname == "word") {
+                r.token = Token::Word;
+            }
+            else if (tokenname == "byte") {
+                r.token = Token::Byte;
             }
             else if (tokenname == "enum") {
                 r.token = Token::Enum;
@@ -475,6 +616,7 @@ static Token line_get_token(void) {
         }
     }
     else if (isdigit(*line_parse)) {
+        r.token = Token::HexValue;
         r.value = (uint64_t)strtoull(line_parse,&line_parse,0);
     }
     else if (*line_parse == '/') { // Intel-ism for specifying the value of reg in mod/reg/rm   /0 /1 /2 /3 /4 /5 /6 /7
@@ -484,6 +626,7 @@ static Token line_get_token(void) {
             r.error_source = start;
             return r;
         }
+        r.token = Token::RegSpec;
         r.value = (uint64_t)strtoull(line_parse,&line_parse,0);
     }
     else if (*line_parse == ',') {
@@ -496,6 +639,18 @@ static Token line_get_token(void) {
     }
     else if (*line_parse == ')') {
         r.token = Token::ParensClose;
+        line_parse++;
+    }
+    else if (*line_parse == '&') {
+        r.token = Token::And;
+        line_parse++;
+    }
+    else if (*line_parse == '?') {
+        r.token = Token::QuestionMark;
+        line_parse++;
+    }
+    else if (*line_parse == ':') {
+        r.token = Token::ColonMark;
         line_parse++;
     }
     else {
@@ -746,7 +901,21 @@ bool parse_opcode_block(void) {
             // TODO
         }
         else if (t.token == Token::Opsize) {
-            // TODO
+            Token st = line_get_token();
+
+            if (st.token == Token::Error) {
+                fprintf_error_pos(stderr,t,"Error in opsize token ");
+                ret = false;
+                break;
+            }
+            else if (st.token == Token::Ternary) {
+                opcode.opsize = st;
+            }
+            else {
+                fprintf_error_pos(stderr,t,"Unexpected opsize token ");
+                ret = false;
+                break;
+            }
         }
         else if (t.token == Token::Reg) {
             // TODO
