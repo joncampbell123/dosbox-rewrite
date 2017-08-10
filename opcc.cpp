@@ -55,12 +55,12 @@ struct Token {
 
     std::string         string,string2;
     std::string         error_source;
-    uint64_t            value;
+    uint64_t            value,value2,value3;
     enum TokenValue     token;
     long                line;
     unsigned int        pos;
 
-    Token() : value(0), token(None), line(0), pos(0) {
+    Token() : value(0), value2(0), value3(0), token(None), line(0), pos(0) {
     }
 
     void fprintf_debug(FILE *fp) {
