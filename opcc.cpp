@@ -11,6 +11,7 @@
 
 #include <string>
 #include <vector>
+#include <list>
 #include <map>
 
 struct Token {
@@ -193,6 +194,13 @@ OPCC_Symbol &OPCC_Symbol_Lookup(const char *s) {
     return Symbol_none;
 }
 
+OPCC_Symbol &OPCC_Symbol_Lookup_By_Index(const size_t i) {
+    if (i < Symbols.size())
+        return Symbols[i];
+
+    return Symbol_none;
+}
+
 size_t OPCC_SymbolToIndex(const OPCC_Symbol &s) {
     // apparently this works because C++ requires std::vector to allocate a contiguous block of memory for the array
     const size_t i = (size_t)((uintptr_t)((&s) - (&Symbols[0])));
@@ -207,6 +215,26 @@ OPCC_Symbol &OPCC_IndexToSymbol(const size_t i) {
     assert(i < Symbols.size());
     return Symbols[i];
 }
+
+class OPCC_Opcode {
+public:
+    OPCC_Opcode() : Symbol_Index(~((size_t)0)) {
+    }
+    ~OPCC_Opcode() {
+    }
+public:
+    void fprintf_debug(FILE *fp) {
+        OPCC_Symbol &sym = OPCC_Symbol_Lookup_By_Index(Symbol_Index);
+
+        fprintf(fp,"/* Opcode: %-24s %-20s */\n",
+            sym.enum_string.c_str(),
+            (std::string("\"")+sym.opname_string+"\"").c_str());
+    }
+public:
+    size_t                      Symbol_Index;
+};
+
+std::vector<OPCC_Opcode>        Opcodes;
 
 void OPCC_Symbol_Init(void) {
     SymbolsByEnum.clear();
@@ -683,6 +711,7 @@ bool parse_symbol_block(void) {
  * it's up to us to fetch lines until we hit "end" */
 bool parse_opcode_block(void) {
     bool ret = true,end = false;
+    OPCC_Opcode opcode;
     Token t;
 
     t.pos = 1;
@@ -704,7 +733,14 @@ bool parse_opcode_block(void) {
             /* name is given in "string" */
             assert(!t.string.empty());
 
-            fprintf(stderr,"enum: '%s'\n",t.string.c_str());
+            OPCC_Symbol &x = OPCC_Symbol_Lookup(t.string.c_str());
+            if (&x == &Symbol_none) {
+                fprintf_error_pos(stderr,t,"Symbol '%s' does not exist ",t.string.c_str());
+                ret = false;
+                break;
+            }
+
+            opcode.Symbol_Index = OPCC_SymbolToIndex(x);
         }
         else if (t.token == Token::Encoding) {
             // TODO
@@ -728,6 +764,13 @@ bool parse_opcode_block(void) {
     if (ret && !end) {
         fprintf_error_pos(stderr,t,"No End token, stopping parsing at ");
         ret = false;
+    }
+    else if (opcode.Symbol_Index == ~((size_t)0)) {
+        fprintf_error_pos(stderr,t,"No symbol specified ");
+        ret = false;
+    }
+    else {
+        if (ret) Opcodes.push_back(opcode);
     }
 
     return ret;
@@ -873,6 +916,12 @@ int main(int argc,char **argv) {
     // show symbols
     fprintf(dest_fp,"/* Symbols parsed: */\n");
     for (size_t si=0;si < Symbols.size();si++) Symbols[si].fprintf_debug(dest_fp);
+    fprintf(dest_fp,"/* -------------------------------------- */\n");
+    fprintf(dest_fp,"\n");
+
+    // show opcodes
+    fprintf(dest_fp,"/* Opcodes parsed: */\n");
+    for (size_t si=0;si < Opcodes.size();si++) Opcodes[si].fprintf_debug(dest_fp);
     fprintf(dest_fp,"/* -------------------------------------- */\n");
     fprintf(dest_fp,"\n");
 
