@@ -45,6 +45,7 @@ struct Token {
         PrefixName,
         ParensOpen,
         ParensClose,
+        Lock,
         And,
         Dash,
         Encoding,
@@ -55,6 +56,14 @@ struct Token {
         NotEqualsSign,  // !=
         QuestionMark,
         ColonMark,
+        SegOverride,
+        CS,
+        DS,
+        ES,
+        SS,
+        Rep,
+        Repz,
+        Repnz,
         a,              // AL/AX/EAX/RAX
         b,              // BL/BX/EBX/RBX
         c,              // CL/CX/ECX/RCX
@@ -86,6 +95,33 @@ struct Token {
             fprintf(fp,"range(");
             fprintf(fp,"0x%llX-0x%llX",(unsigned long long)value,(unsigned long long)value2);
             fprintf(fp,")");
+        }
+        else if (token == CS) {
+            fprintf(fp,"cs");
+        }
+        else if (token == DS) {
+            fprintf(fp,"ds");
+        }
+        else if (token == ES) {
+            fprintf(fp,"es");
+        }
+        else if (token == SS) {
+            fprintf(fp,"ss");
+        }
+        else if (token == Rep) {
+            fprintf(fp,"rep");
+        }
+        else if (token == Repz) {
+            fprintf(fp,"repz");
+        }
+        else if (token == Repnz) {
+            fprintf(fp,"repnz");
+        }
+        else if (token == SegOverride) {
+            fprintf(fp,"segoverride");
+        }
+        else if (token == Lock) {
+            fprintf(fp,"lock");
         }
         else if (token == Ternary) {
             fprintf(fp,"ternary(");
@@ -353,6 +389,15 @@ public:
             }
             fprintf(fp," */\n");
         }
+
+        for (size_t si=0;si < state.size();si++) {
+            auto &i = state[si];
+            fprintf(fp,"/*   State change: ");
+            i.first.fprintf_debug(fp);
+            fprintf(fp," = ");
+            i.second.fprintf_debug(fp);
+            fprintf(fp," */\n");
+        }
     }
 public:
     std::string                 prefix_name;
@@ -465,7 +510,7 @@ static Token line_get_token(void) {
         while (*line_parse &&
           !(*line_parse == ' ' || *line_parse == '\t' || *line_parse == '(' ||
             *line_parse == ')' || *line_parse == ','  || *line_parse == '&' ||
-            *line_parse == '?' || *line_parse == ':')) line_parse++;
+            *line_parse == '?' || *line_parse == ':'  || *line_parse == '=')) line_parse++;
 
         if (*line_parse == '(') {
             /* this is where recursion comes in! */
@@ -690,7 +735,32 @@ static Token line_get_token(void) {
                 r.token = Token::Opcode;
             }
             else if (tokenname == "state") {
+                Token st;
+
+                /* state name=value */
                 r.token = Token::State;
+
+                st = line_get_token();
+                if (!(st.token == Token::None || st.token == Token::Error)) {
+                    r.subtoken.push_back(st);
+
+                    st = line_get_token();
+                    if (st.token == Token::EqualsSign) {
+                        st = line_get_token();
+                        if (!(st.token == Token::None || st.token == Token::Error)) {
+                            r.subtoken.push_back(st);
+                        }
+                    }
+                }
+
+                if (r.subtoken.size() < 2) {
+                    if (st.token == Token::None || st.token == Token::Error) {
+                        fprintf_error_pos(stderr,st,"State unexpected token ");
+                        r.token = Token::Error;
+                        r.error_source = start;
+                        return r;
+                    }
+                }
             }
             else if (tokenname == "opname") {
                 r.token = Token::Opname;
@@ -726,8 +796,32 @@ static Token line_get_token(void) {
             else if (tokenname == "reg") {
                 r.token = Token::Reg;
             }
+            else if (tokenname == "rep") {
+                r.token = Token::Rep;
+            }
+            else if (tokenname == "repz") {
+                r.token = Token::Repz;
+            }
+            else if (tokenname == "repnz") {
+                r.token = Token::Repnz;
+            }
+            else if (tokenname == "segoverride") {
+                r.token = Token::SegOverride;
+            }
             else if (tokenname == "prefix") {
                 r.token = Token::Prefix;
+            }
+            else if (tokenname == "cs") {
+                r.token = Token::CS;
+            }
+            else if (tokenname == "ds") {
+                r.token = Token::DS;
+            }
+            else if (tokenname == "es") {
+                r.token = Token::ES;
+            }
+            else if (tokenname == "ss") {
+                r.token = Token::SS;
             }
             else if (tokenname == "i") {
                 r.token = Token::Immediate;
@@ -749,6 +843,9 @@ static Token line_get_token(void) {
             }
             else if (tokenname == "D") {
                 r.token = Token::D;
+            }
+            else if (tokenname == "lock") {
+                r.token = Token::Lock;
             }
             else if (tokenname == "writes") {
                 r.token = Token::Writes;
@@ -784,6 +881,10 @@ static Token line_get_token(void) {
     }
     else if (*line_parse == ')') {
         r.token = Token::ParensClose;
+        line_parse++;
+    }
+    else if (*line_parse == '=') {
+        r.token = Token::EqualsSign;
         line_parse++;
     }
     else if (*line_parse == '&') {
@@ -1241,7 +1342,9 @@ bool parse_prefix_block(void) {
             }
         }
         else if (t.token == Token::State) {
-            // TODO
+            /* state name=val */
+            assert(t.subtoken.size() >= 2);
+            prefix.state.push_back(std::pair<Token,Token>(t.subtoken[0],t.subtoken[1]));
         }
         else if (t.token == Token::None) {
             continue;
