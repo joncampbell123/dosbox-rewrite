@@ -205,8 +205,9 @@ FILE*               dest_fp=NULL;
 char                line[4096];
 
 // symbols
-const size_t        symbol_stop = 0;
-const size_t        symbol_undefined = 1;
+const size_t        symbol_continue_prefix = 0;
+const size_t        symbol_continue_main = 1;
+const size_t        symbol_undefined = 2;
 
 class OPCC_Symbol {
 public:
@@ -411,9 +412,13 @@ void OPCC_Symbol_Init(void) {
     SymbolsByEnum.clear();
     Symbols.clear();
 
-    // auto-create "stop" symbol. this tells the state machine to stop.
-    assert(Symbols.size() == symbol_stop);
-    assert(OPCC_SymbolToIndex(OPCC_Symbol_New("stop")) == symbol_stop);
+    // auto-create "continue_prefix" symbol. this tells the state machine to keep running (prefix opcode).
+    assert(Symbols.size() == symbol_continue_prefix);
+    assert(OPCC_SymbolToIndex(OPCC_Symbol_New("continue_prefix")) == symbol_continue_prefix);
+
+    // auto-create "continue_main" symbol. this tells the state machine to keep running (main opcode).
+    assert(Symbols.size() == symbol_continue_main);
+    assert(OPCC_SymbolToIndex(OPCC_Symbol_New("continue_main")) == symbol_continue_main);
 
     // auto-create "undefined" symbol. disassembler can show "unknown", emulator can throw #UD exception unless 8088 emulation which is then a NO-OP
     assert(Symbols.size() == symbol_undefined);
