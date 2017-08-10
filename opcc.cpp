@@ -46,6 +46,7 @@ struct Token {
         ParensOpen,
         ParensClose,
         And,
+        Dash,
         Encoding,
         State,
         Symbol,
@@ -430,6 +431,47 @@ static Token line_get_token(void) {
                     }
                 }
             }
+            else if (funcname == "range") {
+                /* range(min-max), etc */
+                st = line_get_token();
+                if (st.token == Token::Error) {
+                    fprintf_error_pos(stderr,st,"Error in parenthesis ");
+                }
+                else if (st.token == Token::HexValue) {
+                    r.value = st.value;
+
+                    st = line_get_token();
+                    if (st.token == Token::Dash) {
+                        st = line_get_token();
+                        if (st.token == Token::HexValue) {
+                            r.value2 = st.value;
+
+                            r.token = Token::Range;
+                        }
+                        else {
+                            fprintf_error_pos(stderr,st,"Unexpected token ");
+                        }
+                    }
+                    else {
+                        fprintf_error_pos(stderr,st,"Unexpected token ");
+                    }
+                }
+                else {
+                    fprintf_error_pos(stderr,st,"Unexpected token ");
+                }
+
+                /* should close with parenthesis */
+                if (!closeparens && r.token != Token::Error) {
+                    st = line_get_token();
+                    if (st.token != Token::ParensClose) {
+                        fprintf_error_pos(stderr,st,"Failure to close parenthesis ");
+                        r.token = Token::Error;
+                    }
+                    else {
+                        closeparens = true;
+                    }
+                }
+            }
             else if (funcname == "ternary") {
                 /* ternary(opbyte&1?truecond:falsecond) */
                 st = line_get_token();
@@ -583,6 +625,15 @@ static Token line_get_token(void) {
                     return r;
                 }
             }
+            else if (tokenname == "ibs") {
+                r.token = Token::Ibs;
+            }
+            else if (tokenname == "iop") {
+                r.token = Token::Iop;
+            }
+            else if (tokenname == "mod/reg/rm") {
+                r.token = Token::ModRegRm;
+            }
             else if (tokenname == "opsize") {
                 r.token = Token::Opsize;
                 r.value = (uint64_t)Token::None;
@@ -643,6 +694,10 @@ static Token line_get_token(void) {
     }
     else if (*line_parse == '&') {
         r.token = Token::And;
+        line_parse++;
+    }
+    else if (*line_parse == '-') {
+        r.token = Token::Dash;
         line_parse++;
     }
     else if (*line_parse == '?') {
@@ -898,13 +953,54 @@ bool parse_opcode_block(void) {
             opcode.Symbol_Index = OPCC_SymbolToIndex(x);
         }
         else if (t.token == Token::Encoding) {
-            // TODO
+            enum {
+                PREFIX=0,
+                MAIN,
+                MODREGRM,
+                MODREGRM_CLARIFY,
+                IMMEDIATE
+            };
+            int state = PREFIX;
+
+            do {
+                Token st = line_get_token();
+
+                if (st.token == Token::Error) {
+                    fprintf_error_pos(stderr,st,"Error in encoding token ");
+                    ret = false;
+                    break;
+                }
+                else if (st.token == Token::None) {
+                    break;
+                }
+                else if (st.token == Token::Range && state <= MAIN) {
+                    state = MAIN;
+                }
+                else if (st.token == Token::ModRegRm && state >= MAIN && state < MODREGRM) {
+                    state = MODREGRM;
+                }
+                else if (st.token == Token::RegSpec && state >= MODREGRM && state <= MODREGRM_CLARIFY) {
+                    state = MODREGRM_CLARIFY;
+                }
+                else if (
+                   (st.token == Token::Iop || st.token == Token::Ibs
+                    ) && state >= MAIN && state <= IMMEDIATE) {
+                    state = IMMEDIATE;
+                }
+                else {
+                    fprintf_error_pos(stderr,st,"Unexpected encoding token ");
+                    ret = false;
+                    break;
+                }
+            } while (1);
+
+            if (!ret) break;
         }
         else if (t.token == Token::Opsize) {
             Token st = line_get_token();
 
             if (st.token == Token::Error) {
-                fprintf_error_pos(stderr,t,"Error in opsize token ");
+                fprintf_error_pos(stderr,st,"Error in opsize token ");
                 ret = false;
                 break;
             }
@@ -912,7 +1008,7 @@ bool parse_opcode_block(void) {
                 opcode.opsize = st;
             }
             else {
-                fprintf_error_pos(stderr,t,"Unexpected opsize token ");
+                fprintf_error_pos(stderr,st,"Unexpected opsize token ");
                 ret = false;
                 break;
             }
