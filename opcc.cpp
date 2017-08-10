@@ -334,6 +334,34 @@ public:
 
 std::vector<OPCC_Opcode>        Opcodes;
 
+class OPCC_Prefix {
+public:
+    OPCC_Prefix() {
+    }
+    ~OPCC_Prefix() {
+    }
+public:
+    void fprintf_debug(FILE *fp) {
+        fprintf(fp,"/* Prefix: %-20s */\n",
+            (std::string("\"")+prefix_name+"\"").c_str());
+
+        if (!encoding.empty()) {
+            fprintf(fp,"/*   Encoding: ");
+            for (size_t ei=0;ei < encoding.size();ei++) {
+                if (ei != 0) fprintf(fp," ");
+                encoding[ei].fprintf_debug(fp);
+            }
+            fprintf(fp," */\n");
+        }
+    }
+public:
+    std::string                 prefix_name;
+    std::vector<Token>          encoding;   // encoding tokens (range, HexValue, mod/reg/rm, immediate)
+    std::vector<std::pair<Token,Token> > state;
+};
+
+std::vector<OPCC_Prefix>        Prefixes;
+
 void OPCC_Symbol_Init(void) {
     SymbolsByEnum.clear();
     Symbols.clear();
@@ -1040,11 +1068,11 @@ bool parse_opcode_block(void) {
                 else if (st.token == Token::None) {
                     break;
                 }
-                else if (st.token == Token::Range && state <= MAIN) {
+                else if ((st.token == Token::Range || st.token == Token::HexValue) && state <= MAIN) {
                     opcode.encoding.push_back(st);
                     state = MAIN;
                 }
-                else if (st.token == Token::Range && state >= MODREGRM && state <= MAIN_TAIL) {
+                else if ((st.token == Token::Range || st.token == Token::HexValue) && state >= MODREGRM && state <= MAIN_TAIL) {
                     opcode.encoding.push_back(st);
                     state = MAIN_TAIL;
                 }
@@ -1136,6 +1164,10 @@ bool parse_opcode_block(void) {
         fprintf_error_pos(stderr,t,"No End token, stopping parsing at ");
         ret = false;
     }
+    else if (opcode.encoding.empty()) {
+        fprintf_error_pos(stderr,t,"No encoding specified ");
+        ret = false;
+    }
     else if (opcode.Symbol_Index == ~((size_t)0)) {
         fprintf_error_pos(stderr,t,"No symbol specified ");
         ret = false;
@@ -1155,6 +1187,7 @@ bool parse_opcode_block(void) {
  * it's up to us to fetch lines until we hit "end" */
 bool parse_prefix_block(void) {
     bool ret = true,end = false;
+    OPCC_Prefix prefix;
     Token t;
 
     t.pos = 1;
@@ -1172,10 +1205,40 @@ bool parse_prefix_block(void) {
             break;
         }
         else if (t.token == Token::Encoding) {
-            // TODO
+            do {
+                Token st = line_get_token();
+
+                if (st.token == Token::Error) {
+                    fprintf_error_pos(stderr,st,"Error in encoding token ");
+                    ret = false;
+                    break;
+                }
+                else if (st.token == Token::None) {
+                    break;
+                }
+                else if (st.token == Token::Range || st.token == Token::HexValue) {
+                    prefix.encoding.push_back(st);
+                }
+                else {
+                    fprintf_error_pos(stderr,st,"Unexpected encoding token ");
+                    ret = false;
+                    break;
+                }
+            } while (1);
+
+            if (!ret) break;
         }
         else if (t.token == Token::PrefixName) {
-            // TODO
+            assert(!t.string.empty());
+
+            if (prefix.prefix_name.empty()) {
+                prefix.prefix_name = t.string;
+            }
+            else {
+                fprintf_error_pos(stderr,t,"PrefixName already set ");
+                ret = false;
+                break;
+            }
         }
         else if (t.token == Token::State) {
             // TODO
@@ -1193,6 +1256,13 @@ bool parse_prefix_block(void) {
     if (ret && !end) {
         fprintf_error_pos(stderr,t,"No End token, stopping parsing at ");
         ret = false;
+    }
+    else if (prefix.encoding.empty()) {
+        fprintf_error_pos(stderr,t,"No encoding specified ");
+        ret = false;
+    }
+    else {
+        if (ret) Prefixes.push_back(prefix);
     }
 
     return ret;
@@ -1293,6 +1363,12 @@ int main(int argc,char **argv) {
     // show opcodes
     fprintf(dest_fp,"/* Opcodes parsed: */\n");
     for (size_t si=0;si < Opcodes.size();si++) Opcodes[si].fprintf_debug(dest_fp);
+    fprintf(dest_fp,"/* -------------------------------------- */\n");
+    fprintf(dest_fp,"\n");
+
+    // show prefixes
+    fprintf(dest_fp,"/* Prefixes parsed: */\n");
+    for (size_t si=0;si < Prefixes.size();si++) Prefixes[si].fprintf_debug(dest_fp);
     fprintf(dest_fp,"/* -------------------------------------- */\n");
     fprintf(dest_fp,"\n");
 
