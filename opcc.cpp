@@ -54,7 +54,13 @@ struct Token {
         EqualsSign,     // ==
         NotEqualsSign,  // !=
         QuestionMark,
-        ColonMark
+        ColonMark,
+        a,              // AL/AX/EAX/RAX
+        b,              // BL/BX/EBX/RBX
+        c,              // CL/CX/ECX/RCX
+        d,              // DL/DX/EDX/RCX
+        S,              //    SI/ESI/RSI
+        D               //    DI/EDI/RDI
     };
 
     std::string         string,string2;
@@ -133,6 +139,18 @@ struct Token {
             fprintf(fp,"reg");
         else if (token == Rm)
             fprintf(fp,"rm");
+        else if (token == a)
+            fprintf(fp,"a");
+        else if (token == b)
+            fprintf(fp,"b");
+        else if (token == c)
+            fprintf(fp,"c");
+        else if (token == d)
+            fprintf(fp,"d");
+        else if (token == S)
+            fprintf(fp,"S");
+        else if (token == D)
+            fprintf(fp,"D");
         else {
             fprintf(fp,"???");
         }
@@ -289,6 +307,11 @@ public:
             opsize.fprintf_debug(fp);
             fprintf(fp," */\n");
         }
+        if (reg_source.token != Token::None) {
+            fprintf(fp,"/*   Reg source: ");
+            reg_source.fprintf_debug(fp);
+            fprintf(fp," */\n");
+        }
         if (!encoding.empty()) {
             fprintf(fp,"/*   Encoding: ");
             for (size_t ei=0;ei < encoding.size();ei++) {
@@ -305,6 +328,7 @@ public:
     std::vector<Token>          encoding;   // encoding tokens (range, HexValue, mod/reg/rm, immediate)
     signed char                 reg_match;  // opcode matches reg value (group opcode)
     size_t                      Symbol_Index;
+    Token                       reg_source;
     Token                       opsize;
 };
 
@@ -596,7 +620,7 @@ static Token line_get_token(void) {
 //            fprintf(stderr,"token '%s'\n",tokenname.c_str());
 
             // sorry, I'm not going out of my way to make it case insensitive
-                 if (tokenname == "display") {
+            if (tokenname == "display") {
                 r.token = Token::Display;
             }
             else if (tokenname == "encoding") {
@@ -679,6 +703,24 @@ static Token line_get_token(void) {
             }
             else if (tokenname == "i") {
                 r.token = Token::Immediate;
+            }
+            else if (tokenname == "a") {
+                r.token = Token::a;
+            }
+            else if (tokenname == "b") {
+                r.token = Token::b;
+            }
+            else if (tokenname == "c") {
+                r.token = Token::c;
+            }
+            else if (tokenname == "c") {
+                r.token = Token::d;
+            }
+            else if (tokenname == "S") {
+                r.token = Token::S;
+            }
+            else if (tokenname == "D") {
+                r.token = Token::D;
             }
             else if (tokenname == "writes") {
                 r.token = Token::Writes;
@@ -1047,7 +1089,23 @@ bool parse_opcode_block(void) {
             }
         }
         else if (t.token == Token::Reg) {
-            // TODO
+            // reg <reg>
+            if (opcode.reg_source.token == Token::None) {
+                Token st = line_get_token();
+
+                if (st.token == Token::a || st.token == Token::b ||
+                    st.token == Token::c || st.token == Token::d ||
+                    st.token == Token::S || st.token == Token::D ||
+                    st.token == Token::Reg) {
+                    opcode.reg_source = st;
+                }
+                else {
+                    fprintf_error_pos(stderr,st,"Reg source not valid");
+                }
+            }
+            else {
+                fprintf_error_pos(stderr,t,"Reg source already defined");
+            }
         }
         else if (t.token == Token::None) {
             continue;
@@ -1056,6 +1114,21 @@ bool parse_opcode_block(void) {
             fprintf_error_pos(stderr,t,"Unexpected token at ");
             ret = false;
             break;
+        }
+    }
+
+    // if mod/reg/rm was specified, reg_source should be mod/reg/rm
+    if (ret) {
+        for (size_t si=0;si < opcode.encoding.size();si++) {
+            if (opcode.encoding[si].token == Token::ModRegRm) {
+                if (opcode.reg_source.token == Token::None)
+                    opcode.reg_source = opcode.encoding[si];
+                else {
+                    fprintf_error_pos(stderr,t,"Reg source already specified ");
+                    ret = false;
+                    break;
+                }
+            }
         }
     }
 
