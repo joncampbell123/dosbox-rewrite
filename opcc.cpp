@@ -40,6 +40,7 @@ struct Token {
         Ibs,
         RegSpec,        // Intel-ism for value of reg field in combo opcodes i.e. reg == 0 spec by /0
         HexValue,
+        Prefix,
         PrefixName,
         ParensOpen,
         ParensClose,
@@ -333,8 +334,21 @@ static Token line_get_token(void) {
                     return r;
                 }
             }
+            else if (tokenname == "prefixname") {
+                r.token = Token::PrefixName;
+                /* what follows is an enum name */
+                r.string = line_get_name();
+                if (r.string.empty()) {
+                    r.token = Token::Error;
+                    r.error_source = start;
+                    return r;
+                }
+            }
             else if (tokenname == "opcode") {
                 r.token = Token::Opcode;
+            }
+            else if (tokenname == "state") {
+                r.token = Token::State;
             }
             else if (tokenname == "opname") {
                 r.token = Token::Opname;
@@ -360,6 +374,9 @@ static Token line_get_token(void) {
             }
             else if (tokenname == "reg") {
                 r.token = Token::Reg;
+            }
+            else if (tokenname == "prefix") {
+                r.token = Token::Prefix;
             }
             else if (tokenname == "i") {
                 r.token = Token::Immediate;
@@ -596,6 +613,60 @@ bool parse_opcode_block(void) {
         else if (t.token == Token::Opsize) {
             // TODO
         }
+        else if (t.token == Token::Reg) {
+            // TODO
+        }
+        else if (t.token == Token::None) {
+            continue;
+        }
+        else {
+            fprintf_error_pos(stderr,t,"Unexpected token at ");
+            ret = false;
+            break;
+        }
+    }
+
+    if (ret && !end) {
+        fprintf_error_pos(stderr,t,"No End token, stopping parsing at ");
+        ret = false;
+    }
+
+    return ret;
+}
+
+/* prefix
+ *    ...
+ * end
+ *
+ * at entry to this function, the line containing "prefix" has been parsed.
+ * it's up to us to fetch lines until we hit "end" */
+bool parse_prefix_block(void) {
+    bool ret = true,end = false;
+    Token t;
+
+    t.pos = 1;
+    t.line = source_file_line;
+    while (line_get()) {
+        t = line_get_token();
+
+        if (t.token == Token::Error) {
+            fprintf_error_pos(stderr,t,"Error in ");
+            ret = false;
+            break;
+        }
+        else if (t.token == Token::End) {
+            end = true;
+            break;
+        }
+        else if (t.token == Token::Encoding) {
+            // TODO
+        }
+        else if (t.token == Token::PrefixName) {
+            // TODO
+        }
+        else if (t.token == Token::State) {
+            // TODO
+        }
         else if (t.token == Token::None) {
             continue;
         }
@@ -678,6 +749,17 @@ int main(int argc,char **argv) {
                 fprintf_error_pos(stderr,t,"Extra tokens ignored at ");
 
             if (!parse_opcode_block()) {
+                ret = 1;
+                break;
+            }
+        }
+        else if (t.token == Token::Prefix) {
+            /* no additional tokens on the same line should exist */
+            t = line_get_token();
+            if (t.token != Token::None)
+                fprintf_error_pos(stderr,t,"Extra tokens ignored at ");
+
+            if (!parse_prefix_block()) {
                 ret = 1;
                 break;
             }
