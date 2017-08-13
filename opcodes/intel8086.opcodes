@@ -84,142 +84,150 @@
 ; References:
 ;    Intel 8088 datasheet, 8086/8088 Instruction Set Summary
 
-;-----------------------------------------------------------;
-symbol                                                      ;
-    enum                add__rm_reg                         ; ADD r/m, reg
-    opname              "ADD"                               ; instruction name shown in debugger
-    display             opsize(rm), opsize(reg)             ; ADD register/memory, reg
-    reads               opsize(rm), opsize(reg)             ; reads r/m and reg
-    writes              opsize(rm)                          ; writes result to r/m
-end                                                         ;
-                                                            ;
-opcode                                                      ; ADD r/m, reg
-    encoding            range(0x00-0x01) mod/reg/rm         ; 0x00 or 0x01  000000dw d=direction==0 w=wordsize
-    opsize              ternary(opbyte&1?word:byte)         ; word size (ex. AX/EAX/RAX) if a & 1, else byte size (ex. AL)
-    enum                add__rm_reg                         ; ADD instruction
-end                                                         ;
-;-----------------------------------------------------------;
+; WARNING: I am redoing the syntax. Do not compile.
 
-;-----------------------------------------------------------;
-symbol                                                      ;
-    enum                add__reg_rm                         ; ADD reg, r/m
-    opname              "ADD"                               ; instruction name shown in debugger
-    display             opsize(reg), opsize(rm)             ; ADD reg, register/memory
-    reads               opsize(reg), opsize(rm)             ; reads reg and r/m
-    writes              opsize(reg)                         ; writes result to reg
-end                                                         ;
-                                                            ;
-opcode                                                      ; ADD reg, r/m
-    encoding            range(0x02-0x03) mod/reg/rm         ; 0x02 or 0x03  000000dw d=direction==1 w=wordsize
-    opsize              ternary(opbyte&1?word:byte)         ; word size (ex. AX/EAX/RAX) if a & 1, else byte size (ex. AL)
-    enum                add__reg_rm                         ; ADD instruction
-end                                                         ;
-;-----------------------------------------------------------;
+;-----------------------------------------------------------------------;
+symbol                                                                  ;
+    enum                add__rm_reg                                     ; ADD r/m, reg
+    opname              "ADD"                                           ; instruction name shown in debugger
+    display             opsize(genreg(rm)), opsize(genreg(reg))         ; ADD register/memory, reg
+    reads               opsize(genreg(rm)), opsize(genreg(reg))         ; reads r/m and reg
+    writes              opsize(genreg(rm))                              ; writes result to r/m
+end                                                                     ;
+;-----------------------------------------------------------------------;
 
-;-----------------------------------------------------------;
-symbol                                                      ;
-    enum                add__reg_imm                        ; ADD reg, immediate value
-    opname              "ADD"                               ; instruction name shown in debugger
-    display             opsize(reg), opsize(i)              ; ADD reg, immediate
-    reads               opsize(reg), opsize(i)              ; reads reg and immediate
-    writes              opsize(reg)                         ; writes result to reg
-end                                                         ;
-;-----------------------------------------------------------;
+;-----------------------------------------------------------------------;
+opcode                                                                  ; ADD r/m, reg
+    encoding            range(0x00-0x01) mod/reg/rm                     ; 0x00 or 0x01  000000dw d=direction==0 w=wordsize
+    opsize              ternary(opbyte&1?word:byte)                     ; word size (ex. AX/EAX/RAX) if a & 1, else byte size (ex. AL)
+    enum                add__rm_reg                                     ; ADD instruction
+end                                                                     ;
+;-----------------------------------------------------------------------;
 
-;-----------------------------------------------------------;
-opcode                                                      ; ADD accum, immediate
-    encoding            range(0x04-0x05) iop                ; 0x04 or 0x05  0000010w w=wordsize  followed by immediate value
-    opsize              ternary(opbyte&1?word:byte)         ; word size (AX/EAX/RAX) if a & 1, else byte size (AL)
-    reg                 a                                   ; reg=accumulator
-    enum                add__reg_imm                        ; ADD instruction
-end                                                         ;
-;-----------------------------------------------------------;
+;-----------------------------------------------------------------------;
+symbol                                                                  ;
+    enum                add__reg_rm                                     ; ADD reg, r/m
+    opname              "ADD"                                           ; instruction name shown in debugger
+    display             opsize(genreg(reg)), opsize(genreg(rm))         ; ADD reg, register/memory
+    reads               opsize(genreg(reg)), opsize(genreg(rm))         ; reads reg and r/m
+    writes              opsize(genreg(reg))                             ; writes result to reg
+end                                                                     ;
+;-----------------------------------------------------------------------;
 
-;-----------------------------------------------------------;
-symbol                                                      ;
-    enum                add__rm_imm                         ; ADD r/m, immediate value
-    opname              "ADD"                               ; instruction name shown in debugger
-    display             opsize(rm), opsize(i)               ; ADD r/m, immediate
-    reads               opsize(rm), opsize(i)               ; reads r/m and immediate
-    writes              opsize(rm)                          ; writes r/m
-end                                                         ;
-;-----------------------------------------------------------;
+;-----------------------------------------------------------------------;
+opcode                                                                  ; ADD reg, r/m
+    encoding            range(0x02-0x03) mod/reg/rm                     ; 0x02 or 0x03  000000dw d=direction==1 w=wordsize
+    opsize              ternary(opbyte&1?word:byte)                     ; word size (ex. AX/EAX/RAX) if a & 1, else byte size (ex. AL)
+    enum                add__reg_rm                                     ; ADD instruction
+end                                                                     ;
+;-----------------------------------------------------------------------;
 
-;-----------------------------------------------------------;
-opcode                                                      ; ADD r/m, immediate
-    encoding            range(0x80-0x81) mod/reg/rm /0 iop  ; 0x80 or 0x81  1000000w w=wordsize  mod/reg/rm  followed by immediate value
-    opsize              ternary(opbyte&1?word:byte)         ; word size (AX/EAX/RAX) if a & 1, else byte size (AL)
-    enum                add__rm_imm                         ; ADD instruction
-end                                                         ;
-;-----------------------------------------------------------;
+;-----------------------------------------------------------------------;
+symbol                                                                  ;
+    enum                add__reg_imm                                    ; ADD reg, immediate value
+    opname              "ADD"                                           ; instruction name shown in debugger
+    display             opsize(genreg(reg)), opsize(i)                  ; ADD reg, immediate
+    reads               opsize(genreg(reg)), opsize(i)                  ; reads reg and immediate
+    writes              opsize(genreg(reg))                             ; writes result to reg
+end                                                                     ;
+;-----------------------------------------------------------------------;
 
-;-----------------------------------------------------------;
-opcode                                                      ; ADD r/m, immediate
-    encoding            range(0x82-0x83) mod/reg/rm /0 ibs  ; 0x82 or 0x83  1000001w w=wordsize  mod/reg/rm  followed by immediate value (signed byte to be sign-extended)
-    opsize              ternary(opbyte&1?word:byte)         ; word size (AX/EAX/RAX) if a & 1, else byte size (AL)
-    enum                add__rm_imm                         ; ADD instruction
-end                                                         ;
-;-----------------------------------------------------------;
+;-----------------------------------------------------------------------;
+opcode                                                                  ; ADD accum, immediate
+    encoding            range(0x04-0x05) iop                            ; 0x04 or 0x05  0000010w w=wordsize  followed by immediate value
+    opsize              ternary(opbyte&1?word:byte)                     ; word size (AX/EAX/RAX) if a & 1, else byte size (AL)
+    reg                 a                                               ; reg=accumulator
+    enum                add__reg_imm                                    ; ADD instruction
+end                                                                     ;
+;-----------------------------------------------------------------------;
 
-;-----------------------------------------------------------;
-prefix                                                      ; LOCK prefix
-    encoding            0x9B                                ;
-    prefixname          "FWAIT"                             ; shown in debugger
-    state               fwait=1                             ; flag to set in decompiler
-end                                                         ;
-;-----------------------------------------------------------;
+;-----------------------------------------------------------------------;
+symbol                                                                  ;
+    enum                add__rm_imm                                     ; ADD r/m, immediate value
+    opname              "ADD"                                           ; instruction name shown in debugger
+    display             opsize(genreg(rm)), opsize(i)                   ; ADD r/m, immediate
+    reads               opsize(genreg(rm)), opsize(i)                   ; reads r/m and immediate
+    writes              opsize(genreg(rm))                              ; writes r/m
+end                                                                     ;
+;-----------------------------------------------------------------------;
 
-;-----------------------------------------------------------;
-prefix                                                      ; LOCK prefix
-    encoding            0xF0                                ;
-    prefixname          "LOCK"                              ; shown in debugger
-    state               lock=1                              ; flag to set in decompiler
-end                                                         ;
-;-----------------------------------------------------------;
+;-----------------------------------------------------------------------;
+opcode                                                                  ; ADD r/m, immediate
+    encoding            range(0x80-0x81) mod/reg/rm /0 iop              ; 0x80 or 0x81  1000000w w=wordsize  mod/reg/rm  followed by immediate value
+    opsize              ternary(opbyte&1?word:byte)                     ; word size (AX/EAX/RAX) if a & 1, else byte size (AL)
+    enum                add__rm_imm                                     ; ADD instruction
+end                                                                     ;
+;-----------------------------------------------------------------------;
 
-;-----------------------------------------------------------;
-prefix                                                      ; REPNZ prefix (repeat while ZF=0)
-    encoding            0xF2                                ;
-    prefixname          "REPNZ"                             ; shown in debugger
-    state               rep=repnz                           ; state to be set in decompiler
-end                                                         ;
-                                                            ;
-prefix                                                      ; REPZ prefix (repeat while ZF=1)
-    encoding            0xF3                                ;
-    prefixname          "REPNZ"                             ; shown in debugger
-    state               rep=repz                            ; state to be set in decompiler
-end                                                         ;
-;-----------------------------------------------------------;
+;-----------------------------------------------------------------------;
+opcode                                                                  ; ADD r/m, immediate
+    encoding            range(0x82-0x83) mod/reg/rm /0 ibs              ; 0x82 or 0x83  1000001w w=wordsize  mod/reg/rm  followed by immediate value
+    opsize              ternary(opbyte&1?word:byte)                     ; word size (AX/EAX/RAX) if a & 1, else byte size (AL)
+    enum                add__rm_imm                                     ; ADD instruction
+end                                                                     ;
+;-----------------------------------------------------------------------;
 
-;-----------------------------------------------------------;
-prefix                                                      ;
-    encoding            0x26                                ; ES: prefix
-    prefixname          "ES:"                               ; shown in debugger
-    state               segoverride=es                      ; state to be set in decompiler
-end                                                         ;
-;-----------------------------------------------------------;
+;-----------------------------------------------------------------------;
+prefix                                                                  ; LOCK prefix
+    encoding            0x9B                                            ;
+    prefixname          "FWAIT"                                         ; shown in debugger
+    state               fwait=1                                         ; flag to set in decompiler
+end                                                                     ;
+;-----------------------------------------------------------------------;
 
-;-----------------------------------------------------------;
-prefix                                                      ;
-    encoding            0x2E                                ; CS: prefix
-    prefixname          "CS:"                               ; shown in debugger
-    state               segoverride=cs                      ; state to be set in decompiler
-end                                                         ;
-;-----------------------------------------------------------;
+;-----------------------------------------------------------------------;
+prefix                                                                  ; LOCK prefix
+    encoding            0xF0                                            ;
+    prefixname          "LOCK"                                          ; shown in debugger
+    state               lock=1                                          ; flag to set in decompiler
+end                                                                     ;
+;-----------------------------------------------------------------------;
 
-;-----------------------------------------------------------;
-prefix                                                      ;
-    encoding            0x36                                ; SS: prefix
-    prefixname          "SS:"                               ; shown in debugger
-    state               segoverride=ss                      ; state to be set in decompiler
-end                                                         ;
-;-----------------------------------------------------------;
+;-----------------------------------------------------------------------;
+prefix                                                                  ; REPNZ prefix (repeat while ZF=0)
+    encoding            0xF2                                            ;
+    prefixname          "REPNZ"                                         ; shown in debugger
+    state               rep=repnz                                       ; state to be set in decompiler
+end                                                                     ;
+;-----------------------------------------------------------------------;
 
-;-----------------------------------------------------------;
-prefix                                                      ;
-    encoding            0x3E                                ; DS: prefix
-    prefixname          "DS:"                               ; shown in debugger
-    state               segoverride=ds                      ; state to be set in decompiler
-end                                                         ;
-;-----------------------------------------------------------;
+;-----------------------------------------------------------------------;
+prefix                                                                  ; REPZ prefix (repeat while ZF=1)
+    encoding            0xF3                                            ;
+    prefixname          "REPNZ"                                         ; shown in debugger
+    state               rep=repz                                        ; state to be set in decompiler
+end                                                                     ;
+;-----------------------------------------------------------------------;
+
+;-----------------------------------------------------------------------;
+prefix                                                                  ;
+    encoding            0x26                                            ; ES: prefix
+    prefixname          "ES:"                                           ; shown in debugger
+    state               segoverride=es                                  ; state to be set in decompiler
+end                                                                     ;
+;-----------------------------------------------------------------------;
+
+;-----------------------------------------------------------------------;
+prefix                                                                  ;
+    encoding            0x2E                                            ; CS: prefix
+    prefixname          "CS:"                                           ; shown in debugger
+    state               segoverride=cs                                  ; state to be set in decompiler
+end                                                                     ;
+;-----------------------------------------------------------------------;
+
+;-----------------------------------------------------------------------;
+prefix                                                                  ;
+    encoding            0x36                                            ; SS: prefix
+    prefixname          "SS:"                                           ; shown in debugger
+    state               segoverride=ss                                  ; state to be set in decompiler
+end                                                                     ;
+;-----------------------------------------------------------------------;
+
+;-----------------------------------------------------------------------;
+prefix                                                                  ;
+    encoding            0x3E                                            ; DS: prefix
+    prefixname          "DS:"                                           ; shown in debugger
+    state               segoverride=ds                                  ; state to be set in decompiler
+end                                                                     ;
+;-----------------------------------------------------------------------;
 
