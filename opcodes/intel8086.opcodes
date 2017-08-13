@@ -87,20 +87,16 @@
 ; WARNING: I am redoing the syntax. Do not compile.
 
 ;-----------------------------------------------------------------------;
+; ============================== ADD ================================== ;
+;-----------------------------------------------------------------------;
+
+;-----------------------------------------------------------------------;
 symbol                                                                  ;
     enum                add__rm_reg                                     ; ADD r/m, reg
     opname              "ADD"                                           ; instruction name shown in debugger
     display             opsize(genreg(rm)), opsize(genreg(reg))         ; ADD register/memory, reg
     reads               opsize(genreg(rm)), opsize(genreg(reg))         ; reads r/m and reg
     writes              opsize(genreg(rm))                              ; writes result to r/m
-end                                                                     ;
-;-----------------------------------------------------------------------;
-
-;-----------------------------------------------------------------------;
-opcode                                                                  ; ADD r/m, reg
-    encoding            range(0x00-0x01) mod/reg/rm                     ; 0x00 or 0x01  000000dw d=direction==0 w=wordsize
-    opsize              ternary(opbyte&1?word:byte)                     ; word size (ex. AX/EAX/RAX) if a & 1, else byte size (ex. AL)
-    enum                add__rm_reg                                     ; ADD instruction
 end                                                                     ;
 ;-----------------------------------------------------------------------;
 
@@ -115,14 +111,6 @@ end                                                                     ;
 ;-----------------------------------------------------------------------;
 
 ;-----------------------------------------------------------------------;
-opcode                                                                  ; ADD reg, r/m
-    encoding            range(0x02-0x03) mod/reg/rm                     ; 0x02 or 0x03  000000dw d=direction==1 w=wordsize
-    opsize              ternary(opbyte&1?word:byte)                     ; word size (ex. AX/EAX/RAX) if a & 1, else byte size (ex. AL)
-    enum                add__reg_rm                                     ; ADD instruction
-end                                                                     ;
-;-----------------------------------------------------------------------;
-
-;-----------------------------------------------------------------------;
 symbol                                                                  ;
     enum                add__reg_imm                                    ; ADD reg, immediate value
     opname              "ADD"                                           ; instruction name shown in debugger
@@ -133,21 +121,38 @@ end                                                                     ;
 ;-----------------------------------------------------------------------;
 
 ;-----------------------------------------------------------------------;
-opcode                                                                  ; ADD accum, immediate
-    encoding            range(0x04-0x05) iop                            ; 0x04 or 0x05  0000010w w=wordsize  followed by immediate value
-    opsize              ternary(opbyte&1?word:byte)                     ; word size (AX/EAX/RAX) if a & 1, else byte size (AL)
-    reg                 a                                               ; reg=accumulator
-    enum                add__reg_imm                                    ; ADD instruction
-end                                                                     ;
-;-----------------------------------------------------------------------;
-
-;-----------------------------------------------------------------------;
 symbol                                                                  ;
     enum                add__rm_imm                                     ; ADD r/m, immediate value
     opname              "ADD"                                           ; instruction name shown in debugger
     display             opsize(genreg(rm)), opsize(i)                   ; ADD r/m, immediate
     reads               opsize(genreg(rm)), opsize(i)                   ; reads r/m and immediate
     writes              opsize(genreg(rm))                              ; writes r/m
+end                                                                     ;
+;-----------------------------------------------------------------------;
+
+
+;-----------------------------------------------------------------------;
+opcode                                                                  ; ADD r/m, reg
+    encoding            range(0x00-0x01) mod/reg/rm                     ; 0x00 or 0x01  000000dw d=direction==0 w=wordsize
+    opsize              ternary(opbyte&1?word:byte)                     ; word size (ex. AX/EAX/RAX) if a & 1, else byte size (ex. AL)
+    enum                add__rm_reg                                     ; ADD instruction
+end                                                                     ;
+;-----------------------------------------------------------------------;
+
+;-----------------------------------------------------------------------;
+opcode                                                                  ; ADD reg, r/m
+    encoding            range(0x02-0x03) mod/reg/rm                     ; 0x02 or 0x03  000000dw d=direction==1 w=wordsize
+    opsize              ternary(opbyte&1?word:byte)                     ; word size (ex. AX/EAX/RAX) if a & 1, else byte size (ex. AL)
+    enum                add__reg_rm                                     ; ADD instruction
+end                                                                     ;
+;-----------------------------------------------------------------------;
+
+;-----------------------------------------------------------------------;
+opcode                                                                  ; ADD accum, immediate
+    encoding            range(0x04-0x05) iop                            ; 0x04 or 0x05  0000010w w=wordsize  followed by immediate value
+    opsize              ternary(opbyte&1?word:byte)                     ; word size (AX/EAX/RAX) if a & 1, else byte size (AL)
+    reg                 a                                               ; reg=accumulator
+    enum                add__reg_imm                                    ; ADD instruction
 end                                                                     ;
 ;-----------------------------------------------------------------------;
 
@@ -165,6 +170,11 @@ opcode                                                                  ; ADD r/
     opsize              ternary(opbyte&1?word:byte)                     ; word size (AX/EAX/RAX) if a & 1, else byte size (AL)
     enum                add__rm_imm                                     ; ADD instruction
 end                                                                     ;
+;-----------------------------------------------------------------------;
+
+
+;-----------------------------------------------------------------------;
+; ============================ (prefix) =============================== ;
 ;-----------------------------------------------------------------------;
 
 ;-----------------------------------------------------------------------;
