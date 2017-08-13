@@ -401,73 +401,39 @@ OPCC_DECOM_H = \
 	\
 	dosboxxr/lib/cpu/core/intel80286.c16.a16.decom.h \
 	\
-	dosboxxr/lib/cpu/core/intel80386.c16.a16.decom.h \
 	dosboxxr/lib/cpu/core/intel80386.cxx.axx.decom.h \
-	dosboxxr/lib/cpu/core/intel80386.c32.a32.decom.h \
 	\
-	dosboxxr/lib/cpu/core/intel80386early.c16.a16.decom.h \
 	dosboxxr/lib/cpu/core/intel80386early.cxx.axx.decom.h \
-	dosboxxr/lib/cpu/core/intel80386early.c32.a32.decom.h \
 	\
-	dosboxxr/lib/cpu/core/intel80486.c16.a16.decom.h \
 	dosboxxr/lib/cpu/core/intel80486.cxx.axx.decom.h \
-	dosboxxr/lib/cpu/core/intel80486.c32.a32.decom.h \
 	\
-	dosboxxr/lib/cpu/core/intel80486early.c16.a16.decom.h \
 	dosboxxr/lib/cpu/core/intel80486early.cxx.axx.decom.h \
-	dosboxxr/lib/cpu/core/intel80486early.c32.a32.decom.h \
 	\
-	dosboxxr/lib/cpu/core/intelPentium.c16.a16.decom.h \
 	dosboxxr/lib/cpu/core/intelPentium.cxx.axx.decom.h \
-	dosboxxr/lib/cpu/core/intelPentium.c32.a32.decom.h \
 	\
-	dosboxxr/lib/cpu/core/intelPentiumPro.c16.a16.decom.h \
 	dosboxxr/lib/cpu/core/intelPentiumPro.cxx.axx.decom.h \
-	dosboxxr/lib/cpu/core/intelPentiumPro.c32.a32.decom.h \
 	\
-	dosboxxr/lib/cpu/core/intelPentiumMMX.c16.a16.decom.h \
 	dosboxxr/lib/cpu/core/intelPentiumMMX.cxx.axx.decom.h \
-	dosboxxr/lib/cpu/core/intelPentiumMMX.c32.a32.decom.h \
 	\
-	dosboxxr/lib/cpu/core/intelPentiumProMMX.c16.a16.decom.h \
 	dosboxxr/lib/cpu/core/intelPentiumProMMX.cxx.axx.decom.h \
-	dosboxxr/lib/cpu/core/intelPentiumProMMX.c32.a32.decom.h \
 	\
-	dosboxxr/lib/cpu/core/cyrix6x86MX.c16.a16.decom.h \
 	dosboxxr/lib/cpu/core/cyrix6x86MX.cxx.axx.decom.h \
-	dosboxxr/lib/cpu/core/cyrix6x86MX.c32.a32.decom.h \
 	\
-	dosboxxr/lib/cpu/core/intelPentium2.c16.a16.decom.h \
 	dosboxxr/lib/cpu/core/intelPentium2.cxx.axx.decom.h \
-	dosboxxr/lib/cpu/core/intelPentium2.c32.a32.decom.h \
 	\
-	dosboxxr/lib/cpu/core/intelPentium3.c16.a16.decom.h \
 	dosboxxr/lib/cpu/core/intelPentium3.cxx.axx.decom.h \
-	dosboxxr/lib/cpu/core/intelPentium3.c32.a32.decom.h \
 	\
-	dosboxxr/lib/cpu/core/intelPentium4.c16.a16.decom.h \
 	dosboxxr/lib/cpu/core/intelPentium4.cxx.axx.decom.h \
-	dosboxxr/lib/cpu/core/intelPentium4.c32.a32.decom.h \
 	\
-	dosboxxr/lib/cpu/core/intelPentium4Prescott.c16.a16.decom.h \
 	dosboxxr/lib/cpu/core/intelPentium4Prescott.cxx.axx.decom.h \
-	dosboxxr/lib/cpu/core/intelPentium4Prescott.c32.a32.decom.h \
 	\
-	dosboxxr/lib/cpu/core/amdk6r2.c16.a16.decom.h \
 	dosboxxr/lib/cpu/core/amdk6r2.cxx.axx.decom.h \
-	dosboxxr/lib/cpu/core/amdk6r2.c32.a32.decom.h \
 	\
-	dosboxxr/lib/cpu/core/amdAthlon.c16.a16.decom.h \
 	dosboxxr/lib/cpu/core/amdAthlon.cxx.axx.decom.h \
-	dosboxxr/lib/cpu/core/amdAthlon.c32.a32.decom.h \
 	\
-	dosboxxr/lib/cpu/core/intelCore.c16.a16.decom.h \
 	dosboxxr/lib/cpu/core/intelCore.cxx.axx.decom.h \
-	dosboxxr/lib/cpu/core/intelCore.c32.a32.decom.h \
 	\
-	dosboxxr/lib/cpu/core/everything.c16.a16.decom.h \
-	dosboxxr/lib/cpu/core/everything.cxx.axx.decom.h \
-	dosboxxr/lib/cpu/core/everything.c32.a32.decom.h
+	dosboxxr/lib/cpu/core/everything.cxx.axx.decom.h
 
 OPCC_EMU_H = \
 	dosboxxr/lib/cpu/core/intel8088.c16.a16.emu.h \
