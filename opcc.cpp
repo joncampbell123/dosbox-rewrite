@@ -1515,7 +1515,7 @@ int main(int argc,char **argv) {
         fprintf(fp,"/* enumeration of opcodes, obtained by using decompilation code. */\n");
         fprintf(fp,"/* run the state machine while symbol <= OPCODE_%s. */\n",Symbols[symbol_continue_main].enum_string.c_str());
         fprintf(fp,"/* if symbol == OPCODE_%s then read mod/reg/rm, and use opcode lookup table */\n",Symbols[symbol_continue_modregrm].enum_string.c_str());
-        fprintf(fp,"/* at offset to read [offset+(mrmbyte >> 3)] (or, [offset+(mod<<3)+reg]) */\n");
+        fprintf(fp,"/* at offset to read [offset+mrmbyte] */\n");
         fprintf(fp,"enum {\n");
         for (size_t si=0;si < Symbols.size();si++) {
             fprintf(fp,"\tOPCODE_%s,",Symbols[si].enum_string.c_str());
