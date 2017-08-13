@@ -209,7 +209,8 @@ char                line[4096];
 // symbols
 const size_t        symbol_continue_prefix = 0;
 const size_t        symbol_continue_main = 1;
-const size_t        symbol_undefined = 2;
+const size_t        symbol_continue_modregrm = 2;   // opcodes that determine opcode by mod/reg/rm reg field
+const size_t        symbol_undefined = 3;
 
 class OPCC_Symbol {
 public:
@@ -425,6 +426,10 @@ void OPCC_Symbol_Init(void) {
     // auto-create "continue_main" symbol. this tells the state machine to keep running (main opcode).
     assert(Symbols.size() == symbol_continue_main);
     assert(OPCC_SymbolToIndex(OPCC_Symbol_New("continue_main")) == symbol_continue_main);
+
+    // auto-create "continue_modregrm" symbol. this tells the state machine to stop (combo opcode, read mod/reg/rm to determine opcode by reg)
+    assert(Symbols.size() == symbol_continue_modregrm);
+    assert(OPCC_SymbolToIndex(OPCC_Symbol_New("continue_modregrm")) == symbol_continue_modregrm);
 
     // auto-create "undefined" symbol. disassembler can show "unknown", emulator can throw #UD exception unless 8088 emulation which is then a NO-OP
     assert(Symbols.size() == symbol_undefined);
@@ -1507,7 +1512,10 @@ int main(int argc,char **argv) {
         fprintf(fp,"/* auto-generated */\n");
         fprintf(fp,"\n");
 
-        fprintf(fp,"/* enumeration of opcodes, obtained by using decompilation code */\n");
+        fprintf(fp,"/* enumeration of opcodes, obtained by using decompilation code. */\n");
+        fprintf(fp,"/* run the state machine while symbol <= OPCODE_%s. */\n",Symbols[symbol_continue_main].enum_string.c_str());
+        fprintf(fp,"/* if symbol == OPCODE_%s then read mod/reg/rm, and use opcode lookup table */\n",Symbols[symbol_continue_modregrm].enum_string.c_str());
+        fprintf(fp,"/* at offset to read [offset+(mrmbyte >> 3)] (or, [offset+(mod<<3)+reg]) */\n");
         fprintf(fp,"enum {\n");
         for (size_t si=0;si < Symbols.size();si++) {
             fprintf(fp,"\tOPCODE_%s,",Symbols[si].enum_string.c_str());
