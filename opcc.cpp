@@ -258,6 +258,8 @@ public:
 
 std::vector<OPCC_Symbol>        Symbols;
 std::map<std::string,size_t>    SymbolsByEnum;
+std::vector<size_t>             SymbolsToOpname;
+std::map<std::string,std::vector<size_t> > SymbolsByOpname;
 
 static OPCC_Symbol              Symbol_none;
 
@@ -411,6 +413,8 @@ public:
 std::vector<OPCC_Prefix>        Prefixes;
 
 void OPCC_Symbol_Init(void) {
+    SymbolsByOpname.clear();
+    SymbolsToOpname.clear();
     SymbolsByEnum.clear();
     Symbols.clear();
 
@@ -1471,6 +1475,24 @@ int main(int argc,char **argv) {
         }
     }
 
+    // combined opame
+    for (size_t si=0;si < Symbols.size();si++) {
+        auto &i = Symbols[si];
+        auto &lookup = SymbolsByOpname[i.opname_string];
+        lookup.push_back(OPCC_SymbolToIndex(i));
+    }
+
+    {
+        size_t counter=0;
+
+        for (auto si=SymbolsByOpname.begin();si!=SymbolsByOpname.end();si++,counter++) {
+            auto &lookup = si->second;
+            for (size_t li=0;li < lookup.size();li++) SymbolsToOpname.push_back(counter);
+        }
+
+        assert(SymbolsToOpname.size() == Symbols.size());
+    }
+
     // show symbols
     fprintf(dest_fp,"/* Symbols parsed: */\n");
     for (size_t si=0;si < Symbols.size();si++) Symbols[si].fprintf_debug(dest_fp);
@@ -1488,18 +1510,70 @@ int main(int argc,char **argv) {
         fprintf(fp,"enum {\n");
         for (size_t si=0;si < Symbols.size();si++) {
             fprintf(fp,"\tOPCODE_%s,",Symbols[si].enum_string.c_str());
-            if ((si%5) == 0) fprintf(fp," /* =%lu */",(unsigned long)si);
+            fprintf(fp," /* =%lu */",(unsigned long)si);
             fprintf(fp,"\n");
         }
         fprintf(fp,"\tOPCODE__END /* =%lu */\n",(unsigned long)Symbols.size());
         fprintf(fp,"};\n");
         fprintf(fp,"\n");
 
-        fprintf(fp,"static const char *OPCODE_display_names[OPCODE__END] = {\n");
-        for (size_t si=0;si < Symbols.size();si++) {
-            fprintf(fp,"\t\"%s\"",Symbols[si].opname_string.c_str());
-            if ((si+1) != Symbols.size()) fprintf(fp,",");
-            fprintf(fp," /* %s */",Symbols[si].enum_string.c_str());
+        size_t max_sym2opname = 0;
+        {
+            size_t cc = SymbolsByOpname.size();
+
+            fprintf(fp,"static const ");
+            if (cc >= (size_t)0x10000UL) fprintf(fp,"uint32_t");
+            else if (cc >= (size_t)0x100UL) fprintf(fp,"uint16_t");
+            else fprintf(fp,"unsigned char");
+            fprintf(fp," OPCODE_enum_to_display_name[OPCODE__END] = {\n");
+            for (size_t stoi=0;stoi < SymbolsToOpname.size();stoi++) {
+                size_t stoidx = SymbolsToOpname[stoi];
+
+                if (max_sym2opname <= stoidx)
+                    max_sym2opname = stoidx + 1;
+
+                fprintf(fp,"\t%-7lu",(unsigned long)stoidx);
+                if ((stoi+1) != SymbolsToOpname.size())
+                    fprintf(fp,",");
+                else
+                    fprintf(fp," ");
+
+                assert(stoi < Symbols.size());
+                auto &sym = Symbols[stoi];
+
+                fprintf(fp," // %lu  OPCODE_%s -> %s",(unsigned long)stoi,sym.enum_string.c_str(),sym.opname_string.c_str());
+                fprintf(fp,"\n");
+            }
+            fprintf(fp,"};\n");
+
+            fprintf(fp,"\n");
+        }
+
+        fprintf(fp,"static const size_t OPCODE_display_END = %lu;\n",(unsigned long)max_sym2opname);
+        fprintf(fp,"static const char *OPCODE_display_names[OPCODE_display_END] = {\n");
+        for (auto si=SymbolsByOpname.begin();si!=SymbolsByOpname.end();) {
+            const std::string &opname = si->first;
+            auto &ls = si->second;
+            si++;
+
+            fprintf(fp,"\t\"%s\"",opname.c_str());
+            if (si != SymbolsByOpname.end())
+                fprintf(fp,",");
+            else
+                fprintf(fp," ");
+
+            fprintf(fp," // ");
+            for (size_t li=0;li < ls.size();li++) {
+                const size_t sidx = ls[li];
+                assert(sidx < Symbols.size());
+                auto &sym = Symbols[sidx];
+
+                fprintf(fp,"%s",sym.enum_string.c_str());
+                if ((li+1) != ls.size())
+                    fprintf(fp,",");
+                else
+                    fprintf(fp," ");
+            }
             fprintf(fp,"\n");
         }
         fprintf(fp,"};\n");
