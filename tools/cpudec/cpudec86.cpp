@@ -33,40 +33,23 @@ void IPDec_8086(x86_offset_t ip);
 void IPDec_80186(x86_offset_t ip);
 void IPDec_80286(x86_offset_t ip);
 void IPDec_80386(x86_offset_t ip);
-void IPDec_80386_generic(x86_offset_t ip);
 void IPDec_80486(x86_offset_t ip);
-void IPDec_80486_generic(x86_offset_t ip);
 void IPDec_80386early(x86_offset_t ip);
-void IPDec_80386early_generic(x86_offset_t ip);
 void IPDec_80486early(x86_offset_t ip);
-void IPDec_80486early_generic(x86_offset_t ip);
 void IPDec_Pentium(x86_offset_t ip);
-void IPDec_Pentium_generic(x86_offset_t ip);
 void IPDec_PentiumPro(x86_offset_t ip);
-void IPDec_PentiumPro_generic(x86_offset_t ip);
 void IPDec_PentiumMMX(x86_offset_t ip);
-void IPDec_PentiumMMX_generic(x86_offset_t ip);
 void IPDec_PentiumProMMX(x86_offset_t ip);
-void IPDec_PentiumProMMX_generic(x86_offset_t ip);
 void IPDec_Pentium2(x86_offset_t ip);
-void IPDec_Pentium2_generic(x86_offset_t ip);
 void IPDec_Pentium3(x86_offset_t ip);
-void IPDec_Pentium3_generic(x86_offset_t ip);
 void IPDec_Pentium4(x86_offset_t ip);
-void IPDec_Pentium4_generic(x86_offset_t ip);
 void IPDec_Pentium4Prescott(x86_offset_t ip);
-void IPDec_Pentium4Prescott_generic(x86_offset_t ip);
 void IPDec_Cyrix6x86MX(x86_offset_t ip);
-void IPDec_Cyrix6x86MX_generic(x86_offset_t ip);
 void IPDec_AMDK6r2(x86_offset_t ip);
-void IPDec_AMDK6r2_generic(x86_offset_t ip);
 void IPDec_AMDAthlon(x86_offset_t ip);
-void IPDec_AMDAthlon_generic(x86_offset_t ip);
 void IPDec_IntelCore(x86_offset_t ip);
-void IPDec_IntelCore_generic(x86_offset_t ip);
 #endif
 void IPDec_Everything(x86_offset_t ip);
-void IPDec_Everything_generic(x86_offset_t ip);
 
 x86_offset_t            exe_ip = 0;
 unsigned char*          exe_ip_ptr = NULL;
@@ -116,74 +99,74 @@ int main(int argc,char **argv) {
                 else if (!strcmp(a,"intel80386") || !strcmp(a,"intel386") || !strcmp(a,"386"))
                     IPDec = IPDec_80386;
                 else if (!strcmp(a,"intel80386g") || !strcmp(a,"intel386g") || !strcmp(a,"386g"))
-                    IPDec = IPDec_80386_generic;
+                    IPDec = IPDec_80386;
                 else if (!strcmp(a,"intel80386early") || !strcmp(a,"intel386early") || !strcmp(a,"386early"))
                     IPDec = IPDec_80386early;
                 else if (!strcmp(a,"intel80386earlyg") || !strcmp(a,"intel386earlyg") || !strcmp(a,"386earlyg"))
-                    IPDec = IPDec_80386early_generic;
+                    IPDec = IPDec_80386early;
                 else if (!strcmp(a,"intel80486") || !strcmp(a,"intel486") || !strcmp(a,"486"))
                     IPDec = IPDec_80486;
                 else if (!strcmp(a,"intel80486g") || !strcmp(a,"intel486g") || !strcmp(a,"486g"))
-                    IPDec = IPDec_80486_generic;
+                    IPDec = IPDec_80486;
                 else if (!strcmp(a,"intel80486early") || !strcmp(a,"intel486early") || !strcmp(a,"486early"))
                     IPDec = IPDec_80486early;
                 else if (!strcmp(a,"intel80486earlyg") || !strcmp(a,"intel486earlyg") || !strcmp(a,"486earlyg"))
-                    IPDec = IPDec_80486early_generic;
+                    IPDec = IPDec_80486early;
                 else if (!strcmp(a,"intelpentium") || !strcmp(a,"intel586") || !strcmp(a,"586"))
                     IPDec = IPDec_Pentium;
                 else if (!strcmp(a,"intelpentiumg") || !strcmp(a,"intel586g") || !strcmp(a,"586g"))
-                    IPDec = IPDec_Pentium_generic;
+                    IPDec = IPDec_Pentium;
                 else if (!strcmp(a,"intelpentiumpro") || !strcmp(a,"intel586pro") || !strcmp(a,"586pro"))
                     IPDec = IPDec_PentiumPro;
                 else if (!strcmp(a,"intelpentiumprog") || !strcmp(a,"intel586prog") || !strcmp(a,"586prog"))
-                    IPDec = IPDec_PentiumPro_generic;
+                    IPDec = IPDec_PentiumPro;
                 else if (!strcmp(a,"intelpentiummmx") || !strcmp(a,"intel586mmx") || !strcmp(a,"586mmx"))
                     IPDec = IPDec_PentiumMMX;
                 else if (!strcmp(a,"intelpentiummmxg") || !strcmp(a,"intel586mmxg") || !strcmp(a,"586mmxg"))
-                    IPDec = IPDec_PentiumMMX_generic;
+                    IPDec = IPDec_PentiumMMX;
                 else if (!strcmp(a,"intelpentiumprommx") || !strcmp(a,"intel586prommx") || !strcmp(a,"586prommx"))
                     IPDec = IPDec_PentiumProMMX;
                 else if (!strcmp(a,"intelpentiumprommxg") || !strcmp(a,"intel586prommxg") || !strcmp(a,"586prommxg"))
-                    IPDec = IPDec_PentiumProMMX_generic;
+                    IPDec = IPDec_PentiumProMMX;
                 else if (!strcmp(a,"intelpentium2") || !strcmp(a,"intelp2") || !strcmp(a,"686"))
                     IPDec = IPDec_Pentium2;
                 else if (!strcmp(a,"intelpentium2g") || !strcmp(a,"intelp2g") || !strcmp(a,"686"))
-                    IPDec = IPDec_Pentium2_generic;
+                    IPDec = IPDec_Pentium2;
                 else if (!strcmp(a,"intelpentium3") || !strcmp(a,"intelp3"))
                     IPDec = IPDec_Pentium3;
                 else if (!strcmp(a,"intelpentium3g") || !strcmp(a,"intelp3g"))
-                    IPDec = IPDec_Pentium3_generic;
+                    IPDec = IPDec_Pentium3;
                 else if (!strcmp(a,"intelpentium4") || !strcmp(a,"intelp4"))
                     IPDec = IPDec_Pentium4;
                 else if (!strcmp(a,"intelpentium4g") || !strcmp(a,"intelp4g"))
-                    IPDec = IPDec_Pentium4_generic;
+                    IPDec = IPDec_Pentium4;
                 else if (!strcmp(a,"intelpentium4prescott") || !strcmp(a,"intelp4prescott"))
                     IPDec = IPDec_Pentium4Prescott;
                 else if (!strcmp(a,"intelpentium4prescottg") || !strcmp(a,"intelp4prescottg"))
-                    IPDec = IPDec_Pentium4Prescott_generic;
+                    IPDec = IPDec_Pentium4Prescott;
                 else if (!strcmp(a,"necv20") || !strcmp(a,"v20"))
                     IPDec = IPDec_necv20;
                 else if (!strcmp(a,"cyrix6x86mx") || !strcmp(a,"6x86mx"))
                     IPDec = IPDec_Cyrix6x86MX;
                 else if (!strcmp(a,"cyrix6x86mxg") || !strcmp(a,"6x86mxg"))
-                    IPDec = IPDec_Cyrix6x86MX_generic;
+                    IPDec = IPDec_Cyrix6x86MX;
                 else if (!strcmp(a,"amdk6r2"))
                     IPDec = IPDec_AMDK6r2;
                 else if (!strcmp(a,"amdk6r2g"))
-                    IPDec = IPDec_AMDK6r2_generic;
+                    IPDec = IPDec_AMDK6r2;
                 else if (!strcmp(a,"amdathlon"))
                     IPDec = IPDec_AMDAthlon;
                 else if (!strcmp(a,"amdathlong"))
-                    IPDec = IPDec_AMDAthlon_generic;
+                    IPDec = IPDec_AMDAthlon;
                 else if (!strcmp(a,"intelcore"))
                     IPDec = IPDec_IntelCore;
                 else if (!strcmp(a,"intelcoreg"))
-                    IPDec = IPDec_IntelCore_generic;
+                    IPDec = IPDec_IntelCore;
 #endif
                 else if (!strcmp(a,"everything"))
                     IPDec = IPDec_Everything;
                 else if (!strcmp(a,"everythingg"))
-                    IPDec = IPDec_Everything_generic;
+                    IPDec = IPDec_Everything;
                 else {
                     fprintf(stderr,"Unknown CPU\n");
                     return 1;

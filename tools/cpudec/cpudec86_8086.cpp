@@ -42,7 +42,7 @@ void IPDec_8086(x86_offset_t ip) {
     /* decode */
 _x86decode_begin_code16_addr16:
 _x86decode_after_prefix_code16_addr16:
-#include "dosboxxr/lib/cpu/core/intel8088.c16.a16.decom.h"
+#include "dosboxxr/lib/cpu/core/intel8088.cxx.axx.decom.h"
     goto _x86done;
 _x86decode_illegal_opcode:
 _x86done:

@@ -43,33 +43,19 @@ void IPDec_Cyrix6x86MX(x86_offset_t ip) {
     IPDecStr[0] = 0;
     IPDecIP = ip;
 
-    /* jump to 32-bit code entry if that's the CPU mode */
-    if (exe_code32)
-        goto _x86decode_begin_code32_addr32;
-
     /* decode */
-// COMMON CASE
-_x86decode_begin_code16_addr16:
-    code32=addr32=0;
-_x86decode_after_prefix_code16_addr16:
-_x86decode_after_prefix_386override_code16_addr16:
-#include "dosboxxr/lib/cpu/core/cyrix6x86MX.c16.a16.decom.h"
-    goto _x86done;
-// UNCOMMON CASES
+    code32 = addr32 = exe_code32;
 _x86decode_begin_code16_addr32:
-_x86decode_after_prefix_code16_addr32:
-_x86decode_after_prefix_386override_code16_addr32:
 _x86decode_begin_code32_addr16:
+_x86decode_after_prefix_code16_addr16:
+_x86decode_after_prefix_code16_addr32:
 _x86decode_after_prefix_code32_addr16:
-_x86decode_after_prefix_386override_code32_addr16:
-#include "dosboxxr/lib/cpu/core/cyrix6x86MX.cxx.axx.decom.h"
-    goto _x86done;
-// COMMON CASE
-_x86decode_begin_code32_addr32:
-    code32=addr32=1;
 _x86decode_after_prefix_code32_addr32:
+_x86decode_after_prefix_386override_code16_addr16:
+_x86decode_after_prefix_386override_code16_addr32:
+_x86decode_after_prefix_386override_code32_addr16:
 _x86decode_after_prefix_386override_code32_addr32:
-#include "dosboxxr/lib/cpu/core/cyrix6x86MX.c32.a32.decom.h"
+#include "dosboxxr/lib/cpu/core/cyrix6x86MX.cxx.axx.decom.h"
     goto _x86done;
 _x86decode_illegal_opcode:
 _x86done:

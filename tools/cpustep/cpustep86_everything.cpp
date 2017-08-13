@@ -67,6 +67,11 @@ void IPExec_Everything(x86_offset_t ip) {
     x86Vex vex;
     uint8_t op;
 
+    (void)ipwf;
+    (void)imm2;
+    (void)imm;
+    (void)ipw;
+
     /* one instruction only */
     ipwf = IPDecStr+sizeof(IPDecStr);
     ipw = IPDecStr;
