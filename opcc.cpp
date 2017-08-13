@@ -202,6 +202,8 @@ std::string         dest_file;
 bool                dest_stdout=true;
 FILE*               dest_fp=NULL;
 
+std::string         symbol_file;
+
 char                line[4096];
 
 // symbols
@@ -432,6 +434,7 @@ static void help(void) {
     fprintf(stderr," -i -                   Read from stdin\n");
     fprintf(stderr," -o <file>              Write to file\n");
     fprintf(stderr," -o -                   Write to stdout\n");
+    fprintf(stderr," -s <file>              Write symbols to file\n");
 }
 
 // C/C++ implementation of Perl's chomp function.
@@ -931,6 +934,12 @@ static int parse_argv(int argc,char **argv) {
             if (!strcmp(a,"h") || !strcmp(a,"help")) {
                 help();
                 return 1;
+            }
+            else if (!strcmp(a,"s")) {
+                a = argv[i++];
+                if (a == NULL) return 1;
+
+                symbol_file = a;
             }
             else if (!strcmp(a,"o")) {
                 a = argv[i++];
@@ -1467,6 +1476,24 @@ int main(int argc,char **argv) {
     for (size_t si=0;si < Symbols.size();si++) Symbols[si].fprintf_debug(dest_fp);
     fprintf(dest_fp,"/* -------------------------------------- */\n");
     fprintf(dest_fp,"\n");
+
+    // export symbols
+    if (!symbol_file.empty()) {
+        FILE *fp = fopen(symbol_file.c_str(),"w");
+        if (fp == NULL) return 1;
+
+        fprintf(fp,"/* auto-generated */\n");
+        fprintf(fp,"enum {\n");
+        for (size_t si=0;si < Symbols.size();si++) {
+            fprintf(fp,"\tOPCODE_%s,",Symbols[si].enum_string.c_str());
+            if ((si%5) == 0) fprintf(fp," /* =%lu */",(unsigned long)si);
+            fprintf(fp,"\n");
+        }
+        fprintf(fp,"\tOPCODE__END /* =%lu */\n",(unsigned long)Symbols.size());
+        fprintf(fp,"};\n");
+
+        fclose(fp);
+    }
 
     // show opcodes
     fprintf(dest_fp,"/* Opcodes parsed: */\n");
