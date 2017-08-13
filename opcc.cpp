@@ -45,6 +45,7 @@ struct Token {
         PrefixName,
         ParensOpen,
         ParensClose,
+        Fwait,
         Lock,
         And,
         Dash,
@@ -122,6 +123,9 @@ struct Token {
         }
         else if (token == Lock) {
             fprintf(fp,"lock");
+        }
+        else if (token == Fwait) {
+            fprintf(fp,"fwait");
         }
         else if (token == Ternary) {
             fprintf(fp,"ternary(");
@@ -863,6 +867,9 @@ static Token line_get_token(void) {
             }
             else if (tokenname == "lock") {
                 r.token = Token::Lock;
+            }
+            else if (tokenname == "fwait") {
+                r.token = Token::Fwait;
             }
             else if (tokenname == "writes") {
                 r.token = Token::Writes;

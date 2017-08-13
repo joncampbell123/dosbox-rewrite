@@ -163,6 +163,14 @@ end                                                         ;
 
 ;-----------------------------------------------------------;
 prefix                                                      ; LOCK prefix
+    encoding            0x9B                                ;
+    prefixname          "FWAIT"                             ; shown in debugger
+    state               fwait=1                             ; flag to set in decompiler
+end                                                         ;
+;-----------------------------------------------------------;
+
+;-----------------------------------------------------------;
+prefix                                                      ; LOCK prefix
     encoding            0xF0                                ;
     prefixname          "LOCK"                              ; shown in debugger
     state               lock=1                              ; flag to set in decompiler
