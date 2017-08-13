@@ -1507,6 +1507,7 @@ int main(int argc,char **argv) {
         fprintf(fp,"/* auto-generated */\n");
         fprintf(fp,"\n");
 
+        fprintf(fp,"/* enumeration of opcodes, obtained by using decompilation code */\n");
         fprintf(fp,"enum {\n");
         for (size_t si=0;si < Symbols.size();si++) {
             fprintf(fp,"\tOPCODE_%s,",Symbols[si].enum_string.c_str());
@@ -1517,6 +1518,9 @@ int main(int argc,char **argv) {
         fprintf(fp,"};\n");
         fprintf(fp,"\n");
 
+        fprintf(fp,"/* lookup table. opcode enum to diplay name index. */\n");
+        fprintf(fp,"/* const size_t display_index = OPCODE_enum_to_display_name[opcode_enum_value]; */\n");
+        fprintf(fp,"/* const char *display_string = OPCODE_display_names[display_index]; */\n");
         size_t max_sym2opname = 0;
         {
             size_t cc = SymbolsByOpname.size();
@@ -1549,6 +1553,9 @@ int main(int argc,char **argv) {
             fprintf(fp,"\n");
         }
 
+        fprintf(fp,"/* display names. this is formatted differently from the opcode enum because */\n");
+        fprintf(fp,"/* the display names are often redundant for each variant of an opcode */\n");
+        fprintf(fp,"/* i.e. multiple opcode enums for each variant of the ADD instruction. */\n");
         fprintf(fp,"static const size_t OPCODE_display_END = %lu;\n",(unsigned long)max_sym2opname);
         fprintf(fp,"static const char *OPCODE_display_names[OPCODE_display_END] = {\n");
         for (auto si=SymbolsByOpname.begin();si!=SymbolsByOpname.end();) {
