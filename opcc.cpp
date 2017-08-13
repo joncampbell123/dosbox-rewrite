@@ -1483,6 +1483,8 @@ int main(int argc,char **argv) {
         if (fp == NULL) return 1;
 
         fprintf(fp,"/* auto-generated */\n");
+        fprintf(fp,"\n");
+
         fprintf(fp,"enum {\n");
         for (size_t si=0;si < Symbols.size();si++) {
             fprintf(fp,"\tOPCODE_%s,",Symbols[si].enum_string.c_str());
@@ -1491,6 +1493,17 @@ int main(int argc,char **argv) {
         }
         fprintf(fp,"\tOPCODE__END /* =%lu */\n",(unsigned long)Symbols.size());
         fprintf(fp,"};\n");
+        fprintf(fp,"\n");
+
+        fprintf(fp,"static const char *OPCODE_display_names[OPCODE__END] = {\n");
+        for (size_t si=0;si < Symbols.size();si++) {
+            fprintf(fp,"\t\"%s\"",Symbols[si].opname_string.c_str());
+            if ((si+1) != Symbols.size()) fprintf(fp,",");
+            fprintf(fp," /* %s */",Symbols[si].enum_string.c_str());
+            fprintf(fp,"\n");
+        }
+        fprintf(fp,"};\n");
+        fprintf(fp,"\n");
 
         fclose(fp);
     }
