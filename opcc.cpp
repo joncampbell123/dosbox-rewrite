@@ -1536,7 +1536,7 @@ int main(int argc,char **argv) {
                 if (max_sym2opname <= stoidx)
                     max_sym2opname = stoidx + 1;
 
-                fprintf(fp,"\t%-7lu",(unsigned long)stoidx);
+                fprintf(fp,"\t%lu",(unsigned long)stoidx);
                 if ((stoi+1) != SymbolsToOpname.size())
                     fprintf(fp,",");
                 else
