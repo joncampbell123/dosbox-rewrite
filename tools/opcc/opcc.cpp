@@ -4,6 +4,7 @@
 #include <string.h>
 #include <assert.h>
 #include <stdio.h>
+#include <errno.h>
 #include <fcntl.h>
 
 #include <algorithm>        // std::min
@@ -214,6 +215,10 @@ string                  in_path;
 FILE*                   out_fp = NULL;
 string                  out_path;
 
+string                  symbol_path;
+
+map<string,bool>        opcode_symbol_list;
+
 enum opccMode           cc_mode = MOD_DECOMPILE;
 
 bool                    mprefix_exists = false;
@@ -231,6 +236,7 @@ static void help() {
     fprintf(stderr,"\n");
     fprintf(stderr,"   -i <input>          Input file path or - for stdin\n");
     fprintf(stderr,"   -o <output>         Output file path or - for stdout\n");
+    fprintf(stderr,"   -s <output>         Output file for symbols (enum)\n");
     fprintf(stderr,"   -m <mode>           Generation mode:\n");
     fprintf(stderr,"        decompile        Generate code to decompile/disassemble\n");
     fprintf(stderr,"        execute          Generate code to execute instructions\n");
@@ -287,6 +293,11 @@ static bool parse(int argc,char **argv) {
                 a = argv[i++];
                 if (a == NULL) return false;
                 out_path = a;
+            }
+            else if (!strcmp(a,"s")) {
+                a = argv[i++];
+                if (a == NULL) return false;
+                symbol_path = a;
             }
             else if (!strcmp(a,"m")) {
                 a = argv[i++];
@@ -1648,6 +1659,10 @@ bool parse_opcode_def(char *line,unsigned long lineno,char *s) {
             return false;
         }
     }
+
+    /* collect names */
+    if (!st.name.empty() && !st.is_prefix)
+        opcode_symbol_list[st.name] = true;
 
     last_opcodes.clear();
     if (st.xop) {
@@ -3396,6 +3411,76 @@ int main(int argc,char **argv) {
     fprintf(out_fp,"#undef IPFcodeWsigned\n");
 
     fclose(out_fp);
+
+    if (!symbol_path.empty()) {
+        vector<size_t> offsetlist;
+        size_t count,offset;
+        FILE *fp;
+
+        fp = fopen(symbol_path.c_str(),"w");
+        if (!fp) {
+            fprintf(stderr,"Cannot open symbol file for writing, %s\n",strerror(errno));
+            return 1;
+        }
+
+        count = 0;
+        fprintf(fp,"/* auto-generated */\n");
+        fprintf(fp,"enum {\n");
+        fprintf(fp,"\tOPCODE_NONE, /* =%lu */\n",(unsigned long)(count++));
+        for (map<string,bool>::iterator i=opcode_symbol_list.begin();i!=opcode_symbol_list.end();i++) {
+            const string &ent = i->first;
+
+            fprintf(fp,"\tOPCODE_%s, /* =%lu */\n",ent.c_str(),(unsigned long)(count++));
+        }
+        fprintf(fp,"\tOPCODE__MAX  /* =%lu */\n",(unsigned long)(count++));
+        fprintf(fp,"};\n");
+        fprintf(fp,"\n");
+
+        count = 0;
+        offset = 0;
+        offsetlist.clear();
+        fprintf(fp,"/* auto-generated */\n");
+        fprintf(fp,"const char opcode_names[] = \\\n");
+        fprintf(fp,"\t\"\\0\" /* =%lu @%lu */ \\\n",(unsigned long)(count++),(unsigned long)offset);
+        offsetlist.push_back(offset);
+        offset += 1/*NUL*/;
+        for (map<string,bool>::iterator i=opcode_symbol_list.begin();i!=opcode_symbol_list.end();i++) {
+            const string &ent = i->first;
+
+            fprintf(fp,"\t\"%s\\0\" /* =%lu @%lu */ \\\n",ent.c_str(),(unsigned long)(count++),(unsigned long)offset);
+            offsetlist.push_back(offset);
+            offset += 1/*NUL*/ + ent.length();
+        }
+        fprintf(fp,"\t\"\\0\"; /* =%lu @%lu */\n",(unsigned long)(count++),(unsigned long)offset);
+        offsetlist.push_back(offset);
+        fprintf(fp,"\n");
+
+        count = 0;
+        fprintf(fp,"/* auto-generated */\n");
+        fprintf(fp,"const ");
+        if (offset >= (size_t)0x10000UL)
+            fprintf(fp,"uint32_t ");
+        else if (offset >= (size_t)0x100UL)
+            fprintf(fp,"uint16_t ");
+        else
+            fprintf(fp,"uint8_t ");
+        fprintf(fp,"opcode_name_offsets[OPCODE__MAX+1] = {\n");
+        assert(count < offsetlist.size());
+        fprintf(fp,"\t%lu, /* =%lu */\n",(unsigned long)offsetlist[count],(unsigned long)(count)); count++;
+        for (map<string,bool>::iterator i=opcode_symbol_list.begin();i!=opcode_symbol_list.end();i++) {
+            const string &ent = i->first;
+
+            assert(count < offsetlist.size());
+            fprintf(fp,"\t%lu, /* =%lu %s */\n",(unsigned long)offsetlist[count],(unsigned long)(count),ent.c_str()); count++;
+        }
+        assert(count < offsetlist.size());
+        fprintf(fp,"\t%lu  /* =%lu */\n",(unsigned long)offsetlist[count],(unsigned long)(count)); count++;
+        fprintf(fp,"};\n");
+        fprintf(fp,"\n");
+
+        fclose(fp);
+    }
+
     return 0;
 }
 
