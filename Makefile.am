@@ -427,7 +427,7 @@ OPCC_DECOM_H = \
 	\
 	dosboxxr/lib/cpu/core/all_symbols.h
 
-dosboxxr/lib/cpu/core/all_symbols.h: $(OPCODES_FILES)
+dosboxxr/lib/cpu/core/all_symbols.h: $(OPCODES_FILES) $(OPCC_DECOM_H) $(OPCC_EMU_H)
 	tools/opcc/opcc_symbols_combine.pl dosboxxr/lib/cpu/core/*.symbols.h >$@
 
 OPCC_EMU_H = \
@@ -630,3 +630,5 @@ opcodes-dec: $(OPCC_DECOM_H)
 
 opcodes-emu: $(OPCC_EMU_H)
 
+opcodes-clean:
+	rm -f $(OPCC_EMU_H) $(OPCC_DECOM_H)
