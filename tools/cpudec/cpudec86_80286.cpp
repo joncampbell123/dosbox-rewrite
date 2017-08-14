@@ -22,17 +22,8 @@
 #include "dosboxxr/lib/cpu/ipdec_pre_core.h"
 
 void IPDec_80286(x86_offset_t ip) {
-    x86ScaleIndexBase sib;
-    bool prefix_WAIT = false;
-    bool prefix_LOCK = false;
-    signed char repmode = -1;
-    signed char segoverride = -1;
-    unsigned int opcode = 0;
-    x86_offset_t disp;
-    uint16_t imm,imm2;
+    struct opcc_decom_state opstate;
     char *ipw,*ipwf;
-    x86ModRegRm mrm;
-    uint8_t op;
 
     /* one instruction only */
     ipwf = IPDecStr+sizeof(IPDecStr);

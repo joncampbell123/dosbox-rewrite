@@ -55,21 +55,10 @@ static inline void CPU_STD(void) {
 }
 
 void IPExec_Everything(x86_offset_t ip) {
-    bool code32=exe_code32;
-    bool addr32=exe_code32;
-    x86ScaleIndexBase sib;
-    bool prefix66=false;
-    bool prefix67=false;
-    x86_offset_t disp;
-    uint32_t imm,imm2;
+    struct opcc_decom_state opstate(exe_code32);
     char *ipw,*ipwf;
-    x86ModRegRm mrm;
-    x86Vex vex;
-    uint8_t op;
 
     (void)ipwf;
-    (void)imm2;
-    (void)imm;
     (void)ipw;
 
     /* one instruction only */
@@ -85,7 +74,7 @@ void IPExec_Everything(x86_offset_t ip) {
     /* decode */
 // COMMON CASE
 _x86decode_begin_code16_addr16:
-    code32=addr32=0;
+    opstate.code32 = opstate.addr32 = 0;
 _x86decode_after_prefix_code16_addr16:
 _x86decode_after_prefix_386override_code16_addr16:
 #include "dosboxxr/lib/cpu/core/everything.c16.a16.emu.h"
@@ -101,7 +90,7 @@ _x86decode_after_prefix_386override_code32_addr16:
     goto _x86done;
 // COMMON CASE
 _x86decode_begin_code32_addr32:
-    code32=addr32=1;
+    opstate.code32 = opstate.addr32 = 1;
 _x86decode_after_prefix_code32_addr32:
 _x86decode_after_prefix_386override_code32_addr32:
 #include "dosboxxr/lib/cpu/core/everything.c32.a32.emu.h"

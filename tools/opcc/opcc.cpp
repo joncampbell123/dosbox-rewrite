@@ -1889,8 +1889,8 @@ bool parse_opcodelist(void) {
 
 void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const uint8_t *opbase,const size_t opbaselen,OpByte &map,const unsigned int indent,const unsigned int flags,OpByte& maproot);
 
-static const char *immnames[4] = {"imm","imm2","imm3","imm4"};
-static const char *immnames_rip[4] = {"(imm+IPval())","(imm2+IPval())","(imm3+IPval())","(imm4+IPval())"};
+static const char *immnames[4] = {"opstate.imm","opstate.imm2","opstate.imm3","opstate.imm4"};
+static const char *immnames_rip[4] = {"(opstate.imm+IPval())","(opstate.imm2+IPval())","(opstate.imm3+IPval())","(opstate.imm4+IPval())"};
 
 void opcode_gen_case_statement_immarg_fetch_nopc(const string &indent_str,OpByte *submap) {
     unsigned int immc = 0;
@@ -1900,48 +1900,48 @@ void opcode_gen_case_statement_immarg_fetch_nopc(const string &indent_str,OpByte
 
         switch (a) {
             case OPARG_IB:
-                if (immc != 0)  fprintf(out_fp,"%simm%u=IPFB();\n",indent_str.c_str(),immc+1);
-                else            fprintf(out_fp,"%simm=IPFB();\n",indent_str.c_str());
+                if (immc != 0)  fprintf(out_fp,"%sopstate.imm%u=IPFB();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%sopstate.imm=IPFB();\n",indent_str.c_str());
                 immc++;
                 break;
             case OPARG_IBS:
-                if (immc != 0)  fprintf(out_fp,"%simm%u=IPFBsigned();\n",indent_str.c_str(),immc+1);
-                else            fprintf(out_fp,"%simm=IPFBsigned();\n",indent_str.c_str());
+                if (immc != 0)  fprintf(out_fp,"%sopstate.imm%u=IPFBsigned();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%sopstate.imm=IPFBsigned();\n",indent_str.c_str());
                 immc++;
                 break;
             case OPARG_IW:
-                if (immc != 0)  fprintf(out_fp,"%simm%u=IPFcodeW();\n",indent_str.c_str(),immc+1);
-                else            fprintf(out_fp,"%simm=IPFcodeW();\n",indent_str.c_str());
+                if (immc != 0)  fprintf(out_fp,"%sopstate.imm%u=IPFcodeW();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%sopstate.imm=IPFcodeW();\n",indent_str.c_str());
                 immc++;
                 break;
             case OPARG_IWA:
-                if (immc != 0)  fprintf(out_fp,"%simm%u=IPFaddrW();\n",indent_str.c_str(),immc+1);
-                else            fprintf(out_fp,"%simm=IPFaddrW();\n",indent_str.c_str());
+                if (immc != 0)  fprintf(out_fp,"%sopstate.imm%u=IPFaddrW();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%sopstate.imm=IPFaddrW();\n",indent_str.c_str());
                 immc++;
                 break;
             case OPARG_IWS:
-                if (immc != 0)  fprintf(out_fp,"%simm%u=IPFcodeWsigned();\n",indent_str.c_str(),immc+1);
-                else            fprintf(out_fp,"%simm=IPFcodeWsigned();\n",indent_str.c_str());
+                if (immc != 0)  fprintf(out_fp,"%sopstate.imm%u=IPFcodeWsigned();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%sopstate.imm=IPFcodeWsigned();\n",indent_str.c_str());
                 immc++;
                 break;
             case OPARG_IW16:
-                if (immc != 0)  fprintf(out_fp,"%simm%u=IPFW();\n",indent_str.c_str(),immc+1);
-                else            fprintf(out_fp,"%simm=IPFW();\n",indent_str.c_str());
+                if (immc != 0)  fprintf(out_fp,"%sopstate.imm%u=IPFW();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%sopstate.imm=IPFW();\n",indent_str.c_str());
                 immc++;
                 break;
             case OPARG_IW16S:
-                if (immc != 0)  fprintf(out_fp,"%simm%u=IPFWsigned();\n",indent_str.c_str(),immc+1);
-                else            fprintf(out_fp,"%simm=IPFWsigned();\n",indent_str.c_str());
+                if (immc != 0)  fprintf(out_fp,"%sopstate.imm%u=IPFWsigned();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%sopstate.imm=IPFWsigned();\n",indent_str.c_str());
                 immc++;
                 break;
             case OPARG_IW32:
-                if (immc != 0)  fprintf(out_fp,"%simm%u=IPFDW();\n",indent_str.c_str(),immc+1);
-                else            fprintf(out_fp,"%simm=IPFDW();\n",indent_str.c_str());
+                if (immc != 0)  fprintf(out_fp,"%sopstate.imm%u=IPFDW();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%sopstate.imm=IPFDW();\n",indent_str.c_str());
                 immc++;
                 break;
             case OPARG_IW32S:
-                if (immc != 0)  fprintf(out_fp,"%simm%u=IPFDWsigned();\n",indent_str.c_str(),immc+1);
-                else            fprintf(out_fp,"%simm=IPFDWsigned();\n",indent_str.c_str());
+                if (immc != 0)  fprintf(out_fp,"%sopstate.imm%u=IPFDWsigned();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%sopstate.imm=IPFDWsigned();\n",indent_str.c_str());
                 immc++;
                 break;
             default:
@@ -1958,48 +1958,48 @@ void opcode_gen_case_statement_immarg_fetch(const string &indent_str,OpByte *sub
 
         switch (a) {
             case OPARG_IB:
-                if (immc != 0)  fprintf(out_fp,"%s        imm%u=IPFB();\n",indent_str.c_str(),immc+1);
-                else            fprintf(out_fp,"%s        imm=IPFB();\n",indent_str.c_str());
+                if (immc != 0)  fprintf(out_fp,"%s        opstate.imm%u=IPFB();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%s        opstate.imm=IPFB();\n",indent_str.c_str());
                 immc++;
                 break;
             case OPARG_IBS:
-                if (immc != 0)  fprintf(out_fp,"%s        imm%u=IPFBsigned();\n",indent_str.c_str(),immc+1);
-                else            fprintf(out_fp,"%s        imm=IPFBsigned();\n",indent_str.c_str());
+                if (immc != 0)  fprintf(out_fp,"%s        opstate.imm%u=IPFBsigned();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%s        opstate.imm=IPFBsigned();\n",indent_str.c_str());
                 immc++;
                 break;
             case OPARG_IW:
-                if (immc != 0)  fprintf(out_fp,"%s        imm%u=IPFcodeW();\n",indent_str.c_str(),immc+1);
-                else            fprintf(out_fp,"%s        imm=IPFcodeW();\n",indent_str.c_str());
+                if (immc != 0)  fprintf(out_fp,"%s        opstate.imm%u=IPFcodeW();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%s        opstate.imm=IPFcodeW();\n",indent_str.c_str());
                 immc++;
                 break;
             case OPARG_IWA:
-                if (immc != 0)  fprintf(out_fp,"%s        imm%u=IPFaddrW();\n",indent_str.c_str(),immc+1);
-                else            fprintf(out_fp,"%s        imm=IPFaddrW();\n",indent_str.c_str());
+                if (immc != 0)  fprintf(out_fp,"%s        opstate.imm%u=IPFaddrW();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%s        opstate.imm=IPFaddrW();\n",indent_str.c_str());
                 immc++;
                 break;
             case OPARG_IWS:
-                if (immc != 0)  fprintf(out_fp,"%s        imm%u=IPFcodeWsigned();\n",indent_str.c_str(),immc+1);
-                else            fprintf(out_fp,"%s        imm=IPFcodeWsigned();\n",indent_str.c_str());
+                if (immc != 0)  fprintf(out_fp,"%s        opstate.imm%u=IPFcodeWsigned();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%s        opstate.imm=IPFcodeWsigned();\n",indent_str.c_str());
                 immc++;
                 break;
             case OPARG_IW16:
-                if (immc != 0)  fprintf(out_fp,"%s        imm%u=IPFW();\n",indent_str.c_str(),immc+1);
-                else            fprintf(out_fp,"%s        imm=IPFW();\n",indent_str.c_str());
+                if (immc != 0)  fprintf(out_fp,"%s        opstate.imm%u=IPFW();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%s        opstate.imm=IPFW();\n",indent_str.c_str());
                 immc++;
                 break;
             case OPARG_IW16S:
-                if (immc != 0)  fprintf(out_fp,"%s        imm%u=IPFWsigned();\n",indent_str.c_str(),immc+1);
-                else            fprintf(out_fp,"%s        imm=IPFWsigned();\n",indent_str.c_str());
+                if (immc != 0)  fprintf(out_fp,"%s        opstate.imm%u=IPFWsigned();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%s        opstate.imm=IPFWsigned();\n",indent_str.c_str());
                 immc++;
                 break;
             case OPARG_IW32:
-                if (immc != 0)  fprintf(out_fp,"%s        imm%u=IPFDW();\n",indent_str.c_str(),immc+1);
-                else            fprintf(out_fp,"%s        imm=IPFDW();\n",indent_str.c_str());
+                if (immc != 0)  fprintf(out_fp,"%s        opstate.imm%u=IPFDW();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%s        opstate.imm=IPFDW();\n",indent_str.c_str());
                 immc++;
                 break;
             case OPARG_IW32S:
-                if (immc != 0)  fprintf(out_fp,"%s        imm%u=IPFDWsigned();\n",indent_str.c_str(),immc+1);
-                else            fprintf(out_fp,"%s        imm=IPFDWsigned();\n",indent_str.c_str());
+                if (immc != 0)  fprintf(out_fp,"%s        opstate.imm%u=IPFDWsigned();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%s        opstate.imm=IPFDWsigned();\n",indent_str.c_str());
                 immc++;
                 break;
             default:
@@ -2013,34 +2013,34 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
     unsigned int immc = 0;
 
     if (submap->vex_decompose_here == 3)
-        fprintf(out_fp,"%s        vex.V = ((~op) >> 3) & 7;\n",indent_str.c_str());
+        fprintf(out_fp,"%s        opstate.vex.V = ((~opstate.op) >> 3) & 7;\n",indent_str.c_str());
     else if (submap->vex_decompose_here == 2)
-        fprintf(out_fp,"%s        vex.V = ((~mrm.byte) >> 3) & 7;\n",indent_str.c_str());
+        fprintf(out_fp,"%s        opstate.vex.V = ((~opstate.mrm.byte) >> 3) & 7;\n",indent_str.c_str());
     else if (submap->xop_decompose_here == 3)
-        fprintf(out_fp,"%s        vex.V = ((~op) >> 3) & 7;/*NTS: Just re-use the VEX.V field*/\n",indent_str.c_str());
+        fprintf(out_fp,"%s        opstate.vex.V = ((~opstate.op) >> 3) & 7;/*NTS: Just re-use the VEX.V field*/\n",indent_str.c_str());
 
     if (!(flags & OUTCODE_GEN_SKIP_MRM)) {
         if (submap->modregrm) {
             if (generic1632) {
                 if (cc_mode == MOD_EXECUTE) {
-                    fprintf(out_fp,"%s        if (addr32) {\n",indent_str.c_str());
-                    fprintf(out_fp,"%s            IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);\n",indent_str.c_str());
-                    fprintf(out_fp,"%s            IPFB_LEA32(mrm,sib,disp);\n",indent_str.c_str());
+                    fprintf(out_fp,"%s        if (opstate.addr32) {\n",indent_str.c_str());
+                    fprintf(out_fp,"%s            IPFB_mrm_sib_disp_a32_read(opstate.mrm,opstate.sib,opstate.disp);\n",indent_str.c_str());
+                    fprintf(out_fp,"%s            IPFB_LEA32(opstate.mrm,opstate.sib,opstate.disp);\n",indent_str.c_str());
                     fprintf(out_fp,"%s        } else {\n",indent_str.c_str());
-                    fprintf(out_fp,"%s            IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);\n",indent_str.c_str());
-                    fprintf(out_fp,"%s            IPFB_LEA16(mrm,sib,disp);\n",indent_str.c_str());
+                    fprintf(out_fp,"%s            IPFB_mrm_sib_disp_a16_read(opstate.mrm,opstate.sib,opstate.disp);\n",indent_str.c_str());
+                    fprintf(out_fp,"%s            IPFB_LEA16(opstate.mrm,opstate.sib,opstate.disp);\n",indent_str.c_str());
                     fprintf(out_fp,"%s        }\n",indent_str.c_str());
                 }
                 else {
-                    fprintf(out_fp,"%s        if (addr32)\n",indent_str.c_str());
-                    fprintf(out_fp,"%s            IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);\n",indent_str.c_str());
+                    fprintf(out_fp,"%s        if (opstate.addr32)\n",indent_str.c_str());
+                    fprintf(out_fp,"%s            IPFB_mrm_sib_disp_a32_read(opstate.mrm,opstate.sib,opstate.disp);\n",indent_str.c_str());
                     fprintf(out_fp,"%s        else\n",indent_str.c_str());
-                    fprintf(out_fp,"%s            IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);\n",indent_str.c_str());
+                    fprintf(out_fp,"%s            IPFB_mrm_sib_disp_a16_read(opstate.mrm,opstate.sib,opstate.disp);\n",indent_str.c_str());
                 }
             }
             else {
-                fprintf(out_fp,"%s        IPFB_mrm_sib_disp_a%u_read(mrm,sib,disp);\n",indent_str.c_str(),addrwidth);
-                if (cc_mode == MOD_EXECUTE) fprintf(out_fp,"%s        IPFB_LEA%u(mrm,sib,disp);\n",indent_str.c_str(),addrwidth);
+                fprintf(out_fp,"%s        IPFB_mrm_sib_disp_a%u_read(opstate.mrm,opstate.sib,opstate.disp);\n",indent_str.c_str(),addrwidth);
+                if (cc_mode == MOD_EXECUTE) fprintf(out_fp,"%s        IPFB_LEA%u(opstate.mrm,opstate.sib,opstate.disp);\n",indent_str.c_str(),addrwidth);
             }
         }
     }
@@ -2056,9 +2056,9 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
     }
 
     if (submap->opsz32)
-        fprintf(out_fp,"%s        prefix66 ^= 1;\n",indent_str.c_str());
+        fprintf(out_fp,"%s        opstate.prefix66 ^= 1;\n",indent_str.c_str());
     if (submap->addrsz32)
-        fprintf(out_fp,"%s        prefix67 ^= 1;\n",indent_str.c_str());
+        fprintf(out_fp,"%s        opstate.prefix67 ^= 1;\n",indent_str.c_str());
 
     if (submap->illegal) {
         fprintf(out_fp,"%s        goto _x86decode_illegal_opcode;\n",indent_str.c_str());
@@ -2100,13 +2100,13 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                 if (submap->opsz32 || submap->addrsz32) {
                     if (generic1632) {
                         if (submap->opsz32)
-                            fprintf(out_fp,"%s        code32 ^= 1;\n",indent_str.c_str());
+                            fprintf(out_fp,"%s        opstate.code32 ^= 1;\n",indent_str.c_str());
                         else if (submap->addrsz32)
-                            fprintf(out_fp,"%s        addr32 ^= 1;\n",indent_str.c_str());
+                            fprintf(out_fp,"%s        opstate.addr32 ^= 1;\n",indent_str.c_str());
                     }
                     else {
                         if (c32vars)
-                            fprintf(out_fp,"%s        code32=%u; addr32=%u;\n",
+                            fprintf(out_fp,"%s        opstate.code32=%u; opstate.addr32=%u;\n",
                                     indent_str.c_str(),jcw==32?1:0,jaw==32?1:0);
                     }
                 }
@@ -2118,7 +2118,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                  * the instructions. If the case statement falls through then we goto a label to
                  * handle 0x0F opcode parsing as normal. */
                 fprintf(out_fp,"%s        /* Mandatory prefix detection */\n",indent_str.c_str());
-                fprintf(out_fp,"%s        op=IPFB();\n",indent_str.c_str());
+                fprintf(out_fp,"%s        opstate.op=IPFB();\n",indent_str.c_str());
 
                 {
                     OpByte *submap2 = submap->opmap[0x0F];
@@ -2128,7 +2128,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                         tmp[opbaselen] = op;
                         tmp[opbaselen+1] = 0x0F;
 
-                        fprintf(out_fp,"%s        %sif (op == 0x0F) {\n",indent_str.c_str(),emit?"else ":"");
+                        fprintf(out_fp,"%s        %sif (opstate.op == 0x0F) {\n",indent_str.c_str(),emit?"else ":"");
 
                         outcode_gen(codewidth,addrwidth,tmp,opbaselen+2,*submap2,indent+3U,flags_l/*|OUTCODE_GEN_ALREADY_IPFB*/|OUTCODE_GEN_DEFAULT_IS_GOTO_FALLBACK,maproot);
                         emit_prefix_goto = true;
@@ -2147,7 +2147,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                         tmp[opbaselen] = op;
                         tmp[opbaselen+1] = 0x90;
 
-                        fprintf(out_fp,"%s        %sif (op == 0x90) {\n",indent_str.c_str(),emit?"else ":"");
+                        fprintf(out_fp,"%s        %sif (opstate.op == 0x90) {\n",indent_str.c_str(),emit?"else ":"");
 
                         opcode_gen_case_statement(codewidth,addrwidth,tmp,opbaselen+2,map,indent+1U,indent2,submap2,0x90,0,maproot);
                         emit_prefix_goto = true;
@@ -2204,75 +2204,75 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
 
                         if (ph == "codewidth") { // becomes an integer value
                             if (generic1632)
-                                fprintf(out_fp,"(code32?32:16)");
+                                fprintf(out_fp,"(opstate.code32?32:16)");
                             else
                                 fprintf(out_fp,"%u",codewidth);
                         }
                         else if (ph == "codewidthbytes") { // becomes an integer value
                             if (generic1632)
-                                fprintf(out_fp,"(code32?4:2)");
+                                fprintf(out_fp,"(opstate.code32?4:2)");
                             else
                                 fprintf(out_fp,"%u",codewidth>>3);
                         }
                         else if (ph == "codewidthmask") { // becomes an integer value
                             if (generic1632)
-                                fprintf(out_fp,"(code32?0xFFFFFFFFUL:0xFFFFUL)");
+                                fprintf(out_fp,"(opstate.code32?0xFFFFFFFFUL:0xFFFFUL)");
                             else
                                 fprintf(out_fp,"0x%lXUL",codewidth == 32 ? 0xFFFFFFFFUL : 0xFFFFUL);
                         }
                         else if (ph == "code32") {
                             if (generic1632)
-                                fprintf(out_fp,"code32");
+                                fprintf(out_fp,"opstate.code32");
                             else
                                 fprintf(out_fp,"%u",codewidth == 32 ? 1 : 0);
                         }
                         else if (ph == "code16") {
                             if (generic1632)
-                                fprintf(out_fp,"!code32");
+                                fprintf(out_fp,"!opstate.code32");
                             else
                                 fprintf(out_fp,"%u",codewidth == 16 ? 1 : 0);
                         }
                         else if (ph == "addrwidth") { // becomes an integer value
                             if (generic1632)
-                                fprintf(out_fp,"(addr32?32:16)");
+                                fprintf(out_fp,"(opstate.addr32?32:16)");
                             else
                                 fprintf(out_fp,"%u",addrwidth);
                         }
                         else if (ph == "addrwidthbytes") { // becomes an integer value
                             if (generic1632)
-                                fprintf(out_fp,"(addr32?4:2)");
+                                fprintf(out_fp,"(opstate.addr32?4:2)");
                             else
                                 fprintf(out_fp,"%u",addrwidth>>3);
                         }
                         else if (ph == "addrwidthmask") { // becomes an integer value
                             if (generic1632)
-                                fprintf(out_fp,"(addr32?0xFFFFFFFFUL:0xFFFFUL)");
+                                fprintf(out_fp,"(opstate.addr32?0xFFFFFFFFUL:0xFFFFUL)");
                             else
                                 fprintf(out_fp,"0x%lXUL",addrwidth == 32 ? 0xFFFFFFFFUL : 0xFFFFUL);
                         }
                         else if (ph == "addr32") {
                             if (generic1632)
-                                fprintf(out_fp,"addr32");
+                                fprintf(out_fp,"opstate.addr32");
                             else
                                 fprintf(out_fp,"%u",addrwidth == 32 ? 1 : 0);
                         }
                         else if (ph == "addr16") {
                             if (generic1632)
-                                fprintf(out_fp,"!addr32");
+                                fprintf(out_fp,"!opstate.addr32");
                             else
                                 fprintf(out_fp,"%u",addrwidth == 16 ? 1 : 0);
                         }
                         else if (ph == "i") {
-                            fprintf(out_fp,"imm");
+                            fprintf(out_fp,"opstate.imm");
                         }
                         else if (ph == "reg") {
                             if (submap->reg_from_opcode)
-                                fprintf(out_fp,"(op&7)");
+                                fprintf(out_fp,"(opstate.op&7)");
                             else
-                                fprintf(out_fp,"mrm.reg()");
+                                fprintf(out_fp,"opstate.mrm.reg()");
                         }
                         else if (ph == "disp") {
-                            fprintf(out_fp,"disp");
+                            fprintf(out_fp,"opstate.disp");
                         }
                         else {
                             fprintf(stderr,"WARNING: unknown placeholder '%s'\n",ph.c_str());
@@ -2291,18 +2291,18 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
             char tmp[128];
 
             if (!submap->isprefix)
-                fprintf(out_fp,"%s        opcode = OPCODE_%s;\n",indent_str.c_str(),submap->name.c_str());
+                fprintf(out_fp,"%s        opstate.opcode = OPCODE_%s;\n",indent_str.c_str(),submap->name.c_str());
             else if (submap->segoverride != OPSEG_NONE)
-                fprintf(out_fp,"%s        segoverride = OPSEG_%s;\n",indent_str.c_str(),opseg2string(submap->segoverride));
+                fprintf(out_fp,"%s        opstate.segoverride = OPSEG_%s;\n",indent_str.c_str(),opseg2string(submap->segoverride));
             else if (submap->name == "REPZ" || submap->name == "REPNZ" || submap->name == "REPC" || submap->name == "REPNC")
-                fprintf(out_fp,"%s        repmode = OPREP_%s;\n",indent_str.c_str(),submap->name.c_str());
+                fprintf(out_fp,"%s        opstate.repmode = OPREP_%s;\n",indent_str.c_str(),submap->name.c_str());
             else
-                fprintf(out_fp,"%s        prefix_%s = 1;\n",indent_str.c_str(),submap->name.c_str());
+                fprintf(out_fp,"%s        opstate.prefix_%s = 1;\n",indent_str.c_str(),submap->name.c_str());
 
             fprintf(out_fp,"%s        ipw += snprintf(ipw,(size_t)(ipwf-ipw),\"",indent_str.c_str());
             if (generic1632 && submap->suffix == OPSUFFIX_WORD) {
                 fprintf(out_fp,"%s%%s",submap->name.c_str());
-                fmtargs += ",code32?\"d\":\"w\"";
+                fmtargs += ",opstate.code32?\"d\":\"w\"";
             }
             else {
                 fprintf(out_fp,"%s%s",submap->name.c_str(),suffix_str(submap->suffix,codewidth));
@@ -2339,14 +2339,14 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                             fprintf(out_fp,"[0x%%02lX]");
                             sprintf(tmp,",(unsigned long)((uint%u_t)%s)",addrwidth,imn[arg.index]);
                             fmtargs += tmp;
-                            if (generic1632) fmtargs += "&(addr32?0xFFFFFFFFUL:0xFFFFUL)";
+                            if (generic1632) fmtargs += "&(opstate.addr32?0xFFFFFFFFUL:0xFFFFUL)";
                             break;
                         case OPARG_IW:
                         case OPARG_IWA:
                         case OPARG_IWS:
                             if (generic1632) {
                                 fprintf(out_fp,"[0x%%0*lX]");
-                                fmtargs += ",addr32?8:4";
+                                fmtargs += ",opstate.addr32?8:4";
                             }
                             else {
                                 if (addrwidth == 32)
@@ -2357,7 +2357,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
 
                             sprintf(tmp,",(unsigned long)((uint%u_t)%s)",addrwidth,imn[arg.index]);
                             fmtargs += tmp;
-                            if (generic1632) fmtargs += "&(addr32?0xFFFFFFFFUL:0xFFFFUL)";
+                            if (generic1632) fmtargs += "&(opstate.addr32?0xFFFFFFFFUL:0xFFFFUL)";
                             break;
                         case OPARG_IW16:
                         case OPARG_IW16S:
@@ -2421,7 +2421,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                     const char *suffix = codewidth == 32 ? "d" : "w";
 
                     if (generic1632)
-                        szp = "code32?4:2";
+                        szp = "opstate.code32?4:2";
                     else
                         szp = codewidth == 32 ? "4" : "2";
 
@@ -2499,20 +2499,20 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
 
                     fprintf(out_fp,"%%s");
                     if (generic1632) {
-                        fmtargs += ",IPDecPrint1632(addr32,mrm,sib,disp,";
+                        fmtargs += ",IPDecPrint1632(opstate.addr32,opstate.mrm,opstate.sib,opstate.disp,";
                     }
                     else {
                         if (addrwidth == 32)
-                            fmtargs += ",IPDecPrint32(mrm,sib,disp,";
+                            fmtargs += ",IPDecPrint32(opstate.mrm,opstate.sib,opstate.disp,";
                         else
-                            fmtargs += ",IPDecPrint16(mrm,disp,";
+                            fmtargs += ",IPDecPrint16(opstate.mrm,opstate.disp,";
                     }
 
                     fmtargs += szp;
                     fmtargs += ",";
                     fmtargs += rc;
                     if (generic1632 && arg.argtype == OPDARGTYPE_WORD) {
-                        fmtargs += ",code32?\"d\":\"w\"";
+                        fmtargs += ",opstate.code32?\"d\":\"w\"";
                     }
                     else {
                         fmtargs += ",\"";
@@ -2528,12 +2528,12 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                     fmtargs += ")";
                 }
                 else if (arg.arg == OPDARG_reg) {
-                    const char *regname = "mrm.reg()";
+                    const char *regname = "opstate.mrm.reg()";
                     char regn[32];
 
                     if (!submap->modregrm) {
                         if (submap->reg_from_opcode)
-                            regname = "op&7";
+                            regname = "opstate.op&7";
                     }
 
                     if (arg.argreg != OPREG_NONE) {
@@ -2551,7 +2551,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                         case OPDARGTYPE_WORD:
                             fprintf(out_fp,"%%s");
                             if (generic1632) {
-                                fmtargs += ",CPUregsN[code32?4:2][";
+                                fmtargs += ",CPUregsN[opstate.code32?4:2][";
                             }
                             else {
                                 if (codewidth == 32)
@@ -2647,12 +2647,12 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                             fprintf(out_fp,"0x%%02lX");
                             sprintf(tmp,",(unsigned long)((uint%u_t)%s)",codewidth,imn_str);
                             fmtargs += tmp;
-                            if (generic1632) fmtargs += "&(code32?0xFFFFFFFFUL:0xFFFFUL)";
+                            if (generic1632) fmtargs += "&(opstate.code32?0xFFFFFFFFUL:0xFFFFUL)";
                             break;
                         case OPARG_IWA:
                             if (generic1632) {
                                 fprintf(out_fp,"0x%%0*lX");
-                                fmtargs += ",addr32?8:4";
+                                fmtargs += ",opstate.addr32?8:4";
                             }
                             else {
                                 if (addrwidth == 32)
@@ -2662,14 +2662,14 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                             }
 
                             sprintf(tmp,",(unsigned long)((uint%u_t)%s)",addrwidth,imn_str);
-                            if (generic1632) fmtargs += "&(addr32?0xFFFFFFFFUL:0xFFFFUL)";
+                            if (generic1632) fmtargs += "&(opstate.addr32?0xFFFFFFFFUL:0xFFFFUL)";
                             fmtargs += tmp;
                             break;
                         case OPARG_IW:
                         case OPARG_IWS:
                             if (generic1632) {
                                 fprintf(out_fp,"0x%%0*lX");
-                                fmtargs += ",code32?8:4";
+                                fmtargs += ",opstate.code32?8:4";
                             }
                             else {
                                 if (codewidth == 32)
@@ -2680,7 +2680,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
 
                             sprintf(tmp,",(unsigned long)((uint%u_t)%s)",codewidth,imn_str);
                             fmtargs += tmp;
-                            if (generic1632) fmtargs += "&(code32?0xFFFFFFFFUL:0xFFFFUL)";
+                            if (generic1632) fmtargs += "&(opstate.code32?0xFFFFFFFFUL:0xFFFFUL)";
                             break;
                         case OPARG_IW16:
                         case OPARG_IW16S:
@@ -2701,7 +2701,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                     };
                 }
                 else if (arg.arg == OPDARG_vexsidx) {
-                    const char *regname = "vex.V";
+                    const char *regname = "opstate.vex.V";
                     char regn[32];
 
                     if (arg.argreg != OPREG_NONE) {
@@ -2719,7 +2719,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                         case OPDARGTYPE_WORD:
                             fprintf(out_fp,"%%s");
                             if (generic1632) {
-                                fmtargs += ",CPUregsN[code32?4:2][";
+                                fmtargs += ",CPUregsN[opstate.code32?4:2][";
                             }
                             else {
                                 if (codewidth == 32)
@@ -2790,7 +2790,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                     }
                 }
                 else if (arg.arg == OPDARG_i74) {
-                    const char *regname = "(imm>>4)&15";
+                    const char *regname = "(opstate.imm>>4)&15";
                     char regn[32];
 
                     if (arg.argreg != OPREG_NONE) {
@@ -2808,7 +2808,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                         case OPDARGTYPE_WORD:
                             fprintf(out_fp,"%%s");
                             if (generic1632) {
-                                fmtargs += ",CPUregsN[code32?4:2][";
+                                fmtargs += ",CPUregsN[opstate.code32?4:2][";
                             }
                             else {
                                 if (codewidth == 32)
@@ -2879,7 +2879,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                     }
                 }
                 else if (arg.arg == OPDARG_xopsidx) {
-                    const char *regname = "vex.V"; // NTS: we re-use the VEX struct
+                    const char *regname = "opstate.vex.V"; // NTS: we re-use the VEX struct
                     char regn[32];
 
                     if (arg.argreg != OPREG_NONE) {
@@ -2897,7 +2897,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                         case OPDARGTYPE_WORD:
                             fprintf(out_fp,"%%s");
                             if (generic1632) {
-                                fmtargs += ",CPUregsN[code32?4:2][";
+                                fmtargs += ",CPUregsN[opstate.code32?4:2][";
                             }
                             else {
                                 if (codewidth == 32)
@@ -2992,22 +2992,22 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
         if (submap->opsz32 || submap->addrsz32) {
             if (generic1632) {
                 if (submap->opsz32)
-                    fprintf(out_fp,"%s        code32 ^= 1;\n",indent_str.c_str());
+                    fprintf(out_fp,"%s        opstate.code32 ^= 1;\n",indent_str.c_str());
                 else if (submap->addrsz32)
-                    fprintf(out_fp,"%s        addr32 ^= 1;\n",indent_str.c_str());
+                    fprintf(out_fp,"%s        opstate.addr32 ^= 1;\n",indent_str.c_str());
 
-                fprintf(out_fp,"%s        if (code32 && addr32)\n",indent_str.c_str());
+                fprintf(out_fp,"%s        if (opstate.code32 && opstate.addr32)\n",indent_str.c_str());
                 fprintf(out_fp,"%s            goto _x86decode_after_prefix_386override_code32_addr32;\n",indent_str.c_str());
-                fprintf(out_fp,"%s        else if (code32)\n",indent_str.c_str());
+                fprintf(out_fp,"%s        else if (opstate.code32)\n",indent_str.c_str());
                 fprintf(out_fp,"%s            goto _x86decode_after_prefix_386override_code32_addr16;\n",indent_str.c_str());
-                fprintf(out_fp,"%s        else if (addr32)\n",indent_str.c_str());
+                fprintf(out_fp,"%s        else if (opstate.addr32)\n",indent_str.c_str());
                 fprintf(out_fp,"%s            goto _x86decode_after_prefix_386override_code16_addr32;\n",indent_str.c_str());
                 fprintf(out_fp,"%s        else\n",indent_str.c_str());
                 fprintf(out_fp,"%s            goto _x86decode_after_prefix_386override_code16_addr16;\n",indent_str.c_str());
             }
             else {
                 if (c32vars)
-                    fprintf(out_fp,"%s        code32=%u; addr32=%u;\n",
+                    fprintf(out_fp,"%s        opstate.code32=%u; opstate.addr32=%u;\n",
                         indent_str.c_str(),jcw==32?1:0,jaw==32?1:0);
 
                 fprintf(out_fp,"%s        goto _x86decode_after_prefix_386override_code%u_addr%u;\n",
@@ -3081,27 +3081,27 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
         fprintf(out_fp,"%s/* AMD 3DNow! encoding 0x0F 0x0F mod/reg/rm <opcode> */\n",indent_str.c_str());
         if (generic1632) {
             if (cc_mode == MOD_EXECUTE) {
-                fprintf(out_fp,"%sif (addr32) {\n",indent_str.c_str());
-                fprintf(out_fp,"%s    IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);\n",indent_str.c_str());
-                fprintf(out_fp,"%s    IPFB_LEA32(mrm,sib,disp);\n",indent_str.c_str());
+                fprintf(out_fp,"%sif (opstate.addr32) {\n",indent_str.c_str());
+                fprintf(out_fp,"%s    IPFB_mrm_sib_disp_a32_read(opstate.mrm,opstate.sib,opstate.disp);\n",indent_str.c_str());
+                fprintf(out_fp,"%s    IPFB_LEA32(opstate.mrm,opstate.sib,opstate.disp);\n",indent_str.c_str());
                 fprintf(out_fp,"%s} else {\n",indent_str.c_str());
-                fprintf(out_fp,"%s    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);\n",indent_str.c_str());
-                fprintf(out_fp,"%s    IPFB_LEA16(mrm,sib,disp);\n",indent_str.c_str());
+                fprintf(out_fp,"%s    IPFB_mrm_sib_disp_a16_read(opstate.mrm,opstate.sib,opstate.disp);\n",indent_str.c_str());
+                fprintf(out_fp,"%s    IPFB_LEA16(opstate.mrm,opstate.sib,opstate.disp);\n",indent_str.c_str());
                 fprintf(out_fp,"%s}\n",indent_str.c_str());
             }
             else {
-                fprintf(out_fp,"%sif (addr32)\n",indent_str.c_str());
-                fprintf(out_fp,"%s    IPFB_mrm_sib_disp_a32_read(mrm,sib,disp);\n",indent_str.c_str());
+                fprintf(out_fp,"%sif (opstate.addr32)\n",indent_str.c_str());
+                fprintf(out_fp,"%s    IPFB_mrm_sib_disp_a32_read(opstate.mrm,opstate.sib,opstate.disp);\n",indent_str.c_str());
                 fprintf(out_fp,"%selse\n",indent_str.c_str());
-                fprintf(out_fp,"%s    IPFB_mrm_sib_disp_a16_read(mrm,sib,disp);\n",indent_str.c_str());
+                fprintf(out_fp,"%s    IPFB_mrm_sib_disp_a16_read(opstate.mrm,opstate.sib,opstate.disp);\n",indent_str.c_str());
             }
         }
         else {
-            fprintf(out_fp,"%sIPFB_mrm_sib_disp_a%u_read(mrm,sib,disp);\n",indent_str.c_str(),addrwidth);
-            if (cc_mode == MOD_EXECUTE) fprintf(out_fp,"%sIPFB_LEA%u(mrm,sib,disp);\n",indent_str.c_str(),addrwidth);
+            fprintf(out_fp,"%sIPFB_mrm_sib_disp_a%u_read(opstate.mrm,opstate.sib,opstate.disp);\n",indent_str.c_str(),addrwidth);
+            if (cc_mode == MOD_EXECUTE) fprintf(out_fp,"%sIPFB_LEA%u(opstate.mrm,opstate.sib,opstate.disp);\n",indent_str.c_str(),addrwidth);
         }
 
-        fprintf(out_fp,"%sswitch (op=IPFB()) {\n",indent_str.c_str());
+        fprintf(out_fp,"%sswitch (opstate.op=IPFB()) {\n",indent_str.c_str());
     }
     else if (map.modregrm) {
         bool is_modreg_pattern = true;
@@ -3200,11 +3200,11 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
             if (ipfb_combined)
                 opcode_gen_case_statement_immarg_fetch_nopc(indent_str,map.opmap[0x00]);
 
-            fprintf(out_fp,"%sswitch (mrm.reg()) {\n",indent_str.c_str());
+            fprintf(out_fp,"%sswitch (opstate.mrm.reg()) {\n",indent_str.c_str());
             reg_enum = true;
         }
         else {
-            fprintf(out_fp,"%sswitch (mrm.byte) {\n",indent_str.c_str());
+            fprintf(out_fp,"%sswitch (opstate.mrm.byte) {\n",indent_str.c_str());
         }
     }
     else {
@@ -3212,17 +3212,17 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
             size_t i=0;
 
             if (!(flags & OUTCODE_GEN_ALREADY_IPFB))
-                fprintf(out_fp,"%sop=IPFB();\n",indent_str.c_str());
+                fprintf(out_fp,"%sopstate.op=IPFB();\n",indent_str.c_str());
 
             fprintf(out_fp,"%s_x86decode_begin_code%u_addr%u_opcode_parse_",indent_str.c_str(),codewidth,addrwidth);
             for (;i < opbaselen;i++) fprintf(out_fp,"%02X",opbase[i]);
             if (generic1632) fprintf(out_fp,"_generic");
             fprintf(out_fp,":\n");
 
-            fprintf(out_fp,"%sswitch (op) {\n",indent_str.c_str());
+            fprintf(out_fp,"%sswitch (opstate.op) {\n",indent_str.c_str());
         }
         else {
-            fprintf(out_fp,"%sswitch (op=IPFB()) {\n",indent_str.c_str());
+            fprintf(out_fp,"%sswitch (opstate.op=IPFB()) {\n",indent_str.c_str());
         }
     }
 
@@ -3391,11 +3391,11 @@ int main(int argc,char **argv) {
         out_fp = fopen(out_path.c_str(),"w");
 
     if (generic1632) {
-        fprintf(out_fp,"#define IPFcodeW() (code32 ? IPFDW() : IPFW())\n");
-        fprintf(out_fp,"#define IPFcodeWsigned() (code32 ? IPFDWsigned() : IPFWsigned())\n");
+        fprintf(out_fp,"#define IPFcodeW() (opstate.code32 ? IPFDW() : IPFW())\n");
+        fprintf(out_fp,"#define IPFcodeWsigned() (opstate.code32 ? IPFDWsigned() : IPFWsigned())\n");
 
-        fprintf(out_fp,"#define IPFaddrW() (addr32 ? IPFDW() : IPFW())\n");
-        fprintf(out_fp,"#define IPFaddrWsigned() (addr32 ? IPFDWsigned() : IPFWsigned())\n");
+        fprintf(out_fp,"#define IPFaddrW() (opstate.addr32 ? IPFDW() : IPFW())\n");
+        fprintf(out_fp,"#define IPFaddrWsigned() (opstate.addr32 ? IPFDWsigned() : IPFWsigned())\n");
     }
     else {
         if (sel_code_width == 32) {

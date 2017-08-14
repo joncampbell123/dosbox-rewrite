@@ -16,34 +16,14 @@
 # include "dosboxxr/lib/util/endian.h"
 #endif
 
-#include "dosboxxr/lib/cpu/ipdec.h"
-#include "dosboxxr/lib/cpu/x86Vex.h"
-#include "dosboxxr/lib/cpu/x86ModRegRm.h"
-#include "dosboxxr/lib/cpu/x86ScaleIndexBase.h"
-#include "dosboxxr/lib/cpu/memreftypes.h"
-#include "dosboxxr/lib/cpu/core/all_symbols.h"
-#include "dosboxxr/lib/util/case_groups.h"
 #include "cpustep86common.h"
 
+#include "dosboxxr/lib/cpu/core/all_symbols.h"
 #include "dosboxxr/lib/cpu/ipdec_pre_core.h"
 
 void IPDec_Everything(x86_offset_t ip) {
-    bool code32=exe_code32;
-    bool addr32=exe_code32;
-    x86ScaleIndexBase sib;
-    signed char repmode = -1;
-    signed char segoverride = -1;
-    unsigned int opcode = 0;
-    bool prefix_WAIT = false;
-    bool prefix_LOCK = false;
-    bool prefix66=false;
-    bool prefix67=false;
-    x86_offset_t disp;
-    uint32_t imm,imm2;
+    struct opcc_decom_state opstate(exe_code32);
     char *ipw,*ipwf;
-    x86ModRegRm mrm;
-    x86Vex vex;
-    uint8_t op;
 
     /* one instruction only */
     ipwf = IPDecStr+sizeof(IPDecStr);

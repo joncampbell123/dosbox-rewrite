@@ -6,6 +6,24 @@
 #include "dosboxxr/lib/cpu/memreftypes.h"
 #include "dosboxxr/lib/util/case_groups.h"
 
+enum opccRep {
+    OPREP_NONE=-1,
+    OPREP_REPNZ,
+    OPREP_REPZ,
+    OPREP_REPNC,
+    OPREP_REPC
+};
+
+enum opccSeg {
+    OPSEG_NONE=-1,
+    OPSEG_CS=0,
+    OPSEG_DS,
+    OPSEG_ES,
+    OPSEG_FS,
+    OPSEG_GS,
+    OPSEG_SS
+};
+
 /* yes, I shamelessly copied this from minx86dec. so sue me for borrowing code from my own OSS projects. */
 struct opcc_decom_state {
     bool                code32;
@@ -24,24 +42,10 @@ struct opcc_decom_state {
     x86ModRegRm         mrm;
     x86Vex              vex;
     x86ScaleIndexBase   sib;
-};
 
-enum opccRep {
-    OPREP_NONE=-1,
-    OPREP_REPNZ,
-    OPREP_REPZ,
-    OPREP_REPNC,
-    OPREP_REPC
-};
-
-enum opccSeg {
-    OPSEG_NONE=-1,
-    OPSEG_CS=0,
-    OPSEG_DS,
-    OPSEG_ES,
-    OPSEG_FS,
-    OPSEG_GS,
-    OPSEG_SS
+    opcc_decom_state() : code32(false), addr32(false), prefix66(false), prefix67(false), prefix_WAIT(false), prefix_LOCK(false), segoverride(OPSEG_NONE), repmode(OPREP_NONE) { }
+    opcc_decom_state(const bool _m32) : code32(_m32), addr32(_m32), prefix66(false), prefix67(false), prefix_WAIT(false), prefix_LOCK(false), segoverride(OPSEG_NONE), repmode(OPREP_NONE) { }
+    opcc_decom_state(const bool _c32,const bool _a32) : code32(_c32), addr32(_a32), prefix66(false), prefix67(false), prefix_WAIT(false), prefix_LOCK(false), segoverride(OPSEG_NONE), repmode(OPREP_NONE) { }
 };
 
 static inline int32_t IPFBsigned(void) {

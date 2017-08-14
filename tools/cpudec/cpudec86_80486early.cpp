@@ -22,21 +22,8 @@
 #include "dosboxxr/lib/cpu/ipdec_pre_core.h"
 
 void IPDec_80486early(x86_offset_t ip) {
-    bool code32=exe_code32;
-    bool addr32=exe_code32;
-    x86ScaleIndexBase sib;
-    bool prefix66=false;
-    bool prefix67=false;
-    bool prefix_WAIT = false;
-    bool prefix_LOCK = false;
-    signed char repmode = -1;
-    signed char segoverride = -1;
-    unsigned int opcode = 0;
-    x86_offset_t disp;
-    uint32_t imm,imm2;
+    struct opcc_decom_state opstate(exe_code32);
     char *ipw,*ipwf;
-    x86ModRegRm mrm;
-    uint8_t op;
 
     /* one instruction only */
     ipwf = IPDecStr+sizeof(IPDecStr);
@@ -45,7 +32,6 @@ void IPDec_80486early(x86_offset_t ip) {
     IPDecIP = ip;
 
     /* decode */
-    code32 = addr32 = exe_code32;
 _x86decode_begin_code16_addr32:
 _x86decode_begin_code32_addr16:
 _x86decode_after_prefix_code16_addr16:
