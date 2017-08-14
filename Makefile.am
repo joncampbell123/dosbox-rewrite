@@ -179,6 +179,12 @@ bin_tools_cpudec86e_SOURCES = \
 	tools/cpudec/cpudec86.cpp \
 	tools/cpudec/cpudec86_everything.cpp
 
+$(bin_tools_cpustep86_SOURCES): $(OPCC_DECOM_H) $(OPCC_EMU_H)
+
+$(bin_tools_cpudec86e_SOURCES): $(OPCC_DECOM_H)
+
+$(bin_tools_cpudec86_SOURCES): $(OPCC_DECOM_H)
+
 bin_tools_cpudec86_CXXFLAGS = $(AM_CXXFLAGS) -Itools/cpudec
 bin_tools_cpudec86_DEPENDENCIES = \
 	dosboxxr/lib/cpu/libcpu.a $(OPCC_DECOM_H)
