@@ -382,7 +382,7 @@ bin_test_cpumemreftypes_LDADD =
 
 OPCODES_FILES = $(wildcard opcodes/*.opcodes)
 
-OPCC_DECOM_H = \
+OPCC_DECOM_H_BASE = \
 	dosboxxr/lib/cpu/core/intel8088.cxx.axx.decom.h \
 	\
 	dosboxxr/lib/cpu/core/necv20.cxx.axx.decom.h \
@@ -423,19 +423,24 @@ OPCC_DECOM_H = \
 	\
 	dosboxxr/lib/cpu/core/intelCore.cxx.axx.decom.h \
 	\
-	dosboxxr/lib/cpu/core/everything.cxx.axx.decom.h \
-	\
+	dosboxxr/lib/cpu/core/everything.cxx.axx.decom.h
+
+OPCC_DECOM_H = \
+	$(OPCC_DECOM_H_BASE) \
 	dosboxxr/lib/cpu/core/all_symbols.h
 
-dosboxxr/lib/cpu/core/all_symbols.h: $(OPCODES_FILES) $(OPCC_DECOM_H) $(OPCC_EMU_H)
-	tools/opcc/opcc_symbols_combine.pl dosboxxr/lib/cpu/core/*.symbols.h >$@
+dosboxxr/lib/cpu/core/all_symbols.h: $(OPCODES_FILES) $(OPCC_DECOM_H_BASE) $(OPCC_EMU_H_BASE)
+	tools/opcc/opcc_symbols_combine.pl $(patsubst %.h,%.h.symbols.h,$(OPCC_DECOM_H_BASE)) >$@
 
-OPCC_EMU_H = \
+OPCC_EMU_H_BASE = \
 	dosboxxr/lib/cpu/core/intel8088.cxx.axx.emu.h \
 	\
 	dosboxxr/lib/cpu/core/everything.c16.a16.emu.h \
 	dosboxxr/lib/cpu/core/everything.cxx.axx.emu.h \
 	dosboxxr/lib/cpu/core/everything.c32.a32.emu.h
+
+OPCC_EMU_H = \
+	$(OPCC_EMU_H_BASE)
 
 testasm/test1.bin: testasm/test1.asm
 	yasm -o $@ -f bin $<
