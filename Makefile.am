@@ -147,7 +147,7 @@ bin_tools_cpustep86_SOURCES = \
 	tools/cpustep/cpustep86_everything.cpp
 bin_tools_cpustep86_CXXFLAGS = $(AM_CXXFLAGS) -Itools/cpustep
 bin_tools_cpustep86_DEPENDENCIES = \
-	dosboxxr/lib/cpu/libcpu.a $(OPCC_DECOM_H)
+	dosboxxr/lib/cpu/libcpu.a $(OPCC_DECOM_H) $(OPCC_EMU_H)
 bin_tools_cpustep86_LDADD = \
 	dosboxxr/lib/cpu/libcpu.a
 
