@@ -16,14 +16,9 @@
 # include "dosboxxr/lib/util/endian.h"
 #endif
 
-#include "dosboxxr/lib/cpu/ipdec.h"
-#include "dosboxxr/lib/cpu/x86ModRegRm.h"
-#include "dosboxxr/lib/cpu/x86ScaleIndexBase.h"
-#include "dosboxxr/lib/cpu/memreftypes.h"
-#include "dosboxxr/lib/cpu/core/all_symbols.h"
-#include "dosboxxr/lib/util/case_groups.h"
 #include "cpudec86common.h"
 
+#include "dosboxxr/lib/cpu/core/all_symbols.h"
 #include "dosboxxr/lib/cpu/ipdec_pre_core.h"
 
 void IPDec_AMDAthlon(x86_offset_t ip) {

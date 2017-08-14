@@ -1,4 +1,7 @@
 
+#ifndef DOSBOXXR_LIB_CPU_IPDEC_H
+#define DOSBOXXR_LIB_CPU_IPDEC_H
+
 #include "dosboxxr/lib/cpu/memreftypes.h"
 #include "dosboxxr/lib/cpu/x86ModRegRm.h"
 #include "dosboxxr/lib/cpu/x86ScaleIndexBase.h"
@@ -58,4 +61,6 @@ static inline uint32_t IPDec32abs(uint32_t v) {
 const char *IPDecPrint16(const x86ModRegRm &mrm,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass,const char *suffix,const IPDecMRMMode mrm_mode=MRM_NORMAL);
 const char *IPDecPrint32(const x86ModRegRm &mrm,const x86ScaleIndexBase &sib,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass,const char *suffix,const IPDecMRMMode mrm_mode=MRM_NORMAL);
 const char *IPDecPrint1632(const bool addr32,const x86ModRegRm &mrm,const x86ScaleIndexBase &sib,const x86_offset_t ofs,const unsigned int sz,const IPDecRegClass regclass,const char *suffix,const IPDecMRMMode mrm_mode=MRM_NORMAL);
+
+#endif /* DOSBOXXR_LIB_CPU_IPDEC_H */
 

@@ -1,4 +1,31 @@
 
+#include "dosboxxr/lib/cpu/ipdec.h"
+#include "dosboxxr/lib/cpu/x86Vex.h"
+#include "dosboxxr/lib/cpu/x86ModRegRm.h"
+#include "dosboxxr/lib/cpu/x86ScaleIndexBase.h"
+#include "dosboxxr/lib/cpu/memreftypes.h"
+#include "dosboxxr/lib/util/case_groups.h"
+
+/* yes, I shamelessly copied this from minx86dec. so sue me for borrowing code from my own OSS projects. */
+struct opcc_decom_state {
+    bool                code32;
+	bool			    addr32;
+    bool                prefix66;
+    bool                prefix67;
+    bool                prefix_WAIT;
+    bool                prefix_LOCK;
+    uint8_t             op;
+    signed char         segoverride;
+    signed char         repmode;
+	uint32_t		    ip_value;	/* IP instruction pointer value */
+    uint32_t            imm,imm2;
+    unsigned int        opcode;
+    x86_offset_t        disp;
+    x86ModRegRm         mrm;
+    x86Vex              vex;
+    x86ScaleIndexBase   sib;
+};
+
 enum opccRep {
     OPREP_NONE=-1,
     OPREP_REPNZ,

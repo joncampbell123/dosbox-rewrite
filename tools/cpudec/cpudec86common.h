@@ -1,4 +1,6 @@
 
+#include "dosboxxr/lib/cpu/memreftypes.h"
+
 extern x86_offset_t            exe_ip;
 extern unsigned char*          exe_ip_ptr;
 extern unsigned char*          exe_image;
