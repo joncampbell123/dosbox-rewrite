@@ -1857,11 +1857,70 @@ bool parse_opcodelist(void) {
 #define OUTCODE_GEN_SKIP_MRM                        (1U << 2)
 #define OUTCODE_GEN_CODE32                          (1U << 3)
 #define OUTCODE_GEN_ADDR32                          (1U << 4)
+#define OUTCODE_GEN_SKIP_IPFB                       (1U << 5)
 
 void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const uint8_t *opbase,const size_t opbaselen,OpByte &map,const unsigned int indent,const unsigned int flags,OpByte& maproot);
 
 static const char *immnames[4] = {"imm","imm2","imm3","imm4"};
 static const char *immnames_rip[4] = {"(imm+IPval())","(imm2+IPval())","(imm3+IPval())","(imm4+IPval())"};
+
+void opcode_gen_case_statement_immarg_fetch_nopc(const string &indent_str,OpByte *submap) {
+    unsigned int immc = 0;
+
+    for (size_t i=0;i < submap->immarg.size();i++) {
+        enum opccArgs a = submap->immarg[i];
+
+        switch (a) {
+            case OPARG_IB:
+                if (immc != 0)  fprintf(out_fp,"%simm%u=IPFB();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%simm=IPFB();\n",indent_str.c_str());
+                immc++;
+                break;
+            case OPARG_IBS:
+                if (immc != 0)  fprintf(out_fp,"%simm%u=IPFBsigned();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%simm=IPFBsigned();\n",indent_str.c_str());
+                immc++;
+                break;
+            case OPARG_IW:
+                if (immc != 0)  fprintf(out_fp,"%simm%u=IPFcodeW();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%simm=IPFcodeW();\n",indent_str.c_str());
+                immc++;
+                break;
+            case OPARG_IWA:
+                if (immc != 0)  fprintf(out_fp,"%simm%u=IPFaddrW();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%simm=IPFaddrW();\n",indent_str.c_str());
+                immc++;
+                break;
+            case OPARG_IWS:
+                if (immc != 0)  fprintf(out_fp,"%simm%u=IPFcodeWsigned();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%simm=IPFcodeWsigned();\n",indent_str.c_str());
+                immc++;
+                break;
+            case OPARG_IW16:
+                if (immc != 0)  fprintf(out_fp,"%simm%u=IPFW();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%simm=IPFW();\n",indent_str.c_str());
+                immc++;
+                break;
+            case OPARG_IW16S:
+                if (immc != 0)  fprintf(out_fp,"%simm%u=IPFWsigned();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%simm=IPFWsigned();\n",indent_str.c_str());
+                immc++;
+                break;
+            case OPARG_IW32:
+                if (immc != 0)  fprintf(out_fp,"%simm%u=IPFDW();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%simm=IPFDW();\n",indent_str.c_str());
+                immc++;
+                break;
+            case OPARG_IW32S:
+                if (immc != 0)  fprintf(out_fp,"%simm%u=IPFDWsigned();\n",indent_str.c_str(),immc+1);
+                else            fprintf(out_fp,"%simm=IPFDWsigned();\n",indent_str.c_str());
+                immc++;
+                break;
+            default:
+                break;
+        };
+    }
+}
 
 void opcode_gen_case_statement_immarg_fetch(const string &indent_str,OpByte *submap) {
     unsigned int immc = 0;
@@ -1979,7 +2038,8 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
     }
 
     /* then fetch other args */
-    opcode_gen_case_statement_immarg_fetch(indent_str,submap);
+    if (!(flags&OUTCODE_GEN_SKIP_IPFB))
+        opcode_gen_case_statement_immarg_fetch(indent_str,submap);
 
     if (submap->opmap_valid) {
         uint8_t tmp[16];
@@ -2931,6 +2991,7 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
     OpByte *submap,*submap2;
     string indent_str;
     bool reg_enum=false;
+    bool ipfb_combined=false;
 
     for (unsigned int ind=0;ind < indent;ind++)
         indent_str += "    ";
@@ -3066,6 +3127,40 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
         }
 
         if (is_reg_pattern) {
+            // if all have the same immediate args then we can combine the IPFB() calls at the top
+            {
+                OpByte *fmap,*smap;
+                bool f=true;
+
+                fmap = map.opmap[0x00];
+                for (unsigned int op=0x08;op < 0x40;op += 8) { // reg 0...7
+                    smap = map.opmap[op];
+
+                    if (fmap == NULL || smap == NULL) {
+                        f = false;
+                        break;
+                    }
+                    else if (fmap->already != smap->already) {
+                        f = false;
+                        break;
+                    }
+                    else if (fmap->immarg.size() != smap->immarg.size()) {
+                        f = false;
+                        break;
+                    }
+                    else if (fmap->immarg != smap->immarg) {
+                        f = false;
+                        break;
+                    }
+                }
+
+                ipfb_combined = f;
+            }
+
+            // emit
+            if (ipfb_combined)
+                opcode_gen_case_statement_immarg_fetch_nopc(indent_str,map.opmap[0x00]);
+
             fprintf(out_fp,"%sswitch (mrm.reg()) {\n",indent_str.c_str());
             reg_enum = true;
         }
@@ -3115,7 +3210,8 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
                     }
                 }
 
-                opcode_gen_case_statement(codewidth,addrwidth,opbase,opbaselen,map,indent,indent_str,submap,op,flags,maproot);
+                opcode_gen_case_statement(codewidth,addrwidth,opbase,opbaselen,map,indent,indent_str,submap,op,
+                    flags | (ipfb_combined ? OUTCODE_GEN_SKIP_IPFB : 0),maproot);
             }
 
             if (submap == NULL) {
