@@ -2277,6 +2277,9 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
             string fmtargs;
             char tmp[128];
 
+            if (!submap->isprefix)
+                fprintf(out_fp,"%s        opcode = OPCODE_%s;\n",indent_str.c_str(),submap->name.c_str());
+
             fprintf(out_fp,"%s        ipw += snprintf(ipw,(size_t)(ipwf-ipw),\"",indent_str.c_str());
             if (generic1632 && submap->suffix == OPSUFFIX_WORD) {
                 fprintf(out_fp,"%s%%s",submap->name.c_str());
@@ -3042,6 +3045,7 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
             fprintf(out_fp,"/*   char IPDecStr[256]; */\n");
             fprintf(out_fp,"/*   char *ipw,*ipwf; */\n");
             fprintf(out_fp,"/*   x86_offset_t IPval(void); */\n");
+            fprintf(out_fp,"/*   unsigned int opcode; */\n");
         }
     }
     else {

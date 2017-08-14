@@ -20,6 +20,7 @@
 #include "dosboxxr/lib/cpu/x86ModRegRm.h"
 #include "dosboxxr/lib/cpu/x86ScaleIndexBase.h"
 #include "dosboxxr/lib/cpu/memreftypes.h"
+#include "dosboxxr/lib/cpu/core/all_symbols.h"
 #include "dosboxxr/lib/util/case_groups.h"
 #include "cpudec86common.h"
 
@@ -31,6 +32,7 @@ void IPDec_AMDK6r2(x86_offset_t ip) {
     x86ScaleIndexBase sib;
     bool prefix66=false;
     bool prefix67=false;
+    unsigned int opcode;
     x86_offset_t disp;
     uint32_t imm,imm2;
     char *ipw,*ipwf;

@@ -24,6 +24,7 @@
 #include "dosboxxr/lib/cpu/x86ModRegRm.h"
 #include "dosboxxr/lib/cpu/x86ScaleIndexBase.h"
 #include "dosboxxr/lib/cpu/memreftypes.h"
+#include "dosboxxr/lib/cpu/core/all_symbols.h"
 #include "dosboxxr/lib/util/case_groups.h"
 #include "cpudec86common.h"
 

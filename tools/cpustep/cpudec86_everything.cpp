@@ -21,6 +21,7 @@
 #include "dosboxxr/lib/cpu/x86ModRegRm.h"
 #include "dosboxxr/lib/cpu/x86ScaleIndexBase.h"
 #include "dosboxxr/lib/cpu/memreftypes.h"
+#include "dosboxxr/lib/cpu/core/all_symbols.h"
 #include "dosboxxr/lib/util/case_groups.h"
 #include "cpustep86common.h"
 
@@ -30,6 +31,7 @@ void IPDec_Everything(x86_offset_t ip) {
     bool code32=exe_code32;
     bool addr32=exe_code32;
     x86ScaleIndexBase sib;
+    unsigned int opcode;
     bool prefix66=false;
     bool prefix67=false;
     x86_offset_t disp;
