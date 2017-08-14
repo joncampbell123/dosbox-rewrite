@@ -380,6 +380,8 @@ bin_test_cpumemreftypes_CXXFLAGS = $(AM_CXXFLAGS)
 bin_test_cpumemreftypes_DEPENDENCIES =
 bin_test_cpumemreftypes_LDADD =
 
+OPCODES_FILES = $(wildcard opcodes/*.opcodes)
+
 OPCC_DECOM_H = \
 	dosboxxr/lib/cpu/core/intel8088.cxx.axx.decom.h \
 	\
@@ -421,7 +423,12 @@ OPCC_DECOM_H = \
 	\
 	dosboxxr/lib/cpu/core/intelCore.cxx.axx.decom.h \
 	\
-	dosboxxr/lib/cpu/core/everything.cxx.axx.decom.h
+	dosboxxr/lib/cpu/core/everything.cxx.axx.decom.h \
+	\
+	dosboxxr/lib/cpu/core/all_symbols.h
+
+dosboxxr/lib/cpu/core/all_symbols.h: $(OPCODES_FILES)
+	tools/opcc/opcc_symbols_combine.pl dosboxxr/lib/cpu/core/*.symbols.h >$@
 
 OPCC_EMU_H = \
 	dosboxxr/lib/cpu/core/intel8088.cxx.axx.emu.h \
@@ -614,6 +621,10 @@ dosboxxr/lib/cpu/core/everything.c32.a32.emu.h: dosboxxr/lib/cpu/core/everything
 
 # grrr how do I get automake to run opcc first before compiling other parts?
 opcodes: opcodes-dec opcodes-emu
+
+$(OPCC_DECOM_H): $(OPCODES_FILES)
+
+$(OPCC_EMU_H): $(OPCODES_FILES)
 
 opcodes-dec: $(OPCC_DECOM_H)
 
