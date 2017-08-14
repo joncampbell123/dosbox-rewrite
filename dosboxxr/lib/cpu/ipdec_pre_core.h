@@ -100,15 +100,15 @@ enum {
 struct opcc_argv {
     signed char         segment;    /* which segment */
     unsigned char       size;       /* size of the operand (1=byte 2=word 4=dword etc) */
-    uint16_t            segval;     /* segment value (if segment == -2) */
     unsigned char       regtype;    /* type of register (0 if memory ref) */
     unsigned char       reg;
-    uint32_t            memref_base;    /* base immediate offset */
-    uint32_t            value;
     unsigned char       memregsz;
     unsigned char       memregs;
     unsigned char       memreg[4];  /* memory register offsets to add together. note that [0] is scaled by SIB scalar part */
     unsigned char       scalar;
+    uint16_t            segval;     /* segment value (if segment == -2) */
+    uint32_t            memref_base;    /* base immediate offset */
+    uint32_t            value;
 };
 
 /* yes, I shamelessly copied this from minx86dec. so sue me for borrowing code from my own OSS projects. */
