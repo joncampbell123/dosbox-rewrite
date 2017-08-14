@@ -636,5 +636,5 @@ opcodes-dec: $(OPCC_DECOM_H)
 opcodes-emu: $(OPCC_EMU_H)
 
 opcodes-clean:
-	rm -f $(OPCC_EMU_H) $(OPCC_DECOM_H) $(patsubst %.h,%.h.symbols.h,$(OPCC_EMU_H) $(OPCC_DECOM_H))
+	rm -f $(OPCC_EMU_H) $(OPCC_DECOM_H) $(patsubst %.h,%.h.symbols.h,$(OPCC_EMU_H) $(OPCC_DECOM_H)) dosboxxr/lib/cpu/core/*.p
 
