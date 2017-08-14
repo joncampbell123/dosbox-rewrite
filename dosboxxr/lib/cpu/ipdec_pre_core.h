@@ -1,4 +1,12 @@
 
+enum opccRep {
+    OPREP_NONE=-1,
+    OPREP_REPNZ,
+    OPREP_REPZ,
+    OPREP_REPNC,
+    OPREP_REPC
+};
+
 enum opccSeg {
     OPSEG_NONE=-1,
     OPSEG_CS=0,

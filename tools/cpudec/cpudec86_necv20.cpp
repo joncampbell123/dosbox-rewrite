@@ -28,6 +28,9 @@
 
 void IPDec_necv20(x86_offset_t ip) {
     x86ScaleIndexBase sib;
+    bool prefix_WAIT = false;
+    bool prefix_LOCK = false;
+    signed char repmode = -1;
     signed char segoverride = -1;
     unsigned int opcode = 0;
     x86_offset_t disp;

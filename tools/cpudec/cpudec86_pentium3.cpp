@@ -32,6 +32,9 @@ void IPDec_Pentium3(x86_offset_t ip) {
     x86ScaleIndexBase sib;
     bool prefix66=false;
     bool prefix67=false;
+    bool prefix_WAIT = false;
+    bool prefix_LOCK = false;
+    signed char repmode = -1;
     signed char segoverride = -1;
     unsigned int opcode = 0;
     x86_offset_t disp;

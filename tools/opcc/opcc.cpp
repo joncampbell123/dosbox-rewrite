@@ -2294,6 +2294,10 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
                 fprintf(out_fp,"%s        opcode = OPCODE_%s;\n",indent_str.c_str(),submap->name.c_str());
             else if (submap->segoverride != OPSEG_NONE)
                 fprintf(out_fp,"%s        segoverride = OPSEG_%s;\n",indent_str.c_str(),opseg2string(submap->segoverride));
+            else if (submap->name == "REPZ" || submap->name == "REPNZ" || submap->name == "REPC" || submap->name == "REPNC")
+                fprintf(out_fp,"%s        repmode = OPREP_%s;\n",indent_str.c_str(),submap->name.c_str());
+            else
+                fprintf(out_fp,"%s        prefix_%s = 1;\n",indent_str.c_str(),submap->name.c_str());
 
             fprintf(out_fp,"%s        ipw += snprintf(ipw,(size_t)(ipwf-ipw),\"",indent_str.c_str());
             if (generic1632 && submap->suffix == OPSUFFIX_WORD) {
