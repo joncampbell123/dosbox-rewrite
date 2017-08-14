@@ -48,6 +48,7 @@ print "\n";
 my @offsetlist = ( );
 $count = 0;
 $offset = 0;
+print "#ifdef WANT_OPCODE_NAMES\n";
 print "/* auto generated */\n";
 print "const char opcode_names[] = \\\n";
 print "\t\"\\0\" /* =$count @".$offset." */ \\\n"; push(@offsetlist,$offset); $count++; $offset += 1;
@@ -77,5 +78,6 @@ for ($op=0;$op < @symlist;$op++) {
 }
 print "\t".$offsetlist[$count]."  /* =$count */\n";
 print "};\n";
+print "#endif /*WANT_OPCODE_NAMES*/\n";
 print "\n";
 

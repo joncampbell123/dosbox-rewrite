@@ -3439,6 +3439,7 @@ int main(int argc,char **argv) {
         count = 0;
         offset = 0;
         offsetlist.clear();
+        fprintf(fp,"#ifdef WANT_OPCODE_NAMES\n");
         fprintf(fp,"/* auto-generated */\n");
         fprintf(fp,"const char opcode_names[] = \\\n");
         fprintf(fp,"\t\"\\0\" /* =%lu @%lu */ \\\n",(unsigned long)(count++),(unsigned long)offset);
@@ -3476,6 +3477,7 @@ int main(int argc,char **argv) {
         assert(count < offsetlist.size());
         fprintf(fp,"\t%lu  /* =%lu */\n",(unsigned long)offsetlist[count],(unsigned long)(count)); count++;
         fprintf(fp,"};\n");
+        fprintf(fp,"#endif /*WANT_OPCODE_NAMES*/\n");
         fprintf(fp,"\n");
 
         fclose(fp);
