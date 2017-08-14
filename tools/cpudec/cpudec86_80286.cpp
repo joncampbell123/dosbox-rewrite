@@ -28,7 +28,8 @@
 
 void IPDec_80286(x86_offset_t ip) {
     x86ScaleIndexBase sib;
-    unsigned int opcode;
+    signed char segoverride = -1;
+    unsigned int opcode = 0;
     x86_offset_t disp;
     uint16_t imm,imm2;
     char *ipw,*ipwf;

@@ -31,7 +31,8 @@ void IPDec_Everything(x86_offset_t ip) {
     bool code32=exe_code32;
     bool addr32=exe_code32;
     x86ScaleIndexBase sib;
-    unsigned int opcode;
+    signed char segoverride = -1;
+    unsigned int opcode = 0;
     bool prefix66=false;
     bool prefix67=false;
     x86_offset_t disp;

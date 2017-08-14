@@ -32,7 +32,8 @@ void IPDec_Pentium4(x86_offset_t ip) {
     x86ScaleIndexBase sib;
     bool prefix66=false;
     bool prefix67=false;
-    unsigned int opcode;
+    signed char segoverride = -1;
+    unsigned int opcode = 0;
     x86_offset_t disp;
     uint32_t imm,imm2;
     char *ipw,*ipwf;

@@ -1,4 +1,14 @@
 
+enum opccSeg {
+    OPSEG_NONE=-1,
+    OPSEG_CS=0,
+    OPSEG_DS,
+    OPSEG_ES,
+    OPSEG_FS,
+    OPSEG_GS,
+    OPSEG_SS
+};
+
 static inline int32_t IPFBsigned(void) {
     return (int32_t)((int8_t)IPFB());
 }

@@ -29,6 +29,19 @@ enum opccSeg {
     OPSEG_SS
 };
 
+const char *opseg2string(const unsigned int x) {
+    switch (x) {
+        case OPSEG_CS:  return "CS";
+        case OPSEG_DS:  return "DS";
+        case OPSEG_ES:  return "ES";
+        case OPSEG_FS:  return "FS";
+        case OPSEG_GS:  return "GS";
+        case OPSEG_SS:  return "SS";
+    }
+
+    return "";
+}
+
 enum opccReg {
     OPREG_NONE=-1,
 
@@ -2279,6 +2292,8 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
 
             if (!submap->isprefix)
                 fprintf(out_fp,"%s        opcode = OPCODE_%s;\n",indent_str.c_str(),submap->name.c_str());
+            else if (submap->segoverride != OPSEG_NONE)
+                fprintf(out_fp,"%s        segoverride = OPSEG_%s;\n",indent_str.c_str(),opseg2string(submap->segoverride));
 
             fprintf(out_fp,"%s        ipw += snprintf(ipw,(size_t)(ipwf-ipw),\"",indent_str.c_str());
             if (generic1632 && submap->suffix == OPSUFFIX_WORD) {
@@ -3045,7 +3060,8 @@ void outcode_gen(const unsigned int codewidth,const unsigned int addrwidth,const
             fprintf(out_fp,"/*   char IPDecStr[256]; */\n");
             fprintf(out_fp,"/*   char *ipw,*ipwf; */\n");
             fprintf(out_fp,"/*   x86_offset_t IPval(void); */\n");
-            fprintf(out_fp,"/*   unsigned int opcode; */\n");
+            fprintf(out_fp,"/*   signed char segoverride = -1; */\n");
+            fprintf(out_fp,"/*   unsigned int opcode = 0; */\n");
         }
     }
     else {
