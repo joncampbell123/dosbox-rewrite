@@ -2299,6 +2299,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
             else
                 fprintf(out_fp,"%s        opstate.prefix_%s = 1;\n",indent_str.c_str(),submap->name.c_str());
 
+            if (!submap->isprefix) {
             fprintf(out_fp,"%s        ipw += snprintf(ipw,(size_t)(ipwf-ipw),\"",indent_str.c_str());
             if (generic1632 && submap->suffix == OPSUFFIX_WORD) {
                 fprintf(out_fp,"%s%%s",submap->name.c_str());
@@ -2974,6 +2975,7 @@ void opcode_gen_case_statement(const unsigned int codewidth,const unsigned int a
             fprintf(out_fp,"\"");
             if (!fmtargs.empty()) fprintf(out_fp,"%s",fmtargs.c_str());
             fprintf(out_fp,");\n");
+            }
         }
     }
 
