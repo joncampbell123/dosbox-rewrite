@@ -109,6 +109,17 @@ struct opcc_argv {
     uint16_t            segval;     /* segment value (if segment == -2) */
     uint32_t            memref_base;    /* base immediate offset */
     uint32_t            value;
+
+    void clear(void) {
+        segment = OPSEG_NONE;
+        size = 0;
+        regtype = 0;
+        reg = 0;
+        memregsz = 0;
+        memregs = 0;
+        memref_base = 0;
+        value = 0;
+    }
 };
 
 /* yes, I shamelessly copied this from minx86dec. so sue me for borrowing code from my own OSS projects. */
@@ -120,6 +131,7 @@ struct opcc_decom_state {
     bool                prefix_WAIT;
     bool                prefix_LOCK;
     uint8_t             op;
+    unsigned char       argc;
     signed char         segoverride;
     signed char         repmode;
 	uint32_t		    ip_value;	/* IP instruction pointer value */
@@ -129,6 +141,7 @@ struct opcc_decom_state {
     x86ModRegRm         mrm;
     x86Vex              vex;
     x86ScaleIndexBase   sib;
+    struct opcc_argv    argv[4];
 
     opcc_decom_state() : code32(false), addr32(false), prefix66(false), prefix67(false), prefix_WAIT(false), prefix_LOCK(false), segoverride(OPSEG_NONE), repmode(OPREP_NONE) { }
     opcc_decom_state(const bool _m32) : code32(_m32), addr32(_m32), prefix66(false), prefix67(false), prefix_WAIT(false), prefix_LOCK(false), segoverride(OPSEG_NONE), repmode(OPREP_NONE) { }
