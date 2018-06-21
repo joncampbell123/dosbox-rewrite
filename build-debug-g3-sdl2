@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# I'm sick and tired of all the churn the three versions of autoconf
+# are causing in this repo. Stop committing the configure scripts
+# and just autoregen.
+./autogen.sh || exit 1
+
+# fix
+chmod +x vs2015/sdl/build-scripts/strip_fPIC.sh
+
+chmod +x configure
+
+export CFLAGS="$CFLAGS -g3 -O0 -fno-inline -fno-omit-frame-pointer"
+export CXXFLAGS="$CXXFLAGS -g3 -O0 -fno-inline -fno-omit-frame-pointer"
+
+# NTS: --disable-dynamic-core is needed. the dynamic core doesn't work properly with the CFLAGS given above
+./configure --enable-core-inline --enable-debug=heavy --prefix=/usr --disable-dynamic-core --enable-sdl2 || exit 1
+make -j3 || exit 1
+
