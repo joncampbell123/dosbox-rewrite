@@ -36,6 +36,8 @@ _Additional study needs to be done on what happens if EGA/VGA graphics modes are
 
 SVGA chipsets seem to define the higher resolution modes, including 15/16bpp, 24bpp, and 32bpp by character clocks, and will use whatever pixelsperclock the hardware is wired to use for those modes.
 
+For some older SVGA chipsets that follow the "highcolor RAMDAC" model, the pixelsperclock will remain the same but pixels will be transformed (and the resolution halved) to convert VGA DAC output into highcolor 15bpp/16bpp output, if the appropriate register values are set up (Tseng cards?). Emulation of other chipsets may require emulating the half-hearted "emulation" the SVGA chipset does of the highcolor RAMDAC register set (Chips & Technologies). A good example of a DOS program setting up highcolor directly on a specific chipset is MFX's "Transgression 2" demo, though it seems to do it slightly wrong.
+
 MCGA is unknown at this time.
 
 PC-98 will use pixelsperclock == 16 if 2.5MHz GDC clock, pixelsperclock == 8 if 5MHz GDC clock. The master and slave GDCs will be given independent pixelsperclock due to the way hardware connects the two independent video outputs together. Each GDC will be given it's own state regarding hsync/vsync and raster position to better emulate the scrambled display that occurs if the master and slave are not genlocked or misprogrammed. Based on real hardware, the slave GDC does not generate hsync/vsync pulses and therefore the master GDC's output is still stable when the two are de-synchronized. _TODO: confirm this._
