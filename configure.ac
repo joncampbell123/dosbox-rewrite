@@ -552,10 +552,10 @@ AC_CHECK_LIB(iconv, libiconv_open, have_iconv_lib=yes, ,-liconv)
 # FIXME: Arrggh we need the WHOLE PATH
 pwd=`pwd`
 
-CFLAGS="$CFLAGS -I$pwd/vs2015/sdlnet/linux-host/include -I$pwd/vs2015/sdlnet/linux-host/include/SDL"
-LDFLAGS="$LDFLAGS -L$pwd/vs2015/sdlnet/linux-host/lib"
-CPPFLAGS="$CPPFLAGS -I$pwd/vs2015/sdlnet/linux-host/include -I$pwd/vs2015/sdlnet/linux-host/include/SDL"
-CXXFLAGS="$CXXFLAGS -I$pwd/vs2015/sdlnet/linux-host/include -I$pwd/vs2015/sdlnet/linux-host/include/SDL"
+CFLAGS="$CFLAGS"
+LDFLAGS="$LDFLAGS"
+CPPFLAGS="$CPPFLAGS"
+CXXFLAGS="$CXXFLAGS"
 
 dnl LIBRARY TEST: SDLnet 1.x
 AC_CHECK_HEADER(SDL_net.h,have_sdl_net_h=yes,)
