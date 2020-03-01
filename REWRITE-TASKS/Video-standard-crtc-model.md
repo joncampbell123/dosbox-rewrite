@@ -36,7 +36,7 @@ _Additional study needs to be done on what happens if EGA/VGA graphics modes are
 
 SVGA chipsets seem to define the higher resolution modes, including 15/16bpp, 24bpp, and 32bpp by character clocks, and will use whatever pixelsperclock the hardware is wired to use for those modes.
 
-For some older SVGA chipsets that follow the "highcolor RAMDAC" model, the pixelsperclock will remain the same but pixels will be transformed (and the resolution halved) to convert VGA DAC output into highcolor 15bpp/16bpp output, if the appropriate register values are set up (Tseng cards?). Emulation of other chipsets may require emulating the half-hearted "emulation" the SVGA chipset does of the highcolor RAMDAC register set (Chips & Technologies). A good example of a DOS program setting up highcolor directly on a specific chipset is MFX's "Transgression 2" demo, though it seems to do it slightly wrong.
+For some older SVGA chipsets that follow the "highcolor RAMDAC" model, the pixelsperclock will remain the same but pixels will be transformed (and the resolution halved) to convert VGA digital output into highcolor 15bpp/16bpp output, if the appropriate register values are set up (Tseng cards?). Emulation of other chipsets may require emulating the half-hearted "emulation" the SVGA chipset does of the highcolor RAMDAC register set (Chips & Technologies). A good example of a DOS program setting up highcolor directly on a specific chipset is MFX's "Transgression 2" demo, though it seems to do it slightly wrong.
 
 MCGA is unknown at this time.
 
