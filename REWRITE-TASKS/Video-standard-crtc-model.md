@@ -40,7 +40,7 @@ For some older SVGA chipsets that follow the "highcolor RAMDAC" model, the pixel
 
 MCGA is unknown at this time.
 
-PC-98 will use pixelsperclock == 16 if 2.5MHz GDC clock, pixelsperclock == 8 if 5MHz GDC clock. The master and slave GDCs will be given independent pixelsperclock due to the way hardware connects the two independent video outputs together. Each GDC will be given it's own state regarding hsync/vsync and raster position to better emulate the scrambled display that occurs if the master and slave are not genlocked or misprogrammed. Based on real hardware, the slave GDC does not generate hsync/vsync pulses and therefore the master GDC's output is still stable when the two are de-synchronized. _TODO: confirm this._
+PC-98 will use pixelsperclock == 16 if 2.5MHz GDC clock, pixelsperclock == 8 if 5MHz GDC clock. The master and slave GDCs will be given independent pixelsperclock due to the way hardware connects the two independent video outputs together. In normal operation, they are genlocked such that the master GDC output, the text, overlays the slave GDC output, the graphics. Each GDC will be given it's own state regarding hsync/vsync and raster position to better emulate the scrambled display that occurs if the master and slave are not genlocked or misprogrammed. Based on real hardware, the slave GDC does not generate hsync/vsync pulses and therefore the master GDC's output is still stable when the two are de-synchronized. _TODO: confirm this._
 
 # Standard character clock model: character clock shift register output to DAC
 
