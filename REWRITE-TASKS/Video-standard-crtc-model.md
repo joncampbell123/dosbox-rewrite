@@ -1,7 +1,9 @@
 # Standard character clock model: dot clock and character clock model
 
 double dotclockfreq = dot clock frequency
+
 unsigned int pixelsperclock = pixels per character
+
 constexpr double charclockfreq = dotclockfreq / pixelsperclock
 
 Pixel doubling will be handled in one of two ways depending on how the actual hardware behaves.
@@ -37,6 +39,7 @@ PC-98 will use pixelsperclock == 16 if 2.5MHz GDC clock, pixelsperclock == 8 if 
 Emulation renders one character clock to the shiftregister and the shift register is written to emulator display output.
 
 pixeltype_t shiftregister[pixelsperclock];
+
 unsigned int shiftregisterpos = 0;
 
 When shiftregisterpos >= pixelclock, emulation will be called on to render the next character clock.
