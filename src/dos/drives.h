@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -35,9 +35,10 @@ public:
 	static int UnmountDrive(int drive);
 //	static void CycleDrive(bool pressed);
 //	static void CycleDisk(bool pressed);
+	static void CycleDisks(int drive, bool notify);
 	static void CycleAllDisks(void);
 	static void CycleAllCDs(void);
-	static void Init(Section* sec);
+	static void Init(Section* s);
 	
 	static void SaveState( std::ostream& stream );
 	static void LoadState( std::istream& stream );
@@ -45,7 +46,7 @@ public:
 private:
 	static struct DriveInfo {
 		std::vector<DOS_Drive*> disks;
-		Bit32u currentDisk;
+		Bit32u currentDisk = 0;
 	} driveInfos[DOS_DRIVES];
 	
 	static int currentDrive;
@@ -75,7 +76,7 @@ public:
 	virtual Bits UnMount(void);
 	virtual char const * GetLabel(){return dirCache.GetLabel();};
 	virtual void SetLabel(const char *label, bool iscdrom, bool updatable) { dirCache.SetLabel(label,iscdrom,updatable); };
-	virtual void *opendir(const char *dir);
+	virtual void *opendir(const char *name);
 	virtual void closedir(void *handle);
 	virtual bool read_directory_first(void *handle, char* entry_name, bool& is_directory);
 	virtual bool read_directory_next(void *handle, char* entry_name, bool& is_directory);
@@ -89,7 +90,7 @@ protected:
 	friend void DOS_Shell::CMD_SUBST(char* args); 	
 	struct {
 		char srch_dir[CROSS_LEN];
-	} srchInfo[MAX_OPENDIRS];
+    } srchInfo[MAX_OPENDIRS] = {};
 
 	struct {
 		Bit16u bytes_sector;
@@ -165,10 +166,10 @@ struct direntry {
 	Bit8u attrib;
 	Bit8u NTRes;
 	Bit8u milliSecondStamp;
-	Bit16u crtTime;
-	Bit16u crtDate;
-	Bit16u accessDate;
-	Bit16u hiFirstClust;
+	Bit16u crtTime;             // <- NTS: This field did not appear until MS-DOS 7.0 (Windows 95)
+	Bit16u crtDate;             // <- NTS: This field did not appear until MS-DOS 7.0 (Windows 95)
+	Bit16u accessDate;          // <- NTS: This field did not appear until MS-DOS 7.0 (Windows 95)
+	Bit16u hiFirstClust;        // <- NTS: FAT32 only!
 	Bit16u modTime;
 	Bit16u modDate;
 	Bit16u loFirstClust;
@@ -204,9 +205,9 @@ struct partTable {
 class imageDisk;
 class fatDrive : public DOS_Drive {
 public:
-	fatDrive(const char * sysFilename, Bit32u bytesector, Bit32u cylsector, Bit32u headscyl, Bit32u cylinders);
-	fatDrive(imageDisk *sourceLoadedDisk);
-    void fatDriveInit(const char *sysFilename, Bit32u bytesector, Bit32u cylsector, Bit32u headscyl, Bit32u cylinders, Bit64u filesize);
+	fatDrive(const char * sysFilename, Bit32u bytesector, Bit32u cylsector, Bit32u headscyl, Bit32u cylinders, std::vector<std::string> &options);
+	fatDrive(imageDisk *sourceLoadedDisk, std::vector<std::string> &options);
+    void fatDriveInit(const char *sysFilename, Bit32u bytesector, Bit32u cylsector, Bit32u headscyl, Bit32u cylinders, Bit64u filesize, std::vector<std::string> &options);
     virtual ~fatDrive();
 	virtual bool FileOpen(DOS_File * * file,const char * name,Bit32u flags);
 	virtual bool FileCreate(DOS_File * * file,const char * name,Bit16u attributes);
@@ -226,12 +227,15 @@ public:
 	virtual bool isRemovable(void);
 	virtual Bits UnMount(void);
 public:
+	Bit8u readSector(Bit32u sectnum, void * data);
+	Bit8u writeSector(Bit32u sectnum, void * data);
 	Bit32u getAbsoluteSectFromBytePos(Bit32u startClustNum, Bit32u bytePos);
 	Bit32u getSectorSize(void);
+	Bit32u getClusterSize(void);
 	Bit32u getAbsoluteSectFromChain(Bit32u startClustNum, Bit32u logicalSector);
 	bool allocateCluster(Bit32u useCluster, Bit32u prevCluster);
 	Bit32u appendCluster(Bit32u startCluster);
-	void deleteClustChain(Bit32u startCluster);
+	void deleteClustChain(Bit32u startCluster, Bit32u bytePos);
 	Bit32u getFirstFreeClust(void);
 	bool directoryBrowse(Bit32u dirClustNumber, direntry *useEntry, Bit32s entNum, Bit32s start=0);
 	bool directoryChange(Bit32u dirClustNumber, direntry *useEntry, Bit32s entNum);
@@ -244,13 +248,13 @@ private:
 	bool FindNextInternal(Bit32u dirClustNumber, DOS_DTA & dta, direntry *foundEntry);
 	bool getDirClustNum(const char * dir, Bit32u * clustNum, bool parDir);
 	bool getFileDirEntry(char const * const filename, direntry * useEntry, Bit32u * dirClust, Bit32u * subEntry);
-	bool addDirectoryEntry(Bit32u dirClustNumber, direntry useEntry);
+	bool addDirectoryEntry(Bit32u dirClustNumber, direntry& useEntry);
 	void zeroOutCluster(Bit32u clustNumber);
 	bool getEntryName(const char *fullname, char *entname);
 	friend void DOS_Shell::CMD_SUBST(char* args); 	
 	struct {
 		char srch_dir[CROSS_LEN];
-	} srchInfo[MAX_OPENDIRS];
+    } srchInfo[MAX_OPENDIRS] = {};
 
 	struct {
 		Bit16u bytes_sector;
@@ -258,20 +262,22 @@ private:
 		Bit16u total_clusters;
 		Bit16u free_clusters;
 		Bit8u mediaid;
-	} allocation;
+    } allocation = {};
 	
-	bootstrap bootbuffer;
-	Bit8u fattype;
-	Bit32u CountOfClusters;
-	Bit32u partSectOff;
-	Bit32u firstDataSector;
-	Bit32u firstRootDirSect;
+    bootstrap bootbuffer = {};
+	bool absolute = false;
+	Bit8u fattype = 0;
+	Bit32u CountOfClusters = 0;
+	Bit32u partSectOff = 0;
+	Bit32u firstDataSector = 0;
+	Bit32u firstRootDirSect = 0;
 
-	Bit32u cwdDirCluster;
-	Bit32u dirPosition; /* Position in directory search */
+	Bit32u cwdDirCluster = 0;
 
-	Bit8u fatSectBuffer[SECTOR_SIZE_MAX * 2];
-	Bit32u curFatSect;
+    Bit8u fatSectBuffer[SECTOR_SIZE_MAX * 2] = {};
+	Bit32u curFatSect = 0;
+
+	DOS_Drive_Cache labelCache;
 public:
     /* the driver code must use THESE functions to read the disk, not directly from the disk drive,
      * in order to support a drive with a smaller sector size than the FAT filesystem's "sector".
@@ -281,9 +287,21 @@ public:
 	virtual Bit8u Read_AbsoluteSector(Bit32u sectnum, void * data);
 	virtual Bit8u Write_AbsoluteSector(Bit32u sectnum, void * data);
 	virtual Bit32u getSectSize(void);
-	Bit32u sector_size;
+	Bit32u sector_size = 0;
+
+    // INT 25h/INT 26h
+    virtual Bit32u GetSectorCount(void);
+    virtual Bit32u GetSectorSize(void);
+	virtual Bit8u Read_AbsoluteSector_INT25(Bit32u sectnum, void * data);
+	virtual Bit8u Write_AbsoluteSector_INT25(Bit32u sectnum, void * data);
+    virtual void UpdateDPB(unsigned char dos_drive);
+
+	virtual char const * GetLabel(){return labelCache.GetLabel();};
+	virtual void SetLabel(const char *label, bool iscdrom, bool updatable);
+    virtual void UpdateBootVolumeLabel(const char *label);
 };
 
+PhysPt DOS_Get_DPB(unsigned int dos_drive);
 
 class cdromDrive : public localDrive
 {
@@ -405,7 +423,7 @@ struct isoDirEntry {
 
 class isoDrive : public DOS_Drive {
 public:
-	isoDrive(char driveLetter, const char* device_name, Bit8u mediaid, int &error);
+	isoDrive(char driveLetter, const char* fileName, Bit8u mediaid, int &error);
 	~isoDrive();
 	virtual bool FileOpen(DOS_File **file, const char *name, Bit32u flags);
 	virtual bool FileCreate(DOS_File **file, const char *name, Bit16u attributes);
@@ -413,7 +431,7 @@ public:
 	virtual bool RemoveDir(const char *dir);
 	virtual bool MakeDir(const char *dir);
 	virtual bool TestDir(const char *dir);
-	virtual bool FindFirst(const char *_dir, DOS_DTA &dta, bool fcb_findfirst);
+	virtual bool FindFirst(const char *dir, DOS_DTA &dta, bool fcb_findfirst);
 	virtual bool FindNext(DOS_DTA &dta);
 	virtual bool GetFileAttr(const char *name, Bit16u *attr);
 	virtual bool Rename(const char * oldname,const char * newname);
@@ -434,9 +452,9 @@ private:
 	bool loadImage();
 	bool lookupSingle(isoDirEntry *de, const char *name, Bit32u sectorStart, Bit32u length);
 	bool lookup(isoDirEntry *de, const char *path);
-	int  UpdateMscdex(char driveLetter, const char* physicalPath, Bit8u& subUnit);
+	int  UpdateMscdex(char driveLetter, const char* path, Bit8u& subUnit);
 	int  GetDirIterator(const isoDirEntry* de);
-	bool GetNextDirEntry(const int dirIterator, isoDirEntry* de);
+	bool GetNextDirEntry(const int dirIteratorHandle, isoDirEntry* de);
 	void FreeDirIterator(const int dirIterator);
 	bool ReadCachedSector(Bit8u** buffer, const Bit32u sector);
 	
@@ -490,6 +508,7 @@ public:
 	bool isRemote(void);
 	virtual bool isRemovable(void);
 	virtual Bits UnMount(void);
+	virtual char const* GetLabel(void);
 private:
 	VFILE_Block * search_file;
 };

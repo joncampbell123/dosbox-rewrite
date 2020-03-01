@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 /* 
@@ -92,11 +92,11 @@ void SN76496Write(struct SN76496 *R,Bitu port,Bitu data) {
 
 	if (data & 0x80)
 	{
-		int r = (data & 0x70) >> 4;
+		int r = int((data & 0x70u) >> 4u);
 		int c = r/2;
 
 		R->LastRegister = r;
-		R->Register[r] = (R->Register[r] & 0x3f0) | (data & 0x0f);
+		R->Register[r] = int(((unsigned int)R->Register[r] & 0x3f0u) | (data & 0x0fu));
 		switch (r)
 		{
 			case 0:	/* tone 0 : frequency */
@@ -142,7 +142,7 @@ void SN76496Write(struct SN76496 *R,Bitu port,Bitu data) {
 			case 0:	/* tone 0 : frequency */
 			case 2:	/* tone 1 : frequency */
 			case 4:	/* tone 2 : frequency */
-				R->Register[r] = (R->Register[r] & 0x0f) | ((data & 0x3f) << 4);
+				R->Register[r] = int(((unsigned int)R->Register[r] & 0x0fu) | ((data & 0x3fu) << 4u));
 				R->Period[c] = (int)R->UpdateStep * R->Register[r];
 				if (R->Period[c] == 0) R->Period[c] = 0x3fe;
 				if (r == 4)
@@ -317,8 +317,8 @@ static void SN76496_set_gain(struct SN76496 *R, int gain) {
 
 void SN76496Reset(struct SN76496 *R, Bitu Clock, Bitu sample_rate) {
 	Bitu i;
-	R->SampleRate = sample_rate;
-	SN76496_set_clock(R,Clock);
+	R->SampleRate = (int)sample_rate;
+	SN76496_set_clock(R,(int)Clock);
 	for (i = 0;i < 4;i++) R->Volume[i] = 0;
 	R->LastRegister = 0;
 	for (i = 0;i < 8;i+=2)

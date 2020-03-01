@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -36,6 +36,7 @@
 #include "softmodem.h"
 #include "nullmodem.h"
 #include "seriallog.h"
+#include "serialfile.h"
 
 #include "cpu.h"
 
@@ -180,28 +181,28 @@ static void SERIAL_Write (Bitu port, Bitu val, Bitu) {
 #endif
 	switch (index) {
 		case THR_OFFSET:
-			serialports[i]->Write_THR (val);
+			serialports[i]->Write_THR ((Bit8u)val);
 			return;
 		case IER_OFFSET:
-			serialports[i]->Write_IER (val);
+			serialports[i]->Write_IER ((Bit8u)val);
 			return;
 		case FCR_OFFSET:
-			serialports[i]->Write_FCR (val);
+			serialports[i]->Write_FCR ((Bit8u)val);
 			return;
 		case LCR_OFFSET:
-			serialports[i]->Write_LCR (val);
+			serialports[i]->Write_LCR ((Bit8u)val);
 			return;
 		case MCR_OFFSET:
-			serialports[i]->Write_MCR (val);
+			serialports[i]->Write_MCR ((Bit8u)val);
 			return;
 		case MSR_OFFSET:
-			serialports[i]->Write_MSR (val);
+			serialports[i]->Write_MSR ((Bit8u)val);
 			return;
 		case SPR_OFFSET:
-			serialports[i]->Write_SPR (val);
+			serialports[i]->Write_SPR ((Bit8u)val);
 			return;
 		default:
-			serialports[i]->Write_reserved (val, port & 0x7);
+			serialports[i]->Write_reserved ((Bit8u)val, port & 0x7);
 	}
 }
 #if SERIAL_DEBUG
@@ -245,7 +246,7 @@ void CSerial::changeLineProperties() {
 static void Serial_EventHandler(Bitu val) {
 	Bitu serclassid=val&0x3;
 	if(serialports[serclassid]!=0)
-		serialports[serclassid]->handleEvent(val>>2);
+		serialports[serclassid]->handleEvent((Bit16u)(val>>2));
 }
 
 void CSerial::setEvent(Bit16u type, float duration) {
@@ -421,17 +422,17 @@ void CSerial::receiveByteEx (Bit8u data, Bit8u error) {
 			// error and FIFO inactive
 			rise (ERROR_PRIORITY);
 			LSR |= error;
-		};
+		}
         if(error&LSR_PARITY_ERROR_MASK) {
 			parityErrors++;
-		};
+		}
 		if(error&LSR_OVERRUN_ERROR_MASK) {
 			overrunErrors++;
 			if(!GETFLAG(IF)) overrunIF0++;
 #if SERIAL_DEBUG
 			log_ser(dbg_serialtraffic,"rx overrun (IF=%d)", GETFLAG(IF)>0);
 #endif
-		};
+		}
 		if(error&LSR_FRAMING_ERROR_MASK) {
 			framingErrors++;
 		}
@@ -499,7 +500,7 @@ void CSerial::ByteTransmitted () {
 void CSerial::Write_THR (Bit8u data) {
 	// 0-7 transmit data
 	
-	if ((LCR & LCR_DIVISOR_Enable_MASK)) {
+	if (LCR & LCR_DIVISOR_Enable_MASK) {
 		// write to DLL
 		baud_divider&=0xFF00;
 		baud_divider |= data;
@@ -508,7 +509,7 @@ void CSerial::Write_THR (Bit8u data) {
 		// write to THR
         clear (TX_PRIORITY);
 
-		if((LSR & LSR_TX_EMPTY_MASK))
+		if(LSR & LSR_TX_EMPTY_MASK)
 		{	// we were idle before
 			//LOG_MSG("starting new transmit cycle");
 			//if(sync_guardtime) LOG_MSG("Serial port internal error 1");
@@ -553,7 +554,7 @@ void CSerial::Write_THR (Bit8u data) {
 /*****************************************************************************/
 Bitu CSerial::Read_RHR () {
 	// 0-7 received data
-	if ((LCR & LCR_DIVISOR_Enable_MASK)) return baud_divider&0xff;
+	if (LCR & LCR_DIVISOR_Enable_MASK) return baud_divider&0xff;
 	else {
 		Bit8u data=rxfifo->getb();
 		if(FCR&FCR_ACTIVATE) {
@@ -595,7 +596,7 @@ Bitu CSerial::Read_IER () {
 }
 
 void CSerial::Write_IER (Bit8u data) {
-	if ((LCR & LCR_DIVISOR_Enable_MASK)) {	// write to DLM
+	if (LCR & LCR_DIVISOR_Enable_MASK) {	// write to DLM
 		baud_divider&=0xff;
 		baud_divider |= ((Bit16u)data)<<8;
 		changeLineProperties();
@@ -732,82 +733,86 @@ Bitu CSerial::Read_MCR () {
 
 void CSerial::Write_MCR (Bit8u data) {
 	// WARNING: At the time setRTSDTR is called rts and dsr members are still wrong.
-	if(data&FIFO_FLOWCONTROL) LOG_MSG("Warning: tried to activate hardware handshake.");
-	bool temp_dtr = data & MCR_DTR_MASK? true:false;
-	bool temp_rts = data & MCR_RTS_MASK? true:false;
-	bool temp_op1 = data & MCR_OP1_MASK? true:false;
-	bool temp_op2 = data & MCR_OP2_MASK? true:false;
-	bool temp_loopback = data & MCR_LOOPBACK_Enable_MASK? true:false;
-	if(loopback!=temp_loopback) {
-		if(temp_loopback) setRTSDTR(false,false);
-		else setRTSDTR(temp_rts,temp_dtr);
+	if (data&FIFO_FLOWCONTROL) LOG_MSG("Warning: tried to activate hardware handshake.");
+	bool new_dtr = (data & MCR_DTR_MASK)? true:false;
+	bool new_rts = (data & MCR_RTS_MASK)? true:false;
+	bool new_op1 = (data & MCR_OP1_MASK)? true:false;
+	bool new_op2 = (data & MCR_OP2_MASK)? true:false;
+	bool new_loopback = (data & MCR_LOOPBACK_Enable_MASK)? true:false;
+	if (loopback != new_loopback) {
+		if (new_loopback) setRTSDTR(false,false);
+		else setRTSDTR(new_rts,new_dtr);
 	}
 
-	if (temp_loopback) {	// is on:
+	if (new_loopback) {	// is on:
 		// DTR->DSR
 		// RTS->CTS
 		// OP1->RI
 		// OP2->CD
-		if(temp_dtr!=dtr && !d_dsr) {
-			d_dsr=true;
+		if (new_dtr != dtr && !d_dsr) {
+			d_dsr = true;
 			rise (MSR_PRIORITY);
 		}
-		if(temp_rts!=rts && !d_cts) {
-			d_cts=true;
+		if (new_dtr != dtr && !d_dsr) {
+			d_dsr = true;
 			rise (MSR_PRIORITY);
 		}
-		if(temp_op1!=op1 && !d_ri) {
+		if (new_op1 != op1 && !d_ri) {
 			// interrupt only at trailing edge
-			if(!temp_op1) {
-				d_ri=true;
+			if (!new_op1) {
+				d_ri = true;
 				rise (MSR_PRIORITY);
 			}
 		}
-		if(temp_op2!=op2 && !d_cd) {
-			d_cd=true;
+		if (new_op2 != op2 && !d_cd) {
+			d_cd = true;
 			rise (MSR_PRIORITY);
 		}
 	} else {
 		// loopback is off
-		if(temp_rts!=rts) {
+		if (new_rts != rts) {
 			// RTS difference
-			if(temp_dtr!=dtr) {
+			if (new_dtr != dtr) {
 				// both difference
 
 #if SERIAL_DEBUG
-				log_ser(dbg_modemcontrol,"RTS %x.",temp_rts);
-				log_ser(dbg_modemcontrol,"DTR %x.",temp_dtr);
+				log_ser(dbg_modemcontrol,"RTS %x.",new_rts);
+				log_ser(dbg_modemcontrol,"DTR %x.",new_dtr);
 #endif
-				setRTSDTR(temp_rts, temp_dtr);
+				setRTSDTR(new_rts, new_dtr);
 			} else {
 				// only RTS
 
 #if SERIAL_DEBUG
-				log_ser(dbg_modemcontrol,"RTS %x.",temp_rts);
+				log_ser(dbg_modemcontrol,"RTS %x.",new_rts);
 #endif
-				setRTS(temp_rts);
+				setRTS(new_rts);
 			}
-		} else if(temp_dtr!=dtr) {
+		} else if (new_dtr != dtr) {
 			// only DTR
 #if SERIAL_DEBUG
-				log_ser(dbg_modemcontrol,"%DTR %x.",temp_dtr);
+				log_ser(dbg_modemcontrol,"%DTR %x.",new_dtr);
 #endif
-			setDTR(temp_dtr);
+			setDTR(new_dtr);
 		}
 	}
-	// interrupt logic: if OP2 is 0, the IRQ line is tristated (pulled high)
-	if((!op2) && temp_op2) {
+	// interrupt logic: if new_OP2 is 0, the IRQ line is tristated (pulled high)
+	// which turns off the IRQ generation.
+	if ((!op2) && new_op2) {
 		// irq has been enabled (tristate high -> irq level)
-		if(!irq_active) PIC_DeActivateIRQ(irq);
-	} else if(op2 && (!temp_op2)) {
-		if(!irq_active) PIC_ActivateIRQ(irq); 
+		// Generate one if ComputeInterrupts has set irq_active to true
+		if (irq_active) PIC_ActivateIRQ(irq);
+	} else if (op2 && (!new_op2)) {
+		// irq has been disabled (irq level -> tristate) 
+		// Remove the IRQ signal if the irq was being generated before
+		if (irq_active) PIC_DeActivateIRQ(irq); 
 	}
 
-	dtr=temp_dtr;
-	rts=temp_rts;
-	op1=temp_op1;
-	op2=temp_op2;
-	loopback=temp_loopback;
+	dtr=new_dtr;
+	rts=new_rts;
+	op1=new_op1;
+	op2=new_op2;
+	loopback=new_loopback;
 }
 
 /*****************************************************************************/
@@ -1086,6 +1091,26 @@ void CSerial::Init_Registers () {
 CSerial::CSerial(Bitu id, CommandLine* cmd) {
 	idnumber=id;
 	Bit16u base = serial_baseaddr[id];
+    InstallationSuccessful = false;
+    bytetime = 0;
+    waiting_interrupts = 0;
+    baud_divider = 0;
+    IER = 0;
+    irq_active = false;
+    ISR = 0;
+    LCR = 0;
+    dtr = false;
+    rts = false;
+    op1 = false;
+    op2 = false;
+    loopback = false;
+    LSR = 0;
+    SPR = 0;
+    loopback_data = 0;
+    errors_in_fifo = 0;
+    rx_interrupt_threshold = 0;
+    FCR = 0;
+    sync_guardtime = false;
 
     d_cts=false;		// bit0: deltaCTS
     d_dsr=false;		// bit1: deltaDSR
@@ -1184,7 +1209,7 @@ void CSerial::unregisterDOSDevice() {
 
 CSerial::~CSerial(void) {
 	unregisterDOSDevice();
-	for(Bitu i = 0; i <= SERIAL_BASE_EVENT_COUNT; i++)
+	for(Bit8u i = 0; i <= SERIAL_BASE_EVENT_COUNT; i++)
 		removeEvent(i);
 
 	if (rxfifo != NULL) {
@@ -1215,7 +1240,7 @@ bool CSerial::Getchar(Bit8u* data, Bit8u* lsr, bool wait_dsr, Bitu timeout) {
 		}
 	}
 	// wait for a byte to arrive
-	while((!((*lsr=Read_LSR())&0x1))&&(starttime>PIC_FullIndex()-timeout))
+	while((!((*lsr=(Bit8u)Read_LSR())&0x1))&&(starttime>PIC_FullIndex()-timeout))
 		CALLBACK_Idle();
 	
 	if(!(starttime>PIC_FullIndex()-timeout)) {
@@ -1224,7 +1249,7 @@ bool CSerial::Getchar(Bit8u* data, Bit8u* lsr, bool wait_dsr, Bitu timeout) {
 #endif
 		return false;
 	}
-	*data=Read_RHR();
+	*data=(Bit8u)Read_RHR();
 
 #if SERIAL_DEBUG
 	log_ser(dbg_aux,"Getchar read 0x%x",*data);
@@ -1313,7 +1338,7 @@ public:
         if (IS_PC98_ARCH) return;
 
 		char s_property[] = "serialx"; 
-		for(Bitu i = 0; i < 4; i++) {
+		for(Bit8u i = 0; i < 4; i++) {
 			// get the configuration property
 			s_property[6] = '1' + i;
 			Prop_multival* p = section->Get_multival(s_property);
@@ -1326,6 +1351,9 @@ public:
 			}
 			else if (type=="log") {
 				serialports[i] = new CSerialLog (i, &cmd);
+			}
+			else if (type=="file") {
+				serialports[i] = new CSerialFile (i, &cmd);
 			}
 			else if (type=="serialmouse") {
 				serialports[i] = new CSerialMouse (i, &cmd);

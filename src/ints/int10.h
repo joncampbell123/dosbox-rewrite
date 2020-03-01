@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,14 +13,13 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
 #include "vga.h"
 
-/* TODO: Make this user-configurable */
-#define S3_LFB_BASE		0xE0000000u
+extern uint32_t S3_LFB_BASE;
 
 #define BIOSMEM_SEG		0x40u
 
@@ -101,6 +100,8 @@
 extern Bit8u int10_font_08[256 * 8];
 extern Bit8u int10_font_14[256 * 14];
 extern Bit8u int10_font_16[256 * 16];
+extern Bit8u int10_font_14_alternate[20 * 15 + 1];
+extern Bit8u int10_font_16_alternate[19 * 17 + 1];
 
 struct VideoModeBlock {
 	Bit16u	mode;
@@ -128,16 +129,20 @@ typedef struct {
 		RealPt font_16_alternate;
 		RealPt static_state;
 		RealPt video_save_pointers;
+        RealPt video_dynamic_save_area;
 		RealPt video_parameter_table;
 		RealPt video_save_pointer_table;
 		RealPt video_dcc_table;
 		RealPt oemstring;
 		RealPt vesa_modes;
+		RealPt wait_retrace;
+		RealPt set_window;
 		RealPt pmode_interface;
 		Bit16u pmode_interface_size;
 		Bit16u pmode_interface_start;
 		Bit16u pmode_interface_window;
 		Bit16u pmode_interface_palette;
+        Bit16u vesa_alloc_modes;
 		Bit16u used;
 	} rom;
 	Bit16u vesa_setmode;
@@ -151,6 +156,10 @@ typedef struct {
 #define _S3_PIXEL_DOUBLE		0x0008
 #define _REPEAT1			    0x0010  /* VGA doublescan (bit 0 of max scanline) */
 #define _CGA_SYNCDOUBLE			0x0020
+#define _HIGH_DEFINITION        0x0040
+#define _UNUSUAL_MODE           0x0080
+#define _USER_DISABLED          0x4000  /* disabled (cannot set mode) but still listed in modelist */
+#define _USER_MODIFIED          0x8000  /* user modified (through VESAMOED) */
 
 extern Int10Data int10;
 
@@ -168,6 +177,9 @@ static inline Bit8u CURSOR_POS_ROW(Bit8u page) {
         return real_readb(BIOSMEM_SEG,BIOSMEM_CURSOR_POS+page*2u+1u);
 }
 
+//! \brief Gets the state of INS/OVR mode.
+bool INT10_GetInsertState();
+
 bool INT10_SetVideoMode(Bit16u mode);
 
 void INT10_ScrollWindow(Bit8u rul,Bit8u cul,Bit8u rlr,Bit8u clr,Bit8s nlines,Bit8u attr,Bit8u page);
@@ -178,6 +190,8 @@ void INT10_DisplayCombinationCode(Bit16u * dcc,bool set);
 void INT10_GetFuncStateInformation(PhysPt save);
 
 void INT10_SetCursorShape(Bit8u first,Bit8u last);
+void INT10_GetScreenColumns(Bit16u* cols);
+void INT10_GetCursorPos(Bit8u *row, Bit8u *col, Bit8u page);
 void INT10_SetCursorPos(Bit8u row,Bit8u col,Bit8u page);
 void INT10_TeletypeOutput(Bit8u chr,Bit8u attr);
 void INT10_TeletypeOutputAttr(Bit8u chr,Bit8u attr,bool useattr);
@@ -190,7 +204,7 @@ void INT10_PutPixel(Bit16u x,Bit16u y,Bit8u page,Bit8u color);
 void INT10_GetPixel(Bit16u x,Bit16u y,Bit8u page,Bit8u * color);
 
 /* Font Stuff */
-void INT10_LoadFont(PhysPt font,bool reload,Bitu count,Bitu offset,Bitu map,Bitu height);
+void INT10_LoadFont(PhysPt font,bool reload,Bit16u count,Bitu offset,Bitu map,Bit8u height);
 void INT10_ReloadFont(void);
 
 /* Palette Group */
@@ -222,9 +236,9 @@ Bit8u VESA_GetSVGAMode(Bit16u & mode);
 Bit8u VESA_SetCPUWindow(Bit8u window,Bit8u address);
 Bit8u VESA_GetCPUWindow(Bit8u window,Bit16u & address);
 Bit8u VESA_ScanLineLength(Bit8u subcall, Bit16u val, Bit16u & bytes,Bit16u & pixels,Bit16u & lines);
-Bit8u VESA_SetDisplayStart(Bit16u x,Bit16u y);
+Bit8u VESA_SetDisplayStart(Bit16u x,Bit16u y,bool wait);
 Bit8u VESA_GetDisplayStart(Bit16u & x,Bit16u & y);
-Bit8u VESA_SetPalette(PhysPt data,Bitu index,Bitu count);
+Bit8u VESA_SetPalette(PhysPt data,Bitu index,Bitu count,bool wait);
 Bit8u VESA_GetPalette(PhysPt data,Bitu index,Bitu count);
 
 /* Sub Groups */
@@ -237,7 +251,7 @@ RealPt INT10_EGA_RIL_GetVersionPt(void);
 void INT10_EGA_RIL_ReadRegister(Bit8u & bl, Bit16u dx);
 void INT10_EGA_RIL_WriteRegister(Bit8u & bl, Bit8u bh, Bit16u dx);
 void INT10_EGA_RIL_ReadRegisterRange(Bit8u ch, Bit8u cl, Bit16u dx, PhysPt dst);
-void INT10_EGA_RIL_WriteRegisterRange(Bit8u ch, Bit8u cl, Bit16u dx, PhysPt dst);
+void INT10_EGA_RIL_WriteRegisterRange(Bit8u ch, Bit8u cl, Bit16u dx, PhysPt src);
 void INT10_EGA_RIL_ReadRegisterSet(Bit16u cx, PhysPt tbl);
 void INT10_EGA_RIL_WriteRegisterSet(Bit16u cx, PhysPt tbl);
 

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2013  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 #ifndef DOSBOX_PARPORT_H
@@ -89,10 +89,7 @@ public:
 	virtual void Write_CON(Bitu)=0;
 	virtual void Write_IOSEL(Bitu)=0;
 
-	void Write_reserved(Bit8u data, Bit8u address);
-
 	virtual bool Putchar(Bit8u)=0;
-	bool Putchar_default(Bit8u);
 	Bit8u getPrinterStatus();
 	void initialize();
 
@@ -100,7 +97,6 @@ public:
 };
 
 extern CParallel* parallelPortObjects[];
-void PARALLEL_Init (Section * sec);
 
 const Bit16u parallel_baseaddr[3] = {0x378,0x278,0x3bc};
 

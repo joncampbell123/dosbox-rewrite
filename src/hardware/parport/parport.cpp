@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2013  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 /* FIXME: At some point I would like to roll the Disney Sound Source emulation into this code */
 
@@ -86,7 +86,7 @@ device_LPT::~device_LPT() {
 static void Parallel_EventHandler(Bitu val) {
 	Bitu serclassid=val&0x3;
 	if(parallelPortObjects[serclassid]!=0)
-		parallelPortObjects[serclassid]->handleEvent(val>>2);
+		parallelPortObjects[serclassid]->handleEvent((Bit16u)(val>>2ul));
 }
 
 void CParallel::setEvent(Bit16u type, float duration) {
@@ -231,7 +231,7 @@ CParallel::CParallel(CommandLine* cmd, Bitu portnr, Bit8u initirq) {
 void CParallel::registerDOSDevice() {
 	if (mydosdevice == NULL) {
 		LOG(LOG_MISC,LOG_DEBUG)("LPT%d: Registering DOS device",(int)port_nr+1);
-		mydosdevice = new device_LPT(port_nr, this);
+		mydosdevice = new device_LPT((Bit8u)port_nr, this);
 		DOS_AddDevice(mydosdevice);
 	}
 }
@@ -257,7 +257,7 @@ Bit8u CParallel::getPrinterStatus()
 		3      I/O error
 		2-1    unused
 		0      timeout  */
-	Bit8u statusreg=Read_SR();
+	Bit8u statusreg=(Bit8u)Read_SR();
 
 	//LOG_MSG("get printer status: %x",statusreg);
 	statusreg^=0x48;
@@ -313,9 +313,9 @@ void BIOS_Post_register_parports() {
 
 	for (i=0;i < 3;i++) {
 		if (parallelPortObjects[i] != NULL)
-			BIOS_SetLPTPort(i,parallelPortObjects[i]->base);
-		else if (DISNEY_HasInit() && parallel_baseaddr[i] == DISNEY_BasePort())
-			BIOS_SetLPTPort(i,DISNEY_BasePort());
+			BIOS_SetLPTPort(i,(Bit16u)parallelPortObjects[i]->base);
+		else if (DISNEY_HasInit() && parallel_baseaddr[i] == (Bit16u)DISNEY_BasePort())
+			BIOS_SetLPTPort(i,(Bit16u)DISNEY_BasePort());
 	}
 }
 	
@@ -327,6 +327,11 @@ public:
         // TODO: PC-98 does have one parallel port, if at all
         if (IS_PC98_ARCH) return;
 
+#if C_PRINTER
+        // we can only have one printer redirection, hence the variable
+        bool printer_used = false;
+#endif
+
 		// default ports & interrupts
 		Bit8u defaultirq[] = { 7, 5, 12};
 		Section_prop *section = static_cast <Section_prop*>(configuration);
@@ -334,7 +339,7 @@ public:
 		char pname[]="parallelx";
 		// iterate through all 3 lpt ports
 		for (Bitu i = 0; i < 3; i++) {
-			pname[8] = '1' + i;
+			pname[8] = '1' + (char)i;
 			CommandLine cmd(0,section->Get_string(pname));
 
 			std::string str;
@@ -361,7 +366,26 @@ public:
 				}
 			}
 			else 
-			if(str=="disabled") {
+#if C_PRINTER
+            // allow printer redirection on a single port
+            if (str == "printer" && !printer_used)
+            {
+                CPrinterRedir* cprd = new CPrinterRedir(i, defaultirq[i], &cmd);
+                if (cprd->InstallationSuccessful)
+                {
+                    parallelPortObjects[i] = cprd;
+                    printer_used = true;
+                }
+                else
+                {
+                    LOG_MSG("Error: printer is not enabled.");
+                    delete cprd;
+                    parallelPortObjects[i] = 0;
+                }
+            }
+            else
+#endif				
+            if(str=="disabled") {
 				parallelPortObjects[i] = 0;
 			} else if (str == "disney") {
 				if (!DISNEY_HasInit()) {

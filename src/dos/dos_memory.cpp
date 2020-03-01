@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -21,7 +21,6 @@
 #include "mem.h"
 #include "bios.h"
 #include "dos_inc.h"
-#include "callback.h"
 
 // uncomment for alloc/free debug messages
 #define DEBUG_ALLOC
@@ -102,14 +101,7 @@ void DOS_FreeProcessMemory(Bit16u pspseg) {
 		if (mcb.GetPSPSeg()==pspseg) {
 			mcb.SetPSPSeg(MCB_FREE);
 		}
-		if (mcb.GetType()==0x5a) {
-			/* check if currently last block reaches up to the PCJr graphics memory */
-			if ((machine==MCH_PCJR) && (mcb_segment+mcb.GetSize()==0x17fe) &&
-			   (real_readb(0x17ff,0)==0x4d) && (real_readw(0x17ff,1)==8)) {
-				/* re-enable the memory past segment 0x2000 */
-				mcb.SetType(0x4d);
-			} else break;
-		}
+		if (mcb.GetType()==0x5a) break;
 		if (GCC_UNLIKELY(mcb.GetType()!=0x4d)) DOS_Mem_E_Exit("Corrupt MCB chain");
 		mcb_segment+=mcb.GetSize()+1;
 		mcb.SetPt(mcb_segment);
@@ -327,11 +319,12 @@ bool DOS_ResizeMemory(Bit16u segment,Bit16u * blocks) {
 
 	if (*blocks > total)
 		DOS_CompressMemory(segment-1);
+	else
+		DOS_CompressMemory();
 
 	if (*blocks<=total) {
 		if (GCC_UNLIKELY(*blocks==total)) {
 			/* Nothing to do */
-			DOS_CompressMemory();
 			return true;
 		}
 		/* Shrinking MCB */
@@ -367,7 +360,6 @@ bool DOS_ResizeMemory(Bit16u segment,Bit16u * blocks) {
 		mcb_next.SetPSPSeg(MCB_FREE);
 		mcb.SetType(0x4d);
 		mcb.SetPSPSeg(dos.psp());
-		DOS_CompressMemory();
 		return true;
 	}
 
@@ -380,7 +372,6 @@ bool DOS_ResizeMemory(Bit16u segment,Bit16u * blocks) {
 	}
 	mcb.SetSize(total);
 	mcb.SetPSPSeg(dos.psp());
-	DOS_CompressMemory();
 	if (*blocks==total) return true;	/* block fit exactly */
 
 	*blocks=total;	/* return maximum */
@@ -414,11 +405,14 @@ bool DOS_FreeMemory(Bit16u segment) {
 
 Bitu GetEMSPageFrameSegment(void);
 
-void DOS_BuildUMBChain(bool umb_active,bool ems_active) {
-	unsigned int seg_limit = MEM_TotalPages()*256;
+void DOS_BuildUMBChain(bool umb_active,bool /*ems_active*/) {
+	unsigned int seg_limit = (unsigned int)(MEM_TotalPages()*256);
 
 	/* UMBs are only possible if the machine has 1MB+64KB of RAM */
 	if (umb_active && (machine!=MCH_TANDY) && seg_limit >= (0x10000+0x1000-1) && first_umb_seg < GetEMSPageFrameSegment()) {
+        /* XMS emulation sets UMB size now.
+         * PCjr mode disables UMB emulation */
+#if 0
 		if (ems_active) {
 			/* we can use UMBs up to the EMS page frame */
 			/* FIXME: when we make the EMS page frame configurable this will need to be updated */
@@ -428,8 +422,9 @@ void DOS_BuildUMBChain(bool umb_active,bool ems_active) {
 			/* we can use UMBs up to where PCjr wants cartridge ROM */
 			first_umb_size = 0xE000 - first_umb_seg;
 		}
+#endif
 
-		dos_infoblock.SetStartOfUMBChain(UMB_START_SEG);
+		dos_infoblock.SetStartOfUMBChain((Bit16u)UMB_START_SEG);
 		dos_infoblock.SetUMBChainState(0);		// UMBs not linked yet
 
 		DOS_MCB umb_mcb(first_umb_seg);
@@ -509,87 +504,53 @@ bool DOS_LinkUMBsToMemChain(Bit16u linkstate) {
 }
 
 
-static Bitu DOS_default_handler(void) {
-	LOG(LOG_CPU,LOG_ERROR)("DOS rerouted Interrupt Called %X",lastint);
-	return CBRET_NONE;
-}
-
 #include <assert.h>
 
 extern Bit16u DOS_IHSEG;
 
-extern bool enable_dummy_environment_block;
-extern bool enable_dummy_loadfix_padding;
 extern bool enable_dummy_device_mcb;
-extern bool iret_only_for_debug_interrupts;
 
-static	CALLBACK_HandlerObject callbackhandler;
 void DOS_SetupMemory(void) {
 	unsigned int max_conv;
 	unsigned int seg_limit;
 
 	max_conv = (unsigned int)mem_readw(BIOS_MEMORY_SIZE) << (10u - 4u);
-	seg_limit = MEM_TotalPages()*256;
+	seg_limit = (unsigned int)(MEM_TotalPages()*256);
 	if (seg_limit > max_conv) seg_limit = max_conv;
 	UMB_START_SEG = max_conv - 1;
 
 	/* Let dos claim a few bios interrupts. Makes DOSBox more compatible with 
 	 * buggy games, which compare against the interrupt table. (probably a 
 	 * broken linked list implementation) */
-	callbackhandler.Allocate(&DOS_default_handler,"DOS default int");
 	Bit16u ihseg;
 	Bit16u ihofs;
 
 	assert(DOS_IHSEG != 0);
 	ihseg = DOS_IHSEG;
-	ihofs = 0x08;
+	ihofs = 0xF4;
 
-	real_writeb(ihseg,ihofs+0x00,(Bit8u)0xFE);	//GRP 4
-	real_writeb(ihseg,ihofs+0x01,(Bit8u)0x38);	//Extra Callback instruction
-	real_writew(ihseg,ihofs+0x02,callbackhandler.Get_callback());  //The immediate word
-	real_writeb(ihseg,ihofs+0x04,(Bit8u)0xCF);	//An IRET Instruction
-
-	if (iret_only_for_debug_interrupts) {
-		//point at IRET, not the callback. Hack for paranoid games & demos that check for debugger presence.
-		RealSetVec(0x01,RealMake(ihseg,ihofs+4));
-		RealSetVec(0x03,RealMake(ihseg,ihofs+4));
-	}
-	else {
-		RealSetVec(0x01,RealMake(ihseg,ihofs));		//BioMenace (offset!=4)
-		RealSetVec(0x03,RealMake(ihseg,ihofs));		//Alien Incident (offset!=0)
-	}
+	real_writeb(ihseg,ihofs,(Bit8u)0xCF);		//An IRET Instruction
+	RealSetVec(0x01,RealMake(ihseg,ihofs));		//BioMenace (offset!=4)
 	if (machine != MCH_PCJR) RealSetVec(0x02,RealMake(ihseg,ihofs)); //BioMenace (segment<0x8000). Else, taken by BIOS NMI interrupt
+	RealSetVec(0x03,RealMake(ihseg,ihofs));		//Alien Incident (offset!=0)
 	RealSetVec(0x04,RealMake(ihseg,ihofs));		//Shadow President (lower byte of segment!=0)
-//	RealSetVec(0x0f,RealMake(ihseg,ihofs));		//Always a tricky one (soundblaster irq)
+	RealSetVec(0x0f,RealMake(ihseg,ihofs));		//Always a tricky one (soundblaster irq)
 
 	Bit16u mcb_sizes=0;
 
 	if (enable_dummy_device_mcb) {
 		// Create a dummy device MCB with PSPSeg=0x0008
+        LOG_MSG("Dummy device MCB at segment 0x%x",DOS_MEM_START+mcb_sizes);
 		DOS_MCB mcb_devicedummy((Bit16u)DOS_MEM_START+mcb_sizes);
 		mcb_devicedummy.SetPSPSeg(MCB_DOS);	// Devices
-		mcb_devicedummy.SetSize(1);
+		mcb_devicedummy.SetSize(16);
 		mcb_devicedummy.SetType(0x4d);		// More blocks will follow
-		mcb_sizes+=1+1;
+		mcb_sizes+=1+16;
+
+// We DO need to mark this area as 'SD' but leaving it blank so far
+// confuses MEM.EXE (shows ???????) which suggests other software
+// might have a problem with it as well.
 //		mcb_devicedummy.SetFileName("SD      ");
-	}
-
-	if (enable_dummy_environment_block) {
-		// Create a small empty MCB (result from a growing environment block)
-		DOS_MCB tempmcb((Bit16u)DOS_MEM_START+mcb_sizes);
-		tempmcb.SetPSPSeg(MCB_FREE);
-		tempmcb.SetSize(4);
-		mcb_sizes+=4+1;
-		tempmcb.SetType(0x4d);
-	}
-
-	if (enable_dummy_loadfix_padding) {
-		// Lock the previous empty MCB
-		DOS_MCB tempmcb2((Bit16u)DOS_MEM_START+mcb_sizes);
-		tempmcb2.SetPSPSeg(0x40);	// can be removed by loadfix
-		tempmcb2.SetSize(16);
-		mcb_sizes+=16+1;
-		tempmcb2.SetType(0x4d);
 	}
 
 	DOS_MCB mcb((Bit16u)DOS_MEM_START+mcb_sizes);
@@ -605,6 +566,11 @@ void DOS_SetupMemory(void) {
 */		mcb.SetSize(/*0x9BFF*/(seg_limit-0x801) - DOS_MEM_START - mcb_sizes);
 	} else if (machine==MCH_PCJR) {
 		DOS_MCB mcb_devicedummy((Bit16u)0x2000);
+
+        /* FIXME: The PCjr can have built-in either 64KB or 128KB of RAM.
+         *        RAM beyond 128KB is made possible with expansion sidecars.
+         *        DOSBox-X needs to support memsizekb=64 or memsizekb=128,
+         *        and adjust video ram location appropriately. */
 
 		if (seg_limit < ((256*1024)/16))
 			E_Exit("PCjr requires at least 256K");
@@ -641,8 +607,3 @@ void DOS_SetupMemory(void) {
 	dos.firstMCB=DOS_MEM_START;
 	dos_infoblock.SetFirstMCB(DOS_MEM_START);
 }
-
-void DOS_UnsetupMemory() {
-    callbackhandler.Uninstall();
-}
-

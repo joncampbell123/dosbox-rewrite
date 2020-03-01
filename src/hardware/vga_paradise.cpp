@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -52,7 +52,7 @@ static void bank_setup_pvga1a() {
 		// TODO: Requirements are not compatible with vga_memory implementation.
 	} else {
 		// Single bank config is straightforward
-		vga.svga.bank_read = vga.svga.bank_write = pvga1a.PR0A;
+		vga.svga.bank_read = vga.svga.bank_write = (Bit8u)pvga1a.PR0A;
 		vga.svga.bank_size = 4*1024;
 		VGA_SetupHandlers();
 	}
@@ -158,19 +158,20 @@ void FinishSetMode_PVGA1A(Bitu /*crtc_base*/, VGA_ModeExtraData* modeData) {
 	IO_Write(0x3ce, 0x0e);
 	IO_Write(0x3cf, 0x00);
 	IO_Write(0x3ce, 0x0f);
-	IO_Write(0x3cf, oldlock);
+	IO_Write(0x3cf, (Bit8u)oldlock);
 
 	if (svga.determine_mode)
 		svga.determine_mode();
 
 	if(vga.mode != M_VGA) {
 		vga.config.compatible_chain4 = false;
-		vga.vmemwrap = vga.vmemsize;
+//		vga.vmemwrap = vga.mem.memsize;
 	} else {
 		vga.config.compatible_chain4 = true;
-		vga.vmemwrap = 256*1024;
+//		vga.vmemwrap = 256*1024;
 	}
 
+    // FIXME: What? Is this needed?
 	vga.config.compatible_chain4 = false;
 
 	VGA_SetupHandlers();
@@ -202,7 +203,7 @@ Bitu GetClock_PVGA1A() {
 }
 
 bool AcceptsMode_PVGA1A(Bitu mode) {
-	return VideoModeMemSize(mode) < vga.vmemsize;
+	return VideoModeMemSize(mode) < vga.mem.memsize;
 }
 
 void SVGA_Setup_ParadisePVGA1A(void) {
@@ -221,14 +222,14 @@ void SVGA_Setup_ParadisePVGA1A(void) {
 	VGA_SetClock(3,35900);
 
 	// Adjust memory, default to 512K
-	if (vga.vmemsize == 0)
-		vga.vmemsize = 512*1024;
+	if (vga.mem.memsize == 0)
+		vga.mem.memsize = 512*1024;
 
-	if (vga.vmemsize < 512*1024)	{
-		vga.vmemsize = 256*1024;
+	if (vga.mem.memsize < 512*1024)	{
+		vga.mem.memsize = 256*1024;
 		pvga1a.PR1 = 1<<6;
-	} else if (vga.vmemsize > 512*1024) {
-		vga.vmemsize = 1024*1024;
+	} else if (vga.mem.memsize > 512*1024) {
+		vga.mem.memsize = 1024*1024;
 		pvga1a.PR1 = 3<<6;
 	} else {
 		pvga1a.PR1 = 2<<6;

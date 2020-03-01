@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 /*
@@ -418,7 +418,7 @@ Bits Operator::TemplateVolume(  ) {
 		}
 		//In sustain phase, but not sustaining, do regular release
 	case RELEASE: 
-		vol += RateForward( releaseAdd );;
+		vol += RateForward( releaseAdd );
 		if ( GCC_UNLIKELY(vol >= ENV_MAX) ) {
 			volume = ENV_MAX;
 			SetState( OFF );
@@ -612,6 +612,15 @@ Operator::Operator() {
 	reg60 = 0;
 	reg80 = 0;
 	regE0 = 0;
+    waveBase = 0;
+    waveMask = 0;
+    waveStart = 0;
+    vibrato = 0;
+    attackAdd = 0;
+    decayAdd = 0;
+    rateIndex = 0;
+    tremoloMask = 0;
+    vibStrength = 0;
 	SetState( OFF );
 	rateZero = (1 << OFF);
 	sustainLevel = ENV_MAX;
@@ -716,18 +725,23 @@ void Channel::WriteB0( const Chip* chip, Bit8u val ) {
 	}
 }
 
-void Channel::WriteC0( const Chip* chip, Bit8u val ) {
+void Channel::WriteC0(const Chip* chip, Bit8u val) {
 	Bit8u change = val ^ regC0;
-	if ( !change )
+	if (!change)
 		return;
 	regC0 = val;
-	feedback = ( val >> 1 ) & 7;
-	if ( feedback ) {
+	feedback = (regC0 >> 1) & 7;
+	if (feedback) {
 		//We shift the input to the right 10 bit wave index value
 		feedback = 9 - feedback;
-	} else {
+	}
+	else {
 		feedback = 31;
 	}
+	UpdateSynth(chip);
+}
+
+void Channel::UpdateSynth( const Chip* chip ) {
 	//Select the new synth mode
 	if ( chip->opl3Active ) {
 		//4-op mode enabled for this channel
@@ -761,20 +775,20 @@ void Channel::WriteC0( const Chip* chip, Bit8u val ) {
 		} else if ((fourMask & 0x40) && ( chip->regBD & 0x20) ) {
 
 		//Regular dual op, am or fm
-		} else if ( val & 1 ) {
+		} else if (regC0 & 1 ) {
 			synthHandler = &Channel::BlockTemplate< sm3AM >;
 		} else {
 			synthHandler = &Channel::BlockTemplate< sm3FM >;
 		}
-		maskLeft = ( val & 0x10 ) ? -1 : 0;
-		maskRight = ( val & 0x20 ) ? -1 : 0;
+		maskLeft = (regC0 & 0x10 ) ? -1 : 0;
+		maskRight = (regC0 & 0x20 ) ? -1 : 0;
 	//opl2 active
 	} else { 
 		//Disable updating percussion channels
 		if ( (fourMask & 0x40) && ( chip->regBD & 0x20 ) ) {
 
 		//Regular dual op, am or fm
-		} else if ( val & 1 ) {
+		} else if (regC0 & 1 ) {
 			synthHandler = &Channel::BlockTemplate< sm2AM >;
 		} else {
 			synthHandler = &Channel::BlockTemplate< sm2FM >;
@@ -782,20 +796,14 @@ void Channel::WriteC0( const Chip* chip, Bit8u val ) {
 	}
 }
 
-void Channel::ResetC0( const Chip* chip ) {
-	Bit8u val = regC0;
-	regC0 ^= 0xff;
-	WriteC0( chip, val );
-}
-
 template< bool opl3Mode>
 /*INLINE*/ void Channel::GeneratePercussion( Chip* chip, Bit32s* output ) {
 	Channel* chan = this;
 
 	//BassDrum
-	Bit32s mod = (Bit32s)((Bit32u)((old[0] + old[1])) >> feedback);
+	Bit32s mod = (Bit32s)((Bit32u)(old[0] + old[1]) >> feedback);
 	old[0] = old[1];
-	old[1] = Op(0)->GetSample( mod ); 
+	old[1] = (Bit32s)Op(0)->GetSample( mod );
 
 	//When bassdrum is in AM mode first operator is ignoed
 	if ( chan->regC0 & 1 ) {
@@ -803,35 +811,35 @@ template< bool opl3Mode>
 	} else {
 		mod = old[0];
 	}
-	Bit32s sample = Op(1)->GetSample( mod ); 
+	Bit32s sample = (Bit32s)Op(1)->GetSample( mod );
 
 
 	//Precalculate stuff used by other outputs
 	Bit32u noiseBit = chip->ForwardNoise() & 0x1;
-	Bit32u c2 = Op(2)->ForwardWave();
-	Bit32u c5 = Op(5)->ForwardWave();
+	Bit32u c2 = (Bit32u)Op(2)->ForwardWave();
+	Bit32u c5 = (Bit32u)Op(5)->ForwardWave();
 	Bit32u phaseBit = (((c2 & 0x88) ^ ((c2<<5) & 0x80)) | ((c5 ^ (c5<<2)) & 0x20)) ? 0x02 : 0x00;
 
 	//Hi-Hat
-	Bit32u hhVol = Op(2)->ForwardVolume();
+	Bit32u hhVol = (Bit32u)Op(2)->ForwardVolume();
 	if ( !ENV_SILENT( hhVol ) ) {
 		Bit32u hhIndex = (phaseBit<<8) | (0x34 << ( phaseBit ^ (noiseBit << 1 )));
-		sample += Op(2)->GetWave( hhIndex, hhVol );
+		sample += (Bit32s)Op(2)->GetWave( hhIndex, hhVol );
 	}
 	//Snare Drum
-	Bit32u sdVol = Op(3)->ForwardVolume();
+	Bit32u sdVol = (Bit32u)Op(3)->ForwardVolume();
 	if ( !ENV_SILENT( sdVol ) ) {
 		Bit32u sdIndex = ( 0x100 + (c2 & 0x100) ) ^ ( noiseBit << 8 );
-		sample += Op(3)->GetWave( sdIndex, sdVol );
+		sample += (Bit32s)Op(3)->GetWave( sdIndex, sdVol );
 	}
 	//Tom-tom
-	sample += Op(4)->GetSample( 0 );
+	sample += (Bit32s)Op(4)->GetSample( 0 );
 
 	//Top-Cymbal
-	Bit32u tcVol = Op(5)->ForwardVolume();
+	Bit32u tcVol = (Bit32u)Op(5)->ForwardVolume();
 	if ( !ENV_SILENT( tcVol ) ) {
 		Bit32u tcIndex = (1 + phaseBit) << 8;
-		sample += Op(5)->GetWave( tcIndex, tcVol );
+		sample += (Bit32s)Op(5)->GetWave( tcIndex, tcVol );
 	}
 	sample <<= 1;
 	if ( opl3Mode ) {
@@ -910,31 +918,31 @@ Channel* Channel::BlockTemplate( Chip* chip, Bit32u samples, Bit32s* output ) {
 		//Do unsigned shift so we can shift out all bits but still stay in 10 bit range otherwise
 		Bit32s mod = (Bit32s)((Bit32u)((old[0] + old[1])) >> feedback);
 		old[0] = old[1];
-		old[1] = Op(0)->GetSample( mod );
+		old[1] = (Bit32s)Op(0)->GetSample( mod );
 		Bit32s sample;
 		Bit32s out0 = old[0];
 		if ( mode == sm2AM || mode == sm3AM ) {
-			sample = out0 + Op(1)->GetSample( 0 );
+			sample = (Bit32s)(out0 + Op(1)->GetSample( 0 ));
 		} else if ( mode == sm2FM || mode == sm3FM ) {
-			sample = Op(1)->GetSample( out0 );
+			sample = (Bit32s)Op(1)->GetSample( out0 );
 		} else if ( mode == sm3FMFM ) {
 			Bits next = Op(1)->GetSample( out0 ); 
 			next = Op(2)->GetSample( next );
-			sample = Op(3)->GetSample( next );
+			sample = (Bit32s)Op(3)->GetSample( next );
 		} else if ( mode == sm3AMFM ) {
 			sample = out0;
 			Bits next = Op(1)->GetSample( 0 ); 
 			next = Op(2)->GetSample( next );
-			sample += Op(3)->GetSample( next );
+			sample += (Bit32s)Op(3)->GetSample( next );
 		} else if ( mode == sm3FMAM ) {
-			sample = Op(1)->GetSample( out0 );
+			sample = (Bit32s)Op(1)->GetSample( out0 );
 			Bits next = Op(2)->GetSample( 0 );
-			sample += Op(3)->GetSample( next );
+			sample += (Bit32s)Op(3)->GetSample( next );
 		} else if ( mode == sm3AMAM ) {
 			sample = out0;
 			Bits next = Op(1)->GetSample( 0 ); 
-			sample += Op(2)->GetSample( next );
-			sample += Op(3)->GetSample( 0 );
+			sample += (Bit32s)Op(2)->GetSample( next );
+			sample += (Bit32s)Op(3)->GetSample( 0 );
 		}
 		switch( mode ) {
 		case sm2AM:
@@ -1075,7 +1083,8 @@ void Chip::WriteBD( Bit8u val ) {
 	//Toggle keyoffs when we turn off the percussion
 	} else if ( change & 0x20 ) {
 		//Trigger a reset to setup the original synth handler
-		chan[6].ResetC0( this );
+		//This makes it call
+		chan[6].UpdateSynth( this );
 		chan[6].op[0].KeyOff( 0x2 );
 		chan[6].op[1].KeyOff( 0x2 );
 		chan[7].op[0].KeyOff( 0x2 );
@@ -1100,6 +1109,13 @@ void Chip::WriteBD( Bit8u val ) {
 		regChan->_FUNC_( this, val );													\
 	}
 
+//Update the 0xc0 register for all channels to signal the switch to mono/stereo handlers
+void Chip::UpdateSynths() {
+	for (int i = 0; i < 18; i++) {
+		chan[i].UpdateSynth(this);
+	}
+}
+
 void Chip::WriteReg( Bit32u reg, Bit8u val ) {
 	Bitu index;
 	switch ( (reg & 0xf0) >> 4 ) {
@@ -1112,15 +1128,16 @@ void Chip::WriteReg( Bit32u reg, Bit8u val ) {
 				return;
 			//Always keep the highest bit enabled, for checking > 0x80
 			reg104 = 0x80 | ( val & 0x3f );
+			//Switch synths when changing the 4op combinations
+			UpdateSynths();
 		} else if ( reg == 0x105 ) {
 			//MAME says the real opl3 doesn't reset anything on opl3 disable/enable till the next write in another register
 			if ( !((opl3Active ^ val) & 1 ) )
 				return;
 			opl3Active = ( val & 1 ) ? 0xff : 0;
-			//Update the 0xc0 register for all channels to signal the switch to mono/stereo handlers
-			for ( int i = 0; i < 18;i++ ) {
-				chan[i].ResetC0( this );
-			}
+			//Just update the synths now that opl3 must have been enabled
+			//This isn't how the real card handles it but need to switch to stereo generating handlers
+			UpdateSynths();
 		} else if ( reg == 0x08 ) {
 			reg08 = val;
 		}
@@ -1179,11 +1196,11 @@ Bit32u Chip::WriteAddr( Bit32u port, Bit8u val ) {
 
 void Chip::GenerateBlock2( Bitu total, Bit32s* output ) {
 	while ( total > 0 ) {
-		Bit32u samples = ForwardLFO( total );
+		Bit32u samples = ForwardLFO( (Bit32u)total );
 		memset(output, 0, sizeof(Bit32s) * samples);
-		int count = 0;
+//		int count = 0;
 		for( Channel* ch = chan; ch < chan + 9; ) {
-			count++;
+//			count++;
 			ch = (ch->*(ch->synthHandler))( this, samples, output );
 		}
 		total -= samples;
@@ -1193,11 +1210,11 @@ void Chip::GenerateBlock2( Bitu total, Bit32s* output ) {
 
 void Chip::GenerateBlock3( Bitu total, Bit32s* output  ) {
 	while ( total > 0 ) {
-		Bit32u samples = ForwardLFO( total );
+		Bit32u samples = ForwardLFO( (Bit32u)total );
 		memset(output, 0, sizeof(Bit32s) * samples *2);
-		int count = 0;
+//		int count = 0;
 		for( Channel* ch = chan; ch < chan + 18; ) {
-			count++;
+//			count++;
 			ch = (ch->*(ch->synthHandler))( this, samples, output );
 		}
 		total -= samples;
@@ -1241,12 +1258,13 @@ void Chip::Setup( Bit32u rate ) {
 		EnvelopeSelect( i, index, shift );
 		linearRates[i] = (Bit32u)( scale * (EnvelopeIncreaseTable[ index ] << ( RATE_SH + ENV_EXTRA - shift - 3 )));
 	}
+//	Bit32s attackDiffs[62];
 	//Generate the best matching attack rate
 	for ( Bit8u i = 0; i < 62; i++ ) {
 		Bit8u index, shift;
 		EnvelopeSelect( i, index, shift );
 		//Original amount of samples the attack would take
-		Bit32s original = (Bit32s)((Bit32u)( (AttackSamplesTable[ index ] << shift) / scale));
+		Bit32s originalAmount = (Bit32s)((Bit32u)( (AttackSamplesTable[ index ] << shift) / scale));
 		 
 		Bit32s guessAdd = (Bit32s)((Bit32u)( scale * (EnvelopeIncreaseTable[ index ] << ( RATE_SH - shift - 3 ))));
 		Bit32s bestAdd = guessAdd;
@@ -1255,7 +1273,7 @@ void Chip::Setup( Bit32u rate ) {
 			Bit32s volume = ENV_MAX;
 			Bit32s samples = 0;
 			Bit32u count = 0;
-			while ( volume > 0 && samples < original * 2 ) {
+			while ( volume > 0 && samples < originalAmount * 2 ) {
 				count += (Bit32u)guessAdd;
 				Bit32s change = (Bit32s)(count >> RATE_SH);
 				count &= RATE_MASK;
@@ -1265,28 +1283,28 @@ void Chip::Setup( Bit32u rate ) {
 				samples++;
 
 			}
-			Bit32s diff = original - samples;
+			Bit32s diff = originalAmount - samples;
 			Bit32u lDiff = labs( diff );
 			//Init last on first pass
 			if ( lDiff < bestDiff ) {
 				bestDiff = lDiff;
 				bestAdd = guessAdd;
+				//We hit an exactly matching sample count
 				if ( !bestDiff )
 					break;
 			}
+			//Linear correction factor, not exactly perfect but seems to work
+			double correct = (originalAmount - diff) / (double)originalAmount;
+			guessAdd = (Bit32s)(guessAdd * correct);
 			//Below our target
 			if ( diff < 0 ) {
-				//Better than the last time
-				Bit32s mul = ((original - diff) << 12) / original;
-				guessAdd = ((guessAdd * mul) >> 12);
+				//Always add one here for rounding, an overshoot will get corrected by another pass decreasing
 				guessAdd++;
-			} else if ( diff > 0 ) {
-				Bit32s mul = ((original - diff) << 12) / original;
-				guessAdd = (guessAdd * mul) >> 12;
-				guessAdd--;
 			}
 		}
 		attackRates[i] = (Bit32u)bestAdd;
+		//Keep track of the diffs for some debugging
+//		attackDiffs[i] = bestDiff;
 	}
 	for ( Bit8u i = 62; i < 76; i++ ) {
 		//This should provide instant volume maximizing
@@ -1439,7 +1457,7 @@ void InitTables( void ) {
 		if ( i >= 16 )
 			index += 9;
 		Bitu blah = reinterpret_cast<Bitu>( &(chip->chan[ index ]) );
-		ChanOffsetTable[i] = blah;
+		ChanOffsetTable[i] = (Bit16u)blah;
 	}
 	//Same for operators
 	for ( Bitu i = 0; i < 64; i++ ) {
@@ -1454,7 +1472,7 @@ void InitTables( void ) {
 		Bitu opNum = ( i % 8 ) / 3;
 		DBOPL::Channel* chan = 0;
 		Bitu blah = reinterpret_cast<Bitu>( &(chan->op[opNum]) );
-		OpOffsetTable[i] = ChanOffsetTable[ chNum ] + blah;
+		OpOffsetTable[i] = (Bit16u)(ChanOffsetTable[ chNum ] + blah);
 	}
 #if 0
 	//Stupid checks if table's are correct
@@ -1508,7 +1526,7 @@ void Handler::Generate( MixerChannel* chan, Bitu samples ) {
 
 void Handler::Init( Bitu rate ) {
 	InitTables();
-	chip.Setup( rate );
+	chip.Setup( (Bit32u)rate );
 }
 }
 

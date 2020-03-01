@@ -14,7 +14,7 @@
 *
 *  You should have received a copy of the GNU General Public License
 *  along with this program; if not, write to the Free Software
-*  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+*  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
 */
 
 #include "dosbox.h"
@@ -113,7 +113,7 @@ imageDiskMemory::imageDiskMemory(Bit32u imgSizeK) : imageDisk(ID_MEMORY), total_
 }
 
 // Create a floppy image of a specified geometry
-imageDiskMemory::imageDiskMemory(diskGeo floppyGeometry) : imageDisk(ID_MEMORY), total_sectors(0), underlyingImage(NULL) {
+imageDiskMemory::imageDiskMemory(diskGeo& floppyGeometry) : imageDisk(ID_MEMORY), total_sectors(0), underlyingImage(NULL) {
 	init(floppyGeometry, false, 0);
 }
 
@@ -222,9 +222,8 @@ imageDiskMemory::~imageDiskMemory() {
 	//release the underlying image
 	if (this->underlyingImage) this->underlyingImage->Release();
 	//loop through each chunk and release it if it has been allocated
-	Bit8u* chunk;
 	for (Bit32u i = 0; i < total_chunks; i++) {
-		chunk = ChunkMap[i];
+		Bit8u* chunk = ChunkMap[i];
 		if (chunk) free(chunk);
 	}
 	//release the memory map

@@ -14,7 +14,7 @@
 *
 *  You should have received a copy of the GNU General Public License
 *  along with this program; if not, write to the Free Software
-*  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+*  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
 */
 
 #include "dosbox.h"
@@ -212,10 +212,7 @@ bool imageDiskVHD::convert_UTF16_for_fopen(std::string &string, const void* data
 	string.reserve((size_t)(string.size() + (dataLength / 2) + 10)); //allocate a few extra bytes
 	char* indata = (char*)data;
 	char* lastchar = indata + dataLength;
-	int utf32code = 0;
-#if defined (WIN32) || defined(OS2)
-	int iso8859_1code = 0;
-#else
+#if !defined (WIN32) && !defined(OS2)
 	char temp[10];
 	char* tempout;
 	char* tempout2;
@@ -223,12 +220,12 @@ bool imageDiskVHD::convert_UTF16_for_fopen(std::string &string, const void* data
 #endif
 	while (indata < lastchar) {
 		//decode the character
-		utf32code = utf16le_decode((const char**)&indata, lastchar);
+		int utf32code = utf16le_decode((const char**)&indata, lastchar);
 		if (utf32code < 0) return false;
 #if defined (WIN32) || defined(OS2)
 		//MSDN docs define fopen to accept strings in the windows default code page, which is typically Windows-1252
 		//convert unicode string to ISO-8859, which is a subset of Windows-1252, and a lot easier to implement
-		iso8859_1code = iso8859_1_encode(utf32code);
+		int iso8859_1code = iso8859_1_encode(utf32code);
 		if (iso8859_1code < 0) return false;
 		//and note that backslashes stay as backslashes on windows
 		string += (char)iso8859_1code;
@@ -331,7 +328,7 @@ Bit8u imageDiskVHD::Write_AbsoluteSector(Bit32u sectnum, const void * data) {
 		if (!copiedFooter) {
 			//write backup of footer at start of file (should already exist, but we never checked to be sure it is readable or matches the footer we used)
 			if (fseeko64(diskimg, (off_t)0, SEEK_SET)) return 0x05;
-			if (fwrite(originalFooter.cookie, sizeof(Bit8u), 512, diskimg) != 512) return 0x05;
+			if (fwrite(&originalFooter, sizeof(Bit8u), 512, diskimg) != 512) return 0x05;
 			copiedFooter = true;
 			//flush the data to disk after writing the backup footer
 			if (fflush(diskimg)) return 0x05;
@@ -342,7 +339,7 @@ Bit8u imageDiskVHD::Write_AbsoluteSector(Bit32u sectnum, const void * data) {
 		if (fseeko64(diskimg, (off_t)newFooterPosition + 512, SEEK_SET)) return 0x05;
 		//now write the footer
 		if (fseeko64(diskimg, (off_t)newFooterPosition, SEEK_SET)) return 0x05;
-		if (fwrite(originalFooter.cookie, sizeof(Bit8u), 512, diskimg) != 512) return 0x05;
+		if (fwrite(&originalFooter, sizeof(Bit8u), 512, diskimg) != 512) return 0x05;
 		//save the new block location and new footer position
 		Bit32u newBlockSectorNumber = (Bit32u)((footerPosition + 511ul) / 512ul);
 		footerPosition = newFooterPosition;

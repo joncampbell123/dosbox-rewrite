@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 	CASE_B(0x00)												/* ADD Eb,Gb */
@@ -230,7 +230,7 @@
 	CASE_W(0x60)												/* PUSHA */
 		if (CPU_ArchitectureType<CPU_ARCHTYPE_80186) goto illegal_opcode;
 		{
-			Bitu old_esp = reg_esp;
+			Bit32u old_esp = reg_esp;
 			try {
 				Bit16u old_sp = (CPU_ArchitectureType >= CPU_ARCHTYPE_286 ? reg_sp : (reg_sp-10));
 				Push_16(reg_ax);Push_16(reg_cx);Push_16(reg_dx);Push_16(reg_bx);
@@ -246,7 +246,7 @@
 	CASE_W(0x61)												/* POPA */
 		if (CPU_ArchitectureType<CPU_ARCHTYPE_80186) goto illegal_opcode;
 		{
-			Bitu old_esp = reg_esp;
+			Bit32u old_esp = reg_esp;
 			try {
 				reg_di=Pop_16();reg_si=Pop_16();reg_bp=Pop_16();Pop_16();//Don't save SP
 				reg_bx=Pop_16();reg_dx=Pop_16();reg_cx=Pop_16();reg_ax=Pop_16();
@@ -310,7 +310,7 @@
 		break;
 	CASE_W(0x6a)												/* PUSH Ib */
 		if (CPU_ArchitectureType<CPU_ARCHTYPE_80186) goto illegal_opcode;
-		Push_16((Bitu)Fetchbs());
+		Push_16((Bit16u)Fetchbs());
 		break;
 	CASE_W(0x6b)												/* IMUL Gw,Ew,Ib */
 		if (CPU_ArchitectureType<CPU_ARCHTYPE_80186) goto illegal_opcode;
@@ -1222,12 +1222,54 @@
 		SETFLAGBIT(CF,true);
 		break;
 	CASE_B(0xfa)												/* CLI */
-		if (CPU_CLI()) RUNEXCEPTION();
+do_cli:	if (CPU_CLI()) RUNEXCEPTION();
 		break;
 	CASE_B(0xfb)												/* STI */
 		if (CPU_STI()) RUNEXCEPTION();
 #if CPU_PIC_CHECK
-		if (GETFLAG(IF) && PIC_IRQCheck) goto decode_end;
+		if (GETFLAG(IF) && PIC_IRQCheck) {
+            // NTS: Do not immmediately break execution, but set the cycle count to a minimal
+            //      value so that if a CLI follows immediately the interrupt will be ignored.
+            //
+            //      It turns out on a 486 that STI+CLI (right next to each other) does not
+            //      trigger the CPU to process interrupts. Like this:
+            //
+            //      STI
+            //      CLI
+            //
+            //      The FM music driver for the PC-98 version of Peret em Heru appears to have
+            //      STI+CLI sequences for some reason in certain subroutines within the FM
+            //      music interrupt handler, which should not be trigger points to process
+            //      interrupts because the FM interrupt is non-reentrant and Peret is also
+            //      calling another entry point to the FM driver from IRQ 2 (vsync). If
+            //      IRQ 2 is processed while the FM interrupt is processing at the STI, the
+            //      stack switch will overwrite the first and the FM interrupt will return
+            //      by stale data and crash.
+            //
+            //      [https://github.com/joncampbell123/dosbox-x/issues/1162]
+            //
+            // NTS: The prior fix that set CPU_Cycles = 4 causes the normal core to get stuck
+            //      and never break out (hanging DOSBox-X) when running PC-98 game Night Slave,
+            //      so that isn't a long-term option.
+            {
+                Bit8u b = FetchPeekb();
+                if (b == 0xFAu) {
+                    /* if the next opcode is CLI, then do CLI right here before the normal core
+                     * has any chance to break and handle interrupts */
+                    FetchDiscardb(); // discard opcode we peeked, and then go execute it
+                    CPU_Cycles--; // we're executing another instruction, which should eat one CPU cycle
+                    goto do_cli;
+                }
+            }
+            // otherwise, break for interrupt handling as normal
+            if (CPU_Cycles > 2) {
+                CPU_CycleLeft += CPU_Cycles - 2;
+                CPU_Cycles = 2;
+            }
+            else {
+                goto decode_end;
+            }
+        }
 #endif
 		break;
 	CASE_B(0xfc)												/* CLD */

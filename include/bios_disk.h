@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,13 +13,14 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 #ifndef DOSBOX_BIOS_DISK_H
 #define DOSBOX_BIOS_DISK_H
 
 #include <stdio.h>
+#include <stdlib.h>
 #ifndef DOSBOX_MEM_H
 #include "mem.h"
 #endif
@@ -57,7 +58,8 @@ public:
         ID_VFD,
 		ID_MEMORY,
 		ID_VHD,
-        ID_D88
+        ID_D88,
+        ID_NFD
 	};
 
 	virtual Bit8u Read_Sector(Bit32u head,Bit32u cylinder,Bit32u sector,void * data,unsigned int req_sector_size=0);
@@ -149,6 +151,36 @@ public:
     std::vector<vfdentry> dents;
 };
 
+class imageDiskNFD : public imageDisk {
+public:
+	virtual Bit8u Read_Sector(Bit32u head,Bit32u cylinder,Bit32u sector,void * data,unsigned int req_sector_size=0);
+	virtual Bit8u Write_Sector(Bit32u head,Bit32u cylinder,Bit32u sector,const void * data,unsigned int req_sector_size=0);
+	virtual Bit8u Read_AbsoluteSector(Bit32u sectnum, void * data);
+	virtual Bit8u Write_AbsoluteSector(Bit32u sectnum, const void * data);
+
+	imageDiskNFD(FILE *imgFile, Bit8u *imgName, Bit32u imgSizeK, bool isHardDisk, unsigned int revision);
+	virtual ~imageDiskNFD();
+
+    struct vfdentry {
+        uint8_t         track,head,sector;
+        uint16_t        sector_size;
+
+        uint32_t        data_offset;
+        uint32_t        entry_offset; // offset of the 12-byte entry this came from (if nonzero)
+
+        vfdentry() : track(0), head(0), sector(0), sector_size(0), data_offset(0), entry_offset(0) {
+        }
+
+        uint16_t getSectorSize(void) const {
+            return sector_size;
+        }
+    };
+
+    vfdentry *findSector(Bit8u head,Bit8u track,Bit8u sector/*TODO: physical head?*/,unsigned int req_sector_size=0);
+
+    std::vector<vfdentry> dents;
+};
+
 class imageDiskVFD : public imageDisk {
 public:
 	virtual Bit8u Read_Sector(Bit32u head,Bit32u cylinder,Bit32u sector,void * data,unsigned int req_sector_size=0);
@@ -170,11 +202,11 @@ public:
         }
 
         bool hasSectorData(void) const {
-            return fillbyte == 0xFF;
+            return fillbyte == 0xFF && data_offset != 0xFFFFFFFFUL;
         }
 
         bool hasFill(void) const {
-            return fillbyte != 0xFF;
+            return fillbyte != 0xFF || data_offset == 0xFFFFFFFFUL;
         }
 
         uint16_t getSectorSize(void) const {
@@ -199,9 +231,9 @@ public:
 	// Create a hard drive image of a specified size; automatically select c/h/s
 	imageDiskMemory(Bit32u imgSizeK);
 	// Create a hard drive image of a specified geometry
-	imageDiskMemory(Bit16u cylinders, Bit16u heads, Bit16u sectors, Bit16u sectorSize);
+	imageDiskMemory(Bit16u cylinders, Bit16u heads, Bit16u sectors, Bit16u sector_size);
 	// Create a floppy image of a specified geometry
-	imageDiskMemory(diskGeo floppyGeometry);
+	imageDiskMemory(diskGeo& floppyGeometry);
 	// Create a copy-on-write memory image of an existing image
 	imageDiskMemory(imageDisk* underlyingImage);
 	virtual ~imageDiskMemory();
@@ -244,10 +276,10 @@ public:
 		VHD_TYPE_DYNAMIC = 3,
 		VHD_TYPE_DIFFERENCING = 4
 	};
-	VHDTypes vhdType;
+    VHDTypes vhdType = VHD_TYPE_NONE;
 	virtual Bit8u Read_AbsoluteSector(Bit32u sectnum, void * data);
 	virtual Bit8u Write_AbsoluteSector(Bit32u sectnum, const void * data);
-	static ErrorCodes Open(const char* fileName, const bool readOnly, imageDisk** imageDisk);
+	static ErrorCodes Open(const char* fileName, const bool readOnly, imageDisk** disk);
 	static VHDTypes GetVHDType(const char* fileName);
 	virtual ~imageDiskVHD();
 
@@ -306,25 +338,25 @@ private:
 		bool IsValid();
 	};
 
-	imageDiskVHD() : imageDisk(ID_VHD), parentDisk(NULL), copiedFooter(false), currentBlock(0xFFFFFFFF), currentBlockAllocated(false), currentBlockDirtyMap(NULL) { }
+	imageDiskVHD() : imageDisk(ID_VHD) { }
 	static ErrorCodes TryOpenParent(const char* childFileName, const ParentLocatorEntry &entry, Bit8u* data, const Bit32u dataLength, imageDisk** disk, const Bit8u* uniqueId);
-	static ErrorCodes Open(const char* fileName, const bool readOnly, imageDisk** imageDisk, const Bit8u* matchUniqueId);
+	static ErrorCodes Open(const char* fileName, const bool readOnly, imageDisk** disk, const Bit8u* matchUniqueId);
 	virtual bool loadBlock(const Bit32u blockNumber);
 	static bool convert_UTF16_for_fopen(std::string &string, const void* data, const Bit32u dataLength);
 
-	imageDisk* parentDisk;// = 0;
-	Bit64u footerPosition;
-	VHDFooter footer;
-	VHDFooter originalFooter;
-	bool copiedFooter;// = false;
-	DynamicHeader dynamicHeader;
-	Bit32u sectorsPerBlock;
-	Bit32u blockMapSectors;
-	Bit32u blockMapSize;
-	Bit32u currentBlock;// = 0xFFFFFFFF;
-	bool currentBlockAllocated;// = false;
-	Bit32u currentBlockSectorOffset;
-	Bit8u* currentBlockDirtyMap;// = 0;
+    imageDisk* parentDisk = NULL;
+	Bit64u footerPosition = 0;
+    VHDFooter footer = {};
+    VHDFooter originalFooter = {};
+    bool copiedFooter = false;
+    DynamicHeader dynamicHeader = {};
+	Bit32u sectorsPerBlock = 0;
+	Bit32u blockMapSectors = 0;
+	Bit32u blockMapSize = 0;
+	Bit32u currentBlock = 0xFFFFFFFF;
+    bool currentBlockAllocated = false;
+	Bit32u currentBlockSectorOffset = 0;
+	Bit8u* currentBlockDirtyMap = 0;
 };
 
 void updateDPT(void);
@@ -336,15 +368,15 @@ void incrementFDD(void);
 #define MAX_HDD_IMAGES 4
 #define MAX_DISK_IMAGES 6 //MAX_HDD_IMAGES + 2
 
+extern bool imageDiskChange[MAX_DISK_IMAGES];
 extern imageDisk *imageDiskList[MAX_DISK_IMAGES];
-extern imageDisk *diskSwap[20];
-extern Bits swapPosition;
+extern imageDisk *diskSwap[MAX_SWAPPABLE_DISKS];
+extern Bit32s swapPosition;
 extern Bit16u imgDTASeg; /* Real memory location of temporary DTA pointer for fat image disk access */
 extern RealPt imgDTAPtr; /* Real memory location of temporary DTA pointer for fat image disk access */
 extern DOS_DTA *imgDTA;
 
 void swapInDisks(void);
-void swapInNextDisk(void);
 bool getSwapRequest(void);
 imageDisk *GetINT13HardDrive(unsigned char drv);
 imageDisk *GetINT13FloppyDrive(unsigned char drv);

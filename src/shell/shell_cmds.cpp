@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -81,13 +81,13 @@ static SHELL_Cmd cmd_list[]={
 {	"ADDKEY",	1,			&DOS_Shell::CMD_ADDKEY,		"SHELL_CMD_ADDKEY_HELP"},
 {	"VOL",	0,			&DOS_Shell::CMD_VOL,		"SHELL_CMD_VOL_HELP"},
 {	"PROMPT",	0,			&DOS_Shell::CMD_PROMPT,		"SHELL_CMD_PROMPT_HELP"},
-{	"LABEL",	0,			&DOS_Shell::CMD_LABEL,		"SHELL_CMD_LABEL_HELP"},
 {	"MORE",	1,			&DOS_Shell::CMD_MORE,		"SHELL_CMD_MORE_HELP"},
 {	"FOR",	1,			&DOS_Shell::CMD_FOR,		"SHELL_CMD_FOR_HELP"},
 {	"INT2FDBG",	1,			&DOS_Shell::CMD_INT2FDBG,	"Hook INT 2Fh for debugging purposes"},
 {	"CTTY",		1,			&DOS_Shell::CMD_CTTY,		"Change TTY device"},
+{   "DX-CAPTURE",0,         &DOS_Shell::CMD_DXCAPTURE,  "Run program with video/audio capture.\n"},
 #if C_DEBUG
-{	"DEBUGBOX",	0,			&DOS_Shell::CMD_DEBUGBOX,	"Run program, break into debugger at entry point"},
+{	"DEBUGBOX",	0,			&DOS_Shell::CMD_DEBUGBOX,	"Run program, break into debugger at entry point.\n"},
 #endif
 {0,0,0,0}
 }; 
@@ -105,21 +105,21 @@ static void StripSpaces(char*&args,char also) {
 		args++;
 }
 
-static char* ExpandDot(char*args, char* buffer) {
+static char* ExpandDot(char*args, char* buffer , size_t bufsize) {
 	if(*args == '.') {
 		if(*(args+1) == 0){
-			strcpy(buffer,"*.*");
+			safe_strncpy(buffer, "*.*", bufsize);
 			return buffer;
 		}
 		if( (*(args+1) != '.') && (*(args+1) != '\\') ) {
 			buffer[0] = '*';
 			buffer[1] = 0;
-			strcat(buffer,args);
+			if (bufsize > 2) strncat(buffer,args,bufsize - 1 /*used buffer portion*/ - 1 /*trailing zero*/  );
 			return buffer;
 		} else
-			strcpy (buffer, args);
+			safe_strncpy (buffer, args, bufsize);
 	}
-	else strcpy(buffer,args);
+	else safe_strncpy(buffer,args, bufsize);
 	return buffer;
 }
 
@@ -135,10 +135,16 @@ bool DOS_Shell::CheckConfig(char* cmd_in,char*line) {
 	}
 	char newcom[1024]; newcom[0] = 0; strcpy(newcom,"z:\\config -set ");
 	strcat(newcom,test->GetName());	strcat(newcom," ");
-	strcat(newcom,cmd_in);strcat(newcom,line);
+	strcat(newcom,cmd_in);
+    if (line != NULL)
+        strcat(newcom, line);
+    else
+        E_Exit("'line' in CheckConfig is NULL");
 	DoCommand(newcom);
 	return true;
 }
+
+bool enable_config_as_shell_commands = false;
 
 void DOS_Shell::DoCommand(char * line) {
 /* First split the line into command and arguments */
@@ -177,7 +183,7 @@ void DOS_Shell::DoCommand(char * line) {
 	}
 /* This isn't an internal command execute it */
 	if(Execute(cmd_buffer,line)) return;
-	if(CheckConfig(cmd_buffer,line)) return;
+	if(enable_config_as_shell_commands && CheckConfig(cmd_buffer,line)) return;
 	WriteOut(MSG_Get("SHELL_EXECUTE_ILLEGAL_COMMAND"),cmd_buffer);
 }
 
@@ -404,7 +410,7 @@ continue_1:
 
 	char full[DOS_PATHLENGTH];
 	char buffer[CROSS_LEN];
-	args = ExpandDot(args,buffer);
+	args = ExpandDot(args,buffer, CROSS_LEN);
 	StripSpaces(args);
 	if (!DOS_Canonicalize(args,full)) { WriteOut(MSG_Get("SHELL_ILLEGAL_PATH"));return; }
 	bool res=DOS_FindFirst(args,0xffff & ~DOS_ATTR_VOLUME);
@@ -446,34 +452,38 @@ void DOS_Shell::CMD_HELP(char * args){
 void DOS_Shell::CMD_RENAME(char * args){
 	HELP("RENAME");
 	StripSpaces(args);
-	if(!*args) {SyntaxError();return;}
-	if((strchr(args,'*')!=NULL) || (strchr(args,'?')!=NULL) ) { WriteOut(MSG_Get("SHELL_CMD_NO_WILD"));return;}
+	if (!*args) {SyntaxError();return;}
+	if ((strchr(args,'*')!=NULL) || (strchr(args,'?')!=NULL) ) { WriteOut(MSG_Get("SHELL_CMD_NO_WILD"));return;}
 	char * arg1=StripWord(args);
+	StripSpaces(args);
+	if (!*args) {SyntaxError();return;}
 	char* slash = strrchr(arg1,'\\');
-	if(slash) { 
-		slash++;
+	if (slash) { 
 		/* If directory specified (crystal caves installer)
 		 * rename from c:\X : rename c:\abc.exe abc.shr. 
-		 * File must appear in C:\ */ 
+		 * File must appear in C:\ 
+		 * Ren X:\A\B C => ren X:\A\B X:\A\C */ 
 		
-		char dir_source[DOS_PATHLENGTH]={0};
+		char dir_source[DOS_PATHLENGTH + 4] = {0}; //not sure if drive portion is included in pathlength
 		//Copy first and then modify, makes GCC happy
-		strcpy(dir_source,arg1);
+		safe_strncpy(dir_source,arg1,DOS_PATHLENGTH + 4);
 		char* dummy = strrchr(dir_source,'\\');
-		*dummy=0;
-
-		if((strlen(dir_source) == 2) && (dir_source[1] == ':')) 
-			strcat(dir_source,"\\"); //X: add slash
-
-		char dir_current[DOS_PATHLENGTH + 1];
-		dir_current[0] = '\\'; //Absolute addressing so we can return properly
-		DOS_GetCurrentDir(0,dir_current + 1);
-		if(!DOS_ChangeDir(dir_source)) {
+		if (!dummy) { //Possible due to length
 			WriteOut(MSG_Get("SHELL_ILLEGAL_PATH"));
 			return;
 		}
-		DOS_Rename(slash,args);
-		DOS_ChangeDir(dir_current);
+		dummy++;
+		*dummy = 0;
+
+		//Maybe check args for directory, as I think that isn't allowed
+
+		//dir_source and target are introduced for when we support multiple files being renamed.
+		char target[DOS_PATHLENGTH+CROSS_LEN + 5] = {0};
+		strcpy(target,dir_source);
+		strncat(target,args,CROSS_LEN);
+
+		DOS_Rename(arg1,target);
+
 	} else {
 		DOS_Rename(arg1,args);
 	}
@@ -607,18 +617,18 @@ static void FormatNumber(Bit32u num,char * buf) {
 	num/=1000;
 	numg=num;
 	if (numg) {
-		sprintf(buf,"%d,%03d,%03d,%03d",numg,numm,numk,numb);
+		sprintf(buf,"%u,%03u,%03u,%03u",numg,numm,numk,numb);
 		return;
-	};
+	}
 	if (numm) {
-		sprintf(buf,"%d,%03d,%03d",numm,numk,numb);
+		sprintf(buf,"%u,%03u,%03u",numm,numk,numb);
 		return;
-	};
+	}
 	if (numk) {
-		sprintf(buf,"%d,%03d",numk,numb);
+		sprintf(buf,"%u,%03u",numk,numb);
 		return;
-	};
-	sprintf(buf,"%d",numb);
+	}
+	sprintf(buf,"%u",numb);
 }
 
 struct DtaResult {
@@ -716,7 +726,7 @@ void DOS_Shell::CMD_DIR(char * args) {
 			break;
 		}
 	}
-	args = ExpandDot(args,buffer);
+	args = ExpandDot(args,buffer,CROSS_LEN);
 
 	bool con_temp = false, null_temp = false;
 
@@ -800,7 +810,7 @@ void DOS_Shell::CMD_DIR(char * args) {
 		std::reverse(results.begin(), results.end());
 	}
 
-	for (std::vector<DtaResult>::iterator iter = results.begin(); iter != results.end(); iter++) {
+	for (std::vector<DtaResult>::iterator iter = results.begin(); iter != results.end(); ++iter) {
 
 		char * name = iter->name;
 		Bit32u size = iter->size;
@@ -882,29 +892,15 @@ void DOS_Shell::CMD_DIR(char * args) {
 struct copysource {
 	std::string filename;
 	bool concat;
-	copysource(std::string filein,bool concatin):
+	copysource(std::string& filein,bool concatin):
 		filename(filein),concat(concatin){ };
 	copysource():filename(""),concat(false){ };
 };
 
 
 void DOS_Shell::CMD_COPY(char * args) {
-	extern Bitu ZDRIVE_NUM;
-	const char root[4] = {(char)('A'+ZDRIVE_NUM),':','\\',0};
-	char cmd[20];
-	strcpy(cmd,root);
-	strcat(cmd,"COPY.EXE");
-	if (DOS_FindFirst(cmd,0xffff & ~DOS_ATTR_VOLUME)) {
-		StripSpaces(args);
-		while(ScanCMDBool(args,"T")) ; //Shouldn't this be A ?
-		ScanCMDBool(args,"Y");
-		ScanCMDBool(args,"-Y");
-		Execute(cmd,args);
-		return;
-	}
-
 	HELP("COPY");
-	static char defaulttarget[] = ".";
+	static std::string defaulttarget = ".";
 	StripSpaces(args);
 	/* Command uses dta so set it to our internal dta */
 	RealPt save_dta=dos.dta();
@@ -957,7 +953,8 @@ void DOS_Shell::CMD_COPY(char * args) {
 						strcat(source_x,"\\*.*");
 				}
 			}
-			sources.push_back(copysource(source_x,(plus)?true:false));
+            std::string source_xString = std::string(source_x);
+			sources.push_back(copysource(source_xString,(plus)?true:false));
 			source_p = plus;
 		} while(source_p && *source_p);
 	}
@@ -966,7 +963,7 @@ void DOS_Shell::CMD_COPY(char * args) {
 		WriteOut(MSG_Get("SHELL_MISSING_PARAMETER"));
 		dos.dta(save_dta);
 		return;
-	};
+	}
 
 	copysource target;
 	// If more then one object exists and last target is not part of a 
@@ -1015,13 +1012,16 @@ void DOS_Shell::CMD_COPY(char * args) {
 		if(temp && (temp == pathTarget || temp[-1] == '\\')) *temp = 0;//strip off *.* from target
 	
 		// add '\\' if target is a directory
+		bool target_is_file = true;
 		if (pathTarget[strlen(pathTarget)-1]!='\\') {
 			if (DOS_FindFirst(pathTarget,0xffff & ~DOS_ATTR_VOLUME)) {
 				dta.GetResult(name,size,date,time,attr);
-				if (attr & DOS_ATTR_DIRECTORY)	
+				if (attr & DOS_ATTR_DIRECTORY) {
 					strcat(pathTarget,"\\");
+					target_is_file = false;
+				}
 			}
-		};
+		} else target_is_file = false;
 
 		//Find first sourcefile
 		bool ret = DOS_FindFirst(const_cast<char*>(source.filename.c_str()),0xffff & ~DOS_ATTR_VOLUME);
@@ -1031,7 +1031,7 @@ void DOS_Shell::CMD_COPY(char * args) {
 			return;
 		}
 
-		Bit16u sourceHandle,targetHandle;
+		Bit16u sourceHandle,targetHandle = 0;
 		char nameTarget[DOS_PATHLENGTH];
 		char nameSource[DOS_PATHLENGTH];
 		
@@ -1079,14 +1079,21 @@ void DOS_Shell::CMD_COPY(char * args) {
 			}
 		}
 
+		bool second_file_of_current_source = false;
 		while (ret) {
 			dta.GetResult(name,size,date,time,attr);
 
 			if ((attr & DOS_ATTR_DIRECTORY)==0) {
+                Bit16u ftime,fdate;
+
 				strcpy(nameSource,pathSource);
 				strcat(nameSource,name);
 				// Open Source
 				if (DOS_OpenFile(nameSource,0,&sourceHandle)) {
+                    // record the file date/time
+                    bool ftdvalid = DOS_GetFileDate(sourceHandle, &ftime, &fdate);
+                    if (!ftdvalid) LOG_MSG("WARNING: COPY cannot obtain file date/time");
+
 					// Create Target or open it if in concat mode
 					strcpy(nameTarget,pathTarget);
 					
@@ -1101,9 +1108,18 @@ void DOS_Shell::CMD_COPY(char * args) {
 					}
 					
 					if (nameTarget[pathTargetLen-1]=='\\') strcat(nameTarget,name);
+
+					//Special variable to ensure that copy * a_file, where a_file is not a directory concats.
+					bool special = second_file_of_current_source && target_is_file;
+					second_file_of_current_source = true; 
+					if (special) oldsource.concat = true;
 					//Don't create a new file when in concat mode
 					if (oldsource.concat || DOS_CreateFile(nameTarget,0,&targetHandle)) {
 						Bit32u dummy=0;
+
+                        if (!DOS_SetFileDate(targetHandle, ftime, fdate))
+                            LOG_MSG("WARNING: COPY unable to apply date/time to dest");
+
 						//In concat mode. Open the target and seek to the eof
 						if (!oldsource.concat || (DOS_OpenFile(nameTarget,OPEN_READWRITE,&targetHandle) && 
 					        	                  DOS_SeekFile(targetHandle,&dummy,DOS_SEEK_END))) {
@@ -1118,7 +1134,7 @@ void DOS_Shell::CMD_COPY(char * args) {
 							failed |= DOS_CloseFile(sourceHandle);
 							failed |= DOS_CloseFile(targetHandle);
 							WriteOut(" %s\n",name);
-							if(!source.concat) count++; //Only count concat files once
+							if(!source.concat && !special) count++; //Only count concat files once
 						} else {
 							DOS_CloseFile(sourceHandle);
 							WriteOut(MSG_Get("SHELL_CMD_COPY_FAILURE"),const_cast<char*>(target.filename.c_str()));
@@ -1128,11 +1144,11 @@ void DOS_Shell::CMD_COPY(char * args) {
 						WriteOut(MSG_Get("SHELL_CMD_COPY_FAILURE"),const_cast<char*>(target.filename.c_str()));
 					}
 				} else WriteOut(MSG_Get("SHELL_CMD_COPY_FAILURE"),const_cast<char*>(source.filename.c_str()));
-			};
+			}
 			//On to the next file if the previous one wasn't a device
 			if ((attr&DOS_ATTR_DEVICE) == 0) ret = DOS_FindNext();
 			else ret = false;
-		};
+		}
 	}
 
 	WriteOut(MSG_Get("SHELL_CMD_COPY_SUCCESS"),count);
@@ -1277,7 +1293,7 @@ void DOS_Shell::CMD_GOTO(char * args) {
 	HELP("GOTO");
 	StripSpaces(args);
 	if (!bf) return;
-	if (*args &&(*args==':')) args++;
+	if (*args==':') args++;
 	//label ends at the first space
 	char* non_space = args;
 	while (*non_space) {
@@ -1450,7 +1466,7 @@ void DOS_Shell::CMD_DATE(char * args) {
 	const char* datestring = MSG_Get("SHELL_CMD_DATE_DAYS");
 	Bit32u length;
 	char day[6] = {0};
-	if(sscanf(datestring,"%u",&length) && (length<5) && (strlen(datestring)==(length*7+1))) {
+	if(sscanf(datestring,"%u",&length) && (length<5) && (strlen(datestring)==((size_t)length*7+1))) {
 		// date string appears valid
 		for(Bit32u i = 0; i < length; i++) day[i] = datestring[reg_al*length+1+i];
 	}
@@ -1540,10 +1556,8 @@ void DOS_Shell::CMD_SUBST (char * args) {
  * E.g. make basedir member dos_drive instead of localdrive
  */
 	HELP("SUBST");
-	localDrive* ldp=0;
-	char mountstring[DOS_PATHLENGTH+CROSS_LEN+20];
-	char temp_str[2] = { 0,0 };
 	try {
+		char mountstring[DOS_PATHLENGTH+CROSS_LEN+20];
 		strcpy(mountstring,"MOUNT ");
 		StripSpaces(args);
 		std::string arg;
@@ -1553,6 +1567,7 @@ void DOS_Shell::CMD_SUBST (char * args) {
   
 		command.FindCommand(1,arg);
 		if( (arg.size()>1) && arg[1] !=':')  throw(0);
+		char temp_str[2] = { 0,0 };
 		temp_str[0]=(char)toupper(args[0]);
 		command.FindCommand(2,arg);
 		if((arg=="/D") || (arg=="/d")) {
@@ -1569,6 +1584,7 @@ void DOS_Shell::CMD_SUBST (char * args) {
    		Bit8u drive;char fulldir[DOS_PATHLENGTH];
 		if (!DOS_MakeName(const_cast<char*>(arg.c_str()),fulldir,&drive)) throw 0;
 	
+		localDrive* ldp=0;
 		if( ( ldp=dynamic_cast<localDrive*>(Drives[drive])) == 0 ) throw 0;
 		char newname[CROSS_LEN];   
 		strcpy(newname, ldp->basedir);	   
@@ -1675,7 +1691,7 @@ void DOS_Shell::CMD_ATTRIB(char *args){
 
 void DOS_Shell::CMD_PROMPT(char *args){
 	HELP("PROMPT");
-	if(args && *args && strlen(args)) {
+	if(args && *args) {
 		args++;
 		SetEnv("PROMPT",args);
 	} else
@@ -1683,29 +1699,15 @@ void DOS_Shell::CMD_PROMPT(char *args){
 	return;
 }
 
-void DOS_Shell::CMD_LABEL(char *args){
-	HELP("LABEL");
-	Bit8u drive = DOS_GetDefaultDrive();
-	if(args && *args) {
-		std::string label;
-		args++;
-		label = args;
-		Drives[drive]->SetLabel(label.c_str(),false,true);
-		return;
-	}
-	WriteOut(MSG_Get("SHELL_CMD_LABEL_HELP")); WriteOut("\n");
-	WriteOut(MSG_Get("SHELL_CMD_LABEL_HELP_LONG"));
-	return;
-}
-
 void DOS_Shell::CMD_PATH(char *args){
 	HELP("PATH");
-	if(args && *args && strlen(args)){
+	if(args && *args){
 		char pathstring[DOS_PATHLENGTH+CROSS_LEN+20]={ 0 };
 		strcpy(pathstring,"set PATH=");
-		while(args && *args && (*args=='='|| *args==' ')) 
+		while(args && (*args=='='|| *args==' ')) 
 		     args++;
-		strcat(pathstring,args);
+        if (args)
+            strcat(pathstring,args);
 		this->ParseLine(pathstring);
 		return;
 	} else {
@@ -1724,15 +1726,24 @@ void DOS_Shell::CMD_VER(char *args) {
 		char* word = StripWord(args);
 		if(strcasecmp(word,"set")) return;
 		word = StripWord(args);
-		dos.version.major = (Bit8u)(atoi(word));
-		dos.version.minor = (Bit8u)(atoi(args));
-	} else WriteOut(MSG_Get("SHELL_CMD_VER_VER"),VERSION,dos.version.major,dos.version.minor);
+		if (!*args && !*word) { //Reset
+			dos.version.major = 5;
+			dos.version.minor = 0;
+		} else if (*args == 0 && *word && (strchr(word,'.') != 0)) { //Allow: ver set 5.1
+			const char * p = strchr(word,'.');
+			dos.version.major = (Bit8u)(atoi(word));
+			dos.version.minor = (Bit8u)(atoi(p+1));
+		} else { //Official syntax: ver set 5 2
+			dos.version.major = (Bit8u)(atoi(word));
+			dos.version.minor = (Bit8u)(atoi(args));
+		}
+	} else WriteOut(MSG_Get("SHELL_CMD_VER_VER"),VERSION,SDL_STRING,dos.version.major,dos.version.minor);
 }
 
 void DOS_Shell::CMD_VOL(char *args){
 	HELP("VOL");
 	Bit8u drive=DOS_GetDefaultDrive();
-	if(args && *args && strlen(args)){
+	if(args && *args){
 		args++;
 		Bit32u argLen = (Bit32u)strlen(args);
 		switch (args[argLen-1]) {
@@ -1764,14 +1775,14 @@ void DOS_Shell::CMD_VOL(char *args){
 	return;
 }
 
-void SetVal(const std::string secname, std::string preval, const std::string val);
+void SetVal(const std::string& secname, const std::string& preval, const std::string& val);
 static void delayed_press(Bitu key) { KEYBOARD_AddKey((KBD_KEYS)key,true); }
 static void delayed_release(Bitu key) { KEYBOARD_AddKey((KBD_KEYS)key,false); }
 static void delayed_sdlpress(Bitu core) {
 	if(core==1) SetVal("cpu","core","normal");
 	else if(core==2) SetVal("cpu","core","simple");
 	else if(core==3) SetVal("cpu","core","dynamic");
-	else if(core==3) SetVal("cpu","core","full");
+	else if(core==4) SetVal("cpu","core","full");
 }
 // ADDKEY patch was created by Moe
 void DOS_Shell::CMD_ADDKEY(char * args){
@@ -1781,18 +1792,18 @@ void DOS_Shell::CMD_ADDKEY(char * args){
 		WriteOut(MSG_Get("SHELL_SYNTAXERROR"));
 		return;
 	}
-	char * word;
-	int delay = 0, duration = 0, core=0;
+    pic_tickindex_t delay = 0;
+    int duration = 0, core = 0;
 
 	while (*args) {
-		word=StripWord(args);
+		char *word=StripWord(args);
 		KBD_KEYS scankey = (KBD_KEYS)0;
 		char *tail;
-		bool alt = false, control = false, shift = false;
+		bool alt = false, ctrl = false, shift = false;
 		while (word[1] == '-') {
 			switch (word[0]) {
 				case 'c':
-					control = true;
+					ctrl = true;
 					word += 2;
 					break;
 				case 's':
@@ -1861,7 +1872,7 @@ void DOS_Shell::CMD_ADDKEY(char * args){
 			core = 3;
 		} else if (!strcasecmp(word,"full")) {
 			core = 4;
-		} else if (word[0] == 'k' && word[1] == 'p' && word[2] & !word[3]) {
+		} else if (word[0] == 'k' && word[1] == 'p' && word[2] && !word[3]) {
 			word[0] = 151+word[2]-'0';
 			word[1] = 0;
 		} else if (word[0] == 'f' && word[1]) {
@@ -1920,7 +1931,7 @@ void DOS_Shell::CMD_ADDKEY(char * args){
 				if (delay == 0) KEYBOARD_AddKey(KBD_leftshift,true);
 				else PIC_AddEvent(&delayed_press,delay++,KBD_leftshift);
 			}
-			if (control) {
+			if (ctrl) {
 				if (delay == 0) KEYBOARD_AddKey(KBD_leftctrl,true);
 				else PIC_AddEvent(&delayed_press,delay++,KBD_leftctrl);
 			}
@@ -1937,7 +1948,7 @@ void DOS_Shell::CMD_ADDKEY(char * args){
 				if (delay+duration == 0) KEYBOARD_AddKey(KBD_leftalt,false);
 				else PIC_AddEvent(&delayed_release,delay+++duration,KBD_leftalt);
 			}
-			if (control) {
+			if (ctrl) {
 				if (delay+duration == 0) KEYBOARD_AddKey(KBD_leftctrl,false);
 				else PIC_AddEvent(&delayed_release,delay+++duration,KBD_leftctrl);
 			}
@@ -1980,6 +1991,96 @@ void DOS_Shell::CMD_DEBUGBOX(char * args) {
 
 void DOS_Shell::CMD_FOR(char *args){
     (void)args;//UNUSED
+}
+
+void CAPTURE_StartCapture(void);
+void CAPTURE_StopCapture(void);
+
+void CAPTURE_StartWave(void);
+void CAPTURE_StopWave(void);
+
+void CAPTURE_StartMTWave(void);
+void CAPTURE_StopMTWave(void);
+
+// Explanation: Start capture, run program, stop capture when program exits.
+//              Great for gameplay footage or demoscene capture.
+//
+//              The command name is chosen not to conform to the 8.3 pattern
+//              on purpose to avoid conflicts with any existing DOS applications.
+void DOS_Shell::CMD_DXCAPTURE(char * args) {
+    bool cap_video = false;
+    bool cap_audio = false;
+    bool cap_mtaudio = false;
+    unsigned long post_exit_delay_ms = 3000; /* 3 sec */
+
+    while (*args == ' ') args++;
+
+    if (ScanCMDBool(args,"V"))
+        cap_video = true;
+    if (ScanCMDBool(args,"-V"))
+        cap_video = false;
+
+    if (ScanCMDBool(args,"A"))
+        cap_audio = true;
+    if (ScanCMDBool(args,"-A"))
+        cap_audio = false;
+
+    if (ScanCMDBool(args,"M"))
+        cap_mtaudio = true;
+    if (ScanCMDBool(args,"-M"))
+        cap_mtaudio = false;
+
+    if (!cap_video && !cap_audio && !cap_mtaudio)
+        cap_video = true;
+
+    if (cap_video)
+        CAPTURE_StartCapture();
+    if (cap_audio)
+        CAPTURE_StartWave();
+    if (cap_mtaudio)
+        CAPTURE_StartMTWave();
+
+    DoCommand(args);
+
+    if (post_exit_delay_ms > 0) {
+        LOG_MSG("Pausing for post exit delay (%.3f seconds)",(double)post_exit_delay_ms / 1000);
+
+        Bit32u lasttick=GetTicks();
+        while ((GetTicks()-lasttick)<post_exit_delay_ms) {
+            CALLBACK_Idle();
+
+            if (machine == MCH_PC98) {
+                reg_eax = 0x0100;   // sense key
+                CALLBACK_RunRealInt(0x18);
+                SETFLAGBIT(ZF,reg_bh == 0);
+            }
+            else {
+                reg_eax = 0x0100;
+                CALLBACK_RunRealInt(0x16);
+            }
+
+            if (!GETFLAG(ZF)) {
+                if (machine == MCH_PC98) {
+                    reg_eax = 0x0000;   // read key
+                    CALLBACK_RunRealInt(0x18);
+                }
+                else {
+                    reg_eax = 0x0000;
+                    CALLBACK_RunRealInt(0x16);
+                }
+
+                if (reg_al == 32/*space*/ || reg_al == 27/*escape*/)
+                    break;
+            }
+        }
+    }
+
+    if (cap_video)
+        CAPTURE_StopCapture();
+    if (cap_audio)
+        CAPTURE_StopWave();
+    if (cap_mtaudio)
+        CAPTURE_StopMTWave();
 }
 
 void DOS_Shell::CMD_CTTY(char * args) {

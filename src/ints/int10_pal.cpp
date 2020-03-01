@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 #include "dosbox.h"
@@ -300,6 +300,16 @@ void INT10_GetDACPage(Bit8u* mode,Bit8u* page) {
 		*page&=0xc;
 		*page>>=2;
 	}
+
+    /* the operations carried out here blanked the display because of the index (0x10/0x14) without bit 5,
+     * write a dummy index with bit 5 to reenable the display. Bugfix for "Blue Force" MS-DOS game.
+     *
+     * Note that DOSBox SVN has the same bug without this fix, but appears to work because the AC blanking
+     * doesn't work (2019/12/08). */
+    IO_Write(VGAREG_ACTL_ADDRESS,0x10/*index*/ | 0x20/*display enable*/);
+    /* read both, to avoid having to read 0x3CC or BIOS data area regs */
+    IO_Read(0x3BA); /* reset flip flop */
+    IO_Read(0x3DA); /* reset flip flop */
 }
 
 void INT10_SetPelMask(Bit8u mask) {
@@ -317,6 +327,7 @@ void INT10_SetBackgroundBorder(Bit8u val) {
 	
 	switch (machine) {
 	case MCH_CGA:
+	case MCH_MCGA:
 		// only write the color select register
 		IO_Write(0x3d9,color_select);
 		break;
@@ -378,20 +389,20 @@ void INT10_SetColorSelect(Bit8u val) {
 	Bit8u temp=real_readb(BIOSMEM_SEG,BIOSMEM_CURRENT_PAL);
 	temp=(temp & 0xdf) | ((val & 1) ? 0x20 : 0x0);
 	real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_PAL,temp);
-	if (machine == MCH_CGA || machine == MCH_AMSTRAD || machine==MCH_TANDY)
+	if (machine == MCH_CGA || machine == MCH_MCGA || machine == MCH_AMSTRAD || machine==MCH_TANDY)
 		IO_Write(0x3d9,temp);
 	else if (machine == MCH_PCJR) {
 		IO_Read(VGAREG_TDY_RESET); // reset the flipflop
 		switch(vga.mode) {
 		case M_TANDY2:
 			IO_Write(VGAREG_TDY_ADDRESS, 0x11);
-			IO_Write(VGAREG_PCJR_DATA, val&1? 0xf:0);
+			IO_Write(VGAREG_PCJR_DATA, (val&1)? 0xf:0);
 			break;
 		case M_TANDY4:
 			for(Bit8u i = 0x11; i < 0x14; i++) {
 				const Bit8u t4_table[] = {0,2,4,6, 0,3,5,0xf};
 				IO_Write(VGAREG_TDY_ADDRESS, i);
-				IO_Write(VGAREG_PCJR_DATA, t4_table[(i-0x10)+(val&1? 4:0)]);
+				IO_Write(VGAREG_PCJR_DATA, t4_table[(i-0x10)+((val&1)? 4:0)]);
 			}
 			break;
 		default:
@@ -419,7 +430,7 @@ void INT10_SetColorSelect(Bit8u val) {
 void INT10_PerformGrayScaleSumming(Bit16u start_reg,Bit16u count) {
 	if (count>0x100) count=0x100;
 	for (Bitu ct=0; ct<count; ct++) {
-		IO_Write(VGAREG_DAC_READ_ADDRESS,start_reg+ct);
+		IO_Write(VGAREG_DAC_READ_ADDRESS,(Bit8u)(start_reg+ct));
 		Bit8u red=IO_Read(VGAREG_DAC_DATA);
 		Bit8u green=IO_Read(VGAREG_DAC_DATA);
 		Bit8u blue=IO_Read(VGAREG_DAC_DATA);
@@ -427,6 +438,6 @@ void INT10_PerformGrayScaleSumming(Bit16u start_reg,Bit16u count) {
 		/* calculate clamped intensity, taken from VGABIOS */
 		Bit32u i=(( 77u*red + 151u*green + 28u*blue ) + 0x80u) >> 8u;
 		Bit8u ic=(i>0x3f) ? 0x3f : ((Bit8u)(i & 0xff));
-		INT10_SetSingleDACRegister(start_reg+ct,ic,ic,ic);
+		INT10_SetSingleDACRegister((Bit8u)(start_reg+ct),ic,ic,ic);
 	}
 }

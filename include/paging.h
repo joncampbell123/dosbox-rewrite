@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -39,11 +39,11 @@ class PageDirectory;
 
 typedef PageHandler* (MEM_CalloutHandler)(MEM_CalloutObject &co,Bitu phys_page);
 
-void MEM_RegisterHandler(Bitu phys_page,PageHandler *handler,Bitu phys_range=1);
+void MEM_RegisterHandler(Bitu phys_page,PageHandler *handler,Bitu page_range=1);
 
-void MEM_FreeHandler(Bitu phys_page,Bitu phys_range=1);
+void MEM_FreeHandler(Bitu phys_page,Bitu page_range=1);
 
-void MEM_InvalidateCachedHandler(Bitu phys_page,Bitu phys_range=1);
+void MEM_InvalidateCachedHandler(Bitu phys_page,Bitu range=1);
 
 static const Bitu MEMMASK_ISA_20BIT = 0x000000FFU; /* ISA 20-bit decode (20 - 12 = 8) */
 static const Bitu MEMMASK_ISA_24BIT = 0x00000FFFU; /* ISA 24-bit decode (24 - 12 = 12) */
@@ -74,12 +74,12 @@ static inline Bitu MEMMASK_Combine(const Bitu a,const Bitu b) {
 #define TLB_BANKS		((1024*1024/TLB_SIZE)-1)
 #endif
 
-#define PFLAG_READABLE		0x1
-#define PFLAG_WRITEABLE		0x2
-#define PFLAG_HASROM		0x4
-#define PFLAG_HASCODE		0x8				//Page contains dynamic code
-#define PFLAG_NOCODE		0x10			//No dynamic code can be generated here
-#define PFLAG_INIT			0x20			//No dynamic code can be generated here
+#define PFLAG_READABLE		0x1u
+#define PFLAG_WRITEABLE		0x2u
+#define PFLAG_HASROM		0x4u
+#define PFLAG_HASCODE		0x8u			//Page contains dynamic code
+#define PFLAG_NOCODE		0x10u			//No dynamic code can be generated here
+#define PFLAG_INIT			0x20u			//No dynamic code can be generated here
 
 #define LINK_START	((1024+64)/4)			//Start right after the HMA
 
@@ -90,21 +90,33 @@ class PageHandler {
 public:
 	PageHandler(Bitu flg) : flags(flg) {}
 	virtual ~PageHandler(void) { }
-	virtual Bitu readb(PhysPt addr);
-	virtual Bitu readw(PhysPt addr);
-	virtual Bitu readd(PhysPt addr);
-	virtual void writeb(PhysPt addr,Bitu val);
-	virtual void writew(PhysPt addr,Bitu val);
-	virtual void writed(PhysPt addr,Bitu val);
+	virtual Bit8u readb(PhysPt addr);
+	virtual Bit16u readw(PhysPt addr);
+	virtual Bit32u readd(PhysPt addr);
+	virtual void writeb(PhysPt addr,Bit8u val);
+	virtual void writew(PhysPt addr,Bit16u val);
+	virtual void writed(PhysPt addr,Bit32u val);
 	virtual HostPt GetHostReadPt(Bitu phys_page);
 	virtual HostPt GetHostWritePt(Bitu phys_page);
 	virtual bool readb_checked(PhysPt addr,Bit8u * val);
 	virtual bool readw_checked(PhysPt addr,Bit16u * val);
 	virtual bool readd_checked(PhysPt addr,Bit32u * val);
-	virtual bool writeb_checked(PhysPt addr,Bitu val);
-	virtual bool writew_checked(PhysPt addr,Bitu val);
-	virtual bool writed_checked(PhysPt addr,Bitu val);
-   PageHandler (void) { }
+	virtual bool writeb_checked(PhysPt addr,Bit8u val);
+	virtual bool writew_checked(PhysPt addr,Bit16u val);
+	virtual bool writed_checked(PhysPt addr,Bit32u val);
+
+#if 0//ENABLE IF PORTING ADDITIONAL CODE WRITTEN AGAINST THE OLDER PAGE HANDLER readb/writeb PROTYPE.
+    // DEPRECATED. THIS IS HERE TO MAKE ANY DERIVED CLASS NOT YET UPDATED BLOW UP WITH A COMPILER ERROR.
+    // FIXME: DOES VISUAL STUDIO 2017 HAVE ANY PROBLEMS WITH THIS? CLANG/LLVM?
+	virtual void writeb(PhysPt addr,Bitu val) final = delete;
+	virtual void writew(PhysPt addr,Bitu val) final = delete;
+	virtual void writed(PhysPt addr,Bitu val) final = delete;
+	virtual void writeb_checked(PhysPt addr,Bitu val) final = delete;
+	virtual void writew_checked(PhysPt addr,Bitu val) final = delete;
+	virtual void writed_checked(PhysPt addr,Bitu val) final = delete;
+#endif
+
+    PageHandler(void) : flags(0) { }
 	Bitu flags; 
 	Bitu getFlags() const {
 		return flags;
@@ -115,7 +127,6 @@ public:
 
 private:
 	PageHandler(const PageHandler&);
-	PageHandler& operator=(const PageHandler&);
 
 };
 
@@ -206,11 +217,9 @@ void PAGING_UnlinkPages(Bitu lin_page,Bitu pages);
 /* This maps the page directly, only use when paging is disabled */
 void PAGING_MapPage(Bitu lin_page,Bitu phys_page);
 bool PAGING_MakePhysPage(Bitu & page);
-bool PAGING_ForcePageInit(Bitu lin_addr);
 
 void MEM_SetLFB(Bitu page, Bitu pages, PageHandler *handler, PageHandler *mmiohandler);
 void MEM_SetPageHandler(Bitu phys_page, Bitu pages, PageHandler * handler);
-void MEM_ResetPageHandler(Bitu phys_page, Bitu pages);
 
 
 #ifdef _MSC_VER
@@ -351,7 +360,7 @@ void PAGING_InitTLBBank(tlb_entry **bank);
 
 static INLINE tlb_entry *get_tlb_entry(const PhysPt address) {
 	const Bitu index=(address >> 12U);
-	if (TLB_BANKS && (index > TLB_SIZE)) {
+	if (TLB_BANKS && (index >= TLB_SIZE)) {
 		const Bitu bank=(address >> BANK_SHIFT) - 1U;
 		if (!paging.tlbh_banks[bank])
 			PAGING_InitTLBBank(&paging.tlbh_banks[bank]);
@@ -405,7 +414,7 @@ static INLINE Bit32u mem_readd_inline(const PhysPt address) {
 	if ((address & 0xfff)<0xffd) {
 		const HostPt tlb_addr=get_tlb_read(address);
 		if (tlb_addr) return host_readd(tlb_addr+address);
-		else return (get_tlb_readhandler(address))->readd(address);
+		else return (Bit32u)(get_tlb_readhandler(address))->readd(address);
 	} else return mem_unalignedreadd(address);
 }
 

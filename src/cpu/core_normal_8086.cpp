@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 #include <stdio.h>
@@ -78,9 +78,9 @@ static void SaveMw(Bitu off,Bitu val) {
 
 static inline Bit16u LoadMw(Bitu off) {
 	if (last_ea86_offset == 0xffff)
-		return (mem_readb_inline(off) | (mem_readb_inline(off-0xffff) << 8));
+		return (mem_readb_inline((PhysPt)off) | (mem_readb_inline((PhysPt)(off-0xffff)) << 8));
 
-	return mem_readw_inline(off);	
+	return mem_readw_inline((PhysPt)off);
 }
 
 #define LoadMd(off) mem_readd_inline(off)
@@ -89,11 +89,11 @@ static inline Bit16u LoadMw(Bitu off) {
 
 static void SaveMw(Bitu off,Bitu val) {
 	if (last_ea86_offset == 0xffff) {
-		mem_writeb_inline(off,val);
-		mem_writeb_inline(off-0xffff,val>>8);
+		mem_writeb_inline((PhysPt)off,(Bit8u)val);
+		mem_writeb_inline((PhysPt)(off-0xffff),(Bit8u)(val>>8));
 	}
 	else {
-		mem_writew_inline(off,val);
+		mem_writew_inline((PhysPt)off,(Bit16u)val);
 	}
 }
 
@@ -123,6 +123,7 @@ extern Bitu cycle_count;
 #define TEST_PREFIX_REP		(core.prefixes & PREFIX_REP)
 
 #define DO_PREFIX_SEG(_SEG)					\
+    if (GETFLAG(IF) && CPU_Cycles <= 0) goto prefix_out; \
 	BaseDS=SegBase(_SEG);					\
 	BaseSS=SegBase(_SEG);					\
 	core.base_val_ds=_SEG;					\
@@ -133,6 +134,7 @@ extern Bitu cycle_count;
 	abort();									
 
 #define DO_PREFIX_REP(_ZERO)				\
+    if (GETFLAG(IF) && CPU_Cycles <= 0) goto prefix_out; \
 	core.prefixes|=PREFIX_REP;				\
 	core.rep_zero=_ZERO;					\
 	goto restart_opcode;
@@ -156,9 +158,20 @@ static struct {
 #define SAVEIP		reg_eip=GETIP;
 #define LOADIP		core.cseip=((PhysPt)(SegBase(cs)+reg_eip));
 
+#define SAVEIP_PREFIX		reg_eip=GETIP-1;
+
 #define SegBase(c)	SegPhys(c)
 #define BaseDS		core.base_ds
 #define BaseSS		core.base_ss
+
+static INLINE void FetchDiscardb() {
+	core.cseip+=1;
+}
+
+static INLINE Bit8u FetchPeekb() {
+	Bit8u temp=LoadMb(core.cseip);
+	return temp;
+}
 
 static INLINE Bit8u Fetchb() {
 	Bit8u temp=LoadMb(core.cseip);
@@ -189,6 +202,9 @@ static INLINE Bit32u Fetchd() {
 #define EALookupTable (core.ea_table)
 
 Bits CPU_Core8086_Normal_Run(void) {
+    if (CPU_Cycles <= 0)
+	    return CBRET_NONE;
+
 	while (CPU_Cycles-->0) {
 		LOADIP;
 		core.prefixes=0;
@@ -203,7 +219,7 @@ Bits CPU_Core8086_Normal_Run(void) {
 		if (DEBUG_HeavyIsBreakpoint()) {
 			FillFlags();
 			return (Bits)debugCallback;
-		};
+		}
 #endif
 #endif
 		cycle_count++;
@@ -235,6 +251,13 @@ restart_opcode:
 		}
 		SAVEIP;
 	}
+	FillFlags();
+	return CBRET_NONE;
+/* 8086/286 multiple prefix interrupt bug emulation.
+ * If an instruction is interrupted, only the last prefix is restarted.
+ * See also [https://www.pcjs.org/pubs/pc/reference/intel/8086/] and [https://www.youtube.com/watch?v=6FC-tcwMBnU] */ 
+prefix_out:
+	SAVEIP_PREFIX;
 	FillFlags();
 	return CBRET_NONE;
 decode_end:

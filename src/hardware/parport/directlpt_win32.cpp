@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2013  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -53,15 +53,15 @@
 /* Wrapper functions for the function pointers
     - call these functions to perform I/O.
  */
-     short  Inp32 (short portaddr)
+     short Inp32(short portaddr)
      {
-          return (inp32fp)(portaddr);
+         return inp32fp(portaddr);
      }
 
-     void  Out32 (short portaddr, short datum)
+     void Out32(short portaddr, short datum)
      {
-          (oup32fp)(portaddr,datum);
-     } 
+         oup32fp(portaddr, datum);
+     }
 
 //********************************************************
 
@@ -85,6 +85,7 @@ CDirectLPT::CDirectLPT (Bitu nr, Bit8u initIrq, CommandLine* cmd)
 
      if (inp32fp == NULL) {
           LOG_MSG("GetProcAddress for Inp32 Failed.\n");
+          FreeLibrary(hLib);
           return ;
      }
 
@@ -93,6 +94,7 @@ CDirectLPT::CDirectLPT (Bitu nr, Bit8u initIrq, CommandLine* cmd)
 
      if (oup32fp == NULL) {
           LOG_MSG("GetProcAddress for Oup32 Failed.\n");
+          FreeLibrary(hLib);
           return ;
      }
 
@@ -107,12 +109,14 @@ CDirectLPT::CDirectLPT (Bitu nr, Bit8u initIrq, CommandLine* cmd)
 	if(cmd->FindStringBegin("realbase:",str,false)) {
 		if(sscanf(str.c_str(), "%x",&realbaseaddress)!=1) {
 			LOG_MSG("parallel%d: Invalid realbase parameter.",nr);
+            FreeLibrary(hLib);
 			return;
 		} 
 	}
 
 	if(realbaseaddress>=0x10000) {
 		LOG_MSG("Error: Invalid base address.");
+        FreeLibrary(hLib);
 		return;
 	}
 	/*
@@ -135,6 +139,7 @@ CDirectLPT::CDirectLPT (Bitu nr, Bit8u initIrq, CommandLine* cmd)
 		((realbaseaddress>=0x3f0)&&(realbaseaddress<=0x3f7)) ||	// floppy + prim. HDD
 		((realbaseaddress>=0x370)&&(realbaseaddress<=0x377))) {	// sek. hdd
 		LOG_MSG("Parallel Port: Invalid base address.");
+        FreeLibrary(hLib);
 		return;
 	}
 	/*	
@@ -148,6 +153,7 @@ CDirectLPT::CDirectLPT (Bitu nr, Bit8u initIrq, CommandLine* cmd)
 	if(cmd->FindStringBegin("ecpbase:",str,false)) {
 		if(sscanf(str.c_str(), "%x",&ecpbase)!=1) {
 			LOG_MSG("parallel%d: Invalid realbase parameter.",nr);
+            FreeLibrary(hLib);
 			return;
 		}
 		isECP=true;
@@ -204,6 +210,7 @@ CDirectLPT::CDirectLPT (Bitu nr, Bit8u initIrq, CommandLine* cmd)
 	{
 		LOG_MSG("No parallel port detected at 0x%x!",realbaseaddress);
 		// cannot remember 1
+        FreeLibrary(hLib);
 		return;
 	}
 	
@@ -223,6 +230,7 @@ CDirectLPT::CDirectLPT (Bitu nr, Bit8u initIrq, CommandLine* cmd)
 	{
 		LOG_MSG("No parallel port detected at 0x%x!",realbaseaddress);
 		// cannot remember 0
+        FreeLibrary(hLib);
 		return;
 	}
 	Out32(realbaseaddress+2,controlreg);

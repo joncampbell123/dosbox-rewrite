@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2013  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -76,13 +76,16 @@ public:
     bool CurrentArgvEnd(void);
     void EatCurrentArgv(void);
     void NextArgv(void);
+
+    const std::string &GetRawCmdline(void);
 private:
 	typedef std::list<std::string>::iterator cmd_it;
 	std::string opt_gnu_getopt_singlechar;		/* non-empty if we hit GNU options like -abcd => -a -b -c -d */
 	cmd_it opt_scan;
-	bool opt_eat_argv;
+	bool opt_eat_argv = false;
 	std::list<std::string> cmds;
 	std::string file_name;
+    std::string raw_cmdline;
 	enum opt_style opt_style;
 	bool FindEntry(char const * const name,cmd_it & it,bool neednext=false);
 };
@@ -109,7 +112,7 @@ public:
 	DOS_PSP * psp;                                      //! DOS kernel Program Segment Prefix associated with this program at runtime
 	virtual void Run(void)=0;                           //! Run() method, called when the program is run. Subclass must override this
 	bool GetEnvStr(const char * entry,std::string & result); //! Return an environment variable by name
-	bool GetEnvNum(Bitu num,std::string & result);      //! Return an environment variable by index
+	bool GetEnvNum(Bitu want_num,std::string & result);      //! Return an environment variable by index
 	Bitu GetEnvCount(void);                             //! Return the number of enviormental variables
 	bool SetEnv(const char * entry,const char * new_string); //! Set environment variable
 	void WriteOut(const char * format,...);				//! Write to standard output 
@@ -120,6 +123,6 @@ public:
 };
 
 typedef void (PROGRAMS_Main)(Program * * make);
-void PROGRAMS_MakeFile(char const * const name,PROGRAMS_Main * main);
+void PROGRAMS_MakeFile(char const * const name,PROGRAMS_Main * SDL_main);
 
 #endif

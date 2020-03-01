@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -73,7 +73,7 @@ class DOS_DTA;
 
 class DOS_File {
 public:
-	DOS_File():flags(0)		{ name=0; refCtr = 0; hdrive=0xff; newtime=false;};
+    DOS_File() :flags(0) { name = 0; attr = 0; date = 0; drive = 0; refCtr = 0; open = false; time = 0; hdrive = 0xff; newtime = false; };
 	DOS_File(const DOS_File& orig);
 	DOS_File & operator= (const DOS_File & orig);
 	virtual	~DOS_File(){if(name) delete [] name;};
@@ -94,6 +94,7 @@ public:
 	virtual Bit32u	GetSeekPos()	{ return 0xffffffff; }
 	void SetDrive(Bit8u drv) { hdrive=drv;}
 	Bit8u GetDrive(void) { return hdrive;}
+    virtual void    Flush(void) { }
 
 	char* name;
 	Bit8u drive;
@@ -136,6 +137,27 @@ private:
 	Bitu devnum;
 };
 
+class localFile : public DOS_File {
+public:
+	localFile(const char* _name, FILE * handle);
+	bool Read(Bit8u * data,Bit16u * size);
+	bool Write(const Bit8u * data,Bit16u * size);
+	bool Seek(Bit32u * pos,Bit32u type);
+	bool Close();
+#ifdef WIN32
+	bool LockFile(Bit8u mode, Bit32u pos, Bit16u size);
+#endif
+	Bit16u GetInformation(void);
+	bool UpdateDateTimeFromHost(void);   
+	void FlagReadOnlyMedium(void);
+	void Flush(void);
+	Bit32u GetSeekPos(void);
+private:
+	FILE * fhandle;
+	bool read_only_medium;
+	enum { NONE,READ,WRITE } last_action;
+};
+
 /* The following variable can be lowered to free up some memory.
  * The negative side effect: The stored searches will be turned over faster.
  * Should not have impact on systems with few directory entries. */
@@ -151,7 +173,7 @@ public:
 
 	enum TDirSort { NOSORT, ALPHABETICAL, DIRALPHABETICAL, ALPHABETICALREV, DIRALPHABETICALREV };
 
-	void		SetBaseDir			(const char* path, DOS_Drive *drive);
+	void		SetBaseDir			(const char* baseDir, DOS_Drive *drive);
 	void		SetDirSort			(TDirSort sort) { sortDirType = sort; };
 	bool		OpenDir				(const char* path, Bit16u& id);
 	bool		ReadDir				(Bit16u id, char* &result);
@@ -164,12 +186,12 @@ public:
 	bool		FindNext			(Bit16u id, char* &result);
 
 	void		CacheOut			(const char* path, bool ignoreLastDir = false);
-	void		AddEntry			(const char* path, bool checkExist = false);
+	void		AddEntry			(const char* path, bool checkExists = false);
 	void		DeleteEntry			(const char* path, bool ignoreLastDir = false);
 
 	void		EmptyCache			(void);
 	void		MediaChange			(void);
-	void		SetLabel			(const char* name,bool cdrom,bool allowupdate);
+	void		SetLabel			(const char* vname,bool cdrom,bool allowupdate);
 	char*		GetLabel			(void) { return label; };
 
 	class CFileInfo {
@@ -201,33 +223,33 @@ private:
 	void DeleteFileInfo(CFileInfo *dir);
 
 	bool		RemoveTrailingDot	(char* shortname);
-	Bits		GetLongName		(CFileInfo* info, char* shortname);
-	void		CreateShortName		(CFileInfo* dir, CFileInfo* info);
-	Bitu		CreateShortNameID	(CFileInfo* dir, const char* name);
+	Bits		GetLongName		(CFileInfo* curDir, char* shortName);
+	void		CreateShortName		(CFileInfo* curDir, CFileInfo* info);
+	Bitu		CreateShortNameID	(CFileInfo* curDir, const char* name);
 	int		CompareShortname	(const char* compareName, const char* shortName);
 	bool		SetResult		(CFileInfo* dir, char * &result, Bitu entryNr);
-	bool		IsCachedIn		(CFileInfo* dir);
+	bool		IsCachedIn		(CFileInfo* curDir);
 	CFileInfo*	FindDirInfo		(const char* path, char* expandedPath);
 	bool		RemoveSpaces		(char* str);
-	bool		OpenDir			(CFileInfo* dir, const char* path, Bit16u& id);
-	void		CreateEntry		(CFileInfo* dir, const char* name, bool query_directory);
+	bool		OpenDir			(CFileInfo* dir, const char* expand, Bit16u& id);
+	void		CreateEntry		(CFileInfo* dir, const char* name, bool is_directory);
 	void		CopyEntry		(CFileInfo* dir, CFileInfo* from);
 	Bit16u		GetFreeID		(CFileInfo* dir);
 	void		Clear			(void);
 
 	CFileInfo*	dirBase;
-	char		dirPath				[CROSS_LEN];
-	DOS_Drive*	drive;
-	char		basePath			[CROSS_LEN];
-	bool		dirFirstTime;
+	char		dirPath				[CROSS_LEN] = {};
+	DOS_Drive*	drive = NULL;
+	char		basePath			[CROSS_LEN] = {};
+	bool		dirFirstTime = false;
 	TDirSort	sortDirType;
 	CFileInfo*	save_dir;
-	char		save_path			[CROSS_LEN];
-	char		save_expanded		[CROSS_LEN];
+	char		save_path			[CROSS_LEN] = {};
+	char		save_expanded		[CROSS_LEN] = {};
 
 	Bit16u		srchNr;
 	CFileInfo*	dirSearch			[MAX_OPENDIRS];
-	char		dirSearchName		[MAX_OPENDIRS];
+	char		dirSearchName		[MAX_OPENDIRS] = {};
 	CFileInfo*	dirFindFirst		[MAX_OPENDIRS];
 	Bit16u		nextFreeFindFirst;
 
@@ -279,6 +301,13 @@ public:
 	virtual void MediaChange() {};
 	// disk cycling functionality (request resources)
 	virtual void Activate(void) {};
+	virtual void UpdateDPB(unsigned char dos_drive) { (void)dos_drive; };
+
+    // INT 25h/INT 26h
+    virtual Bit32u GetSectorCount(void) { return 0; }
+    virtual Bit32u GetSectorSize(void) { return 0; } // LOGICAL sector size (from the FAT driver) not PHYSICAL disk sector size
+	virtual Bit8u Read_AbsoluteSector_INT25(Bit32u sectnum, void * data) { (void)sectnum; (void)data; return 0x05; }
+	virtual Bit8u Write_AbsoluteSector_INT25(Bit32u sectnum, void * data) { (void)sectnum; (void)data; return 0x05; }
 };
 
 enum { OPEN_READ=0, OPEN_WRITE=1, OPEN_READWRITE=2, OPEN_READ_NO_MOD=4, DOS_NOT_INHERIT=128};

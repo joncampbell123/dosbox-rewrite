@@ -1,3 +1,20 @@
+/*
+ *  Copyright (C) 2018  Jon Campbell
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
+ */
 
 /* Shut up! */
 #define _CRT_NONSTDC_NO_DEPRECATE
@@ -19,7 +36,7 @@
 #endif
 
 /* FIXME: I made the mistake of putting critical calls in assert() calls, which under MSVC++ may evaluate to nothing in Release builds */
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined (__MINGW32__)
 # ifdef NDEBUG
 #  undef assert
 #  define assert(x) x
@@ -128,10 +145,8 @@ void avi_writer_free_stream(avi_writer_stream *s) {
 }
 
 void avi_writer_free_streams(avi_writer *w) {
-    int i;
-
     if (w->avi_stream) {
-        for (i=0;i < w->avi_stream_max;i++)
+        for (int i=0;i < w->avi_stream_max;i++)
             avi_writer_free_stream(&w->avi_stream[i]);
         free(w->avi_stream);
     }
@@ -642,11 +657,11 @@ int avi_writer_update_avi_and_stream_headers(avi_writer *w) {
                 s->header.dwLength = s->sample_index_max;
         }
         else if (s->header.fccType == avi_fccType_audio) {
-            unsigned int nss,nlength=0;
+            unsigned int nlength=0;
 
             if (s->format != NULL && s->format_len >= sizeof(windows_WAVEFORMAT)) {
-                windows_WAVEFORMAT *w = (windows_WAVEFORMAT*)(s->format);
-                nss = __le_u16(&w->nBlockAlign);
+                windows_WAVEFORMAT *wf = (windows_WAVEFORMAT*)(s->format);
+                unsigned int nss = __le_u16(&wf->nBlockAlign);
                 if (nss != 0) nlength = s->sample_write_offset / nss;
             }
             else {
@@ -688,7 +703,6 @@ int avi_writer_update_avi_and_stream_headers(avi_writer *w) {
  *      returned is never larger than about 2MB or so */
 uint64_t avi_writer_stream_alloc_superindex(avi_writer *w,avi_writer_stream *s) {
     riff_chunk chunk;
-    uint64_t ofs;
 
     if (w == NULL || s == NULL)
         return 0ULL;
@@ -732,7 +746,7 @@ uint64_t avi_writer_stream_alloc_superindex(avi_writer *w,avi_writer_stream *s) 
         if ((s->indx_entryofs + sizeof(riff_indx_AVISUPERINDEX_entry)) > s->indx.data_length)
             return 0ULL;
 
-        ofs = (uint64_t)s->indx.absolute_data_offset + (uint64_t)s->indx_entryofs;
+        uint64_t ofs = (uint64_t)s->indx.absolute_data_offset + (uint64_t)s->indx_entryofs;
         s->indx_entryofs += (unsigned int)sizeof(riff_indx_AVISUPERINDEX_entry);
         return ofs;
     }
@@ -794,7 +808,7 @@ int avi_writer_emit_opendml_indexes(avi_writer *w) {
             /* start an AVISUPERINDEX */
             out_chunks = 0;
             if ((superindex = avi_writer_stream_alloc_superindex(w,s)) == 0ULL) {
-                fprintf(stderr,"Cannot alloc superindex for %u\n",s->index);
+                fprintf(stderr,"Cannot alloc superindex for %d\n",s->index);
                 break;
             }
 

@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -56,7 +56,7 @@ using namespace std;
 
 
 //Public Constructor.
-	QCow2Image::QCow2Image(QCow2Image::QCow2Header qcow2Header, FILE *qcow2File, const char* imageName, Bit32u sectorSizeBytes) : file(qcow2File), header(qcow2Header), sector_size(sectorSizeBytes), backing_image(NULL)
+	QCow2Image::QCow2Image(QCow2Image::QCow2Header& qcow2Header, FILE *qcow2File, const char* imageName, Bit32u sectorSizeBytes) : file(qcow2File), header(qcow2Header), sector_size(sectorSizeBytes), backing_image(NULL)
 	{
 		cluster_mask = mask64(header.cluster_bits);
 		cluster_size = cluster_mask + 1;
@@ -70,7 +70,12 @@ using namespace std;
 			char* backing_file_name = new char[header.backing_file_size + 1];
 			backing_file_name[header.backing_file_size] = 0;
 			fseeko64(file, (off_t)header.backing_file_offset, SEEK_SET);
-			fread(backing_file_name, header.backing_file_size, 1, file);
+            size_t readResult = fread(backing_file_name, header.backing_file_size, 1, file);
+            if (readResult != 1) {
+                LOG(LOG_IO, LOG_ERROR) ("Reading error in QCow2Image constructor\n");
+                delete[] backing_file_name;
+                return;
+            }
 			if (backing_file_name[0] != 0x2F){
 				for (int image_name_index = (int)strlen(imageName); image_name_index > -1; image_name_index--){
 					if (imageName[image_name_index] == 0x2F){
@@ -206,47 +211,34 @@ using namespace std;
 
 //Helper functions for endianness. QCOW format is big endian so we need different functions than those defined in mem.h.
 #if defined(WORDS_BIGENDIAN) || !defined(C_UNALIGNED_MEMORY)
+    inline Bit16u QCow2Image::host_read16(Bit16u buffer) {
+        return buffer;
+    }
 
+    inline Bit32u QCow2Image::host_read32(Bit32u buffer) {
+        return buffer;
+    }
 
-	inline Bit16u QCow2Image::host_read16(Bit16u buffer) {
-		return buffer;
-	}
-
-
-	inline Bit32u QCow2Image::host_read32(Bit32u buffer) {
-		return buffer;
-	}
-
-
-	inline Bit64u QCow2Image::host_read64(Bit64u buffer) {
-		return buffer;
-	}
-
-
+    inline Bit64u QCow2Image::host_read64(Bit64u buffer) {
+        return buffer;
+    }
 #else
+    inline Bit16u QCow2Image::host_read16(Bit16u buffer) {
+        return (buffer >> 8) | (buffer << 8);
+    }
 
+    inline Bit32u QCow2Image::host_read32(Bit32u buffer) {
+        return (buffer >> 24) | (((buffer >> 16) & 0xff) << 8) |
+            (((buffer >> 8) & 0xff) << 16) | (buffer << 24);
+    }
 
-	inline Bit16u QCow2Image::host_read16(Bit16u buffer) {
-		Bit8u* b = (Bit8u*)&buffer;
-		return (unsigned int)b[1] | ((unsigned int)b[0] << 8u);
-	}
-
-
-	inline Bit32u QCow2Image::host_read32(Bit32u buffer) {
-		Bit8u* b = (Bit8u*)&buffer;
-		return (Bit32u)b[3] | ((Bit32u)b[2] << 8u) | ((Bit32u)b[1] << 16u) | ((Bit32u)b[0] << 24u);
-	}
-
-
-	inline Bit64u QCow2Image::host_read64(Bit64u buffer) {
-		Bit8u* b = (Bit8u*)&buffer;
-		return
-            (unsigned int)b[7] | ((unsigned int)b[6] << 8u) |
-            ((unsigned int)b[5] << 16u) | ((unsigned int)b[4] << 24u) |
-            ((Bit64u)b[3] << 32u) | ((Bit64u)b[2] << 40u) | ((Bit64u)b[1] << 48u) | ((Bit64u)b[0] << 56u);
-	}
-
-
+    inline Bit64u QCow2Image::host_read64(Bit64u buffer) {
+        return
+            (buffer >> 56) | (((buffer >> 48) & 0xff) << 8) |
+            (((buffer >> 40) & 0xff) << 16) | (((buffer >> 32) & 0xff) << 24) |
+            (((buffer >> 24) & 0xff) << 32) | (((buffer >> 16) & 0xff) << 40) |
+            (((buffer >> 8) & 0xff) << 48) | (buffer << 56);
+    }
 #endif
 
 
@@ -441,7 +433,7 @@ using namespace std;
 
 
 //Public Constructor.
-	QCow2Disk::QCow2Disk(QCow2Image::QCow2Header qcow2Header, FILE *qcow2File, Bit8u *imgName, Bit32u imgSizeK, Bit32u sectorSizeBytes, bool isHardDisk) : imageDisk(qcow2File, imgName, imgSizeK, isHardDisk), qcowImage(qcow2Header, qcow2File, (const char*) imgName, sectorSizeBytes){
+	QCow2Disk::QCow2Disk(QCow2Image::QCow2Header& qcow2Header, FILE *qcow2File, Bit8u *imgName, Bit32u imgSizeK, Bit32u sectorSizeBytes, bool isHardDisk) : imageDisk(qcow2File, imgName, imgSizeK, isHardDisk), qcowImage(qcow2Header, qcow2File, (const char*) imgName, sectorSizeBytes){
 	}
 
 

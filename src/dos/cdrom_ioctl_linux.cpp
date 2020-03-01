@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
  
 
@@ -65,9 +65,9 @@ bool CDROM_Interface_Ioctl::ReadSectors(PhysPt buffer, bool raw, unsigned long s
 	
 	if (raw) {
 		struct cdrom_read cdrom_read;
-		cdrom_read.cdread_lba = sector;
+		cdrom_read.cdread_lba = (int)sector;
 		cdrom_read.cdread_bufaddr = (char*)buf;
-		cdrom_read.cdread_buflen = buflen;
+		cdrom_read.cdread_buflen = (int)buflen;
 		
 		ret = ioctl(cdrom_fd, CDROMREADRAW, &cdrom_read);		
 	} else {

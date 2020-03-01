@@ -78,8 +78,29 @@ static NSString *getApplicationName(void)
 }
 @end
 
+static NSMenu*          sdl1_hax_dock_menu = NULL;
+
+void sdl1_hax_set_dock_menu(NSMenu *menu) {
+    if (sdl1_hax_dock_menu != menu) {
+        if (sdl1_hax_dock_menu != nil) {
+            [sdl1_hax_dock_menu release];
+        }
+
+        sdl1_hax_dock_menu = menu;
+
+        if (sdl1_hax_dock_menu != nil) {
+            [sdl1_hax_dock_menu retain];
+        }
+    }
+}
+
 /* The main class of the application, the application's delegate */
 @implementation SDLMain
+
+- (NSMenu *)applicationDockMenu:(NSApplication *)sender
+{
+    return sdl1_hax_dock_menu;
+}
 
 /* Set the working directory to the .app's parent directory */
 - (void) setupWorkingDirectory:(BOOL)shouldChdir
@@ -123,7 +144,7 @@ static NSString *getApplicationName(void)
 
 #else
 
-static void setApplicationMenu(void)
+static void setApplicationMenu(NSMenu *modme)
 {
     /* warning: this code is very odd */
     NSMenu *appleMenu;
@@ -157,7 +178,7 @@ static void setApplicationMenu(void)
     /* Put menu into the menubar */
     menuItem = [[NSMenuItem alloc] initWithTitle:@"" action:nil keyEquivalent:@""];
     [menuItem setSubmenu:appleMenu];
-    [[NSApp mainMenu] addItem:menuItem];
+    [modme addItem:menuItem];
 
     /* Tell the application object that this is now the application menu */
     [NSApp setAppleMenu:appleMenu];
@@ -165,6 +186,10 @@ static void setApplicationMenu(void)
     /* Finally give up our references to the objects */
     [appleMenu release];
     [menuItem release];
+}
+
+void sdl1_hax_stock_osx_menu_additem(NSMenu *modme) {
+    setApplicationMenu(modme);
 }
 
 /* Create a window menu */
@@ -200,6 +225,7 @@ void* sdl1_hax_stock_osx_menu(void) {
 	return stock_menu;
 }
 
+#if 0
 /* Replacement for NSApplicationMain */
 static void CustomApplicationMain (int argc, char **argv)
 {
@@ -222,7 +248,7 @@ static void CustomApplicationMain (int argc, char **argv)
 
     /* Set up the menubar */
     [NSApp setMainMenu:[[NSMenu alloc] init]];
-    setApplicationMenu();
+    setApplicationMenu([NSApp mainMenu]);
     setupWindowMenu();
 
     /* save a copy of our menu */
@@ -240,6 +266,7 @@ static void CustomApplicationMain (int argc, char **argv)
     [sdlMain release];
     [pool release];
 }
+#endif
 
 #endif
 
@@ -306,12 +333,14 @@ static void CustomApplicationMain (int argc, char **argv)
     [self fixMenu:[NSApp mainMenu] withAppName:getApplicationName()];
 #endif
 
+    [NSApp activateIgnoringOtherApps:YES];
+
     /* Hand off to main application code */
-    gCalledAppMainline = TRUE;
-    status = SDL_main (gArgc, gArgv);
+//    gCalledAppMainline = TRUE;
+//    status = SDL_main (gArgc, gArgv);
 
     /* We're done, thank you for playing */
-    exit(status);
+//    exit(status);
 }
 @end
 
@@ -365,6 +394,8 @@ static void CustomApplicationMain (int argc, char **argv)
 /* Main entry point to executable - should *not* be SDL_main! */
 int main (int argc, char **argv)
 {
+    return SDL_main(argc,argv);
+#if 0
     /* Copy the arguments into a global variable */
     /* This is passed if we are launched by double-clicking */
     if ( argc >= 2 && strncmp (argv[1], "-psn", 4) == 0 ) {
@@ -388,5 +419,56 @@ int main (int argc, char **argv)
     CustomApplicationMain (argc, argv);
 #endif
     return 0;
+#endif
+}
+
+static SDLMain *appDelegate = nil;
+
+void
+Cocoa_RegisterApp(void)
+{
+    /* This can get called more than once! Be careful what you initialize! */
+
+    if (NSApp == nil) {
+        [NSApplication sharedApplication];
+//        SDL_assert(NSApp != nil);
+
+//        s_bShouldHandleEventsInSDLApplication = SDL_TRUE;
+
+//        if (!SDL_GetHintBoolean(SDL_HINT_MAC_BACKGROUND_APP, SDL_FALSE)) {
+            [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
+//        }
+
+        if ([NSApp mainMenu] == nil) {
+            /* Set up the menubar */
+            [NSApp setMainMenu:[[NSMenu alloc] init]];
+            setApplicationMenu([NSApp mainMenu]);
+            setupWindowMenu();
+
+            /* save a copy of our menu */
+            stock_menu = [NSApp mainMenu];
+            [stock_menu retain];
+        }
+
+        [NSApp finishLaunching];
+        if ([NSApp delegate]) {
+            /* The SDL app delegate calls this in didFinishLaunching if it's
+             * attached to the NSApp, otherwise we need to call it manually.
+             */
+//            [NApplication registerUserDefaults];
+        }
+    }
+    if (NSApp && !appDelegate) {
+        appDelegate = [[SDLMain alloc] init];
+
+        /* If someone else has an app delegate, it means we can't turn a
+         * termination into SDL_Quit, and we can't handle application:openFile:
+         */
+        if (![NSApp delegate]) {
+            [(NSApplication *)NSApp setDelegate:appDelegate];
+        } else {
+//            appDelegate->seenFirstActivate = YES;
+        }
+    }
 }
 

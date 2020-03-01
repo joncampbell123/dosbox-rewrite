@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -22,6 +22,7 @@
 #include <string.h>
 #include <time.h>
 #include <errno.h>
+#include <limits.h>
 
 #include "dosbox.h"
 #include "dos_inc.h"
@@ -35,27 +36,6 @@
 #include <sys/utime.h>
 #include <sys/locking.h>
 #endif
-
-class localFile : public DOS_File {
-public:
-	localFile(const char* name, FILE * handle);
-	bool Read(Bit8u * data,Bit16u * size);
-	bool Write(const Bit8u * data,Bit16u * size);
-	bool Seek(Bit32u * pos,Bit32u type);
-	bool Close();
-#ifdef WIN32
-	bool LockFile(Bit8u mode, Bit32u pos, Bit16u size);
-#endif
-	Bit16u GetInformation(void);
-	bool UpdateDateTimeFromHost(void);   
-	void FlagReadOnlyMedium(void);
-	void Flush(void);
-	Bit32u GetSeekPos(void);
-private:
-	FILE * fhandle;
-	bool read_only_medium;
-	enum { NONE,READ,WRITE } last_action;
-};
 
 #include "cp437_uni.h"
 #include "cp932_uni.h"
@@ -98,10 +78,9 @@ static host_cnv_char_t cpcnv_temp[4096];
 bool String_ASCII_TO_HOST(host_cnv_char_t *d/*CROSS_LEN*/,const char *s/*CROSS_LEN*/) {
 	host_cnv_char_t *df = d + CROSS_LEN - 1;
 	const char *sf = s + CROSS_LEN - 1;
-    unsigned char ic;
 
     while (*s != 0 && s < sf) {
-        ic = (unsigned char)(*s++);
+        unsigned char ic = (unsigned char)(*s++);
         if (ic < 32 || ic > 127) return false; // non-representable
 
 #if defined(host_cnv_use_wchar)
@@ -121,13 +100,11 @@ bool String_ASCII_TO_HOST(host_cnv_char_t *d/*CROSS_LEN*/,const char *s/*CROSS_L
 template <class MT> bool String_SBCS_TO_HOST(host_cnv_char_t *d/*CROSS_LEN*/,const char *s/*CROSS_LEN*/,const MT *map,const size_t map_max) {
 	host_cnv_char_t *df = d + CROSS_LEN - 1;
 	const char *sf = s + CROSS_LEN - 1;
-    unsigned char ic;
-    MT wc;
 
     while (*s != 0 && s < sf) {
-        ic = (unsigned char)(*s++);
+        unsigned char ic = (unsigned char)(*s++);
         if (ic >= map_max) return false; // non-representable
-        wc = map[ic]; // output: unicode character
+        MT wc = map[ic]; // output: unicode character
 
 #if defined(host_cnv_use_wchar)
         *d++ = (host_cnv_char_t)wc;
@@ -146,24 +123,21 @@ template <class MT> bool String_SBCS_TO_HOST(host_cnv_char_t *d/*CROSS_LEN*/,con
 template <class MT> bool String_DBCS_TO_HOST_SHIFTJIS(host_cnv_char_t *d/*CROSS_LEN*/,const char *s/*CROSS_LEN*/,const MT *hitbl,const MT *rawtbl,const size_t rawtbl_max) {
 	host_cnv_char_t *df = d + CROSS_LEN - 1;
 	const char *sf = s + CROSS_LEN - 1;
-    uint16_t ic;
-    MT rawofs;
-    MT wc;
 
     while (*s != 0 && s < sf) {
-        ic = (unsigned char)(*s++);
+        uint16_t ic = (unsigned char)(*s++);
         if ((ic & 0xE0) == 0x80 || (ic & 0xE0) == 0xE0) {
             if (*s == 0) return false;
             ic <<= 8U;
             ic += (unsigned char)(*s++);
         }
 
-        rawofs = hitbl[ic >> 6];
+        MT rawofs = hitbl[ic >> 6];
         if (rawofs == 0xFFFF)
             return false;
 
-        assert((size_t)(rawofs+0x40) <= rawtbl_max);
-        wc = rawtbl[rawofs + (ic & 0x3F)];
+        assert((size_t)(rawofs+ (Bitu)0x40) <= rawtbl_max);
+        MT wc = rawtbl[rawofs + (ic & 0x3F)];
         if (wc == 0x0000)
             return false;
 
@@ -197,7 +171,7 @@ template <class MT> int DBCS_SHIFTJIS_From_Host_Find(int c,const MT *hitbl,const
         MT ofs = hitbl[h];
 
         if (ofs == 0xFFFF) continue;
-        assert((size_t)(ofs+0x40) <= rawtbl_max);
+        assert((size_t)(ofs+ (Bitu)0x40) <= rawtbl_max);
 
         for (size_t l=0;l < 0x40;l++) {
             if ((MT)c == rawtbl[ofs+l])
@@ -211,10 +185,9 @@ template <class MT> int DBCS_SHIFTJIS_From_Host_Find(int c,const MT *hitbl,const
 template <class MT> bool String_HOST_TO_DBCS_SHIFTJIS(char *d/*CROSS_LEN*/,const host_cnv_char_t *s/*CROSS_LEN*/,const MT *hitbl,const MT *rawtbl,const size_t rawtbl_max) {
     const host_cnv_char_t *sf = s + CROSS_LEN - 1;
     char *df = d + CROSS_LEN - 1;
-    int ic;
-    int oc;
 
     while (*s != 0 && s < sf) {
+        int ic;
 #if defined(host_cnv_use_wchar)
         ic = (int)(*s++);
 #else
@@ -222,7 +195,7 @@ template <class MT> bool String_HOST_TO_DBCS_SHIFTJIS(char *d/*CROSS_LEN*/,const
             return false; // non-representable
 #endif
 
-        oc = DBCS_SHIFTJIS_From_Host_Find<MT>(ic,hitbl,rawtbl,rawtbl_max);
+        int oc = DBCS_SHIFTJIS_From_Host_Find<MT>(ic,hitbl,rawtbl,rawtbl_max);
         if (oc < 0)
             return false; // non-representable
 
@@ -246,10 +219,9 @@ template <class MT> bool String_HOST_TO_DBCS_SHIFTJIS(char *d/*CROSS_LEN*/,const
 template <class MT> bool String_HOST_TO_SBCS(char *d/*CROSS_LEN*/,const host_cnv_char_t *s/*CROSS_LEN*/,const MT *map,const size_t map_max) {
     const host_cnv_char_t *sf = s + CROSS_LEN - 1;
     char *df = d + CROSS_LEN - 1;
-    int ic;
-    int oc;
 
     while (*s != 0 && s < sf) {
+        int ic;
 #if defined(host_cnv_use_wchar)
         ic = (int)(*s++);
 #else
@@ -257,7 +229,7 @@ template <class MT> bool String_HOST_TO_SBCS(char *d/*CROSS_LEN*/,const host_cnv
             return false; // non-representable
 #endif
 
-        oc = SBCS_From_Host_Find<MT>(ic,map,map_max);
+        int oc = SBCS_From_Host_Find<MT>(ic,map,map_max);
         if (oc < 0)
             return false; // non-representable
 
@@ -274,9 +246,9 @@ template <class MT> bool String_HOST_TO_SBCS(char *d/*CROSS_LEN*/,const host_cnv
 bool String_HOST_TO_ASCII(char *d/*CROSS_LEN*/,const host_cnv_char_t *s/*CROSS_LEN*/) {
     const host_cnv_char_t *sf = s + CROSS_LEN - 1;
     char *df = d + CROSS_LEN - 1;
-    int ic;
 
     while (*s != 0 && s < sf) {
+        int ic;
 #if defined(host_cnv_use_wchar)
         ic = (int)(*s++);
 #else
@@ -351,13 +323,38 @@ char *CodePageHostToGuest(const host_cnv_char_t *s) {
     return (char*)cpcnv_temp;
 }
 
-bool localDrive::FileCreate(DOS_File * * file,const char * name,Bit16u /*attributes*/) {
+bool localDrive::FileCreate(DOS_File * * file,const char * name,Bit16u attributes) {
     if (nocachedir) EmptyCache();
 
     if (readonly) {
 		DOS_SetError(DOSERR_WRITE_PROTECTED);
         return false;
     }
+
+    if (attributes & DOS_ATTR_VOLUME) {
+        // Real MS-DOS 6.22 and earlier behavior says that creating a volume label
+        // without first deleting the existing volume label does nothing but add
+        // yet another volume label entry to the root directory and the reported
+        // volume label does not change. MS-DOS 7.0 and later appear to have fixed
+        // this considering the re-use of bits [3:0] == 0xF to carry LFN entries.
+        //
+        // Emulate this behavior by setting the volume label ONLY IF there is no
+        // volume label. If the DOS application knows how to do it properly it will
+        // first issue an FCB delete with attr = DOS_ATTR_VOLUME and ????????.???
+        // OR (more common in MS-DOS 6.22 and later) an FCB delete with
+        // attr = DOS_ATTR_VOLUME and an explicit copy of the volume label obtained
+        // from FCB FindFirst.
+        //
+        // Volume label handling always affects the root directory.
+        //
+        // This function is called with file == NULL for volume labels.
+        if (*GetLabel() == 0)
+            SetLabel(name,false,true);
+
+        return true;
+    }
+
+    assert(file != NULL);
 
 //TODO Maybe care for attributes but not likely
 	char newname[CROSS_LEN];
@@ -511,7 +508,7 @@ FILE * localDrive::GetSystemFilePtr(char const * const name, char const * const 
     unsigned int tis;
 
     // "type" always has ANSI chars (like "rb"), nothing fancy
-    for (tis=0;type[tis] != 0 && tis < 7;tis++) wtype[tis] = (wchar_t)type[tis];
+    for (tis=0;tis < 7 && type[tis] != 0;tis++) wtype[tis] = (wchar_t)type[tis];
     assert(tis < 7); // guard
     wtype[tis] = 0;
 
@@ -540,9 +537,8 @@ bool localDrive::GetSystemFilename(char *sysName, char const * const dosName) {
     return false;
 #else
     strcpy(sysName,host_name);
+    return true;
 #endif
-
-	return true;
 }
 
 bool localDrive::FileUnlink(const char * name) {
@@ -616,8 +612,11 @@ bool localDrive::FindFirst(const char * _dir,DOS_DTA & dta,bool fcb_findfirst) {
 		EmptyCache(); //rescan floppie-content on each findfirst
 	}
     
-	char end[2]={CROSS_FILESPLIT,0};
-	if (tempDir[strlen(tempDir)-1]!=CROSS_FILESPLIT) strcat(tempDir,end);
+	
+	if (tempDir[strlen(tempDir)-1]!=CROSS_FILESPLIT) {
+		char end[2]={CROSS_FILESPLIT,0};
+		strcat(tempDir,end);
+	}
 	
 	Bit16u id;
 	if (!dirCache.FindFirst(tempDir,id)) {
@@ -845,7 +844,7 @@ bool localDrive::TestDir(const char * dir) {
 		ht_stat_t test;
 		if (ht_stat(host_name,&test))		return false;
 		if ((test.st_mode & S_IFDIR)==0)	return false;
-	};
+	}
 	int temp=ht_access(host_name,F_OK);
 	return (temp==0);
 }
@@ -958,8 +957,6 @@ bool localDrive::FileStat(const char* name, FileStat_Block * const stat_block) {
 	if((time=localtime(&temp_stat.st_mtime))!=0) {
 		stat_block->time=DOS_PackTime((Bit16u)time->tm_hour,(Bit16u)time->tm_min,(Bit16u)time->tm_sec);
 		stat_block->date=DOS_PackDate((Bit16u)(time->tm_year+1900),(Bit16u)(time->tm_mon+1),(Bit16u)time->tm_mday);
-	} else {
-
 	}
 	stat_block->size=(Bit32u)temp_stat.st_size;
 	return true;
@@ -1076,7 +1073,8 @@ bool localFile::Read(Bit8u * data,Bit16u * size) {
 }
 
 bool localFile::Write(const Bit8u * data,Bit16u * size) {
-	if ((this->flags & 0xf) == OPEN_READ) {	// check if file opened in read-only mode
+	Bit32u lastflags = this->flags & 0xf;
+	if (lastflags == OPEN_READ || lastflags == OPEN_READ_NO_MOD) {	// check if file opened in read-only mode
 		DOS_SetError(DOSERR_ACCESS_DENIED);
 		return false;
 	}
@@ -1150,7 +1148,7 @@ bool localFile::Seek(Bit32u * pos,Bit32u type) {
 		// Out of file range, pretend everythings ok 
 		// and move file pointer top end of file... ?! (Black Thorne)
 		fseek(fhandle,0,SEEK_END);
-	};
+	}
 #if 0
 	fpos_t temppos;
 	fgetpos(fhandle,&temppos);
@@ -1163,14 +1161,11 @@ bool localFile::Seek(Bit32u * pos,Bit32u type) {
 }
 
 bool localFile::Close() {
-	// only close if one reference left
-	if (refCtr==1) {
-		if(fhandle) fclose(fhandle); 
-		fhandle = 0;
-		open = false;
-	};
+	if (newtime && fhandle) {
+        // force STDIO to flush buffers on this file handle, or else fclose() will write buffered data
+        // and cause mtime to reset back to current time.
+        fflush(fhandle);
 
-	if (newtime) {
  		// backport from DOS_PackDate() and DOS_PackTime()
 		struct tm tim = { 0 };
 		tim.tm_sec  = (time&0x1f)*2;
@@ -1179,24 +1174,46 @@ bool localFile::Close() {
 		tim.tm_mday = date&0x1f;
 		tim.tm_mon  = ((date>>5)&0x0f)-1;
 		tim.tm_year = (date>>9)+1980-1900;
+        // sanitize the date in case of invalid timestamps (such as 0x0000 date/time fields)
+        if (tim.tm_mon < 0) tim.tm_mon = 0;
+        if (tim.tm_mday == 0) tim.tm_mday = 1;
 		//  have the C run-time library code compute whether standard time or daylight saving time is in effect.
 		tim.tm_isdst = -1;
 		// serialize time
 		mktime(&tim);
 
-		struct utimbuf ftim;
-		ftim.actime = ftim.modtime = mktime(&tim);
-	
-		char fullname[DOS_PATHLENGTH];
-		strcpy(fullname, Drives[drive]->GetBaseDir());
-		strcat(fullname, name);
-//		Dos_SpecoalChar(fullname, true);
-		CROSS_FILENAME(fullname);
-		if (utime(fullname, &ftim)) {
-//			extern int errno; 
-//			LOG_MSG("Set time failed for %s (%s)", fullname, strerror(errno));
-			return false;
-		}
+        // change file time by file handle (while we still have it open)
+        // so that we do not have to duplicate guest to host filename conversion here.
+        // This should help Yksoft1 with file date/time, PC-98, and Shift-JIS Japanese filenames as well on Windows.
+
+#if defined(WIN32) /* TODO: What about MinGW? */
+        struct _utimbuf ftim;
+        ftim.actime = ftim.modtime = mktime(&tim);
+
+        if (_futime(fileno(fhandle), &ftim)) {
+            extern int errno; 
+            LOG_MSG("Set time failed (%s)", strerror(errno));
+        }
+#elif !defined(RISCOS) // Linux (TODO: What about Mac OS X/Darwin?)
+        // NTS: Do not attempt futime, Linux doesn't have it.
+        //      Do not attempt futimes, Linux man pages LIE about having it. It's even there in the freaking header, but not recognized!
+        //      Use futimens. Modern stuff should have it. [https://pubs.opengroup.org/onlinepubs/9699919799/functions/futimens.html]
+        struct timespec ftsp[2];
+        ftsp[0].tv_sec =  ftsp[1].tv_sec =  mktime(&tim);
+        ftsp[0].tv_nsec = ftsp[1].tv_nsec = 0;
+
+        if (futimens(fileno(fhandle), ftsp)) {
+            extern int errno; 
+            LOG_MSG("Set time failed (%s)", strerror(errno));
+        }
+#endif
+	}
+
+	// only close if one reference left
+	if (refCtr==1) {
+		if(fhandle) fclose(fhandle); 
+		fhandle = 0;
+		open = false;
 	}
 
 	return true;
@@ -1208,14 +1225,14 @@ Bit16u localFile::GetInformation(void) {
 	
 
 Bit32u localFile::GetSeekPos() {
-	return ftell( fhandle );
+	return (Bit32u)ftell( fhandle );
 }
 
 
 localFile::localFile(const char* _name, FILE * handle) {
 	fhandle=handle;
 	open=true;
-	UpdateDateTimeFromHost();
+	localFile::UpdateDateTimeFromHost();
 
 	attr=DOS_ATTR_ARCHIVE;
 	last_action=NONE;
@@ -1246,6 +1263,7 @@ bool localFile::UpdateDateTimeFromHost(void) {
 void localFile::Flush(void) {
 	if (last_action==WRITE) {
 		fseek(fhandle,ftell(fhandle),SEEK_SET);
+        fflush(fhandle);
 		last_action=NONE;
 	}
 }
@@ -1262,7 +1280,10 @@ bool MSCDEX_GetVolumeName(Bit8u subUnit, char* name);
 
 
 cdromDrive::cdromDrive(const char driveLetter, const char * startdir,Bit16u _bytes_sector,Bit8u _sectors_cluster,Bit16u _total_clusters,Bit16u _free_clusters,Bit8u _mediaid, int& error)
-		   :localDrive(startdir,_bytes_sector,_sectors_cluster,_total_clusters,_free_clusters,_mediaid) {
+		   :localDrive(startdir,_bytes_sector,_sectors_cluster,_total_clusters,_free_clusters,_mediaid),
+		    subUnit(0),
+		    driveLetter('\0')
+{
 	// Init mscdex
 	error = MSCDEX_AddDrive(driveLetter,startdir,subUnit);
 	strcpy(info, "CDRom ");

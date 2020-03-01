@@ -1,3 +1,20 @@
+/*
+ *  Copyright (C) 2018  Jon Campbell
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
+ */
 
 /* Shut up! */
 #define _CRT_NONSTDC_NO_DEPRECATE
@@ -17,6 +34,14 @@
 
 #ifndef O_BINARY
 # define O_BINARY 0
+#endif
+
+/* FIXME: I made the mistake of putting critical calls in assert() calls, which under MSVC++ may evaluate to nothing in Release builds */
+#if defined(_MSC_VER) || defined (__MINGW32__)
+# ifdef NDEBUG
+#  undef assert
+#  define assert(x) x
+# endif
 #endif
 
 #include "riff_wav_writer.h"
@@ -78,7 +103,7 @@ int riff_wav_writer_set_format_ex(riff_wav_writer *w,windows_WAVEFORMATEX *f,siz
 		return 0;
 
 	w->fmt_len = sizeof(windows_WAVEFORMAT);
-	if (__le_u16(&f->cbSize) != 0u) w->fmt_len += 2u + __le_u16(&f->cbSize);
+	if (__le_u16(&f->cbSize) != 0u) w->fmt_len += (size_t)2u + __le_u16(&f->cbSize);
 	if (w->fmt_len > len)
 		return 0;
 	if ((w->fmt = malloc(w->fmt_len)) == NULL)

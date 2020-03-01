@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -68,7 +68,7 @@ static Bit16u socketCount;
 static Bit16u opensockets[SOCKTABLESIZE]; 
 
 static Bit16u swapByte(Bit16u sockNum) {
-	return (((sockNum>> 8)) | (sockNum << 8));
+	return ((sockNum>> 8) | (sockNum << 8));
 }
 
 void UnpackIP(PackedIP ipPack, IPaddress * ipAddr) {
@@ -138,11 +138,11 @@ bool ECBClass::writeData() {
 	Bit8u* buffer = databuffer;
 	fragmentDescriptor tmpFrag;
 	setInUseFlag(USEFLAG_AVAILABLE);
-	Bitu fragCount = getFragCount(); 
+	Bit16u fragCount = getFragCount(); 
 	Bitu bufoffset = 0;
-	for(Bitu i = 0;i < fragCount;i++) {
+	for(Bit16u i = 0;i < fragCount;i++) {
 		getFragDesc(i,&tmpFrag);
-		for(Bitu t = 0;t < tmpFrag.size;t++) {
+		for(Bit16u t = 0;t < tmpFrag.size;t++) {
 			real_writeb(tmpFrag.segment, tmpFrag.offset + t, buffer[bufoffset]);
 			bufoffset++;
 			if(bufoffset >= length) {
@@ -231,12 +231,12 @@ void ECBClass::NotifyESR(void) {
 }
 
 void ECBClass::setImmAddress(Bit8u *immAddr) {
-	for(Bitu i=0;i<6;i++)
+	for(Bit8u i=0;i<6;i++)
 		real_writeb(RealSeg(ECBAddr), RealOff(ECBAddr)+28+i, immAddr[i]);
 }
 
 void ECBClass::getImmAddress(Bit8u* immAddr) {
-	for(Bitu i=0;i<6;i++)
+	for(Bit8u i=0;i<6;i++)
 		immAddr[i] = real_readb(RealSeg(ECBAddr), RealOff(ECBAddr)+28+i);
 }
 
@@ -314,7 +314,7 @@ static void CloseSocket(void) {
 	for(i=0;i<socketCount-1;i++) {
 		if (opensockets[i] == sockNum) {
 			// Realign list of open sockets
-			memcpy(&opensockets[i], &opensockets[i+1], SOCKTABLESIZE - (i + 1));
+			memcpy(&opensockets[i], &opensockets[i+1], size_t(SOCKTABLESIZE - (i + 1)));
 			break;
 		}
 	}
@@ -381,7 +381,7 @@ static void handleIpxRequest(void) {
 						// es:si
 						// Currently no support for multiple networks
 
-			for(Bitu i = 0; i < 6; i++) 
+			for(Bit8u i = 0; i < 6; i++) 
 				real_writeb(SegValue(es),reg_di+i,real_readb(SegValue(es),reg_si+i+4));
 
 			reg_cx=1;		// time ticks expected
@@ -589,7 +589,7 @@ static void receivePacket(Bit8u *buffer, Bit16s bufSize) {
 	{
 		nextECB = useECB->nextECB;
 		if(useECB->iuflag == USEFLAG_LISTENING && useECB->mysocket == useSocket) {
-			useECB->writeDataBuffer(buffer, bufSize);
+			useECB->writeDataBuffer(buffer, (Bit16u)bufSize);
 			useECB->NotifyESR();
 			return;
 		}
@@ -673,12 +673,12 @@ static void sendPacket(ECBClass* sendecb) {
 	// Blank CRC
 	//wordptr[0] = 0xffff;
 	// Length
-	wordptr[1] = swapByte(packetsize);
+	wordptr[1] = swapByte((Bit16u)packetsize);
 	// Source socket
 	//wordptr[14] = swapByte(sendecb->getSocket());
 	
 	sendecb->getFragDesc(0,&tmpFrag);
-	real_writew(tmpFrag.segment,tmpFrag.offset+2, swapByte(packetsize));
+	real_writew(tmpFrag.segment,tmpFrag.offset+2, swapByte((Bit16u)packetsize));
 	
 
 	Bit8u immedAddr[6];
@@ -855,7 +855,7 @@ public:
 		// Help on connect command
 		if(strcasecmp("connect", helpStr) == 0) {
 			WriteOut("IPXNET CONNECT opens a connection to an IPX tunneling server running on another\n");
-			WriteOut("DosBox session.  The \"address\" parameter specifies the IP address or host name\n");
+			WriteOut("DOSBox session.  The \"address\" parameter specifies the IP address or host name\n");
 			WriteOut("of the server computer.  One can also specify the UDP port to use.  By default\n");
 			WriteOut("IPXNET uses port 213, the assigned IANA port for IPX tunneling, for its\nconnection.\n\n");
 			WriteOut("The syntax for IPXNET CONNECT is:\n\n");
@@ -871,9 +871,9 @@ public:
 		}
 		// Help on the startserver command
 		if(strcasecmp("startserver", helpStr) == 0) {
-			WriteOut("IPXNET STARTSERVER starts and IPX tunneling server on this DosBox session.  By\n");
+			WriteOut("IPXNET STARTSERVER starts and IPX tunneling server on this DOSBox session.  By\n");
 			WriteOut("default, the server will accept connections on UDP port 213, though this can be\n");
-			WriteOut("changed.  Once the server is started, DosBox will automatically start a client\n");
+			WriteOut("changed.  Once the server is started, DOSBox will automatically start a client\n");
 			WriteOut("connection to the IPX tunneling server.\n\n");
 			WriteOut("The syntax for IPXNET STARTSERVER is:\n\n");
 			WriteOut("IPXNET STARTSERVER <port>\n\n");
@@ -883,7 +883,7 @@ public:
 		if(strcasecmp("stopserver", helpStr) == 0) {
 			WriteOut("IPXNET STOPSERVER stops the IPX tunneling server running on this DosBox\nsession.");
 			WriteOut("  Care should be taken to ensure that all other connections have\nterminated ");
-			WriteOut("as well sinnce stoping the server may cause lockups on other\nmachines still using ");
+			WriteOut("as well since stopping the server may cause lockups on other\nmachines still using ");
 			WriteOut("the IPX tunneling server.\n\n");
 			WriteOut("The syntax for IPXNET STOPSERVER is:\n\n");
 			WriteOut("IPXNET STOPSERVER\n\n");
@@ -900,7 +900,7 @@ public:
 		}
 		// Help on the status command
 		if(strcasecmp("status", helpStr) == 0) {
-			WriteOut("IPXNET STATUS reports the current state of this DosBox's sessions IPX tunneling\n");
+			WriteOut("IPXNET STATUS reports the current state of this DOSBox's sessions IPX tunneling\n");
 			WriteOut("network.  For a list of the computers connected to the network use the IPXNET \n");
 			WriteOut("PING command.\n\n");
 			WriteOut("The syntax for IPXNET STATUS is:\n\n");
@@ -911,7 +911,7 @@ public:
 
 	void Run(void)
 	{
-		WriteOut("IPX Tunneling utility for DosBox\n\n");
+		WriteOut("IPX Tunneling utility for DOSBox\n\n");
 		if(!cmd->GetCount()) {
 			WriteOut("The syntax of this command is:\n\n");
 			WriteOut("IPXNET [ CONNECT | DISCONNECT | STARTSERVER | STOPSERVER | PING | HELP |\n         STATUS ]\n\n");
@@ -943,7 +943,7 @@ public:
 					if(!cmd->FindCommand(2, temp_line)) {
 						udpPort = 213;
 					} else {
-						udpPort = strtol(temp_line.c_str(), NULL, 10);
+						udpPort = (unsigned int)strtol(temp_line.c_str(), NULL, 10);
 					}
 					startsuccess = IPX_StartServer((Bit16u)udpPort);
 					if(startsuccess) {
@@ -961,7 +961,7 @@ public:
 			}
 			if(strcasecmp("stopserver", temp_line.c_str()) == 0) {
 				if(!isIpxServer) {
-					WriteOut("IPX Tunneling Server not running in this DosBox session.\n");
+					WriteOut("IPX Tunneling Server not running in this DOSBox session.\n");
 				} else {
 					isIpxServer = false;
 					DisconnectFromServer(false);
@@ -985,7 +985,7 @@ public:
 				if(!cmd->FindCommand(3, temp_line)) {
 					udpPort = 213;
 				} else {
-					udpPort = strtol(temp_line.c_str(), NULL, 10);
+					udpPort = (unsigned int)strtol(temp_line.c_str(), NULL, 10);
 				}
 
 				if(ConnectToServer(strHost)) {
@@ -1092,7 +1092,7 @@ private:
 	CALLBACK_HandlerObject callback_ipx;
 	CALLBACK_HandlerObject callback_esr;
 	CALLBACK_HandlerObject callback_ipxint;
-	RealPt old_73_vector;
+	RealPt old_73_vector = 0;
 	bool ipx_init;
 public:
 	IPX(Section* configuration):Module_base(configuration) {
@@ -1184,7 +1184,7 @@ public:
 		IO_WriteB(0xa1,IO_ReadB(0xa1)|8);	// disable IRQ11
    
 		PhysPt phyDospage = PhysMake(dospage,0);
-		for(Bitu i = 0;i < 32;i++)
+		for(Bit8u i = 0;i < 32;i++)
 			phys_writeb(phyDospage+i,(Bit8u)0x00);
 
 		VFILE_Remove("IPXNET.COM");
@@ -1193,11 +1193,11 @@ public:
 
 static IPX* test;
 
-void IPX_ShutDown(Section* sec) {
+void IPX_ShutDown(Section*) {
 	delete test;    
 }
 
-void IPX_OnReset(Section* sec) {
+void IPX_OnReset(Section*) {
 	if (test == NULL) {
 		LOG(LOG_MISC,LOG_DEBUG)("Allocating IPX emulation");
 		test = new IPX(control->GetSection("ipx"));

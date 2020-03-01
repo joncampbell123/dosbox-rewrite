@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -134,27 +134,33 @@ DOS_File::DOS_File(const DOS_File& orig) {
 	refCtr=orig.refCtr;
 	open=orig.open;
 	hdrive=orig.hdrive;
+    drive = 0;
+    newtime = false;
 	name=0;
 	if(orig.name) {
 		name=new char [strlen(orig.name) + 1];strcpy(name,orig.name);
 	}
 }
 
-DOS_File & DOS_File::operator= (const DOS_File & orig) {
-	flags=orig.flags;
-	time=orig.time;
-	date=orig.date;
-	attr=orig.attr;
-	refCtr=orig.refCtr;
-	open=orig.open;
-	hdrive=orig.hdrive;
-	if(name) {
-		delete [] name; name=0;
-	}
-	if(orig.name) {
-		name=new char [strlen(orig.name) + 1];strcpy(name,orig.name);
-	}
-	return *this;
+DOS_File& DOS_File::operator= (const DOS_File& orig) {
+    if (this != &orig) {
+        flags = orig.flags;
+        time = orig.time;
+        date = orig.date;
+        attr = orig.attr;
+        refCtr = orig.refCtr;
+        open = orig.open;
+        hdrive = orig.hdrive;
+        drive = orig.drive;
+        newtime = orig.newtime;
+        if (name) {
+            delete[] name; name = 0;
+        }
+        if (orig.name) {
+            name = new char[strlen(orig.name) + 1]; strcpy(name, orig.name);
+        }
+    }
+    return *this;
 }
 
 Bit8u DOS_FindDevice(char const * name) {
@@ -209,7 +215,7 @@ void DOS_AddDevice(DOS_Device * adddev) {
 void DOS_DelDevice(DOS_Device * dev) {
 // We will destroy the device if we find it in our list.
 // TODO:The file table is not checked to see the device is opened somewhere!
-	if (dev == NULL) E_Exit("DOS_DelDevice with null ptr");
+	if (dev == NULL) return E_Exit("DOS_DelDevice with null ptr");
 	for (Bitu i = 0; i <DOS_DEVICES;i++) {
 		if (Devices[i] == dev) { /* NTS: The mainline code deleted by matching names??? Why? */
 //			LOG_MSG("DOS_DelDevice %s (%p)\n",dev->name,(void*)dev);
@@ -225,8 +231,6 @@ void DOS_DelDevice(DOS_Device * dev) {
 	delete dev;
 }
 
-void update_pc98_function_row(bool enable);
-
 void DOS_ShutdownDevices(void) {
 	for (Bitu i=0;i < DOS_DEVICES;i++) {
 		if (Devices[i] != NULL) {
@@ -237,15 +241,15 @@ void DOS_ShutdownDevices(void) {
 	}
 
     /* NTS: CON counts as a device */
-    if (IS_PC98_ARCH) update_pc98_function_row(false);
+    if (IS_PC98_ARCH) update_pc98_function_row(0);
 }
 
 // INT 29h emulation needs to keep track of CON
-DOS_Device *DOS_CON = NULL;
+device_CON *DOS_CON = NULL;
 
 void DOS_SetupDevices(void) {
 	DOS_Device * newdev;
-	newdev=new device_CON(); DOS_CON = newdev;
+	DOS_CON=new device_CON(); newdev=DOS_CON;
 	DOS_AddDevice(newdev);
 	DOS_Device * newdev2;
 	newdev2=new device_NUL();
@@ -253,5 +257,60 @@ void DOS_SetupDevices(void) {
 	DOS_Device * newdev3;
 	newdev3=new device_PRN();
 	DOS_AddDevice(newdev3);
+}
+
+/* PC-98 INT DC CL=0x10 AH=0x00 DL=cjar */
+void PC98_INTDC_WriteChar(unsigned char b) {
+    if (DOS_CON != NULL) {
+        Bit16u sz = 1;
+
+        DOS_CON->Write(&b,&sz);
+    }
+}
+
+void INTDC_CL10h_AH03h(Bit16u raw) {
+    if (DOS_CON != NULL)
+        DOS_CON->INTDC_CL10h_AH03h(raw);
+}
+
+void INTDC_CL10h_AH04h(void) {
+    if (DOS_CON != NULL)
+        DOS_CON->INTDC_CL10h_AH04h();
+}
+
+void INTDC_CL10h_AH05h(void) {
+    if (DOS_CON != NULL)
+        DOS_CON->INTDC_CL10h_AH05h();
+}
+
+void INTDC_CL10h_AH06h(Bit16u count) {
+    if (DOS_CON != NULL)
+        DOS_CON->INTDC_CL10h_AH06h(count);
+}
+
+void INTDC_CL10h_AH07h(Bit16u count) {
+    if (DOS_CON != NULL)
+        DOS_CON->INTDC_CL10h_AH07h(count);
+}
+
+void INTDC_CL10h_AH08h(Bit16u count) {
+    if (DOS_CON != NULL)
+        DOS_CON->INTDC_CL10h_AH08h(count);
+}
+
+void INTDC_CL10h_AH09h(Bit16u count) {
+    if (DOS_CON != NULL)
+        DOS_CON->INTDC_CL10h_AH09h(count);
+}
+
+Bitu INT29_HANDLER(void) {
+    if (DOS_CON != NULL) {
+        unsigned char b = reg_al;
+        Bit16u sz = 1;
+
+        DOS_CON->Write(&b,&sz);
+    }
+
+    return CBRET_NONE;
 }
 

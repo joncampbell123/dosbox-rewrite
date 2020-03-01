@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2012  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 #include "dosbox.h"
@@ -33,6 +33,9 @@
 
 unsigned long PIC_irq_delay_ns = 0;
 
+bool never_mark_cascade_in_service = false;
+bool ignore_cascade_in_service = false;
+
 struct PIC_Controller {
     Bitu icw_words;
     Bitu icw_index;
@@ -48,6 +51,7 @@ struct PIC_Controller {
     Bit8u imrr;       // mask register reversed (makes bit tests simpler)
     Bit8u isr;        // in service register
     Bit8u isrr;       // in service register reversed (makes bit tests simpler)
+    Bit8u isr_ignore; // in service bits to ignore
     Bit8u active_irq; //currently active irq
 
 
@@ -60,29 +64,20 @@ struct PIC_Controller {
     }
 
     void update_active_irq() {
+        if (auto_eoi) {
+            assert(isr == 0);
+        }
+
         if(isr == 0) {active_irq = 8; return;}
         for(Bit8u i = 0, s = 1; i < 8;i++, s<<=1){
-            if( isr & s){
+            if (isr & s) {
                 active_irq = i;
                 return;
             }
         }
     }
 
-    void check_for_irq(){
-        const Bit8u possible_irq = (irr&imrr)&isrr;
-        if (possible_irq) {
-            const Bit8u a_irq = special?8:active_irq;
-            for(Bit8u i = 0, s = 1; i < a_irq;i++, s<<=1){
-                if ( possible_irq & s ) {
-                    //There is an irq ready to be served => signal master and/or cpu
-                    activate();
-                    return;
-                }
-            }
-        }
-        deactivate(); //No irq, remove signal to master and/or cpu
-    }
+    void check_for_irq();
 
     //Signals master/cpu that there is an irq ready.
     void activate();
@@ -90,15 +85,7 @@ struct PIC_Controller {
     //Removes signal to master/cpu that there is an irq ready.
     void deactivate();
 
-    void raise_irq(Bit8u val){
-        Bit8u bit = 1 << (val);
-        if((irr & bit)==0) { //value changed (as it is currently not active)
-            irr|=bit;
-            if((bit&imrr)&isrr) { //not masked and not in service
-                if(special || val < active_irq) activate();
-            }
-        }
-    }
+    void raise_irq(Bit8u val);
 
     void lower_irq(Bit8u val){
         Bit8u bit = 1 << ( val);
@@ -126,6 +113,36 @@ Bitu PIC_IRQCheckPending = 0; //Maybe make it a bool and/or ensure 32bit size (x
 bool enable_slave_pic = true; /* if set, emulate slave with cascade to master. if clear, emulate only master, and no cascade (IRQ 2 is open) */
 bool enable_pc_xt_nmi_mask = false;
 
+void PIC_Controller::check_for_irq(){
+    const Bit8u possible_irq = (irr&imrr)&isrr;
+    if (possible_irq) {
+        Bit8u a_irq = special?8:active_irq;
+
+        if (ignore_cascade_in_service && this == &master && a_irq == (unsigned char)master_cascade_irq)
+            a_irq++;
+
+        for(Bit8u i = 0, s = 1; i < a_irq;i++, s<<=1){
+            if ( possible_irq & s ) {
+                //There is an irq ready to be served => signal master and/or cpu
+                activate();
+                return;
+            }
+        }
+    }
+    deactivate(); //No irq, remove signal to master and/or cpu
+}
+
+void PIC_Controller::raise_irq(Bit8u val){
+    Bit8u bit = 1 << (val);
+    if((irr & bit)==0) { //value changed (as it is currently not active)
+        irr|=bit;
+        if((bit&imrr)&isrr) { //not masked and not in service
+            if(special || val < active_irq) activate();
+            else if (ignore_cascade_in_service && this == &master && val == (unsigned char)master_cascade_irq) activate();
+        }
+    }
+}
+
 void PIC_IRQCheckDelayed(Bitu val) {
     (void)val;//UNUSED
     PIC_IRQCheck = 1;
@@ -148,8 +165,8 @@ void PIC_Controller::activate() {
         //cycles 0, take care of the port IO stuff added in raise_irq base caller.
         if (!PIC_IRQCheckPending) {
             /* NTS: PIC_AddEvent by design caps CPU_Cycles to make the event happen on time */
-            PIC_AddEvent(PIC_IRQCheckDelayed,(double)PIC_irq_delay_ns / 1000000,0);
             PIC_IRQCheckPending = 1;
+            PIC_AddEvent(PIC_IRQCheckDelayed,(double)PIC_irq_delay_ns / 1000000,0);
         }
     } else {
         master.raise_irq(master_cascade_irq);
@@ -184,9 +201,14 @@ void PIC_Controller::deactivate() {
 void PIC_Controller::start_irq(Bit8u val){
     irr&=~(1<<(val));
     if (!auto_eoi) {
-        active_irq = val;
-        isr |= 1<<(val);
-        isrr = ~isr;
+        if (never_mark_cascade_in_service && this == &master && val == master_cascade_irq) {
+            /* do nothing */
+        }
+        else {
+            active_irq = val;
+            isr |= 1<<(val);
+            isrr = (~isr) | isr_ignore;
+        }
     } else if (GCC_UNLIKELY(rotate_on_auto_eoi)) {
         LOG_MSG("rotate on auto EOI not handled");
     }
@@ -233,15 +255,15 @@ static void write_command(Bitu port,Bitu val,Bitu iolen) {
         if (val&0x20) {     // EOI commands
             if (GCC_UNLIKELY(val&0x80)) LOG_MSG("rotate mode not supported");
             if (val&0x40) {     // specific EOI
-                pic->isr &= ~(1<< ((val-0x60)));
-                pic->isrr = ~pic->isr;
+                pic->isr &= ~(1<< (val-0x60));
+                pic->isrr = (~pic->isr) | pic->isr_ignore;
                 pic->check_after_EOI();
 //              if (val&0x80);  // perform rotation
             } else {        // nonspecific EOI
                 if (pic->active_irq != 8) { 
                     //If there is no irq in service, ignore the call, some games send an eoi to both pics when a sound irq happens (regardless of the irq).
                     pic->isr &= ~(1 << (pic->active_irq));
-                    pic->isrr = ~pic->isr;
+                    pic->isrr = (~pic->isr) | pic->isr_ignore;
                     pic->check_after_EOI();
                 }
 //              if (val&0x80);  // perform rotation
@@ -305,7 +327,14 @@ static Bitu read_command(Bitu port,Bitu iolen) {
     PIC_Controller * pic=&pics[(port==0x20/*IBM*/ || port==0x00/*PC-98*/) ? 0 : 1];
     if (pic->request_issr){
         return pic->isr;
-    } else { 
+    } else {
+        /* HACK: I found a PC-98 game "Steel Gun Nyan" that relies on setting the timer to Mode 3 (Square Wave)
+         *       then polling the output through the master PIC's IRR to do delays. */
+        if (pic == &master) {
+            void TIMER_IRQ0Poll(void);
+            TIMER_IRQ0Poll();
+        }
+
         return pic->irr;
     }
 }
@@ -320,11 +349,22 @@ static Bitu read_data(Bitu port,Bitu iolen) {
 /* PC/XT NMI mask register 0xA0. Documentation on the other bits
  * is sparse and spread across the internet, but many seem to
  * agree that bit 7 is used to enable/disable the NMI (1=enable,
- * 0=disable) */
+ * 0=disable)
+ *
+ * Confirmed: IBM PCjr technical reference, BIOS source code.
+ *            Some part of the code writes 0x80 to this port,
+ *            then does some work, then writes 0x00.
+ *
+ * IBM PCjr definitions:
+ *   bit[7]: Enable NMI
+ *   bit[6]: IR test enable
+ *   bit[5]: Select clock 1 input
+ *   bit[4]: Disable HRQ */
 static void pc_xt_nmi_write(Bitu port,Bitu val,Bitu iolen) {
     (void)iolen;//UNUSED
     (void)port;//UNUSED
     CPU_NMI_gate = (val & 0x80) ? true : false;
+    CPU_Check_NMI();
 }
 
 /* FIXME: This should be called something else that's true to the ISA bus, like PIC_PulseIRQ, not Activate IRQ.
@@ -375,23 +415,41 @@ void PIC_DeActivateIRQ(Bitu irq) {
     pic->lower_irq(t);
 }
 
-enum PIC_irq_hacks PIC_IRQ_hax[16] = { PIC_irq_hack_none };
+unsigned int PIC_IRQ_hax[16] = { PIC_irq_hack_none };
 
-void PIC_Set_IRQ_hack(int IRQ,enum PIC_irq_hacks hack) {
+void PIC_Set_IRQ_hack(int IRQ,unsigned int hack) {
     if (IRQ < 0 || IRQ >= 16) return;
     PIC_IRQ_hax[IRQ] = hack;
 }
 
-enum PIC_irq_hacks PIC_parse_IRQ_hack_string(const char *str) {
-    if (!strcmp(str,"none"))
-        return PIC_irq_hack_none;
-    else if (!strcmp(str,"cs_equ_ds"))
-        return PIC_irq_hack_cs_equ_ds;
+unsigned int PIC_parse_IRQ_hack_string(const char *str) {
+    unsigned int res = PIC_irq_hack_none;
+    std::string what;
 
-    return PIC_irq_hack_none;
+    while (*str != 0) {
+        while (*str == ' ') str++;
+        if (*str == 0) break;
+
+        what.clear();
+        while (*str != 0 && *str != ' ')
+            what += *str++;
+
+        while (*str == ' ') str++;
+
+        LOG_MSG("IRQ HACK: '%s'",what.c_str());
+
+        if (what == "none")
+            res  = PIC_irq_hack_none;
+        else if (what == "cs_equ_ds")
+            res |= PIC_irq_hack_cs_equ_ds;
+    }
+
+    return res;
 }
 
 static bool IRQ_hack_check_cs_equ_ds(const int IRQ) {
+    (void)IRQ;
+
     uint16_t s_cs = SegValue(cs);
     uint16_t s_ds = SegValue(ds);
 
@@ -399,7 +457,9 @@ static bool IRQ_hack_check_cs_equ_ds(const int IRQ) {
         return true; // don't complain about the BIOS ISR
 
     if (s_cs != s_ds) {
+#if 0
         LOG(LOG_PIC,LOG_DEBUG)("Not dispatching IRQ %d according to IRQ hack. CS != DS",IRQ);
+#endif
         return false;
     }
 
@@ -408,13 +468,17 @@ static bool IRQ_hack_check_cs_equ_ds(const int IRQ) {
 
 static void slave_startIRQ(){
     Bit8u pic1_irq = 8;
+    bool skipped_irq = false;
     const Bit8u p = (slave.irr & slave.imrr)&slave.isrr;
     const Bit8u max = slave.special?8:slave.active_irq;
     for(Bit8u i = 0,s = 1;i < max;i++, s<<=1) {
         if (p&s) {
-            if (PIC_IRQ_hax[i+8] == PIC_irq_hack_cs_equ_ds)
-                if (!IRQ_hack_check_cs_equ_ds(i+8))
+            if (PIC_IRQ_hax[i+8] & PIC_irq_hack_cs_equ_ds) {
+                if (!IRQ_hack_check_cs_equ_ds(i+8)) {
+                    skipped_irq = true;
                     continue; // skip IRQ
+                }
+            }
 
             pic1_irq = i;
             break;
@@ -422,11 +486,14 @@ static void slave_startIRQ(){
     }
 
     if (GCC_UNLIKELY(pic1_irq == 8)) {
-        /* we have an IRQ routing problem. this code is supposed to emulate the fact that
-         * what was once IRQ 2 on PC/XT is routed to IRQ 9 on AT systems, because IRQ 8-15
-         * cascade to IRQ 2 on such systems. but it's nothing to E_Exit() over. */
-        LOG(LOG_PIC,LOG_ERROR)("ISA PIC problem: IRQ %d (cascade) is active on master PIC without active IRQ 8-15 on slave PIC.",master_cascade_irq);
-        slave.lower_irq(master_cascade_irq); /* clear it */
+        if (!skipped_irq) {
+            /* we have an IRQ routing problem. this code is supposed to emulate the fact that
+             * what was once IRQ 2 on PC/XT is routed to IRQ 9 on AT systems, because IRQ 8-15
+             * cascade to IRQ 2 on such systems. but it's nothing to E_Exit() over. */
+            LOG(LOG_PIC,LOG_ERROR)("ISA PIC problem: IRQ %d (cascade) is active on master PIC without active IRQ 8-15 on slave PIC.",master_cascade_irq);
+            slave.lower_irq(master_cascade_irq); /* clear it */
+        }
+
         return;
     }
 
@@ -444,15 +511,22 @@ void PIC_runIRQs(void) {
     if (!GETFLAG(IF)) return;
     if (GCC_UNLIKELY(!PIC_IRQCheck)) return;
     if (GCC_UNLIKELY(cpudecoder==CPU_Core_Normal_Trap_Run)) return; // FIXME: Why?
-    if (GCC_UNLIKELY(CPU_NMI_active) || GCC_UNLIKELY(CPU_NMI_pending)) return; /* NMI has higher priority than PIC */
+    if (GCC_UNLIKELY(CPU_NMI_active)) return;
+    if (GCC_UNLIKELY(CPU_NMI_pending)) {
+        CPU_NMI_Interrupt(); // converts pending to active
+        return; /* NMI has higher priority than PIC */
+    }
 
     const Bit8u p = (master.irr & master.imrr)&master.isrr;
-    const Bit8u max = master.special?8:master.active_irq;
+    Bit8u max = master.special?8:master.active_irq;
     Bit8u i,s;
+
+    if (ignore_cascade_in_service && max == (unsigned char)master_cascade_irq)
+        max++;
 
     for (i = 0,s = 1;i < max;i++, s<<=1){
         if (p&s) {
-            if (PIC_IRQ_hax[i] == PIC_irq_hack_cs_equ_ds)
+            if (PIC_IRQ_hax[i] & PIC_irq_hack_cs_equ_ds)
                 if (!IRQ_hack_check_cs_equ_ds(i))
                     continue; // skip IRQ
 
@@ -465,16 +539,18 @@ void PIC_runIRQs(void) {
         }
     }
 
-    /* if we cleared all IRQs, then stop checking.
-     * otherwise, keep the flag set for the next IRQ to process. */
-    if (i == max && (master.irr&master.imrr) == 0) {
-        PIC_IRQCheckPending = 0;
-        PIC_IRQCheck = 0;
-    }
-    else if (PIC_IRQCheck) {
-        PIC_AddEvent(PIC_IRQCheckDelayed,(double)PIC_irq_delay_ns / 1000000,0);
-        PIC_IRQCheckPending = 1;
-        PIC_IRQCheck = 0;
+    if (slave.auto_eoi)
+        slave.check_for_irq();
+    if (master.auto_eoi)
+        master.check_for_irq();
+
+    /* continue (delayed) processing if more interrupts to handle */
+    PIC_IRQCheck = 0;
+    if (i != max) {
+        if (!PIC_IRQCheckPending) {
+            PIC_IRQCheckPending = 1;
+            PIC_AddEvent(PIC_IRQCheckDelayed,(double)PIC_irq_delay_ns / 1000000,0);
+        }
     }
 }
 
@@ -503,7 +579,7 @@ void DEBUG_PICAck(int irq) {
         PIC_Controller * pic=&pics[irq>7 ? 1 : 0];
 
         pic->isr &= ~(1u << ((unsigned int)irq & 7U));
-        pic->isrr = ~pic->isr;
+        pic->isrr = (~pic->isr) | pic->isr_ignore;
         pic->check_after_EOI();
     }
 }
@@ -546,6 +622,13 @@ static void AddEntry(PICEntry * entry) {
 
 static bool InEventService = false;
 static pic_tickindex_t srv_lag = 0;
+
+pic_tickindex_t PIC_GetCurrentEventTime(void) {
+    if (InEventService)
+        return (pic_tickindex_t)PIC_Ticks + srv_lag;
+    else
+        return PIC_FullIndex();
+}
 
 void PIC_AddEvent(PIC_EventHandler handler,pic_tickindex_t delay,Bitu val) {
     if (GCC_UNLIKELY(!pic_queue.free_entry)) {
@@ -614,10 +697,33 @@ void PIC_RemoveEvents(PIC_EventHandler handler) {
 
 extern ClockDomain clockdom_DOSBox_cycles;
 
+//#define DEBUG_CPU_CYCLE_OVERRUN
+//#define DEBUG_PIC_IRQCHECK_VS_IRR
+
 bool PIC_RunQueue(void) {
+#if C_DEBUG
+    bool IsDebuggerActive(void);
+    bool IsDebuggerRunwatch(void);
+    if (IsDebuggerActive() && !IsDebuggerRunwatch())
+        return false;
+#endif
+#ifdef DEBUG_CPU_CYCLE_OVERRUN
+    /* I/O delay can cause negative CPU_Cycles and PIC event / audio rendering issues */
+    cpu_cycles_count_t overrun = -std::min(CPU_Cycles,(cpu_cycles_count_t)0);
+
+    if (overrun > (CPU_CycleMax/100))
+        LOG_MSG("PIC_RunQueue: CPU cycles count overrun by %ld (%.3fms)\n",(signed long)overrun,(double)overrun / CPU_CycleMax);
+#endif
+
     /* Check to see if a new millisecond needs to be started */
     CPU_CycleLeft += CPU_Cycles;
     CPU_Cycles = 0;
+
+#ifdef DEBUG_PIC_IRQCHECK_VS_IRR
+    // WARNING: If the problem is the cascade interrupt un-acknowledged, this will give a false positive
+    if (!PIC_IRQCheck && !PIC_IRQCheckPending && ((master.irr&master.imrr) != 0 || (slave.irr&slave.imrr) != 0))
+        LOG_MSG("PIC_IRQCheck not set and interrupts pending");
+#endif
 
     if (CPU_CycleLeft > 0) {
         if (PIC_IRQCheck)
@@ -718,7 +824,7 @@ void TIMER_AddTick(void) {
     PIC_Ticks++;
     if ((PIC_Ticks&0x3fff) == 0) {
         unsigned long ticks = GetTicks();
-        int delta = (PIC_Ticks-PIC_tickstart)*10000/(ticks-PIC_benchstart)+5;
+        int delta = int((PIC_Ticks-PIC_tickstart)*10000/(ticks-PIC_benchstart)+5);
         GFX_SetTitle(-1,-1,delta,false);
         PIC_benchstart = ticks;
         PIC_tickstart = PIC_Ticks;
@@ -753,7 +859,6 @@ static IO_WriteHandleObject WriteHandler[4];
 
 void PIC_Reset(Section *sec) {
     (void)sec;//UNUSED
-    Bitu i;
 
     ReadHandler[0].Uninstall();
     ReadHandler[1].Uninstall();
@@ -771,6 +876,33 @@ void PIC_Reset(Section *sec) {
 
     enable_slave_pic = section->Get_bool("enable slave pic");
     enable_pc_xt_nmi_mask = section->Get_bool("enable pc nmi mask");
+    never_mark_cascade_in_service = section->Get_bool("cascade interrupt never in service");
+
+    {
+        std::string x = section->Get_string("cascade interrupt ignore in service");
+
+        if (x == "1" || x == "true")
+            ignore_cascade_in_service = true;
+        else if (x == "0" || x == "false")
+            ignore_cascade_in_service = false;
+        else {
+            // auto
+            if (IS_PC98_ARCH)
+                ignore_cascade_in_service = true;
+            else
+                ignore_cascade_in_service = false;
+        }
+
+        LOG(LOG_MISC,LOG_DEBUG)("PIC: Ignore cascade in service=%u",ignore_cascade_in_service);
+    }
+
+    if (enable_slave_pic && machine == MCH_PCJR && enable_pc_xt_nmi_mask) {
+        LOG(LOG_MISC,LOG_DEBUG)("PIC_Reset(): PCjr emulation with NMI mask register requires disabling slave PIC (IRQ 8-15)");
+        enable_slave_pic = false;
+    }
+
+    if (!enable_slave_pic && IS_PC98_ARCH)
+        LOG(LOG_MISC,LOG_DEBUG)("PIC_Reset(): PC-98 emulation without slave PIC (IRQ 8-15) is unusual");
 
     /* NTS: This is a good guess. But the 8259 is static circuitry and not driven by a clock.
      *      But the ability to respond to interrupts is limited by the CPU, too. */
@@ -791,7 +923,7 @@ void PIC_Reset(Section *sec) {
     /* Setup pic0 and pic1 with initial values like DOS has normally */
     PIC_Ticks=0;
     PIC_IRQCheck=0;
-    for (i=0;i<2;i++) {
+    for (Bitu i=0;i<2;i++) {
         pics[i].auto_eoi=false;
         pics[i].rotate_on_auto_eoi=false;
         pics[i].request_issr=false;
@@ -801,8 +933,28 @@ void PIC_Reset(Section *sec) {
         pics[i].icw_words=0;
         pics[i].irr = pics[i].isr = pics[i].imrr = 0;
         pics[i].isrr = pics[i].imr = 0xff;
+        pics[i].isr_ignore = 0x00;
         pics[i].active_irq = 8;
     }
+
+    /* PC-98: By default (but an option otherwise)
+     *        initialize the PIC so that reading the command port
+     *        produces the ISR status not the IRR status.
+     *
+     *        The reason the option is on by default, is that there
+     *        is PC-98 programming literature that recommends reading
+     *        ISR status before acknowledging interrupts (to avoid
+     *        conflicts with other ISR handlers perhaps). So it's
+     *        probably a common convention.
+     *
+     * Notes: "Blackbird" by Vivian needs this in order for the FM interrupt
+     *        to continue working. A bug in the FM interrupt routine programs
+     *        only the master PIC into this mode but then reads from the slave
+     *        which is not necessarily initialized into this mode and may return
+     *        the IRR register instead, causing the game to misinterpret
+     *        incoming interrupts as in-service. */
+    if (IS_PC98_ARCH && section->Get_bool("pc-98 pic init to read isr"))
+        pics[0].request_issr = pics[1].request_issr = true;
 
     /* IBM: IRQ 0-15 is INT 0x08-0x0F, 0x70-0x7F
      * PC-98: IRQ 0-15 is INT 0x08-0x17 */
@@ -813,11 +965,15 @@ void PIC_Reset(Section *sec) {
         PIC_SetIRQMask(i,true);
 
     PIC_SetIRQMask(0,false);                    /* Enable system timer */
-    PIC_SetIRQMask(1,false);                    /* Enable system timer */
+    PIC_SetIRQMask(1,false);                    /* Enable keyboard interrupt */
     PIC_SetIRQMask(8,false);                    /* Enable RTC IRQ */
 
-    if (master_cascade_irq >= 0)
+    if (master_cascade_irq >= 0) {
         PIC_SetIRQMask((unsigned int)master_cascade_irq,false);/* Enable second pic */
+
+        if (ignore_cascade_in_service)
+            pics[0].isr_ignore |= 1u << (unsigned char)master_cascade_irq;
+    }
 
     /* I/O port map
      *
@@ -873,7 +1029,7 @@ void Init_PIC() {
 #if C_DEBUG
 void DEBUG_LogPIC_C(PIC_Controller &pic) {
     LOG_MSG("%s interrupt controller state",&pic == &master ? "Master" : "Slave");
-    LOG_MSG("ICW %u/%u special=%u auto-eoi=%u rotate-eoi=%u single=%u request_issr=%u vectorbase=0x%02x active_irq=%u",
+    LOG_MSG("ICW %u/%u special=%u auto-eoi=%u rotate-eoi=%u single=%u request_issr=%u vectorbase=0x%02x active_irq=%u isr=%02x isrr=%02x isrignore=%02x",
         (unsigned int)pic.icw_index,
         (unsigned int)pic.icw_words,
         pic.special?1:0,
@@ -882,7 +1038,10 @@ void DEBUG_LogPIC_C(PIC_Controller &pic) {
         pic.single?1:0,
         pic.request_issr?1:0,
         pic.vector_base,
-        pic.active_irq);
+        pic.active_irq,
+        pic.isr,
+        pic.isrr,
+        pic.isr_ignore);
 
     LOG_MSG("IRQ INT#  Req /Mask/Serv");
     for (unsigned int si=0;si < 8;si++) {

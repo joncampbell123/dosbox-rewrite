@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -76,7 +76,7 @@ typedef struct SCtrl {
     Bit8u           vol[4];
 } TCtrl;
 
-extern int CDROM_GetMountType(char* path, int force);
+extern int CDROM_GetMountType(char* path, int forceCD);
 
 //! \brief Base CD-ROM interface class
 //!
@@ -313,7 +313,6 @@ static	int	refCount;
 	std::vector<Track>	tracks;
 typedef	std::vector<Track>::iterator	track_it;
 	std::string	mcn;
-	Bit8u	subUnit;
 };
 
 #if defined (WIN32)	/* Win 32 */

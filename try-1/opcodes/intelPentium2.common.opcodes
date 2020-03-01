@@ -1,7 +1,0 @@
-
-; Pentium II
-opcode 0x0F 0x34:                               "SYSENTER"                  ; Fast System Call                          00001111 00110100
-opcode 0x0F 0x35:                               "SYSEXIT"                   ; Fast Return from System Call              00001111 00110101
-opcode 0x0F 0xAE mod/reg/rm /0:                 "FXSAVE" b(r/m)             ; Save x87 FPU, MMX, etc. state             00001111 10101110
-opcode 0x0F 0xAE mod/reg/rm /1:                 "FXRSTOR" b(r/m)            ; Restore x87 FPU, MMX, etc. state          00001111 10101110
-

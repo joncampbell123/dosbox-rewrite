@@ -26,19 +26,19 @@ private:
 	LA32Ramp *cutoffModifierRamp;
 	const TimbreParam::PartialParam *partialParam;
 
-	Bit8u baseCutoff;
-	int keyTimeSubtraction;
-	unsigned int levelMult;
+	Bit8u baseCutoff = 0;
+	int keyTimeSubtraction = 0;
+	unsigned int levelMult = 0;
 
-	Bit8u target;
-	unsigned int phase;
+	Bit8u target = 0;
+	unsigned int phase = 0;
 
 	void startRamp(Bit8u newTarget, Bit8u newIncrement, int newPhase);
 	void nextPhase();
 
 public:
-	TVF(const Partial *partial, LA32Ramp *cutoffModifierRamp);
-	void reset(const TimbreParam::PartialParam *partialParam, Bit32u basePitch);
+	TVF(const Partial *usePartial, LA32Ramp *useCutoffModifierRamp);
+	void reset(const TimbreParam::PartialParam *newPartialParam, Bit32u basePitch);
 	// Returns the base cutoff (without envelope modification).
 	// The base cutoff is calculated when reset() is called and remains static
 	// for the lifetime of the partial.

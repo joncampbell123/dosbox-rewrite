@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2013  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 /*
@@ -41,17 +41,17 @@ static inline bool diffYUV(Bit32u yuv1, Bit32u yuv2)
 	Bit32u mask;
 
 	diff = ((yuv1 & Ymask) - (yuv2 & Ymask));
-	mask = diff >> 31; // -1 if value < 0, 0 otherwise
+	mask = (Bit32u)(((Bit32s)diff) >> 31); // ~1/-1 if value < 0, 0 otherwise
 	diff = (diff ^ mask) - mask; //-1: ~value + 1; 0: value
 	if (diff > trY) return true;
 
 	diff = ((yuv1 & Umask) - (yuv2 & Umask));
-	mask = diff >> 31; // -1 if value < 0, 0 otherwise
+	mask = (Bit32u)(((Bit32s)diff) >> 31); // ~1/-1 if value < 0, 0 otherwise
 	diff = (diff ^ mask) - mask; //-1: ~value + 1; 0: value
 	if (diff > trU) return true;
 
 	diff = ((yuv1 & Vmask) - (yuv2 & Vmask));
-	mask = diff >> 31; // -1 if value < 0, 0 otherwise
+	mask = (Bit32u)(((Bit32s)diff) >> 31); // ~1/-1 if value < 0, 0 otherwise
 	diff = (diff ^ mask) - mask; //-1: ~value + 1; 0: value
 	if (diff > trV) return true;
 
@@ -62,9 +62,6 @@ static inline bool diffYUV(Bit32u yuv1, Bit32u yuv2)
 
 static inline void conc2d(InitLUTs,SBPP)(void)
 {
-	int r, g, b;
-	int Y, u, v;
-
 # if !defined(_MSC_VER) /* Microsoft C++ thinks this is a failed attempt at a function call---it's not */
 	(void)conc2d(InitLUTs,SBPP);
 # endif
@@ -72,6 +69,7 @@ static inline void conc2d(InitLUTs,SBPP)(void)
 	_RGBtoYUV = (Bit32u *)malloc(65536 * sizeof(Bit32u));
 
 	for (int color = 0; color < 65536; ++color) {
+		int r, g, b;
 #if SBPP == 32
 		r = ((color & 0xF800) >> 11) << (8 - 5);
 		g = ((color & 0x07E0) >> 5) << (8 - 6);
@@ -81,9 +79,12 @@ static inline void conc2d(InitLUTs,SBPP)(void)
 		g = ((color & greenMask) >> greenShift) << (8 - greenBits);
 		b = ((color & blueMask) >> blueShift) << (8 - blueBits);
 #endif
-		Y = (r + g + b) >> 2;
-		u = 128 + ((r - b) >> 2);
-		v = 128 + ((-r + 2 * g - b) >> 3);
-		_RGBtoYUV[color] = (Bit32u)((Y << 16) | (u << 8) | v);
+		int Y = (r + g + b) >> 2;
+		int u = 128 + ((r - b) >> 2);
+		int v = 128 + ((-r + 2 * g - b) >> 3);
+        if (_RGBtoYUV != NULL)
+            _RGBtoYUV[color] = (Bit32u)((Y << 16) | (u << 8) | v);
+        else
+            E_Exit("Memory allocation failed in conc2d");
 	}
 }

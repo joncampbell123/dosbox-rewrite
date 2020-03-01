@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 #ifndef DOSBOX_PCI_H
@@ -65,7 +65,7 @@ public:
 			/* NTS: If I recall, this virtual function call means that we'll call the
 			 *      C++ subclass's config_write() NOT our own--right? */
 			for (Bitu i=0;i < iolen;i++) {
-				config_write(regnum+i,1,value&0xFF);
+				config_write((Bit8u)(regnum+i),1,value&0xFF);
 				value >>= 8U;
 			}
 		}
@@ -84,7 +84,7 @@ public:
 			/* NTS: If I recall, this virtual function call means that we'll call the
 			 *      C++ subclass's config_read() NOT our own--right? */
 			for (Bitu i=0;i < iolen;i++)
-				v += ((config_read(regnum+i,1)&0xFF) << ((iolen-i-1)*8));
+				v += ((config_read((Bit8u)(regnum+i),1)&0xFF) << ((iolen-i-1)*8));
 		}
 
 		return v;

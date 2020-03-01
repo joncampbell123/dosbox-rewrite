@@ -64,13 +64,13 @@ private:
 	const MemParams::PatchTemp *patchTemp;
 	const MemParams::RhythmTemp *rhythmTemp;
 
-	bool playing;
+	bool playing = false;
 
-	int biasAmpSubtraction;
-	int veloAmpSubtraction;
-	int keyTimeSubtraction;
+	int biasAmpSubtraction = 0;
+	int veloAmpSubtraction = 0;
+	int keyTimeSubtraction = 0;
 
-	Bit8u target;
+	Bit8u target = 0;
 	int phase;
 
 	void startRamp(Bit8u newTarget, Bit8u newIncrement, int newPhase);
@@ -78,8 +78,8 @@ private:
 	void nextPhase();
 
 public:
-	TVA(const Partial *partial, LA32Ramp *ampRamp);
-	void reset(const Part *part, const TimbreParam::PartialParam *partialParam, const MemParams::RhythmTemp *rhythmTemp);
+	TVA(const Partial *usePartial, LA32Ramp *useAmpRamp);
+	void reset(const Part *newPart, const TimbreParam::PartialParam *newPartialParam, const MemParams::RhythmTemp *newRhythmTemp);
 	void handleInterrupt();
 	void recalcSustain();
 	void startDecay();

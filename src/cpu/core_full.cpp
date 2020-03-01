@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 #include "dosbox.h"
@@ -92,18 +92,18 @@ Bits CPU_Core_Full_Run(void) {
 		if (DEBUG_HeavyIsBreakpoint()) {
 			FillFlags();
 			return (Bits)debugCallback;
-		};
+		}
 #endif
 #endif
 
 		LoadIP();
-		inst.entry=cpu.code.big*0x200u;
+		inst.entry=cpu.code.big*(Bitu)0x200u;
 		inst.prefix=cpu.code.big;
 restartopcode:
 		inst.entry=(inst.entry & 0xffffff00u) | Fetchb();
 		inst.code=OpCodeTable[inst.entry];
         Bitu old_flags = reg_flags;
-		Bitu old_esp = reg_esp; // always restore stack pointer on page fault
+		Bit32u old_esp = reg_esp; // always restore stack pointer on page fault
 		try {
 			#include "core_full/load.h"
 			#include "core_full/op.h"

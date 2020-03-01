@@ -14,7 +14,7 @@
 
     You should have received a copy of the GNU Library General Public
     License along with this library; if not, write to the Free
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335 USA  USA
 
     Sam Lantinga
     slouken@libsdl.org
@@ -24,6 +24,15 @@
 #include "SDL_QuartzVideo.h"
 #include "SDL_QuartzWM.h"
 #include "SDL_QuartzWindow.h"
+
+bool sdl1_hax_highdpi_enable = false;
+
+void sdl1_hax_macosx_highdpi_set_enable(const bool enable) {
+	if (sdl1_hax_highdpi_enable != enable) {
+		sdl1_hax_highdpi_enable = enable;
+		// TODO: Force reinitialization of the window
+	}
+}
 
 /*
     This function makes the *SDL region* of the window 100% opaque. 
@@ -51,7 +60,24 @@ static void QZ_SetPortAlphaOpaque () {
     }
 }
 
+#if MAC_OS_X_VERSION_MAX_ALLOWED >= 101202/* touch bar interface appeared in 10.12.2+ according to Apple */
+static NSTouchBar* (*sdl1_hax_maketouchbar_cb)(NSWindow *wnd) = NULL;
+
+void sdl1_hax_make_touch_bar_set_callback(NSTouchBar* (*newcb)(NSWindow*)) {
+    sdl1_hax_maketouchbar_cb = newcb;
+}
+#endif
+
 @implementation SDL_QuartzWindow
+
+#if MAC_OS_X_VERSION_MAX_ALLOWED >= 101202/* touch bar interface appeared in 10.12.2+ according to Apple */
+- (NSTouchBar *)makeTouchBar {
+    if (sdl1_hax_maketouchbar_cb != NULL)
+        return sdl1_hax_maketouchbar_cb(self);
+
+    return nil;
+}
+#endif
 
 /* we override these methods to fix the miniaturize animation/dock icon bug */
 - (void)miniaturize:(id)sender
@@ -111,7 +137,7 @@ static void QZ_SetPortAlphaOpaque () {
         so don't send the resize event. 
     */
     SDL_VideoDevice *this = (SDL_VideoDevice*)current_video;
-    
+
     if (this && SDL_VideoSurface == NULL) {
 
         [ super setFrame:frameRect display:flag ];
@@ -123,7 +149,10 @@ static void QZ_SetPortAlphaOpaque () {
         [ super setFrame:frameRect display:flag ];
         
         newViewFrame = [ window_view frame ];
-        
+
+	if (sdl1_hax_highdpi_enable)
+		newViewFrame = [ qz_window convertRectToBacking:newViewFrame ];
+
         SDL_PrivateResize (newViewFrame.size.width, newViewFrame.size.height);
     }
 }
@@ -172,6 +201,12 @@ static void QZ_SetPortAlphaOpaque () {
     }
 }
 
+- (void)appDidChangeScreen:(NSNotification*)note
+{
+    void QZ_ReinitWindow(void);
+    QZ_ReinitWindow();
+}
+
 - (void)appDidUnhide:(NSNotification*)note
 {
     /* restore cached image, since it may not be current, post expose event too */
@@ -193,7 +228,10 @@ static void QZ_SetPortAlphaOpaque () {
    
     [ [ NSNotificationCenter defaultCenter ] addObserver:self
         selector:@selector(appWillUnhide:) name:NSApplicationWillUnhideNotification object:NSApp ];
-        
+
+    [ [ NSNotificationCenter defaultCenter ] addObserver:self
+        selector:@selector(appDidChangeScreen:) name:NSWindowDidChangeScreenNotification object:self ];
+
     return [ super initWithContentRect:contentRect styleMask:styleMask backing:backingType defer:flag ];
 }
 
@@ -219,6 +257,13 @@ static void QZ_SetPortAlphaOpaque () {
 @end
 
 @implementation SDL_QuartzView
+
+void QZ_UpdateRectsOnDrawRect(/*TODO: NSRect from drawRect*/);
+
+- (void)drawRect:(NSRect)dirtyRect
+{
+	QZ_UpdateRectsOnDrawRect();
+}
 
 - (void)resetCursorRects
 {

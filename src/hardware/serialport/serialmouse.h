@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2013  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 /* $Id: serialdummy.h,v 1.5 2009-05-27 09:15:41 qbix79 Exp $ */
@@ -44,7 +44,7 @@ public:
 	void start_packet();
 
 	Bit8u send_ack;
-	Bit8u packet[3];
+    Bit8u packet[3] = {};
 	Bit8u packet_xmit;
 	Bit8u mouse_buttons;	/* bit 0 = left   bit 1 = right     becomes bits 5 (L) and 4 (R) in packet[0] */
 	Bit8u xmit_another_packet;

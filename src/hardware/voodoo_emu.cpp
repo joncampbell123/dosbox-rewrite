@@ -124,7 +124,7 @@ static raster_info *add_rasterizer(voodoo_state *v, const raster_info *cinfo);
 static raster_info *find_rasterizer(voodoo_state *v, int texcount);
 
 /* generic rasterizers */
-static void raster_fastfill(void *dest, INT32 scanline, const poly_extent *extent, const void *extradata);
+static void raster_fastfill(void *destbase, INT32 y, const poly_extent *extent, const void *extradata);
 
 
 /***************************************************************************
@@ -135,7 +135,7 @@ void raster_generic(UINT32 TMUS, UINT32 TEXMODE0, UINT32 TEXMODE1, void *destbas
 					INT32 y, const poly_extent *extent,	const void *extradata)
 {
 	const poly_extra_data *extra = (const poly_extra_data *)extradata;
-	voodoo_state *v = extra->state;
+	v = extra->state;
 	stats_block *stats = &v->thread_stats[0];
 	DECLARE_DITHER_POINTERS;
 	INT32 startx = extent->startx;
@@ -925,15 +925,14 @@ void ncc_table_write(ncc_table *n, UINT32 regnum, UINT32 data)
 
 void ncc_table_update(ncc_table *n)
 {
-	int r, g, b, i;
-
-	/* generte all 256 possibilities */
-	for (i = 0; i < 256; i++)
+	/* generate all 256 possibilities */
+	for (int i = 0; i < 256; i++)
 	{
 		int vi = (i >> 2) & 0x03;
 		int vq = (i >> 0) & 0x03;
 
 		/* start with the intensity */
+		int r, g, b;
 		r = g = b = n->y[(i >> 4) & 0x0f];
 
 		/* add the coloring */
@@ -1248,23 +1247,21 @@ void poly_render_triangle_custom(void *dest, int startscanline, int numscanlines
 		/* determine how much to advance to hit the next bucket */
 		scaninc = 1;
 
+		const poly_extent *extent = &extents[(curscan + extnum) - startscanline];
+		INT32 istartx = extent->startx, istopx = extent->stopx;
+
+		/* force start < stop */
+		if (istartx > istopx)
 		{
-			const poly_extent *extent = &extents[(curscan + extnum) - startscanline];
-			INT32 istartx = extent->startx, istopx = extent->stopx;
-
-			/* force start < stop */
-			if (istartx > istopx)
-			{
-				INT32 temp = istartx;
-				istartx = istopx;
-				istopx = temp;
-			}
-
-			/* set the extent and update the total pixel count */
-			unit->extent[extnum].startx = (INT16)istartx;
-			unit->extent[extnum].stopx = (INT16)istopx;
-			raster_fastfill(dest,curscan,extent,extra);
+			INT32 temp = istartx;
+			istartx = istopx;
+			istopx = temp;
 		}
+
+		/* set the extent and update the total pixel count */
+		unit->extent[extnum].startx = (INT16)istartx;
+		unit->extent[extnum].stopx = (INT16)istopx;
+		raster_fastfill(dest,curscan,extent,extra);
 		delete unit;
 	}
 }
@@ -1310,7 +1307,7 @@ static void update_statistics(voodoo_state *v, bool accumulate)
 
 void register_w(UINT32 offset, UINT32 data) {
 //	voodoo_reg reg;
-	UINT32 regnum  = (offset) & 0xff;
+	UINT32 regnum;
 	UINT32 chips   = (offset>>8) & 0xf;
 //	reg.u = data;
 
@@ -2782,18 +2779,14 @@ UINT32 register_r(UINT32 offset)
 			//result |= v->fbi.vblank << 6;
 			result |= (Voodoo_GetRetrace() ? 0x40u : 0u);
 
-
-			/* bit 7 is FBI graphics engine busy */
-			if (v->pci.op_pending)
+			if (v->pci.op_pending) {
+				/* bit 7 is FBI graphics engine busy */
 				result |= 1 << 7;
-
-			/* bit 8 is TREX busy */
-			if (v->pci.op_pending)
+				/* bit 8 is TREX busy */
 				result |= 1 << 8;
-
-			/* bit 9 is overall busy */
-			if (v->pci.op_pending)
+				/* bit 9 is overall busy */
 				result |= 1 << 9;
+			}
 
 			/* bits 11:10 specifies which buffer is visible */
 			result |= (UINT32)(v->fbi.frontbuf << 10);
@@ -2871,7 +2864,6 @@ UINT32 lfb_r(UINT32 offset)
 	LOG(LOG_VOODOO,LOG_WARN)("Voodoo:read LFB offset %X", offset);
 	UINT16 *buffer;
 	UINT32 bufmax;
-	UINT32 bufoffs;
 	UINT32 data;
 	int x, y, scry;
 	UINT32 destbuf;
@@ -2914,7 +2906,7 @@ UINT32 lfb_r(UINT32 offset)
 		data = voodoo_ogl_read_pixel(x, scry+1);
 	} else {
 		/* advance pointers to the proper row */
-		bufoffs = (unsigned long)((long)scry * (long)v->fbi.rowpixels + (long)x);
+		UINT32 bufoffs = (unsigned long)((long)scry * (long)v->fbi.rowpixels + (long)x);
 		if (bufoffs >= bufmax){
 			LOG_MSG("LFB_R: Buffer offset out of bounds x=%i y=%i offset=%08X bufoffs=%08X\n", x, y, offset, (UINT32) bufoffs);
 			return 0xffffffff;
@@ -3173,7 +3165,7 @@ void fastfill(voodoo_state *v)
 	poly_extent extents[64];
 	UINT16 dithermatrix[16];
 	UINT16 *drawbuf = NULL;
-	int extnum, x, y;
+	int extnum, y;
 
 	/* if we're not clearing either, take no time */
 	if (!FBZMODE_RGB_BUFFER_MASK(v->reg[fbzMode].u) && !FBZMODE_AUX_BUFFER_MASK(v->reg[fbzMode].u))
@@ -3203,7 +3195,7 @@ void fastfill(voodoo_state *v)
 		{
 			DECLARE_DITHER_POINTERS_NO_DITHER_VAR;
 			COMPUTE_DITHER_POINTERS_NO_DITHER_VAR(v->reg[fbzMode].u, y);
-			for (x = 0; x < 4; x++)
+			for (int x = 0; x < 4; x++)
 			{
 				int r = v->reg[color1].rgb.r;
 				int g = v->reg[color1].rgb.g;
@@ -3230,7 +3222,7 @@ void fastfill(voodoo_state *v)
 		/* iterate over blocks of extents */
 		for (y = sy; y < ey; y += (int)ARRAY_LENGTH(extents))
 		{
-			int count = MIN(((size_t)(ey - y)), ARRAY_LENGTH(extents));
+			int count = (int)MIN(((size_t)(ey - y)), ARRAY_LENGTH(extents));
 
 			extra->state = v;
 			memcpy(extra->dither, dithermatrix, sizeof(extra->dither));
@@ -3736,7 +3728,7 @@ static raster_info *find_rasterizer(voodoo_state *v, int texcount)
 static void raster_fastfill(void *destbase, INT32 y, const poly_extent *extent, const void *extradata)
 {
 	const poly_extra_data *extra = (const poly_extra_data *)extradata;
-	voodoo_state *v = extra->state;
+	v = extra->state;
 	stats_block *stats = &v->thread_stats[0];
 	INT32 startx = extent->startx;
 	INT32 stopx = extent->stopx;

@@ -1,5 +1,5 @@
  /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 #ifndef DOSBOX_MAPPER_H
@@ -28,6 +28,7 @@ enum MapKeys {
 	MK_1, MK_2, MK_3, MK_4,
     MK_c, MK_d, MK_f, MK_m, MK_r, MK_s, MK_v, MK_w,
     MK_escape,
+    MK_lbracket,MK_rbracket,MK_leftarrow,
 
     MK_MAX
 };
@@ -41,6 +42,7 @@ void MAPPER_RunEvent(Bitu);
 void MAPPER_RunInternal();
 void MAPPER_LosingFocus(void);
 
+std::string mapper_event_keybind_string(const std::string &x);
 
 #define MMOD1 0x1
 #define MMOD2 0x2

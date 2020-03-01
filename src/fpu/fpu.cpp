@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -45,7 +45,13 @@ Bit16u FPU_GetTag(void){
 	return tag;
 }
 
+#if C_FPU_X86
+#include "fpu_instructions_x86.h"
+#elif defined(HAS_LONG_DOUBLE)
+#include "fpu_instructions_longdouble.h"
+#else
 #include "fpu_instructions.h"
+#endif
 
 /* WATCHIT : ALWAYS UPDATE REGISTERS BEFORE AND AFTER USING THEM 
 			STATUS WORD =>	FPU_SET_TOP(TOP) BEFORE a read
@@ -1010,6 +1016,14 @@ void FPU_Selftest() {
 		LOG(LOG_FPU,LOG_WARN)("FPU_Reg field order is wrong. ll=0x%16llx l=0x%08lx h=0x%08lx",
 			(unsigned long long)freg.ll,	(unsigned long)freg.l.lower,	(unsigned long)freg.l.upper);
 	}
+#endif
+
+#if C_FPU_X86
+    LOG(LOG_FPU,LOG_NORMAL)("FPU core: x86 FPU");
+#elif defined(HAS_LONG_DOUBLE)
+    LOG(LOG_FPU,LOG_NORMAL)("FPU core: long double FPU");
+#else
+    LOG(LOG_FPU,LOG_NORMAL)("FPU core: double FPU (caution: possible precision errors)");
 #endif
 
 	FPU_Selftest_32();

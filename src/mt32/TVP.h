@@ -31,23 +31,23 @@ private:
 
 	int maxCounter;
 	int processTimerIncrement;
-	int counter;
-	Bit32u timeElapsed;
+	int counter = 0;
+	Bit32u timeElapsed = 0;
 
-	int phase;
-	Bit32u basePitch;
-	Bit32s targetPitchOffsetWithoutLFO;
-	Bit32s currentPitchOffset;
+	int phase = 0;
+	Bit32u basePitch = 0;
+	Bit32s targetPitchOffsetWithoutLFO = 0;
+	Bit32s currentPitchOffset = 0;
 
-	Bit16s lfoPitchOffset;
+	Bit16s lfoPitchOffset = 0;
 	// In range -12 - 36
-	Bit8s timeKeyfollowSubtraction;
+	Bit8s timeKeyfollowSubtraction = 0;
 
-	Bit16s pitchOffsetChangePerBigTick;
-	Bit16u targetPitchOffsetReachedBigTick;
-	unsigned int shifts;
+	Bit16s pitchOffsetChangePerBigTick = 0;
+	Bit16u targetPitchOffsetReachedBigTick = 0;
+	unsigned int shifts = 0;
 
-	Bit16u pitch;
+	Bit16u pitch = 0;
 
 	void updatePitch();
 	void setupPitchChange(int targetPitchOffset, Bit8u changeDuration);
@@ -55,8 +55,8 @@ private:
 	void nextPhase();
 	void process();
 public:
-	TVP(const Partial *partial);
-	void reset(const Part *part, const TimbreParam::PartialParam *partialParam);
+	TVP(const Partial *usePartial);
+	void reset(const Part *usePart, const TimbreParam::PartialParam *usePartialParam);
 	Bit32u getBasePitch() const;
 	Bit16u nextPitch();
 	void startDecay();

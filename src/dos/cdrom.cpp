@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -39,7 +39,7 @@ CDROM_Interface_SDL::CDROM_Interface_SDL(void) {
 }
 
 CDROM_Interface_SDL::~CDROM_Interface_SDL(void) {
-	StopAudio();
+	CDROM_Interface_SDL::StopAudio();
 #if !defined(C_SDL2)
 	SDL_CDClose(cd);
 	cd		= 0;
@@ -59,7 +59,7 @@ bool CDROM_Interface_SDL::SetDevice(char* path, int forceCD) {
 	        cd = SDL_CDOpen(driveID);
 	        SDL_CDStatus(cd);
 	   	return true;
-	};	
+	}
 	
 	const char* cdname = 0;
 	for (int i=0; i<num; i++) {
@@ -69,8 +69,8 @@ bool CDROM_Interface_SDL::SetDevice(char* path, int forceCD) {
 			SDL_CDStatus(cd);
 			driveID = i;
 			return true;
-		};
-	};
+		}
+	}
 #endif
 
 	return false; 
@@ -174,7 +174,7 @@ bool CDROM_Interface_SDL::PlayAudioSector(unsigned long start,unsigned long len)
 	// Has to be there, otherwise wrong cd status report (dunno why, sdl bug ?)
 	SDL_CDClose(cd);
 	cd = SDL_CDOpen(driveID);
-	bool success = (SDL_CDPlay(cd,start+150,len)==0);
+	bool success = (SDL_CDPlay(cd,int(start+150u),int(len))==0);
 	return success;
 #else
     return false;
@@ -242,7 +242,7 @@ int CDROM_GetMountType(char* path, int forceCD) {
 	for (int i=0; i<num; i++) {
 		cdName = SDL_CDName(i);
 		if (strcmp(buffer,cdName)==0) return 0;
-	};
+	}
 #endif
 	
 	// Detect ISO

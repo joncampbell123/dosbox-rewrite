@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -122,7 +122,7 @@ static void write_p201(Bitu port,Bitu val,Bitu iolen) {
     (void)iolen;//UNUSED
 	/* Store writetime index */
 	write_active = true;
-	last_write = PIC_Ticks;
+	last_write = (Bit32u)PIC_Ticks;
 	if (stick[0].enabled) {
 		stick[0].xcount=(Bitu)((stick[0].xpos*RANGE)+RANGE);
 		stick[0].ycount=(Bitu)((stick[0].ypos*RANGE)+RANGE);
@@ -144,9 +144,9 @@ static void write_p201_timed(Bitu port,Bitu val,Bitu iolen) {
 	double currentTick = PIC_FullIndex();
 	if (stick[0].enabled) {
 		stick[0].xtick = currentTick + 1000.0*( JOY_S_CONSTANT + S_PER_OHM *
-	                         (double)(((stick[0].xpos+1.0)* OHMS)) );
+	                         (double)((stick[0].xpos+1.0)* OHMS) );
 		stick[0].ytick = currentTick + 1000.0*( JOY_S_CONSTANT + S_PER_OHM *
-		                 (double)(((stick[0].ypos+1.0)* OHMS)) );
+		                 (double)((stick[0].ypos+1.0)* OHMS) );
 	}
 	if (stick[1].enabled) {
 		stick[1].xtick = currentTick + 1000.0*( JOY_S_CONSTANT + S_PER_OHM *

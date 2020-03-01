@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -27,7 +27,7 @@
 Bit32u DOS_HMA_LIMIT();
 Bit32u DOS_HMA_FREE_START();
 Bit32u DOS_HMA_GET_FREE_SPACE();
-void DOS_HMA_CLAIMED(Bitu bytes);
+void DOS_HMA_CLAIMED(Bit16u bytes);
 
 extern bool enable_share_exe_fake;
 
@@ -57,7 +57,7 @@ const char *Win_NameThatVXD(Bit16u devid) {
 		case 0x0487:	return "NWSUP";
 		case 0x28A1:	return "PHARLAP";
 		case 0x7A5F:	return "SIWVID";
-	};
+	}
 
 	return NULL;
 }
@@ -67,7 +67,7 @@ void DOS_AddMultiplexHandler(MultiplexHandler * handler) {
 }
 
 void DOS_DelMultiplexHandler(MultiplexHandler * handler) {
-	for(Multiplex_it it =Multiplex.begin();it != Multiplex.end();it++) {
+	for(Multiplex_it it =Multiplex.begin();it != Multiplex.end();++it) {
 		if(*it == handler) {
 			Multiplex.erase(it);
 			return;
@@ -76,7 +76,7 @@ void DOS_DelMultiplexHandler(MultiplexHandler * handler) {
 }
 
 static Bitu INT2F_Handler(void) {
-	for(Multiplex_it it = Multiplex.begin();it != Multiplex.end();it++)
+	for(Multiplex_it it = Multiplex.begin();it != Multiplex.end();++it)
 		if( (*it)() ) return CBRET_NONE;
    
 	LOG(LOG_DOSMISC,LOG_ERROR)("DOS:INT 2F Unhandled call AX=%4X",reg_ax);
@@ -88,9 +88,28 @@ static Bitu INT2A_Handler(void) {
 	return CBRET_NONE;
 }
 
+extern RealPt DOS_DriveDataListHead;       // INT 2Fh AX=0803h DRIVER.SYS drive data table list
+
 // INT 2F
 static bool DOS_MultiplexFunctions(void) {
 	switch (reg_ax) {
+    case 0x0800:    /* DRIVER.SYS function */
+    case 0x0801:    /* DRIVER.SYS function */
+    case 0x0802:    /* DRIVER.SYS function */
+        LOG(LOG_MISC,LOG_DEBUG)("Unhandled DRIVER.SYS call AX=%04x BX=%04x CX=%04x DX=%04x BP=%04x",reg_ax,reg_bx,reg_cx,reg_dx,reg_bp);
+        break;
+    case 0x0803:    /* DRIVER.SYS function */
+        LOG(LOG_MISC,LOG_DEBUG)("Unhandled DRIVER.SYS call AX=%04x BX=%04x CX=%04x DX=%04x BP=%04x",reg_ax,reg_bx,reg_cx,reg_dx,reg_bp);
+        // FIXME: Windows 95 SCANDISK.EXE relies on the drive data table list pointer provided by this call.
+        //        Returning DS:DI unmodified or set to 0:0 will only send it off into the weeds chasing random data
+        //        as a linked list. However looking at the code DI=0xFFFF is sufficient to prevent that until
+        //        DOSBox-X emulates DRIVER.SYS functions and provides the information it expects according to RBIL.
+        //        BUT, Windows 95 setup checks if the pointer is NULL, and considers 0:FFFF valid >_<.
+        //        It's just easier to return a pointer to a dummy table.
+        //        [http://www.ctyme.com/intr/rb-4283.htm]
+        SegSet16(ds,DOS_DriveDataListHead >> 16);
+        reg_di = DOS_DriveDataListHead;
+        break;
 	/* ert, 20100711: Locking extensions */
 	case 0x1000:	/* SHARE.EXE installation check */
 		if (enable_share_exe_fake) {
@@ -109,9 +128,9 @@ static bool DOS_MultiplexFunctions(void) {
 		if (reg_bx<16) {
 			RealPt sftrealpt=mem_readd(Real2Phys(dos_infoblock.GetPointer())+4);
 			PhysPt sftptr=Real2Phys(sftrealpt);
-			Bitu sftofs=0x06u+reg_bx*0x3bu;
+			Bit32u sftofs=0x06u+reg_bx*0x3bu;
 
-			if (Files[reg_bx]) mem_writeb(sftptr+sftofs,Files[reg_bx]->refCtr);
+			if (Files[reg_bx]) mem_writeb(sftptr+sftofs, (Bit8u)(Files[reg_bx]->refCtr));
 			else mem_writeb(sftptr+sftofs,0);
 
 			if (!Files[reg_bx]) return true;
@@ -132,7 +151,7 @@ static bool DOS_MultiplexFunctions(void) {
 				mem_writew(sftptr+sftofs+0x02,(Bit16u)(Files[reg_bx]->flags&3));	// file open mode
 				mem_writeb(sftptr+sftofs+0x04,(Bit8u)(Files[reg_bx]->attr));		// file attribute
 				mem_writew(sftptr+sftofs+0x05,0x40|drive);							// device info word
-				mem_writed(sftptr+sftofs+0x07,RealMake(dos.tables.dpb,drive));		// dpb of the drive
+				mem_writed(sftptr+sftofs+0x07,RealMake(dos.tables.dpb,drive*dos.tables.dpb_size));	// dpb of the drive
 				mem_writew(sftptr+sftofs+0x0d,Files[reg_bx]->time);					// packed file time
 				mem_writew(sftptr+sftofs+0x0f,Files[reg_bx]->date);					// packed file date
 				Bit32u curpos=0;
@@ -187,6 +206,9 @@ static bool DOS_MultiplexFunctions(void) {
 			reg_ax=0xc000;
 
 		}
+		return true;
+	case 0x1600:	/* Windows enhanced mode installation check */
+		// Leave AX as 0x1600, indicating that neither Windows 3.x enhanced mode nor Windows/386 2.x is running, nor is XMS version 1 driver installed
 		return true;
 	case 0x1605:	/* Windows init broadcast */
 		if (enable_a20_on_windows_init) {
@@ -349,7 +371,13 @@ static bool DOS_MultiplexFunctions(void) {
 		LOG(LOG_MISC,LOG_DEBUG)("HMA allocation: %u bytes at FFFF:%04x",reg_bx,reg_di);
 		DOS_HMA_CLAIMED(reg_bx);
 		} return true;
-	}
+    case 0x4a10: { /* Microsoft SmartDrive (SMARTDRV) API */
+        LOG(LOG_MISC,LOG_DEBUG)("Unhandled SMARTDRV call AX=%04x BX=%04x CX=%04x DX=%04x BP=%04x",reg_ax,reg_bx,reg_cx,reg_dx,reg_bp);
+	    } return true;
+    case 0x4a11: { /* Microsoft DoubleSpace (DBLSPACE.BIN) API */
+        LOG(LOG_MISC,LOG_DEBUG)("Unhandled DBLSPACE call AX=%04x BX=%04x CX=%04x DX=%04x BP=%04x",reg_ax,reg_bx,reg_cx,reg_dx,reg_bp);
+	    } return true;
+    }
 
 	return false;
 }

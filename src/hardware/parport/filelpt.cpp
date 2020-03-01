@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2013  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -30,9 +30,11 @@
 
 CFileLPT::CFileLPT (Bitu nr, Bit8u initIrq, CommandLine* cmd)
                               :CParallel (cmd, nr,initIrq) {
+    bool is_file = false;
 	InstallationSuccessful = false;
 	fileOpen = false;
 	controlreg = 0;
+    timeout = ~0u;
 	std::string str;
 	ack = false;
 
@@ -62,22 +64,29 @@ CFileLPT::CFileLPT (Bitu nr, Bit8u initIrq, CommandLine* cmd)
 			}
 		}
 	}
-	
 	temp=0;
-	if(cmd->FindStringBegin("timeout:",str,false)) {
-		if(sscanf(str.c_str(), "%u",&timeout)!=1) {
-			LOG_MSG("parallel%d: Invalid timeout parameter.",(int)nr+1);
-			return;
-		}
-	} else timeout = 500;
 
 	if(cmd->FindStringBegin("dev:",str,false)) {
 		name = str.c_str();
 		filetype = FILE_DEV;
+	} else if(cmd->FindStringBegin("file:",str,false)) {
+		name = str.c_str();
+		filetype = FILE_DEV;
+        is_file = true;
 	} else if(cmd->FindStringBegin("append:",str,false)) {
 		name = str.c_str();
 		filetype = FILE_APPEND;
 	} else filetype = FILE_CAPTURE;
+
+	if (cmd->FindStringBegin("timeout:",str,false)) {
+		if(sscanf(str.c_str(), "%u",&timeout)!=1) {
+			LOG_MSG("parallel%d: Invalid timeout parameter.",(int)nr+1);
+			return;
+		}
+	}
+
+    if (timeout == ~0u)
+        timeout = is_file ? 0 : 500;
 
 	InstallationSuccessful = true;
 }
@@ -94,12 +103,15 @@ bool CFileLPT::OpenFile() {
 	switch(filetype) {
 	case FILE_DEV:
 		file = fopen(name.c_str(),"wb");
+        if (file != NULL) setbuf(file,NULL); // disable buffering
 		break;
 	case FILE_CAPTURE:
 		file = OpenCaptureFile("Parallel Port Stream",".prt");
+        if (file != NULL) setbuf(file,NULL); // disable buffering
 		break;
 	case FILE_APPEND:
 		file = fopen(name.c_str(),"ab");
+        if (file != NULL) setbuf(file,NULL); // disable buffering
 		break;
 	}
 
@@ -128,7 +140,7 @@ bool CFileLPT::Putchar(Bit8u val)
 
 	if(codepage_ptr!=NULL) {
 		Bit16u extchar = codepage_ptr[val];
-		if(extchar & 0xFF00) fputc((Bitu)(extchar >> 8),file);
+		if(extchar & 0xFF00) fputc((int)((Bit8u)(extchar >> 8)),file);
 		fputc((Bitu)(extchar & 0xFF),file);
 
 	} else fputc((Bitu)val,file);
@@ -176,7 +188,7 @@ void CFileLPT::Write_IOSEL(Bitu val) {
 }
 void CFileLPT::handleUpperEvent(Bit16u type) {
     (void)type;//UNUSED
-	if(fileOpen) {
+	if(fileOpen && timeout != 0) {
 		if(lastUsedTick + timeout < PIC_Ticks) {
 			if(addFF) {
 				fputc(12,file);

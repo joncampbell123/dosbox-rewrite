@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -69,12 +69,14 @@ void write_p3c4(Bitu /*port*/,Bitu val,Bitu /*iolen*/) {
 			val &= 0x07;	// FIXME: reasonable guess, since the ET4000 does it too
 		else
 			val &= 0x0F;	// FIXME: reasonable guess
+
+        /* Paradise/Western Digital sequencer registers appear to repeat every 0x40 aka decoding bits [5:0] */
 	}
 	else if (machine == MCH_EGA) {
 		val &= 0x0F; // FIXME: reasonable guess
 	}
 
-	seq(index)=val;
+	seq(index)=(Bit8u)val;
 }
 
 void VGA_SequReset(bool reset);
@@ -85,17 +87,17 @@ void write_p3c5(Bitu /*port*/,Bitu val,Bitu iolen) {
 	switch(seq(index)) {
 	case 0:		/* Reset */
 		if((seq(reset)^val)&0x3) VGA_SequReset((val&0x3)!=0x3);
-		seq(reset)=val;
+		seq(reset)=(Bit8u)val;
 		break;
 	case 1:		/* Clocking Mode */
 		if (val!=seq(clocking_mode)) {
 			if((seq(clocking_mode)^val)&0x20) VGA_Screenstate((val&0x20)==0);
 			// don't resize if only the screen off bit was changed
 			if ((val&(~0x20u))!=(seq(clocking_mode)&(~0x20u))) {
-				seq(clocking_mode)=val;
+				seq(clocking_mode)=(Bit8u)val;
 				VGA_StartResize();
 			} else {
-				seq(clocking_mode)=val;
+				seq(clocking_mode)=(Bit8u)val;
 			}
 			if (val & 0x20) vga.attr.disabled |= 0x2u;
 			else vga.attr.disabled &= ~0x2u;
@@ -126,7 +128,7 @@ void write_p3c5(Bitu /*port*/,Bitu val,Bitu iolen) {
 		break;
 	case 3:		/* Character Map Select */
 		{
-			seq(character_map_select)=val;
+			seq(character_map_select)=(Bit8u)val;
 			Bit8u font1=(val & 0x3) << 1;
 			if (IS_VGA_ARCH) font1|=(val & 0x10) >> 4;
 			vga.draw.font_tables[0]=&vga.draw.font[font1*8*1024];
@@ -152,7 +154,7 @@ void write_p3c5(Bitu /*port*/,Bitu val,Bitu iolen) {
 			3  If set address bit 0-1 selects video memory planes (256 color mode),
 				rather than the Map Mask and Read Map Select Registers.
 		*/
-		seq(memory_mode)=val;
+		seq(memory_mode)=(Bit8u)val;
 		if (IS_VGA_ARCH) {
 			/* Changing this means changing the VGA Memory Read/Write Handler */
 			if (val&0x08) vga.config.chained=true;

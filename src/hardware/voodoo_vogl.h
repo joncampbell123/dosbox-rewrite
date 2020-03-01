@@ -1,5 +1,5 @@
  /*
- *  Copyright (C) 2002-2013  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -26,11 +26,11 @@
 
 /* opengl extensions */
 #ifdef WIN32
-extern PFNGLACTIVETEXTUREARBPROC glActiveTextureARB;
-extern PFNGLMULTITEXCOORD4FARBPROC glMultiTexCoord4fARB;
-extern PFNGLMULTITEXCOORD4FVARBPROC glMultiTexCoord4fvARB;
-# define glMultiTexCoord4fv glMultiTexCoord4fvARB
-# define glActiveTexture glActiveTextureARB
+extern PFNGLACTIVETEXTUREARBPROC __glActiveTextureARB;
+extern PFNGLMULTITEXCOORD4FARBPROC __glMultiTexCoord4fARB;
+extern PFNGLMULTITEXCOORD4FVARBPROC __glMultiTexCoord4fvARB;
+# define glMultiTexCoord4fv __glMultiTexCoord4fvARB
+# define glActiveTexture __glActiveTextureARB
 #endif
 
 extern PFNGLCREATESHADEROBJECTARBPROC glCreateShaderObjectARB;

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2013  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 /* Local Debug Function */
@@ -57,10 +57,10 @@ public:
 
         WINI_MAX_INDEX
     };
-    bool win_vis[WINI_MAX_INDEX];
+    bool win_vis[WINI_MAX_INDEX] = {};
     std::string win_title[WINI_MAX_INDEX];
-    unsigned char win_order[WINI_MAX_INDEX];
-    unsigned int win_height[WINI_MAX_INDEX];
+    unsigned char win_order[WINI_MAX_INDEX] = {};
+    unsigned int win_height[WINI_MAX_INDEX] = {};
 public:
 	DBGBlock() : win_main(NULL), win_reg(NULL), win_data(NULL), win_code(NULL),
 		win_var(NULL), win_out(NULL), win_inp(NULL), active_win(WINI_CODE), input_y(0), global_mask(0), data_view(0xFF) {
@@ -98,8 +98,8 @@ public:
     int name_to_win(const char *name);
     WINDOW *get_active_win(void);
     int win_find_order(int wnd);
-    int win_prev_by_order(int ord);
-    int win_next_by_order(int ord);
+    int win_prev_by_order(int order);
+    int win_next_by_order(int order);
     void swap_order(int o1,int o2);
     void next_window(void);
 };
@@ -116,7 +116,7 @@ struct DASMLine {
 extern DBGBlock dbg;
 
 /* Local Debug Stuff */
-Bitu DasmI386(char* buffer, PhysPt pc, Bitu cur_ip, bool bit32);
+Bitu DasmI386(char* buffer, PhysPt pc, Bit32u cur_ip, bool bit32);
 int  DasmLastOperandSize(void);
 #endif
 

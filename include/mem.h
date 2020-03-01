@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 #ifndef DOSBOX_MEM_H
@@ -42,10 +42,9 @@ extern HostPt               MemBase;
 
 HostPt                      GetMemBase(void);
 bool                        MEM_A20_Enabled(void);
-void                        MEM_A20_Enable(bool enable);
+void                        MEM_A20_Enable(bool enabled);
 
 /* Memory management / EMS mapping */
-HostPt                      MEM_GetBlockPage(void);
 Bitu                        MEM_FreeTotal(void);           //Free 4 kb pages
 Bitu                        MEM_FreeLargest(void);         //Largest free 4 kb pages block
 Bitu                        MEM_TotalPages(void);          //Total amount of 4 kb pages
@@ -53,7 +52,6 @@ Bitu                        MEM_AllocatedPages(MemHandle handle); // amount of a
 MemHandle                   MEM_AllocatePages(Bitu pages,bool sequence);
 MemHandle                   MEM_AllocatePages_A20_friendly(Bitu pages,bool sequence);
 MemHandle                   MEM_GetNextFreePage(void);
-PhysPt                      MEM_AllocatePage(void);
 void                        MEM_ReleasePages(MemHandle handle);
 bool                        MEM_ReAllocatePages(MemHandle & handle,Bitu pages,bool sequence);
 
@@ -148,13 +146,13 @@ static INLINE void var_write(Bit64u * const var, const Bit64u val) {
 
 /* The Folowing six functions are slower but they recognize the paged memory system */
 
-Bit8u  mem_readb(const PhysPt pt);
-Bit16u mem_readw(const PhysPt pt);
-Bit32u mem_readd(const PhysPt pt);
+Bit8u  mem_readb(const PhysPt address);
+Bit16u mem_readw(const PhysPt address);
+Bit32u mem_readd(const PhysPt address);
 
-void mem_writeb(const PhysPt pt,const Bit8u val);
-void mem_writew(const PhysPt pt,const Bit16u val);
-void mem_writed(const PhysPt pt,const Bit32u val);
+void mem_writeb(const PhysPt address,const Bit8u val);
+void mem_writew(const PhysPt address,const Bit16u val);
+void mem_writed(const PhysPt address,const Bit32u val);
 
 void phys_writes(PhysPt addr, const char* string, Bitu length);
 

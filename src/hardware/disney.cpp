@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -196,7 +196,7 @@ static void disney_write(Bitu port,Bitu val,Bitu iolen) {
 	switch (port-DISNEY_BASE) {
 	case 0:		/* Data Port */
 	{
-		disney.data=val;
+		disney.data=(Bit8u)val;
 		// if data is written here too often without using the stereo
 		// mechanism we use the simple DAC machanism. 
         if(disney.state != DS_RUNNING) {
@@ -263,7 +263,7 @@ static void disney_write(Bitu port,Bitu val,Bitu iolen) {
 
 //		LOG_WARN("DISNEY:Control write %x",val);
 		if (val&0x10) LOG(LOG_MISC,LOG_ERROR)("DISNEY:Parallel IRQ Enabled");
-		disney.control=val;
+		disney.control=(Bit8u)val;
 		break;
 	}
 }
@@ -335,7 +335,7 @@ static void DISNEY_CallBack(Bitu len) {
 			if(real_used) {
 				gapfiller0 = disney.da[0].buffer[real_used-1];
 				gapfiller1 = disney.da[1].buffer[real_used-1];
-			};
+			}
 
 			memset(disney.da[0].buffer+real_used,
 				gapfiller0,len-real_used);

@@ -83,8 +83,6 @@ private:
 	bool	_isOpen;
 	int	_device_num;
 
-	int	_control_fd;
-
 	/* buffer for partial data read from _control_fd - from timidity-io.c, see fdgets() */
 	char	_controlbuffer[BUFSIZ];
 	int	_controlbuffer_count;	/* beginning of read pointer */
@@ -240,7 +238,7 @@ int MidiHandler_timidity::timidity_ctl_command(char * buff, const char *fmt, ...
 		va_start(ap, fmt);
 		len = vsnprintf(buff, BUFSIZ-1, fmt, ap); /* leave one byte for \n */
 		va_end(ap);
-		if (len <= 0 && len >= BUFSIZ-1) {
+		if (len <= 0 || len >= BUFSIZ-1) {
 			LOG_MSG("timidity_ctl_command: vsnprintf returned %d!\n", len);
 			return 0;
 		}

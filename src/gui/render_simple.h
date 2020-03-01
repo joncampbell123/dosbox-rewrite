@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,60 +13,41 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
-
+#undef conc4d_func
+#undef conc4d_sub_func
 #if defined (SCALERLINEAR)
-static inline void conc4d(SCALERNAME,SBPP,DBPP,L)(const void *s) {
-# if !defined(_MSC_VER) /* Microsoft C++ thinks this is a failed attempt at a function call---it's not */
-	(void)conc4d(SCALERNAME,SBPP,DBPP,L);
-# endif
+# define conc4d_func        conc4d(SCALERNAME,SBPP,DBPP,L)
+# define conc4d_sub_func    conc4d(SCALERNAME,SBPP,DBPP,Lsub)
 #else
-static inline void conc4d(SCALERNAME,SBPP,DBPP,R)(const void *s) {
-# if !defined(_MSC_VER) /* Microsoft C++ thinks this is a failed attempt at a function call---it's not */
-	(void)conc4d(SCALERNAME,SBPP,DBPP,R);
-# endif
+# define conc4d_func        conc4d(SCALERNAME,SBPP,DBPP,R)
+# define conc4d_sub_func    conc4d(SCALERNAME,SBPP,DBPP,Rsub)
 #endif
 
-#ifdef RENDER_NULL_INPUT
-	if (!s) {
-		render.scale.cacheRead += render.scale.cachePitch;
-#if defined(SCALERLINEAR) 
-		Bitu skipLines = SCALERHEIGHT;
-#else
-		Bitu skipLines = Scaler_Aspect[ render.scale.outLine++ ];
-#endif
-		ScalerAddLines( 0, skipLines );
-		return;
-	}
-#endif
-	/* Clear the complete line marker */
-	Bitu hadChange = 0;
-	const SRCTYPE *src = (SRCTYPE*)s;
-	SRCTYPE *cache = (SRCTYPE*)(render.scale.cacheRead);
-	render.scale.cacheRead += render.scale.cachePitch;
-	PTYPE * line0=(PTYPE *)(render.scale.outWrite);
-#if (SBPP == 9)
-	for (Bits x=(Bits)render.src.width;x>0;) {
-		if (*(Bit32u const*)src == *(Bit32u*)cache && !(
+static inline void conc4d_sub_func(const SRCTYPE* &src, SRCTYPE* &cache, PTYPE* &line0, const unsigned int block_proc, Bitu &hadChange) {
+#if !defined(C_SCALER_FULL_LINE)
+        if (memcmp(src,cache,block_proc * sizeof(SRCTYPE)) == 0
+# if (SBPP == 9)
+            && !(
 			render.pal.modified[src[0]] | 
 			render.pal.modified[src[1]] | 
 			render.pal.modified[src[2]] | 
-			render.pal.modified[src[3]] )) {
-			x-=4;
-			src+=4;
-			cache+=4;
-			line0+=4*SCALERWIDTH;
-#else 
-	for (Bits x=(Bits)render.src.width;x>0;) {
-		if (*(Bitu const*)src == *(Bitu*)cache) {
-			x-=(Bits)(sizeof(Bitu)/sizeof(SRCTYPE));
-			src+=(Bits)(sizeof(Bitu)/sizeof(SRCTYPE));
-			cache+=(Bits)(sizeof(Bitu)/sizeof(SRCTYPE));
-			line0+=(Bits)(sizeof(Bitu)/sizeof(SRCTYPE))*SCALERWIDTH;
+			render.pal.modified[src[3]] |
+            render.pal.modified[src[4]] | 
+            render.pal.modified[src[5]] | 
+			render.pal.modified[src[6]] | 
+			render.pal.modified[src[7]])
+# endif
+            ) {
+			src   += block_proc;
+			cache += block_proc;
+			line0 += block_proc*SCALERWIDTH;
+		}
+        else
 #endif
-		} else {
+        {
 #if defined(SCALERLINEAR)
 #if (SCALERHEIGHT > 1) 
 			PTYPE *line1 = WC[0];
@@ -101,10 +82,10 @@ static inline void conc4d(SCALERNAME,SBPP,DBPP,R)(const void *s) {
 #endif
 #endif //defined(SCALERLINEAR)
 			hadChange = 1;
-			for (Bitu i = x > 32 ? 32 : (Bitu)x;i>0;i--,x--) {
-				const SRCTYPE S = *src;
-				*cache = S;
-				src++;cache++;
+            unsigned int i = block_proc; /* WARNING: assume block_proc != 0 */
+            do {
+				const SRCTYPE S = *src++;
+				*cache++ = S;
 				const PTYPE P = PMAKE(S);
 				SCALERFUNC;
 				line0 += SCALERWIDTH;
@@ -123,7 +104,7 @@ static inline void conc4d(SCALERNAME,SBPP,DBPP,R)(const void *s) {
 #if (SCALERHEIGHT > 5) 
 				line5 += SCALERWIDTH;
 #endif
-			}
+			} while (--i != 0u);
 #if defined(SCALERLINEAR)
 #if (SCALERHEIGHT > 1)
 			Bitu copyLen = (Bitu)((Bit8u*)line1 - (Bit8u*)WC[0]);
@@ -143,7 +124,50 @@ static inline void conc4d(SCALERNAME,SBPP,DBPP,R)(const void *s) {
 #endif
 #endif //defined(SCALERLINEAR)
 		}
+}
+
+static inline void conc4d_func(const void *s) {
+#ifdef RENDER_NULL_INPUT
+	if (!s) {
+		render.scale.cacheRead += render.scale.cachePitch;
+#if defined(SCALERLINEAR) 
+		Bitu skipLines = SCALERHEIGHT;
+#else
+		Bitu skipLines = Scaler_Aspect[ render.scale.outLine++ ];
+#endif
+		ScalerAddLines( 0, skipLines );
+		return;
 	}
+#endif
+	/* Clear the complete line marker */
+	Bitu hadChange = 0;
+	const SRCTYPE *src = (SRCTYPE*)s;
+
+	SRCTYPE *cache = (SRCTYPE*)(render.scale.cacheRead);
+	render.scale.cacheRead += render.scale.cachePitch;
+	PTYPE * line0=(PTYPE *)(render.scale.outWrite);
+
+#if defined(C_SCALER_FULL_LINE)
+    conc4d_sub_func(src,cache,line0,(unsigned int)render.src.width,hadChange);
+#else
+# if (SBPP == 9)
+    // the pal change code above limits this to 8 pixels only, see function above
+    const unsigned int block_size = 8;
+# else
+    // larger blocks encourage memcmp() to optimize, scaler loop to process before coming back to check again.
+    const unsigned int block_size = 128;
+# endif
+
+    Bitu x = (Bitu)render.src.width;
+    while (x >= block_size) {
+        x -= block_size;
+        conc4d_sub_func(src,cache,line0,block_size,hadChange);
+    }
+    if (x > 0) {
+        conc4d_sub_func(src,cache,line0,(unsigned int)x,hadChange);
+	}
+#endif
+
 #if defined(SCALERLINEAR) 
 	Bitu scaleLines = SCALERHEIGHT;
 #else

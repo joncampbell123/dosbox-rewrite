@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2013  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 #include <string.h>
@@ -44,25 +44,25 @@ static void innova_write(Bitu port,Bitu val,Bitu iolen) {
 	innova.last_used=PIC_Ticks;
 
 	Bitu sidPort = port-innova.basePort;
-	innova.sid->write(sidPort, val);
+	innova.sid->write((reg8)sidPort, (reg8)val);
 }
 
 static Bitu innova_read(Bitu port,Bitu iolen) {
     (void)iolen;//UNUSED
 	Bitu sidPort = port-innova.basePort;
-	return innova.sid->read(sidPort);
+	return innova.sid->read((reg8)sidPort);
 }
 
 
 static void INNOVA_CallBack(Bitu len) {
 	if (!len) return;
 
-	cycle_count delta_t = SID_FREQ*len/innova.rate;
+	cycle_count delta_t = (cycle_count)(SID_FREQ*len/innova.rate);
 	short* buffer = (short*)MixTemp;
 	Bitu bufindex = 0;
 
 	while(delta_t && bufindex != len) {
-		bufindex += (Bitu)innova.sid->clock(delta_t, buffer+bufindex, len-bufindex);
+		bufindex += (Bitu)innova.sid->clock(delta_t, buffer+bufindex, (int)(len-bufindex));
 	}
 	innova.chan->AddSamples_m16(len, buffer);
 
@@ -102,7 +102,7 @@ public:
 		innova.sid->set_chip_model(MOS6581);
 		innova.sid->enable_filter(true);
 		innova.sid->enable_external_filter(true);
-		innova.sid->set_sampling_parameters(SID_FREQ, method, innova.rate, -1, 0.97);
+		innova.sid->set_sampling_parameters(SID_FREQ, method, (double)innova.rate, -1, 0.97);
 
 		innova.last_used=0;
 

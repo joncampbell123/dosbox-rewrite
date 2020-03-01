@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -77,14 +77,17 @@ public:
 	static void GetPlatformConfigName(std::string& in);
 	static void CreatePlatformConfigDir(std::string& in);
 	static void ResolveHomedir(std::string & temp_line);
-	static void CreateDir(std::string const& temp);
+	static void CreateDir(std::string const& in);
 	static bool IsPathAbsolute(std::string const& in);
 };
 
 
 #if defined (WIN32)
 
-#define WIN32_LEAN_AND_MEAN        // Exclude rarely-used stuff from 
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN        // Exclude rarely-used stuff from
+#endif
+
 #include <windows.h>
 
 typedef struct dir_struct {
@@ -130,4 +133,5 @@ bool read_directory_next(dir_information* dirp, char* entry_name, bool& is_direc
 
 void close_directory(dir_information* dirp);
 
+FILE* fopen_wrap(const char* path, const char* mode);
 #endif

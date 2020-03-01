@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,10 +13,11 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "dosbox.h"
 #include "mem.h"
@@ -72,6 +73,8 @@ Bitu cycle_count;
 #define CPU_PIC_CHECK 1u
 #define CPU_TRAP_CHECK 1u
 
+#define CPU_TRAP_DECODER	CPU_Core_Normal_Trap_Run
+
 #define OPCODE_NONE			0x000u
 #define OPCODE_0F			0x100u
 #define OPCODE_SIZE			0x200u
@@ -122,6 +125,15 @@ static struct {
 #define BaseDS		core.base_ds
 #define BaseSS		core.base_ss
 
+static INLINE void FetchDiscardb() {
+	core.cseip+=1;
+}
+
+static INLINE Bit8u FetchPeekb() {
+	Bit8u temp=LoadMb(core.cseip);
+	return temp;
+}
+
 static INLINE Bit8u Fetchb() {
 	Bit8u temp=LoadMb(core.cseip);
 	core.cseip+=1;
@@ -152,9 +164,12 @@ static INLINE Bit32u Fetchd() {
 #define EALookupTable (core.ea_table)
 
 Bits CPU_Core_Normal_Run(void) {
+    if (CPU_Cycles <= 0)
+	    return CBRET_NONE;
+
 	while (CPU_Cycles-->0) {
 		LOADIP;
-		core.opcode_index=cpu.code.big*0x200u;
+		core.opcode_index=cpu.code.big*(Bitu)0x200u;
 		core.prefixes=cpu.code.big;
 		core.ea_table=&EATable[cpu.code.big*256u];
 		BaseDS=SegBase(ds);
@@ -165,7 +180,7 @@ Bits CPU_Core_Normal_Run(void) {
 		if (DEBUG_HeavyIsBreakpoint()) {
 			FillFlags();
 			return (Bits)debugCallback;
-		};
+		}
 #endif
 #endif
 		cycle_count++;

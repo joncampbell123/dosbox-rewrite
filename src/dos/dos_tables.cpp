@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -21,6 +21,7 @@
 #include "mem.h"
 #include "dos_inc.h"
 #include "callback.h"
+#include "control.h"
 #include <assert.h>
 
 extern Bitu DOS_PRIVATE_SEGMENT_Size;
@@ -41,10 +42,9 @@ GCC_ATTRIBUTE (packed);
 #pragma pack ()
 #endif
 
+RealPt DOS_DriveDataListHead=0;       // INT 2Fh AX=0803h DRIVER.SYS drive data table list
 RealPt DOS_TableUpCase;
 RealPt DOS_TableLowCase;
-
-extern bool mainline_compatible_mapping;
 
 static Bitu call_casemap = 0;
 
@@ -72,7 +72,7 @@ void DOS_GetMemory_reinit() {
 void DOS_GetMemory_unmap() {
 	if (DOS_PRIVATE_SEGMENT != 0) {
 		LOG(LOG_MISC,LOG_DEBUG)("Unmapping DOS private segment 0x%04x-0x%04x",DOS_PRIVATE_SEGMENT,DOS_PRIVATE_SEGMENT_END-1u);
-		if (DOS_PRIVATE_SEGMENT >= 0xA000u) MEM_unmap_physmem((unsigned int)DOS_PRIVATE_SEGMENT<<4u,((unsigned int)DOS_PRIVATE_SEGMENT_END<<4u)-1u);
+		if (DOS_PRIVATE_SEGMENT >= 0xA000u) MEM_unmap_physmem((Bitu)DOS_PRIVATE_SEGMENT<<4u,((Bitu)DOS_PRIVATE_SEGMENT_END<<4u)-1u);
 		DOS_GetMemory_unmapped = true;
 		DOS_PRIVATE_SEGMENT_END = 0;
 		DOS_PRIVATE_SEGMENT = 0;
@@ -80,23 +80,47 @@ void DOS_GetMemory_unmap() {
 	}
 }
 
+bool DOS_User_Wants_UMBs() {
+    Section_prop * section=static_cast<Section_prop *>(control->GetSection("dos"));
+    return section->Get_bool("umb");
+}
+
 void DOS_GetMemory_Choose() {
 	if (DOS_PRIVATE_SEGMENT == 0) {
-		if (mainline_compatible_mapping) {
-			/* DOSBox mainline compatible: private area 0xC800-0xCFFF */
-			DOS_PRIVATE_SEGMENT=0xc800;
-			DOS_PRIVATE_SEGMENT_END=0xc800 + DOS_PRIVATE_SEGMENT_Size;
-		}
-		else {
-			/* DOSBox-X non-compatible: Position ourself just past the VGA BIOS */
-			/* NTS: Code has been arranged so that DOS kernel init follows BIOS INT10h init */
-			DOS_PRIVATE_SEGMENT=VGA_BIOS_SEG_END;
-			DOS_PRIVATE_SEGMENT_END=DOS_PRIVATE_SEGMENT + DOS_PRIVATE_SEGMENT_Size;
-		}
+        /* DOSBox-X non-compatible: Position ourself just past the VGA BIOS */
+        /* NTS: Code has been arranged so that DOS kernel init follows BIOS INT10h init */
+        DOS_PRIVATE_SEGMENT=(Bit16u)VGA_BIOS_SEG_END;
+        DOS_PRIVATE_SEGMENT_END= (Bit16u)(DOS_PRIVATE_SEGMENT + DOS_PRIVATE_SEGMENT_Size);
+
+        if (IS_PC98_ARCH) {
+            bool PC98_FM_SoundBios_Enabled(void);
+
+            /* Do not let the private segment overlap with anything else after segment C800:0000 including the SOUND ROM at CC00:0000.
+             * Limiting to 32KB also leaves room for UMBs if enabled between C800:0000 and the EMS page frame at (usually) D000:0000 */
+            unsigned int limit = 0xD000;
+
+            if (PC98_FM_SoundBios_Enabled()) {
+                // TODO: What about sound BIOSes larger than 16KB?
+                if (limit > 0xCC00)
+                    limit = 0xCC00;
+            }
+
+            if (DOS_User_Wants_UMBs()) {
+                // leave room for UMBs, things are cramped a bit in PC-98 mode
+                if (limit > 0xC600)
+                    limit = 0xC600;
+            }
+
+            if (DOS_PRIVATE_SEGMENT_END > limit)
+                DOS_PRIVATE_SEGMENT_END = limit;
+
+            if (DOS_PRIVATE_SEGMENT >= DOS_PRIVATE_SEGMENT_END)
+                E_Exit("Insufficient room in upper memory area for private area");
+        }
 
 		if (DOS_PRIVATE_SEGMENT >= 0xA000) {
-			memset(GetMemBase()+((unsigned int)DOS_PRIVATE_SEGMENT<<4u),0x00,(unsigned int)(DOS_PRIVATE_SEGMENT_END-DOS_PRIVATE_SEGMENT)<<4u);
-			MEM_map_RAM_physmem((unsigned int)DOS_PRIVATE_SEGMENT<<4u,((unsigned int)DOS_PRIVATE_SEGMENT_END<<4u)-1u);
+			memset(GetMemBase()+((Bitu)DOS_PRIVATE_SEGMENT<<4u),0x00,(Bitu)(DOS_PRIVATE_SEGMENT_END-DOS_PRIVATE_SEGMENT)<<4u);
+			MEM_map_RAM_physmem((Bitu)DOS_PRIVATE_SEGMENT<<4u,((Bitu)DOS_PRIVATE_SEGMENT_END<<4u)-1u);
 		}
 
 		LOG(LOG_MISC,LOG_DEBUG)("DOS private segment set to 0x%04x-0x%04x",DOS_PRIVATE_SEGMENT,DOS_PRIVATE_SEGMENT_END-1);
@@ -155,16 +179,37 @@ static Bit8u country_info[0x22] = {
 /* Reservered 5     */  0x00, 0x00, 0x00, 0x00, 0x00
 };
 
+static Bit8u country_info_pc98[0x22] = {
+/* Date format      */  0x02, 0x00,
+/* Currencystring   */  0x5C, 0x00, 0x00, 0x00, 0x00,
+/* Thousands sep    */  0x2c, 0x00,
+/* Decimal sep      */  0x2e, 0x00,
+/* Date sep         */  0x2d, 0x00,
+/* time sep         */  0x3a, 0x00,
+/* currency form    */  0x00,
+/* digits after dec */  0x00,
+/* Time format      */  0x01,
+/* Casemap          */  0x00, 0x00, 0x00, 0x00,
+/* Data sep         */  0x2c, 0x00,
+/* Reservered 5     */  0x00, 0x00, 0x00, 0x00, 0x00,
+/* Reservered 5     */  0x00, 0x00, 0x00, 0x00, 0x00
+};
+
 extern bool enable_dbcs_tables;
 extern bool enable_filenamechar;
 extern bool enable_collating_uppercase;
 
+PhysPt DOS_Get_DPB(unsigned int dos_drive) {
+    if (dos_drive >= DOS_DRIVES)
+        return 0;
+
+    return PhysMake(dos.tables.dpb,dos_drive*dos.tables.dpb_size);
+}
+
 void DOS_SetupTables(void) {
-	Bit16u seg;Bitu i;
-	dos.tables.mediaid=RealMake(DOS_GetMemory(4,"dos.tables.mediaid"),0);
+	Bit16u seg;Bit16u i;
 	dos.tables.tempdta=RealMake(DOS_GetMemory(4,"dos.tables.tempdta"),0);
 	dos.tables.tempdta_fcbdelete=RealMake(DOS_GetMemory(4,"dos.tables.fcbdelete"),0);
-	for (i=0;i<DOS_DRIVES;i++) mem_writew(Real2Phys(dos.tables.mediaid)+i*2,0);
 	/* Create the DOS Info Block */
 	dos_infoblock.SetLocation(DOS_INFOBLOCK_SEG); //c2woody
    
@@ -193,14 +238,26 @@ void DOS_SetupTables(void) {
 
 
 
-	/* Allocate DCBS DOUBLE BYTE CHARACTER SET LEAD-BYTE TABLE */
-	if (enable_dbcs_tables) {
-		dos.tables.dbcs=RealMake(DOS_GetMemory(12,"dos.tables.dbcs"),0);
-		mem_writed(Real2Phys(dos.tables.dbcs),0); //empty table
-	}
-	else {
-		dos.tables.dbcs=0;
-	}
+    /* Allocate DCBS DOUBLE BYTE CHARACTER SET LEAD-BYTE TABLE */
+    if (enable_dbcs_tables) {
+        dos.tables.dbcs=RealMake(DOS_GetMemory(12,"dos.tables.dbcs"),0);
+
+        if (IS_PC98_ARCH) {
+            // write a valid table, or else Windows 3.1 is unhappy.
+            // Values are copied from INT 21h AX=6300h as returned by an MS-DOS 6.22 boot disk
+            mem_writeb(Real2Phys(dos.tables.dbcs)+0,0x81);  // low/high DBCS pair 1
+            mem_writeb(Real2Phys(dos.tables.dbcs)+1,0x9F);
+            mem_writeb(Real2Phys(dos.tables.dbcs)+2,0xE0);  // low/high DBCS pair 2
+            mem_writeb(Real2Phys(dos.tables.dbcs)+3,0xFC);
+            mem_writed(Real2Phys(dos.tables.dbcs)+4,0);
+        }
+        else {
+            mem_writed(Real2Phys(dos.tables.dbcs),0); //empty table
+        }
+    }
+    else {
+        dos.tables.dbcs=0;
+    }
 	/* FILENAME CHARACTER TABLE */
 	if (enable_filenamechar) {
 		dos.tables.filenamechar=RealMake(DOS_GetMemory(2,"dos.tables.filenamechar"),0);
@@ -236,10 +293,10 @@ void DOS_SetupTables(void) {
 	if (enable_collating_uppercase) {
 		dos.tables.collatingseq=RealMake(DOS_GetMemory(25,"dos.tables.collatingseq"),0);
 		mem_writew(Real2Phys(dos.tables.collatingseq),0x100);
-		for (i=0; i<256; i++) mem_writeb(Real2Phys(dos.tables.collatingseq)+i+2,i);
+		for (i=0; i<256; i++) mem_writeb(Real2Phys(dos.tables.collatingseq)+i+2,(Bit8u)i);
 		dos.tables.upcase=dos.tables.collatingseq+258;
 		mem_writew(Real2Phys(dos.tables.upcase),0x80);
-		for (i=0; i<128; i++) mem_writeb(Real2Phys(dos.tables.upcase)+i+2,0x80+i);
+		for (i=0; i<128; i++) mem_writeb(Real2Phys(dos.tables.upcase)+i+2,(Bit8u)0x80+i);
 	}
 	else {
 		dos.tables.collatingseq = 0;
@@ -253,12 +310,28 @@ void DOS_SetupTables(void) {
 	dos_infoblock.SetFCBTable(RealMake(seg,0));
 
 	/* Create a fake DPB */
-	dos.tables.dpb=DOS_GetMemory(2,"dos.tables.dpb");
-	for(Bitu d=0;d<26;d++) real_writeb(dos.tables.dpb,d,d);
+	dos.tables.dpb=DOS_GetMemory(((DOS_DRIVES*dos.tables.dpb_size)+15u)/16u,"dos.tables.dpb");
+    dos.tables.mediaid_offset=0x17;	//Media ID offset in DPB (MS-DOS 4.x-6.x)
+	dos.tables.mediaid=RealMake(dos.tables.dpb,dos.tables.mediaid_offset);
+	for (i=0;i<DOS_DRIVES;i++) {
+        real_writeb(dos.tables.dpb,i*dos.tables.dpb_size,(Bit8u)i);             // drive number
+        real_writeb(dos.tables.dpb,i*dos.tables.dpb_size+1,(Bit8u)i);           // unit number
+        real_writew(dos.tables.dpb,i*dos.tables.dpb_size+2,0x0200);     // bytes per sector
+        real_writew(dos.tables.dpb,i*dos.tables.dpb_size+6,0x0001);     // reserved sectors at the beginning of the drive
+        mem_writew(Real2Phys(dos.tables.mediaid)+i*dos.tables.dpb_size,0u);
+        real_writew(dos.tables.dpb,i*dos.tables.dpb_size+0x1F,0xFFFF);      // number of free clusters or 0xFFFF if unknown
+
+        // next DPB pointer
+        if ((i+1) < DOS_DRIVES)
+            real_writed(dos.tables.dpb,i*dos.tables.dpb_size+0x19,RealMake(dos.tables.dpb,(i+1)*dos.tables.dpb_size));
+        else
+            real_writed(dos.tables.dpb,i*dos.tables.dpb_size+0x19,0xFFFFFFFF); // ED4.EXE (provided by Yksoft1) expects this, or else loops forever
+	}
+    dos_infoblock.SetFirstDPB(RealMake(dos.tables.dpb,0));
 
 	/* Create a fake disk buffer head */
 	seg=DOS_GetMemory(6,"Fake disk buffer head");
-	for (Bitu ct=0; ct<0x20; ct++) real_writeb(seg,ct,0);
+	for (Bit8u ct=0; ct<0x20; ct++) real_writeb(seg,ct,0);
 	real_writew(seg,0x00,0xffff);		// forward ptr
 	real_writew(seg,0x02,0xffff);		// backward ptr
 	real_writeb(seg,0x04,0xff);			// not in use
@@ -273,7 +346,42 @@ void DOS_SetupTables(void) {
 	call_casemap = CALLBACK_Allocate();
 	CALLBACK_Setup(call_casemap,DOS_CaseMapFunc,CB_RETF,"DOS CaseMap");
 	/* Add it to country structure */
-	host_writed(country_info + 0x12, CALLBACK_RealPointer(call_casemap));
-	dos.tables.country=country_info;
+    if (IS_PC98_ARCH) {
+        host_writed(country_info_pc98 + 0x12, CALLBACK_RealPointer(call_casemap));
+        dos.tables.country=country_info_pc98;
+    }
+    else {
+        host_writed(country_info + 0x12, CALLBACK_RealPointer(call_casemap));
+        dos.tables.country=country_info;
+    }
+
+    /* PC-98 INT 1Bh device list (60:6Ch-7Bh).
+     * For now, just write a fake list to satisfy any PC-98 game that
+     * requires a "master disk" to run even if running from an HDI.
+     * See also: [http://hackipedia.org/browse.cgi/Computer/Platform/PC%2c%20NEC%20PC%2d98/Collections/Undocumented%209801%2c%209821%20Volume%202%20%28webtech.co.jp%29/memdos%2etxt]
+     * This is needed to run "Legend of Heroes III" */
+    if (IS_PC98_ARCH) {
+        // FIXME: This is just a fake list. At some point in the future, this
+        //        list needs to reflect the state of all MOUNT/IMGMOUNT commands
+        //        while in the DOS environment provided by this emulation.
+        //
+        //        The byte values seem to match drive letter assignment, as noted:
+        //        [https://github.com/joncampbell123/dosbox-x/issues/1226]
+        for (i=0;i < 0x10;i++) real_writeb(0x60,0x6C+i,0);
+        real_writeb(0x60,0x6C,0xA0);    /* hard drive */
+        real_writeb(0x60,0x6D,0x90);    /* floppy drive */
+    }
+
+    /* fake DRIVER.SYS data table list, to satisfy Windows 95 setup.
+     * The list is supposed to be a linked list of drive BPBs, INT 13h info, etc.
+     * terminated by offset 0xFFFF. For now, just point at a 0xFFFF.
+     * Note that Windows 95 setup and SCANDISK.EXE have different criteria on
+     * the return value of INT 2Fh AX=803h and returning without a pointer
+     * really isn't an option. According to RBIL this interface is built into
+     * MS-DOS. */
+    DOS_DriveDataListHead = RealMake(DOS_GetMemory(1/*paragraph*/,"driver.sys.data.list"),0);
+    mem_writew(Real2Phys(DOS_DriveDataListHead)+0x00,0xFFFF); /* list termination */
+    mem_writew(Real2Phys(DOS_DriveDataListHead)+0x02,0xFFFF);
+    mem_writew(Real2Phys(DOS_DriveDataListHead)+0x04,0x0000);
 }
 

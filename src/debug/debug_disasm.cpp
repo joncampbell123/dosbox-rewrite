@@ -104,7 +104,7 @@ INLINE UINT32 le_uint32(const void* ptr) {
 static UINT8 must_do_size;   /* used with size of operand */
 static int wordop;           /* dealing with word or byte operand */
 
-static int instruction_offset;
+static Bit32u instruction_offset;
 //static UINT16 instruction_segment;
 
 static char* ubufs;           /* start of buffer */
@@ -247,7 +247,7 @@ static char const * op386map1[256] = {
   "int 03",           "int %Ib",         "into",           "iret",
 /* d */
   "%g1 %Eb,1",        "%g1 %Ev,1",       "%g1 %Eb,cl",     "%g1 %Ev,cl",
-  "aam ; %Ib",        "aad ; %Ib",       "setalc",         "xlat",
+  "aam ; %Ib",        "aad ; %Ib",       "setalc",         "%P xlat",
 #if 0
   "esc 0,%Ib",        "esc 1,%Ib",       "esc 2,%Ib",      "esc 3,%Ib",
   "esc 4,%Ib",        "esc 5,%Ib",       "esc 6,%Ib",      "esc 7,%Ib",
@@ -496,6 +496,7 @@ static void uprintf(char const *s, ...)
 	va_list	arg_ptr;
 	va_start (arg_ptr, s);
 	vsprintf(ubufp, s, arg_ptr);
+	va_end(arg_ptr);
 	while (*ubufp)
 		ubufp++;
 }
@@ -532,7 +533,6 @@ static void outhex(char subtype, int extend, int optional, int defsize, int sign
   int n=0, s=0, i;
   INT32 delta = 0;
   unsigned char buff[6];
-  char *name;
   char  signchar;
 
   switch (subtype) {
@@ -617,7 +617,7 @@ static void outhex(char subtype, int extend, int optional, int defsize, int sign
     return;
   }
   if ((n == 4) && !sign) {
-    name = addr_to_hex((UINT32)delta, 0);
+    char *name = addr_to_hex((UINT32)delta, 0);
     uprintf("%s", name);
     return;
   }
@@ -653,9 +653,9 @@ static void outhex(char subtype, int extend, int optional, int defsize, int sign
        } else
          signchar = '+';
        if (sign)
-		 uprintf("%c%08lX", (char)signchar, delta & 0xFFFFFFFFL);
+		 uprintf("%c%08lX", (char)signchar, (unsigned long)delta & 0xFFFFFFFFL);
        else
-		 uprintf("%08lX", delta & 0xFFFFFFFFL);
+		 uprintf("%08lX", (unsigned long)delta & 0xFFFFFFFFL);
        break;
   }
 }
@@ -1079,7 +1079,7 @@ static void ua_str(char const *str)
 }
 
 
-Bitu DasmI386(char* buffer, PhysPt pc, Bitu cur_ip, bool bit32)
+Bitu DasmI386(char* buffer, PhysPt pc, Bit32u cur_ip, bool bit32)
 {
   	Bitu c;
 

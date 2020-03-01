@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -34,7 +34,12 @@
 
 #include <algorithm>
 
-#define XMS_HANDLES							50u		/* 50 XMS Memory Blocks */ 
+#define XMS_HANDLES_MIN                     4u
+#define XMS_HANDLES_MAX						256u	/* 256 XMS Memory Blocks */ 
+#define XMS_HANDLES_DEFAULT                 50u     /* DOSBox SVN default */
+
+unsigned int XMS_HANDLES =                  XMS_HANDLES_DEFAULT;
+
 #define XMS_VERSION    						0x0300u	/* version 3.00 */
 #define XMS_DRIVER_VERSION					0x0301u	/* my driver version 3.01 */
 
@@ -122,8 +127,6 @@ static int xms_local_enable_count = 0;
 void DOS_Write_HMA_CPM_jmp(void);
 
 Bitu XMS_EnableA20(bool enable) {
-	Bit8u val;
-
     if (IS_PC98_ARCH) {
         // NEC PC-98: Unmask (enable) A20 by writing to port 0xF2.
         //            Mask (disable) A20 by writing to port 0xF6.
@@ -131,7 +134,7 @@ Bitu XMS_EnableA20(bool enable) {
     }
     else {
         // IBM PC/AT: Port 0x92, bit 1, set if A20 enabled
-        val = IO_Read(0x92);
+        Bit8u val = IO_Read(0x92);
         if (enable) IO_Write(0x92,val | 2);
         else		IO_Write(0x92,val & ~2);
     }
@@ -151,7 +154,7 @@ static RealPt xms_callback;
 static bool umb_available = false;
 static bool umb_init = false;
 
-static XMS_Block xms_handles[XMS_HANDLES];
+static XMS_Block xms_handles[XMS_HANDLES_MAX];
 
 Bitu XMS_GetTotalHandles(void) {
     return XMS_HANDLES;
@@ -219,7 +222,7 @@ Bitu XMS_AllocateMemory(Bitu size, Bit16u& handle) {	// size = kb
 		Bitu pages=(size/4) + ((size & 3) ? 1 : 0);
 		mem=MEM_AllocatePages(pages,true);
 		if (!mem) return XMS_OUT_OF_SPACE;
-		if (dbg_zero_on_xms_allocmem) XMS_ZeroAllocation(mem,pages);
+		if (dbg_zero_on_xms_allocmem) XMS_ZeroAllocation(mem,(unsigned int)pages);
 	} else {
 		mem=MEM_GetNextFreePage();
 		if (mem==0) LOG(LOG_MISC,LOG_DEBUG)("XMS:Allocate zero pages with no memory left"); // Windows 3.1 triggers this surprisingly often!
@@ -235,6 +238,7 @@ Bitu XMS_AllocateMemory(Bitu size, Bit16u& handle) {	// size = kb
 
 Bitu XMS_FreeMemory(Bitu handle) {
 	if (InvalidHandle(handle)) return XMS_INVALID_HANDLE;
+    if (xms_handles[handle].locked != 0) return XMS_BLOCK_LOCKED;
 	MEM_ReleasePages(xms_handles[handle].mem);
 	xms_handles[handle].mem=-1;
 	xms_handles[handle].size=0;
@@ -245,6 +249,10 @@ Bitu XMS_FreeMemory(Bitu handle) {
 Bitu XMS_MoveMemory(PhysPt bpt) {
 	/* Read the block with mem_read's */
 	Bitu length=mem_readd(bpt+offsetof(XMS_MemMove,length));
+
+    /* "Length must be even" --Microsoft XMS Spec 3.0 */
+    if (length & 1u) return XMS_INVALID_LENGTH;
+
 	Bitu src_handle=mem_readw(bpt+offsetof(XMS_MemMove,src_handle));
 	union {
 		RealPt realpt;
@@ -267,6 +275,10 @@ Bitu XMS_MoveMemory(PhysPt bpt) {
 		srcpt=((unsigned int)xms_handles[src_handle].mem*4096U)+src.offset;
 	} else {
 		srcpt=Real2Phys(src.realpt);
+
+        /* Microsoft TEST.C considers it an error to allow real mode pointers + length to
+         * extend past the end of the 8086-accessible conventional memory area. */
+        if ((srcpt+length) > 0x10FFF0u) return XMS_INVALID_LENGTH;
 	}
 	if (dest_handle) {
 		if (InvalidHandle(dest_handle)) {
@@ -281,6 +293,10 @@ Bitu XMS_MoveMemory(PhysPt bpt) {
 		destpt=((unsigned int)xms_handles[dest_handle].mem*4096U)+dest.offset;
 	} else {
 		destpt=Real2Phys(dest.realpt);
+
+        /* Microsoft TEST.C considers it an error to allow real mode pointers + length to
+         * extend past the end of the 8086-accessible conventional memory area. */
+        if ((destpt+length) > 0x10FFF0u) return XMS_INVALID_LENGTH;
 	}
 //	LOG_MSG("XMS move src %X dest %X length %X",srcpt,destpt,length);
 
@@ -361,7 +377,7 @@ INLINE void SET_RESULT(Bitu res,bool touch_bl_on_succes=true) {
 }
 
 Bitu XMS_LocalEnableA20(void) {
-    /* This appears to be how Microsoft HIMEM.SYS implements this */
+    /* This appears to be how Microsoft HIMEM.SYS implements this. A20 is only enabled if the local enable count was == 0 at entry to this call. */
     if ((xms_local_enable_count++) == 0)
         XMS_EnableA20(true);
 
@@ -369,16 +385,24 @@ Bitu XMS_LocalEnableA20(void) {
 }
 
 Bitu XMS_LocalDisableA20(void) {
-    /* This appears to be how Microsoft HIMEM.SYS implements this */
+    /* This appears to be how Microsoft HIMEM.SYS implements this. A20 is only disabled if the local enable count was == 1 at entry to this call. */
     if (xms_local_enable_count > 0) {
         if (--xms_local_enable_count == 0)
             XMS_EnableA20(false);
     }
     else {
-        return 0x82; // A20 error
+        return 0x82; // A20 error (HIMEM.SYS behavior)
     }
 
     return 0;
+}
+
+void XMS_DOS_LocalA20EnableIfNotEnabled(void) {
+    /* Confirmed MS-DOS behavior if DOS=HIGH */
+    if (!XMS_GetEnabledA20()) {
+        LOG(LOG_DOSMISC,LOG_DEBUG)("DOS=HIGH, XMS enabled, A20 gate disabled. Reenabling A20 gate on INT 21h call.");
+        XMS_LocalEnableA20();
+    }
 }
 
 Bitu XMS_Handler(void) {
@@ -462,11 +486,11 @@ Bitu XMS_Handler(void) {
         SET_RESULT(XMS_LocalDisableA20());
 		break;
 	case XMS_QUERY_A20:											/* 07 */
-		reg_ax = XMS_GetEnabledA20();
+		reg_ax = (Bit16u)XMS_GetEnabledA20();
 		reg_bl = 0;
 		break;
 	case XMS_QUERY_FREE_EXTENDED_MEMORY:						/* 08 */
-		reg_bl = XMS_QueryFreeMemory(reg_eax,reg_edx);
+		reg_bl = (Bit8u)XMS_QueryFreeMemory(reg_eax,reg_edx);
 		if (reg_eax > 65535) reg_eax = 65535; /* cap sizes for older DOS programs. newer ones use function 0x88 */
 		if (reg_edx > 65535) reg_edx = 65535;
 		break;
@@ -477,13 +501,13 @@ Bitu XMS_Handler(void) {
 		Bit16u handle = 0;
 		SET_RESULT(XMS_AllocateMemory(reg_edx,handle));
 		reg_dx = handle;
-		}; break;
+		} break;
 	case XMS_ALLOCATE_EXTENDED_MEMORY:							/* 09 */
 		{
 		Bit16u handle = 0;
 		SET_RESULT(XMS_AllocateMemory(reg_dx,handle));
 		reg_dx = handle;
-		}; break;
+		} break;
 	case XMS_FREE_EXTENDED_MEMORY:								/* 0a */
 		SET_RESULT(XMS_FreeMemory(reg_dx));
 		break;
@@ -498,8 +522,8 @@ Bitu XMS_Handler(void) {
 		if (res==0) { // success
 			reg_bx=(Bit16u)(address & 0xFFFF);
 			reg_dx=(Bit16u)(address >> 16);
-		};
-		}; break;
+		}
+		} break;
 	case XMS_UNLOCK_EXTENDED_MEMORY_BLOCK:						/* 0d */
 		SET_RESULT(XMS_UnlockMemory(reg_dx));
 		break;
@@ -566,13 +590,13 @@ Bitu XMS_Handler(void) {
 		reg_bl=UMB_NO_BLOCKS_AVAILABLE;
 		break;
 	case XMS_QUERY_ANY_FREE_MEMORY:								/* 88 */
-		reg_bl = XMS_QueryFreeMemory(reg_eax,reg_edx);
-		reg_ecx = (MEM_TotalPages()*MEM_PAGESIZE)-1;			// highest known physical memory address
+		reg_bl = (Bit8u)XMS_QueryFreeMemory(reg_eax,reg_edx);
+		reg_ecx = (Bit32u)((MEM_TotalPages()*MEM_PAGESIZE)-1);			// highest known physical memory address
 		break;
 	case XMS_GET_EMB_HANDLE_INFORMATION_EXT: {					/* 8e */
 		Bit8u free_handles;
 		Bitu result = XMS_GetHandleInformation(reg_dx,reg_bh,free_handles,reg_edx);
-		if (result != 0) reg_bl = result;
+		if (result != 0) reg_bl = (Bit8u)result;
 		else reg_cx = free_handles;
 		reg_ax = (result==0);
 		} break;
@@ -592,8 +616,6 @@ bool keep_umb_on_boot;
 extern Bitu VGA_BIOS_SEG;
 extern Bitu VGA_BIOS_SEG_END;
 extern Bitu VGA_BIOS_Size;
-
-extern bool mainline_compatible_mapping;
 
 bool XMS_IS_ACTIVE() {
 	return (xms_callback != 0);
@@ -627,7 +649,20 @@ public:
 		Section_prop * section=static_cast<Section_prop *>(configuration);
 		umb_available=false;
 
+        xms_global_enable = false;
+        xms_local_enable_count = 0;
+
 		if (!section->Get_bool("xms")) return;
+
+        XMS_HANDLES = (unsigned int)(section->Get_int("xms handles"));
+        if (XMS_HANDLES == 0)
+            XMS_HANDLES = XMS_HANDLES_DEFAULT;
+        else if (XMS_HANDLES < XMS_HANDLES_MIN)
+            XMS_HANDLES = XMS_HANDLES_MIN;
+        else if (XMS_HANDLES > XMS_HANDLES_MAX)
+            XMS_HANDLES = XMS_HANDLES_MAX;
+
+        LOG_MSG("XMS: %u handles allocated for use by the DOS environment",XMS_HANDLES);
 
 		/* NTS: Disable XMS emulation if CPU type is less than a 286, because extended memory did not
 		 *      exist until the CPU had enough address lines to read past the 1MB mark.
@@ -690,6 +725,12 @@ public:
 		first_umb_seg=section->Get_hex("umb start");
 		first_umb_size=section->Get_hex("umb end");
 
+        /* This code will mess up the MCB chain in PCjr mode if umb=true */
+        if (umb_available && machine == MCH_PCJR) {
+            LOG(LOG_MISC,LOG_DEBUG)("UMB emulation is incompatible with PCjr emulation, disabling UMBs");
+            umb_available = false;
+        }
+
 		DOS_GetMemory_Choose();
 
 		// Sanity check
@@ -697,12 +738,10 @@ public:
 
 		if (first_umb_seg == 0) {
 			first_umb_seg = DOS_PRIVATE_SEGMENT_END;
-			if (mainline_compatible_mapping && first_umb_seg < 0xD000)
-				first_umb_seg = 0xD000; /* Mainline DOSBox assumes a 128KB UMB region starting at 0xD000 */
-			else if (first_umb_seg < VGA_BIOS_SEG_END)
-				first_umb_seg = VGA_BIOS_SEG_END;
+			if (first_umb_seg < (Bit16u)VGA_BIOS_SEG_END)
+				first_umb_seg = (Bit16u)VGA_BIOS_SEG_END;
 		}
-		if (first_umb_size == 0) first_umb_size = ROMBIOS_MinAllocatedLoc()>>4;
+		if (first_umb_size == 0) first_umb_size = (Bit16u)(ROMBIOS_MinAllocatedLoc()>>4);
 
 		if (first_umb_seg < 0xC000 || first_umb_seg < DOS_PRIVATE_SEGMENT_END) {
 			LOG(LOG_MISC,LOG_WARN)("UMB blocks before 0xD000 conflict with VGA (0xA000-0xBFFF), VGA BIOS (0xC000-0xC7FF) and DOSBox private area (0x%04x-0x%04x)",
@@ -714,6 +753,26 @@ public:
 			LOG(LOG_MISC,LOG_NORMAL)("UMB starting segment 0x%04x conflict with BIOS at 0x%04x. Disabling UMBs",(int)first_umb_seg,(int)(rombios_minimum_location>>4));
 			umb_available = false;
 		}
+
+        if (IS_PC98_ARCH) {
+            bool PC98_FM_SoundBios_Enabled(void);
+
+            /* Do not let the private segment overlap with anything else after segment C800:0000 including the SOUND ROM at CC00:0000.
+             * Limiting to 32KB also leaves room for UMBs if enabled between C800:0000 and the EMS page frame at (usually) D000:0000 */
+            unsigned int limit = 0xCFFF;
+
+            if (PC98_FM_SoundBios_Enabled()) {
+                // TODO: What about sound BIOSes larger than 16KB?
+                if (limit > 0xCBFF)
+                    limit = 0xCBFF;
+            }
+
+            if (first_umb_seg > limit)
+                first_umb_seg = limit;
+            if (first_umb_size > limit)
+                first_umb_size = limit;
+        }
+
 		if (first_umb_size >= (rombios_minimum_location>>4)) {
 			/* we can ask the BIOS code to trim back the region, assuming it hasn't allocated anything there yet */
 			LOG(LOG_MISC,LOG_DEBUG)("UMB ending segment 0x%04x conflicts with BIOS at 0x%04x, asking BIOS to move aside",(int)first_umb_size,(int)(rombios_minimum_location>>4));
@@ -734,7 +793,7 @@ public:
         if (ems_available && first_umb_size >= GetEMSPageFrameSegment()) {
             assert(GetEMSPageFrameSegment() >= 0xA000);
             LOG(LOG_MISC,LOG_DEBUG)("UMB overlaps EMS page frame at 0x%04x, truncating region",(unsigned int)GetEMSPageFrameSegment());
-            first_umb_size = GetEMSPageFrameSegment() - 1;
+            first_umb_size = (Bit16u)(GetEMSPageFrameSegment() - 1);
         }
         /* UMB cannot interfere with EGC 4th graphics bitplane on PC-98 */
         /* TODO: Allow UMB into E000:xxxx if emulating a PC-98 that lacks 16-color mode. */
@@ -783,8 +842,10 @@ public:
 		DOS_DelMultiplexHandler(multiplex_xms);
 
 		/* Free used memory while skipping the 0 handle */
-		for (Bitu i = 1;i<XMS_HANDLES;i++) 
-			if(!xms_handles[i].free) XMS_FreeMemory(i);
+		for (Bitu i = 1;i<XMS_HANDLES;i++) {
+		    xms_handles[i].locked=0;
+            XMS_FreeMemory(i);
+        }
 
 		xms_init = false;
 	}

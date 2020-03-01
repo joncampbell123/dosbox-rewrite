@@ -928,6 +928,13 @@ void X11_FreeVideoModes(_THIS)
 #endif /* SDL_VIDEO_DRIVER_X11_XRANDR */
 }
 
+/* DOSBox-X Hack API: Allow host program to determine size/position of the fullscreen window */
+extern int SDL_FSPositionX,SDL_FSPositionY;
+extern int SDL_FSWidth,SDL_FSHeight;
+
+static int WMwindow_saved_x = 0;
+static int WMwindow_saved_y = 0;
+
 int X11_ResizeFullScreen(_THIS)
 {
     int x = 0, y = 0;
@@ -948,19 +955,27 @@ int X11_ResizeFullScreen(_THIS)
 #endif /* SDL_VIDEO_DRIVER_X11_XINERAMA */
 
     if ( currently_fullscreen ) {
-        /* Switch resolution and cover it with the FSwindow */
-        move_cursor_to(this, x, y);
-        set_best_resolution(this, window_w, window_h);
-        move_cursor_to(this, x, y);
-        get_real_resolution(this, &real_w, &real_h);
-        if ( window_w > real_w ) {
-            real_w = MAX(real_w, screen_w);
+        if (SDL_FSWidth > 0 && SDL_FSHeight > 0) {
+            x = SDL_FSPositionX;
+            y = SDL_FSPositionY;
+            window_w = real_w = SDL_FSWidth;
+            window_h = real_h = SDL_FSHeight;
         }
-        if ( window_h > real_h ) {
-            real_h = MAX(real_h, screen_h);
+        else {
+            /* Switch resolution and cover it with the FSwindow */
+            move_cursor_to(this, x, y);
+            set_best_resolution(this, window_w, window_h);
+            move_cursor_to(this, x, y);
+            get_real_resolution(this, &real_w, &real_h);
+            if ( window_w > real_w ) {
+                real_w = MAX(real_w, screen_w);
+            }
+            if ( window_h > real_h ) {
+                real_h = MAX(real_h, screen_h);
+            }
         }
         XMoveResizeWindow(SDL_Display, FSwindow, x, y, real_w, real_h);
-        move_cursor_to(this, real_w/2, real_h/2);
+        move_cursor_to(this, x + real_w/2, y + real_h/2);
 
         /* Center and reparent the drawing window */
         x = (real_w - window_w)/2;
@@ -1067,6 +1082,20 @@ int X11_EnterFullScreen(_THIS)
         X11_GrabInputNoLock(this, this->input_grab | SDL_GRAB_FULLSCREEN);
     }
 
+    if ( WMwindow ) {
+        int x = 0,y = 0;
+        XWindowAttributes a;
+        Window child;
+
+        memset(&a,0,sizeof(a));
+        XGetWindowAttributes(SDL_Display, WMwindow, &a);
+        XTranslateCoordinates(SDL_Display, WMwindow, SDL_Root, 0, 0, &x, &y, &child );
+        WMwindow_saved_x = x - a.x;
+        WMwindow_saved_y = y - a.y;
+
+        XUnmapWindow(SDL_Display, WMwindow);
+    }
+
     /* We may need to refresh the screen at this point (no backing store)
        We also don't get an event, which is why we explicitly refresh. */
     if ( this->screen ) {
@@ -1083,6 +1112,11 @@ int X11_EnterFullScreen(_THIS)
 int X11_LeaveFullScreen(_THIS)
 {
     if ( currently_fullscreen ) {
+        if ( WMwindow ) {
+            XMapWindow(SDL_Display, WMwindow);
+            XMoveWindow(SDL_Display, WMwindow, WMwindow_saved_x, WMwindow_saved_y);
+        }
+
         XReparentWindow(SDL_Display, SDL_Window, WMwindow, 0, 0);
 #if SDL_VIDEO_DRIVER_X11_VIDMODE
         if ( use_vidmode ) {

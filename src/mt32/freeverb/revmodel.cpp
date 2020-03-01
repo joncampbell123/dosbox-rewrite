@@ -35,6 +35,7 @@ revmodel::revmodel(float scaletuning)
 	roomsize = (initialroom*scaleroom) + offsetroom;
 	width = initialwidth;
 	mode = initialmode;
+    filtval = 0;
 	update();
 
 	// Buffer will be full of rubbish - so we MUST mute them
@@ -80,14 +81,13 @@ void revmodel::mute()
 
 void revmodel::process(const float *inputL, const float *inputR, float *outputL, float *outputR, long numsamples)
 {
-	float outL,outR,input;
-
 	while (numsamples-- > 0)
 	{
 		int i;
 
-		outL = outR = 0;
-		input = (*inputL + *inputR) * gain;
+		float outL = 0;
+		float outR = 0;
+		float input = (*inputL + *inputR) * gain;
 
 		// Implementation of 2-stage IIR single-pole low-pass filter
 		// found at the entrance of reverb processing on real devices

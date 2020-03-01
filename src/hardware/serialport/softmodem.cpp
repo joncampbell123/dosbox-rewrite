@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2013  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -71,7 +71,7 @@ CSerialModem::~CSerialModem() {
 	delete tqueue;
 
 	// remove events
-	for(Bitu i = SERIAL_BASE_EVENT_COUNT+1;	i <= SERIAL_MODEM_EVENT_COUNT; i++)
+	for(Bit8u i = SERIAL_BASE_EVENT_COUNT+1;	i <= SERIAL_MODEM_EVENT_COUNT; i++)
 		removeEvent(i);
 }
 
@@ -133,11 +133,11 @@ void CSerialModem::SendNumber(Bitu val) {
 	rqueue->addb(0xd);
 	rqueue->addb(0xa);
 	
-	rqueue->addb(val/100+'0');
+	rqueue->addb((Bit8u)(val/100+'0'));
 	val = val%100;
-	rqueue->addb(val/10+'0');
+	rqueue->addb((Bit8u)(val/10+'0'));
 	val = val%10;
-	rqueue->addb(val+'0');
+	rqueue->addb((Bit8u)(val+'0'));
 
 	rqueue->addb(0xd);
 	rqueue->addb(0xa);
@@ -215,7 +215,7 @@ Bitu CSerialModem::ScanNumber(char * & scan) {
 	while (char c=*scan) {
 		if (c>='0' && c<='9') {
 			ret*=10;
-			ret+=c-'0';
+			ret+=(Bitu)(c-'0');
 			scan++;
 		} else break;
 	}
@@ -275,7 +275,7 @@ void CSerialModem::EnterIdleState(void){
 			delete waitingclientsocket;
 	} else if (listenport) {
 		
-		serversocket=new TCPServerSocket(listenport);	
+		serversocket=new TCPServerSocket((Bit16u)listenport);	
 		if(!serversocket->isopen) {
 			LOG_MSG("Serial%d: Modem could not open TCP port %d.",(int)COMNUMBER,(int)listenport);
 			delete serversocket;
@@ -363,18 +363,23 @@ void CSerialModem::DoCommand() {
 				helper[0]=0;
 				helper--;
 			}
+
+			//Large enough scope, so the buffers are still valid when reaching Dail.
+			char buffer[128];
+			char obuffer[128];
 			if (strlen(foundstr) >= 12) {
 				// Check if supplied parameter only consists of digits
 				bool isNum = true;
-				for (Bitu i=0; i<strlen(foundstr); i++)
+				size_t fl = strlen(foundstr);
+				for (size_t i = 0; i < fl; i++)
 					if (foundstr[i] < '0' || foundstr[i] > '9') isNum = false;
 				if (isNum) {
 					// Parameter is a number with at least 12 digits => this cannot
 					// be a valid IP/name
 					// Transform by adding dots
-					char buffer[128];
-					Bitu j = 0;
-					for (Bitu i=0; i<strlen(foundstr); i++) {
+					size_t j = 0;
+					size_t foundlen = strlen(foundstr);
+					for (size_t i = 0; i < foundlen; i++) {
 						buffer[j++] = foundstr[i];
 						// Add a dot after the third, sixth and ninth number
 						if (i == 2 || i == 5 || i == 8)
@@ -386,6 +391,19 @@ void CSerialModem::DoCommand() {
 					}
 					buffer[j] = 0;
 					foundstr = buffer;
+					
+					// Remove Zeros from beginning of octets
+					size_t k = 0;
+					size_t foundlen2 = strlen(foundstr);
+					for (size_t i = 0; i < foundlen2; i++) {
+						if (i == 0 && foundstr[0] == '0') continue;
+						if (i == 1 && foundstr[0] == '0' && foundstr[1] == '0') continue;
+						if (foundstr[i] == '0' && foundstr[i-1] == '.') continue;
+						if (foundstr[i] == '0' && foundstr[i-1] == '0' && foundstr[i-2] == '.') continue;
+						obuffer[k++] = foundstr[i];
+						}
+					obuffer[k] = 0;
+					foundstr = obuffer;
 				}
 			}
 			Dial(foundstr);
@@ -393,8 +411,8 @@ void CSerialModem::DoCommand() {
 		}
 		case 'I': // Some strings about firmware
 			switch (ScanNumber(scanbuf)) {
-			case 3: SendLine("DosBox Emulated Modem Firmware V1.00"); break;
-			case 4: SendLine("Modem compiled for DosBox version " VERSION); break;
+			case 3: SendLine("DOSBox Emulated Modem Firmware V1.00"); break;
+			case 4: SendLine("Modem compiled for DOSBox version " VERSION); break;
 			}
 			break;
 		case 'E': // Echo on/off
@@ -482,7 +500,7 @@ void CSerialModem::DoCommand() {
 				scanbuf++;
 				while(scanbuf[0]==' ') scanbuf++;	// skip spaces
 				Bitu val = ScanNumber(scanbuf);
-				reg[index]=val;
+				reg[index]=(Bit8u)val;
 				break;
 			}
 			else if(scanbuf[0]=='?') {	// get register
@@ -669,7 +687,7 @@ void CSerialModem::Timer2(void) {
 			else if (txval==0xd) DoCommand();				// return
 			else if (txval != '+') {
 				if(cmdpos<99) {
-					cmdbuf[cmdpos] = txval;
+					cmdbuf[cmdpos] = (char)txval;
 					cmdpos++;
 				}
 			}
@@ -770,7 +788,7 @@ void CSerialModem::transmitByte(Bit8u val, bool first) {
 	//LOG_MSG("MODEM: Byte %x to be transmitted",val);
 }
 
-void CSerialModem::updatePortConfig(Bit16u, Bit8u lcr) { 
+void CSerialModem::updatePortConfig(Bit16u, Bit8u) { 
 // nothing to do here right?
 }
 
@@ -783,10 +801,11 @@ void CSerialModem::setBreak(bool) {
 }
 
 void CSerialModem::setRTSDTR(bool rts, bool dtr) {
+    (void)rts;
 	setDTR(dtr);
 }
 void CSerialModem::setRTS(bool val) {
-	
+	(void)val;
 }
 void CSerialModem::setDTR(bool val) {
 	if(!val && connected) {

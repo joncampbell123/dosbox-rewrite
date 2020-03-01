@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -37,7 +37,7 @@
 #define CPU_AUTODETERMINE_SHIFT		0x02
 #define CPU_AUTODETERMINE_MASK		0x03
 
-#define CPU_CYCLES_LOWER_LIMIT		100
+#define CPU_CYCLES_LOWER_LIMIT		200
 
 
 #define CPU_ARCHTYPE_MIXED			0xff
@@ -80,6 +80,7 @@ extern CPU_Decoder * cpudecoder;
 Bits CPU_Core_Normal_Run(void);
 Bits CPU_Core_Normal_Trap_Run(void);
 Bits CPU_Core_Simple_Run(void);
+Bits CPU_Core_Simple_Trap_Run(void);
 Bits CPU_Core_Full_Run(void);
 Bits CPU_Core_Dyn_X86_Run(void);
 Bits CPU_Core_Dyn_X86_Trap_Run(void);
@@ -93,6 +94,10 @@ Bits CPU_Core286_Normal_Trap_Run(void);
 
 Bits CPU_Core8086_Normal_Run(void);
 Bits CPU_Core8086_Normal_Trap_Run(void);
+
+Bits CPU_Core286_Prefetch_Run(void);
+
+Bits CPU_Core8086_Prefetch_Run(void);
 
 void CPU_Enable_SkipAutoAdjust(void);
 void CPU_Disable_SkipAutoAdjust(void);
@@ -128,8 +133,8 @@ bool CPU_READ_CRX(Bitu cr,Bit32u & retvalue);
 bool CPU_WRITE_DRX(Bitu dr,Bitu value);
 bool CPU_READ_DRX(Bitu dr,Bit32u & retvalue);
 
-bool CPU_WRITE_TRX(Bitu dr,Bitu value);
-bool CPU_READ_TRX(Bitu dr,Bit32u & retvalue);
+bool CPU_WRITE_TRX(Bitu tr,Bitu value);
+bool CPU_READ_TRX(Bitu tr,Bit32u & retvalue);
 
 Bitu CPU_SMSW(void);
 bool CPU_LMSW(Bitu word);
@@ -137,11 +142,11 @@ bool CPU_LMSW(Bitu word);
 void CPU_VERR(Bitu selector);
 void CPU_VERW(Bitu selector);
 
-void CPU_JMP(bool use32,Bitu selector,Bitu offset,Bitu oldeip);
-void CPU_CALL(bool use32,Bitu selector,Bitu offset,Bitu oldeip);
-void CPU_RET(bool use32,Bitu bytes,Bitu oldeip);
-void CPU_IRET(bool use32,Bitu oldeip);
-void CPU_HLT(Bitu oldeip);
+void CPU_JMP(bool use32,Bitu selector,Bitu offset,Bit32u oldeip);
+void CPU_CALL(bool use32,Bitu selector,Bitu offset,Bit32u oldeip);
+void CPU_RET(bool use32,Bitu bytes,Bit32u oldeip);
+void CPU_IRET(bool use32,Bit32u oldeip);
+void CPU_HLT(Bit32u oldeip);
 
 bool CPU_POPF(Bitu use32);
 bool CPU_PUSHF(Bitu use32);
@@ -149,7 +154,6 @@ bool CPU_CLI(void);
 bool CPU_STI(void);
 
 bool CPU_IO_Exception(Bitu port,Bitu size);
-void CPU_RunException(void);
 
 void CPU_ENTER(bool use32,Bitu bytes,Bitu level);
 void init_vm86_fake_io();
@@ -165,31 +169,31 @@ extern bool CPU_NMI_pending;
 
 extern bool do_seg_limits;
 
-void CPU_Interrupt(Bitu num,Bitu type,Bitu oldeip);
+void CPU_Interrupt(Bitu num,Bitu type,Bit32u oldeip);
 void CPU_Check_NMI();
 void CPU_Raise_NMI();
 void CPU_NMI_Interrupt();
 static INLINE void CPU_HW_Interrupt(Bitu num) {
 	CPU_Interrupt(num,0,reg_eip);
 }
-static INLINE void CPU_SW_Interrupt(Bitu num,Bitu oldeip) {
+static INLINE void CPU_SW_Interrupt(Bitu num,Bit32u oldeip) {
 	CPU_Interrupt(num,CPU_INT_SOFTWARE,oldeip);
 }
-static INLINE void CPU_SW_Interrupt_NoIOPLCheck(Bitu num,Bitu oldeip) {
+static INLINE void CPU_SW_Interrupt_NoIOPLCheck(Bitu num,Bit32u oldeip) {
 	CPU_Interrupt(num,CPU_INT_SOFTWARE|CPU_INT_NOIOPLCHECK,oldeip);
 }
 
 bool CPU_PrepareException(Bitu which,Bitu error);
 void CPU_Exception(Bitu which,Bitu error=0);
 
-bool CPU_SetSegGeneral(SegNames seg,Bitu value);
+bool CPU_SetSegGeneral(SegNames seg,Bit16u value);
 bool CPU_PopSeg(SegNames seg,bool use32);
 
 bool CPU_CPUID(void);
-Bitu CPU_Pop16(void);
-Bitu CPU_Pop32(void);
-void CPU_Push16(Bitu value);
-void CPU_Push32(Bitu value);
+Bit16u CPU_Pop16(void);
+Bit32u CPU_Pop32(void);
+void CPU_Push16(Bit16u value);
+void CPU_Push32(Bit32u value);
 
 void CPU_SetFlags(Bitu word,Bitu mask);
 
@@ -520,7 +524,7 @@ struct CPUBlock {
 		Bitu eflags;
 	} masks;
 	struct {
-		Bitu mask,notmask;
+		Bit32u mask,notmask;
 		bool big;
 	} stack;
 	struct {

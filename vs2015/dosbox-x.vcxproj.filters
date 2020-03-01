@@ -55,9 +55,6 @@
     <Filter Include="Sources\libs\porttalk">
       <UniqueIdentifier>{cd3f8fa5-7241-4256-a47c-a74ae8a95284}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\libs\zmbv">
-      <UniqueIdentifier>{28485f5b-4c4a-4ad6-a8b1-59835197cb97}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Sources\misc">
       <UniqueIdentifier>{5af65dcd-0cd1-4ee7-a026-ead87797f0df}</UniqueIdentifier>
     </Filter>
@@ -79,8 +76,44 @@
     <Filter Include="Includes">
       <UniqueIdentifier>{39027cf6-2435-4d52-a1ea-c3cc6c7f31ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\pc98fmboards">
-      <UniqueIdentifier>{77588c09-bef2-4f95-a219-8ac9d696a7ff}</UniqueIdentifier>
+    <Filter Include="Sources\xBRZ">
+      <UniqueIdentifier>{6212d2c1-4c3f-4ec6-ad0e-88413d9f1b6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\output">
+      <UniqueIdentifier>{b81e382e-b6fe-4ac3-91d1-a4c1e031214b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\hardware\snd_pc98">
+      <UniqueIdentifier>{bd560cc3-48c5-40d2-89ed-18bb890e85f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\hardware\snd_pc98\cbus">
+      <UniqueIdentifier>{ac790bbf-6718-4b72-9cd1-b8f76f16c3a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\hardware\snd_pc98\common">
+      <UniqueIdentifier>{845326a1-1737-4d13-8b97-a3e39829ffda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\hardware\snd_pc98\generic">
+      <UniqueIdentifier>{f01f7ecf-16a2-47f6-aab2-bb5089d70fc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\hardware\snd_pc98\x11">
+      <UniqueIdentifier>{dd370a1a-f30e-4dbf-9d74-bf98b8be48f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\hardware\snd_pc98\sound">
+      <UniqueIdentifier>{023b0f91-b8ac-4891-b979-69c5decfaa70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\hardware\snd_pc98\sound\getsnd">
+      <UniqueIdentifier>{f6769d5c-60ef-441a-9658-290ad81b7cec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\output\direct3d">
+      <UniqueIdentifier>{3755469d-f02e-4c3e-b6cd-25db8b71b1fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\cpu\core_dynrec">
+      <UniqueIdentifier>{8d1a73c6-be58-4d9f-aa03-b9f57516bedb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\hardware\mame">
+      <UniqueIdentifier>{31feddeb-9587-415e-9cd8-a8bc0bed318c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\libs\zmbv">
+      <UniqueIdentifier>{fd585132-36d9-4941-8490-3821d36aec5a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -273,12 +306,6 @@
     <ClCompile Include="..\src\fpu\fpu.cpp">
       <Filter>Sources\fpu</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\gui\direct3d.cpp">
-      <Filter>Sources\gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\gui\hq2x_d3d.cpp">
-      <Filter>Sources\gui</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\gui\menu.cpp">
       <Filter>Sources\gui</Filter>
     </ClCompile>
@@ -289,9 +316,6 @@
       <Filter>Sources\gui</Filter>
     </ClCompile>
     <ClCompile Include="..\src\gui\render_scalers.cpp">
-      <Filter>Sources\gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\gui\ScalingEffect.cpp">
       <Filter>Sources\gui</Filter>
     </ClCompile>
     <ClCompile Include="..\src\gui\sdl_gui.cpp">
@@ -735,81 +759,6 @@
     <ClCompile Include="..\src\dosbox.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\hardware\hardware.cpp">
-      <Filter>Sources\hardware\parport</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\hardware\snd_pc98\cbus\board26k.c">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\hardware\snd_pc98\cbus\board86.c">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\hardware\snd_pc98\common\parts.c">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\hardware\snd_pc98\generic\keydisp.c">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\getsnd\getsmix.c">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\getsnd\getsnd.c">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\getsnd\getwave.c">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\adpcmc.c">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\adpcmg.c">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\fmboard.c">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\fmtimer.c">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\opngenc.c">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\opngeng.c">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\pcm86c.c">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\pcm86g.c">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\psggenc.c">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\psggeng.c">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\rhythmc.c">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\sound.c">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\soundrom.c">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\tms3631c.c">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\tms3631g.c">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\hardware\snd_pc98\x11\dosio.c">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\cpu\core_dyn_x86.cpp">
-      <Filter>Sources\cpu</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\hardware\8255.cpp">
       <Filter>Sources\hardware</Filter>
     </ClCompile>
@@ -822,8 +771,161 @@
     <ClCompile Include="..\src\gui\bitop.cpp">
       <Filter>Sources\gui</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\xBRZ\xbrz.cpp">
+      <Filter>Sources\xBRZ</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\gui\ptrop.cpp">
       <Filter>Sources\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\output\output_surface.cpp">
+      <Filter>Sources\output</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\output\output_direct3d.cpp">
+      <Filter>Sources\output</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\output\output_opengl.cpp">
+      <Filter>Sources\output</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\output\output_tools.cpp">
+      <Filter>Sources\output</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\output\output_tools_xbrz.cpp">
+      <Filter>Sources\output</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\output\output_surface_sdl2.cpp">
+      <Filter>Sources\output</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\output\output_surface_sdl.cpp">
+      <Filter>Sources\output</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\hardware.cpp">
+      <Filter>Sources\hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\snd_pc98\sound\adpcmg.c">
+      <Filter>Sources\hardware\snd_pc98\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\snd_pc98\sound\adpcmc.c">
+      <Filter>Sources\hardware\snd_pc98\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\snd_pc98\cbus\board26k.c">
+      <Filter>Sources\hardware\snd_pc98\cbus</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\snd_pc98\cbus\board86.c">
+      <Filter>Sources\hardware\snd_pc98\cbus</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\snd_pc98\x11\dosio.c">
+      <Filter>Sources\hardware\snd_pc98\x11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\snd_pc98\sound\fmboard.c">
+      <Filter>Sources\hardware\snd_pc98\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\snd_pc98\sound\fmtimer.c">
+      <Filter>Sources\hardware\snd_pc98\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\snd_pc98\sound\getsnd\getsmix.c">
+      <Filter>Sources\hardware\snd_pc98\sound\getsnd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\snd_pc98\sound\getsnd\getsnd.c">
+      <Filter>Sources\hardware\snd_pc98\sound\getsnd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\snd_pc98\sound\getsnd\getwave.c">
+      <Filter>Sources\hardware\snd_pc98\sound\getsnd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\snd_pc98\generic\keydisp.c">
+      <Filter>Sources\hardware\snd_pc98\generic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\snd_pc98\sound\opngenc.c">
+      <Filter>Sources\hardware\snd_pc98\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\snd_pc98\sound\opngeng.c">
+      <Filter>Sources\hardware\snd_pc98\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\snd_pc98\common\parts.c">
+      <Filter>Sources\hardware\snd_pc98\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\snd_pc98\sound\pcm86c.c">
+      <Filter>Sources\hardware\snd_pc98\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\snd_pc98\sound\pcm86g.c">
+      <Filter>Sources\hardware\snd_pc98\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\snd_pc98\sound\psggenc.c">
+      <Filter>Sources\hardware\snd_pc98\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\snd_pc98\sound\psggeng.c">
+      <Filter>Sources\hardware\snd_pc98\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\snd_pc98\sound\rhythmc.c">
+      <Filter>Sources\hardware\snd_pc98\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\snd_pc98\sound\sound.c">
+      <Filter>Sources\hardware\snd_pc98\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\snd_pc98\sound\soundrom.c">
+      <Filter>Sources\hardware\snd_pc98\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\snd_pc98\sound\tms3631c.c">
+      <Filter>Sources\hardware\snd_pc98\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\snd_pc98\sound\tms3631g.c">
+      <Filter>Sources\hardware\snd_pc98\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\output\direct3d\direct3d.cpp">
+      <Filter>Sources\output\direct3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\output\direct3d\hq2x_d3d.cpp">
+      <Filter>Sources\output\direct3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\output\direct3d\ScalingEffect.cpp">
+      <Filter>Sources\output\direct3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\parport\printer_redir.cpp">
+      <Filter>Sources\hardware\parport</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\builtin\dsxmenu_exe_pc.cpp">
+      <Filter>Sources\builtin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\builtin\dsxmenu_exe_pc98.cpp">
+      <Filter>Sources\builtin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\misc\iconvpp.cpp">
+      <Filter>Sources\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cpu\core_prefetch_286.cpp">
+      <Filter>Sources\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cpu\core_prefetch_8086.cpp">
+      <Filter>Sources\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\mame\fmopl.cpp">
+      <Filter>Sources\hardware\mame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\mame\saa1099.cpp">
+      <Filter>Sources\hardware\mame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\mame\sn76496.cpp">
+      <Filter>Sources\hardware\mame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\mame\ymdeltat.cpp">
+      <Filter>Sources\hardware\mame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\mame\ymf262.cpp">
+      <Filter>Sources\hardware\mame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cpu\core_dynrec.cpp">
+      <Filter>Sources\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\gui\zipcrc.c">
+      <Filter>Sources\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\gui\zipfile.cpp">
+      <Filter>Sources\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\libs\zmbv\zmbv.cpp">
+      <Filter>Sources\libs\zmbv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware\serialport\serialfile.cpp">
+      <Filter>Sources\hardware\serialport</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -887,12 +989,6 @@
     <ClInclude Include="..\src\fpu\fpu_instructions.h">
       <Filter>Sources\fpu</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\gui\d3d_components.h">
-      <Filter>Sources\gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\gui\direct3d.h">
-      <Filter>Sources\gui</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\gui\dosbox.cga640.bmp.h">
       <Filter>Sources\gui</Filter>
     </ClInclude>
@@ -900,9 +996,6 @@
       <Filter>Sources\gui</Filter>
     </ClInclude>
     <ClInclude Include="..\src\gui\dosbox_logo.h">
-      <Filter>Sources\gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\gui\hq2x_d3d.h">
       <Filter>Sources\gui</Filter>
     </ClInclude>
     <ClInclude Include="..\src\gui\midi_alsa.h">
@@ -951,9 +1044,6 @@
       <Filter>Sources\gui</Filter>
     </ClInclude>
     <ClInclude Include="..\src\gui\render_templates_sai.h">
-      <Filter>Sources\gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\gui\ScalingEffect.h">
       <Filter>Sources\gui</Filter>
     </ClInclude>
     <ClInclude Include="..\src\hardware\adlib.h">
@@ -1042,12 +1132,6 @@
     </ClInclude>
     <ClInclude Include="..\src\ints\int10.h">
       <Filter>Sources\ints</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\libs\gui_tk\gui_tk.h">
-      <Filter>Sources\libs\gui_tk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\libs\porttalk\porttalk.h">
-      <Filter>Sources\libs\porttalk</Filter>
     </ClInclude>
     <ClInclude Include="..\src\mt32\AReverbModel.h">
       <Filter>Sources\mt32</Filter>
@@ -1271,9 +1355,6 @@
     <ClInclude Include="..\include\mmx.h">
       <Filter>Includes</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\modules.h">
-      <Filter>Includes</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\mouse.h">
       <Filter>Includes</Filter>
     </ClInclude>
@@ -1331,9 +1412,6 @@
     <ClInclude Include="..\include\resource.h">
       <Filter>Includes</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\selftest.h">
-      <Filter>Includes</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\serialport.h">
       <Filter>Includes</Filter>
     </ClInclude>
@@ -1382,66 +1460,6 @@
     <ClInclude Include="..\include\zip.h">
       <Filter>Includes</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\libs\zmbv\zmbv.h">
-      <Filter>Sources\libs\zmbv</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\libs\zmbv\zmbv_vfw.h">
-      <Filter>Sources\libs\zmbv</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\hardware\snd_pc98\cbus\board26k.h">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\hardware\snd_pc98\cbus\board86.h">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\hardware\snd_pc98\common\parts.h">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\hardware\snd_pc98\common\profile.h">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\hardware\snd_pc98\common\wavefile.h">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\hardware\snd_pc98\generic\keydisp.h">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\hardware\snd_pc98\sound\getsnd\getsnd.h">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\hardware\snd_pc98\sound\adpcm.h">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\hardware\snd_pc98\sound\fmboard.h">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\hardware\snd_pc98\sound\fmtimer.h">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\hardware\snd_pc98\sound\opngen.h">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\hardware\snd_pc98\sound\pcm86.h">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\hardware\snd_pc98\sound\psggen.h">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\hardware\snd_pc98\sound\rhythm.h">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\hardware\snd_pc98\sound\sound.h">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\hardware\snd_pc98\sound\soundrom.h">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\hardware\snd_pc98\sound\tms3631.h">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\hardware\snd_pc98\x11\dosio.h">
-      <Filter>Sources\pc98fmboards</Filter>
-    </ClInclude>
     <ClInclude Include="config.h">
       <Filter>Includes</Filter>
     </ClInclude>
@@ -1451,8 +1469,263 @@
     <ClInclude Include="..\include\bitop.h">
       <Filter>Includes</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\xBRZ\xbrz.h">
+      <Filter>Sources\xBRZ</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\xBRZ\xbrz_config.h">
+      <Filter>Sources\xBRZ</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\xBRZ\xbrz_tools.h">
+      <Filter>Sources\xBRZ</Filter>
+    </ClInclude>
     <ClInclude Include="..\include\ptrop.h">
       <Filter>Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\sdlmain.h">
+      <Filter>Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\output\output_surface.h">
+      <Filter>Sources\output</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\output\output_direct3d.h">
+      <Filter>Sources\output</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\output\output_opengl.h">
+      <Filter>Sources\output</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\output\output_tools.h">
+      <Filter>Sources\output</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\output\output_tools_xbrz.h">
+      <Filter>Sources\output</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hardware\snd_pc98\sound\adpcm.h">
+      <Filter>Sources\hardware\snd_pc98\sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hardware\snd_pc98\cbus\board26k.h">
+      <Filter>Sources\hardware\snd_pc98\cbus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hardware\snd_pc98\cbus\board86.h">
+      <Filter>Sources\hardware\snd_pc98\cbus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hardware\snd_pc98\x11\dosio.h">
+      <Filter>Sources\hardware\snd_pc98\x11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hardware\snd_pc98\sound\fmboard.h">
+      <Filter>Sources\hardware\snd_pc98\sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hardware\snd_pc98\sound\fmtimer.h">
+      <Filter>Sources\hardware\snd_pc98\sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hardware\snd_pc98\sound\getsnd\getsnd.h">
+      <Filter>Sources\hardware\snd_pc98\sound\getsnd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hardware\snd_pc98\generic\keydisp.h">
+      <Filter>Sources\hardware\snd_pc98\generic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hardware\snd_pc98\sound\opngen.h">
+      <Filter>Sources\hardware\snd_pc98\sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hardware\snd_pc98\common\parts.h">
+      <Filter>Sources\hardware\snd_pc98\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hardware\snd_pc98\sound\pcm86.h">
+      <Filter>Sources\hardware\snd_pc98\sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hardware\snd_pc98\common\profile.h">
+      <Filter>Sources\hardware\snd_pc98\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hardware\snd_pc98\sound\psggen.h">
+      <Filter>Sources\hardware\snd_pc98\sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hardware\snd_pc98\sound\rhythm.h">
+      <Filter>Sources\hardware\snd_pc98\sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hardware\snd_pc98\sound\sound.h">
+      <Filter>Sources\hardware\snd_pc98\sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hardware\snd_pc98\sound\soundrom.h">
+      <Filter>Sources\hardware\snd_pc98\sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hardware\snd_pc98\sound\tms3631.h">
+      <Filter>Sources\hardware\snd_pc98\sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hardware\snd_pc98\common\wavefile.h">
+      <Filter>Sources\hardware\snd_pc98\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\output\direct3d\d3d_components.h">
+      <Filter>Sources\output\direct3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\output\direct3d\direct3d.h">
+      <Filter>Sources\output\direct3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\output\direct3d\hq2x_d3d.h">
+      <Filter>Sources\output\direct3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\output\direct3d\ScalingEffect.h">
+      <Filter>Sources\output\direct3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\midi.h">
+      <Filter>Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hardware\mame\fmopl.h">
+      <Filter>Sources\hardware\mame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hardware\mame\saa1099.h">
+      <Filter>Sources\hardware\mame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hardware\mame\sn76496.h">
+      <Filter>Sources\hardware\mame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hardware\mame\ymdeltat.h">
+      <Filter>Sources\hardware\mame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hardware\mame\ymf262.h">
+      <Filter>Sources\hardware\mame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hardware\mame\emu.h">
+      <Filter>Sources\hardware\mame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\build_timestamp.h">
+      <Filter>Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\byteorder.h">
+      <Filter>Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\fpu_control_x86.h">
+      <Filter>Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\iconvpp.hpp">
+      <Filter>Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\keymap.h">
+      <Filter>Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\util_math.h">
+      <Filter>Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\zipcrc.h">
+      <Filter>Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\zipfile.h">
+      <Filter>Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_prefetch_buf.h">
+      <Filter>Sources\cpu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_dynrec\cache.h">
+      <Filter>Sources\cpu\core_dynrec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_dynrec\decoder.h">
+      <Filter>Sources\cpu\core_dynrec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_dynrec\decoder_basic.h">
+      <Filter>Sources\cpu\core_dynrec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_dynrec\decoder_opcodes.h">
+      <Filter>Sources\cpu\core_dynrec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_dynrec\dyn_fpu.h">
+      <Filter>Sources\cpu\core_dynrec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_dynrec\operators.h">
+      <Filter>Sources\cpu\core_dynrec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_dynrec\risc_armv4le.h">
+      <Filter>Sources\cpu\core_dynrec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_dynrec\risc_armv4le-common.h">
+      <Filter>Sources\cpu\core_dynrec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_dynrec\risc_armv4le-o3.h">
+      <Filter>Sources\cpu\core_dynrec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_dynrec\risc_armv4le-thumb.h">
+      <Filter>Sources\cpu\core_dynrec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_dynrec\risc_armv4le-thumb-iw.h">
+      <Filter>Sources\cpu\core_dynrec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_dynrec\risc_armv4le-thumb-niw.h">
+      <Filter>Sources\cpu\core_dynrec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_dynrec\risc_armv8le.h">
+      <Filter>Sources\cpu\core_dynrec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_dynrec\risc_mipsel32.h">
+      <Filter>Sources\cpu\core_dynrec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_dynrec\risc_x64.h">
+      <Filter>Sources\cpu\core_dynrec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_dynrec\risc_x86.h">
+      <Filter>Sources\cpu\core_dynrec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_full\ea_lookup.h">
+      <Filter>Sources\cpu\core_full</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_full\load.h">
+      <Filter>Sources\cpu\core_full</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_full\loadwrite.h">
+      <Filter>Sources\cpu\core_full</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_full\op.h">
+      <Filter>Sources\cpu\core_full</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_full\optable.h">
+      <Filter>Sources\cpu\core_full</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_full\save.h">
+      <Filter>Sources\cpu\core_full</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_full\string.h">
+      <Filter>Sources\cpu\core_full</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_full\support.h">
+      <Filter>Sources\cpu\core_full</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_normal\helpers.h">
+      <Filter>Sources\cpu\core_normal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_normal\prefix_0f.h">
+      <Filter>Sources\cpu\core_normal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_normal\prefix_0f_mmx.h">
+      <Filter>Sources\cpu\core_normal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_normal\prefix_66.h">
+      <Filter>Sources\cpu\core_normal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_normal\prefix_66_0f.h">
+      <Filter>Sources\cpu\core_normal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_normal\prefix_none.h">
+      <Filter>Sources\cpu\core_normal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_normal\string.h">
+      <Filter>Sources\cpu\core_normal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_normal\support.h">
+      <Filter>Sources\cpu\core_normal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_normal\table_ea.h">
+      <Filter>Sources\cpu\core_normal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cpu\core_normal\table_ea_8086.h">
+      <Filter>Sources\cpu\core_normal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\fpu\fpu_instructions_longdouble.h">
+      <Filter>Sources\fpu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\fpu\fpu_instructions_x86.h">
+      <Filter>Sources\fpu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\resource.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hardware\serialport\serialfile.h">
+      <Filter>Sources\hardware\serialport</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

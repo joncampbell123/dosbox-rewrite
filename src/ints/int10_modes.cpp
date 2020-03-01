@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,25 +13,31 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
+#include <stdlib.h>
 #include <string.h>
 
 #include "dosbox.h"
 #include "mem.h"
 #include "inout.h"
 #include "int10.h"
-#include "mouse.h"
 #include "vga.h"
 #include "bios.h"
+#include "programs.h"
+#include "render.h"
 
 #define SEQ_REGS 0x05
 #define GFX_REGS 0x09
 #define ATT_REGS 0x15
 
+extern bool enable_vga_8bit_dac;
+extern bool int10_vesa_map_as_128kb;
 extern bool allow_vesa_lowres_modes;
+extern bool allow_vesa_4bpp_packed;
+extern bool allow_explicit_vesa_24bpp;
 extern bool vesa12_modes_32bpp;
 extern bool allow_vesa_32bpp;
 extern bool allow_vesa_24bpp;
@@ -40,6 +46,16 @@ extern bool allow_vesa_15bpp;
 extern bool allow_vesa_8bpp;
 extern bool allow_vesa_4bpp;
 extern bool allow_vesa_tty;
+extern bool vga_8bit_dac;
+
+/* This list includes non-explicitly 24bpp modes (in the 0x100-0x11F range) that are available
+ * when the VBE1.2 setting indicates they should be 24bpp.
+ *
+ * Explicitly 24bpp modes (numbered 0x120 or higher) are available regardless of the VBE1.2
+ * setting but only if enabled in dosbox.conf.
+ *
+ * Disabling the explicit 24bpp modes is intended to reflect actual SVGA hardware that tends
+ * to support either 24bpp or 32bpp, but not both. */
 
 VideoModeBlock ModeList_VGA[]={
 /* mode  ,type     ,sw  ,sh  ,tw ,th ,cw,ch ,pt,pstart  ,plength,htot,vtot,hde,vde special flags */
@@ -81,7 +97,7 @@ VideoModeBlock ModeList_VGA[]={
 /* VESA text modes */ 
 { 0x108  ,M_TEXT   ,640 ,480,  80,60, 8,  8 ,2 ,0xB8000 ,0x4000, 100 ,525 ,80 ,480 ,0   },
 { 0x109  ,M_TEXT   ,1056,400, 132,25, 8, 16, 1 ,0xB8000 ,0x2000, 160, 449, 132,400, 0   },
-{ 0x10A  ,M_TEXT   ,1056,688, 132,43, 8,  8, 1 ,0xB8000 ,0x4000, 160, 449, 132,344, 0   },
+{ 0x10A  ,M_TEXT   ,1056,688, 132,43, 8, 16, 1 ,0xB8000 ,0x4000, 160, 806, 132,688, 0   },
 { 0x10B  ,M_TEXT   ,1056,400, 132,50, 8,  8, 1 ,0xB8000 ,0x4000, 160, 449, 132,400, 0   },
 { 0x10C  ,M_TEXT   ,1056,480, 132,60, 8,  8, 2 ,0xB8000 ,0x4000, 160, 531, 132,480, 0   },
 
@@ -127,97 +143,112 @@ VideoModeBlock ModeList_VGA[]={
 { 0x119  ,M_LIN15  ,1280,1024,160,64 ,8 ,16 ,1 ,0xA0000 ,0x10000,424 ,1066,320,1024,0	},
 { 0x11A  ,M_LIN16  ,1280,1024,160,64 ,8 ,16 ,1 ,0xA0000 ,0x10000,424 ,1066,320,1024,0	},
 
-{ 0x11C  ,M_LIN8   ,640 ,350 ,80 ,25 ,8 ,14 ,2 ,0xA0000 ,0x10000,100 ,449 ,80 ,350 ,0	},
+{ 0x11C  ,M_LIN8   ,640 ,350 ,80 ,25 ,8 ,14 ,2 ,0xA0000 ,0x10000,100 ,449 ,80 ,350 ,_UNUSUAL_MODE  },
 // special mode for Birth demo by Incognita
-{ 0x11D  ,M_LIN15  ,640 ,350 ,80 ,25 ,8 ,14 ,1 ,0xA0000 ,0x10000,200 ,449 ,160,350 ,0   },
-{ 0x11F  ,M_LIN16  ,640 ,350 ,80 ,25 ,8 ,14 ,1 ,0xA0000 ,0x10000,200 ,449 ,160,350 ,0   },
-{ 0x120  ,M_LIN8   ,1600,1200,200,75 ,8 ,16 ,1 ,0xA0000 ,0x10000,264 ,1240,200,1200,0	},
-{ 0x142  ,M_LIN32  ,640 ,350 ,80 ,25 ,8 ,14 ,2 ,0xA0000 ,0x10000 ,100 ,449 ,80 ,350 ,0	},
+{ 0x11D  ,M_LIN15  ,640 ,350 ,80 ,25 ,8 ,14 ,1 ,0xA0000 ,0x10000,200 ,449 ,160,350 ,_UNUSUAL_MODE  },
+{ 0x11F  ,M_LIN16  ,640 ,350 ,80 ,25 ,8 ,14 ,1 ,0xA0000 ,0x10000,200 ,449 ,160,350 ,_UNUSUAL_MODE  },
+{ 0x120  ,M_LIN8   ,1600,1200,200,75 ,8 ,16 ,1 ,0xA0000 ,0x10000,264 ,1240,200,1200,0  },
+{ 0x142  ,M_LIN32  ,640 ,350 ,80 ,25 ,8 ,14 ,2 ,0xA0000 ,0x10000 ,100 ,449 ,80 ,350,_UNUSUAL_MODE  },
 
 // FIXME: Find an old S3 Trio and dump the VESA modelist, then arrange this modelist to match
-{ 0x150  ,M_LIN8   ,320 ,480 ,40 ,60 ,8 ,8  ,1 ,0xA0000 ,0x10000,100 ,525 ,80 ,480 , _S3_PIXEL_DOUBLE  },
+{ 0x150  ,M_LIN8   ,320 ,480 ,40 ,60 ,8 ,8  ,1 ,0xA0000 ,0x10000,100 ,525 ,80 ,480 , _S3_PIXEL_DOUBLE | _UNUSUAL_MODE },
 { 0x151  ,M_LIN8   ,320 ,240 ,40 ,30 ,8 ,8  ,1 ,0xA0000 ,0x10000,100 ,525 ,80 ,480 , _S3_PIXEL_DOUBLE | _REPEAT1 },
-{ 0x152  ,M_LIN8   ,320 ,400 ,40 ,50 ,8 ,8  ,1 ,0xA0000 ,0x10000,100 ,449 ,80 ,400 , _S3_PIXEL_DOUBLE  },
+{ 0x152  ,M_LIN8   ,320 ,400 ,40 ,50 ,8 ,8  ,1 ,0xA0000 ,0x10000,100 ,449 ,80 ,400 , _S3_PIXEL_DOUBLE | _UNUSUAL_MODE },
 // For S3 Trio emulation this mode must exist as mode 0x153 else RealTech "Countdown" will crash
 // if you select VGA 320x200 with S3 acceleration.
 { 0x153  ,M_LIN8   ,320 ,200 ,40 ,25 ,8 ,8  ,1 ,0xA0000 ,0x10000,100 ,449 ,80 ,400 , _S3_PIXEL_DOUBLE | _REPEAT1 },
+
+{ 0x15C ,M_LIN8,    512 ,384 ,64 ,48 ,8, 8  ,1 ,0xA0000 ,0x10000,168 ,806 ,128,768 , _S3_PIXEL_DOUBLE | _DOUBLESCAN },
+{ 0x159 ,M_LIN8,    400 ,300 ,50 ,37 ,8 ,8  ,1 ,0xA0000 ,0x10000,132 ,628 ,100,600 , _S3_PIXEL_DOUBLE | _DOUBLESCAN },
+{ 0x15D ,M_LIN16,   512 ,384 ,64 ,48 ,8, 16 ,1 ,0xA0000 ,0x10000,168 ,806 ,128,768 , _S3_PIXEL_DOUBLE | _DOUBLESCAN },
+{ 0x15A ,M_LIN16,   400 ,300 ,50 ,37 ,8 ,16 ,1 ,0xA0000 ,0x10000,132 ,628 ,100,600 , _S3_PIXEL_DOUBLE | _DOUBLESCAN },
 
 { 0x160  ,M_LIN15  ,320 ,240 ,40 ,30 ,8 ,8  ,1 ,0xA0000 ,0x10000,100 ,525 , 80 ,480 , _REPEAT1 },
 { 0x161  ,M_LIN15  ,320 ,400 ,40 ,50 ,8 ,8  ,1 ,0xA0000 ,0x10000,100 ,449 , 80 ,400 ,0 },
 { 0x162  ,M_LIN15  ,320 ,480 ,40 ,60 ,8 ,8  ,1 ,0xA0000 ,0x10000,100 ,525 , 80 ,480 ,0 },
 { 0x165  ,M_LIN15  ,640 ,400 ,80 ,25 ,8 ,16 ,1 ,0xA0000 ,0x10000,200 ,449 ,160 ,400 ,0   },
 
+// hack: 320x200x16bpp for "Process" demo (1997) with apparently hard-coded VBE mode
+{ 0x136  ,M_LIN16  ,320 ,240 ,40 ,30 ,8 ,8  ,1 ,0xA0000 ,0x10000,100 ,525 , 80 ,480 , _REPEAT1 },
+
 // hack: 320x480x256-color alias for Habitual demo. doing this removes the need to run S3VBE20.EXE before running the demo.
 //       the reason it has to be this particular video mode is because HABITUAL.EXE does not query modes, it simply assumes
 //       that mode 0x166 is this particular mode and errors out if it can't set it.
-{ 0x166  ,M_LIN8   ,320 ,480 ,40 ,60 ,8 ,8  ,1 ,0xA0000 ,0x10000,100 ,525 ,80 ,480 , _S3_PIXEL_DOUBLE  },
+{ 0x166  ,M_LIN8   ,320 ,480 ,40 ,60 ,8 ,8  ,1 ,0xA0000 ,0x10000,100 ,525 ,80 ,480 , _S3_PIXEL_DOUBLE | _UNUSUAL_MODE },
 
 { 0x170  ,M_LIN16  ,320 ,240 ,40 ,30 ,8 ,8  ,1 ,0xA0000 ,0x10000,100 ,525 , 80 ,480 , _REPEAT1 },
-{ 0x171  ,M_LIN16  ,320 ,400 ,40 ,50 ,8 ,8  ,1 ,0xA0000 ,0x10000,100 ,449 , 80 ,400 ,0 },
+{ 0x171  ,M_LIN16  ,320 ,400 ,40 ,50 ,8 ,8  ,1 ,0xA0000 ,0x10000,100 ,449 , 80 ,400 , _UNUSUAL_MODE },
 { 0x172  ,M_LIN16  ,320 ,480 ,40 ,60 ,8 ,8  ,1 ,0xA0000 ,0x10000,100 ,525 , 80 ,480 ,0 },
-{ 0x175  ,M_LIN16  ,640 ,400 ,80 ,25 ,8 ,16 ,1 ,0xA0000 ,0x10000,200 ,449 ,160 ,400 ,0   },
+{ 0x175  ,M_LIN16  ,640 ,400 ,80 ,25 ,8 ,16 ,1 ,0xA0000 ,0x10000,200 ,449 ,160 ,400 ,0 },
 
 { 0x190  ,M_LIN32  ,320 ,240 ,40 ,30 ,8 ,8  ,1 ,0xA0000 ,0x10000, 50 ,525 ,40 ,480 , _REPEAT1 },
-{ 0x191  ,M_LIN32  ,320 ,400 ,40 ,50 ,8 ,8  ,1 ,0xA0000 ,0x10000, 50 ,449 ,40 ,400 ,0 },
-{ 0x192  ,M_LIN32  ,320 ,480 ,40 ,60 ,8 ,8  ,1 ,0xA0000 ,0x10000, 50 ,525 ,40 ,480 ,0 },
+{ 0x191  ,M_LIN32  ,320 ,400 ,40 ,50 ,8 ,8  ,1 ,0xA0000 ,0x10000, 50 ,449 ,40 ,400 ,_UNUSUAL_MODE },
+{ 0x192  ,M_LIN32  ,320 ,480 ,40 ,60 ,8 ,8  ,1 ,0xA0000 ,0x10000, 50 ,525 ,40 ,480 ,_UNUSUAL_MODE },
 
-// S3 specific modes
+// S3 specific modes (OEM modes). See also [http://www.ctyme.com/intr/rb-0275.htm]
+{ 0x201  ,M_LIN8    ,640 ,480, 80,30 ,8 ,16 ,1 ,0xA0000 ,0x10000,100 ,525 ,80 ,480 , _VGA_PIXEL_DOUBLE },
+{ 0x202  ,M_LIN4    ,800 ,600,100,37 ,8 ,16 ,1 ,0xA0000 ,0x10000,132 ,628 ,100,600 ,0	},
+{ 0x203  ,M_LIN8    ,800 ,600,100,37 ,8 ,16 ,1 ,0xA0000 ,0x10000,132 ,628 ,100,600 ,0	}, // Line Wars II, S3 accelerated 800x600
+{ 0x204  ,M_LIN4    ,1024,768,128,48 ,8 ,16 ,1 ,0xA0000 ,0x10000,168 ,806 ,128,768 ,0	},
+{ 0x205  ,M_LIN8    ,1024,768,128,48 ,8 ,16 ,1 ,0xA0000 ,0x10000,168 ,806 ,128,768 ,0	},
+{ 0x206  ,M_LIN4    ,1280,960,160,64 ,8 ,16 ,1 ,0xA0000 ,0x10000,212 ,1024,160,960 ,0	}, // TODO VERIFY THIS
 { 0x207  ,M_LIN8	,1152,864,160,64 ,8 ,16 ,1 ,0xA0000 ,0x10000,182 ,948 ,144,864 ,0	},
+{ 0x208  ,M_LIN4    ,1280,1024,160,64 ,8 ,16 ,1 ,0xA0000 ,0x10000,212 ,1066,160,1024,0	},
 { 0x209  ,M_LIN15	,1152,864,160,64 ,8 ,16 ,1 ,0xA0000 ,0x10000,364 ,948 ,288,864 ,0	},
 { 0x20A  ,M_LIN16	,1152,864,160,64 ,8 ,16 ,1 ,0xA0000 ,0x10000,364 ,948 ,288,864 ,0	},
-{ 0x20B  ,M_LIN32	,1152, 864,160,64 ,8 ,16 ,1 ,0xA0000 ,0x10000,182 ,948 ,144,864 ,0	},
+{ 0x20B  ,M_LIN32	,1152,864,160,64 ,8 ,16 ,1 ,0xA0000 ,0x10000,182 ,948 ,144,864 ,0	},
 { 0x213  ,M_LIN32   ,640 ,400,80 ,25 ,8 ,16 ,1 ,0xA0000 ,0x10000,100 ,449 ,80 ,400 ,0	},
 
 // Some custom modes
 
 // 720x480 3:2 modes
-{ 0x21B  ,M_LIN4   ,720 ,480 ,90 ,30 ,8 ,16 ,1 ,0xA0000 ,0x10000,132 ,525 ,90  ,480 ,0	},
-{ 0x21C  ,M_LIN8   ,720 ,480 ,90 ,30 ,8 ,16 ,1 ,0xA0000 ,0x10000,132 ,525 ,90  ,480 ,0	},
-{ 0x21D  ,M_LIN15  ,720 ,480 ,90 ,30 ,8 ,16 ,1 ,0xA0000 ,0x10000,264 ,525 ,180 ,480 ,0  },
-{ 0x21E  ,M_LIN16  ,720 ,480 ,90 ,30 ,8 ,16 ,1 ,0xA0000 ,0x10000,264 ,525 ,180 ,480 ,0  },
-{ 0x21F  ,M_LIN32  ,720 ,480 ,90 ,30 ,8 ,16 ,1 ,0xA0000 ,0x10000,132 ,525 ,90  ,480 ,0  },
+{ 0x21B  ,M_LIN4   ,720 ,480 ,90 ,30 ,8 ,16 ,1 ,0xA0000 ,0x10000,132 ,525 ,90  ,480 ,_UNUSUAL_MODE	},
+{ 0x21C  ,M_LIN8   ,720 ,480 ,90 ,30 ,8 ,16 ,1 ,0xA0000 ,0x10000,132 ,525 ,90  ,480 ,_UNUSUAL_MODE	},
+{ 0x21D  ,M_LIN15  ,720 ,480 ,90 ,30 ,8 ,16 ,1 ,0xA0000 ,0x10000,264 ,525 ,180 ,480 ,_UNUSUAL_MODE  },
+{ 0x21E  ,M_LIN16  ,720 ,480 ,90 ,30 ,8 ,16 ,1 ,0xA0000 ,0x10000,264 ,525 ,180 ,480 ,_UNUSUAL_MODE  },
+{ 0x21F  ,M_LIN32  ,720 ,480 ,90 ,30 ,8 ,16 ,1 ,0xA0000 ,0x10000,132 ,525 ,90  ,480 ,_UNUSUAL_MODE  },
 
 // 848x480 16:9 modes
-{ 0x220  ,M_LIN4   ,848 ,480 ,106,30 ,8 ,16 ,1 ,0xA0000 ,0x10000,132 ,525 ,106 ,480 ,0	},
-{ 0x221  ,M_LIN8   ,848 ,480 ,106,30 ,8 ,16 ,1 ,0xA0000 ,0x10000,132 ,525 ,106 ,480 ,0	},
-{ 0x222  ,M_LIN15  ,848 ,480 ,106,30 ,8 ,16 ,1 ,0xA0000 ,0x10000,264 ,525 ,212 ,480 ,0  },
-{ 0x223  ,M_LIN16  ,848 ,480 ,106,30 ,8 ,16 ,1 ,0xA0000 ,0x10000,264 ,525 ,212 ,480 ,0  },
-{ 0x224  ,M_LIN32  ,848 ,480 ,106,30 ,8 ,16 ,1 ,0xA0000 ,0x10000,132 ,525 ,106 ,480 ,0  },
+{ 0x220  ,M_LIN4   ,848 ,480 ,106,30 ,8 ,16 ,1 ,0xA0000 ,0x10000,132 ,525 ,106 ,480 ,_UNUSUAL_MODE	},
+{ 0x221  ,M_LIN8   ,848 ,480 ,106,30 ,8 ,16 ,1 ,0xA0000 ,0x10000,132 ,525 ,106 ,480 ,_UNUSUAL_MODE	},
+{ 0x222  ,M_LIN15  ,848 ,480 ,106,30 ,8 ,16 ,1 ,0xA0000 ,0x10000,264 ,525 ,212 ,480 ,_UNUSUAL_MODE  },
+{ 0x223  ,M_LIN16  ,848 ,480 ,106,30 ,8 ,16 ,1 ,0xA0000 ,0x10000,264 ,525 ,212 ,480 ,_UNUSUAL_MODE  },
+{ 0x224  ,M_LIN32  ,848 ,480 ,106,30 ,8 ,16 ,1 ,0xA0000 ,0x10000,132 ,525 ,106 ,480 ,_UNUSUAL_MODE  },
 
 // 1280x800 8:5 modes
-{ 0x225  ,M_LIN4   ,1280,800 ,160,50 ,8 ,16 ,1 ,0xA0000 ,0x10000,200 ,880 ,160 ,800 ,0	},
-{ 0x226  ,M_LIN8   ,1280,800 ,160,50 ,8 ,16 ,1 ,0xA0000 ,0x10000,200 ,880 ,160 ,800 ,0	},
-{ 0x227  ,M_LIN15  ,1280,800 ,160,50 ,8 ,16 ,1 ,0xA0000 ,0x10000,400 ,880 ,320 ,800 ,0  },
-{ 0x228  ,M_LIN16  ,1280,800 ,160,50 ,8 ,16 ,1 ,0xA0000 ,0x10000,400 ,880 ,320 ,800 ,0  },
-{ 0x229  ,M_LIN32  ,1280,800 ,160,50 ,8 ,16 ,1 ,0xA0000 ,0x10000,200 ,880 ,160 ,800 ,0  },
-{ 0x300  ,M_LIN24  ,1280,800 ,160,50 ,8 ,16 ,1 ,0xA0000 ,0x10000,200 ,880 ,160 ,800 ,0  },
+{ 0x225  ,M_LIN4   ,1280,800 ,160,50 ,8 ,16 ,1 ,0xA0000 ,0x10000,200 ,880 ,160 ,800 ,_UNUSUAL_MODE  },
+{ 0x226  ,M_LIN8   ,1280,800 ,160,50 ,8 ,16 ,1 ,0xA0000 ,0x10000,200 ,880 ,160 ,800 ,_UNUSUAL_MODE  },
+{ 0x227  ,M_LIN15  ,1280,800 ,160,50 ,8 ,16 ,1 ,0xA0000 ,0x10000,400 ,880 ,320 ,800 ,_UNUSUAL_MODE  },
+{ 0x228  ,M_LIN16  ,1280,800 ,160,50 ,8 ,16 ,1 ,0xA0000 ,0x10000,400 ,880 ,320 ,800 ,_UNUSUAL_MODE  },
+{ 0x229  ,M_LIN32  ,1280,800 ,160,50 ,8 ,16 ,1 ,0xA0000 ,0x10000,200 ,880 ,160 ,800 ,_UNUSUAL_MODE  },
+{ 0x300  ,M_LIN24  ,1280,800 ,160,50 ,8 ,16 ,1 ,0xA0000 ,0x10000,200 ,880 ,160 ,800 ,_UNUSUAL_MODE  },
 
 // 1280x960 4:3 modes
-{ 0x22a  ,M_LIN4   ,1280,960 ,160,60 ,8 ,16 ,1 ,0xA0000 ,0x10000,200 ,1020,160 ,960 ,0	},
-{ 0x22b  ,M_LIN8   ,1280,960 ,160,60 ,8 ,16 ,1 ,0xA0000 ,0x10000,200 ,1020,160 ,960 ,0	},
-{ 0x22c  ,M_LIN15  ,1280,960 ,160,60 ,8 ,16 ,1 ,0xA0000 ,0x10000,400 ,1020,320 ,960 ,0  },
-{ 0x22d  ,M_LIN16  ,1280,960 ,160,60 ,8 ,16 ,1 ,0xA0000 ,0x10000,400 ,1020,320 ,960 ,0  },
-{ 0x22e  ,M_LIN32  ,1280,960 ,160,60 ,8 ,16 ,1 ,0xA0000 ,0x10000,200 ,1020,160 ,960 ,0  },
-{ 0x301  ,M_LIN24  ,1280,960 ,160,60 ,8 ,16 ,1 ,0xA0000 ,0x10000,200 ,1020,160 ,960 ,0  },
+{ 0x22a  ,M_LIN4   ,1280,960 ,160,60 ,8 ,16 ,1 ,0xA0000 ,0x10000,200 ,1020,160 ,960 ,_UNUSUAL_MODE  },
+{ 0x22b  ,M_LIN8   ,1280,960 ,160,60 ,8 ,16 ,1 ,0xA0000 ,0x10000,200 ,1020,160 ,960 ,_UNUSUAL_MODE  },
+{ 0x22c  ,M_LIN15  ,1280,960 ,160,60 ,8 ,16 ,1 ,0xA0000 ,0x10000,400 ,1020,320 ,960 ,_UNUSUAL_MODE  },
+{ 0x22d  ,M_LIN16  ,1280,960 ,160,60 ,8 ,16 ,1 ,0xA0000 ,0x10000,400 ,1020,320 ,960 ,_UNUSUAL_MODE  },
+{ 0x22e  ,M_LIN32  ,1280,960 ,160,60 ,8 ,16 ,1 ,0xA0000 ,0x10000,200 ,1020,160 ,960 ,_UNUSUAL_MODE  },
+{ 0x301  ,M_LIN24  ,1280,960 ,160,60 ,8 ,16 ,1 ,0xA0000 ,0x10000,200 ,1020,160 ,960 ,_UNUSUAL_MODE  },
 
 // 1280x1024 5:4 rest
 { 0x22f  ,M_LIN32  ,1280,1024,160,64 ,8 ,16 ,1 ,0xA0000 ,0x10000,212 ,1066,160,1024,0	},
 { 0x302  ,M_LIN24  ,1280,1024,160,64 ,8 ,16 ,1 ,0xA0000 ,0x10000,212 ,1066,160,1024,0	},
 
 // 1400x1050 4:3 - 4bpp requires a hdisplayend value that is even, so round up
-{ 0x250  ,M_LIN4   ,1400,1050,175,66 ,8 ,16 ,1 ,0xA0000 ,0x10000,220 ,1100,176 ,1050,0	},
-{ 0x230  ,M_LIN8   ,1400,1050,175,66 ,8 ,16 ,1 ,0xA0000 ,0x10000,220 ,1100,175 ,1050,0	},
-{ 0x231  ,M_LIN15  ,1400,1050,175,66 ,8 ,16 ,1 ,0xA0000 ,0x10000,440 ,1100,350 ,1050,0  },
-{ 0x232  ,M_LIN16  ,1400,1050,175,66 ,8 ,16 ,1 ,0xA0000 ,0x10000,440 ,1100,350 ,1050,0  },
-{ 0x233  ,M_LIN32  ,1400,1050,175,66 ,8 ,16 ,1 ,0xA0000 ,0x10000,220 ,1100,175 ,1050,0  },
-{ 0x303  ,M_LIN24  ,1400,1050,175,66 ,8 ,16 ,1 ,0xA0000 ,0x10000,220 ,1100,175 ,1050,0  },
+{ 0x250  ,M_LIN4   ,1400,1050,175,66 ,8 ,16 ,1 ,0xA0000 ,0x10000,220 ,1100,176 ,1050,_UNUSUAL_MODE  },
+{ 0x230  ,M_LIN8   ,1400,1050,175,66 ,8 ,16 ,1 ,0xA0000 ,0x10000,220 ,1100,175 ,1050,_UNUSUAL_MODE  },
+{ 0x231  ,M_LIN15  ,1400,1050,175,66 ,8 ,16 ,1 ,0xA0000 ,0x10000,440 ,1100,350 ,1050,_UNUSUAL_MODE  },
+{ 0x232  ,M_LIN16  ,1400,1050,175,66 ,8 ,16 ,1 ,0xA0000 ,0x10000,440 ,1100,350 ,1050,_UNUSUAL_MODE  },
+{ 0x233  ,M_LIN32  ,1400,1050,175,66 ,8 ,16 ,1 ,0xA0000 ,0x10000,220 ,1100,175 ,1050,_UNUSUAL_MODE  },
+{ 0x303  ,M_LIN24  ,1400,1050,175,66 ,8 ,16 ,1 ,0xA0000 ,0x10000,220 ,1100,175 ,1050,_UNUSUAL_MODE  },
 
 // 1440x900 8:5 modes
-{ 0x234  ,M_LIN4   ,1440, 900,180,56 ,8 ,16 ,1 ,0xA0000 ,0x10000,220 , 980,180 , 900,0  },
-{ 0x235  ,M_LIN8   ,1440, 900,180,56 ,8 ,16 ,1 ,0xA0000 ,0x10000,220 , 980,180 , 900,0  },
-{ 0x236  ,M_LIN15  ,1440, 900,180,56 ,8 ,16 ,1 ,0xA0000 ,0x10000,440 , 980,360 , 900,0  },
-{ 0x237  ,M_LIN16  ,1440, 900,180,56 ,8 ,16 ,1 ,0xA0000 ,0x10000,440 , 980,360 , 900,0  },
-{ 0x238  ,M_LIN32  ,1440, 900,180,56 ,8 ,16 ,1 ,0xA0000 ,0x10000,220 , 980,180 , 900,0  },
+{ 0x234  ,M_LIN4   ,1440, 900,180,56 ,8 ,16 ,1 ,0xA0000 ,0x10000,220 , 980,180 , 900,_UNUSUAL_MODE  },
+{ 0x235  ,M_LIN8   ,1440, 900,180,56 ,8 ,16 ,1 ,0xA0000 ,0x10000,220 , 980,180 , 900,_UNUSUAL_MODE  },
+{ 0x236  ,M_LIN15  ,1440, 900,180,56 ,8 ,16 ,1 ,0xA0000 ,0x10000,440 , 980,360 , 900,_UNUSUAL_MODE  },
+{ 0x237  ,M_LIN16  ,1440, 900,180,56 ,8 ,16 ,1 ,0xA0000 ,0x10000,440 , 980,360 , 900,_UNUSUAL_MODE  },
+{ 0x238  ,M_LIN32  ,1440, 900,180,56 ,8 ,16 ,1 ,0xA0000 ,0x10000,220 , 980,180 , 900,_UNUSUAL_MODE  },
 
 // 1600x1200 4:3 rest - 32bpp needs more than 4 megs
 { 0x239  ,M_LIN4   ,1600,1200,200,75 ,8 ,16 ,1 ,0xA0000 ,0x10000,264 ,1240,200, 1200,0	},
@@ -226,34 +257,58 @@ VideoModeBlock ModeList_VGA[]={
 { 0x23c  ,M_LIN32  ,1600,1200,200,75 ,8 ,16 ,1 ,0xA0000 ,0x10000,264 ,1240,200 ,1200,0	},
 
 // 1280x720 16:9 modes
-{ 0x23D  ,M_LIN4   ,1280,720 ,160,45 ,8 ,16 ,1 ,0xA0000 ,0x10000,176 ,792 ,160 ,720 ,0	},
-{ 0x23E  ,M_LIN8   ,1280,720 ,160,45 ,8 ,16 ,1 ,0xA0000 ,0x10000,176 ,792 ,160 ,720 ,0	},
-{ 0x23F  ,M_LIN15  ,1280,720 ,160,45 ,8 ,16 ,1 ,0xA0000 ,0x10000,352 ,792 ,320 ,720 ,0  },
-{ 0x240  ,M_LIN16  ,1280,720 ,160,45 ,8 ,16 ,1 ,0xA0000 ,0x10000,352 ,792 ,320 ,720 ,0  },
-{ 0x241  ,M_LIN32  ,1280,720 ,160,45 ,8 ,16 ,1 ,0xA0000 ,0x10000,176 ,792 ,160 ,720 ,0  },
-{ 0x303  ,M_LIN24  ,1280,720 ,160,45 ,8 ,16 ,1 ,0xA0000 ,0x10000,176 ,792 ,160 ,720 ,0  },
+{ 0x23D  ,M_LIN4   ,1280,720 ,160,45 ,8 ,16 ,1 ,0xA0000 ,0x10000,176 ,792 ,160 ,720 ,_HIGH_DEFINITION  },
+{ 0x23E  ,M_LIN8   ,1280,720 ,160,45 ,8 ,16 ,1 ,0xA0000 ,0x10000,176 ,792 ,160 ,720 ,_HIGH_DEFINITION  },
+{ 0x23F  ,M_LIN15  ,1280,720 ,160,45 ,8 ,16 ,1 ,0xA0000 ,0x10000,352 ,792 ,320 ,720 ,_HIGH_DEFINITION  },
+{ 0x240  ,M_LIN16  ,1280,720 ,160,45 ,8 ,16 ,1 ,0xA0000 ,0x10000,352 ,792 ,320 ,720 ,_HIGH_DEFINITION  },
+{ 0x241  ,M_LIN32  ,1280,720 ,160,45 ,8 ,16 ,1 ,0xA0000 ,0x10000,176 ,792 ,160 ,720 ,_HIGH_DEFINITION  },
+{ 0x303  ,M_LIN24  ,1280,720 ,160,45 ,8 ,16 ,1 ,0xA0000 ,0x10000,176 ,792 ,160 ,720 ,_HIGH_DEFINITION  },
 
 // 1920x1080 16:9 modes
-{ 0x242  ,M_LIN4   ,1920,1080,240,67 ,8 ,16 ,1 ,0xA0000 ,0x10000,264 ,1188,240 ,1080,0	},
-{ 0x243  ,M_LIN8   ,1920,1080,240,67 ,8 ,16 ,1 ,0xA0000 ,0x10000,264 ,1188,240 ,1080,0	},
-{ 0x244  ,M_LIN15  ,1920,1080,240,67 ,8 ,16 ,1 ,0xA0000 ,0x10000,528 ,1188,480 ,1080,0  },
-{ 0x245  ,M_LIN16  ,1920,1080,240,67 ,8 ,16 ,1 ,0xA0000 ,0x10000,528 ,1188,480 ,1080,0  },
-{ 0x246  ,M_LIN32  ,1920,1080,240,67 ,8 ,16 ,1 ,0xA0000 ,0x10000,264 ,1188,240 ,1080,0  },
-{ 0x304  ,M_LIN24  ,1920,1080,240,67 ,8 ,16 ,1 ,0xA0000 ,0x10000,264 ,1188,240 ,1080,0  },
+{ 0x242  ,M_LIN4   ,1920,1080,240,67 ,8 ,16 ,1 ,0xA0000 ,0x10000,264 ,1188,240 ,1080,_HIGH_DEFINITION  },
+{ 0x243  ,M_LIN8   ,1920,1080,240,67 ,8 ,16 ,1 ,0xA0000 ,0x10000,264 ,1188,240 ,1080,_HIGH_DEFINITION  },
+{ 0x244  ,M_LIN15  ,1920,1080,240,67 ,8 ,16 ,1 ,0xA0000 ,0x10000,528 ,1188,480 ,1080,_HIGH_DEFINITION  },
+{ 0x245  ,M_LIN16  ,1920,1080,240,67 ,8 ,16 ,1 ,0xA0000 ,0x10000,528 ,1188,480 ,1080,_HIGH_DEFINITION  },
+{ 0x246  ,M_LIN32  ,1920,1080,240,67 ,8 ,16 ,1 ,0xA0000 ,0x10000,264 ,1188,240 ,1080,_HIGH_DEFINITION  },
+{ 0x304  ,M_LIN24  ,1920,1080,240,67 ,8 ,16 ,1 ,0xA0000 ,0x10000,264 ,1188,240 ,1080,_HIGH_DEFINITION  },
 
 // 960x720 4:3 modes
-{ 0x247  ,M_LIN4   ,960,720 ,160,45 ,8 ,16 ,1 ,0xA0000 ,0x10000,144 ,792 ,120 ,720 ,0	},
-{ 0x248  ,M_LIN8   ,960,720 ,160,45 ,8 ,16 ,1 ,0xA0000 ,0x10000,144 ,792 ,120 ,720 ,0	},
-{ 0x249  ,M_LIN15  ,960,720 ,160,45 ,8 ,16 ,1 ,0xA0000 ,0x10000,288 ,792 ,240 ,720 ,0  },
-{ 0x24A  ,M_LIN16  ,960,720 ,160,45 ,8 ,16 ,1 ,0xA0000 ,0x10000,288 ,792 ,240 ,720 ,0  },
-{ 0x24B  ,M_LIN32  ,960,720 ,160,45 ,8 ,16 ,1 ,0xA0000 ,0x10000,144 ,792 ,120 ,720 ,0  },
+{ 0x247  ,M_LIN4   ,960,720 ,160,45 ,8 ,16 ,1 ,0xA0000 ,0x10000,144 ,792 ,120 ,720 ,_HIGH_DEFINITION  },
+{ 0x248  ,M_LIN8   ,960,720 ,160,45 ,8 ,16 ,1 ,0xA0000 ,0x10000,144 ,792 ,120 ,720 ,_HIGH_DEFINITION  },
+{ 0x249  ,M_LIN15  ,960,720 ,160,45 ,8 ,16 ,1 ,0xA0000 ,0x10000,288 ,792 ,240 ,720 ,_HIGH_DEFINITION  },
+{ 0x24A  ,M_LIN16  ,960,720 ,160,45 ,8 ,16 ,1 ,0xA0000 ,0x10000,288 ,792 ,240 ,720 ,_HIGH_DEFINITION  },
+{ 0x24B  ,M_LIN32  ,960,720 ,160,45 ,8 ,16 ,1 ,0xA0000 ,0x10000,144 ,792 ,120 ,720 ,_HIGH_DEFINITION  },
 
-// 1440x1080 16:9 modes
-{ 0x24C  ,M_LIN4   ,1440,1080,240,67 ,8 ,16 ,1 ,0xA0000 ,0x10000,200 ,1188,180 ,1080,0	},
-{ 0x24D  ,M_LIN8   ,1440,1080,240,67 ,8 ,16 ,1 ,0xA0000 ,0x10000,200 ,1188,180 ,1080,0	},
-{ 0x24E  ,M_LIN15  ,1440,1080,240,67 ,8 ,16 ,1 ,0xA0000 ,0x10000,400 ,1188,360 ,1080,0  },
-{ 0x24F  ,M_LIN16  ,1440,1080,240,67 ,8 ,16 ,1 ,0xA0000 ,0x10000,400 ,1188,360 ,1080,0  },
-{ 0x2F0  ,M_LIN32  ,1440,1080,240,67 ,8 ,16 ,1 ,0xA0000 ,0x10000,200 ,1188,180 ,1080,0  },
+// 1440x1080 4:3 modes
+{ 0x24C  ,M_LIN4   ,1440,1080,240,67 ,8 ,16 ,1 ,0xA0000 ,0x10000,200 ,1188,180 ,1080,_HIGH_DEFINITION  },
+{ 0x24D  ,M_LIN8   ,1440,1080,240,67 ,8 ,16 ,1 ,0xA0000 ,0x10000,200 ,1188,180 ,1080,_HIGH_DEFINITION  },
+{ 0x24E  ,M_LIN15  ,1440,1080,240,67 ,8 ,16 ,1 ,0xA0000 ,0x10000,400 ,1188,360 ,1080,_HIGH_DEFINITION  },
+{ 0x24F  ,M_LIN16  ,1440,1080,240,67 ,8 ,16 ,1 ,0xA0000 ,0x10000,400 ,1188,360 ,1080,_HIGH_DEFINITION  },
+{ 0x2F0  ,M_LIN32  ,1440,1080,240,67 ,8 ,16 ,1 ,0xA0000 ,0x10000,200 ,1188,180 ,1080,_HIGH_DEFINITION  },
+
+// 1920x1440 4:3 modes
+{ 0x350  ,M_LIN4   ,1920,1440,240,90 ,8 ,16 ,1 ,0xA0000 ,0x10000,264 ,1584,240 ,1440,_HIGH_DEFINITION  },
+{ 0x351  ,M_LIN8   ,1920,1440,240,90 ,8 ,16 ,1 ,0xA0000 ,0x10000,264 ,1584,240 ,1440,_HIGH_DEFINITION  },
+{ 0x352  ,M_LIN15  ,1920,1440,240,90 ,8 ,16 ,1 ,0xA0000 ,0x10000,528 ,1584,480 ,1440,_HIGH_DEFINITION  },
+{ 0x353  ,M_LIN16  ,1920,1440,240,90 ,8 ,16 ,1 ,0xA0000 ,0x10000,528 ,1584,480 ,1440,_HIGH_DEFINITION  },
+{ 0x354  ,M_LIN32  ,1920,1440,240,90 ,8 ,16 ,1 ,0xA0000 ,0x10000,264 ,1584,240 ,1440,_HIGH_DEFINITION  },
+{ 0x355  ,M_LIN24  ,1920,1440,240,90 ,8 ,16 ,1 ,0xA0000 ,0x10000,264 ,1584,240 ,1440,_HIGH_DEFINITION  },
+
+// packed 16-color (4bpp) modes seen on a Toshiba Libretto VESA BIOS (Chips & Technologies 65550)
+{ 0x25F  ,M_PACKED4,320 ,200 ,40 ,25 ,8 ,8  ,1 ,0xA0000 ,0x10000,50  ,449 ,40  ,400 , _REPEAT1 },
+{ 0x260  ,M_PACKED4,640 ,400 ,80 ,25 ,8 ,16 ,1 ,0xA0000 ,0x10000,100 ,449 ,80  ,400 ,0  },
+{ 0x261  ,M_PACKED4,640 ,480 ,80 ,30 ,8 ,16 ,1 ,0xA0000 ,0x10000,100 ,525 ,80  ,480 ,0  },
+{ 0x262  ,M_PACKED4,720 ,480 ,90 ,30 ,8 ,16 ,1 ,0xA0000 ,0x10000,132 ,525 ,90  ,480 ,_UNUSUAL_MODE	},
+{ 0x263  ,M_PACKED4,800 ,600 ,100,37 ,8 ,16 ,1 ,0xA0000 ,0x10000,128 ,663 ,100 ,600 ,0	},
+{ 0x264  ,M_PACKED4,848 ,480 ,106,30 ,8 ,16 ,1 ,0xA0000 ,0x10000,132 ,525 ,106 ,480 ,_UNUSUAL_MODE	},
+{ 0x265  ,M_PACKED4,1024,768 ,128,48 ,8 ,16 ,1 ,0xA0000 ,0x10000,168 ,806 ,128 ,768 ,0	},
+{ 0x266  ,M_PACKED4,1280,720 ,160,45 ,8 ,16 ,1 ,0xA0000 ,0x10000,176 ,792 ,160 ,720 ,_HIGH_DEFINITION  },
+{ 0x267  ,M_PACKED4,1280,1024,160,64 ,8 ,16 ,1 ,0xA0000 ,0x10000,212 ,1066,160 ,1024,0	},
+{ 0x268  ,M_PACKED4,1440,900 ,180,56 ,8 ,16 ,1 ,0xA0000 ,0x10000,220 ,980 ,180 ,900 ,_UNUSUAL_MODE  },
+{ 0x269  ,M_PACKED4,1400,1050,175,66 ,8 ,16 ,1 ,0xA0000 ,0x10000,220 ,1100,176 ,1050,_UNUSUAL_MODE  },
+{ 0x26A  ,M_PACKED4,1600,1200,200,75 ,8 ,16 ,1 ,0xA0000 ,0x10000,264 ,1240,200 ,1200,0	},
+{ 0x26B  ,M_PACKED4,1920,1080,240,67 ,8 ,16 ,1 ,0xA0000 ,0x10000,264 ,1188,240 ,1080,_HIGH_DEFINITION  },
+{ 0x356  ,M_PACKED4,1920,1440,240,90 ,8 ,16 ,1 ,0xA0000 ,0x10000,264 ,1584,240 ,1440,_HIGH_DEFINITION  },
 
 {0xFFFF  ,M_ERROR  ,0   ,0   ,0  ,0  ,0 ,0  ,0 ,0x00000 ,0x0000 ,0   ,0   ,0  ,0   ,0 	},
 };
@@ -384,9 +439,9 @@ VideoModeBlock ModeList_OTHER[]={
 { 0x001  ,M_TEXT   ,320 ,400 ,40 ,25 ,8 ,8  ,8 ,0xB8000 ,0x0800 ,56  ,31  ,40 ,25  ,0	},
 { 0x002  ,M_TEXT   ,640 ,400 ,80 ,25 ,8 ,8  ,4 ,0xB8000 ,0x1000 ,113 ,31  ,80 ,25  ,0	},
 { 0x003  ,M_TEXT   ,640 ,400 ,80 ,25 ,8 ,8  ,4 ,0xB8000 ,0x1000 ,113 ,31  ,80 ,25  ,0	},
-{ 0x004  ,M_CGA4   ,320 ,200 ,40 ,25 ,8 ,8  ,4 ,0xB8000 ,0x0800 ,56  ,127 ,40 ,100 ,0   },
-{ 0x005  ,M_CGA4   ,320 ,200 ,40 ,25 ,8 ,8  ,4 ,0xB8000 ,0x0800 ,56  ,127 ,40 ,100 ,0   },
-{ 0x006  ,M_CGA2   ,640 ,200 ,80 ,25 ,8 ,8  ,4 ,0xB8000 ,0x0800 ,56  ,127 ,40 ,100 ,0   },
+{ 0x004  ,M_CGA4   ,320 ,200 ,40 ,25 ,8 ,8  ,1 ,0xB8000 ,0x4000 ,56  ,127 ,40 ,100 ,0   },
+{ 0x005  ,M_CGA4   ,320 ,200 ,40 ,25 ,8 ,8  ,1 ,0xB8000 ,0x4000 ,56  ,127 ,40 ,100 ,0   },
+{ 0x006  ,M_CGA2   ,640 ,200 ,80 ,25 ,8 ,8  ,1 ,0xB8000 ,0x4000 ,56  ,127 ,40 ,100 ,0   },
 { 0x008  ,M_TANDY16,160 ,200 ,20 ,25 ,8 ,8  ,8 ,0xB8000 ,0x2000 ,56  ,127 ,40 ,100 ,0   },
 { 0x009  ,M_TANDY16,320 ,200 ,40 ,25 ,8 ,8  ,8 ,0xB8000 ,0x2000 ,113 ,63  ,80 ,50  ,0   },
 { 0x00A  ,M_CGA4   ,640 ,200 ,80 ,25 ,8 ,8  ,8 ,0xB8000 ,0x2000 ,113 ,63  ,80 ,50  ,0   },
@@ -394,8 +449,44 @@ VideoModeBlock ModeList_OTHER[]={
 {0xFFFF  ,M_ERROR  ,0   ,0   ,0  ,0  ,0 ,0  ,0 ,0x00000 ,0x0000 ,0   ,0   ,0  ,0   ,0 	},
 };
 
+/* MCGA mode list.
+ * These are based off of a register capture of actual MCGA hardware for each mode.
+ * According to register captures, all modes seem to be consistently programmed as if
+ * for 40x25 CGA modes, including 80x25 modes.
+ *
+ * These modes should generally make a 70Hz VGA compatible output, except 640x480 2-color MCGA
+ * mode, which should make a 60Hz VGA compatible mode.
+ *
+ * Register values are CGA-like, meaning that the modes are defined in character clocks
+ * horizontally and character cells vertically and the actual scan line numbers are determined
+ * by the vertical param times max scanline.
+ *
+ * According to the register dump I made, vertical total values don't fully make sense and
+ * may be nonsensical and handled differently for emulation purposes. They're weird.
+ *
+ * When I can figure out which ones are directly handled, doubled, or just ignored, I can
+ * update this table and the emulation to match it.
+ *
+ * Until then, this is close enough. */
+VideoModeBlock ModeList_MCGA[]={
+/* mode  ,type     ,sw  ,sh  ,tw ,th ,cw,ch ,pt,pstart  ,plength,htot,vtot,hde,vde ,special flags */
+{ 0x000  ,M_TEXT   ,320 ,400 ,40 ,25 ,8 ,16 ,8 ,0xB8000 ,0x0800 ,49  ,26  ,40 ,25  ,0   },
+{ 0x001  ,M_TEXT   ,320 ,400 ,40 ,25 ,8 ,16 ,8 ,0xB8000 ,0x0800 ,49  ,26  ,40 ,25  ,0   },
+{ 0x002  ,M_TEXT   ,640 ,400 ,80 ,25 ,8 ,16 ,8 ,0xB8000 ,0x1000 ,49  ,26  ,40 ,25  ,0   },
+{ 0x003  ,M_TEXT   ,640 ,400 ,80 ,25 ,8 ,16 ,8 ,0xB8000 ,0x1000 ,49  ,26  ,40 ,25  ,0   },
+{ 0x004  ,M_CGA4   ,320 ,200 ,40 ,25 ,8 ,8  ,1 ,0xB8000 ,0x4000 ,49  ,108 ,40 ,100 ,0   },
+{ 0x005  ,M_CGA4   ,320 ,200 ,40 ,25 ,8 ,8  ,1 ,0xB8000 ,0x4000 ,49  ,108 ,40 ,100 ,0   },
+{ 0x006  ,M_CGA2   ,640 ,200 ,80 ,25 ,8 ,8  ,1 ,0xB8000 ,0x4000 ,49  ,108 ,40 ,100 ,0   },
+{ 0x011  ,M_CGA2   ,640 ,480 ,80 ,30 ,8 ,16 ,1 ,0xA0000 ,0xA000 ,49  ,127 ,40 ,120 ,0   }, // note 1
+{ 0x013  ,M_VGA    ,320 ,200 ,40 ,25 ,8 ,8  ,1 ,0xA0000 ,0x2000 ,49  ,108 ,40 ,100 ,0   }, // note 1
+{0xFFFF  ,M_ERROR  ,0   ,0   ,0  ,0  ,0 ,0  ,0 ,0x00000 ,0x0000 ,0   ,0   ,0  ,0   ,0   },
+};
+// note 1: CGA-like 200-line vertical timing is programmed into the registers, and then the
+//         hardware doubles them again. The max scanline row is zero in these modes, so
+//         doubling twice is the only way it could work.
+
 VideoModeBlock Hercules_Mode=
-{ 0x007  ,M_TEXT   ,640 ,400 ,80 ,25 ,8 ,14 ,1 ,0xB0000 ,0x1000 ,97 ,25  ,80 ,25  ,0	};
+{ 0x007  ,M_TEXT   ,640 ,350 ,80 ,25 ,8 ,14 ,1 ,0xB0000 ,0x1000 ,97 ,25  ,80 ,25  ,0	};
 
 VideoModeBlock PC98_Mode=
 { 0x000  ,M_PC98   ,640 ,400 ,80 ,25 ,8 ,14 ,1 ,0xA0000 ,0x1000 ,97 ,25  ,80 ,25  ,0	};
@@ -510,13 +601,30 @@ static bool SetCurMode(VideoModeBlock modeblock[],Bit16u mode) {
 	while (modeblock[i].mode!=0xffff) {
 		if (modeblock[i].mode!=mode)
 			i++;
-		/* Hack for VBE 1.2 modes and 24/32bpp ambiguity */
+		/* Hack for VBE 1.2 modes and 24/32bpp ambiguity UNLESS the user changed the mode */
 		else if (modeblock[i].mode >= 0x100 && modeblock[i].mode <= 0x11F &&
+            !(modeblock[i].special & _USER_MODIFIED) &&
 			((modeblock[i].type == M_LIN32 && !vesa12_modes_32bpp) ||
 			(modeblock[i].type == M_LIN24 && vesa12_modes_32bpp))) {
 			/* ignore */
 			i++;
 		}
+        /* ignore deleted modes */
+        else if (modeblock[i].type == M_ERROR) {
+            /* ignore */
+            i++;
+        }
+	    /* ignore disabled modes */
+        else if (modeblock[i].special & _USER_DISABLED) {
+            /* ignore */
+            i++;
+        }
+        /* ignore modes beyond the render scaler architecture's limits... unless the user created it. We did warn the user! */
+        else if (!(modeblock[i].special & _USER_MODIFIED) &&
+                (modeblock[i].swidth > SCALER_MAXWIDTH || modeblock[i].sheight > SCALER_MAXHEIGHT)) {
+            /* ignore */
+            i++;
+        }
 		else {
 			if ((!int10.vesa_oldvbe) || (ModeList_VGA[i].mode<0x120)) {
 				CurMode=&modeblock[i];
@@ -528,6 +636,26 @@ static bool SetCurMode(VideoModeBlock modeblock[],Bit16u mode) {
 	return false;
 }
 
+static void SetTextLines(void) {
+	// check for scanline backwards compatibility (VESA text modes??)
+	switch (real_readb(BIOSMEM_SEG,BIOSMEM_MODESET_CTL)&0x90) {
+	case 0x80: // 200 lines emulation
+		if (CurMode->mode <= 3) {
+			CurMode = &ModeList_VGA_Text_200lines[CurMode->mode];
+		} else if (CurMode->mode == 7) {
+			CurMode = &ModeList_VGA_Text_350lines[4];
+		}
+		break;
+	case 0x00: // 350 lines emulation
+		if (CurMode->mode <= 3) {
+			CurMode = &ModeList_VGA_Text_350lines[CurMode->mode];
+		} else if (CurMode->mode == 7) {
+			CurMode = &ModeList_VGA_Text_350lines[4];
+		}
+		break;
+	}
+}
+
 bool INT10_SetCurMode(void) {
 	bool mode_changed=false;
 	Bit16u bios_mode=(Bit16u)real_readb(BIOSMEM_SEG,BIOSMEM_CURRENT_MODE);
@@ -536,9 +664,13 @@ bool INT10_SetCurMode(void) {
 		case MCH_CGA:
 			if (bios_mode<7) mode_changed=SetCurMode(ModeList_OTHER,bios_mode);
 			break;
+		case MCH_MCGA:
+			mode_changed=SetCurMode(ModeList_MCGA,bios_mode);
+			break;
 		case TANDY_ARCH_CASE:
 			if (bios_mode!=7 && bios_mode<=0xa) mode_changed=SetCurMode(ModeList_OTHER,bios_mode);
 			break;
+		case MCH_MDA:
 		case MCH_HERC:
 			break;
 		case MCH_EGA:
@@ -580,16 +712,32 @@ bool INT10_SetCurMode(void) {
 static void FinishSetMode(bool clearmem) {
 	/* Clear video memory if needs be */
 	if (clearmem) {
-		switch (CurMode->type) {
-		case M_CGA4:
+        switch (CurMode->type) {
+        case M_TANDY16:
+        case M_CGA4:
+            if ((machine==MCH_PCJR) && (CurMode->mode >= 9)) {
+                // PCJR cannot access the full 32k at 0xb800
+                for (Bit16u ct=0;ct<16*1024;ct++) {
+                    // 0x1800 is the last 32k block in 128k, as set in the CRTCPU_PAGE register 
+                    real_writew(0x1800,ct*2,0x0000);
+                }
+                break;
+            }
+            // fall-through
 		case M_CGA2:
-		case M_TANDY16:
-			for (Bit16u ct=0;ct<16*1024;ct++) {
-				real_writew( 0xb800,ct*2,0x0000);
-			}
+            if (machine == MCH_MCGA && CurMode->mode == 0x11) {
+                for (Bit16u ct=0;ct<32*1024;ct++) {
+                    real_writew( 0xa000,ct*2,0x0000);
+                }
+            }
+            else {
+                for (Bit16u ct=0;ct<16*1024;ct++) {
+                    real_writew( 0xb800,ct*2,0x0000);
+                }
+            }
 			break;
 		case M_TEXT: {
-			Bit16u max = (CurMode->ptotal*CurMode->plength)>>1;
+			Bit16u max = (Bit16u)(CurMode->ptotal*CurMode->plength)>>1;
 			if (CurMode->mode == 7) {
 				for (Bit16u ct=0;ct<max;ct++) real_writew(0xB000,ct*2,0x0720);
 			}
@@ -606,8 +754,9 @@ static void FinishSetMode(bool clearmem) {
 		case M_LIN16:
 		case M_LIN24:
 		case M_LIN32:
+        case M_PACKED4:
 			/* Hack we just access the memory directly */
-			memset(vga.mem.linear,0,vga.vmemsize);
+			memset(vga.mem.linear,0,vga.mem.memsize);
 			break;
 		default:
 			break;
@@ -626,11 +775,10 @@ static void FinishSetMode(bool clearmem) {
 
 	// this is an index into the dcc table:
 	if (IS_VGA_ARCH) real_writeb(BIOSMEM_SEG,BIOSMEM_DCC_INDEX,0x0b);
-	real_writed(BIOSMEM_SEG,BIOSMEM_VS_POINTER,int10.rom.video_save_pointers);
 
 	// Set cursor shape
 	if (CurMode->type==M_TEXT) {
-		INT10_SetCursorShape(0x06,07);
+		INT10_SetCursorShape(CURSOR_SCAN_LINE_NORMAL, CURSOR_SCAN_LINE_END);
 	}
 	// Set cursor pos for page 0..7
 	for (Bit8u ct=0;ct<8;ct++) INT10_SetCursorPos(0,0,ct);
@@ -648,8 +796,6 @@ static void FinishSetMode(bool clearmem) {
 	}
 	/* FIXME */
 	VGA_DAC_UpdateColorPalette();
-	/* Tell mouse resolution change */
-	Mouse_NewVideoMode();
 }
 
 extern bool en_int33;
@@ -667,9 +813,20 @@ bool INT10_SetVideoMode_OTHER(Bit16u mode,bool clearmem) {
 			return false;
 		}
 		break;
-	case MCH_HERC:
-		// Only init the adapter if the equipment word is set to monochrome (Testdrive)
-		if ((real_readw(BIOSMEM_SEG,BIOSMEM_INITIAL_MODE)&0x30)!=0x30) return false;
+	case MCH_MCGA:
+        if (!SetCurMode(ModeList_MCGA,mode)) {
+            LOG(LOG_INT10,LOG_ERROR)("Trying to set illegal mode %X",mode);
+            return false;
+        }
+        break;
+    case MCH_MDA:
+    case MCH_HERC:
+		// Allow standard color modes if equipment word is not set to mono (Victory Road)
+		if ((real_readw(BIOSMEM_SEG,BIOSMEM_INITIAL_MODE)&0x30)!=0x30 && mode<7) {
+			SetCurMode(ModeList_OTHER,mode);
+			FinishSetMode(clearmem);
+			return true;
+		}
 		CurMode=&Hercules_Mode;
 		mode=7; // in case the video parameter table is modified
 		break;
@@ -679,42 +836,69 @@ bool INT10_SetVideoMode_OTHER(Bit16u mode,bool clearmem) {
 	LOG(LOG_INT10,LOG_NORMAL)("Set Video Mode %X",mode);
 
 	/* Setup the CRTC */
-	Bitu crtc_base=machine==MCH_HERC ? 0x3b4 : 0x3d4;
+	Bit16u crtc_base=(machine==MCH_HERC || machine==MCH_MDA) ? 0x3b4 : 0x3d4;
+
+    if (machine == MCH_MCGA) {
+        // unlock CRTC regs 0-7
+        unsigned char x;
+
+        IO_WriteB(crtc_base,0x10);
+        x = IO_ReadB(crtc_base+1);
+        IO_WriteB(crtc_base+1,x & 0x7F);
+    }
+
 	//Horizontal total
-	IO_WriteW(crtc_base,0x00 | (CurMode->htotal) << 8);
-	//Horizontal displayed
-	IO_WriteW(crtc_base,0x01 | (CurMode->hdispend) << 8);
-	//Horizontal sync position
-	IO_WriteW(crtc_base,0x02 | (CurMode->hdispend+1) << 8);
-	//Horizontal sync width, seems to be fixed to 0xa, for cga at least, hercules has 0xf
+	IO_WriteW(crtc_base,(Bit16u)(0x00 | (CurMode->htotal) << 8));
+    if (machine == MCH_MCGA) {
+        //Horizontal displayed
+        IO_WriteW(crtc_base,(Bit16u)(0x01 | (CurMode->hdispend-1) << 8));
+        //Horizontal sync position
+        IO_WriteW(crtc_base,(Bit16u)(0x02 | (CurMode->hdispend) << 8));
+    }
+    else {
+        //Horizontal displayed
+        IO_WriteW(crtc_base,(Bit16u)(0x01 | (CurMode->hdispend) << 8));
+        //Horizontal sync position
+        IO_WriteW(crtc_base,(Bit16u)(0x02 | (CurMode->hdispend+1) << 8));
+    }
+    //Horizontal sync width, seems to be fixed to 0xa, for cga at least, hercules has 0xf
 	// PCjr doubles sync width in high resolution modes, good for aspect correction
 	// newer "compatible" CGA BIOS does the same
 	// The IBM CGA card seems to limit retrace pulse widths
 	Bitu syncwidth;
-	if(machine==MCH_HERC) syncwidth = 0xf;
+	if(machine==MCH_HERC || machine==MCH_MDA) syncwidth = 0xf;
 	else if(CurMode->hdispend==80) syncwidth = 0xc;
 	else syncwidth = 0x6;
 	
-	IO_WriteW(crtc_base,0x03 | (syncwidth) << 8);
+	IO_WriteW(crtc_base,(Bit16u)(0x03 | (syncwidth) << 8));
 	////Vertical total
-	IO_WriteW(crtc_base,0x04 | (CurMode->vtotal) << 8);
+	IO_WriteW(crtc_base,(Bit16u)(0x04 | (CurMode->vtotal) << 8));
 	//Vertical total adjust, 6 for cga,hercules,tandy
-	IO_WriteW(crtc_base,0x05 | (6) << 8);
+	IO_WriteW(crtc_base,(Bit16u)(0x05 | (6) << 8));
 	//Vertical displayed
-	IO_WriteW(crtc_base,0x06 | (CurMode->vdispend) << 8);
+	IO_WriteW(crtc_base,(Bit16u)(0x06 | (CurMode->vdispend) << 8));
 	//Vertical sync position
-	IO_WriteW(crtc_base,0x07 | (CurMode->vdispend + ((CurMode->vtotal - CurMode->vdispend)/2)-1) << 8);
+	IO_WriteW(crtc_base,(Bit16u)(0x07 | (CurMode->vdispend + ((CurMode->vtotal - CurMode->vdispend)/2)-1) << 8));
 	//Maximum scanline
 	Bit8u scanline,crtpage;
 	scanline=8;
 	switch(CurMode->type) {
 	case M_TEXT: // text mode character height
-		if (machine==MCH_HERC) scanline=14;
+		if (machine==MCH_HERC || machine==MCH_MDA) scanline=14;
 		else scanline=8;
 		break;
-	case M_CGA2: // graphics mode: even/odd banks interleaved
-		scanline=2;
-		break;
+    case M_CGA2: // graphics mode: even/odd banks interleaved
+        if (machine == MCH_MCGA && CurMode->mode >= 0x11)
+            scanline = 1; // as seen on real hardware, modes 0x11 and 0x13 have max scanline register == 0x00
+        else
+            scanline = 2;
+        break;
+    case M_VGA: // MCGA
+        if (machine == MCH_MCGA)
+            scanline = 1; // as seen on real hardware, modes 0x11 and 0x13 have max scanline register == 0x00
+        else
+            scanline = 2;
+        break;
 	case M_CGA4:
 		if (CurMode->mode!=0xa) scanline=2;
 		else scanline=4;
@@ -726,6 +910,17 @@ bool INT10_SetVideoMode_OTHER(Bit16u mode,bool clearmem) {
 	default:
 		break;
 	}
+
+    if (machine == MCH_MCGA) {
+        IO_Write(0x3c8,0);
+        for (unsigned int i=0;i<248;i++) {
+            IO_Write(0x3c9,vga_palette[i][0]);
+            IO_Write(0x3c9,vga_palette[i][1]);
+            IO_Write(0x3c9,vga_palette[i][2]);
+        }
+		IO_Write(0x3c6,0xff); //Reset Pelmask
+    }
+
 	IO_WriteW(crtc_base,0x09 | (scanline-1u) << 8u);
 	//Setup the CGA palette using VGA DAC palette
 	for (Bit8u ct=0;ct<16;ct++) VGA_DAC_SetEntry(ct,cga_palette[ct][0],cga_palette[ct][1],cga_palette[ct][2]);
@@ -744,6 +939,7 @@ bool INT10_SetVideoMode_OTHER(Bit16u mode,bool clearmem) {
 	};
 	Bit8u mode_control,color_select;
 	switch (machine) {
+	case MCH_MDA:
 	case MCH_HERC:
 		IO_WriteB(0x3b8,0x28);	// TEXT mode and blinking characters
 
@@ -755,14 +951,52 @@ bool INT10_SetVideoMode_OTHER(Bit16u mode,bool clearmem) {
 	case MCH_AMSTRAD:
 		IO_WriteB( 0x3d9, 0x0f );
 	case MCH_CGA:
-		mode_control=mode_control_list[CurMode->mode];
+	case MCH_MCGA:
+        if (CurMode->mode == 0x13 && machine == MCH_MCGA)
+            mode_control=0x0a;
+        else if (CurMode->mode == 0x11 && machine == MCH_MCGA)
+            mode_control=0x1e;
+        else if (CurMode->mode < sizeof(mode_control_list))
+            mode_control=mode_control_list[CurMode->mode];
+        else
+            mode_control=0x00;
+
 		if (CurMode->mode == 0x6) color_select=0x3f;
+        else if (CurMode->mode == 0x11) color_select=0x3f;
 		else color_select=0x30;
 		IO_WriteB(0x3d8,mode_control);
 		IO_WriteB(0x3d9,color_select);
 		real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_MSR,mode_control);
 		real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_PAL,color_select);
 		if (mono_cga) Mono_CGA_Palette();
+
+        if (machine == MCH_MCGA) {
+            unsigned char mcga_mode = 0x10;
+
+            if (CurMode->type == M_VGA)
+                mcga_mode |= 0x01;//320x200 256-color
+            else if (CurMode->type == M_CGA2 && CurMode->sheight > 240)
+                mcga_mode |= 0x02;//640x480 2-color
+
+            /* real hardware: BIOS sets the "hardware computes horizontal timings" bits for mode 0-3 */
+            if (CurMode->mode <= 0x03)
+                mcga_mode |= 0x08;//hardware computes horizontal timing
+
+            /* real hardware: unknown bit 2 is set for all modes except 640x480 2-color */
+            if (CurMode->mode != 0x11)
+                mcga_mode |= 0x04;//unknown bit?
+
+            /* real hardware: unknown bit 5 if set for all 640-wide modes */
+            if (CurMode->swidth >= 500)
+                mcga_mode |= 0x20;//unknown bit?
+
+            /* write protect registers 0-7 if INT 10h mode 2 or 3 to mirror real hardware
+             * behavior observed through CRTC register dumps on MCGA hardware */
+            if (CurMode->mode == 2 || CurMode->mode == 3)
+                mcga_mode |= 0x80;
+
+            IO_WriteW(crtc_base,0x10 | (mcga_mode) << 8);
+        }
 		break;
 	case MCH_TANDY:
 		/* Init some registers */
@@ -780,7 +1014,7 @@ bool INT10_SetVideoMode_OTHER(Bit16u mode,bool clearmem) {
 			IO_WriteB(0x3de,0x0);break;
 		}
 		// write palette
-		for(Bitu i = 0; i < 16; i++) {
+		for(Bit8u i = 0; i < 16; i++) {
 			IO_WriteB(0x3da,i+0x10);
 			IO_WriteB(0x3de,i);
 		}
@@ -910,19 +1144,12 @@ bool INT10_SetVideoMode(Bit16u mode) {
 				return false;
 			}
 		}
-		// check for scanline backwards compatibility (VESA text modes??)
-		if (CurMode->type==M_TEXT) {
-			if ((modeset_ctl&0x90)==0x80) { // 200 lines emulation
-				if (CurMode->mode <= 3) {
-					CurMode = &ModeList_VGA_Text_200lines[CurMode->mode];
-				}
-			} else if ((modeset_ctl&0x90)==0x00) { // 350 lines emulation
-				if (CurMode->mode <= 3) {
-					CurMode = &ModeList_VGA_Text_350lines[CurMode->mode];
-				}
-			}
-		}
-	} else {
+		if (CurMode->type==M_TEXT) SetTextLines();
+
+        // INT 10h modeset will always clear 8-bit DAC mode (by VESA BIOS standards)
+        vga_8bit_dac = false;
+        VGA_DAC_UpdateColorPalette();
+    } else {
 		if (!SetCurMode(ModeList_EGA,mode)){
 			LOG(LOG_INT10,LOG_ERROR)("EGA:Trying to set illegal mode %X",mode);
 			return false;
@@ -985,7 +1212,14 @@ bool INT10_SetVideoMode(Bit16u mode) {
 	
 	if (CurMode->special & _EGA_HALF_CLOCK) seq_data[1]|=0x08; //Check for half clock
 	if ((machine==MCH_EGA) && (CurMode->special & _EGA_HALF_CLOCK)) seq_data[1]|=0x02;
-	seq_data[4]|=0x02;	//More than 64kb
+
+	if (IS_VGA_ARCH || (IS_EGA_ARCH && vga.mem.memsize >= 0x20000))
+        seq_data[4]|=0x02;	//More than 64kb
+    else if (IS_EGA_ARCH && CurMode->vdispend==350) {
+        seq_data[4] &= ~0x04; // turn on odd/even
+        seq_data[1] |= 0x04; // half clock
+    }
+
 	switch (CurMode->type) {
 	case M_TEXT:
 		if (CurMode->cwidth==9) seq_data[1] &= ~1;
@@ -1013,6 +1247,7 @@ bool INT10_SetVideoMode(Bit16u mode) {
 	case M_LIN16:
 	case M_LIN24:
 	case M_LIN32:
+    case M_PACKED4:
 	case M_VGA:
 		seq_data[2]|=0xf;				//Enable all planes for writing
 		seq_data[4]|=0x8;				//Graphics - Chained
@@ -1191,7 +1426,7 @@ bool INT10_SetVideoMode(Bit16u mode) {
 				break;
 			}
 		} else max_scanline |= CurMode->cheight-1;
-		underline=mono_mode ? 0x0f : 0x1f; // mode 7 uses a diff underline position
+		underline=(Bit8u)(mono_mode ? CurMode->cheight-1 : 0x1f); // mode 7 uses underline position
 		break;
 	case M_VGA:
 		underline=0x40;
@@ -1204,11 +1439,10 @@ bool INT10_SetVideoMode(Bit16u mode) {
 		underline=0x60;			//Seems to enable the every 4th clock on my s3
 		break;
 	default:
+	    /* do NOT apply this to VESA BIOS modes */
+		if (CurMode->mode < 0x100 && CurMode->vdispend==350) underline=0x0f;
 		break;
 	}
-
-    /* do NOT apply this to VESA BIOS modes */
-	if (CurMode->mode < 0x100 && CurMode->vdispend==350) underline=0x0f;
 
 	IO_Write(crtc_base,0x09);IO_Write(crtc_base+1u,max_scanline);
 	IO_Write(crtc_base,0x14);IO_Write(crtc_base+1u,underline);
@@ -1239,9 +1473,16 @@ bool INT10_SetVideoMode(Bit16u mode) {
 	case M_LIN32:
 		offset = 4 * CurMode->swidth/8;
 		break;
+    case M_EGA:
+        if (IS_EGA_ARCH && vga.mem.memsize < 0x20000 && CurMode->vdispend==350)
+            offset = CurMode->hdispend/4;
+        else
+            offset = CurMode->hdispend/2;
+		break;
 	default:
-		offset = CurMode->hdispend/2;
-	}
+        offset = CurMode->hdispend/2;
+        break;
+    }
 	IO_Write(crtc_base,0x13);
 	IO_Write(crtc_base + 1u,offset & 0xff);
 
@@ -1269,11 +1510,13 @@ bool INT10_SetVideoMode(Bit16u mode) {
 		break;
 	case M_LIN4:
 	case M_EGA:
-		if (CurMode->mode==0x11) // 0x11 also sets address wrap.  thought maybe all 2 color modes did but 0x0f doesn't.
-			mode_control=0xc3; // so.. 0x11 or 0x0f a one off?
-		else {
-				mode_control=0xe3;
-			}
+        if (CurMode->mode==0x11) // 0x11 also sets address wrap.  thought maybe all 2 color modes did but 0x0f doesn't.
+            mode_control=0xc3; // so.. 0x11 or 0x0f a one off?
+        else
+            mode_control=0xe3;
+
+        if (IS_EGA_ARCH && vga.mem.memsize < 0x20000 && CurMode->vdispend==350)
+            mode_control &= ~0x40; // word mode
 		break;
 	case M_TEXT:
 	case M_VGA:
@@ -1282,6 +1525,7 @@ bool INT10_SetVideoMode(Bit16u mode) {
 	case M_LIN16:
 	case M_LIN24:
 	case M_LIN32:
+    case M_PACKED4:
 		mode_control=0xa3;
 		if (CurMode->special & _VGA_PIXEL_DOUBLE)
 			mode_control |= 0x08;
@@ -1290,7 +1534,10 @@ bool INT10_SetVideoMode(Bit16u mode) {
 		break;
 	}
 
-	IO_Write(crtc_base,0x17);IO_Write(crtc_base+1u,mode_control);
+    if (IS_EGA_ARCH && vga.mem.memsize < 0x20000)
+        mode_control &= ~0x20; // address wrap bit 13
+
+    IO_Write(crtc_base, 0x17); IO_Write(crtc_base + 1u, mode_control);
 	/* Renable write protection */
 	IO_Write(crtc_base,0x11);
 	IO_Write(crtc_base+1u,IO_Read(crtc_base+1u)|0x80);
@@ -1322,6 +1569,9 @@ bool INT10_SetVideoMode(Bit16u mode) {
 		case M_LIN32:
 			misc_control_2=0xd0;
 			break;
+        case M_PACKED4://HACK
+			misc_control_2=0xf0;
+			break;
 		}
 		IO_WriteB(crtc_base,0x67);IO_WriteB(crtc_base+1u,misc_control_2);
 	}
@@ -1343,14 +1593,24 @@ bool INT10_SetVideoMode(Bit16u mode) {
 	case M_LIN16:
 	case M_LIN24:
 	case M_LIN32:
+    case M_PACKED4:
+        gfx_data[0x5] |= 0x40;		//256 color mode
+        if (int10_vesa_map_as_128kb)
+            gfx_data[0x6] |= 0x01;	//graphics mode at 0xa000-bffff
+        else
+            gfx_data[0x6] |= 0x05;	//graphics mode at 0xa000-affff
+        break;
 	case M_VGA:
 		gfx_data[0x5]|=0x40;		//256 color mode
 		gfx_data[0x6]|=0x05;		//graphics mode at 0xa000-affff
 		break;
 	case M_LIN4:
 	case M_EGA:
-		if (CurMode->mode == 0x0f)
-			gfx_data[0x7]=0x05;		// only planes 0 and 2 are used
+        if (IS_EGA_ARCH && vga.mem.memsize < 0x20000 && CurMode->vdispend==350) {
+            gfx_data[0x5]|=0x10;		//Odd-Even Mode
+            gfx_data[0x6]|=0x02;		//Odd-Even Mode
+	        gfx_data[0x7]=0x5;			/* Color don't care */
+        }
 		gfx_data[0x6]|=0x05;		//graphics mode at 0xa000-affff
 		break;
 	case M_CGA4:
@@ -1429,7 +1689,7 @@ att_text16:
 				att_data[ct]=ct;
 				att_data[ct+8]=ct+0x38;
 			}
-			if (IS_VGA_ARCH) att_data[0x06]=0x14;		//Odd Color 6 yellow/brown.
+			att_data[0x06]=0x14;		//Odd Color 6 yellow/brown.
 		}
 		break;
 	case M_CGA2:
@@ -1440,6 +1700,7 @@ att_text16:
 		real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_PAL,0x3f);
 		break;
 	case M_CGA4:
+		att_data[0x12]=0x3;			//Only enable 2 planes
 		att_data[0x10]=0x01;		//Color Graphics
 		att_data[0]=0x0;
 		att_data[1]=0x13;
@@ -1459,6 +1720,7 @@ att_text16:
 	case M_LIN16:
 	case M_LIN24:
 	case M_LIN32:
+    case M_PACKED4:
 		for (Bit8u ct=0;ct<16;ct++) att_data[ct]=ct;
 		att_data[0x10]=0x41;		//Color Graphics 8-bit
 		break;
@@ -1534,6 +1796,7 @@ dac_text16:
 		case M_LIN16:
 		case M_LIN24:
 		case M_LIN32:
+        case M_PACKED4:
 			// IBM and clones use 248 default colors in the palette for 256-color mode.
 			// The last 8 colors of the palette are only initialized to 0 at BIOS init.
 			// Palette index is left at 0xf8 as on most clones, IBM leaves it at 0x10.
@@ -1560,6 +1823,15 @@ dac_text16:
 			IO_Write(0x3c0,att_data[ct]);
 		}
 		vga.config.pel_panning = 0;
+	}
+	/* Write palette register data to dynamic save area if pointer is non-zero */
+	RealPt vsavept=real_readd(BIOSMEM_SEG,BIOSMEM_VS_POINTER);
+	RealPt dsapt=real_readd(RealSeg(vsavept),RealOff(vsavept)+4);
+	if (dsapt) {
+		for (Bit8u ct=0;ct<0x10;ct++) {
+			real_writeb(RealSeg(dsapt),RealOff(dsapt)+ct,att_data[ct]);
+		}
+		real_writeb(RealSeg(dsapt),RealOff(dsapt)+0x10,0); // overscan
 	}
 	/* Setup some special stuff for different modes */
 	Bit8u feature=real_readb(BIOSMEM_SEG,BIOSMEM_INITIAL_MODE);
@@ -1639,7 +1911,7 @@ dac_text16:
 			case 1600: reg_50|=S3_XGA_1600; break;
 			default: break;
 		}
-		IO_WriteB(crtc_base,0x50); IO_WriteB(crtc_base+1u,reg_50);
+		IO_WriteB(crtc_base,0x50); IO_WriteB(crtc_base+1u,(Bit8u)reg_50);
 
 		Bit8u reg_31, reg_3a;
 		switch (CurMode->type) {
@@ -1647,6 +1919,7 @@ dac_text16:
 			case M_LIN16:
 			case M_LIN24:
 			case M_LIN32:
+            case M_PACKED4:
 				reg_3a=0x15;
 				break;
 			case M_LIN8:
@@ -1658,7 +1931,9 @@ dac_text16:
 			default:
 				reg_3a=5;
 				break;
-		};
+		}
+
+        unsigned char s3_mode = 0x00;
 		
 		switch (CurMode->type) {
 		case M_LIN4: // <- Theres a discrepance with real hardware on this
@@ -1667,22 +1942,30 @@ dac_text16:
 		case M_LIN16:
 		case M_LIN24:
 		case M_LIN32:
+        case M_PACKED4:
 			reg_31 = 9;
 			break;
 		default:
 			reg_31 = 5;
 			break;
 		}
+
+        /* SVGA text modes need the 256k+ access bit */
+        if (CurMode->mode >= 0x100 && !int10.vesa_nolfb) {
+            reg_31 |= 8; /* enable 256k+ access */
+            s3_mode |= 0x10; /* enable LFB */
+        }
+
 		IO_Write(crtc_base,0x3a);IO_Write(crtc_base+1u,reg_3a);
 		IO_Write(crtc_base,0x31);IO_Write(crtc_base+1u,reg_31);	//Enable banked memory and 256k+ access
 
 		IO_Write(crtc_base,0x58);
-		if (vga.vmemsize >= (4*1024*1024))
-			IO_Write(crtc_base+1u,0x3);		// 4+ MB window
-		else if (vga.vmemsize >= (2*1024*1024))
-			IO_Write(crtc_base+1u,0x2);		// 2 MB window
+		if (vga.mem.memsize >= (4*1024*1024))
+			IO_Write(crtc_base+1u,0x3 | s3_mode);		// 4+ MB window
+		else if (vga.mem.memsize >= (2*1024*1024))
+			IO_Write(crtc_base+1u,0x2 | s3_mode);		// 2 MB window
 		else
-			IO_Write(crtc_base+1u,0x1);		// 1 MB window
+			IO_Write(crtc_base+1u,0x1 | s3_mode);		// 1 MB window
 
 		IO_Write(crtc_base,0x38);IO_Write(crtc_base+1u,0x48);	//Register lock 1
 		IO_Write(crtc_base,0x39);IO_Write(crtc_base+1u,0xa5);	//Register lock 2
@@ -1742,6 +2025,7 @@ Bitu VideoModeMemSize(Bitu mode) {
 		if (modelist[i].mode==mode) {
 			/* Hack for VBE 1.2 modes and 24/32bpp ambiguity */
 			if (modelist[i].mode >= 0x100 && modelist[i].mode <= 0x11F &&
+                !(modelist[i].special & _USER_MODIFIED) &&
 				((modelist[i].type == M_LIN32 && !vesa12_modes_32bpp) ||
 				 (modelist[i].type == M_LIN24 && vesa12_modes_32bpp))) {
 				/* ignore */
@@ -1758,6 +2042,9 @@ Bitu VideoModeMemSize(Bitu mode) {
 	        return ~0ul;
 
 	switch(vmodeBlock->type) {
+    case M_PACKED4:
+		if (mode >= 0x100 && !allow_vesa_4bpp_packed) return ~0ul;
+		return vmodeBlock->swidth*vmodeBlock->sheight/2;
 	case M_LIN4:
 		if (mode >= 0x100 && !allow_vesa_4bpp) return ~0ul;
 		return vmodeBlock->swidth*vmodeBlock->sheight/2;
@@ -1772,6 +2059,7 @@ Bitu VideoModeMemSize(Bitu mode) {
 		return vmodeBlock->swidth*vmodeBlock->sheight*2;
 	case M_LIN24:
 		if (mode >= 0x100 && !allow_vesa_24bpp) return ~0ul;
+        if (mode >= 0x120 && !allow_explicit_vesa_24bpp) return ~0ul;
 		return vmodeBlock->swidth*vmodeBlock->sheight*3;
 	case M_LIN32:
 		if (mode >= 0x100 && !allow_vesa_32bpp) return ~0ul;
@@ -1785,3 +2073,313 @@ Bitu VideoModeMemSize(Bitu mode) {
 	// Return 0 for all other types, those always fit in memory
 	return 0;
 }
+
+Bitu INT10_WriteVESAModeList(Bitu max_modes);
+
+/* ====================== VESAMOED.COM ====================== */
+class VESAMOED : public Program {
+public:
+	void Run(void) {
+        size_t array_i = 0;
+        std::string arg,tmp;
+		bool got_opt=false;
+        int mode = -1;
+        int fmt = -1;
+        int w = -1,h = -1;
+        int ch = -1;
+        int newmode = -1;
+        signed char enable = -1;
+        bool doDelete = false;
+        bool modefind = false;
+		
+        cmd->BeginOpt();
+        while (cmd->GetOpt(/*&*/arg)) {
+			got_opt=true;
+            if (arg == "?" || arg == "help") {
+                doHelp();
+                break;
+            }
+            else if (arg == "mode") {
+                cmd->NextOptArgv(/*&*/tmp);
+
+                if (tmp == "find") {
+                    modefind = true;
+                }
+                else if (isdigit(tmp[0])) {
+                    mode = (int)strtoul(tmp.c_str(),NULL,0);
+                }
+                else {
+                    WriteOut("Unknown mode '%s'\n",tmp.c_str());
+                    return;
+                }
+            }
+            else if (arg == "fmt") {
+                cmd->NextOptArgv(/*&*/tmp);
+
+                     if (tmp == "LIN4")
+                    fmt = M_LIN4;
+                else if (tmp == "LIN8")
+                    fmt = M_LIN8;
+                else if (tmp == "LIN15")
+                    fmt = M_LIN15;
+                else if (tmp == "LIN16")
+                    fmt = M_LIN16;
+                else if (tmp == "LIN24")
+                    fmt = M_LIN24;
+                else if (tmp == "LIN32")
+                    fmt = M_LIN32;
+                else if (tmp == "TEXT")
+                    fmt = M_TEXT;
+                else {
+                    WriteOut("Unknown format '%s'\n",tmp.c_str());
+                    return;
+                }
+            }
+            else if (arg == "w") {
+                cmd->NextOptArgv(/*&*/tmp);
+                w = (int)strtoul(tmp.c_str(),NULL,0);
+            }
+            else if (arg == "h") {
+                cmd->NextOptArgv(/*&*/tmp);
+                h = (int)strtoul(tmp.c_str(),NULL,0);
+            }
+            else if (arg == "ch") {
+                cmd->NextOptArgv(/*&*/tmp);
+                ch = (int)strtoul(tmp.c_str(),NULL,0);
+            }
+            else if (arg == "newmode") {
+                cmd->NextOptArgv(/*&*/tmp);
+
+                if (isdigit(tmp[0])) {
+                    newmode = (int)strtoul(tmp.c_str(),NULL,0);
+                }
+                else {
+                    WriteOut("Unknown newmode '%s'\n",tmp.c_str());
+                    return;
+                }
+            }
+            else if (arg == "delete") {
+                doDelete = true;
+            }
+            // NTS: If you're wondering why we support disabled modes (modes listed but cannot be set),
+            //      there are plenty of scenarios on actual hardware where this occurs. Laptops, for
+            //      example, have SVGA chipsets that can go up to 1600x1200, but the BIOS will disable
+            //      anything above the native resolution of the laptop's LCD display unless an
+            //      external monitor is attached at boot-up.
+            else if (arg == "disable") {
+                enable = 0;
+            }
+            else if (arg == "enable") {
+                enable = 1;
+            }
+            else {
+                WriteOut("Unknown switch %s",arg.c_str());
+                return;
+            }
+        }
+        cmd->EndOpt();
+		if(!got_opt) {
+            doHelp();
+            return;
+        }
+
+        if (modefind) {
+            if (w < 0 && h < 0 && fmt < 0)
+                return;
+
+            while (ModeList_VGA[array_i].mode != 0xFFFF) {
+                bool match = true;
+
+                     if (w > 0 && (Bitu)w != ModeList_VGA[array_i].swidth)
+                    match = false;
+                else if (h > 0 && (Bitu)h != ModeList_VGA[array_i].sheight)
+                    match = false;
+                else if (fmt >= 0 && (Bitu)fmt != ModeList_VGA[array_i].type)
+                    match = false;
+                else if (ModeList_VGA[array_i].type == M_ERROR)
+                    match = false;
+                else if (ModeList_VGA[array_i].mode <= 0x13)
+                    match = false;
+
+                if (!match)
+                    array_i++;
+                else
+                    break;
+            }
+        }
+        else {
+            while (ModeList_VGA[array_i].mode != 0xFFFF) {
+                if (ModeList_VGA[array_i].mode == (Bitu)mode)
+                    break;
+
+                array_i++;
+            }
+        }
+
+        if (ModeList_VGA[array_i].mode == 0xFFFF) {
+            WriteOut("Mode not found\n");
+            return;
+        }
+        else if (ModeList_VGA[array_i].mode <= 0x13) {
+            WriteOut("Editing base VGA modes is not allowed\n");
+            return;
+        }
+        else if (modefind) {
+            WriteOut("Found mode 0x%x\n",(unsigned int)ModeList_VGA[array_i].mode);
+        }
+
+        if (enable == 0)
+            ModeList_VGA[array_i].special |= (Bit16u)  _USER_DISABLED;
+        else if (enable == 1)
+            ModeList_VGA[array_i].special &= (Bit16u)(~_USER_DISABLED);
+
+        if (doDelete) {
+            if (ModeList_VGA[array_i].type != M_ERROR)
+                WriteOut("Mode 0x%x deleted\n",ModeList_VGA[array_i].mode);
+            else
+                WriteOut("Mode 0x%x already deleted\n",ModeList_VGA[array_i].mode);
+
+            ModeList_VGA[array_i].type = M_ERROR;
+            INT10_WriteVESAModeList(int10.rom.vesa_alloc_modes);
+            return;
+        }
+
+        if (fmt < 0 && ModeList_VGA[array_i].type == M_ERROR) {
+            WriteOut("Mode 0x%x is still deleted. Set a format with -fmt to un-delete\n",ModeList_VGA[array_i].mode);
+            return;
+        }
+
+        if (!modefind && (w > 0 || h > 0 || fmt >= 0 || ch > 0)) {
+            WriteOut("Changing mode 0x%x parameters\n",(unsigned int)ModeList_VGA[array_i].mode);
+
+            ModeList_VGA[array_i].special |= _USER_MODIFIED;
+
+            if (fmt >= 0) {
+                ModeList_VGA[array_i].type = (VGAModes)fmt;
+                /* will require reprogramming width in some cases! */
+                if (w < 0) w = (int)ModeList_VGA[array_i].swidth;
+            }
+            if (w > 0) {
+                /* enforce alignment to avoid problems with modesetting code */
+                {
+                    unsigned int aln = 8;
+
+                    if (ModeList_VGA[array_i].type == M_LIN4)
+                        aln = 16u;
+
+                    w += (int)(aln / 2u);
+                    w -= (int)((unsigned int)w % aln);
+                    if (w == 0u) w = (int)aln;
+                }
+
+                ModeList_VGA[array_i].swidth = (Bitu)w;
+                if (ModeList_VGA[array_i].type == M_LIN15 || ModeList_VGA[array_i].type == M_LIN16) {
+                    ModeList_VGA[array_i].hdispend = (Bitu)w / 4;
+                    ModeList_VGA[array_i].htotal = ModeList_VGA[array_i].hdispend + 40;
+                }
+                else {
+                    ModeList_VGA[array_i].hdispend = (Bitu)w / 8;
+                    ModeList_VGA[array_i].htotal = ModeList_VGA[array_i].hdispend + 20;
+                }
+            }
+            if (h > 0) {
+                ModeList_VGA[array_i].sheight = (Bitu)h;
+
+                if (h >= 340)
+                    ModeList_VGA[array_i].special &= (Bit16u)(~_REPEAT1);
+                else
+                    ModeList_VGA[array_i].special |= (Bit16u)  _REPEAT1;
+
+                if (ModeList_VGA[array_i].special & _REPEAT1)
+                    ModeList_VGA[array_i].vdispend = (Bitu)h * 2u;
+                else
+                    ModeList_VGA[array_i].vdispend = (Bitu)h;
+
+                ModeList_VGA[array_i].vtotal = ModeList_VGA[array_i].vdispend + 49;
+            }
+            if (ch == 8 || ch == 14 || ch == 16)
+                ModeList_VGA[array_i].cheight = (Bitu)ch;
+
+            ModeList_VGA[array_i].twidth = ModeList_VGA[array_i].swidth / ModeList_VGA[array_i].cwidth;
+            ModeList_VGA[array_i].theight = ModeList_VGA[array_i].sheight / ModeList_VGA[array_i].cheight;
+            INT10_WriteVESAModeList(int10.rom.vesa_alloc_modes);
+        }
+
+        if (newmode >= 0x40) {
+            WriteOut("Mode 0x%x moved to mode 0x%x\n",(unsigned int)ModeList_VGA[array_i].mode,(unsigned int)newmode);
+            ModeList_VGA[array_i].mode = (Bit16u)newmode;
+            INT10_WriteVESAModeList(int10.rom.vesa_alloc_modes);
+        }
+
+        /* If the new mode exceeds the maximum supported resolution of the render scaler architecture, then warn.
+         * Exceeding the scaler maximum will result in a frozen screen with the contents prior to the mode switch,
+         * which is useless. VESA BIOS emulation will not allow setting the mode. */
+        if (ModeList_VGA[array_i].swidth > SCALER_MAXWIDTH || ModeList_VGA[array_i].sheight > SCALER_MAXHEIGHT) {
+            WriteOut("WARNING: Mode %u x %u as specified exceeds the maximum resolution\n",
+                ModeList_VGA[array_i].swidth,ModeList_VGA[array_i].sheight);
+            WriteOut("supported by the render scaler architecture of this emulator and\n");
+            WriteOut("will be disabled.\n");
+        }
+
+        /* if the new mode cannot fit in available memory, then mark as disabled */
+        {
+            unsigned int pitch = 0;
+
+            switch (ModeList_VGA[array_i].type) {
+                case M_LIN4:
+                case M_PACKED4:
+                    pitch = (unsigned int)(ModeList_VGA[array_i].swidth / 8) * 4u; /* not totally accurate but close enough */
+                    break;
+                case M_LIN8:
+                    pitch = (unsigned int)ModeList_VGA[array_i].swidth;
+                    break;
+                case M_LIN15:
+                case M_LIN16:
+                    pitch = (unsigned int)ModeList_VGA[array_i].swidth * 2u;
+                    break;
+                case M_LIN24:
+                    pitch = (unsigned int)ModeList_VGA[array_i].swidth * 3u;
+                    break;
+                case M_LIN32:
+                    pitch = (unsigned int)ModeList_VGA[array_i].swidth * 4u;
+                    break;
+                default:
+                    break;
+            }
+
+            if ((pitch * ModeList_VGA[array_i].sheight) > vga.mem.memsize) {
+                /* NTS: Actually we don't mark as disabled, the VESA mode query function will
+                 *      report as disabled automatically for the same check we do. This just
+                 *      lets the user know. */
+                WriteOut("WARNING: Mode %u x %u as specified exceeds video memory, will be disabled\n",
+                        ModeList_VGA[array_i].swidth,
+                        ModeList_VGA[array_i].sheight);
+            }
+        }
+    }
+    void doHelp(void) {
+        WriteOut("VESAMOED VESA BIOS mode editor utility\n");
+        WriteOut("\n");
+        WriteOut("NOTE: Due to architectual limitations of VBE emulation,\n");
+        WriteOut("      Adding new modes is not allowed.\n");
+        WriteOut("\n");
+        WriteOut("  -mode <x>               VBE video mode to edit.\n");
+        WriteOut("                            Specify video mode in decimal or hexadecimal,\n");
+        WriteOut("                            or specify 'find' to match by fmt, width, height.\n");
+        WriteOut("  -fmt <x>                Change pixel format, or mode to find.\n");
+        WriteOut("                            LIN4, LIN8, LIN15, LIN16,\n");
+        WriteOut("                            LIN24, LIN32, TEXT\n");
+        WriteOut("  -w <x>                  Change width (in pixels), or mode to find.\n");
+        WriteOut("  -h <x>                  Change height (in pixels), or mode to find.\n");
+        WriteOut("  -ch <x>                 Change char height (in pixels), or mode to find.\n");
+        WriteOut("  -newmode <x>            Change video mode number\n");
+        WriteOut("  -delete                 Delete video mode\n");
+        WriteOut("  -disable                Disable video mode (list but do not allow setting)\n");
+        WriteOut("  -enable                 Enable video mode\n");
+    }
+};
+
+void VESAMOED_ProgramStart(Program * * make) {
+	*make=new VESAMOED;
+}
+

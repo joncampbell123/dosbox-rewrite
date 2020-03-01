@@ -1,3 +1,20 @@
+/*
+ *  Copyright (C) 2018  Jon Campbell
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
+ */
 
 /* Shut up! */
 #define _CRT_NONSTDC_NO_DEPRECATE
@@ -377,7 +394,7 @@ int riff_stack_read(riff_stack *s,riff_chunk *c,void *buf,size_t len) {
 		int64_t rem = c->data_length - c->read_offset;
 		if (rem > (int64_t)len) rem = (int64_t)len;
 		len = (size_t)rem;
-		if (len <= 0) return 0;
+		if (len == 0) return 0;
 		if (c->absolute_data_offset == ((int64_t)(-1))) return 0;
 		if (s->seek(s,c->absolute_data_offset+c->read_offset) != (c->absolute_data_offset+c->read_offset)) return 0;
 		rd = s->read(s,buf,len);
@@ -549,7 +566,7 @@ void riff_stack_debug_print(FILE *fp,int level,riff_chunk *chunk) {
 		riff_stack_fourcc_to_str(chunk->fourcc,tmp);
 		fprintf(fp,"'%s' ",tmp);
 	}
-	fprintf(fp,"hdr=%lld data=%lld len=%lu data-end=%lld",
+	fprintf(fp,"hdr=%llu data=%llu len=%lu data-end=%llu",
 		(unsigned long long)(chunk->absolute_header_offset),
 		(unsigned long long)(chunk->absolute_data_offset),
 		(unsigned long)(chunk->data_length),
@@ -734,8 +751,7 @@ int riff_stack_set_chunk_list_type(riff_chunk *c,riff_fourcc_t list,riff_fourcc_
 }
 
 void riff_stack_writing_sync(riff_stack *s) {
-	int64_t noffset = 0,x;
-	riff_chunk *t;
+	int64_t noffset = 0;
 
 	while (s->current >= 0) {
 		/* the caller uses this function when all chunks are to be completed,
@@ -745,12 +761,12 @@ void riff_stack_writing_sync(riff_stack *s) {
 		 *
 		 * as part of the process we must clear all disable_sync and
 		 * placeholder markings so the true state can be written back */
-		t = riff_stack_top(s);
+		riff_chunk *t = riff_stack_top(s);
 		t->disable_sync = 0;
 		t->placeholder = 0;
 		riff_stack_header_sync_all(s);
 		assert(s->top->absolute_data_offset >= (int64_t)0);
-		x = s->top->absolute_data_offset + s->top->absolute_data_length;
+		int64_t x = s->top->absolute_data_offset + s->top->absolute_data_length;
 		if (noffset < x) noffset = x;
 		riff_stack_pop(s);
 	}

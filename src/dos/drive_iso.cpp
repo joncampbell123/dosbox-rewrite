@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -41,7 +41,7 @@ public:
 	Bit32u GetSeekPos(void);
 private:
 	isoDrive *drive;
-	Bit8u buffer[ISO_FRAMESIZE];
+    Bit8u buffer[ISO_FRAMESIZE] = {};
 	int cachedSector;
 	Bit32u fileBegin;
 	Bit32u filePos;
@@ -139,23 +139,31 @@ Bit32u isoFile::GetSeekPos() {
 }
 
 
-int  MSCDEX_RemoveDrive(char driveLetter);
-int  MSCDEX_AddDrive(char driveLetter, const char* physicalPath, Bit8u& subUnit);
-void MSCDEX_ReplaceDrive(CDROM_Interface* cdrom, Bit8u subUnit);
-bool MSCDEX_HasDrive(char driveLetter);
-bool MSCDEX_GetVolumeName(Bit8u subUnit, char* name);
+int   MSCDEX_RemoveDrive(char driveLetter);
+int   MSCDEX_AddDrive(char driveLetter, const char* physicalPath, Bit8u& subUnit);
+void  MSCDEX_ReplaceDrive(CDROM_Interface* cdrom, Bit8u subUnit);
+bool  MSCDEX_HasDrive(char driveLetter);
+bool  MSCDEX_GetVolumeName(Bit8u subUnit, char* name);
+Bit8u MSCDEX_GetSubUnit(char driveLetter);
 
 bool CDROM_Interface_Image::images_init = false;
 
-isoDrive::isoDrive(char driveLetter, const char *fileName, Bit8u mediaid, int &error) {
-	size_t i;
+isoDrive::isoDrive(char driveLetter, const char *fileName, Bit8u mediaid, int &error)
+         :iso(false),
+          dataCD(false),
+          mediaid(0),
+          subUnit(0),
+          driveLetter('\0')
+ {
 
     if (!CDROM_Interface_Image::images_init) {
         CDROM_Interface_Image::images_init = true;
-        for (i=0;i < 26;i++)
+        for (size_t i=0;i < 26;i++)
             CDROM_Interface_Image::images[i] = NULL;
     }
 
+	this->fileName[0]  = '\0';
+	this->discLabel[0] = '\0';
 	subUnit = 0;
 	nextFreeDirIterator = 0;
 	memset(dirIterators, 0, sizeof(dirIterators));
@@ -191,6 +199,7 @@ isoDrive::~isoDrive() { }
 
 int isoDrive::UpdateMscdex(char driveLetter, const char* path, Bit8u& subUnit) {
 	if (MSCDEX_HasDrive(driveLetter)) {
+		subUnit = MSCDEX_GetSubUnit(driveLetter);
 		CDROM_Interface_Image* oldCdrom = CDROM_Interface_Image::images[subUnit];
 		CDROM_Interface* cdrom = new CDROM_Interface_Image(subUnit);
 		char pathCopy[CROSS_LEN];
@@ -296,7 +305,7 @@ bool isoDrive::FindNext(DOS_DTA &dta) {
 	int dirIterator = dta.GetDirID();
 	bool isRoot = dirIterators[dirIterator].root;
 	
-	isoDirEntry de;
+    isoDirEntry de = {};
 	while (GetNextDirEntry(dirIterator, &de)) {
 		Bit8u findAttr = 0;
 		if (IS_DIR(FLAGS1)) findAttr |= DOS_ATTR_DIRECTORY;
@@ -489,7 +498,7 @@ int isoDrive :: readDirEntry(isoDirEntry *de, Bit8u *data) {
 	if (de->fileUnitSize != 0 || de->interleaveGapSize != 0) return -1;
 	
 	// modify file identifier for use with dosbox
-	if ((de->length < 33 + de->fileIdentLength)) return -1;
+	if (de->length < 33 + de->fileIdentLength) return -1;
 	if (IS_DIR(FLAGS2)) {
 		if (de->fileIdentLength == 1 && de->ident[0] == 0) strcpy((char*)de->ident, ".");
 		else if (de->fileIdentLength == 1 && de->ident[0] == 1) strcpy((char*)de->ident, "..");

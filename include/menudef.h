@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2013  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 #ifdef __WIN32__
@@ -39,7 +39,7 @@ struct MENU_Block {
 	bool resizeusing; // check if resizable window can be used
 	bool compatible;  // compatible mode for win9x/2000 (if enabled, GUI system will be disabled)
 	bool maxwindow; // check window state
-	MENU_Block():toggle(false),startup(false),hidecycles(false),boot(false),gui(true),resizeusing(false),compatible(false),maxwindow(false){ }
+	MENU_Block():toggle(false),startup(false),hidecycles(false),showrt(false),boot(false),gui(true),resizeusing(false),compatible(false),maxwindow(false){ }
 };
 extern MENU_Block menu;
 

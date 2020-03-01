@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 #include <assert.h>
@@ -25,6 +25,7 @@
 #include "SDL.h"
 
 #include "dosbox.h"
+#include "midi.h"
 #include "control.h"
 #include "cross.h"
 #include "support.h"
@@ -34,7 +35,6 @@
 #include "hardware.h"
 #include "timer.h"
 
-#define SYSEX_SIZE 1024
 #define RAWBUF	1024
 
 Bit8u MIDI_evt_len[256] = {
@@ -60,49 +60,15 @@ Bit8u MIDI_evt_len[256] = {
   0,2,3,2, 0,0,1,0, 1,0,1,1, 1,0,1,0   // 0xf0
 };
 
-class MidiHandler;
+MidiHandler * handler_list = 0;
 
-MidiHandler * handler_list=0;
-
-class MidiHandler {
-public:
-	MidiHandler() {
-		next=handler_list;
-		handler_list=this;
-	};
-	virtual bool Open(const char * /*conf*/) { return true; };
-	virtual void Close(void) {};
-	virtual void PlayMsg(Bit8u * /*msg*/) {};
-	virtual void PlaySysex(Bit8u * /*sysex*/,Bitu /*len*/) {};
-	virtual const char * GetName(void) { return "none"; };
-	virtual void Reset() {};
-	virtual ~MidiHandler() { };
-	MidiHandler * next;
-};
+MidiHandler::MidiHandler(){
+	next = handler_list;
+	handler_list = this;
+}
 
 MidiHandler Midi_none;
-
-
-static struct midi_state_t {
-	Bitu status;
-	Bitu cmd_len;
-	Bitu cmd_pos;
-	Bit8u cmd_buf[8];
-	Bit8u rt_buf[8];
-	struct midi_state_sysex_t {
-		Bit8u buf[SYSEX_SIZE];
-		Bitu used;
-		Bitu delay;
-		Bit32u start;
-
-		midi_state_sysex_t() : used(0), delay(0), start(0) { }
-	} sysex;
-	bool available;
-	MidiHandler * handler;
-
-	midi_state_t() : status(0x00), cmd_len(0), cmd_pos(0), available(false), handler(NULL) { }
-} midi;
-
+DB_Midi midi;
 
 static struct {
 	bool init;
@@ -352,7 +318,7 @@ void MIDI_State_SaveMessage()
 
 						// GM 1.0 = 0-2
 						if( rpn >= 3 ) break;
-						if( rpn == 0x7f7f ) break;
+						//if( rpn == 0x7f7f ) break;
 
 						midi_state[channel].code_rpn_coarse[rpn] = arg2;
 					}
@@ -369,7 +335,7 @@ void MIDI_State_SaveMessage()
 
 						// GM 1.0 = 0-2
 						if( rpn >= 3 ) break;
-						if( rpn == 0x7f7f ) break;
+						//if( rpn == 0x7f7f ) break;
 
 						midi_state[channel].code_rpn_fine[rpn] = arg2;
 					}
@@ -543,7 +509,7 @@ void MIDI_State_LoadMessage()
 void MIDI_RawOutByte(Bit8u data) {
 	if (midi.sysex.start) {
 		Bit32u passed_ticks = GetTicks() - midi.sysex.start;
-		if (passed_ticks < midi.sysex.delay) SDL_Delay(midi.sysex.delay - passed_ticks);
+		if (passed_ticks < midi.sysex.delay) SDL_Delay((Uint32)(midi.sysex.delay - passed_ticks));
 	}
 
 	/* Test for a realtime MIDI message */
@@ -634,7 +600,7 @@ public:
 			fullconf.erase(fullconf.find("delaysysex"));
 			LOG(LOG_MISC,LOG_DEBUG)("MIDI:Using delayed SysEx processing");
 		}
-		std::remove(fullconf.begin(), fullconf.end(), ' ');
+		trim(fullconf);
 		const char * conf = fullconf.c_str();
 		midi.status=0x00;
 		midi.cmd_pos=0;

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -30,7 +30,8 @@ extern CallBack_Handler CallBack_Handlers[];
 enum { CB_RETN,CB_RETF,CB_RETF8,CB_IRET,CB_IRETD,CB_IRET_STI,CB_IRET_EOI_PIC1,
 		CB_IRQ0,CB_IRQ1,CB_IRQ1_BREAK,CB_IRQ9,CB_IRQ12,CB_IRQ12_RET,CB_IRQ6_PCJR,CB_MOUSE,
 		/*CB_INT28,*/CB_INT29,CB_INT16,CB_HOOKABLE,CB_TDE_IRET,CB_IPXESR,CB_IPXESR_RET,
-		CB_INT21,CB_INT13,CB_VESA_START,CB_IRET_EOI_PIC2,CB_CPM };
+		CB_INT21,CB_INT13,CB_VESA_WAIT,CB_VESA_PM,CB_IRET_EOI_PIC2,CB_CPM,
+        CB_RETF_STI,CB_RETF_CLI};
 
 /* NTS: Cannot make runtime configurable, because CB_MAX is used to define an array */
 #define CB_MAX		128U
@@ -58,7 +59,7 @@ static inline PhysPt CALLBACK_GetBase(void) {
 	return (PhysPt)(((PhysPt)CB_SEG << (PhysPt)4U) + (PhysPt)CB_SOFFSET);
 }
 
-Bitu CALLBACK_Allocate();
+Bit8u CALLBACK_Allocate();
 
 void CALLBACK_Idle(void);
 
@@ -71,8 +72,7 @@ bool CALLBACK_Setup(Bitu callback,CallBack_Handler handler,Bitu type,const char*
 Bitu CALLBACK_Setup(Bitu callback,CallBack_Handler handler,Bitu type,PhysPt addr,const char* descr);
 
 void CALLBACK_SetDescription(Bitu nr, const char* descr);
-const char* CALLBACK_GetDescription(Bitu callback);
-bool CALLBACK_Free(Bitu callback);
+const char* CALLBACK_GetDescription(Bitu nr);
 
 void CALLBACK_SCF(bool val);
 void CALLBACK_SZF(bool val);
@@ -92,7 +92,7 @@ private:
 		bool installed;
 	} vectorhandler;
 public:
-	CALLBACK_HandlerObject():installed(false),m_type(NONE) {
+	CALLBACK_HandlerObject():installed(false),m_callback(0/*NULL*/),m_type(NONE) {
 		vectorhandler.installed=false;
 	}
 	~CALLBACK_HandlerObject();

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2013  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 enum STRING_OP {
@@ -34,8 +34,8 @@ extern int cpu_rep_max;
 
 void DoString(STRING_OP type) {
 	static PhysPt  si_base,di_base;
-	static Bitu	si_index,di_index;
-	static Bitu	add_mask;
+	static Bit32u	si_index,di_index;
+	static Bit32u	add_mask;
 	static Bitu	count,count_left;
 	static Bits	add_index;
 
@@ -64,6 +64,33 @@ void DoString(STRING_OP type) {
 			count=(unsigned int)cpu_rep_max;
 		}
 	}
+
+#if defined(PREFETCH_CORE)
+    if (pq_valid && pq_limit >= (2 * prefetch_unit)) {
+        // a REP MOVSB might be a good time for the prefetch queue to empty out old code.
+        // Hack for self-erasing exit code in demoscene program [mirrors/hornet/demos/1993/s/stereo.zip]
+        // which erases itself with:
+        //
+        //      REP STOSW       ; blows away own code segment, CX = 0xE000+ or some large value, AL = 0x00
+        //      MOV AH,4C       ; remains in prefetch queue
+        //      INT 21h         ; remains in prefetch queue
+        //                      ; anything past this point doesn't matter
+        //
+        // While the REP STOSW + MOV AH,4C + INT 21h is small enough to easily fit into the prefetch queue,
+        // this fix ensures that it will be in the prefetch queue so the demo part can blow itself away and
+        // terminate from prefetch properly without crashing.
+        //
+        // Another possible fix of course is to NOP out the REP STOSW in the executable.
+        Bitu stopat = /*LOADIP without setting core.cseip*/(SegBase(cs)+reg_eip) & (~(prefetch_unit-1ul))/*round down*/;
+        for (unsigned int i=0;pq_start < stopat/* do NOT flush out the REP in REP STOSW*/ && i < ((count/4u)+4u);i++) {
+            prefetch_lazyflush(core.cseip+pq_limit);
+            if ((pq_fill - pq_start) < pq_limit)
+                prefetch_filldword();
+            else
+                break;
+        }
+    }
+#endif
 
 	if (count != 0) {
 		try {

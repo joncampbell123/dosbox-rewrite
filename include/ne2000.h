@@ -22,7 +22,7 @@
 //
 //  You should have received a copy of the GNU Lesser General Public
 //  License along with this library; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335 USA USA
 
 // Peter Grehan (grehan@iprg.nokia.com) coded all of this
 // NE2000/ether stuff.
@@ -193,9 +193,6 @@ typedef struct {
   int    base_irq;
   int    tx_timer_index;
   int    tx_timer_active;
-
-  void register_state(bx_param_c *list_p);
-  
 } bx_ne2k_t;
 
 
@@ -216,12 +213,12 @@ public:
   BX_NE2K_SMF Bit32u read_cr(void);
   BX_NE2K_SMF void   write_cr(Bit32u value);
 
-  BX_NE2K_SMF Bit32u chipmem_read(Bit32u address, unsigned io_len);
-  BX_NE2K_SMF Bit32u asic_read(Bit32u offset, unsigned io_len); 
-  BX_NE2K_SMF Bit32u page0_read(Bit32u offset, unsigned io_len);
-  BX_NE2K_SMF Bit32u page1_read(Bit32u offset, unsigned io_len);
-  BX_NE2K_SMF Bit32u page2_read(Bit32u offset, unsigned io_len);
-  BX_NE2K_SMF Bit32u page3_read(Bit32u offset, unsigned io_len);
+  BX_NE2K_SMF Bit32u chipmem_read(Bit32u address, unsigned int io_len);
+  BX_NE2K_SMF Bit32u asic_read(Bit32u offset, unsigned int io_len);
+  BX_NE2K_SMF Bit32u page0_read(Bit32u offset, unsigned int io_len);
+  BX_NE2K_SMF Bit32u page1_read(Bit32u offset, unsigned int io_len);
+  BX_NE2K_SMF Bit32u page2_read(Bit32u offset, unsigned int io_len);
+  BX_NE2K_SMF Bit32u page3_read(Bit32u offset, unsigned int io_len);
 
   BX_NE2K_SMF void chipmem_write(Bit32u address, Bit32u value, unsigned io_len);
   BX_NE2K_SMF void asic_write(Bit32u address, Bit32u value, unsigned io_len);
@@ -234,7 +231,7 @@ public:
   static void tx_timer_handler(void *);
   BX_NE2K_SMF void tx_timer(void);
 
-  static void rx_handler(void *arg, const void *buf, unsigned len);
+  //static void rx_handler(void *arg, const void *buf, unsigned len);
   BX_NE2K_SMF unsigned mcast_index(const void *dst);
   BX_NE2K_SMF void rx_frame(const void *buf, unsigned io_len);
 

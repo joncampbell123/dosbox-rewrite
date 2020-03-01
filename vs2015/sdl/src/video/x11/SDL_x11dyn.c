@@ -14,7 +14,7 @@
 
     You should have received a copy of the GNU Library General Public
     License along with this library; if not, write to the Free
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335 USA  USA
 
     Sam Lantinga
     slouken@libsdl.org
@@ -111,7 +111,7 @@ char *(*pXGetICValues)(XIC, ...) = NULL;
 #undef SDL_X11_MODULE
 #undef SDL_X11_SYM
 
-
+#ifdef SDL_VIDEO_DRIVER_X11_DYNAMIC
 static void *SDL_XGetRequest_workaround(Display* dpy, CARD8 type, size_t len)
 {
 	xReq *req;
@@ -128,6 +128,7 @@ static void *SDL_XGetRequest_workaround(Display* dpy, CARD8 type, size_t len)
 }
 
 static int x11_load_refcount = 0;
+#endif
 
 void SDL_X11_UnloadSymbols(void)
 {

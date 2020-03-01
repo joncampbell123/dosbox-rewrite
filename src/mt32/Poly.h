@@ -43,13 +43,13 @@ private:
 
 	PolyState state;
 
-	Partial *partials[4];
+    Partial* partials[4] = {};
 
 	Poly *next;
 
 public:
 	Poly(Synth *useSynth, Part *usePart);
-	void reset(unsigned int key, unsigned int velocity, bool sustain, Partial **partials);
+	void reset(unsigned int newKey, unsigned int newVelocity, bool newSustain, Partial **newPartials);
 	bool noteOff(bool pedalHeld);
 	bool stopPedalHold();
 	bool startDecay();

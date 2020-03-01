@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2013  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -44,7 +44,13 @@ void lowcase(std::string &str) {
 	int (*tf)(int) = std::tolower;
 	std::transform(str.begin(), str.end(), str.begin(), tf);
 }
-  
+
+void trim(std::string &str) {
+	std::string::size_type loc = str.find_first_not_of(" \r\t\f\n");
+	if (loc != std::string::npos) str.erase(0,loc);
+	loc = str.find_last_not_of(" \r\t\f\n");
+	if (loc != std::string::npos) str.erase(loc+1);
+}
 
 /* 
 	Ripped some source from freedos for this one.
@@ -71,7 +77,7 @@ char *ltrim(char *str) {
 char *rtrim(char *str) {
 	char *p;
 	p = strchr(str, '\0');
-	while (--p >= str && isspace(*reinterpret_cast<unsigned char*>(p))) {};
+	while (--p >= str && isspace(*reinterpret_cast<unsigned char*>(p))) {}
 	p[1] = '\0';
 	return str;
 }
@@ -109,7 +115,7 @@ bool ScanCMDBool(char * cmd,char const * const check) {
 
 /* This scans the command line for a remaining switch and reports it else returns 0*/
 char * ScanCMDRemain(char * cmd) {
-	char * scan,*found;;
+	char * scan,*found;
 	if ((scan=found=strchr(cmd,'/'))) {
 		while ( *scan && !isspace(*reinterpret_cast<unsigned char*>(scan)) ) scan++;
 		*scan=0;

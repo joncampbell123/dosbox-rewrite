@@ -1,6 +1,0 @@
-#!/bin/bash
-# sort of like svn-update-all
-git commit -a
-git push
-git pull
-

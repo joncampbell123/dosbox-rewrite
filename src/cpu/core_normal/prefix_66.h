@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2013  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 	CASE_D(0x01)												/* ADD Ed,Gd */
@@ -148,9 +148,9 @@
 		reg_edi=Pop_32();break;
 	CASE_D(0x60)												/* PUSHAD */
 		{
-			Bitu old_esp = reg_esp;
+			Bit32u old_esp = reg_esp;
 			try {
-				Bitu tmpesp = reg_esp;
+				Bit32u tmpesp = reg_esp;
 				Push_32(reg_eax);Push_32(reg_ecx);Push_32(reg_edx);Push_32(reg_ebx);
 				Push_32(tmpesp);Push_32(reg_ebp);Push_32(reg_esi);Push_32(reg_edi);
 			}
@@ -163,7 +163,7 @@
 		} break;
 	CASE_D(0x61)												/* POPAD */
 		{
-			Bitu old_esp = reg_esp;
+			Bit32u old_esp = reg_esp;
 			try {
 				reg_edi=Pop_32();reg_esi=Pop_32();reg_ebp=Pop_32();Pop_32();//Don't save ESP
 				reg_ebx=Pop_32();reg_edx=Pop_32();reg_ecx=Pop_32();reg_eax=Pop_32();
@@ -207,7 +207,7 @@
 		RMGdEdOp3(DIMULD,Fetchds());
 		break;
 	CASE_D(0x6a)												/* PUSH Ib */
-		Push_32((Bitu)Fetchbs());break;
+		Push_32((Bit32u)Fetchbs());break;
 	CASE_D(0x6b)												/* IMUL Gd,Ed,Ib */
 		RMGdEdOp3(DIMULD,Fetchbs());
 		break;
@@ -417,7 +417,7 @@
 			CPU_CALL(true,newcs,newip,GETIP);
 #if CPU_TRAP_CHECK
 			if (GETFLAG(TF)) {	
-				cpudecoder=CPU_Core_Normal_Trap_Run;
+				cpudecoder=CPU_TRAP_DECODER;
 				return CBRET_NONE;
 			}
 #endif
@@ -430,7 +430,7 @@
 		if (CPU_POPF(true)) RUNEXCEPTION();
 #if CPU_TRAP_CHECK
 		if (GETFLAG(TF)) {	
-			cpudecoder=CPU_Core_Normal_Trap_Run;
+			cpudecoder=CPU_TRAP_DECODER;
 			goto decode_end;
 		}
 #endif
@@ -565,7 +565,7 @@
 			CPU_IRET(true,GETIP);
 #if CPU_TRAP_CHECK
 			if (GETFLAG(TF)) {	
-				cpudecoder=CPU_Core_Normal_Trap_Run;
+				cpudecoder=CPU_TRAP_DECODER;
 				return CBRET_NONE;
 			}
 #endif
@@ -641,7 +641,7 @@
 			CPU_JMP(true,newcs,newip,GETIP);
 #if CPU_TRAP_CHECK
 			if (GETFLAG(TF)) {	
-				cpudecoder=CPU_Core_Normal_Trap_Run;
+				cpudecoder=CPU_TRAP_DECODER;
 				return CBRET_NONE;
 			}
 #endif
@@ -733,7 +733,7 @@
 					CPU_CALL(true,newcs,newip,GETIP);
 #if CPU_TRAP_CHECK
 					if (GETFLAG(TF)) {	
-						cpudecoder=CPU_Core_Normal_Trap_Run;
+						cpudecoder=CPU_TRAP_DECODER;
 						return CBRET_NONE;
 					}
 #endif
@@ -753,7 +753,7 @@
 					CPU_JMP(true,newcs,newip,GETIP);
 #if CPU_TRAP_CHECK
 					if (GETFLAG(TF)) {	
-						cpudecoder=CPU_Core_Normal_Trap_Run;
+						cpudecoder=CPU_TRAP_DECODER;
 						return CBRET_NONE;
 					}
 #endif

@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# allow 32-bit on 64-bit (x86) builds
+if [ "$1" == "32" ]; then
+    export CC=`which gcc`" -m32"
+    export CXX=`which g++`" -m32"
+    shift
+fi
+
 # I'm sick and tired of all the churn the three versions of autoconf
 # are causing in this repo. Stop committing the configure scripts
 # and just autoregen.
@@ -14,6 +21,6 @@ export CFLAGS="$CFLAGS -g3 -O0 -fno-inline -fno-omit-frame-pointer"
 export CXXFLAGS="$CXXFLAGS -g3 -O0 -fno-inline -fno-omit-frame-pointer"
 
 # NTS: --disable-dynamic-core is needed. the dynamic core doesn't work properly with the CFLAGS given above
-./configure --enable-core-inline --enable-debug=heavy --prefix=/usr --disable-dynamic-core --enable-sdl2 || exit 1
+./configure --enable-core-inline --enable-debug=heavy --prefix=/usr --disable-dynamic-core --enable-sdl2 "$@" || exit 1
 make -j3 || exit 1
 

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -159,7 +159,7 @@ void write_p3d5_et4k(Bitu reg,Bitu val,Bitu iolen) {
     case 0x37:
         if (val != et4k.store_3d4_37) {
             et4k.store_3d4_37 = val;
-            vga.vmemwrap = ((64u*1024u)<<((val&8u)>>2u))<<((val&3u)-1u);
+            vga.mem.memmask = (((64u*1024u*((val&8u)?4u:1u))<<((val&3u)-1u)) - 1u) & (vga.mem.memsize-1u);
             VGA_SetupHandlers();
         }
         break;
@@ -371,7 +371,7 @@ void FinishSetMode_ET4K(Bitu crtc_base, VGA_ModeExtraData* modeData) {
     IO_Write(crtc_base,0x33);IO_Write(crtc_base+1,0);
     IO_Write(crtc_base,0x34);IO_Write(crtc_base+1,0);
     IO_Write(crtc_base,0x36);IO_Write(crtc_base+1,0);
-    IO_Write(crtc_base,0x37);IO_Write(crtc_base+1,0x0c|(vga.vmemsize==1024*1024?3:vga.vmemsize==512*1024?2:1));
+    IO_Write(crtc_base,0x37);IO_Write(crtc_base+1,0x0c|(vga.mem.memsize==1024*1024?3:vga.mem.memsize==512*1024?2:1));
     // Clear ext SEQ
     IO_Write(0x3c4,0x06);IO_Write(0x3c5,0);
     IO_Write(0x3c4,0x07);IO_Write(0x3c5,0);
@@ -381,11 +381,11 @@ void FinishSetMode_ET4K(Bitu crtc_base, VGA_ModeExtraData* modeData) {
 
     // Select SVGA clock to get close to 60Hz (not particularly clean implementation)
     if (modeData->modeNo > 0x13) {
-        Bitu target = modeData->vtotal*8*modeData->htotal*60;
+        Bits target = static_cast<Bits>(modeData->vtotal * 8 * modeData->htotal * 60);
         Bitu best = 1;
-        Bits dist = 100000000;
-        for (Bitu i=0; i<16; i++) {
-            Bits cdiff=abs((Bits)(target-et4k.clockFreq[i]));
+        int dist = 100000000;
+        for (Bitu i = 0; i < 16; i++) {
+            int cdiff = abs( static_cast<int>(target - static_cast<Bits>(et4k.clockFreq[i])) );
             if (cdiff < dist) {
                 best = i;
                 dist = cdiff;
@@ -400,7 +400,7 @@ void FinishSetMode_ET4K(Bitu crtc_base, VGA_ModeExtraData* modeData) {
     // Verified (on real hardware and in a few games): Tseng ET4000 used chain4 implementation
     // different from standard VGA. It was also not limited to 64K in regular mode 13h.
     vga.config.compatible_chain4 = false;
-    vga.vmemwrap = vga.vmemsize;
+//    vga.vmemwrap = vga.mem.memsize;
 
     VGA_SetupHandlers();
 }
@@ -437,7 +437,7 @@ Bitu GetClock_ET4K() {
 }
 
 bool AcceptsMode_ET4K(Bitu mode) {
-    return VideoModeMemSize(mode) < vga.vmemsize;
+    return VideoModeMemSize(mode) < vga.mem.memsize;
 //  return mode != 0x3d;
 }
 
@@ -620,15 +620,15 @@ void SVGA_Setup_TsengET4K(void) {
     IO_RegisterWriteHandler(0x3cd,write_p3cd_et4k,IO_MB);
 
     // Default to 1M of VRAM
-    if (vga.vmemsize == 0)
-        vga.vmemsize = 1024*1024;
+    if (vga.mem.memsize == 0)
+        vga.mem.memsize = 1024*1024;
 
-    if (vga.vmemsize < 512*1024)
-        vga.vmemsize = 256*1024;
-    else if (vga.vmemsize < 1024*1024)
-        vga.vmemsize = 512*1024;
+    if (vga.mem.memsize < 512*1024)
+        vga.mem.memsize = 256*1024;
+    else if (vga.mem.memsize < 1024*1024)
+        vga.mem.memsize = 512*1024;
     else
-        vga.vmemsize = 1024*1024;
+        vga.mem.memsize = 1024*1024;
 
     // Tseng ROM signature
     phys_writes(PhysMake(0xc000,0)+0x0075, " Tseng ", 8);
@@ -884,7 +884,7 @@ void FinishSetMode_ET3K(Bitu crtc_base, VGA_ModeExtraData* modeData) {
     IO_Write(crtc_base,0x25);IO_Write(crtc_base+1,et4k_ver_overflow);
 
     // Clear remaining ext CRTC registers
-    for (Bitu i=0x16; i<=0x21; i++) {
+    for (Bit8u i=0x16; i<=0x21; i++) {
         IO_Write(crtc_base,i);
         IO_Write(crtc_base+1,0);
     }
@@ -900,11 +900,11 @@ void FinishSetMode_ET3K(Bitu crtc_base, VGA_ModeExtraData* modeData) {
 
     // Select SVGA clock to get close to 60Hz (not particularly clean implementation)
     if (modeData->modeNo > 0x13) {
-        Bitu target = modeData->vtotal*8*modeData->htotal*60;
+        Bits target = static_cast<Bits>(modeData->vtotal * 8 * modeData->htotal * 60);
         Bitu best = 1;
-        Bits dist = 100000000;
-        for (Bitu i=0; i<8; i++) {
-            Bits cdiff = abs((Bits)(target-et3k.clockFreq[i]));
+        int dist = 100000000;
+        for (Bitu i = 0; i < 8; i++) {
+            int cdiff = abs( static_cast<Bit32s>(target - static_cast<Bits>(et3k.clockFreq[i])) );
             if (cdiff < dist) {
                 best = i;
                 dist = cdiff;
@@ -919,7 +919,7 @@ void FinishSetMode_ET3K(Bitu crtc_base, VGA_ModeExtraData* modeData) {
     // Verified on functioning (at last!) hardware: Tseng ET3000 is the same as ET4000 when
     // it comes to chain4 architecture
     vga.config.compatible_chain4 = false;
-    vga.vmemwrap = vga.vmemsize;
+//    vga.vmemwrap = vga.mem.memsize;
 
     VGA_SetupHandlers();
 }
@@ -948,7 +948,7 @@ Bitu GetClock_ET3K() {
 }
 
 bool AcceptsMode_ET3K(Bitu mode) {
-    return mode <= 0x37 && mode != 0x2f && VideoModeMemSize(mode) < vga.vmemsize;
+    return mode <= 0x37 && mode != 0x2f && VideoModeMemSize(mode) < vga.mem.memsize;
 }
 
 void SVGA_Setup_TsengET3K(void) {
@@ -977,7 +977,7 @@ void SVGA_Setup_TsengET3K(void) {
     IO_RegisterReadHandler(0x3cd,read_p3cd_et3k,IO_MB);
     IO_RegisterWriteHandler(0x3cd,write_p3cd_et3k,IO_MB);
 
-    vga.vmemsize = 512*1024; // Cannot figure how this was supposed to work on the real card
+    vga.mem.memsize = 512*1024; // Cannot figure how this was supposed to work on the real card
 
     // Tseng ROM signature
     PhysPt rom_base=PhysMake(0xc000,0);

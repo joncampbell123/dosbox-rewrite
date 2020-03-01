@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -24,11 +24,15 @@
 #include "regs.h"
 #include "inout.h"
 #include "int10.h"
+#include "mouse.h"
 #include "setup.h"
 
 Int10Data int10;
 static Bitu call_10 = 0;
 static bool warned_ff=false;
+
+extern bool enable_vga_8bit_dac;
+extern bool vga_8bit_dac;
 
 Bitu INT10_Handler(void) {
 	// NTS: We do have to check the "current video mode" from the BIOS data area every call.
@@ -40,7 +44,9 @@ Bitu INT10_Handler(void) {
 
 	switch (reg_ah) {
 	case 0x00:								/* Set VideoMode */
+		Mouse_BeforeNewVideoMode(true);
 		INT10_SetVideoMode(reg_al);
+		Mouse_AfterNewVideoMode(true);
 		break;
 	case 0x01:								/* Set TextMode Cursor Shape */
 		INT10_SetCursorShape(reg_ch,reg_cl);
@@ -129,8 +135,19 @@ Bitu INT10_Handler(void) {
 		reg_ah=(Bit8u)real_readw(BIOSMEM_SEG,BIOSMEM_NB_COLS);
 		break;					
 	case 0x10:								/* Palette functions */
-		if (!IS_EGAVGA_ARCH && (reg_al>0x02)) break;
-		else if (!IS_VGA_ARCH && (reg_al>0x03)) break;
+        if (machine==MCH_MCGA) {
+            if (!(reg_al == 0x10 || reg_al == 0x12 || reg_al == 0x15 || reg_al == 0x17 || reg_al == 0x18 || reg_al == 0x19))
+                break;
+        }
+        else if (machine==MCH_PCJR) {
+            if (reg_al>0x02) /* "Looking at the PCjr tech ref page A-61, ... the BIOS listing stops at subfunction 2." */
+                break;
+        }
+        else {
+            if (!IS_EGAVGA_ARCH && (reg_al>0x02)) break;
+            else if (!IS_VGA_ARCH && (reg_al>0x03)) break;
+        }
+
 		switch (reg_al) {
 		case 0x00:							/* SET SINGLE PALETTE REGISTER */
 			INT10_SetSinglePaletteRegister(reg_bl,reg_bh);
@@ -192,21 +209,29 @@ Bitu INT10_Handler(void) {
 		}
 		break;
 	case 0x11:								/* Character generator functions */
-		if (!IS_EGAVGA_ARCH) 
-			break;
+        if (machine==MCH_MCGA) {
+            if (!(reg_al == 0x24 || reg_al == 0x30))
+                break;
+        }
+        else {
+            if (!IS_EGAVGA_ARCH)
+                break;
+        }
+
+		if ((reg_al&0xf0)==0x10) Mouse_BeforeNewVideoMode(false);
 		switch (reg_al) {
 /* Textmode calls */
 		case 0x00:			/* Load user font */
 		case 0x10:
-			INT10_LoadFont(SegPhys(es)+reg_bp,reg_al==0x10,reg_cx,reg_dx,reg_bl,reg_bh);
+			INT10_LoadFont(SegPhys(es)+reg_bp,reg_al==0x10,reg_cx,reg_dx,reg_bl&0x7f,reg_bh);
 			break;
 		case 0x01:			/* Load 8x14 font */
 		case 0x11:
-			INT10_LoadFont(Real2Phys(int10.rom.font_14),reg_al==0x11,256,0,reg_bl,14);
+			INT10_LoadFont(Real2Phys(int10.rom.font_14),reg_al==0x11,256,0,reg_bl&0x7f,14);
 			break;
 		case 0x02:			/* Load 8x8 font */
 		case 0x12:
-			INT10_LoadFont(Real2Phys(int10.rom.font_8_first),reg_al==0x12,256,0,reg_bl,8);
+			INT10_LoadFont(Real2Phys(int10.rom.font_8_first),reg_al==0x12,256,0,reg_bl&0x7f,8);
 			break;
 		case 0x03:			/* Set Block Specifier */
 			IO_Write(0x3c4,0x3);IO_Write(0x3c5,reg_bl);
@@ -214,7 +239,7 @@ Bitu INT10_Handler(void) {
 		case 0x04:			/* Load 8x16 font */
 		case 0x14:
 			if (!IS_VGA_ARCH) break;
-			INT10_LoadFont(Real2Phys(int10.rom.font_16),reg_al==0x14,256,0,reg_bl,16);
+			INT10_LoadFont(Real2Phys(int10.rom.font_16),reg_al==0x14,256,0,reg_bl&0x7f,16);
 			break;
 /* Graphics mode calls */
 		case 0x20:			/* Set User 8x8 Graphics characters */
@@ -276,7 +301,6 @@ graphics_chars:
 				reg_bp=RealOff(int10.rom.font_8_second);
 				break;
 			case 0x05:	/* alpha alternate 9x14 */
-				if (!IS_VGA_ARCH) break;
 				SegSet16(es,RealSeg(int10.rom.font_14_alternate));
 				reg_bp=RealOff(int10.rom.font_14_alternate);
 				break;
@@ -303,16 +327,59 @@ graphics_chars:
 			LOG(LOG_INT10,LOG_ERROR)("Function 11:Unsupported character generator call %2X",reg_al);
 			break;
 		}
+		if ((reg_al&0xf0)==0x10) Mouse_AfterNewVideoMode(false);
 		break;
 	case 0x12:								/* alternate function select */
-		if (!IS_EGAVGA_ARCH) 
+		if (!IS_EGAVGA_ARCH && machine != MCH_MCGA) 
 			break;
 		switch (reg_bl) {
 		case 0x10:							/* Get EGA Information */
-			reg_bh=(real_readw(BIOSMEM_SEG,BIOSMEM_CRTC_ADDRESS)==0x3B4);	
-			reg_bl=3;	//256 kb
-			reg_cl=real_readb(BIOSMEM_SEG,BIOSMEM_SWITCHES) & 0x0F;
-			reg_ch=real_readb(BIOSMEM_SEG,BIOSMEM_SWITCHES) >> 4;
+            if (machine != MCH_MCGA) {
+                /* This call makes no sense on MCGA systems because it's designed to return EGA information.
+                 *
+                 * Furthermore the MS-DOS port of Thexder calls this function and validates the values
+                 * returned from this call in a way that suggests MCGA BIOSes do not respond to this call:
+                 *
+                 * 0302:00000377 32C0                xor  al,al
+                 * 0302:00000379 B310                mov  bl,10
+                 * 0302:0000037B B7FF                mov  bh,FF
+                 * 0302:0000037D B10F                mov  cl,0F
+                 * 0302:0000037F B412                mov  ah,12
+                 * 0302:00000381 CD10                int  10
+                 * 0302:00000383 80F90C              cmp  cl,0C
+                 * 0302:00000386 730D                jnc  00000395 ($+d)         (down)
+                 * 0302:00000388 80FB03              cmp  bl,03
+                 * 0302:0000038B 7708                ja   00000395 ($+8)         (no jmp)
+                 * 0302:0000038D 0AFF                or   bh,bh
+                 * 0302:0000038F 7504                jne  00000395 ($+4)         (no jmp)
+                 * 0302:00000391 8D16CD02            lea  dx,[02CD]              ds:[02CD]=616D
+                 * 0302:00000395 E82C00              call 000003C4 ($+2c)
+                 *
+                 * Basically all checks confirm the returned values are out of range and invalid for what
+                 * the BIOS call would normally return for EGA. Either MCGA BIOS leaves them unchanged
+                 * or changes them to some other value entirely.
+                 *
+                 * [see also: http://www.ctyme.com/intr/rb-0162.htm]
+                 * [see also: https://github.com/joncampbell123/dosbox-x/issues/1207]
+                 *
+                 * TODO: What does actual MCGA hardware/BIOS do? CHECK */
+                reg_bh=(real_readw(BIOSMEM_SEG,BIOSMEM_CRTC_ADDRESS)==0x3B4);
+                if (IS_EGA_ARCH) {
+                    if (vga.mem.memsize >= (256*1024))
+                        reg_bl=3;	//256 kb
+                    else if (vga.mem.memsize >= (192*1024))
+                        reg_bl=2;	//192 kb
+                    else if (vga.mem.memsize >= (128*1024))
+                        reg_bl=1;	//128 kb
+                    else
+                        reg_bl=0;	//64 kb
+                }
+                else {
+                    reg_bl=3;	//256 kb
+                }
+                reg_cl=real_readb(BIOSMEM_SEG,BIOSMEM_SWITCHES) & 0x0F;
+                reg_ch=real_readb(BIOSMEM_SEG,BIOSMEM_SWITCHES) >> 4;
+            }
 			break;
 		case 0x20:							/* Set alternate printscreen */
 			break;
@@ -464,7 +531,7 @@ CX	640x480	800x600	  1024x768/1280x1024
 		INT10_WriteString(reg_dh,reg_dl,reg_al,reg_bl,SegPhys(es)+reg_bp,reg_cx,reg_bh);
 		break;
 	case 0x1A:								/* Display Combination */
-		if (!IS_VGA_ARCH) break;
+		if (!IS_VGA_ARCH && machine != MCH_MCGA) break;
 		if (reg_al<2) {
 			INT10_DisplayCombinationCode(&reg_bx,(reg_al==1));
 			reg_ax=0x1A;	// high part destroyed or zeroed depending on BIOS
@@ -521,8 +588,10 @@ CX	640x480	800x600	  1024x768/1280x1024
 			reg_ah=VESA_GetSVGAModeInformation(reg_cx,SegValue(es),reg_di);
 			break;
 		case 0x02:							/* Set videomode */
+			Mouse_BeforeNewVideoMode(true);
 			reg_al=0x4f;
 			reg_ah=VESA_SetSVGAMode(reg_bx);
+			Mouse_AfterNewVideoMode(true);
 			break;
 		case 0x03:							/* Get videomode */
 			reg_al=0x4f;
@@ -570,11 +639,10 @@ CX	640x480	800x600	  1024x768/1280x1024
 			break;
 		case 0x07:
 			switch (reg_bl) {
-			case 0x80:						/* Set Display Start during retrace ?? */
-				LOG(LOG_INT10,LOG_ERROR)("Unhandled VESA Function %X Subfunction %X",reg_al,reg_bh);
+			case 0x80:						/* Set Display Start during retrace */
 			case 0x00:						/* Set display Start */
 				reg_al=0x4f;
-				reg_ah=VESA_SetDisplayStart(reg_cx,reg_dx);
+				reg_ah=VESA_SetDisplayStart(reg_cx,reg_dx,reg_bl==0x80);
 				break;
 			case 0x01:
 				reg_al=0x4f;
@@ -587,12 +655,51 @@ CX	640x480	800x600	  1024x768/1280x1024
 				break;
 			}
 			break;
+        case 0x08:
+            switch (reg_bl) {
+                case 0x00:                  /* Set DAC width */
+                    if (CurMode->type == M_LIN8) {
+                        /* TODO: If there is a bit on S3 cards to control DAC width in "pseudocolor" modes, replace this code
+                         *       with something to write that bit instead of internal state change like this. */
+                        if (reg_bh >= 8 && enable_vga_8bit_dac)
+                            vga_8bit_dac = true;
+                        else
+                            vga_8bit_dac = false;
+
+                        VGA_DAC_UpdateColorPalette();
+                        reg_bh=(vga_8bit_dac ? 8 : 6);
+                        reg_al=0x4f;
+                        reg_ah=0x0;
+
+                        LOG(LOG_INT10,LOG_NORMAL)("VESA BIOS called to set VGA DAC width to %u bits",reg_bh);
+                    }
+                    else {
+                        reg_al=0x4f;
+                        reg_ah=0x3;
+                    }
+                    break;
+                case 0x01:                  /* Get DAC width */
+                    if (CurMode->type == M_LIN8) {
+                        reg_bh=(vga_8bit_dac ? 8 : 6);
+                        reg_al=0x4f;
+                        reg_ah=0x0;
+                    }
+                    else {
+                        reg_al=0x4f;
+                        reg_ah=0x3;
+                    }
+                    break;
+                default:
+                    LOG(LOG_INT10,LOG_ERROR)("Unhandled VESA Function %X Subfunction %X",reg_al,reg_bl);
+                    reg_ah=0x1;
+                    break;
+            }
+            break;
 		case 0x09:
 			switch (reg_bl) {
 			case 0x80:						/* Set Palette during retrace */
-				//TODO
 			case 0x00:						/* Set Palette */
-				reg_ah=VESA_SetPalette(SegPhys(es)+reg_di,reg_dx,reg_cx);
+				reg_ah=VESA_SetPalette(SegPhys(es)+reg_di,reg_dx,reg_cx,reg_bl==0x80);
 				reg_al=0x4f;
 				break;
 			case 0x01:						/* Get Palette */
@@ -612,27 +719,27 @@ CX	640x480	800x600	  1024x768/1280x1024
 			}
 			switch (reg_bl) {
 			case 0x00:
-				reg_edi=RealOff(int10.rom.pmode_interface);
 				SegSet16(es,RealSeg(int10.rom.pmode_interface));
+				reg_di=RealOff(int10.rom.pmode_interface);
 				reg_cx=int10.rom.pmode_interface_size;
 				reg_ax=0x004f;
 				break;
 			case 0x01:						/* Get code for "set window" */
-				reg_edi=RealOff(int10.rom.pmode_interface)+(Bit32u)int10.rom.pmode_interface_window;
 				SegSet16(es,RealSeg(int10.rom.pmode_interface));
-				reg_cx=0x10;		//0x10 should be enough for the callbacks
+				reg_di=RealOff(int10.rom.pmode_interface)+(Bit32u)int10.rom.pmode_interface_window;
+				reg_cx=int10.rom.pmode_interface_start-int10.rom.pmode_interface_window;
 				reg_ax=0x004f;
 				break;
 			case 0x02:						/* Get code for "set display start" */
-				reg_edi=RealOff(int10.rom.pmode_interface)+(Bit32u)int10.rom.pmode_interface_start;
 				SegSet16(es,RealSeg(int10.rom.pmode_interface));
-				reg_cx=0x10;		//0x10 should be enough for the callbacks
+				reg_di=RealOff(int10.rom.pmode_interface)+(Bit32u)int10.rom.pmode_interface_start;
+				reg_cx=int10.rom.pmode_interface_palette-int10.rom.pmode_interface_start;
 				reg_ax=0x004f;
 				break;
 			case 0x03:						/* Get code for "set palette" */
-				reg_edi=RealOff(int10.rom.pmode_interface)+(Bit32u)int10.rom.pmode_interface_palette;
 				SegSet16(es,RealSeg(int10.rom.pmode_interface));
-				reg_cx=0x10;		//0x10 should be enough for the callbacks
+				reg_di=RealOff(int10.rom.pmode_interface)+(Bit32u)int10.rom.pmode_interface_palette;
+				reg_cx=int10.rom.pmode_interface_size-int10.rom.pmode_interface_palette;
 				reg_ax=0x004f;
 				break;
 			default:
@@ -679,7 +786,7 @@ CX	640x480	800x600	  1024x768/1280x1024
 		LOG(LOG_INT10,LOG_ERROR)("Function %4X not supported",reg_ax);
 //		reg_al=0x00;		//Successfull, breaks marriage
 		break;
-	};
+	}
 	return CBRET_NONE;
 }
 
@@ -694,6 +801,8 @@ static void INT10_Seg40Init(void) {
 	real_writeb(BIOSMEM_SEG,BIOSMEM_MODESET_CTL,0x51); // why is display switching enabled (bit 6) ?
 	// Set the  default MSR
 	real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_MSR,0x09);
+	// Set the pointer to video save pointer table
+	real_writed(BIOSMEM_SEG, BIOSMEM_VS_POINTER, int10.rom.video_save_pointers);
 }
 
 static void INT10_InitVGA(void) {
@@ -714,7 +823,9 @@ static void INT10_InitVGA(void) {
 }
 
 static void SetupTandyBios(void) {
-	static Bit8u TandyConfig[130]= {
+	if (machine==MCH_TANDY) {
+		unsigned int i;
+		static Bit8u TandyConfig[130]= {
 		0x21, 0x42, 0x49, 0x4f, 0x53, 0x20, 0x52, 0x4f, 0x4d, 0x20, 0x76, 0x65, 0x72,
 		0x73, 0x69, 0x6f, 0x6e, 0x20, 0x30, 0x32, 0x2e, 0x30, 0x30, 0x2e, 0x30, 0x30,
 		0x0d, 0x0a, 0x43, 0x6f, 0x6d, 0x70, 0x61, 0x74, 0x69, 0x62, 0x69, 0x6c, 0x69,
@@ -725,9 +836,7 @@ static void SetupTandyBios(void) {
 		0x6e, 0x69, 0x78, 0x20, 0x53, 0x6f, 0x66, 0x74, 0x77, 0x61, 0x72, 0x65, 0x20,
 		0x41, 0x73, 0x73, 0x6f, 0x63, 0x69, 0x61, 0x74, 0x65, 0x73, 0x20, 0x4c, 0x74,
 		0x64, 0x2e, 0x0d, 0x0a, 0x61, 0x6e, 0x64, 0x20, 0x54, 0x61, 0x6e, 0x64, 0x79
-	};
-	if (machine==MCH_TANDY) {
-		Bitu i;
+		};
 
 		LOG(LOG_MISC,LOG_DEBUG)("Initializing Tandy video state (video BIOS init)");
 
@@ -777,6 +886,7 @@ void INT10_OnResetComplete() {
     BIOS_UnsetupKeyboard();
 }
 
+extern bool vesa_zero_on_get_information;
 extern bool unmask_irq0_on_int10_setmode;
 extern bool int16_unmask_irq1_on_read;
 extern bool int16_ah_01_cf_undoc;
@@ -853,7 +963,7 @@ bool Load_FONT_ROM(void) {
     /* 16x16 double-wide */
     assert(sizeof(tmp) >= (96 * 16 * 2));
     for (lowbyte=0x01;lowbyte < 0x5D;lowbyte++) {
-        fseek(fp,0x1800 + ((lowbyte - 0x01) * 96 * 16 * 2/*16 wide*/),SEEK_SET);
+        fseek(fp,long(0x1800u + ((lowbyte - 0x01u) * 96u * 16u * 2u/*16 wide*/)),SEEK_SET);
         if (fread(tmp,96 * 16 * 2/*16 wide*/,1,fp) != 1) goto fail;
 
         for (hibyte=0;hibyte < 96;hibyte++) {
@@ -889,7 +999,7 @@ bool Load_Anex86_Font(void) {
     FILE *fp = NULL;
 
     /* ANEX86.BMP accurate dump of actual font */
-    if (!fp) fp = fopen("anex86.bmp","rb");
+    fp = fopen("anex86.bmp","rb");
     if (!fp) fp = fopen("ANEX86.bmp","rb");
     if (!fp) fp = fopen("ANEX86.BMP","rb");
 
@@ -935,7 +1045,7 @@ bool Load_Anex86_Font(void) {
     if (host_readd((HostPt)(tmp+16)) != 0) goto fail; // biCompression == 0 or else
 
     /* first row is 8x16 single width */
-    fseek(fp,bmp_ofs+((2048-16)*(2048/8)),SEEK_SET); /* arrrgh bitmaps are upside-down */
+    fseek(fp,long(bmp_ofs+((2048u-16u)*(2048u/8u))),SEEK_SET); /* arrrgh bitmaps are upside-down */
     if (fread(tmp,(2048/8)*16,1,fp) != 1) goto fail;
     for (lowbyte=0;lowbyte < 256;lowbyte++) {
         for (r=0;r < 16;r++) {
@@ -945,7 +1055,7 @@ bool Load_Anex86_Font(void) {
     /* everything after is 16x16 fullwidth.
      * note: 2048 / 16 = 128 */
     for (hibyte=1;hibyte < 128;hibyte++) {
-        fseek(fp,bmp_ofs+((2048-(16*hibyte)-16)*(2048/8)),SEEK_SET); /* arrrgh bitmaps are upside-down */
+        fseek(fp,long(bmp_ofs+((2048u-(16u*hibyte)-16u)*(2048u/8u))),SEEK_SET); /* arrrgh bitmaps are upside-down */
         if (fread(tmp,(2048/8)*16,1,fp) != 1) goto fail;
 
         for (lowbyte=0;lowbyte < 128;lowbyte++) {
@@ -998,6 +1108,7 @@ void INT10_Startup(Section *sec) {
     (void)sec;//UNUSED
 	LOG(LOG_MISC,LOG_DEBUG)("INT 10h reinitializing");
 
+    vesa_zero_on_get_information = static_cast<Section_prop *>(control->GetSection("dosbox"))->Get_bool("vesa zero buffer on get information");
     unmask_irq0_on_int10_setmode = static_cast<Section_prop *>(control->GetSection("dosbox"))->Get_bool("unmask timer on int 10 setmode");
 	int16_unmask_irq1_on_read = static_cast<Section_prop *>(control->GetSection("dosbox"))->Get_bool("unmask keyboard on int 16 read");
     int16_ah_01_cf_undoc = static_cast<Section_prop *>(control->GetSection("dosbox"))->Get_bool("int16 keyboard polling undocumented cf behavior");
@@ -1012,13 +1123,11 @@ void INT10_Startup(Section *sec) {
         //Init the 0x40 segment and init the datastructures in the the video rom area
         INT10_SetupRomMemory();
         INT10_Seg40Init();
-        INT10_SetupVESA();
-        INT10_SetupRomMemoryChecksum();//SetupVesa modifies the rom as well.
         INT10_SetupBasicVideoParameterTable();
 
         LOG(LOG_MISC,LOG_DEBUG)("INT 10: VGA bios used %d / %d memory",(int)int10.rom.used,(int)VGA_BIOS_Size);
         if (int10.rom.used > VGA_BIOS_Size) /* <- this is fatal, it means the Setup() functions scrozzled over the adjacent ROM or RAM area */
-            E_Exit("VGA BIOS size too small");
+            E_Exit("VGA BIOS size too small %u > %u",(unsigned int)int10.rom.used,(unsigned int)VGA_BIOS_Size);
 
         /* NTS: Uh, this does seem bass-ackwards... INT 10h making the VGA BIOS appear. Can we refactor this a bit? */
         if (VGA_BIOS_Size > 0) {
@@ -1035,10 +1144,8 @@ void INT10_Startup(Section *sec) {
     else {
         /* load PC-98 character ROM data, if possible */
         {
-            bool ok = false;
-
             /* We can use FONT.ROM as generated by T98Tools */
-            if (!ok) ok = Load_FONT_ROM();
+            bool ok = Load_FONT_ROM();
             /* We can use ANEX86.BMP from the Anex86 emulator */
             if (!ok) ok = Load_Anex86_Font();
             /* Failing all else we can just re-use the IBM VGA 8x16 font to show SOMETHING on the screen.
@@ -1070,7 +1177,7 @@ void INT10_Startup(Section *sec) {
         mem_writeb(0x71F,0x01); /* scrolling speed is normal */
 
         /* init text RAM */
-        for (unsigned int i=0;i < 0x2000;i += 2) {
+        for (unsigned int i=0;i < 0x1FE0;i += 2) {
             mem_writew(0xA0000+i,0);
             mem_writeb(0xA2000+i,0xE1);
         }
@@ -1079,6 +1186,7 @@ void INT10_Startup(Section *sec) {
             mem_writew(0xA8000+i,0);
             mem_writew(0xB0000+i,0);
             mem_writew(0xB8000+i,0);
+            mem_writew(0xE0000+i,0);
         }
     }
 }

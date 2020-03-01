@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 /* TODO: If biosps2=true and aux=false, also allow an option (default disabled)
@@ -53,10 +53,16 @@ void KEYBOARD_AUX_Event(float x,float y,Bitu buttons,int scrollwheel);
 
 bool en_int33=false;
 bool en_bios_ps2mouse=false;
+bool cell_granularity_disable=false;
+bool en_int33_hide_if_polling=false;
+bool en_int33_hide_if_intsub=false;
+bool en_int33_pc98_show_graphics=true; // NEC MOUSE.COM behavior
+
+double int33_last_poll = 0;
 
 void DisableINT33() {
     if (en_int33) {
-        LOG(LOG_MISC,LOG_DEBUG)("Disabling INT 33 services");
+        LOG(LOG_MOUSE, LOG_DEBUG)("Disabling INT 33 services");
 
         en_int33 = false;
         /* TODO: Also unregister INT 33h handler */
@@ -69,7 +75,7 @@ static Bitu int74_ret_callback = 0;
 static Bitu call_mouse_bd = 0;
 static Bitu call_int33 = 0;
 static Bitu call_int74 = 0;
-static Bitu call_ps2 = 0;
+static Bitu call_ps2, call_uir = 0;
 
 void MOUSE_Unsetup_DOS(void) {
     if (call_mouse_bd != 0) {
@@ -99,10 +105,8 @@ void MOUSE_Unsetup_BIOS(void) {
 
 static Bit16u ps2cbseg,ps2cbofs;
 static bool useps2callback,ps2callbackinit;
-static RealPt ps2_callback;
+static RealPt ps2_callback,uir_callback;
 static Bit16s oldmouseX, oldmouseY;
-// forward
-void WriteMouseIntVector(void);
 
 // serial mouse emulation
 void on_mouse_event_for_serial(int delta_x,int delta_y,Bit8u buttonstate);
@@ -112,6 +116,7 @@ struct button_event {
     Bit8u buttons;
 };
 
+extern bool enable_slave_pic;
 extern uint8_t p7fd8_8255_mouse_int_enable;
 
 uint8_t MOUSE_IRQ = 12; // IBM PC/AT default
@@ -153,9 +158,11 @@ static struct {
     Bit16u last_released_y[MOUSE_BUTTONS];
     Bit16u last_pressed_x[MOUSE_BUTTONS];
     Bit16u last_pressed_y[MOUSE_BUTTONS];
+    pic_tickindex_t hidden_at;
     Bit16u hidden;
     float add_x,add_y;
     Bit16s min_x,max_x,min_y,max_y;
+    Bit16s max_screen_x,max_screen_y;
     float mickey_x,mickey_y;
     float x,y;
     float ps2x,ps2y;
@@ -182,8 +189,8 @@ static struct {
     Bit16u  dspeed_val;
     float   senv_x;
     float   senv_y;
-    Bit16u  updateRegion_x[2];
-    Bit16u  updateRegion_y[2];
+    Bit16s  updateRegion_x[2];
+    Bit16s  updateRegion_y[2];
     Bit16u  doubleSpeedThreshold;
     Bit16u  language;
     Bit16u  cursorType;
@@ -192,6 +199,8 @@ static struct {
     bool enabled;
     bool inhibit_draw;
     bool timer_in_progress;
+    bool first_range_setx;
+    bool first_range_sety;
     bool in_UIR;
     Bit8u mode;
     Bit16s gran_x,gran_y;
@@ -201,12 +210,18 @@ static struct {
 bool Mouse_SetPS2State(bool use) {
     if (use && (!ps2callbackinit)) {
         useps2callback = false;
-        PIC_SetIRQMask(MOUSE_IRQ,true);
+
+        if (MOUSE_IRQ != 0)
+            PIC_SetIRQMask(MOUSE_IRQ,true);
+
         return false;
     }
     useps2callback = use;
     Mouse_AutoLock(useps2callback);
-    PIC_SetIRQMask(MOUSE_IRQ,!useps2callback);
+
+    if (MOUSE_IRQ != 0)
+        PIC_SetIRQMask(MOUSE_IRQ,!useps2callback);
+
     return true;
 }
 
@@ -284,8 +299,6 @@ Bitu PS2_Handler(void) {
 #define MOUSE_DUMMY 128
 #define MOUSE_DELAY 5.0
 
-extern bool p7fd8_8255_mouse_irq_signal;
-
 void MOUSE_Limit_Events(Bitu /*val*/) {
     mouse.timer_in_progress = false;
 
@@ -299,11 +312,10 @@ void MOUSE_Limit_Events(Bitu /*val*/) {
         mouse.timer_in_progress = true;
         PIC_AddEvent(MOUSE_Limit_Events,MOUSE_DELAY);
 
-        if (IS_PC98_ARCH)
-            p7fd8_8255_mouse_irq_signal = true;
-
-        if (!IS_PC98_ARCH || (IS_PC98_ARCH && p7fd8_8255_mouse_int_enable))
-            PIC_ActivateIRQ(MOUSE_IRQ);
+        if (MOUSE_IRQ != 0) {
+            if (!IS_PC98_ARCH)
+                PIC_ActivateIRQ(MOUSE_IRQ);
+        }
     }
 }
 
@@ -326,11 +338,10 @@ INLINE void Mouse_AddEvent(Bit8u type) {
         mouse.timer_in_progress = true;
         PIC_AddEvent(MOUSE_Limit_Events,MOUSE_DELAY);
 
-        if (IS_PC98_ARCH)
-            p7fd8_8255_mouse_irq_signal = true;
-
-        if (!IS_PC98_ARCH || (IS_PC98_ARCH && p7fd8_8255_mouse_int_enable))
-            PIC_ActivateIRQ(MOUSE_IRQ);
+        if (MOUSE_IRQ != 0) {
+            if (!IS_PC98_ARCH)
+                PIC_ActivateIRQ(MOUSE_IRQ);
+        }
     }
 }
 
@@ -358,6 +369,11 @@ void DrawCursorText() {
     // Restore Background
     RestoreCursorBackgroundText();
 
+    // Check if cursor in update region
+    if ((POS_Y <= mouse.updateRegion_y[1]) && (POS_Y >= mouse.updateRegion_y[0]) &&
+        (POS_X <= mouse.updateRegion_x[1]) && (POS_X >= mouse.updateRegion_x[0])) {
+        return;
+    }
 
     // Save Background
     mouse.backposx      = POS_X>>3;
@@ -366,15 +382,26 @@ void DrawCursorText() {
 
     //use current page (CV program)
     Bit8u page = real_readb(BIOSMEM_SEG,BIOSMEM_CURRENT_PAGE);
-    Bit16u result;
 
-    ReadCharAttr((Bit16u)mouse.backposx,(Bit16u)mouse.backposy,page,&result);
-    mouse.backData[0]   = (Bit8u)(result & 0xFF);
-    mouse.backData[1]   = (Bit8u)(result>>8);
-    mouse.background    = true;
-    // Write Cursor
-    result = (result & mouse.textAndMask) ^ mouse.textXorMask;
-    WriteChar((Bit16u)mouse.backposx,(Bit16u)mouse.backposy,page,(Bit8u)(result&0xFF),(Bit8u)(result>>8),true);
+    if (mouse.cursorType == 0) {
+        Bit16u result;
+        ReadCharAttr((Bit16u)mouse.backposx,(Bit16u)mouse.backposy,page,&result);
+        mouse.backData[0]	= (Bit8u)(result & 0xFF);
+        mouse.backData[1]	= (Bit8u)(result>>8);
+        mouse.background	= true;
+        // Write Cursor
+        result = (result & mouse.textAndMask) ^ mouse.textXorMask;
+        WriteChar((Bit16u)mouse.backposx,(Bit16u)mouse.backposy,page,(Bit8u)(result&0xFF),(Bit8u)(result>>8),true);
+    } else {
+        Bit16u address=page * real_readw(BIOSMEM_SEG,BIOSMEM_PAGE_SIZE);
+        address += (mouse.backposy * real_readw(BIOSMEM_SEG,BIOSMEM_NB_COLS) + mouse.backposx) * 2;
+        address /= 2;
+        Bit16u cr = real_readw(BIOSMEM_SEG,BIOSMEM_CRTC_ADDRESS);
+        IO_Write(cr     , 0xe);
+        IO_Write((Bitu)cr + 1u, (address >> 8) & 0xff);
+        IO_Write(cr     , 0xf);
+        IO_Write((Bitu)cr + 1u, address & 0xff);
+    }
 }
 
 // ***************************************************************************
@@ -427,17 +454,17 @@ void ClipCursorArea(Bit16s& x1, Bit16s& x2, Bit16s& y1, Bit16s& y2,
     // Clip down
     if (y2>mouse.clipy) {
         y2 = mouse.clipy;       
-    };
+    }
     // Clip left
     if (x1<0) {
         addx1 += (-x1);
         x1 = 0;
-    };
+    }
     // Clip right
     if (x2>mouse.clipx) {
         addx2 = x2 - mouse.clipx;
         x2 = mouse.clipx;
-    };
+    }
 }
 
 void RestoreCursorBackground() {
@@ -461,16 +488,17 @@ void RestoreCursorBackground() {
             dataPos += addx1;
             for (x=x1; x<=x2; x++) {
                 INT10_PutPixel((Bit16u)x,(Bit16u)y,mouse.page,mouse.backData[dataPos++]);
-            };
+            }
             dataPos += addx2;
-        };
+        }
         mouse.background = false;
-    };
+    }
     RestoreVgaRegisters();
 }
 
 void DrawCursor() {
     if (mouse.hidden || mouse.inhibit_draw) return;
+    INT10_SetCurMode();
     // In Textmode ?
     if (CurMode->type==M_TEXT) {
         DrawCursorText();
@@ -523,9 +551,9 @@ void DrawCursor() {
         dataPos += addx1;
         for (x=x1; x<=x2; x++) {
             INT10_GetPixel((Bit16u)x,(Bit16u)y,mouse.page,&mouse.backData[dataPos++]);
-        };
+        }
         dataPos += addx2;
-    };
+    }
     mouse.background= true;
     mouse.backposx  = POS_X / xratio - mouse.hotx;
     mouse.backposy  = POS_Y - mouse.hoty;
@@ -535,7 +563,7 @@ void DrawCursor() {
     for (y=y1; y<=y2; y++) {
         Bit16u scMask = mouse.screenMask[addy+y-y1];
         Bit16u cuMask = mouse.cursorMask[addy+y-y1];
-        if (addx1>0) { scMask<<=addx1; cuMask<<=addx1; dataPos += addx1; };
+        if (addx1>0) { scMask<<=addx1; cuMask<<=addx1; dataPos += addx1; }
         for (x=x1; x<=x2; x++) {
             Bit8u pixel = 0;
             // ScreenMask
@@ -547,13 +575,25 @@ void DrawCursor() {
             // Set Pixel
             INT10_PutPixel((Bit16u)x,(Bit16u)y,mouse.page,pixel);
             dataPos++;
-        };
+        }
         dataPos += addx2;
-    };
+    }
     RestoreVgaRegisters();
 }
 
 void pc98_mouse_movement_apply(int x,int y);
+
+#if !defined(C_SDL2)
+bool GFX_IsFullscreen(void);
+#else
+static inline bool GFX_IsFullscreen(void) {
+    return false;
+}
+#endif
+
+extern int  user_cursor_x,  user_cursor_y;
+extern int  user_cursor_sw, user_cursor_sh;
+extern bool user_cursor_locked;
 
 /* FIXME: Re-test this code */
 void Mouse_CursorMoved(float xrel,float yrel,float x,float y,bool emulate) {
@@ -571,24 +611,33 @@ void Mouse_CursorMoved(float xrel,float yrel,float x,float y,bool emulate) {
     if((fabs(yrel) > 1.0) || (mouse.senv_y < 1.0)) dy *= mouse.senv_y;
     if (useps2callback) dy *= 2;    
 
-    /* serial mouse, if connected, also wants to know about it */
-    on_mouse_event_for_serial((int)(dx),(int)(dy*2),mouse.buttons);
+    if (user_cursor_locked) {
+        /* either device reports relative motion ONLY, and therefore requires that the user
+         * has captured the mouse */
 
-    mouse.mickey_x += (dx * mouse.mickeysPerPixel_x);
-    mouse.mickey_y += (dy * mouse.mickeysPerPixel_y);
-    if (mouse.mickey_x >= 32768.0) mouse.mickey_x -= 65536.0;
-    else if (mouse.mickey_x <= -32769.0) mouse.mickey_x += 65536.0;
-    if (mouse.mickey_y >= 32768.0) mouse.mickey_y -= 65536.0;
-    else if (mouse.mickey_y <= -32769.0) mouse.mickey_y += 65536.0;
+        /* serial mouse */
+        on_mouse_event_for_serial((int)(dx),(int)(dy*2),mouse.buttons);
+
+        /* PC-98 mouse */
+        if (IS_PC98_ARCH) pc98_mouse_movement_apply(xrel,yrel);
+
+        mouse.mickey_x += (dx * mouse.mickeysPerPixel_x);
+        mouse.mickey_y += (dy * mouse.mickeysPerPixel_y);
+        if (mouse.mickey_x >= 32768.0) mouse.mickey_x -= 65536.0;
+        else if (mouse.mickey_x <= -32769.0) mouse.mickey_x += 65536.0;
+        if (mouse.mickey_y >= 32768.0) mouse.mickey_y -= 65536.0;
+        else if (mouse.mickey_y <= -32769.0) mouse.mickey_y += 65536.0;
+    }
 
     if (emulate) {
         mouse.x += dx;
         mouse.y += dy;
-    } else {
+    } else if (CurMode != NULL) {
         if (CurMode->type == M_TEXT) {
-            mouse.x = x*CurMode->swidth;
-            mouse.y = y*CurMode->sheight * 8 / CurMode->cheight;
-        } else if ((mouse.max_x < 2048) || (mouse.max_y < 2048) || (mouse.max_x != mouse.max_y)) {
+            mouse.x = x*real_readw(BIOSMEM_SEG,BIOSMEM_NB_COLS)*8;
+            mouse.y = y*(real_readb(BIOSMEM_SEG,BIOSMEM_NB_ROWS)+1)*8;
+        /* NTS: DeluxePaint II enhanced sets a large range (5112x3832) for VGA mode 0x12 640x480 16-color */
+        } else {
             if ((mouse.max_x > 0) && (mouse.max_y > 0)) {
                 mouse.x = x*mouse.max_x;
                 mouse.y = y*mouse.max_y;
@@ -596,14 +645,8 @@ void Mouse_CursorMoved(float xrel,float yrel,float x,float y,bool emulate) {
                 mouse.x += xrel;
                 mouse.y += yrel;
             }
-        } else { // Games faking relative movement through absolute coordinates. Quite surprising that this actually works..
-            mouse.x += xrel;
-            mouse.y += yrel;
         }
     }
-
-    if (IS_PC98_ARCH)
-        pc98_mouse_movement_apply(xrel,yrel);
 
     /* ignore constraints if using PS2 mouse callback in the bios */
 
@@ -612,12 +655,50 @@ void Mouse_CursorMoved(float xrel,float yrel,float x,float y,bool emulate) {
     if (mouse.y > mouse.max_y) mouse.y = mouse.max_y;
     if (mouse.y < mouse.min_y) mouse.y = mouse.min_y;
 
-    mouse.ps2x += xrel;
-    mouse.ps2y += yrel;
-    if (mouse.ps2x >= 32768.0)       mouse.ps2x -= 65536.0;
-    else if (mouse.ps2x <= -32769.0) mouse.ps2x += 65536.0;
-    if (mouse.ps2y >= 32768.0)       mouse.ps2y -= 65536.0;
-    else if (mouse.ps2y <= -32769.0) mouse.ps2y += 65536.0;
+    /*make mouse emulated, eventually*/
+    extern MOUSE_EMULATION user_cursor_emulation;
+    bool emu;
+    switch (user_cursor_emulation)
+    {
+    case MOUSE_EMULATION_ALWAYS:
+        emu = true;
+        break;
+    case MOUSE_EMULATION_INTEGRATION:
+        emu = !user_cursor_locked && !GFX_IsFullscreen();
+        break;
+    case MOUSE_EMULATION_LOCKED:
+        emu = user_cursor_locked && !GFX_IsFullscreen();
+        break;
+    case MOUSE_EMULATION_NEVER:
+    default:
+        emu = false;
+    }
+    if (!emu)
+    {
+        auto x1 = (double)user_cursor_x / ((double)user_cursor_sw - 1);
+        auto y1 = (double)user_cursor_y / ((double)user_cursor_sh - 1);
+        mouse.x       = x1 * mouse.max_screen_x;
+        mouse.y       = y1 * mouse.max_screen_y;
+
+        if (mouse.x < mouse.min_x)
+            mouse.x = mouse.min_x;
+        if (mouse.y < mouse.min_y)
+            mouse.y = mouse.min_y;
+        if (mouse.x > mouse.max_x)
+            mouse.x = mouse.max_x;
+        if (mouse.y > mouse.max_y)
+            mouse.y = mouse.max_y;
+    }
+
+    if (user_cursor_locked) {
+        /* send relative PS/2 mouse motion only if the cursor is captured */
+        mouse.ps2x += xrel;
+        mouse.ps2y += yrel;
+        if (mouse.ps2x >= 32768.0)       mouse.ps2x -= 65536.0;
+        else if (mouse.ps2x <= -32769.0) mouse.ps2x += 65536.0;
+        if (mouse.ps2y >= 32768.0)       mouse.ps2y -= 65536.0;
+        else if (mouse.ps2y <= -32769.0) mouse.ps2y += 65536.0;
+    }
 
     Mouse_AddEvent(MOUSE_HAS_MOVED);
 }
@@ -653,18 +734,21 @@ void Mouse_ButtonPressed(Bit8u button) {
     switch (button) {
 #if (MOUSE_BUTTONS >= 1)
     case 0:
+        if (mouse.buttons&1) return;
         mouse.buttons|=1;
         Mouse_AddEvent(MOUSE_LEFT_PRESSED);
         break;
 #endif
 #if (MOUSE_BUTTONS >= 2)
     case 1:
+        if (mouse.buttons&2) return;
         mouse.buttons|=2;
         Mouse_AddEvent(MOUSE_RIGHT_PRESSED);
         break;
 #endif
 #if (MOUSE_BUTTONS >= 3)
     case 2:
+        if (mouse.buttons&4) return;
         mouse.buttons|=4;
         Mouse_AddEvent(MOUSE_MIDDLE_PRESSED);
         break;
@@ -713,18 +797,21 @@ void Mouse_ButtonReleased(Bit8u button) {
     switch (button) {
 #if (MOUSE_BUTTONS >= 1)
     case 0:
+        if (!(mouse.buttons&1)) return;
         mouse.buttons&=~1;
         Mouse_AddEvent(MOUSE_LEFT_RELEASED);
         break;
 #endif
 #if (MOUSE_BUTTONS >= 2)
     case 1:
+        if (!(mouse.buttons&2)) return;
         mouse.buttons&=~2;
         Mouse_AddEvent(MOUSE_RIGHT_RELEASED);
         break;
 #endif
 #if (MOUSE_BUTTONS >= 3)
     case 2:
+        if (!(mouse.buttons&4)) return;
         mouse.buttons&=~4;
         Mouse_AddEvent(MOUSE_MIDDLE_RELEASED);
         break;
@@ -767,20 +854,62 @@ static void Mouse_SetSensitivity(Bit16u px, Bit16u py, Bit16u dspeed){
 
 
 static void Mouse_ResetHardware(void){
-    PIC_SetIRQMask(MOUSE_IRQ,false);
+    if (MOUSE_IRQ != 0)
+        PIC_SetIRQMask(MOUSE_IRQ,false);
 
-    if (IS_PC98_ARCH)
-        p7fd8_8255_mouse_int_enable = 1;
+    if (IS_PC98_ARCH) {
+        IO_WriteB(0x7FDD,IO_ReadB(0x7FDD) & (~0x10)); // remove interrupt inhibit
+
+        // NEC MOUSE.COM behavior: Driver startup and INT 33h AX=0 automatically show the graphics layer.
+        // Some games by "Orange House" depend on this behavior, without which the graphics are invisible.
+        if (en_int33_pc98_show_graphics) {
+            reg_eax = 0x40u << 8u; // AH=40h show graphics layer
+            CALLBACK_RunRealInt(0x18);
+        }
+    }
+}
+
+void Mouse_BeforeNewVideoMode(bool setmode) {
+    (void)setmode;//unused
+
+    if (CurMode->type!=M_TEXT) RestoreCursorBackground();
+    else RestoreCursorBackgroundText();
+    if (!mouse.hidden) {
+        mouse.hidden = 1;
+        mouse.hidden_at = PIC_FullIndex();
+    }
+    mouse.oldhidden = 1;
+    mouse.background = false;
 }
 
 //Does way to much. Many things should be moved to mouse reset one day
-void Mouse_NewVideoMode(void) {
+void Mouse_AfterNewVideoMode(bool setmode) {
     mouse.inhibit_draw = false;
     /* Get the correct resolution from the current video mode */
     Bit8u mode = mem_readb(BIOS_VIDEO_MODE);
-    if(mode == mouse.mode) {LOG(LOG_MOUSE,LOG_NORMAL)("New video is the same as the old"); /*return;*/}
+    if (setmode && mode == mouse.mode) LOG(LOG_MOUSE,LOG_NORMAL)("New video mode is the same as the old");
+    mouse.first_range_setx = false;
+    mouse.first_range_sety = false;
     mouse.gran_x = (Bit16s)0xffff;
     mouse.gran_y = (Bit16s)0xffff;
+
+    /* If new video mode is SVGA and this is NOT a mouse driver reset, then do not reset min/max.
+     * This is needed for "down-by-the-laituri-peli" (some sort of Finnish band tour simulation?)
+     * which sets the min/max range and THEN sets up 640x480 256-color mode through the VESA BIOS.
+     * Without this fix, the cursor is constrained to the upper left hand quadrant of the screen. */
+    if (!setmode || mode <= 0x13/*non-SVGA*/) {
+        mouse.min_x = 0;
+        mouse.max_x = 639;
+        mouse.min_y = 0;
+        mouse.max_y = 479;
+    }
+
+    if (machine == MCH_HERC) {
+        // DeluxePaint II again...
+        mouse.first_range_setx = true;
+        mouse.first_range_sety = true;
+    }
+
     switch (mode) {
     case 0x00:
     case 0x01:
@@ -810,25 +939,51 @@ void Mouse_NewVideoMode(void) {
     case 0x13:
         if (mode == 0x0d || mode == 0x13) mouse.gran_x = (Bit16s)0xfffe;
         mouse.max_y = 199;
+        // some games redefine the mouse range for this mode
+        mouse.first_range_setx = true;
+        mouse.first_range_sety = true;
         break;
     case 0x0f:
     case 0x10:
         mouse.max_y = 349;
+        // Deluxepaint II enhanced will redefine the range for 640x480 mode
+        mouse.first_range_setx = true;
+        mouse.first_range_sety = true;
         break;
     case 0x11:
     case 0x12:
         mouse.max_y = 479;
+        // Deluxepaint II enhanced will redefine the range for 640x480 mode
+        mouse.first_range_setx = true;
+        mouse.first_range_sety = true;
         break;
     default:
         LOG(LOG_MOUSE,LOG_ERROR)("Unhandled videomode %X on reset",mode);
         mouse.inhibit_draw = true;
-        return;
+        /* If new video mode is SVGA and this is NOT a mouse driver reset, then do not reset min/max.
+         * This is needed for "down-by-the-laituri-peli" (some sort of Finnish band tour simulation?)
+         * which sets the min/max range and THEN sets up 640x480 256-color mode through the VESA BIOS.
+         * Without this fix, the cursor is constrained to the upper left hand quadrant of the screen. */
+        if (!setmode) {
+            if (CurMode != NULL) {
+                mouse.first_range_setx = true;
+                mouse.first_range_sety = true;
+                mouse.max_x = CurMode->swidth - 1;
+                mouse.max_y = CurMode->sheight - 1;
+            }
+            else {
+                mouse.max_x = 639;
+                mouse.max_y = 479;
+            }
+        }
+        break;
     }
     mouse.mode = mode;
-    mouse.hidden = 1;
-    mouse.max_x = 639;
-    mouse.min_x = 0;
-    mouse.min_y = 0;
+
+    if (cell_granularity_disable) {
+        mouse.gran_x = (Bit16s)0xffff;
+        mouse.gran_y = (Bit16s)0xffff;
+    }
 
     mouse.events = 0;
     mouse.timer_in_progress = false;
@@ -844,27 +999,33 @@ void Mouse_NewVideoMode(void) {
     mouse.language   = 0;
     mouse.page               = 0;
     mouse.doubleSpeedThreshold = 64;
-    mouse.updateRegion_x[0] = 1;
-    mouse.updateRegion_y[0] = 1;
-    mouse.updateRegion_x[1] = 1;
-    mouse.updateRegion_y[1] = 1;
+    mouse.updateRegion_y[1] = -1; //offscreen
     mouse.cursorType = 0;
     mouse.enabled=true;
-    mouse.oldhidden=1;
+
+    mouse.max_screen_x = mouse.max_x;
+    mouse.max_screen_y = mouse.max_y;
 }
 
 //Much too empty, Mouse_NewVideoMode contains stuff that should be in here
 static void Mouse_Reset(void) {
-    /* Remove drawn mouse Legends of Valor */
-    if (CurMode->type!=M_TEXT) RestoreCursorBackground();
-    else RestoreCursorBackgroundText();
-    mouse.hidden = 1;
-
-    Mouse_NewVideoMode();
+    Mouse_BeforeNewVideoMode(false);
+    Mouse_AfterNewVideoMode(false);
     Mouse_SetMickeyPixelRate(8,16);
 
     mouse.mickey_x = 0;
     mouse.mickey_y = 0;
+
+    mouse.buttons = 0;
+
+    for (Bit16u but=0; but<MOUSE_BUTTONS; but++) {
+        mouse.times_pressed[but] = 0;
+        mouse.times_released[but] = 0;
+        mouse.last_pressed_x[but] = 0;
+        mouse.last_pressed_y[but] = 0;
+        mouse.last_released_x[but] = 0;
+        mouse.last_released_y[but] = 0;
+    }
 
     // Dont set max coordinates here. it is done by SetResolution!
     mouse.x = static_cast<float>((mouse.max_x + 1)/ 2);
@@ -875,223 +1036,344 @@ static void Mouse_Reset(void) {
 
 static Bitu INT33_Handler(void) {
 //  LOG(LOG_MOUSE,LOG_NORMAL)("MOUSE: %04X %X %X %d %d",reg_ax,reg_bx,reg_cx,POS_X,POS_Y);
-    INT10_SetCurMode();
     switch (reg_ax) {
     case 0x00:  /* Reset Driver and Read Status */
-        Mouse_ResetHardware(); /* fallthrough */
-    case 0x21:  /* Software Reset */
-        extern bool Mouse_Drv;
-        if (Mouse_Drv) {
-            reg_ax=0xffff;
-            reg_bx=MOUSE_BUTTONS;
-            Mouse_Reset();
-            Mouse_AutoLock(true);
-            AUX_INT33_Takeover();
-            LOG(LOG_KEYBOARD,LOG_NORMAL)("INT 33h reset");
-        }
-        break;
+        Mouse_ResetHardware();
+        goto software_reset;
     case 0x01:  /* Show Mouse */
-        if(mouse.hidden) mouse.hidden--;
+        if (mouse.hidden) mouse.hidden--;
+        mouse.updateRegion_y[1] = -1; //offscreen
         Mouse_AutoLock(true);
         DrawCursor();
         break;
     case 0x02:  /* Hide Mouse */
         {
-            if (CurMode->type!=M_TEXT) RestoreCursorBackground();
+            if (CurMode->type != M_TEXT) RestoreCursorBackground();
             else RestoreCursorBackgroundText();
+            if (mouse.hidden == 0) mouse.hidden_at = PIC_FullIndex();
             mouse.hidden++;
         }
         break;
     case 0x03:  /* Return position and Button Status */
-        reg_bx=mouse.buttons;
-        reg_cx=(Bit16u)POS_X;
-        reg_dx=(Bit16u)POS_Y;
+        reg_bx = mouse.buttons;
+        reg_cx = (Bit16u)POS_X;
+        reg_dx = (Bit16u)POS_Y;
+        mouse.first_range_setx = false;
+        mouse.first_range_sety = false;
+        if (en_int33_hide_if_polling) int33_last_poll = PIC_FullIndex();
         break;
     case 0x04:  /* Position Mouse */
         /* If position isn't different from current position
          * don't change it then. (as position is rounded so numbers get
          * lost when the rounded number is set) (arena/simulation Wolf) */
         if ((Bit16s)reg_cx >= mouse.max_x) mouse.x = static_cast<float>(mouse.max_x);
-        else if (mouse.min_x >= (Bit16s)reg_cx) mouse.x = static_cast<float>(mouse.min_x); 
+        else if (mouse.min_x >= (Bit16s)reg_cx) mouse.x = static_cast<float>(mouse.min_x);
         else if ((Bit16s)reg_cx != POS_X) mouse.x = static_cast<float>(reg_cx);
 
         if ((Bit16s)reg_dx >= mouse.max_y) mouse.y = static_cast<float>(mouse.max_y);
-        else if (mouse.min_y >= (Bit16s)reg_dx) mouse.y = static_cast<float>(mouse.min_y); 
+        else if (mouse.min_y >= (Bit16s)reg_dx) mouse.y = static_cast<float>(mouse.min_y);
         else if ((Bit16s)reg_dx != POS_Y) mouse.y = static_cast<float>(reg_dx);
         DrawCursor();
+        if (en_int33_hide_if_polling) int33_last_poll = PIC_FullIndex();
         break;
     case 0x05:  /* Return Button Press Data */
         {
-            Bit16u but=reg_bx;
-            reg_ax=mouse.buttons;
-            if (but>=MOUSE_BUTTONS) but = MOUSE_BUTTONS - 1;
-            reg_cx=mouse.last_pressed_x[but];
-            reg_dx=mouse.last_pressed_y[but];
-            reg_bx=mouse.times_pressed[but];
-            mouse.times_pressed[but]=0;
+            Bit16u but = reg_bx;
+            reg_ax = mouse.buttons;
+            if (but >= MOUSE_BUTTONS) but = MOUSE_BUTTONS - 1;
+            reg_cx = mouse.last_pressed_x[but];
+            reg_dx = mouse.last_pressed_y[but];
+            reg_bx = mouse.times_pressed[but];
+            mouse.times_pressed[but] = 0;
+            if (en_int33_hide_if_polling) int33_last_poll = PIC_FullIndex();
             break;
         }
     case 0x06:  /* Return Button Release Data */
         {
-            Bit16u but=reg_bx;
-            reg_ax=mouse.buttons;
-            if (but>=MOUSE_BUTTONS) but = MOUSE_BUTTONS - 1;
-            reg_cx=mouse.last_released_x[but];
-            reg_dx=mouse.last_released_y[but];
-            reg_bx=mouse.times_released[but];
-            mouse.times_released[but]=0;
+            Bit16u but = reg_bx;
+            reg_ax = mouse.buttons;
+            if (but >= MOUSE_BUTTONS) but = MOUSE_BUTTONS - 1;
+            reg_cx = mouse.last_released_x[but];
+            reg_dx = mouse.last_released_y[but];
+            reg_bx = mouse.times_released[but];
+            mouse.times_released[but] = 0;
+            if (en_int33_hide_if_polling) int33_last_poll = PIC_FullIndex();
             break;
         }
     case 0x07:  /* Define horizontal cursor range */
-        {   //lemmings set 1-640 and wants that. iron seeds set 0-640 but doesn't like 640
-            //Iron seed works if newvideo mode with mode 13 sets 0-639
+        {
+            //Lemmings sets 1-640 and wants that. Ironseed sets 0-640 but doesn't like 640
+            //Ironseed works if newvideo mode with mode 13 sets 0-639
             //Larry 6 actually wants newvideo mode with mode 13 to set it to 0-319
-            Bit16s max,min;
-            if ((Bit16s)reg_cx<(Bit16s)reg_dx) { min=(Bit16s)reg_cx;max=(Bit16s)reg_dx;}
-            else { min=(Bit16s)reg_dx;max=(Bit16s)reg_cx;}
-            mouse.min_x=min;
-            mouse.max_x=max;
-            /* Battlechess wants this */
-            if(mouse.x > mouse.max_x) mouse.x = mouse.max_x;
-            if(mouse.x < mouse.min_x) mouse.x = mouse.min_x;
-            /* Or alternatively this: 
+            Bit16s max, min;
+            if ((Bit16s)reg_cx < (Bit16s)reg_dx) { min = (Bit16s)reg_cx; max = (Bit16s)reg_dx; }
+            else { min = (Bit16s)reg_dx; max = (Bit16s)reg_cx; }
+            mouse.min_x = min;
+            mouse.max_x = max;
+            /* Battle Chess wants this */
+            if (mouse.x > mouse.max_x) mouse.x = mouse.max_x;
+            if (mouse.x < mouse.min_x) mouse.x = mouse.min_x;
+            /* Or alternatively this:
             mouse.x = (mouse.max_x - mouse.min_x + 1)/2;*/
-            LOG(LOG_MOUSE,LOG_NORMAL)("Define Hortizontal range min:%d max:%d",min,max);
+            LOG(LOG_MOUSE, LOG_NORMAL)("Define Horizontal range min:%d max:%d", min, max);
+
+            /* NTS: The mouse in VESA BIOS modes would ideally start with the x and y ranges
+             *      that fit the screen, but I'm not so sure mouse drivers even pay attention
+             *      to VESA BIOS modes so it's not certain what comes out. However some
+             *      demoscene productions like "Aqua" will set their own mouse range and draw
+             *      their own cursor. The menu in "Aqua" will set up 640x480 256-color mode
+             *      and then set a mouse range of x=0-1279 and y=0-479. Using the FIRST range
+             *      set after mode set is the only way to make sure mouse pointer integration
+             *      tracks the guest pointer properly. */
+            if (mouse.first_range_setx || mouse.buttons == 0) {
+                if (mouse.min_x == 0 && mouse.max_x > 0) {
+                    // most games redefine the range so they can use a saner range matching the screen
+                    Bit16s nval = mouse.max_x;
+
+                    if (CurMode->type == M_TEXT) {
+                        // Text is reported as if each row is 8 lines high (CGA compat) even if EGA 14-line
+                        // or VGA 16-line, and 8 pixels wide even if EGA/VGA 9-pixels/char is enabled.
+                        //
+                        // Apply sanity rounding.
+                        //
+                        // FreeDOS EDIT: The max is set to just under 640x400, so that the cursor only has
+                        //               room for ONE PIXEL in the last row and column.
+                        if (nval >= ((Bit16s)(CurMode->twidth*8) - 32) && nval <= ((Bit16s)(CurMode->twidth*8) + 32))
+                            nval = (Bit16s)CurMode->twidth*8;
+                    }
+                    else {
+                        // Apply sanity rounding.
+                        //
+                        // Daggerfall: Sets max to 310 instead of 320, probably to prevent drawing the cursor
+                        //             partially offscreen. */
+                        if (nval >= ((Bit16s)CurMode->swidth - 32) && nval <= ((Bit16s)CurMode->swidth + 32))
+                            nval = (Bit16s)CurMode->swidth;
+                        else if (nval >= (((Bit16s)CurMode->swidth - 32) * 2) && nval <= (((Bit16s)CurMode->swidth + 32) * 2))
+                            nval = (Bit16s)CurMode->swidth * 2;
+                    }
+
+                    if (mouse.max_screen_x != nval) {
+                        mouse.max_screen_x = nval;
+                        LOG(LOG_MOUSE, LOG_NORMAL)("Define Horizontal range min:%d max:%d defines the bounds of the screen", min, max);
+                    }
+                }
+                mouse.first_range_setx = false;
+            }
         }
         break;
     case 0x08:  /* Define vertical cursor range */
-        {   // not sure what to take instead of the CurMode (see case 0x07 as well)
+        {
+            // Not sure what to take instead of the CurMode (see case 0x07 as well)
             // especially the cases where sheight= 400 and we set it with the mouse_reset to 200
-            //disabled it at the moment. Seems to break syndicate who want 400 in mode 13
-            Bit16s max,min;
-            if ((Bit16s)reg_cx<(Bit16s)reg_dx) { min=(Bit16s)reg_cx;max=(Bit16s)reg_dx;}
-            else { min=(Bit16s)reg_dx;max=(Bit16s)reg_cx;}
-            mouse.min_y=min;
-            mouse.max_y=max;
-            /* Battlechess wants this */
-            if(mouse.y > mouse.max_y) mouse.y = mouse.max_y;
-            if(mouse.y < mouse.min_y) mouse.y = mouse.min_y;
-            /* Or alternatively this: 
+            // disabled it at the moment. Seems to break Syndicate which wants 400 in mode 13
+            Bit16s max, min;
+            if ((Bit16s)reg_cx < (Bit16s)reg_dx) { min = (Bit16s)reg_cx; max = (Bit16s)reg_dx; }
+            else { min = (Bit16s)reg_dx; max = (Bit16s)reg_cx; }
+            mouse.min_y = min;
+            mouse.max_y = max;
+            /* Battle Chess wants this */
+            if (mouse.y > mouse.max_y) mouse.y = mouse.max_y;
+            if (mouse.y < mouse.min_y) mouse.y = mouse.min_y;
+            /* Or alternatively this:
             mouse.y = (mouse.max_y - mouse.min_y + 1)/2;*/
-            LOG(LOG_MOUSE,LOG_NORMAL)("Define Vertical range min:%d max:%d",min,max);
+            LOG(LOG_MOUSE, LOG_NORMAL)("Define Vertical range min:%d max:%d", min, max);
+
+            /* NTS: The mouse in VESA BIOS modes would ideally start with the x and y ranges
+             *      that fit the screen, but I'm not so sure mouse drivers even pay attention
+             *      to VESA BIOS modes so it's not certain what comes out. However some
+             *      demoscene productions like "Aqua" will set their own mouse range and draw
+             *      their own cursor. The menu in "Aqua" will set up 640x480 256-color mode
+             *      and then set a mouse range of x=0-1279 and y=0-479. Using the FIRST range
+             *      set after mode set is the only way to make sure mouse pointer integration
+             *      tracks the guest pointer properly. */
+            if (mouse.first_range_sety || mouse.buttons == 0) {
+                if (mouse.min_y == 0 && mouse.max_y > 0) {
+                    // most games redefine the range so they can use a saner range matching the screen
+                    Bit16s nval = mouse.max_y;
+
+                    if (CurMode->type == M_TEXT) {
+                        // Text is reported as if each row is 8 lines high (CGA compat) even if EGA 14-line
+                        // or VGA 16-line, and 8 pixels wide even if EGA/VGA 9-pixels/char is enabled.
+                        //
+                        // Apply sanity rounding.
+                        //
+                        // FreeDOS EDIT: The max is set to just under 640x400, so that the cursor only has
+                        //               room for ONE PIXEL in the last row and column.
+                        if (nval >= ((Bit16s)(CurMode->theight*8) - 32) && nval <= ((Bit16s)(CurMode->theight*8) + 32))
+                            nval = (Bit16s)CurMode->theight*8;
+                    }
+                    else {
+                        // Apply sanity rounding.
+                        //
+                        // Daggerfall: Sets max to 310 instead of 320, probably to prevent drawing the cursor
+                        //             partially offscreen. */
+                        if (nval >= ((Bit16s)CurMode->sheight - 32) && nval <= ((Bit16s)CurMode->sheight + 32))
+                            nval = (Bit16s)CurMode->sheight;
+                        else if (nval >= (((Bit16s)CurMode->sheight - 32) * 2) && nval <= (((Bit16s)CurMode->sheight + 32) * 2))
+                            nval = (Bit16s)CurMode->sheight * 2;
+                    }
+
+                    if (mouse.max_screen_y != nval) {
+                        mouse.max_screen_y = nval;
+                        LOG(LOG_MOUSE, LOG_NORMAL)("Define Vertical range min:%d max:%d defines the bounds of the screen", min, max);
+                    }
+                }
+                mouse.first_range_sety = false;
+            }
         }
         break;
     case 0x09:  /* Define GFX Cursor */
         {
-            PhysPt src = SegPhys(es)+reg_dx;
-            MEM_BlockRead(src          ,userdefScreenMask,CURSORY*2);
-            MEM_BlockRead(src+CURSORY*2,userdefCursorMask,CURSORY*2);
+            PhysPt src = SegPhys(es) + reg_dx;
+            MEM_BlockRead(src, userdefScreenMask, CURSORY * 2);
+            MEM_BlockRead(src + CURSORY * 2, userdefCursorMask, CURSORY * 2);
             mouse.screenMask = userdefScreenMask;
             mouse.cursorMask = userdefCursorMask;
-            mouse.hotx       = (Bit16s)reg_bx;
-            mouse.hoty       = (Bit16s)reg_cx;
+            mouse.hotx = (Bit16s)reg_bx;
+            mouse.hoty = (Bit16s)reg_cx;
             mouse.cursorType = 2;
             DrawCursor();
+            break;
         }
-        break;
     case 0x0a:  /* Define Text Cursor */
-        mouse.cursorType = reg_bx;
+        mouse.cursorType = (reg_bx ? 1 : 0);
         mouse.textAndMask = reg_cx;
         mouse.textXorMask = reg_dx;
+        if (reg_bx) {
+            INT10_SetCursorShape(reg_cl, reg_dl);
+            LOG(LOG_MOUSE, LOG_NORMAL)("Hardware Text cursor selected");
+        }
+        DrawCursor();
         break;
     case 0x0b:  /* Read Motion Data */
-        reg_cx=(Bit16u)static_cast<Bit16s>(mouse.mickey_x);
-        reg_dx=(Bit16u)static_cast<Bit16s>(mouse.mickey_y);
-        mouse.mickey_x=0;
-        mouse.mickey_y=0;
-        break;
+        {
+            extern bool MOUSE_IsLocked();
+            const auto locked = MOUSE_IsLocked();
+            reg_cx = (Bit16u)static_cast<Bit16s>(locked ? mouse.mickey_x : 0);
+            reg_dx = (Bit16u)static_cast<Bit16s>(locked ? mouse.mickey_y : 0);
+            mouse.mickey_x = 0;
+            mouse.mickey_y = 0;
+            break;
+        }
     case 0x0c:  /* Define interrupt subroutine parameters */
-        mouse.sub_mask=reg_cx;
-        mouse.sub_seg=SegValue(es);
-        mouse.sub_ofs=reg_dx;
+        mouse.sub_mask = reg_cx;
+        mouse.sub_seg = SegValue(es);
+        mouse.sub_ofs = reg_dx;
         Mouse_AutoLock(true); //Some games don't seem to reset the mouse before using
         break;
-    case 0x0f:  /* Define mickey/pixel rate */
-        Mouse_SetMickeyPixelRate((Bit16s)reg_cx,(Bit16s)reg_dx);
+    case 0x0d:  /* Mouse light pen emulation on */
+        LOG(LOG_MOUSE, LOG_ERROR)("Mouse light pen emulation on not implemented");
         break;
-    case 0x10:      /* Define screen region for updating */
-        mouse.updateRegion_x[0]=reg_cx;
-        mouse.updateRegion_y[0]=reg_dx;
-        mouse.updateRegion_x[1]=reg_si;
-        mouse.updateRegion_y[1]=reg_di;
+    case 0x0e:  /* Mouse light pen emulation off */
+        LOG(LOG_MOUSE, LOG_ERROR)("Mouse light pen emulation off not implemented");
+        break;
+    case 0x0f:  /* Define mickey/pixel rate */
+        Mouse_SetMickeyPixelRate((Bit16s)reg_cx, (Bit16s)reg_dx);
+        break;
+    case 0x10:  /* Define screen region for updating */
+        mouse.updateRegion_x[0] = (Bit16s)reg_cx;
+        mouse.updateRegion_y[0] = (Bit16s)reg_dx;
+        mouse.updateRegion_x[1] = (Bit16s)reg_si;
+        mouse.updateRegion_y[1] = (Bit16s)reg_di;
+        DrawCursor();
         break;
     case 0x11:      /* Get number of buttons */
-        reg_ax=0xffff;
-        reg_bx=MOUSE_BUTTONS;
+        reg_ax = 0xffff;
+        reg_bx = MOUSE_BUTTONS;
         break;
     case 0x13:      /* Set double-speed threshold */
-        mouse.doubleSpeedThreshold=(reg_bx ? reg_bx : 64);
+        mouse.doubleSpeedThreshold = (reg_bx ? reg_bx : 64);
         break;
-    case 0x14: /* Exchange event-handler */ 
-        {   
+    case 0x14: /* Exchange event-handler */
+        {
             Bit16u oldSeg = mouse.sub_seg;
             Bit16u oldOfs = mouse.sub_ofs;
-            Bit16u oldMask= mouse.sub_mask;
+            Bit16u oldMask = mouse.sub_mask;
             // Set new values
-            mouse.sub_mask= reg_cx;
+            mouse.sub_mask = reg_cx;
             mouse.sub_seg = SegValue(es);
             mouse.sub_ofs = reg_dx;
             // Return old values
             reg_cx = (Bit16u)oldMask;
             reg_dx = (Bit16u)oldOfs;
-            SegSet16(es,oldSeg);
+            SegSet16(es, oldSeg);
         }
-        break;      
+        break;
     case 0x15: /* Get Driver storage space requirements */
         reg_bx = sizeof(mouse);
         break;
     case 0x16: /* Save driver state */
         {
-            LOG(LOG_MOUSE,LOG_WARN)("Saving driver state...");
-            PhysPt dest = SegPhys(es)+reg_dx;
+            LOG(LOG_MOUSE, LOG_NORMAL)("Saving driver state...");
+            PhysPt dest = SegPhys(es) + reg_dx;
             MEM_BlockWrite(dest, &mouse, sizeof(mouse));
         }
         break;
     case 0x17: /* load driver state */
         {
-            LOG(LOG_MOUSE,LOG_WARN)("Loading driver state...");
-            PhysPt src = SegPhys(es)+reg_dx;
+            LOG(LOG_MOUSE, LOG_NORMAL)("Loading driver state...");
+            PhysPt src = SegPhys(es) + reg_dx;
             MEM_BlockRead(src, &mouse, sizeof(mouse));
+            break;
         }
+    case 0x18: /* Set alternate subroutine call mask and address */
+        LOG(LOG_MOUSE, LOG_ERROR)("Set alternate subroutine call mask and address not implemented");
+        break;
+    case 0x19: /* Get user alternate interrupt address*/
+        LOG(LOG_MOUSE, LOG_ERROR)("Get user alternate interrupt address not implemented");
         break;
     case 0x1a:  /* Set mouse sensitivity */
         // ToDo : double mouse speed value
-        Mouse_SetSensitivity(reg_bx,reg_cx,reg_dx);
-
-        LOG(LOG_MOUSE,LOG_WARN)("Set sensitivity used with %d %d (%d)",reg_bx,reg_cx,reg_dx);
+        Mouse_SetSensitivity(reg_bx, reg_cx, reg_dx);
+        LOG(LOG_MOUSE, LOG_NORMAL)("Set sensitivity used with %d %d (%d)", reg_bx, reg_cx, reg_dx);
         break;
     case 0x1b:  /* Get mouse sensitivity */
         reg_bx = mouse.senv_x_val;
         reg_cx = mouse.senv_y_val;
         reg_dx = mouse.dspeed_val;
 
-        LOG(LOG_MOUSE,LOG_WARN)("Get sensitivity %d %d",reg_bx,reg_cx);
+        LOG(LOG_MOUSE, LOG_NORMAL)("Get sensitivity %d %d", reg_bx, reg_cx);
         break;
     case 0x1c:  /* Set interrupt rate */
         /* Can't really set a rate this is host determined */
         break;
     case 0x1d:      /* Set display page number */
-        mouse.page=reg_bl;
+        mouse.page = reg_bl;
         break;
     case 0x1e:      /* Get display page number */
-        reg_bx=mouse.page;
+        reg_bx = mouse.page;
         break;
     case 0x1f:  /* Disable Mousedriver */
-        /* ES:BX old mouse driver Zero at the moment TODO */ 
-        reg_bx=0;
-        SegSet16(es,0);    
-        mouse.enabled=false; /* Just for reporting not doing a thing with it */
-        mouse.oldhidden=mouse.hidden;
-        mouse.hidden=1;
+        /* ES:BX old mouse driver Zero at the moment TODO */
+        reg_bx = 0;
+        SegSet16(es, 0);
+        mouse.enabled = false; /* Just for reporting not doing a thing with it */
+        mouse.oldhidden = mouse.hidden;
+        if (!mouse.hidden) {
+            mouse.hidden = 1;
+            mouse.hidden_at = PIC_FullIndex();
+        }
         break;
     case 0x20:  /* Enable Mousedriver */
-        mouse.enabled=true;
-        mouse.hidden=mouse.oldhidden;
+        mouse.enabled = true;
+        mouse.hidden = mouse.oldhidden;
+        break;
+    case 0x21:  /* Software Reset */
+    software_reset:
+        extern bool Mouse_Drv;
+        if (Mouse_Drv) {
+            reg_ax = 0xffff;
+            reg_bx = MOUSE_BUTTONS;
+            Mouse_Reset();
+            Mouse_AutoLock(true);
+            AUX_INT33_Takeover();
+            LOG(LOG_MOUSE, LOG_NORMAL)("INT 33h reset");
+        }
         break;
     case 0x22:      /* Set language for messages */
             /*
              *                        Values for mouse driver language:
-             * 
+             *
              *                        00h     English
              *                        01h     French
              *                        02h     Dutch
@@ -1101,37 +1383,40 @@ static Bitu INT33_Handler(void) {
              *                        06h     Spanish
              *                        07h     Portugese
              *                        08h     Italian
-             *                
+             *
              */
-        mouse.language=reg_bx;
+        mouse.language = reg_bx;
         break;
     case 0x23:      /* Get language for messages */
-        reg_bx=mouse.language;
+        reg_bx = mouse.language;
         break;
     case 0x24:  /* Get Software version and mouse type */
-        reg_bx=0x805;   //Version 8.05 woohoo 
-        reg_ch=0x04;    /* PS/2 type */
-        reg_cl=0;       /* PS/2 (unused) */
+        reg_bx = 0x805;   //Version 8.05 woohoo 
+        reg_ch = 0x04;    /* PS/2 type */
+        reg_cl = 0;       /* PS/2 (unused) */
         break;
     case 0x26: /* Get Maximum virtual coordinates */
-        reg_bx=(mouse.enabled ? 0x0000 : 0xffff);
-        reg_cx=(Bit16u)mouse.max_x;
-        reg_dx=(Bit16u)mouse.max_y;
+        reg_bx = (mouse.enabled ? 0x0000 : 0xffff);
+        reg_cx = (Bit16u)mouse.max_x;
+        reg_dx = (Bit16u)mouse.max_y;
         break;
     case 0x2a:  /* Get cursor hot spot */
-        reg_al=(Bit8u)-mouse.hidden;    // Microsoft uses a negative byte counter for cursor visibility
-        reg_bx=(Bit16u)mouse.hotx;
-        reg_cx=(Bit16u)mouse.hoty;
-        reg_dx=0x04;    // PS/2 mouse type
+        reg_al = (Bit8u)-mouse.hidden;    // Microsoft uses a negative byte counter for cursor visibility
+        reg_bx = (Bit16u)mouse.hotx;
+        reg_cx = (Bit16u)mouse.hoty;
+        reg_dx = 0x04;    // PS/2 mouse type
         break;
     case 0x31: /* Get Current Minimum/Maximum virtual coordinates */
-        reg_ax=(Bit16u)mouse.min_x;
-        reg_bx=(Bit16u)mouse.min_y;
-        reg_cx=(Bit16u)mouse.max_x;
-        reg_dx=(Bit16u)mouse.max_y;
+        reg_ax = (Bit16u)mouse.min_x;
+        reg_bx = (Bit16u)mouse.min_y;
+        reg_cx = (Bit16u)mouse.max_x;
+        reg_dx = (Bit16u)mouse.max_y;
+        break;
+    case 0x53C1: /* Logitech CyberMan */
+        LOG(LOG_MOUSE, LOG_NORMAL)("Mouse function 53C1 for Logitech CyberMan called. Ignored by regular mouse driver.");
         break;
     default:
-        LOG(LOG_MOUSE,LOG_ERROR)("Mouse Function %04X not implemented!",reg_ax);
+        LOG(LOG_MOUSE, LOG_ERROR)("Mouse Function %04X not implemented!", reg_ax);
         break;
     }
     return CBRET_NONE;
@@ -1197,7 +1482,7 @@ static Bitu MOUSE_BD_Handler(void) {
 }
 
 static Bitu INT74_Handler(void) {
-    if (mouse.events>0) {
+    if (mouse.events>0 && !mouse.in_UIR) {
         mouse.events--;
 
         /* INT 33h emulation: HERE within the IRQ 12 handler is the appropriate place to
@@ -1217,10 +1502,11 @@ static Bitu INT74_Handler(void) {
             reg_si=(Bit16u)static_cast<Bit16s>(mouse.mickey_x);
             reg_di=(Bit16u)static_cast<Bit16s>(mouse.mickey_y);
             CPU_Push16(RealSeg(CALLBACK_RealPointer(int74_ret_callback)));
-            CPU_Push16(RealOff(CALLBACK_RealPointer(int74_ret_callback)));
-            SegSet16(cs, mouse.sub_seg);
-            reg_ip = mouse.sub_ofs;
-            if(mouse.in_UIR) LOG(LOG_MOUSE,LOG_ERROR)("Already in UIR!");
+            CPU_Push16(RealOff(CALLBACK_RealPointer(int74_ret_callback))+7);
+            CPU_Push16(RealSeg(uir_callback));
+            CPU_Push16(RealOff(uir_callback));
+            CPU_Push16(mouse.sub_seg);
+            CPU_Push16(mouse.sub_ofs);
             mouse.in_UIR = true;
         } else if (useps2callback) {
             CPU_Push16(RealSeg(CALLBACK_RealPointer(int74_ret_callback)));
@@ -1237,8 +1523,7 @@ static Bitu INT74_Handler(void) {
     return CBRET_NONE;
 }
 
-Bitu MOUSE_UserInt_CB_Handler(void) {
-    mouse.in_UIR = false;
+Bitu INT74_Ret_Handler(void) {
     if (mouse.events) {
         if (!mouse.timer_in_progress) {
             mouse.timer_in_progress = true;
@@ -1248,16 +1533,24 @@ Bitu MOUSE_UserInt_CB_Handler(void) {
     return CBRET_NONE;
 }
 
+Bitu UIR_Handler(void) {
+    mouse.in_UIR = false;
+    return CBRET_NONE;
+}
+
 bool MouseTypeNone();
 
 void MOUSE_OnReset(Section *sec) {
     (void)sec;//UNUSED
     if (IS_PC98_ARCH)
         MOUSE_IRQ = 13; // PC-98 standard
+    else if (!enable_slave_pic)
+        MOUSE_IRQ = 0;
     else
         MOUSE_IRQ = 12; // IBM PC/AT standard
 
-    PIC_SetIRQMask(MOUSE_IRQ,true);
+    if (MOUSE_IRQ != 0)
+        PIC_SetIRQMask(MOUSE_IRQ,true);
 }
 
 void MOUSE_ShutDown(Section *sec) {
@@ -1274,13 +1567,16 @@ void BIOS_PS2Mouse_Startup(Section *sec) {
 
     /* NTS: This assumes MOUSE_Init() is called after KEYBOARD_Init() */
     en_bios_ps2mouse = section->Get_bool("biosps2");
+
+    if (!enable_slave_pic || machine == MCH_PCJR) return;
+
     if (!en_bios_ps2mouse) return;
 
     if (MouseTypeNone()) {
-        LOG(LOG_KEYBOARD,LOG_WARN)("INT 15H PS/2 emulation NOT enabled. biosps2=1 but mouse type=none");
+        LOG(LOG_MOUSE, LOG_WARN)("INT 15H PS/2 emulation NOT enabled. biosps2=1 but mouse type=none");
     }
     else {
-        LOG(LOG_KEYBOARD,LOG_NORMAL)("INT 15H PS/2 emulation enabled");
+        LOG(LOG_MOUSE, LOG_NORMAL)("INT 15H PS/2 emulation enabled");
         bios_enable_ps2();
     }
 
@@ -1290,35 +1586,52 @@ void BIOS_PS2Mouse_Startup(Section *sec) {
     call_int74=CALLBACK_Allocate();
     CALLBACK_Setup(call_int74,&INT74_Handler,CB_IRQ12,"int 74");
     // pseudocode for CB_IRQ12:
+    //  sti
     //  push ds
     //  push es
     //  pushad
     //  sti
     //  callback INT74_Handler
-    //      doesn't return here, but rather to CB_IRQ12_RET
-    //      (ps2 callback/user callback inbetween if requested)
+    //      ps2 or user callback if requested
+    //      otherwise jumps to CB_IRQ12_RET
+    //  push ax
+    //  mov al, 0x20
+    //  out 0xa0, al
+    //  out 0x20, al
+    //  pop ax
+    //  cld
+    //  retf
 
     int74_ret_callback=CALLBACK_Allocate();
-    CALLBACK_Setup(int74_ret_callback,&MOUSE_UserInt_CB_Handler,CB_IRQ12_RET,"int 74 ret");
+    CALLBACK_Setup(int74_ret_callback,&INT74_Ret_Handler,CB_IRQ12_RET,"int 74 ret");
     // pseudocode for CB_IRQ12_RET:
-    //  callback MOUSE_UserInt_CB_Handler
     //  cli
     //  mov al, 0x20
     //  out 0xa0, al
     //  out 0x20, al
+    //  callback INT74_Ret_Handler
     //  popad
     //  pop es
     //  pop ds
     //  iret
 
-    Bit8u hwvec=(MOUSE_IRQ>7)?(0x70+MOUSE_IRQ-8):(0x8+MOUSE_IRQ);
-    RealSetVec(hwvec,CALLBACK_RealPointer(call_int74));
+    if (MOUSE_IRQ != 0) {
+        Bit8u hwvec=(MOUSE_IRQ>7)?(0x70+MOUSE_IRQ-8):(0x8+MOUSE_IRQ);
+        RealSetVec(hwvec,CALLBACK_RealPointer(call_int74));
+    }
 
     // Callback for ps2 user callback handling
     useps2callback = false; ps2callbackinit = false;
-    call_ps2=CALLBACK_Allocate();
+    if (call_ps2 == 0)
+        call_ps2 = CALLBACK_Allocate();
     CALLBACK_Setup(call_ps2,&PS2_Handler,CB_RETF,"ps2 bios callback");
     ps2_callback=CALLBACK_RealPointer(call_ps2);
+
+    // Callback for mouse user routine return
+    if (call_uir == 0)
+        call_uir = CALLBACK_Allocate();
+    CALLBACK_Setup(call_uir,&UIR_Handler,CB_RETF_CLI,"mouse uir ret");
+    uir_callback=CALLBACK_RealPointer(call_uir);
 }
 
 void MOUSE_Startup(Section *sec) {
@@ -1328,10 +1641,24 @@ void MOUSE_Startup(Section *sec) {
 
     /* TODO: Needs to check for mouse, and fail to do anything if neither PS/2 nor serial mouse emulation enabled */
 
-    en_int33=section->Get_bool("int33");
-    if (!en_int33) return;
+    en_int33_hide_if_intsub=section->Get_bool("int33 hide host cursor if interrupt subroutine");
 
-    LOG(LOG_KEYBOARD,LOG_NORMAL)("INT 33H emulation enabled");
+    en_int33_hide_if_polling=section->Get_bool("int33 hide host cursor when polling");
+
+    en_int33_pc98_show_graphics=section->Get_bool("pc-98 show graphics layer on initialize");
+
+    en_int33=section->Get_bool("int33");
+    if (!en_int33) {
+        Mouse_Reset();
+        Mouse_SetSensitivity(50,50,50);
+        return;
+    }
+
+    cell_granularity_disable=section->Get_bool("int33 disable cell granularity");
+
+    LOG(LOG_MOUSE, LOG_NORMAL)("INT 33H emulation enabled");
+    if (en_int33_hide_if_polling)
+        LOG(LOG_MOUSE, LOG_NORMAL)("INT 33H emulation will hide host cursor if polling");
 
     // Callback for mouse interrupt 0x33
     call_int33=CALLBACK_Allocate();
@@ -1355,7 +1682,12 @@ void MOUSE_Startup(Section *sec) {
     //  iret
 
     memset(&mouse,0,sizeof(mouse));
-    mouse.hidden = 1; //Hide mouse on startup
+
+    if (!mouse.hidden) {
+        mouse.hidden = 1;
+        mouse.hidden_at = PIC_FullIndex();
+    }
+
     mouse.timer_in_progress = false;
     mouse.mode = 0xFF; //Non existing mode
     mouse.scrollwheel = 0;
@@ -1373,9 +1705,32 @@ void MOUSE_Startup(Section *sec) {
 }
 
 void MOUSE_Init() {
-    LOG(LOG_MISC,LOG_DEBUG)("Initializing mouse interface emulation");
+    LOG(LOG_MOUSE, LOG_DEBUG)("Initializing mouse interface emulation");
 
     // TODO: We need a DOSBox shutdown callback, and we need a shutdown callback for when the DOS kernel begins to unload and on system reset
     AddVMEventFunction(VM_EVENT_RESET,AddVMEventFunctionFuncPair(MOUSE_OnReset));
+}
+
+bool MOUSE_IsHidden()
+{
+    /* mouse is returned hidden IF hidden for more than 100ms.
+     * rapidly hiding/showing should not signal hidden (FreeDOS EDIT.COM) */
+    return static_cast<bool>(mouse.hidden) && (PIC_FullIndex() >= (mouse.hidden_at + 100));
+}
+
+bool MOUSE_IsBeingPolled()
+{
+    if (!en_int33_hide_if_polling)
+        return false;
+
+    return (PIC_FullIndex() < (int33_last_poll + 1000));
+}
+
+bool MOUSE_HasInterruptSub()
+{
+    if (!en_int33_hide_if_intsub)
+        return false;
+
+    return (mouse.sub_mask != 0);
 }
 

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,10 +13,11 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "dosbox.h"
 #include "mem.h"
@@ -56,6 +57,8 @@ extern Bitu cycle_count;
 
 #define CPU_PIC_CHECK 1u
 #define CPU_TRAP_CHECK 1u
+
+#define CPU_TRAP_DECODER	CPU_Core_Simple_Trap_Run
 
 #define OPCODE_NONE         0x000u
 #define OPCODE_0F           0x100u
@@ -109,6 +112,15 @@ static struct {
 #define SegBase(c)  SegPhys(c)
 #define BaseDS      core.base_ds
 #define BaseSS      core.base_ss
+
+static INLINE void FetchDiscardb() {
+	core.cseip+=1;
+}
+
+static INLINE Bit8u FetchPeekb() {
+    Bit8u temp=host_readb(core.cseip);
+    return temp;
+}
 
 static INLINE Bit8u Fetchb() {
     Bit8u temp=host_readb(core.cseip);
@@ -175,7 +187,7 @@ Bits CPU_Core_Simple_Run(void) {
         if (DEBUG_HeavyIsBreakpoint()) {
             FillFlags();
             return (Bits)debugCallback;
-        };
+        }
 #endif
 #endif
         cycle_count++;
@@ -204,13 +216,12 @@ decode_end:
     return CBRET_NONE;
 }
 
-// not really used
 Bits CPU_Core_Simple_Trap_Run(void) {
     Bits oldCycles = CPU_Cycles;
     CPU_Cycles = 1;
     cpu.trap_skip = false;
 
-    Bits ret=CPU_Core_Normal_Run();
+    Bits ret=CPU_Core_Simple_Run();
     if (!cpu.trap_skip) CPU_HW_Interrupt(1);
     CPU_Cycles = oldCycles-1;
     cpudecoder = &CPU_Core_Simple_Run;

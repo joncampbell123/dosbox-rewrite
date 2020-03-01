@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -31,15 +31,23 @@
 #include <string>
 #include <list>
 
+#include <SDL.h>
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+#define SDL_STRING "SDL2"
+#else
+#define SDL_STRING "SDL1"
+#endif
+
 #define CMD_MAXLINE 4096
 #define CMD_MAXCMDS 20
 #define CMD_OLDSIZE 4096
 extern Bitu call_shellstop;
+class DOS_Shell;
+
 /* first_shell is used to add and delete stuff from the shell env 
  * by "external" programs. (config) */
-extern Program * first_shell;
+extern DOS_Shell * first_shell;
 
-class DOS_Shell;
 
 class BatchFile {
 public:
@@ -106,7 +114,7 @@ public:
 
     /*! \brief      Process and execute command (internal or external)
      */
-	void DoCommand(char * cmd);
+	void DoCommand(char * line);
 
     /*! \brief      Execute a command
      */
@@ -247,10 +255,6 @@ public:
      */
 	void CMD_PROMPT(char * args);
 
-    /*! \brief      Change volume label (LABEL)
-     */
-	void CMD_LABEL(char * args);
-
     /*! \brief      Text pager (MORE)
      */
 	void CMD_MORE(char * args);
@@ -258,6 +262,7 @@ public:
     /*! \brief      Change TTY (console) device (CTTY)
      */
 	void CMD_CTTY(char * args);
+    void CMD_DXCAPTURE(char * args);
 
     /*! \brief      Looping execution (FOR)
      */

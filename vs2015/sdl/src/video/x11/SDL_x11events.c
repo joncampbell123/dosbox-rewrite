@@ -24,7 +24,7 @@
 /* Handle the event stream, converting X11 events into SDL events */
 
 #include <setjmp.h>
-#include <X11/Xlib.h>
+#include <X11/XKBlib.h>
 #include <X11/Xutil.h>
 #include <X11/keysym.h>
 #ifdef __SVR4
@@ -392,6 +392,8 @@ static __inline__ int X11_WarpedMotion(_THIS, XEvent *xevent)
 	return(posted);
 }
 
+extern int X11_GrabbedInput;
+
 static int X11_DispatchEvent(_THIS)
 {
 	int posted;
@@ -464,6 +466,9 @@ printf("Mode: NotifyUngrab\n");
 
 	    /* Gaining input focus? */
 	    case FocusIn: {
+            if ((!currently_fullscreen && xevent.xany.window == SDL_Window) ||
+                (!currently_fullscreen && xevent.xany.window == WMwindow) ||
+                 (currently_fullscreen && xevent.xany.window == FSwindow)) {
 #ifdef DEBUG_XEVENTS
 printf("FocusIn!\n");
 #endif
@@ -478,10 +483,16 @@ printf("FocusIn!\n");
 		switch_waiting = 0x01 | SDL_FULLSCREEN;
 		switch_time = SDL_GetTicks() + 1500;
 	    }
+        }
 	    break;
 
 	    /* Losing input focus? */
 	    case FocusOut: {
+            /* NTS: X11_GrabInput() will cause a FocusOut event because SDL_Window is grabbing keyboard
+             *      input and WMwindow will report focus loss */
+            if ((!currently_fullscreen && xevent.xany.window == SDL_Window) ||
+                (!currently_fullscreen && xevent.xany.window == WMwindow && X11_GrabbedInput == SDL_GRAB_OFF) ||
+                 (currently_fullscreen && xevent.xany.window == FSwindow)) {
 #ifdef DEBUG_XEVENTS
 printf("FocusOut!\n");
 #endif
@@ -496,6 +507,7 @@ printf("FocusOut!\n");
 		switch_waiting = 0x01;
 		switch_time = SDL_GetTicks() + 200;
 	    }
+        }
 	    break;
 
 #ifdef X_HAVE_UTF8_STRING
@@ -1128,13 +1140,13 @@ static int keybhack_jp = 0;
 static int keybhack_jp_ro = -1;
 static int keybhack_jp_yen = -1;
 
-void SDL1_hax_X11_clearfix(void) {
+void DECLSPEC SDL1_hax_X11_clearfix(void) {
     keybhack_jp = 0;
     keybhack_jp_ro = -1;
     keybhack_jp_yen = -1;
 }
 
-void SDL1_hax_X11_jpfix(int ro_scan,int yen_scan) {
+void DECLSPEC SDL1_hax_X11_jpfix(int ro_scan,int yen_scan) {
     SDL1_hax_X11_clearfix();
 
     keybhack_jp = 1;
@@ -1148,7 +1160,7 @@ SDLKey X11_TranslateKeycode(Display *display, KeyCode kc)
 	KeySym xsym;
 	SDLKey key;
 
-	xsym = xlate_last = XKeycodeToKeysym(display, kc, 0);
+	xsym = xlate_last = XkbKeycodeToKeysym(display, kc, 0, 0);
 #ifdef DEBUG_KEYS
 	fprintf(stderr, "Translating key code %d -> 0x%.4x\n", kc, xsym);
 #endif
@@ -1249,7 +1261,7 @@ static void get_modifier_masks(Display *display)
 	for(i = 3; i < 8; i++) {
 		for(j = 0; j < n; j++) {
 			KeyCode kc = xmods->modifiermap[i * n + j];
-			KeySym ks = XKeycodeToKeysym(display, kc, 0);
+			KeySym ks = XkbKeycodeToKeysym(display, kc, 0, 0);
 			unsigned mask = 1 << i;
 			switch(ks) {
 			case XK_Num_Lock:

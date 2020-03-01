@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2013  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 #ifndef DOSBOX_FPU_H
@@ -24,21 +24,21 @@
 #endif
 
 void FPU_ESC0_Normal(Bitu rm);
-void FPU_ESC0_EA(Bitu func,PhysPt ea);
+void FPU_ESC0_EA(Bitu rm,PhysPt addr);
 void FPU_ESC1_Normal(Bitu rm);
-void FPU_ESC1_EA(Bitu func,PhysPt ea);
+void FPU_ESC1_EA(Bitu rm,PhysPt addr);
 void FPU_ESC2_Normal(Bitu rm);
-void FPU_ESC2_EA(Bitu func,PhysPt ea);
+void FPU_ESC2_EA(Bitu rm,PhysPt addr);
 void FPU_ESC3_Normal(Bitu rm);
-void FPU_ESC3_EA(Bitu func,PhysPt ea);
+void FPU_ESC3_EA(Bitu rm,PhysPt addr);
 void FPU_ESC4_Normal(Bitu rm);
-void FPU_ESC4_EA(Bitu func,PhysPt ea);
+void FPU_ESC4_EA(Bitu rm,PhysPt addr);
 void FPU_ESC5_Normal(Bitu rm);
-void FPU_ESC5_EA(Bitu func,PhysPt ea);
+void FPU_ESC5_EA(Bitu rm,PhysPt addr);
 void FPU_ESC6_Normal(Bitu rm);
-void FPU_ESC6_EA(Bitu func,PhysPt ea);
+void FPU_ESC6_EA(Bitu rm,PhysPt addr);
 void FPU_ESC7_Normal(Bitu rm);
-void FPU_ESC7_EA(Bitu func,PhysPt ea);
+void FPU_ESC7_EA(Bitu rm,PhysPt addr);
 
 /* Floating point register, in the form the native host uses for "double".
  * This is slightly less precise than the 80-bit extended IEEE used by Intel,
@@ -153,13 +153,22 @@ enum FPU_Round {
 };
 
 typedef struct {
+#if defined(HAS_LONG_DOUBLE)//probably shouldn't allow struct to change size based on this
+	FPU_Reg		_do_not_use__regs[9];
+#else
 	FPU_Reg		regs[9];
+#endif
+	FPU_P_Reg	p_regs[9];
 	FPU_Reg_80	regs_80[9];
+#if defined(HAS_LONG_DOUBLE)//probably shouldn't allow struct to change size based on this
+	bool		_do_not_use__use80[9];		// if set, use the 80-bit precision version
+#else
 	bool		use80[9];		// if set, use the 80-bit precision version
+#endif
 	FPU_Tag		tags[9];
 	Bit16u		cw,cw_mask_all;
 	Bit16u		sw;
-	Bitu		top;
+	Bit32u		top;
 	FPU_Round	round;
 } FPU_rec;
 
@@ -198,7 +207,7 @@ static INLINE void FPU_SetCW(Bitu word){
 }
 
 
-static INLINE Bitu FPU_GET_TOP(void) {
+static INLINE Bit8u FPU_GET_TOP(void) {
 	return (fpu.sw & 0x3800U) >> 11U;
 }
 

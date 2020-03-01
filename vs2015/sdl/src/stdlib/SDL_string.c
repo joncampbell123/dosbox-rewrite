@@ -1115,7 +1115,7 @@ static size_t SDL_PrintString(char *text, const char *string, size_t maxlen)
 int SDL_vsnprintf(char *text, size_t maxlen, const char *fmt, va_list ap)
 {
     char *textstart = text;
-    if ( maxlen <= 0 ) {
+    if ( maxlen == 0 ) {
         return 0;
     }
     --maxlen; /* For the trailing '\0' */
@@ -1243,6 +1243,6 @@ int SDL_vsnprintf(char *text, size_t maxlen, const char *fmt, va_list ap)
     }
     *text = '\0';
 
-    return (text - textstart);
+    return (int)(text - textstart);
 }
 #endif

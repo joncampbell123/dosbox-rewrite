@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2013  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 /* $Id $ */
@@ -64,7 +64,11 @@ TCPClientSocket::TCPClientSocket(int platformsocket) {
 	((struct _TCPsocketX*)nativetcpstruct)->sflag=0;
 	((struct _TCPsocketX*)nativetcpstruct)->channel=(SOCKET) platformsocket;
 	sockaddr_in		sa;
+#ifdef OS2
+	int			sz;
+#else
 	socklen_t		sz;
+#endif
 	sz=sizeof(sa);
 	if(getpeername(platformsocket, (sockaddr *)(&sa), &sz)==0) {
 		((struct _TCPsocketX*)nativetcpstruct)->
@@ -182,13 +186,13 @@ bool TCPClientSocket::GetRemoteAddressString(Bit8u* buffer) {
 bool TCPClientSocket::ReceiveArray(Bit8u* data, Bitu* size) {
 	if(SDLNet_CheckSockets(listensocketset,0))
 	{
-		Bits retval = SDLNet_TCP_Recv(mysock, data, *size);
+		Bits retval = SDLNet_TCP_Recv(mysock, data, (int)(*size));
 		if(retval<1) {
 			isopen=false;
 			*size=0;
 			return false;
 		} else {
-			*size=retval;
+			*size=(Bitu)retval;
 			return true;
 		}
 	}
@@ -210,7 +214,7 @@ Bits TCPClientSocket::GetcharNonBlock() {
 		if(SDLNet_TCP_Recv(mysock, &retval, 1)!=1) {
 			isopen=false;
 			return -2;
-		} else return retval;
+		} else return (Bits)retval;
 	}
 	else return -1;
 }
@@ -223,7 +227,7 @@ bool TCPClientSocket::Putchar(Bit8u data) {
 }
 
 bool TCPClientSocket::SendArray(Bit8u* data, Bitu bufsize) {
-	if((Bitu)SDLNet_TCP_Send(mysock, data, bufsize) != bufsize) {
+	if((Bitu)SDLNet_TCP_Send(mysock, data, (int)bufsize) != bufsize) {
 		isopen=false;
 		return false;
 	}
@@ -237,7 +241,7 @@ bool TCPClientSocket::SendByteBuffered(Bit8u data) {
 		sendbuffer[sendbufferindex]=data;
 		sendbufferindex=0;
 		
-		if((Bitu)SDLNet_TCP_Send(mysock, sendbuffer, sendbuffersize) != sendbuffersize) {
+		if((Bitu)SDLNet_TCP_Send(mysock, sendbuffer, (int)sendbuffersize) != sendbuffersize) {
 			isopen=false;
 			return false;
 		}
@@ -269,7 +273,7 @@ bool TCPClientSocket::SendArrayBuffered(Bit8u* data, Bitu bufsize) {
 void TCPClientSocket::FlushBuffer() {
 	if(sendbufferindex) {
 		if((Bitu)SDLNet_TCP_Send(mysock, sendbuffer,
-			sendbufferindex) != sendbufferindex) {
+			(int)sendbufferindex) != sendbufferindex) {
 			isopen=false;
 			return;
 		}

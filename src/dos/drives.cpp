@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -79,6 +79,24 @@ checkext:
 }
 
 void Set_Label(char const * const input, char * const output, bool cdrom) {
+    /* I don't know what MSCDEX.EXE does but don't put dots in the 11-char volume label for non-CD-ROM drives */
+    if (!cdrom) {
+        Bitu togo     = 11;
+        Bitu vnamePos = 0;
+        Bitu labelPos = 0;
+
+        while (togo > 0) {
+            if (input[vnamePos]==0) break;
+            //Another mscdex quirk. Label is not always uppercase. (Daggerfall)
+            output[labelPos] = toupper(input[vnamePos]);
+            labelPos++;
+            vnamePos++;
+            togo--;
+        }
+        output[labelPos] = 0;
+        return;
+    }
+
 	Bitu togo     = 8;
 	Bitu vnamePos = 0;
 	Bitu labelPos = 0;
@@ -91,8 +109,7 @@ void Set_Label(char const * const input, char * const output, bool cdrom) {
 		if (input[vnamePos]==0) break;
 		if (!point && (input[vnamePos]=='.')) {	togo=4; point=true; }
 
-		//another mscdex quirk. Label is not always uppercase. (Daggerfall)
-		output[labelPos] = (cdrom?input[vnamePos]:toupper(input[vnamePos]));
+		output[labelPos] = input[vnamePos];
 
 		labelPos++; vnamePos++;
 		togo--;
@@ -100,7 +117,7 @@ void Set_Label(char const * const input, char * const output, bool cdrom) {
 			if (input[vnamePos]=='.') vnamePos++;
 			output[labelPos]='.'; labelPos++; point=true; togo=3;
 		}
-	};
+	}
 	output[labelPos]=0;
 
 	//Remove trailing dot. except when on cdrom and filename is exactly 8 (9 including the dot) letters. MSCDEX feature/bug (fifa96 cdrom detection)
@@ -136,8 +153,9 @@ void DriveManager::InitializeDrive(int drive) {
 		driveInfo.currentDisk = 0;
 		DOS_Drive* disk = driveInfo.disks[driveInfo.currentDisk];
 		Drives[currentDrive] = disk;
-		disk->Activate();
-	}
+		if (driveInfo.disks.size() > 1) disk->Activate();
+        disk->UpdateDPB(currentDrive);
+    }
 }
 
 /*
@@ -173,24 +191,27 @@ void DriveManager::CycleDisk(bool pressed) {
 }
 */
 
-void DriveManager::CycleAllDisks(void) {
-	for (unsigned int idrive=0; idrive<2; idrive++) { /* Cycle all DISKS meaning A: and B: */
-		unsigned int numDisks = (unsigned int)driveInfos[idrive].disks.size();
-		if (numDisks > 1) {
-			// cycle disk
-			unsigned int currentDisk = (unsigned int)driveInfos[idrive].currentDisk;
-			DOS_Drive* oldDisk = driveInfos[idrive].disks[(unsigned int)currentDisk];
-			currentDisk = ((unsigned int)currentDisk + 1u) % (unsigned int)numDisks;		
-			DOS_Drive* newDisk = driveInfos[idrive].disks[(unsigned int)currentDisk];
-			driveInfos[idrive].currentDisk = currentDisk;
-			
-			// copy working directory, acquire system resources and finally switch to next drive		
-			strcpy(newDisk->curdir, oldDisk->curdir);
-			newDisk->Activate();
-			Drives[idrive] = newDisk;
-			LOG_MSG("Drive %c: disk %d of %d now active", 'A'+idrive, currentDisk+1, numDisks);
-		}
+void DriveManager::CycleDisks(int drive, bool notify) {
+	unsigned int numDisks = (unsigned int)driveInfos[drive].disks.size();
+	if (numDisks > 1) {
+		// cycle disk
+		unsigned int currentDisk = (unsigned int)driveInfos[drive].currentDisk;
+		DOS_Drive* oldDisk = driveInfos[drive].disks[(unsigned int)currentDisk];
+		currentDisk = ((unsigned int)currentDisk + 1u) % (unsigned int)numDisks;
+		DOS_Drive* newDisk = driveInfos[drive].disks[currentDisk];
+		driveInfos[drive].currentDisk = currentDisk;
+		
+		// copy working directory, acquire system resources and finally switch to next drive		
+		strcpy(newDisk->curdir, oldDisk->curdir);
+		newDisk->Activate();
+        newDisk->UpdateDPB(currentDrive);
+		Drives[drive] = newDisk;
+		if (notify) LOG_MSG("Drive %c: disk %d of %d now active", 'A'+drive, currentDisk+1, numDisks);
 	}
+}
+
+void DriveManager::CycleAllDisks(void) {
+	for (int idrive=0; idrive<2; idrive++) CycleDisks(idrive, true); /* Cycle all DISKS meaning A: and B: */
 }
 
 void DriveManager::CycleAllCDs(void) {
@@ -207,7 +228,8 @@ void DriveManager::CycleAllCDs(void) {
 			// copy working directory, acquire system resources and finally switch to next drive		
 			strcpy(newDisk->curdir, oldDisk->curdir);
 			newDisk->Activate();
-			Drives[idrive] = newDisk;
+            newDisk->UpdateDPB(currentDrive);
+            Drives[idrive] = newDisk;
 			LOG_MSG("Drive %c: disk %d of %d now active", 'A'+idrive, currentDisk+1, numDisks);
 		}
 	}
@@ -217,11 +239,11 @@ int DriveManager::UnmountDrive(int drive) {
 	int result = 0;
 	// unmanaged drive
 	if (driveInfos[drive].disks.size() == 0) {
-		result = Drives[drive]->UnMount();
+		result = (int)Drives[drive]->UnMount();
 	} else {
 		// managed drive
 		unsigned int currentDisk = driveInfos[drive].currentDisk;
-		result = driveInfos[drive].disks[currentDisk]->UnMount();
+		result = (int)driveInfos[drive].disks[currentDisk]->UnMount();
 		// only delete on success, current disk set to NULL because of UnMount
 		if (result == 0) {
 			driveInfos[drive].disks[currentDisk] = NULL;

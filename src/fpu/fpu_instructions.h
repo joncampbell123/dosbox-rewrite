@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2013  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 #include <math.h> /* for isinf, etc */
@@ -44,23 +44,24 @@ static void FPU_FNOP(void){
 	return;
 }
 
-static void FPU_PUSH(double in){
+static void FPU_PREP_PUSH(void){
 	TOP = (TOP - 1) &7;
-	//actually check if empty
+//	if (GCC_UNLIKELY(fpu.tags[TOP] != TAG_Empty)) E_Exit("FPU stack overflow");
 	fpu.tags[TOP] = TAG_Valid;
+	fpu.use80[TOP] = false; // the value given is already 64-bit precision, it's useless to emulate 80-bit precision
+}
+
+static void FPU_PUSH(double in){
+	FPU_PREP_PUSH();
 	fpu.regs[TOP].d = in;
 	fpu.use80[TOP] = false; // the value given is already 64-bit precision, it's useless to emulate 80-bit precision
 //	LOG(LOG_FPU,LOG_ERROR)("Pushed at %d  %g to the stack",newtop,in);
 	return;
 }
 
-static void FPU_PREP_PUSH(void){
-	TOP = (TOP - 1) &7;
-	fpu.tags[TOP] = TAG_Valid;
-	fpu.use80[TOP] = false; // the value given is already 64-bit precision, it's useless to emulate 80-bit precision
-}
 
 static void FPU_FPOP(void){
+//	if (GCC_UNLIKELY(fpu.tags[TOP] == TAG_Empty)) E_Exit("FPU stack underflow");
 	fpu.tags[TOP]=TAG_Empty;
 	fpu.use80[TOP] = false; // the value given is already 64-bit precision, it's useless to emulate 80-bit precision
 	//maybe set zero in it as well
@@ -103,7 +104,7 @@ static Real64 FPU_FLD80(PhysPt addr,FPU_Reg_80 &raw) {
 	test.eind.l.upper = (Bit32s)mem_readd(addr+4);
 	test.begin = (Bit16s)mem_readw(addr+8);
    
-	Bit64s exp64 = (((test.begin&0x7fff) - BIAS80));
+	Bit64s exp64 = (((test.begin&0x7fff) - (Bit64s)BIAS80));
 	Bit64s blah = ((exp64 >0)?exp64:-exp64)&0x3ff;
 	Bit64s exp64final = ((exp64 >0)?blah:-blah) +BIAS64;
 
@@ -207,9 +208,9 @@ static void FPU_FLD_I64(PhysPt addr,Bitu store_to) {
 
 static void FPU_FBLD(PhysPt addr,Bitu store_to) {
 	Bit64u val = 0;
-	Bitu in = 0;
+	Bit8u in = 0;
 	Bit64u base = 1;
-	for(Bitu i = 0;i < 9;i++){
+	for(Bit8u i = 0;i < 9;i++){
 		in = mem_readb(addr + i);
 		val += ( (in&0xf) * base); //in&0xf shouldn't be higher then 9
 		base *= 10;
@@ -295,7 +296,7 @@ static void FPU_FBST(PhysPt addr) {
 	//numbers from back to front
 	Real64 temp=val.d;
 	Bitu p;
-	for(Bitu i=0;i<9;i++){
+	for(Bit8u i=0;i<9;i++){
 		val.d=temp;
 		temp = static_cast<Real64>(static_cast<Bit64s>(floor(val.d/10.0)));
 		p = static_cast<Bitu>(val.d - 10.0*temp);  
@@ -303,14 +304,14 @@ static void FPU_FBST(PhysPt addr) {
 		temp = static_cast<Real64>(static_cast<Bit64s>(floor(val.d/10.0)));
 		p |= (static_cast<Bitu>(val.d - 10.0*temp)<<4);
 
-		mem_writeb(addr+i,p);
+		mem_writeb(addr+i,(Bit8u)p);
 	}
 	val.d=temp;
 	temp = static_cast<Real64>(static_cast<Bit64s>(floor(val.d/10.0)));
 	p = static_cast<Bitu>(val.d - 10.0*temp);
 	if(sign)
 		p|=0x80;
-	mem_writeb(addr+9,p);
+	mem_writeb(addr+9,(Bit8u)p);
 }
 
 #if defined(WIN32) && defined(_MSC_VER) && (_MSC_VER < 1910)
@@ -630,8 +631,8 @@ static void FPU_FLDENV(PhysPt addr){
 
 static void FPU_FSAVE(PhysPt addr){
 	FPU_FSTENV(addr);
-	Bitu start = (cpu.code.big?28:14);
-	for(Bitu i = 0;i < 8;i++){
+	Bit8u start = (cpu.code.big?28:14);
+	for(Bit8u i = 0;i < 8;i++){
 		FPU_ST80(addr+start,STV(i),/*&*/fpu.regs_80[STV(i)],fpu.use80[STV(i)]);
 		start += 10;
 	}
@@ -640,8 +641,8 @@ static void FPU_FSAVE(PhysPt addr){
 
 static void FPU_FRSTOR(PhysPt addr){
 	FPU_FLDENV(addr);
-	Bitu start = (cpu.code.big?28:14);
-	for(Bitu i = 0;i < 8;i++){
+	Bit8u start = (cpu.code.big?28:14);
+	for(Bit8u i = 0;i < 8;i++){
 		fpu.regs[STV(i)].d = FPU_FLD80(addr+start,/*&*/fpu.regs_80[STV(i)]);
 		fpu.use80[STV(i)] = true;
 		start += 10;

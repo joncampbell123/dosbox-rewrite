@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -86,9 +86,6 @@ public:
 	void FillUp(void);
 	void Enable(bool _yesno);
 
-	void SaveState( std::ostream& stream );
-	void LoadState( std::istream& stream );
-
 	MIXER_Handler handler;
 	float volmain[2];
 	float scale;
@@ -125,7 +122,7 @@ void MIXER_DelChannel(MixerChannel* delchan);
 class MixerObject{
 private:
 	bool installed;
-	char m_name[32];
+    char m_name[32] = {};
 public:
 	MixerObject():installed(false){};
 	MixerChannel* Install(MIXER_Handler handler,Bitu freq,const char * name);

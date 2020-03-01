@@ -30,12 +30,23 @@
  */
 
 #include "config.h"
+#include "dosbox.h"
 
-#if !defined(C_SDL2)
 #include <SDL.h>
 #include "gui_tk.h"
 
 namespace GUI {
+
+/* start <= y < stop, region reserved for top level window title bar */
+int titlebar_y_start = 5;
+int titlebar_y_stop = 25;
+
+/* region where title bar is drawn */
+int titlebox_y_start = 4;
+int titlebox_y_height = 20;
+
+/* width of the system menu */
+int titlebox_sysmenu_width = 20; // includes black divider line
 
 namespace Color {
 	RGB Background3D =		0xffc0c0c0;
@@ -47,14 +58,16 @@ namespace Color {
 	RGB SelectionBackground =	0xff000080;
 	RGB SelectionForeground =	0xffffffff;
 	RGB EditableBackground =	0xffffffff;
-	RGB Titlebar =			0xff000080;
-	RGB TitlebarText =		0xffffffff;
+	RGB Titlebar =			0xffa4c8f0;
+	RGB TitlebarText =		0xff000000;
+	RGB TitlebarInactive =			0xffffffff;
+	RGB TitlebarInactiveText =		0xff000000;
 }
 
 std::map<const char *,Font *,Font::ltstr> Font::registry;
 
 bool ToplevelWindow::mouseDoubleClicked(int x, int y, MouseButton button) {
-	if (button == Left && x < 32 && x > 6 && y > 4 && y < 31) {
+	if (button == Left && x < (6+titlebox_sysmenu_width) && x > 6 && y >= titlebar_y_start && y < titlebar_y_stop) {
 		systemMenu->executeAction("Close");
 		return true;
 	}
@@ -133,7 +146,7 @@ void Drawable::drawText(const String& text, bool interpret, Size start, Size len
 						c = font->toSpecial(text[start]);
 					} while (start < len && ((c >= '0' && c <= '9') || c == ';' || c == '['));
 					if (c == 'm' && start < len) {
-						if (font->toSpecial(text[seqstart++]) != '[') break; /* FIXME: Clang/LLVM claims this comparison will never happen */
+						if (text[seqstart++] != '[') break;
 						c = font->toSpecial(text[seqstart++]);
 						while (c != 'm') {
 							unsigned int param = 0;
@@ -162,7 +175,7 @@ void Drawable::drawText(const String& text, bool interpret, Size start, Size len
 				} while (0);
 			default:
 				width += font->getWidth(text[start]);
-				if (x > 0 && x+width > cw) gotoXY(0,y+font->getHeight());
+				if (x > 0 && x+width > (this->fw)) gotoXY(0,y+font->getHeight());
 			}
 			start++;
 		}
@@ -174,13 +187,13 @@ void Drawable::drawText(const String& text, bool interpret, Size start, Size len
 }
 
 bool ToplevelWindow::mouseDown(int x, int y, MouseButton button) {
-	if (button == Left && x > 32 && x < width-6 && y > 4 && y < 31) {
+	if (button == Left && x >= (6+titlebox_sysmenu_width) && x < width-6 && y >= titlebar_y_start && y < titlebar_y_stop) {
 		dragx = x;
 		dragy = y;
 		mouseChild = NULL;
 		systemMenu->setVisible(false);
 		return true;
-	} else if (button == Left && x < 32 && x > 6 && y > 4 && y < 31) {
+	} else if (button == Left && x < (6+titlebox_sysmenu_width) && x >= 6 && y >= titlebar_y_start && y < titlebar_y_stop) {
 		mouseChild = NULL;
 		raise();
 		systemMenu->setVisible(!systemMenu->isVisible());
@@ -201,6 +214,7 @@ Drawable::Drawable(int w, int h, RGB clear) :
 	tx(0), ty(0),
 	cx(0), cy(0),
 	cw(w), ch(h),
+    fw(w), fh(h),
 	x(0), y(0)
 {
 	this->clear(clear);
@@ -216,13 +230,14 @@ Drawable::Drawable(Drawable &src, RGB clear) :
 	tx(0), ty(0),
 	cx(0), cy(0),
 	cw(src.cw), ch(src.ch),
+    fw(src.fw), fh(src.fh),
 	x(src.x), y(src.y)
 {
 	if (clear != 0) {
 		this->clear(clear);
 	} else {
 		for (unsigned int h = 0; (int)h < src.ch; h++) {
-			memcpy(buffer+(unsigned int)src.cw*h,src.buffer+(unsigned int)src.width*(h+(unsigned int)src.ty)+src.tx,4u*(unsigned int)src.cw);
+			memcpy(buffer+(size_t)src.cw*h,src.buffer+src.width*(h+(size_t)src.ty)+src.tx,4u*(size_t)src.cw);
 		}
 	}
 }
@@ -237,6 +252,7 @@ Drawable::Drawable(Drawable &src, int x, int y, int w, int h) :
 	tx(src.tx+x), ty(src.ty+y),
 	cx(imax(imax(-x,src.cx-x),0)), cy(imax(imax(-y,src.cy-y),0)),
 	cw(imax(0,imin(src.cw-x,w))), ch(imax(0,imin(src.ch-y,h))),
+	fw(w), fh(h),
 	x(imax(0,imin(src.tx-tx,cw))), y(imax(0,imin(src.ty-ty,cw)))
 {
 }
@@ -253,6 +269,41 @@ void Drawable::clear(RGB clear)
 			buffer[(y+ty)*width+x+tx] = clear;
 		}
 	}
+}
+
+void Drawable::drawDotLine(int x2, int y2)
+{
+	int x0 = x2, x1 = x, y0 = y2, y1 = y;
+	int dx = x2-x1, dy = y2-y1;
+	drawPixel();
+
+	if (abs(dx) > abs(dy)) {
+		if (x1 > x2) {
+			x = x2; x2 = x1; x1 = x;
+			y = y2; y2 = y1; y1 = y;
+		}
+		for (x = x1; x <= x2; x++) {
+			y = y1+(x-x1)*dy/dx-lineWidth/2;
+			for (int i = 0; i < lineWidth; i++, y++) {
+                if (((x^y)&1) == 0)
+                    drawPixel();
+            }
+        }
+    } else if (y1 != y2) {
+        if (y1 > y2) {
+            x = x2; x2 = x1; x1 = x;
+            y = y2; y2 = y1; y1 = y;
+        }
+        for (y = y1; y <= y2; y ++) {
+            x = x1+(y-y1)*dx/dy-lineWidth/2;
+            for (int i = 0; i < lineWidth; i++, x++) {
+                if (((x^y)&1) == 0)
+                    drawPixel();
+            }
+		}
+	}
+
+	drawPixel(x0,y0);
 }
 
 void Drawable::drawLine(int x2, int y2)
@@ -322,6 +373,18 @@ void Drawable::drawRect(int w, int h)
 	drawLine(x,y-h);
 }
 
+void Drawable::drawDotRect(int w, int h)
+{
+	gotoXY(x-lineWidth/2,y);
+	drawDotLine(x+w+lineWidth-1,y);
+	gotoXY(x-(lineWidth-1)/2,y);
+	drawDotLine(x,y+h);
+	gotoXY(x+(lineWidth-1)/2,y);
+	drawDotLine(x-w-lineWidth+1,y);
+	gotoXY(x+lineWidth/2,y);
+	drawDotLine(x,y-h);
+}
+
 void Drawable::fill()
 {
 	int x0 = x, xmin;
@@ -381,8 +444,8 @@ void Drawable::drawDrawable(Drawable &d, unsigned char alpha)
 	RGB *src, *dest;
 
 	for (h = imax(d.cy,-ty-y); h < sch && y+h < ch; h++) {
-		src = d.buffer+d.width*(h+d.ty)+d.tx;
-		dest = buffer+width*(y+ty+h)+tx+x;
+		src = d.buffer+d.width*((size_t)h+d.ty)+d.tx;
+		dest = buffer+width*((size_t)y+ty+h)+tx+x;
 		for (w = imax(d.cx,-tx-x); w < scw && x+w < cw; w++) {
 			RGB srcb = src[w], destb = dest[w];
 			unsigned int sop = Color::A(srcb)*((unsigned int)alpha)/255;
@@ -411,7 +474,7 @@ void Drawable::drawText(const Char c, bool interpret)
 		case Font::Tab: gotoXY((((int)(x/font->getWidth()/8))+1)*8*font->getWidth(),y); return;
 		default: break;
 		}
-		if (font->getWidth(c)+x > cw) gotoXY(0,y+font->getHeight());
+		if (font->getWidth(c)+x > (this->fw)) gotoXY(0,y+font->getHeight());
 	}
 	font->drawChar(this,c);
 }
@@ -441,7 +504,7 @@ void BitmapFont::drawChar(Drawable *d, const Char c) const {
 
 	for (int row = height-h; row < height; row++, move(rs-w*col_step)) {
 		for (int col = 0; col < w; col++, move(col_step)) {
-			if (!background_set ^ !(*ptr&(1<<bit)))
+			if (!background_set != !(*ptr&(1<<bit)))
 				out.drawPixel(col,row);
 		}
 	}
@@ -532,8 +595,14 @@ Window::Window(Window *parent, int x, int y, int w, int h) :
 	x(x), y(y),
 	dirty(true),
 	visible(true),
+    tabbable(true),
 	parent(parent),
-	mouseChild(NULL)
+	mouseChild(NULL),
+    transient(false),
+    toplevel(false),
+    mouse_in_window(false),
+    first_tabbable(false),
+    last_tabbable(false)
 {
 	parent->addChild(this);
 }
@@ -543,14 +612,29 @@ Window::Window() :
 	x(0), y(0),
 	dirty(false),
 	visible(true),
+    tabbable(true),
 	parent(NULL),
-	mouseChild(NULL)
+	mouseChild(NULL),
+    transient(false),
+    toplevel(false),
+    mouse_in_window(false)
 {
 }
 
 
 Window::~Window()
 {
+    // WARNING: Child windows will call parent->removeChild() each child we delete here.
+    //          That means the list is modified per call, therefore it's not safe to
+    //          blindly iterate over the children list.
+    //
+    //          Furthermore, modifying the code so that removeChild() does nothing during
+    //          the destructor, and then iterating over the children list normally and
+    //          deleting the child windows, works OK except for a segfault when the user
+    //          uses the "Close" menu item from the system menu.
+    //
+    //          This code is a good framework for the GUI but a knotted mess when it comes
+    //          to pointer ownership and when things are valid.
 	while (!children.empty()) delete children.front();
 	if (parent) parent->removeChild(this);
 	if (parent && parent->mouseChild == this) parent->mouseChild = NULL;
@@ -614,12 +698,146 @@ bool Window::keyDown(const Key &key)
 	if (key.shift) {
 		std::list<Window *>::reverse_iterator i = children.rbegin(), e = children.rend();
 		++i;
-		while (i != e && !(*i)->raise()) ++i;
-		return i != e;
+        while (i != e) {
+            if ((*i)->tabbable) {
+                if ((*i)->raise())
+                    break;
+            }
+
+            ++i;
+        }
+        return (i != e) || toplevel/*prevent TAB escape to another window*/;
 	} else {
 		std::list<Window *>::iterator i = children.begin(), e = children.end();
-		while (i != e && !(*i)->raise()) ++i;
-		return (i != e);
+        --e;
+		while (i != e) {
+            if ((*i)->tabbable) {
+                if ((*i)->raise())
+                    break;
+            }
+
+            ++i;
+        }
+		return (i != e) || toplevel/*prevent TAB escape to another window*/;
+	}
+}
+
+void WindowInWindow::scrollToWindow(Window *child) {
+    if (child->parent != this) {
+        fprintf(stderr,"BUG: scrollToWindow given a window not a child of this parent\n");
+        return;
+    }
+
+    int xadj = -scroll_pos_x;
+    int yadj = -scroll_pos_y;
+    int bw = width;
+    int bh = height;
+
+    if (border) {
+        bw -= 2 + (vscroll?vscroll_display_width:0);
+        bh -= 2;
+    }
+
+    int rx = child->getX() + xadj;
+    int ry = child->getY() + yadj;
+
+    if (rx < 0)
+        scroll_pos_x += rx;
+    if (ry < 0)
+        scroll_pos_y += ry;
+
+    {/*UNTESTED*/
+        int ext = (rx+child->getWidth()) - bw;
+        if (ext > 0) scroll_pos_x += ext;
+    }
+
+    {
+        int ext = (ry+child->getHeight()) - bh;
+        if (ext > 0) scroll_pos_y += ext;
+    }
+
+    if (scroll_pos_x < 0) scroll_pos_x = 0;
+    if (scroll_pos_y < 0) scroll_pos_y = 0;
+    if (scroll_pos_x > scroll_pos_w) scroll_pos_x = scroll_pos_w;
+    if (scroll_pos_y > scroll_pos_h) scroll_pos_y = scroll_pos_h;
+}
+
+bool WindowInWindow::keyDown(const Key &key)
+{
+	if (children.empty()) return false;
+	if ((*children.rbegin())->keyDown(key)) return true;
+    if (dragging || vscroll_dragging) return true;
+
+    if (key.special == Key::Up) {
+        scroll_pos_y -= 64;
+        if (scroll_pos_y < 0) scroll_pos_y = 0;
+        if (scroll_pos_y > scroll_pos_h) scroll_pos_y = scroll_pos_h;
+        return true;
+    }
+
+    if (key.special == Key::Down) {
+        scroll_pos_y += 64;
+        if (scroll_pos_y < 0) scroll_pos_y = 0;
+        if (scroll_pos_y > scroll_pos_h) scroll_pos_y = scroll_pos_h;
+        return true;
+    }
+
+    if (key.special == Key::PageUp) {
+        scroll_pos_y -= height - 16;
+        if (scroll_pos_y < 0) scroll_pos_y = 0;
+        if (scroll_pos_y > scroll_pos_h) scroll_pos_y = scroll_pos_h;
+        return true;
+    }
+
+    if (key.special == Key::PageDown) {
+        scroll_pos_y += height - 16;
+        if (scroll_pos_y < 0) scroll_pos_y = 0;
+        if (scroll_pos_y > scroll_pos_h) scroll_pos_y = scroll_pos_h;
+        return true;
+    }
+
+	if (key.ctrl || key.alt || key.windows || key.special != Key::Tab) return false;
+
+    bool tab_quit = false;
+
+	if (key.shift) {
+		std::list<Window *>::reverse_iterator i = children.rbegin(), e = children.rend();
+		++i;
+        while (i != e) {
+            if ((*i)->last_tabbable)
+                tab_quit = true;
+
+            if ((*i)->tabbable) {
+                // WARNING: remember raise() changes the order of children, therefore using
+                //          *i after raise() is invalid (stale reference)
+                scrollToWindow(*i);
+                if ((*i)->raise())
+                    break;
+            }
+
+            ++i;
+        }
+        if (tab_quit) return false;
+        return (i != e) || toplevel/*prevent TAB escape to another window*/;
+    } else {
+        std::list<Window *>::iterator i = children.begin(), e = children.end();
+        --e;
+        while (i != e) {
+            if ((*i)->first_tabbable)
+                tab_quit = true;
+
+            if ((*i)->tabbable) {
+                // WARNING: remember raise() changes the order of children, therefore using
+                //          *i after raise() is invalid (stale reference)
+                scrollToWindow(*i);
+                if ((*i)->raise())
+                    break;
+            }
+
+            ++i;
+        }
+        if (tab_quit) return false;
+		return (i != e) || toplevel/*prevent TAB escape to another window*/;
 	}
 }
 
@@ -629,18 +847,29 @@ bool Window::keyUp(const Key &key)
 	return (*children.rbegin())->keyUp(key);
 }
 
+void Window::mouseMovedOutside(void) {
+}
+
 bool Window::mouseMoved(int x, int y)
 {
 	std::list<Window *>::reverse_iterator i = children.rbegin();
 	bool end = (i == children.rend());
 	while (!end) {
 		Window *w = *i;
-		i++;
+		++i;
 		end = (i == children.rend());
 		if (w->visible && x >= w->x && x <= w->x+w->width
 			&& y >= w->y && y <= w->y+w->height
-			&& w->mouseMoved(x-w->x, y-w->y)) return true;
+			&& w->mouseMoved(x-w->x, y-w->y)) {
+            w->mouse_in_window = true;
+            return true;
+        }
+        else if (w->mouse_in_window) {
+            w->mouse_in_window = false;
+            w->mouseMovedOutside();
+        }
 	}
+
 	return false;
 }
 
@@ -650,27 +879,55 @@ bool Window::mouseDragged(int x, int y, MouseButton button)
 	return mouseChild->mouseDragged(x-mouseChild->x, y-mouseChild->y, button);
 }
 
+bool Window::mouseDownOutside(MouseButton button) {
+	std::list<Window *>::reverse_iterator i = children.rbegin();
+    bool handled = false;
+
+	while (i != children.rend()) {
+		Window *w = *i;
+
+		if (w->hasFocus()) {
+			if (w->mouseDownOutside(button))
+				handled = true;
+		}
+
+		++i;
+	}
+
+    return handled;
+}
+
 bool Window::mouseDown(int x, int y, MouseButton button)
 {
 	std::list<Window *>::reverse_iterator i = children.rbegin();
+    bool handled = false;
+    bool doraise = !(button == GUI::WheelUp || button == GUI::WheelDown); /* do not raise if the scroll wheel */
 	Window *last = NULL;
 
 	while (i != children.rend()) {
 		Window *w = *i;
 
-		if (w->visible && x >= w->x && x <= w->x+w->width && y >= w->y && y <= w->y+w->height) {
+		if (w->visible && x >= w->x && x < (w->x+w->width) && y >= w->y && y < (w->y+w->height)) {
+            if (handled) {
+                mouseChild = NULL;
+                return true;
+            }
 			mouseChild = last = w;
-			if (w->mouseDown(x-w->x, y-w->y, button) && w->raise()) {
+			if (w->mouseDown(x-w->x, y-w->y, button)) {
+                if (doraise) w->raise();
 				return true;
 			}
 		}
+        else if (w->transient) {
+            handled |= w->mouseDownOutside(button);
+        }
 
-		i++;
+		++i;
 	}
 
 	mouseChild = NULL;
-	if (last != NULL) last->raise();
-	return false;
+	if (last != NULL && doraise) last->raise();
+	return handled;
 }
 
 bool Window::mouseUp(int x, int y, MouseButton button)
@@ -694,15 +951,22 @@ bool Window::mouseDoubleClicked(int x, int y, MouseButton button)
 bool BorderedWindow::mouseDown(int x, int y, MouseButton button)
 {
 	mouseChild = NULL;
-	if (x > width-border_right || y > width-border_bottom) return false;
+	if (x > width-border_right || y > height-border_bottom) return false;
 	x -= border_left; y -= border_top;
 	if (x < 0 || y < 0) return false;
 	return Window::mouseDown(x,y,button);
 }
 
+bool BorderedWindow::mouseUp(int x, int y, MouseButton button) {
+	if (mouseChild == NULL && (x > width-border_right || y > height-border_bottom)) return false;
+	x -= border_left; y -= border_top;
+    if (mouseChild == NULL && (x < 0 || y < 0)) return false;
+	return Window::mouseUp(x,y,button);
+}
+
 bool BorderedWindow::mouseMoved(int x, int y)
 {
-	if (x > width-border_right || y > width-border_bottom) return false;
+	if (x > width-border_right || y > height-border_bottom) return false;
 	x -= border_left; y -= border_top;
 	if (x < 0 || y < 0) return false;
 	return Window::mouseMoved(x,y);
@@ -710,9 +974,9 @@ bool BorderedWindow::mouseMoved(int x, int y)
 
 bool BorderedWindow::mouseDragged(int x, int y, MouseButton button)
 {
-	if (x > width-border_right || y > width-border_bottom) return false;
+	if (mouseChild == NULL && (x > width-border_right || y > height-border_bottom)) return false;
 	x -= border_left; y -= border_top;
-	if (x < 0 || y < 0) return false;
+    if (mouseChild == NULL && (x < 0 || y < 0)) return false;
 	return Window::mouseDragged(x,y,button);
 }
 
@@ -731,35 +995,67 @@ void ToplevelWindow::paint(Drawable &d) const
 	d.drawLine(0,height-2,width-2,height-2);
 	d.drawLine(width-2,0,width-2,height-2);
 
-	d.drawLine(5,4,width-7,4);
-	d.drawLine(5,4,5,30);
+	d.drawLine(5,titlebox_y_start,width-7,titlebox_y_start);
+	d.drawLine(5,titlebox_y_start,5,titlebox_y_start+titlebox_y_height-2);
 
 	d.setColor(Color::Light3D);
 	d.drawLine(1,1,width-3,1);
 	d.drawLine(1,1,1,height-3);
 
-	d.drawLine(5,31,width-6,31);
-	d.drawLine(width-6,5,width-6,31);
+	d.drawLine(5,titlebox_y_start+titlebox_y_height-1,width-6,titlebox_y_start+titlebox_y_height-1);
+	d.drawLine(width-6,5,width-6,titlebox_y_start+titlebox_y_height-1);
 
 	d.setColor(Color::Background3D^mask);
-	d.fillRect(6,5,26,26);
-	d.setColor(Color::Grey50^mask);
-	d.fillRect(9,17,20,4);
-	d.setColor(Color::Black^mask);
-	d.fillRect(8,16,20,4);
-	d.setColor(Color::White^mask);
-	d.fillRect(9,17,18,2);
+	d.fillRect(6,titlebox_y_start+1,titlebox_sysmenu_width-1,titlebox_y_height-2);
+    {
+        int y = titlebox_y_start+((titlebox_y_height-4)/2);
+        int x = 8;
+        int w = (titlebox_sysmenu_width * 20) / 27;
+        int h = 4;
+
+        d.setColor(Color::Grey50^mask);
+        d.fillRect(x+1,y+1,w,  h);
+        d.setColor(Color::Black^mask);
+        d.fillRect(x,  y,  w,  h);
+        d.setColor(Color::White^mask);
+        d.fillRect(x+1,y+1,w-2,h-2);
+    }
 
 	d.setColor(Color::Border);
-	d.drawLine(32,5,32,30);
+	d.drawLine(6+titlebox_sysmenu_width-1,titlebox_y_start+1,6+titlebox_sysmenu_width-1,titlebox_y_start+titlebox_y_height-2);
 
-	d.setColor(Color::Titlebar);
-	d.fillRect(33,5,width-39,26);
+    bool active = hasFocus();
+
+    // FIX: "has focus" is defined as "being at the back of the child list".
+    //      Transient windows such as menus will steal focus, but we don't
+    //      want the title to flash inactive every time a menu comes up.
+    //      Avoid that by searching backwards past transient windows above
+    //      us to check if we'd be at the top anyway without the transient windows.
+    if (!active) {
+        auto i = parent->children.rbegin();
+        while (i != parent->children.rend()) {
+            Window *w = *i;
+
+            if (w->transient) {
+                i++;
+            }
+            else if (w == this) {
+                active = true;
+                break;
+            }
+            else {
+                break;
+            }
+        }
+    }
+
+	d.setColor(active ? Color::Titlebar : Color::TitlebarInactive);
+	d.fillRect(6+titlebox_sysmenu_width,titlebox_y_start+1,width-(6+titlebox_sysmenu_width+6),titlebox_y_height-2);
 
 	const Font *font = Font::getFont("title");
-	d.setColor(Color::TitlebarText);
+	d.setColor(active ? Color::TitlebarText : Color::TitlebarInactiveText);
 	d.setFont(font);
-	d.drawText(31+(width-39-font->getWidth(title))/2,5+(26-font->getHeight())/2+font->getAscent(),title,false,0);
+	d.drawText(31+(width-39-font->getWidth(title))/2,titlebox_y_start+(titlebox_y_height-font->getHeight())/2+font->getAscent(),title,false,0);
 }
 
 void Input::posToEnd(void) {
@@ -894,7 +1190,7 @@ bool Input::keyDown(const Key &key)
 			break;
 		}
 		if (start_sel != end_sel) clearSelection();
-		if (insert || pos >= text.size() ) text.insert(text.begin()+pos++,key.character);
+		if (insert || pos >= text.size() ) text.insert(text.begin()+int(pos++),key.character);
 		else text[pos++] = key.character;
 		break;
 	case Key::Left:
@@ -905,9 +1201,11 @@ bool Input::keyDown(const Key &key)
 		break;
 	case Key::Down:
 		if (multi) pos = findPos(posx+3, posy-offset+f->getHeight()+4);
+        else return false;
 		break;
 	case Key::Up:
 		if (multi) pos = findPos(posx+3, posy-offset-f->getHeight()+4);
+        else return false;
 		break;
 	case Key::Home:
 		if (multi) {
@@ -921,12 +1219,12 @@ bool Input::keyDown(const Key &key)
 		break;
 	case Key::Backspace:
 		if (!key.shift && start_sel != end_sel) clearSelection();
-		else if (pos > 0) text.erase(text.begin()+ --pos);
+		else if (pos > 0) text.erase(text.begin()+int(--pos));
 		break;
 	case Key::Delete:
 		if (key.shift) cutSelection();
 		else if (start_sel != end_sel) clearSelection();
-		else if (pos < text.size()) text.erase(text.begin()+pos);
+		else if (pos < text.size()) text.erase(text.begin()+int(pos));
 		break;
 	case Key::Insert:
 		if (key.ctrl) copySelection();
@@ -936,14 +1234,14 @@ bool Input::keyDown(const Key &key)
 	case Key::Enter:
 		if (multi) {
 			if (start_sel != end_sel) clearSelection();
-			if (insert || pos >= text.size() ) text.insert(text.begin()+pos++,f->fromSpecial(Font::LF));
+			if (insert || pos >= text.size() ) text.insert(text.begin()+int(pos++),f->fromSpecial(Font::LF));
 			else text[pos++] = f->fromSpecial(Font::LF);
 		} else executeAction(text);
 		break;
 	case Key::Tab:
-		if (multi) {
+		if (multi && enable_tab_input) {
 			if (start_sel != end_sel) clearSelection();
-			if (insert || pos >= text.size() ) text.insert(text.begin()+pos++,f->fromSpecial(Font::Tab));
+			if (insert || pos >= text.size() ) text.insert(text.begin()+int(pos++),f->fromSpecial(Font::Tab));
 			else text[pos++] = f->fromSpecial(Font::Tab);
 		} else return false;
 		break;
@@ -1058,6 +1356,11 @@ void Checkbox::paint(Drawable &d) const
 	d.drawLine(3,(height/2)-6,12,(height/2)-6);
 	d.drawLine(3,(height/2)-6,3,(height/2)+4);
 
+    if (hasFocus()) {
+        d.setColor(Color::Black);
+        d.drawDotRect(1,(height/2)-8,14,14);
+    }
+
 	if (checked) {
 		d.setColor(Color::Text);
 		d.drawLine(5,(height/2)-2,7,(height/2)  );
@@ -1154,24 +1457,49 @@ void Menu::paint(Drawable &d) const
 	d.setFont(Font::getFont("menu"));
 	const int asc = Font::getFont("menu")->getAscent()+1;
 	const int height = Font::getFont("menu")->getHeight()+2;
+    int x = 3,cwidth = width-3-x;
 	int y = asc+3;
 	int index = 0;
+    unsigned int coli = 0;
+
+    if (coli < colx.size()) {
+        x = colx[coli++];
+        cwidth = width-3-x;
+        if (coli < colx.size()) {
+            cwidth = colx[coli] - x;
+        }
+    }
+
 	for (std::vector<String>::const_iterator i = items.begin(); i != items.end(); ++i) {
 		if ((*i).empty()) {
 			d.setColor(Color::Shadow3D);
-			d.drawLine(4,y-asc+6,width-5,y-asc+6);
+			d.drawLine(x+1,y-asc+6,cwidth,y-asc+6);
 			d.setColor(Color::Light3D);
-			d.drawLine(4,y-asc+7,width-5,y-asc+7);
+			d.drawLine(x+1,y-asc+7,cwidth,y-asc+7);
 			y += 12;
-		} else {
+        } else if (*i == "|") {
+            y = asc+3;
+            if (coli < colx.size()) {
+                x = colx[coli++];
+                cwidth = width-3-x;
+                if (coli < colx.size()) {
+                    cwidth = colx[coli] - x;
+                }
+
+                d.setColor(Color::Shadow3D);
+                d.drawLine(x-2,2,x-2,this->height-4);
+                d.setColor(Color::Light3D);
+                d.drawLine(x-1,2,x-1,this->height-4);
+            }
+        } else {
 			if (index == selected && hasFocus()) {
 				d.setColor(Color::SelectionBackground);
-				d.fillRect(3,y-asc,width-6,height);
+				d.fillRect(x,y-asc,cwidth,height);
 				d.setColor(Color::SelectionForeground);
 			} else {
 				d.setColor(Color::Text);
 			}
-			d.drawText(20,y,(*i),false,0);
+			d.drawText(x+17,y,(*i),false,0);
 			y += height;
 		}
 		index++;
@@ -1252,7 +1580,8 @@ Screen *Window::getScreen() { return (parent == NULL?dynamic_cast<Screen*>(this)
 
 Screen::Screen(unsigned int width, unsigned int height) :
 	Window(),
-	buffer(new Drawable((int)width, (int)height))
+	buffer(new Drawable((int)width, (int)height)),
+    buffer_i_alloc(true)
 {
 	this->width = (int)width;
 	this->height = (int)height;
@@ -1260,7 +1589,8 @@ Screen::Screen(unsigned int width, unsigned int height) :
 
 Screen::Screen(Drawable *d) :
 	Window(),
-	buffer(d)
+	buffer(d),
+    buffer_i_alloc(true) /* our primary use is from ScreenSDL that calls new */
 {
 	this->width = d->getClipWidth();
 	this->height = d->getClipHeight();
@@ -1268,6 +1598,7 @@ Screen::Screen(Drawable *d) :
 
 Screen::~Screen()
 {
+    if (buffer_i_alloc) delete buffer;
 }
 
 void Screen::paint(Drawable &d) const
@@ -1401,16 +1732,110 @@ static MouseButton SDL_to_GUI(const int button)
 	case SDL_BUTTON_LEFT:      return GUI::Left;
 	case SDL_BUTTON_RIGHT:     return GUI::Right;
 	case SDL_BUTTON_MIDDLE:    return GUI::Middle;
+#if !defined(C_SDL2)
 	case SDL_BUTTON_WHEELUP:   return GUI::WheelUp;
 	case SDL_BUTTON_WHEELDOWN: return GUI::WheelDown;
+#endif /* !C_SDL2 */
 	default: return GUI::NoButton;
 	}
 }
 
+#if defined(C_SDL2)
+static GUI::Char SDLSymToChar(const SDL_Keysym &key) {
+    /* SDL will not uppercase the char for us with shift, etc. */
+    /* Additionally we have to filter out non-char values */
+    if (key.sym == 0 || key.sym > 0x7f) return 0;
+
+    GUI::Char ret = key.sym;
+
+    if (key.mod & KMOD_SHIFT) {
+        switch (ret) {
+            case '[':
+                ret = (GUI::Char)('{');
+                break;
+            case ']':
+                ret = (GUI::Char)('}');
+                break;
+            case '\\':
+                ret = (GUI::Char)('|');
+                break;
+            case ';':
+                ret = (GUI::Char)(':');
+                break;
+            case '\'':
+                ret = (GUI::Char)('"');
+                break;
+            case ',':
+                ret = (GUI::Char)('<');
+                break;
+            case '.':
+                ret = (GUI::Char)('>');
+                break;
+            case '/':
+                ret = (GUI::Char)('?');
+                break;
+            case '-':
+                ret = (GUI::Char)('_');
+                break;
+            case '=':
+                ret = (GUI::Char)('+');
+                break;
+            case '1':
+                ret = (GUI::Char)('!');
+                break;
+            case '2':
+                ret = (GUI::Char)('@');
+                break;
+            case '3':
+                ret = (GUI::Char)('#');
+                break;
+            case '4':
+                ret = (GUI::Char)('$');
+                break;
+            case '5':
+                ret = (GUI::Char)('%');
+                break;
+            case '6':
+                ret = (GUI::Char)('^');
+                break;
+            case '7':
+                ret = (GUI::Char)('&');
+                break;
+            case '8':
+                ret = (GUI::Char)('*');
+                break;
+            case '9':
+                ret = (GUI::Char)('(');
+                break;
+            case '0':
+                ret = (GUI::Char)(')');
+                break;
+            default:
+                ret = (GUI::Char)toupper((int)ret);
+                break;
+        }
+    }
+
+    return ret;
+}
+#endif
+
+#if defined(C_SDL2)
+static const Key SDL_to_GUI(const SDL_Keysym &key)
+#else
 static const Key SDL_to_GUI(const SDL_keysym &key)
+#endif
 {
 	GUI::Key::Special ksym = GUI::Key::None;
 	switch (key.sym) {
+#if !defined(C_SDL2) /* hack for SDL1 that fails to send char code for spacebar up event */
+    case SDLK_SPACE:
+    	return Key(' ', ksym,
+    		(key.mod&KMOD_SHIFT)>0,
+    		(key.mod&KMOD_CTRL)>0,
+    		(key.mod&KMOD_ALT)>0,
+    		(key.mod&KMOD_META)>0);
+#endif
 	case SDLK_ESCAPE: ksym = GUI::Key::Escape; break;
 	case SDLK_BACKSPACE: ksym = GUI::Key::Backspace; break;
 	case SDLK_TAB: ksym = GUI::Key::Tab; break;
@@ -1426,22 +1851,55 @@ static const Key SDL_to_GUI(const SDL_keysym &key)
 	case SDLK_MENU: ksym = GUI::Key::Menu; break;
 	case SDLK_PAGEUP: ksym = GUI::Key::PageUp; break;
 	case SDLK_PAGEDOWN: ksym = GUI::Key::PageDown; break;
+#if !defined(C_SDL2)
 	case SDLK_PRINT: ksym = GUI::Key::Print; break;
+#endif
 	case SDLK_PAUSE: ksym = GUI::Key::Pause; break;
+#if !defined(C_SDL2)
 	case SDLK_BREAK: ksym = GUI::Key::Break; break;
+#endif
 	case SDLK_CAPSLOCK: ksym = GUI::Key::CapsLock; break;
+#if !defined(C_SDL2)
 	case SDLK_NUMLOCK: ksym = GUI::Key::NumLock; break;
 	case SDLK_SCROLLOCK: ksym = GUI::Key::ScrollLock; break;
+#endif
 	case SDLK_F1:case SDLK_F2:case SDLK_F3:case SDLK_F4:case SDLK_F5:case SDLK_F6:
 	case SDLK_F7:case SDLK_F8:case SDLK_F9:case SDLK_F10:case SDLK_F11:case SDLK_F12:
 		ksym = (GUI::Key::Special)(GUI::Key::F1 + key.sym-SDLK_F1);
-	default: break;
+    /* do not provide a character code for these keys */
+    case SDLK_LSHIFT: case SDLK_RSHIFT:
+    case SDLK_LCTRL:  case SDLK_RCTRL:
+    case SDLK_LALT:   case SDLK_RALT:
+#if defined(C_SDL2)
+    	return Key(0, ksym,
+    		(key.mod&KMOD_SHIFT)>0,
+    		(key.mod&KMOD_CTRL)>0,
+    		(key.mod&KMOD_ALT)>0,
+            false);
+#else
+    	return Key(0, ksym,
+    		(key.mod&KMOD_SHIFT)>0,
+    		(key.mod&KMOD_CTRL)>0,
+    		(key.mod&KMOD_ALT)>0,
+    		(key.mod&KMOD_META)>0);
+#endif
+    /* anything else, go ahead */
+	default:
+        break;
 	}
+#if defined(C_SDL2)
+	return Key(SDLSymToChar(key), ksym,
+		(key.mod&KMOD_SHIFT)>0,
+		(key.mod&KMOD_CTRL)>0,
+		(key.mod&KMOD_ALT)>0,
+        false);
+#else
 	return Key(key.unicode, ksym,
 		(key.mod&KMOD_SHIFT)>0,
 		(key.mod&KMOD_CTRL)>0,
 		(key.mod&KMOD_ALT)>0,
 		(key.mod&KMOD_META)>0);
+#endif
 }
 
 /** \brief Internal class that handles different screen bit depths and layouts the SDL way */
@@ -1451,7 +1909,9 @@ protected:
 
 public:
 	SDL_Drawable(int width, int height, RGB clear = Color::Transparent) : Drawable(width, height, clear), surface(SDL_CreateRGBSurfaceFrom(buffer, width, height, 32, width*4, Color::RedMask, Color::GreenMask, Color::BlueMask, Color::AlphaMask)) {
+#if !defined(C_SDL2)
 	    surface->flags |= SDL_SRCALPHA;
+#endif
 	}
 
 	~SDL_Drawable() {
@@ -1462,6 +1922,9 @@ public:
 	    SDL_BlitSurface(surface, NULL, dest, NULL);
 	}
 };
+
+ScreenSDL::~ScreenSDL() {
+}
 
 ScreenSDL::ScreenSDL(SDL_Surface *surface) : Screen(new SDL_Drawable(surface->w, surface->h)), surface(surface), downx(0), downy(0), lastclick(0), lastdown(0) {
 	current_abs_time = start_abs_time = SDL_GetTicks();
@@ -1490,7 +1953,45 @@ void ScreenSDL::paint(Drawable &d) const {
 bool ScreenSDL::event(const SDL_Event &event) {
 	bool rc;
 
+#if defined(C_SDL2)
+    /* handle mouse events only if it comes from the mouse.
+     * ignore the fake mouse events some OSes generate from the touchscreen.
+     * Note that Windows will fake mouse events, Linux/X11 wil not */
+    if (event.type == SDL_MOUSEMOTION || event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) {
+        if (event.button.which == SDL_TOUCH_MOUSEID) /* don't handle mouse events faked by touchscreen */
+            return true;/*eat the event or else it will just keep calling objects until processed*/
+    }
+#endif
+
 	switch (event.type) {
+#if defined(C_SDL2) && !defined(IGNORE_TOUCHSCREEN)
+    case SDL_FINGERUP:
+    case SDL_FINGERDOWN:
+    case SDL_FINGERMOTION: {
+        SDL_Event fake;
+        bool comb = false;
+
+        memset(&fake,0,sizeof(fake));
+        fake.type = SDL_MOUSEMOTION;
+        fake.motion.state = SDL_BUTTON(1);
+        fake.motion.x = (Sint32)(event.tfinger.x * surface->w);
+        fake.motion.y = (Sint32)(event.tfinger.y * surface->h);
+        fake.motion.xrel = (Sint32)event.tfinger.dx;
+        fake.motion.yrel = (Sint32)event.tfinger.dy;
+        comb |= this->event(fake);
+
+        if (event.type == SDL_FINGERUP || event.type == SDL_FINGERDOWN) {
+            memset(&fake,0,sizeof(fake));
+            fake.button.button = SDL_BUTTON_LEFT;
+            fake.button.x = (Sint32)(event.tfinger.x * surface->w);
+            fake.button.y = (Sint32)(event.tfinger.y * surface->h);
+            fake.type = (event.type == SDL_FINGERUP) ? SDL_MOUSEBUTTONUP : SDL_MOUSEBUTTONDOWN;
+            comb |= this->event(fake);
+        }
+
+        return comb;
+    }
+#endif
 	case SDL_KEYUP: {
 		const Key &key = SDL_to_GUI(event.key.keysym);
 		if (key.special == GUI::Key::None && key.character == 0) break;
@@ -1549,5 +2050,319 @@ bool ScreenSDL::event(const SDL_Event &event) {
 	return false;
 }
 
+void WindowInWindow::paintAll(Drawable &d) const {
+    int xadj = -scroll_pos_x;
+    int yadj = -scroll_pos_y;
+
+    if (border) {
+        xadj++;
+        yadj++;
+    }
+
+	Drawable dchild(d,0,0,width,height);
+	for (std::list<Window *>::const_iterator i = children.begin(); i != children.end(); ++i) {
+		Window *child = *i;
+		if (child->isVisible()) {
+			Drawable cd(dchild,child->getX() + xadj,child->getY() + yadj,child->getWidth(),child->getHeight());
+			child->paintAll(cd);
+		}
+	}
+
+    if (border) {
+        int w = width-1;
+        int h = height-1;
+
+        if (vscroll)
+            w -= (vscroll?vscroll_display_width:0);
+
+        dchild.setColor(Color::Shadow3D);
+        dchild.drawLine(0,0,w,0);
+        dchild.drawLine(0,0,0,h);
+
+        dchild.setColor(Color::Light3D);
+        dchild.drawLine(0,h,w,h);
+        dchild.drawLine(w,0,w,h);
+    }
+
+    if (vscroll && vscroll_display_width >= 4) {
+        // TODO: Need a vertical scrollbar window object
+
+        Drawable dscroll(d,width - vscroll_display_width,0,vscroll_display_width,height);
+
+        bool disabled = (scroll_pos_h == 0);
+
+        /* scroll bar border, gray background */
+        dscroll.setColor(disabled ? Color::Shadow3D : Color::Black);
+        dscroll.drawRect(0,0,vscroll_display_width-1,height-1);
+
+        dscroll.setColor(Color::Background3D);
+        dscroll.fillRect(1,1,vscroll_display_width-2,height-2);
+
+        /* the "thumb". make it fixed size, Windows 3.1 style.
+         * this code could adapt to the more range-aware visual style of Windows 95 later. */
+        int thumbwidth = vscroll_display_width - 2;
+        int thumbheight = vscroll_display_width - 2;
+        int thumbtravel = height - 2 - thumbheight;
+        if (thumbtravel < 0) thumbtravel = 0;
+        int ytop = 1 + ((scroll_pos_h > 0) ?
+            ((thumbtravel * scroll_pos_y) / scroll_pos_h) :
+            0);
+
+        if (thumbheight <= (height + 2) && !disabled) {
+            int xleft = 1;
+            dscroll.setColor(Color::Light3D);
+            dscroll.drawLine(xleft,ytop,xleft+thumbwidth-1,ytop);
+            dscroll.drawLine(xleft,ytop,xleft,ytop+thumbheight-1);
+
+            // Windows 3.1 renders the shadow two pixels wide
+            dscroll.setColor(Color::Shadow3D);
+            dscroll.drawLine(xleft,ytop+thumbheight-1,xleft+thumbwidth-1,ytop+thumbheight-1);
+            dscroll.drawLine(xleft+thumbwidth-1,ytop,xleft+thumbwidth-1,ytop+thumbheight-1);
+
+            dscroll.drawLine(xleft+1,ytop+thumbheight-2,xleft+thumbwidth-2,ytop+thumbheight-2);
+            dscroll.drawLine(xleft+thumbwidth-2,ytop+1,xleft+thumbwidth-2,ytop+thumbheight-2);
+
+            // Windows 3.1 also draws a hard black line around the thumb that can coincide with the border
+            dscroll.setColor(Color::Black);
+            dscroll.drawLine(xleft,ytop-1,xleft+thumbwidth-1,ytop-1);
+            dscroll.drawLine(xleft,ytop+thumbheight,xleft+thumbwidth-1,ytop+thumbheight);
+
+            // Windows 3.1 also draws an inverted dotted rectangle around the thumb where it WOULD be
+            // before quantization to scroll position.
+            if (vscroll_dragging) {
+                xleft = 0;
+                ytop = drag_y - ((thumbheight + 2) / 2);
+                if (ytop < 0) ytop = 0;
+                if (ytop > thumbtravel) ytop = thumbtravel;
+                dscroll.setColor(Color::Light3D);
+                dscroll.drawDotRect(xleft,ytop,thumbwidth+1,thumbheight+1);
+            }
+        }
+    }
+}
+
+bool WindowInWindow::mouseDragged(int x, int y, MouseButton button)
+{
+    if (vscroll_dragging) {
+        int thumbheight = vscroll_display_width - 2;
+        int thumbtravel = height - 2 - thumbheight;
+        if (thumbtravel < 0) thumbtravel = 0;
+
+        double npos = (double(y - 1 - (thumbheight / 2)) * scroll_pos_h) / thumbtravel;
+        int nipos = int(floor(npos + 0.5));
+        if (nipos < 0) nipos = 0;
+        if (nipos > scroll_pos_h) nipos = scroll_pos_h;
+        scroll_pos_y = nipos;
+
+        drag_x = x;
+        drag_y = y;
+        return true;
+    }
+
+    if (dragging) {
+        scroll_pos_x -= x - drag_x;
+        scroll_pos_y -= y - drag_y;
+        if (scroll_pos_x < 0) scroll_pos_x = 0;
+        if (scroll_pos_y < 0) scroll_pos_y = 0;
+        if (scroll_pos_x > scroll_pos_w) scroll_pos_x = scroll_pos_w;
+        if (scroll_pos_y > scroll_pos_h) scroll_pos_y = scroll_pos_h;
+        drag_x = x;
+        drag_y = y;
+        return true;
+    }
+
+    int xadj = -scroll_pos_x;
+    int yadj = -scroll_pos_y;
+
+    if (border) {
+        xadj++;
+        yadj++;
+    }
+
+    return Window::mouseDragged(x-xadj,y-yadj,button);
+}
+
+bool WindowInWindow::mouseDown(int x, int y, MouseButton button)
+{
+    if (vscroll && x >= (width - vscroll_display_width) && button == GUI::Left) {
+        mouseChild = this;
+        vscroll_dragging = true;
+        drag_x = x;
+        drag_y = y;
+
+        int thumbheight = vscroll_display_width - 2;
+        int thumbtravel = height - 2 - thumbheight;
+        if (thumbtravel < 0) thumbtravel = 0;
+
+        double npos = (double(y - 1 - (thumbheight / 2)) * scroll_pos_h) / thumbtravel;
+        int nipos = int(floor(npos + 0.5));
+        if (nipos < 0) nipos = 0;
+        if (nipos > scroll_pos_h) nipos = scroll_pos_h;
+        scroll_pos_y = nipos;
+
+        return true;
+    }
+    if (mouseChild == NULL && button == GUI::WheelUp) {
+        scroll_pos_y -= 50;
+        if (scroll_pos_y < 0) scroll_pos_y = 0;
+        mouseChild = this;
+        dragging = true;
+        return true;
+    }
+    if (mouseChild == NULL && button == GUI::WheelDown) {
+        scroll_pos_y += 50;
+        if (scroll_pos_y > scroll_pos_h) scroll_pos_y = scroll_pos_h;
+        mouseChild = this;
+        dragging = true;
+        return true;
+    }
+
+    int xadj = -scroll_pos_x;
+    int yadj = -scroll_pos_y;
+
+    if (border) {
+        xadj++;
+        yadj++;
+    }
+
+    bool ret = Window::mouseDown(x-xadj,y-yadj,button);
+
+    if (!ret && mouseChild == NULL && button == GUI::Left) {
+        drag_x = x;
+        drag_y = y;
+        mouseChild = this;
+        dragging = true;
+        ret = true;
+    }
+
+    return ret;
+}
+
+bool WindowInWindow::mouseUp(int x, int y, MouseButton button)
+{
+    if (vscroll_dragging) {
+        int thumbheight = vscroll_display_width - 2;
+        int thumbtravel = height - 2 - thumbheight;
+        if (thumbtravel < 0) thumbtravel = 0;
+
+        double npos = (double(y - 1 - (thumbheight / 2)) * scroll_pos_h) / thumbtravel;
+        int nipos = int(floor(npos + 0.5));
+        if (nipos < 0) nipos = 0;
+        if (nipos > scroll_pos_h) nipos = scroll_pos_h;
+        scroll_pos_y = nipos;
+
+        vscroll_dragging = false;
+        mouseChild = NULL;
+        return true;
+    }
+
+    if (hscroll_dragging) {
+        hscroll_dragging = false;
+        mouseChild = NULL;
+        return true;
+    }
+
+    if (dragging) {
+        mouseChild = NULL;
+        dragging = false;
+        return true;
+    }
+
+    int xadj = -scroll_pos_x;
+    int yadj = -scroll_pos_y;
+
+    if (border) {
+        xadj++;
+        yadj++;
+    }
+
+    return Window::mouseUp(x-xadj,y-xadj,button);
+}
+
+bool WindowInWindow::mouseMoved(int x, int y) {
+    if (dragging) return true;
+
+    int xadj = -scroll_pos_x;
+    int yadj = -scroll_pos_y;
+
+    if (border) {
+        xadj++;
+        yadj++;
+    }
+
+    return Window::mouseMoved(x-xadj,y-xadj);
+}
+
+bool WindowInWindow::mouseClicked(int x, int y, MouseButton button) {
+    if (dragging) return true;
+
+    int xadj = -scroll_pos_x;
+    int yadj = -scroll_pos_y;
+
+    if (border) {
+        xadj++;
+        yadj++;
+    }
+
+    return Window::mouseClicked(x-xadj,y-xadj,button);
+}
+
+bool WindowInWindow::mouseDoubleClicked(int x, int y, MouseButton button) {
+    if (dragging) return true;
+
+    int xadj = -scroll_pos_x;
+    int yadj = -scroll_pos_y;
+
+    if (border) {
+        xadj++;
+        yadj++;
+    }
+
+    return Window::mouseDoubleClicked(x-xadj,y-xadj,button);
+}
+
+void WindowInWindow::resize(int w, int h) {
+    int mw = 0,mh = 0;
+    int cmpw = w;
+    int cmph = h;
+
+    if (vscroll) cmpw -= vscroll_display_width;
+    if (border) {
+        cmpw -= 2;
+        cmph -= 2;
+    }
+
+	for (std::list<Window *>::const_iterator i = children.begin(); i != children.end(); ++i) {
+		Window *child = *i;
+        int mx = child->getX() + child->getWidth();
+        int my = child->getY() + child->getHeight();
+        if (mw < mx) mw = mx;
+        if (mh < my) mh = my;
+	}
+
+    mw -= cmpw;
+    mh -= cmph;
+    if (mw < 0) mw = 0;
+    if (mh < 0) mh = 0;
+    scroll_pos_w = mw;
+    scroll_pos_h = mh;
+
+    Window::resize(w,h);
+}
+
+void WindowInWindow::enableBorder(bool en) {
+    if (border != en) {
+        border = en;
+        resize(width, height);
+    }
+}
+
+void WindowInWindow::enableScrollBars(bool hs,bool vs) {
+    if (hs != hscroll || vs != vscroll) {
+        hscroll = hs;
+        vscroll = vs;
+        resize(width, height);
+    }
+}
+
 } /* end namespace GUI */
-#endif /* !C_SDL2 */

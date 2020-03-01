@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2013  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 /* Jumps */
@@ -230,14 +230,6 @@ extern bool enable_fpu;
 
 
 #define ROLB(op1,op2,load,save)						\
-	if (!(op2&0x7)) {								\
-		if (op2&0x18) {								\
-			FillFlagsNoCFOF();						\
-			SETFLAGBIT(CF,op1 & 1);					\
-			SETFLAGBIT(OF,(op1 & 1) ^ (op1 >> 7));	\
-		}											\
-		break;										\
-	}												\
 	FillFlagsNoCFOF();								\
 	lf_var1b=load(op1);								\
 	lf_var2b=op2&0x07;								\
@@ -248,14 +240,6 @@ extern bool enable_fpu;
 	SETFLAGBIT(OF,(lf_resb & 1) ^ (lf_resb >> 7));
 
 #define ROLW(op1,op2,load,save)						\
-	if (!(op2&0xf)) {								\
-		if (op2&0x10) {								\
-			FillFlagsNoCFOF();						\
-			SETFLAGBIT(CF,op1 & 1);					\
-			SETFLAGBIT(OF,(op1 & 1) ^ (op1 >> 15));	\
-		}											\
-		break;										\
-	}												\
 	FillFlagsNoCFOF();								\
 	lf_var1w=load(op1);								\
 	lf_var2b=op2&0xf;								\
@@ -266,7 +250,6 @@ extern bool enable_fpu;
 	SETFLAGBIT(OF,(lf_resw & 1) ^ (lf_resw >> 15));
 
 #define ROLD(op1,op2,load,save)						\
-	if (!op2) break;								\
 	FillFlagsNoCFOF();								\
 	lf_var1d=load(op1);								\
 	lf_var2b=op2;									\
@@ -278,14 +261,6 @@ extern bool enable_fpu;
 
 
 #define RORB(op1,op2,load,save)						\
-	if (!(op2&0x7)) {								\
-		if (op2&0x18) {								\
-			FillFlagsNoCFOF();						\
-			SETFLAGBIT(CF,op1>>7);					\
-			SETFLAGBIT(OF,(op1>>7) ^ ((op1>>6) & 1));			\
-		}											\
-		break;										\
-	}												\
 	FillFlagsNoCFOF();								\
 	lf_var1b=load(op1);								\
 	lf_var2b=op2&0x07;								\
@@ -296,14 +271,6 @@ extern bool enable_fpu;
 	SETFLAGBIT(OF,(lf_resb ^ (lf_resb<<1)) & 0x80);
 
 #define RORW(op1,op2,load,save)					\
-	if (!(op2&0xf)) {							\
-		if (op2&0x10) {							\
-			FillFlagsNoCFOF();					\
-			SETFLAGBIT(CF,op1>>15);				\
-			SETFLAGBIT(OF,(op1>>15) ^ ((op1>>14) & 1));			\
-		}										\
-		break;									\
-	}											\
 	FillFlagsNoCFOF();							\
 	lf_var1w=load(op1);							\
 	lf_var2b=op2&0xf;							\
@@ -314,7 +281,6 @@ extern bool enable_fpu;
 	SETFLAGBIT(OF,(lf_resw ^ (lf_resw<<1)) & 0x8000);
 
 #define RORD(op1,op2,load,save)					\
-	if (!op2) break;							\
 	FillFlagsNoCFOF();							\
 	lf_var1d=load(op1);							\
 	lf_var2b=op2;								\
@@ -368,8 +334,6 @@ extern bool enable_fpu;
 	SETFLAGBIT(OF,(reg_flags & 1u) ^ ((unsigned int)lf_resd >> 31u));	\
 }
 
-
-
 #define RCRB(op1,op2,load,save)								\
 	if (op2%9) {											\
 		Bit8u cf=(Bit8u)FillFlags()&0x1;					\
@@ -415,21 +379,18 @@ extern bool enable_fpu;
 
 
 #define SHLB(op1,op2,load,save)								\
-	if (!op2) break;										\
 	lf_var1b=load(op1);lf_var2b=op2;				\
 	lf_resb=(lf_var2b < 8u) ? ((unsigned int)lf_var1b << lf_var2b) : 0;			\
 	save(op1,lf_resb);								\
 	lflags.type=t_SHLb;
 
 #define SHLW(op1,op2,load,save)								\
-	if (!op2) break;										\
 	lf_var1w=load(op1);lf_var2b=op2 ;				\
 	lf_resw=(lf_var2b < 16u) ? ((unsigned int)lf_var1w << lf_var2b) : 0;			\
 	save(op1,lf_resw);								\
 	lflags.type=t_SHLw;
 
 #define SHLD(op1,op2,load,save)								\
-	if (!op2) break;										\
 	lf_var1d=load(op1);lf_var2b=op2;				\
 	lf_resd=(lf_var2b < 32u) ? ((unsigned int)lf_var1d << lf_var2b) : 0;			\
 	save(op1,lf_resd);								\
@@ -437,21 +398,18 @@ extern bool enable_fpu;
 
 
 #define SHRB(op1,op2,load,save)								\
-	if (!op2) break;										\
 	lf_var1b=load(op1);lf_var2b=op2;				\
 	lf_resb=(lf_var2b < 8u) ? ((unsigned int)lf_var1b >> lf_var2b) : 0;			\
 	save(op1,lf_resb);								\
 	lflags.type=t_SHRb;
 
 #define SHRW(op1,op2,load,save)								\
-	if (!op2) break;										\
 	lf_var1w=load(op1);lf_var2b=op2;				\
 	lf_resw=(lf_var2b < 16u) ? ((unsigned int)lf_var1w >> lf_var2b) : 0;			\
 	save(op1,lf_resw);								\
 	lflags.type=t_SHRw;
 
 #define SHRD(op1,op2,load,save)								\
-	if (!op2) break;										\
 	lf_var1d=load(op1);lf_var2b=op2;				\
 	lf_resd=(lf_var2b < 32u) ? ((unsigned int)lf_var1d >> lf_var2b) : 0;			\
 	save(op1,lf_resd);								\
@@ -459,7 +417,6 @@ extern bool enable_fpu;
 
 
 #define SARB(op1,op2,load,save)								\
-	if (!op2) break;										\
 	lf_var1b=load(op1);lf_var2b=op2;				\
 	if (lf_var2b>8) lf_var2b=8;						\
     if (lf_var1b & 0x80) {								\
@@ -472,7 +429,6 @@ extern bool enable_fpu;
 	lflags.type=t_SARb;
 
 #define SARW(op1,op2,load,save)								\
-	if (!op2) break;								\
 	lf_var1w=load(op1);lf_var2b=op2;			\
 	if (lf_var2b>16) lf_var2b=16;					\
 	if (lf_var1w & 0x8000) {							\
@@ -485,7 +441,6 @@ extern bool enable_fpu;
 	lflags.type=t_SARw;
 
 #define SARD(op1,op2,load,save)								\
-	if (!op2) break;								\
 	lf_var2b=op2;lf_var1d=load(op1);			\
 	if (lf_var1d & 0x80000000) {						\
 		lf_resd=(lf_var1d >> lf_var2b)|		\
@@ -639,7 +594,7 @@ extern bool enable_fpu;
 #define MULB(op1,load,save)									\
 	reg_ax=reg_al*load(op1);								\
 	FillFlagsNoCFOF();										\
-	SETFLAGBIT(ZF,reg_al == 0);								\
+	SETFLAGBIT(ZF,reg_al == 0 && CPU_CORE >= CPU_ARCHTYPE_286);								\
 	SETFLAGBIT(PF,PARITY16(reg_ax));								\
 	if (reg_ax & 0xff00) {									\
 		SETFLAGBIT(CF,true);SETFLAGBIT(OF,true);			\
@@ -653,7 +608,7 @@ extern bool enable_fpu;
 	reg_ax=(Bit16u)(tempu);									\
 	reg_dx=(Bit16u)(tempu >> 16);							\
 	FillFlagsNoCFOF();										\
-	SETFLAGBIT(ZF,reg_ax == 0);								\
+	SETFLAGBIT(ZF,reg_ax == 0 && CPU_CORE >= CPU_ARCHTYPE_286);								\
 	SETFLAGBIT(PF,PARITY16(reg_ax)^PARITY16(reg_dx)^FLAG_PF);						\
 	if (reg_dx) {											\
 		SETFLAGBIT(CF,true);SETFLAGBIT(OF,true);			\
@@ -668,7 +623,7 @@ extern bool enable_fpu;
 	reg_eax=(Bit32u)(tempu);								\
 	reg_edx=(Bit32u)(tempu >> 32);							\
 	FillFlagsNoCFOF();										\
-	SETFLAGBIT(ZF,reg_eax == 0);							\
+	SETFLAGBIT(ZF,reg_eax == 0 && CPU_CORE >= CPU_ARCHTYPE_286);							\
 	SETFLAGBIT(PF,PARITY32(reg_eax)^PARITY32(reg_edx)^FLAG_PF);						\
 	if (reg_edx) {											\
 		SETFLAGBIT(CF,true);SETFLAGBIT(OF,true);			\
@@ -802,6 +757,8 @@ extern bool enable_fpu;
 {															\
 	reg_ax=((Bit8s)reg_al) * ((Bit8s)(load(op1)));			\
 	FillFlagsNoCFOF();										\
+	SETFLAGBIT(ZF,reg_al == 0);								\
+	SETFLAGBIT(SF,reg_al & 0x80);							\
 	if ((reg_ax & 0xff80)==0xff80 ||						\
 		(reg_ax & 0xff80)==0x0000) {						\
 		SETFLAGBIT(CF,false);SETFLAGBIT(OF,false);			\
@@ -817,8 +774,10 @@ extern bool enable_fpu;
 	reg_ax=(Bit16u)(temps);									\
 	reg_dx=(Bit16u)(temps >> 16);							\
 	FillFlagsNoCFOF();										\
-	if (((temps & 0xffff8000)==0xffff8000 ||				\
-		(temps & 0xffff8000)==0x0000)) {					\
+	SETFLAGBIT(ZF,reg_ax == 0);								\
+	SETFLAGBIT(SF,reg_ax & 0x8000);							\
+	if ((((unsigned int)temps & 0xffff8000)==0xffff8000 ||				\
+		((unsigned int)temps & 0xffff8000)==0x0000)) {					\
 		SETFLAGBIT(CF,false);SETFLAGBIT(OF,false);			\
 	} else {												\
 		SETFLAGBIT(CF,true);SETFLAGBIT(OF,true);			\
@@ -832,6 +791,8 @@ extern bool enable_fpu;
 	reg_eax=(Bit32u)(temps);								\
 	reg_edx=(Bit32u)(temps >> 32);							\
 	FillFlagsNoCFOF();										\
+	SETFLAGBIT(ZF,reg_eax == 0);							\
+	SETFLAGBIT(SF,reg_eax & 0x80000000);					\
 	if ((reg_edx==0xffffffff) &&							\
 		(reg_eax & 0x80000000) ) {							\
 		SETFLAGBIT(CF,false);SETFLAGBIT(OF,false);			\
@@ -891,6 +852,7 @@ extern bool enable_fpu;
 	if (rm >= 0xc0) {										\
 		GetEArb;											\
 		Bit8u val=CPU_SHIFTOP_MASK(blah,7);								\
+		if (!val) break;									\
 		switch (which)	{									\
 		case 0x00:ROLB(*earb,val,LoadRb,SaveRb);break;		\
 		case 0x01:RORB(*earb,val,LoadRb,SaveRb);break;		\
@@ -904,6 +866,7 @@ extern bool enable_fpu;
 	} else {												\
 		GetEAa;												\
 		Bit8u val=CPU_SHIFTOP_MASK(blah,7);								\
+		if (!val) break;									\
 		switch (which) {									\
 		case 0x00:ROLB(eaa,val,LoadMb,SaveMb);break;		\
 		case 0x01:RORB(eaa,val,LoadMb,SaveMb);break;		\
@@ -925,6 +888,7 @@ extern bool enable_fpu;
 	if (rm >= 0xc0) {										\
 		GetEArw;											\
 		Bit8u val=CPU_SHIFTOP_MASK(blah,15);								\
+		if (!val) break;									\
 		switch (which)	{									\
 		case 0x00:ROLW(*earw,val,LoadRw,SaveRw);break;		\
 		case 0x01:RORW(*earw,val,LoadRw,SaveRw);break;		\
@@ -938,6 +902,7 @@ extern bool enable_fpu;
 	} else {												\
 		GetEAa;												\
 		Bit8u val=CPU_SHIFTOP_MASK(blah,15);								\
+		if (!val) break;									\
 		switch (which) {									\
 		case 0x00:ROLW(eaa,val,LoadMw,SaveMw);break;		\
 		case 0x01:RORW(eaa,val,LoadMw,SaveMw);break;		\
@@ -958,6 +923,7 @@ extern bool enable_fpu;
 	if (rm >= 0xc0) {										\
 		GetEArd;											\
 		Bit8u val=CPU_SHIFTOP_MASK(blah,31);								\
+		if (!val) break;									\
 		switch (which)	{									\
 		case 0x00:ROLD(*eard,val,LoadRd,SaveRd);break;		\
 		case 0x01:RORD(*eard,val,LoadRd,SaveRd);break;		\
@@ -971,6 +937,7 @@ extern bool enable_fpu;
 	} else {												\
 		GetEAa;												\
 		Bit8u val=CPU_SHIFTOP_MASK(blah,31);								\
+		if (!val) break;									\
 		switch (which) {									\
 		case 0x00:ROLD(eaa,val,LoadMd,SaveMd);break;		\
 		case 0x01:RORD(eaa,val,LoadMd,SaveMd);break;		\

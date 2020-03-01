@@ -46,7 +46,7 @@
 //
 //  You should have received a copy of the GNU Lesser General Public
 //  License along with this library; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335 USA USA
 
 // Peter Grehan (grehan@iprg.nokia.com) coded all of this
 // NE2000/ether stuff.
@@ -356,7 +356,7 @@ Bit32u bx_ne2k_c::chipmem_read(Bit32u address, unsigned int io_len)
     BX_PANIC(("unaligned chipmem word read"));
 
   // ROM'd MAC address
-  if (/*(address >=0) && */(address <= 31)) {
+  if (/*(address >=0) && */address <= 31) {
     retval = BX_NE2K_THIS s.macaddr[address];
     if ((io_len == 2u) || (io_len == 4u)) {
       retval |= (unsigned int)(BX_NE2K_THIS s.macaddr[address + 1u] << 8u);
@@ -1399,7 +1399,7 @@ bx_ne2k_c::rx_frame(const void *buf, unsigned io_len)
 //Bit8u macaddr[6] = { 0xAC, 0xDE, 0x48, 0x8E, 0x89, 0x19 };
 
 Bitu dosbox_read(Bitu port, Bitu len) {
-	Bitu retval = theNE2kDevice->read(port,len);
+	Bitu retval = theNE2kDevice->read((Bit32u)port,(unsigned int)len);
 	//LOG_MSG("ne2k rd port %x val %4x len %d page %d, CS:IP %8x:%8x",
 	//	port, retval, len, theNE2kDevice->s.CR.pgsel,SegValue(cs),reg_eip);
 	return retval;
@@ -1407,7 +1407,7 @@ Bitu dosbox_read(Bitu port, Bitu len) {
 void dosbox_write(Bitu port, Bitu val, Bitu len) {
 	//LOG_MSG("ne2k wr port %x val %4x len %d page %d, CS:IP %8x:%8x",
 	//	port, val, len,theNE2kDevice->s.CR.pgsel,SegValue(cs),reg_eip);
-	theNE2kDevice->write(port, val, len);
+	theNE2kDevice->write((Bit32u)port, (Bit32u)val, (unsigned int)len);
 }
 
 void bx_ne2k_c::init()
@@ -1685,8 +1685,8 @@ public:
 		theNE2kDevice = new bx_ne2k_c ();
 		memcpy(theNE2kDevice->s.physaddr, mac, 6);
 
-		theNE2kDevice->s.base_address=base;
-		theNE2kDevice->s.base_irq=irq;
+		theNE2kDevice->s.base_address=(Bit32u)base;
+		theNE2kDevice->s.base_irq=(int)irq;
 
 		theNE2kDevice->init();
 

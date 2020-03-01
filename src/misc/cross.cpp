@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2013  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -21,6 +21,7 @@
 #include "cross.h"
 #include "support.h"
 #include <string>
+#include <limits.h>
 #include <stdlib.h>
 
 #if defined(MACOSX)
@@ -66,6 +67,8 @@ static void W32_ConfDir(std::string& in,bool create) {
 void Cross::GetPlatformResDir(std::string& in) {
 #if defined(MACOSX)
 	in = MacOSXResPath;
+#elif defined(RISCOS)
+	in = "/<DosBox-X$Dir>/resources";
 #elif defined(RESDIR)
 	in = RESDIR;
 #endif
@@ -80,6 +83,11 @@ void Cross::GetPlatformConfigDir(std::string& in) {
 #elif defined(MACOSX)
 	in = "~/Library/Preferences";
 	ResolveHomedir(in);
+#elif defined(HAIKU)
+	in = "~/config/settings/dosbox";
+	ResolveHomedir(in);
+#elif defined(RISCOS)
+	in = "/<Choices$Write>/DosBox-X";
 #elif !defined(HX_DOS)
 	in = "~/.dosbox";
 	ResolveHomedir(in);
@@ -104,9 +112,16 @@ void Cross::CreatePlatformConfigDir(std::string& in) {
 	in += "\\DOSBox";
 	_mkdir(in.c_str());
 #elif defined(MACOSX)
-	in = "~/Library/Preferences/";
+	in = "~/Library/Preferences";
 	ResolveHomedir(in);
 	//Don't create it. Assume it exists
+#elif defined(HAIKU)
+	in = "~/config/settings/dosbox";
+	ResolveHomedir(in);
+	mkdir(in.c_str(),0700);
+#elif defined(RISCOS)
+	in = "/<Choices$Write>/DosBox-X";
+	mkdir(in.c_str(),0700);
 #elif !defined(HX_DOS)
 	in = "~/.dosbox";
 	ResolveHomedir(in);
@@ -228,6 +243,7 @@ bool read_directory_nextw(dir_information* dirp, wchar_t* entry_name, bool& is_d
 }
 
 bool read_directory_first(dir_information* dirp, char* entry_name, bool& is_directory) {
+    if (!dirp) return false;
     if (dirp->wide) return false;
 
     // TODO: offer a config.h option to opt out of Windows widechar functions
@@ -246,6 +262,7 @@ bool read_directory_first(dir_information* dirp, char* entry_name, bool& is_dire
 }
 
 bool read_directory_next(dir_information* dirp, char* entry_name, bool& is_directory) {
+    if (!dirp) return false;
     if (dirp->wide) return false;
 
     // TODO: offer a config.h option to opt out of Windows widechar functions
@@ -262,7 +279,7 @@ bool read_directory_next(dir_information* dirp, char* entry_name, bool& is_direc
 }
 
 void close_directory(dir_information* dirp) {
-	if (dirp->handle != INVALID_HANDLE_VALUE) {
+	if (dirp && dirp->handle != INVALID_HANDLE_VALUE) {
 		FindClose(dirp->handle);
 		dirp->handle = INVALID_HANDLE_VALUE;
 	}
@@ -278,6 +295,7 @@ dir_information* open_directory(const char* dirname) {
 }
 
 bool read_directory_first(dir_information* dirp, char* entry_name, bool& is_directory) {
+	if (!dirp) return false;
 	struct dirent* dentry = readdir(dirp->dir);
 	if (dentry==NULL) {
 		return false;
@@ -309,6 +327,7 @@ bool read_directory_first(dir_information* dirp, char* entry_name, bool& is_dire
 }
 
 bool read_directory_next(dir_information* dirp, char* entry_name, bool& is_directory) {
+	if (!dirp) return false;
 	struct dirent* dentry = readdir(dirp->dir);
 	if (dentry==NULL) {
 		return false;
@@ -341,7 +360,55 @@ bool read_directory_next(dir_information* dirp, char* entry_name, bool& is_direc
 }
 
 void close_directory(dir_information* dirp) {
-	closedir(dirp->dir);
+	if (dirp) closedir(dirp->dir);
 }
 
 #endif
+
+FILE *fopen_wrap(const char *path, const char *mode) {
+#if !defined(WIN32) && !defined(OS2) && !defined(MACOSX) && defined(HAVE_REALPATH)
+	char work[CROSS_LEN] = {0};
+	strncpy(work,path,CROSS_LEN-1);
+	char* last = strrchr(work,'/');
+	
+	if (last) {
+		if (last != work) {
+			*last = 0;
+			//If this compare fails, then we are dealing with files in / 
+			//Which is outside the scope, but test anyway. 
+			//However as realpath only works for exising files. The testing is 
+			//in that case not done against new files.
+		}
+		char* check = realpath(work,NULL);
+		if (check) {
+			if ( ( strlen(check) == 5 && strcmp(check,"/proc") == 0) || strncmp(check,"/proc/",6) == 0) {
+//				LOG_MSG("lst hit %s blocking!",path);
+				free(check);
+				return NULL;
+			}
+			free(check);
+		}
+	}
+
+#if 0
+//Lightweight version, but then existing files can still be read, which is not ideal	
+	if (strpbrk(mode,"aw+") != NULL) {
+		LOG_MSG("pbrk ok");
+		char* check = realpath(path,NULL);
+		//Will be null if file doesn't exist.... ENOENT
+		//TODO What about unlink /proc/self/mem and then create it ?
+		//Should be safe for what we want..
+		if (check) {
+			if (strncmp(check,"/proc/",6) == 0) {
+				free(check);
+				return NULL;
+			}
+			free(check);
+		}
+	}
+*/
+#endif //0 
+#endif
+
+	return fopen(path,mode);
+}

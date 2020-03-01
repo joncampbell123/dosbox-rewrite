@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -45,7 +45,7 @@ typedef list<MessageBlock>::iterator itmb;
 
 void MSG_Add(const char * _name, const char* _val) {
 	/* Find the message */
-	for(itmb tel=Lang.begin();tel!=Lang.end();tel++) {
+	for(itmb tel=Lang.begin();tel!=Lang.end();++tel) {
 		if((*tel).name==_name) { 
 //			LOG_MSG("double entry for %s",_name); //Message file might be loaded before default text messages
 			return;
@@ -57,7 +57,7 @@ void MSG_Add(const char * _name, const char* _val) {
 
 void MSG_Replace(const char * _name, const char* _val) {
 	/* Find the message */
-	for(itmb tel=Lang.begin();tel!=Lang.end();tel++) {
+	for(itmb tel=Lang.begin();tel!=Lang.end();++tel) {
 		if((*tel).name==_name) { 
 			Lang.erase(tel);
 			break;
@@ -118,20 +118,20 @@ void LoadMessageFile(const char * fname) {
 }
 
 const char * MSG_Get(char const * msg) {
-	for(itmb tel=Lang.begin();tel!=Lang.end();tel++){	
+	for(itmb tel=Lang.begin();tel!=Lang.end();++tel){
 		if((*tel).name==msg)
 		{
 			return  (*tel).val.c_str();
 		}
 	}
-	return "Message not Found!\n";
+	return msg;
 }
 
 
 bool MSG_Write(const char * location) {
 	FILE* out=fopen(location,"w+t");
 	if(out==NULL) return false;//maybe an error?
-	for(itmb tel=Lang.begin();tel!=Lang.end();tel++){
+	for(itmb tel=Lang.begin();tel!=Lang.end();++tel){
 		fprintf(out,":%s\n%s\n.\n",(*tel).name.c_str(),(*tel).val.c_str());
 	}
 	fclose(out);

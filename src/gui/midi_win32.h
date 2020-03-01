@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -29,15 +29,15 @@
 
 class MidiHandler_win32: public MidiHandler {
 private:
-	HMIDIOUT m_out;
-	MIDIHDR m_hdr;
-	HANDLE m_event;
+	HMIDIOUT m_out = NULL;
+    MIDIHDR m_hdr = {};
+	HANDLE m_event = NULL;
 	bool isOpen;
 
 #if WIN32_MIDI_PORT_PROTECT
-	HINSTANCE hMidiHelper;
-	bool midi_dll;
-	bool midi_dll_active;
+	HINSTANCE hMidiHelper = NULL;
+	bool midi_dll = false;
+	bool midi_dll_active = false;
 
 	void MidiHelper_Reset()
 	{
@@ -103,22 +103,36 @@ public:
 		if(conf && *conf) {
 			std::string strconf(conf);
 			std::istringstream configmidi(strconf);
-			unsigned int nummer = midiOutGetNumDevs();
+			unsigned int total = midiOutGetNumDevs();
+			unsigned int nummer = total;
 			configmidi >> nummer;
-			if(nummer < midiOutGetNumDevs()){
+			if (configmidi.fail() && total) {
+				lowcase(strconf);
+				for(unsigned int i = 0; i< total;i++) {
+					midiOutGetDevCaps(i, &mididev, sizeof(MIDIOUTCAPS));
+					std::string devname(mididev.szPname);
+					lowcase(devname);
+					if (devname.find(strconf) != std::string::npos) {
+						nummer = i;
+						break;
+					}
+				}
+			}
+
+			if (nummer < total) {
 				midiOutGetDevCaps(nummer, &mididev, sizeof(MIDIOUTCAPS));
 				LOG_MSG("MIDI:win32 selected %s",mididev.szPname);
 
 
 #if WIN32_MIDI_PORT_PROTECT
 				if( midi_dll == false || strcmp( mididev.szPname, "Roland VSC" ) != 0 )
-					res = midiOutOpen(&m_out, nummer, PtrToUlong(m_event), 0, CALLBACK_EVENT);
+					res = midiOutOpen(&m_out, nummer, (DWORD_PTR)m_event, 0, CALLBACK_EVENT);
 				else {
 					// Roland VSC - crash protection
 					res = MidiHelper_Start(nummer);
 				}
 #else
-				res = midiOutOpen(&m_out, nummer, PtrToUlong(m_event), 0, CALLBACK_EVENT);
+				res = midiOutOpen(&m_out, nummer, (DWORD_PTR)m_event, 0, CALLBACK_EVENT);
 #endif
 
 
@@ -127,12 +141,12 @@ public:
 
 					if( nummer != 0 ) {
 						LOG_MSG("MIDI:win32 selected %s","default");
-						res = midiOutOpen(&m_out, MIDI_MAPPER, PtrToUlong(m_event), 0, CALLBACK_EVENT);
+						res = midiOutOpen(&m_out, MIDI_MAPPER, (DWORD_PTR)m_event, 0, CALLBACK_EVENT);
 					}
 				}
 			}
 		} else {
-			res = midiOutOpen(&m_out, MIDI_MAPPER, PtrToUlong(m_event), 0, CALLBACK_EVENT);
+			res = midiOutOpen(&m_out, MIDI_MAPPER, (DWORD_PTR)m_event, 0, CALLBACK_EVENT);
 		}
 		if (res != MMSYSERR_NOERROR) return false;
 
@@ -177,8 +191,8 @@ public:
 		midiOutUnprepareHeader (m_out, &m_hdr, sizeof (m_hdr));
 
 		m_hdr.lpData = (char *) sysex;
-		m_hdr.dwBufferLength = len ;
-		m_hdr.dwBytesRecorded = len ;
+		m_hdr.dwBufferLength = (DWORD)len;
+		m_hdr.dwBytesRecorded = (DWORD)len;
 		m_hdr.dwUser = 0;
 
 		MMRESULT result = midiOutPrepareHeader (m_out, &m_hdr, sizeof (m_hdr));
@@ -194,6 +208,17 @@ public:
 		if( midi_dll_active == true ) {
 			while( midiOutUnprepareHeader (m_out, &m_hdr, sizeof (m_hdr)) != 0 )
 				Sleep(1);
+		}
+#endif
+	}
+	
+	void ListAll(Program* base) {
+#if defined (WIN32)
+		unsigned int total = midiOutGetNumDevs();	
+		for(unsigned int i = 0;i < total;i++) {
+			MIDIOUTCAPS mididev;
+			midiOutGetDevCaps(i, &mididev, sizeof(MIDIOUTCAPS));
+			base->WriteOut("%2d\t \"%s\"\n",i,mididev.szPname);
 		}
 #endif
 	}

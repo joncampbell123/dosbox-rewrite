@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -76,16 +76,41 @@ void VGA_ATTR_SetPalette(Bit8u index, Bit8u val) {
 	val &= 63; 
 	vga.attr.palette[index] = val;
 
-    if (!IS_EGA_ARCH) {
+    if (IS_VGA_ARCH) {
         // apply the plane mask
         val = vga.attr.palette[index & vga.attr.color_plane_enable];
 
-        // replace bits 4-5 if configured
-        if (vga.attr.mode_control & 0x80)
-            val = (val&0xf) | (vga.attr.color_select << 4);
+        // Tseng ET4000AX behavior (according to how COPPER.EXE treats the hardware)
+        // and according to real hardware:
+        //
+        // - If P54S (palette select bits 5-4) are enabled, replace bits 7-4 of the
+        //   color index with the entire color select register. COPPER.EXE line fading
+        //   tricks will not work correctly otherwise.
+        //
+        // - If P54S is not enabled, then do not apply any Color Select register bits.
+        //   This is contrary to standard VGA behavior that would always apply Color
+        //   Select bits 3-2 to index bits 7-6 in any mode other than 256-color mode.
+        if (VGA_AC_remap == AC_low4) {
+            if (vga.attr.mode_control & 0x80)
+                val = (val&0xf) | (vga.attr.color_select << 4);
+        }
+        // normal VGA/SVGA behavior:
+        //
+        // - ignore color select in 256-color mode entirely
+        //
+        // - otherwise, if P54S is enabled, replace bits 5-4 with bits 1-0 of color select.
+        //
+        // - always replace bits 7-6 with bits 3-2 of color select.
+        else {
+            if (!(vga.mode == M_VGA || vga.mode == M_LIN8)) {
+                // replace bits 5-4 if P54S is enabled
+                if (vga.attr.mode_control & 0x80)
+                    val = (val&0xf) | ((vga.attr.color_select & 0x3) << 4);
 
-        // set bits 6 and 7 (not relevant for EGA)
-        val |= (vga.attr.color_select & 0xc) << 4;
+                // always replace bits 7-6
+                val |= (vga.attr.color_select & 0xc) << 4;
+            }
+        }
 
         // apply
         VGA_DAC_CombineColor(index,val);
@@ -113,6 +138,17 @@ void write_p3c0(Bitu /*port*/,Bitu val,Bitu iolen) {
 			5	If set screen output is enabled and the palette can not be modified,
 				if clear screen output is disabled and the palette can be modified.
 		*/
+        /* NOTES: Paradise/Western Digital SVGA appears to respond to 0x00-0x0F as
+         *        expected, but 0x10-0x17 have an alias at 0x18-0x1F according to
+         *        DOSLIB TMODESET.EXE dumps.
+         *
+         *        Original IBM PS/2 VGA hardware acts the same.
+         *
+         *        if (val & 0x10)
+         *          index = val & 0x17;
+         *        else
+         *          index = val & 0x0F;
+         */
 		return;
 	} else {
 		vga.internal.attrindex=false;
@@ -122,7 +158,24 @@ void write_p3c0(Bitu /*port*/,Bitu val,Bitu iolen) {
 		case 0x04:		case 0x05:		case 0x06:		case 0x07:
 		case 0x08:		case 0x09:		case 0x0a:		case 0x0b:
 		case 0x0c:		case 0x0d:		case 0x0e:		case 0x0f:
-			if (attr(disabled) & 0x1) VGA_ATTR_SetPalette(attr(index),(Bit8u)val);
+			if (attr(disabled) & 0x1) {
+                VGA_ATTR_SetPalette(attr(index),(Bit8u)val);
+
+                /* if the color plane enable register is anything other than 0x0F, then
+                 * the whole attribute palette must be re-sent to the DAC because the
+                 * masking causes one entry to affect others due to the way the VGA
+                 * lookup table works (array xlat32[]). This is not necessary for EGA
+                 * emulation because it uses the color plane enable mask directly. */
+                if (IS_VGA_ARCH && (attr(color_plane_enable) & 0x0F) != 0x0F) {
+                    /* update entries before the desired index */
+                    for (Bit8u i=0;i < attr(index);i++)
+                        VGA_ATTR_SetPalette(i,vga.attr.palette[i]);
+
+                    /* update entries after the desired index */
+                    for (Bit8u i=attr(index)+1;i < 0x10;i++)
+                        VGA_ATTR_SetPalette(i,vga.attr.palette[i]);
+                }
+            }
 			/*
 				0-5	Index into the 256 color DAC table. May be modified by 3C0h index
 				10h and 14h.
@@ -142,6 +195,8 @@ void write_p3c0(Bitu /*port*/,Bitu val,Bitu iolen) {
 			
 			if (difference & 0x41)
 				VGA_DetermineMode();
+            if ((difference & 0x40) && (vga.mode == M_VGA)) // 8BIT changes in 256-color mode must be handled
+                VGA_StartResize(50);
 
 			if (difference & 0x04) {
 				// recompute the panning value

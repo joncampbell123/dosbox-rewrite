@@ -16,7 +16,7 @@ public:
 	                comb();
 	        void    setbuffer(float *buf, int size);
 	        void    deletebuffer();
-	inline  float   process(float inp);
+	inline  float   process(float input);
 	        void    mute();
 	        void    setdamp(float val);
 	        float   getdamp();
@@ -26,12 +26,12 @@ public:
 					void saveState( std::ostream &stream );
 					void loadState( std::istream &stream );
 private:
-	float   feedback;
+	float   feedback = 0;
 	float   filterstore;
-	float   damp1;
-	float   damp2;
-	float   *buffer;
-	int     bufsize;
+	float   damp1 = 0;
+	float   damp2 = 0;
+	float   *buffer = NULL;
+	int     bufsize = 0;
 	int     bufidx;
 };
 

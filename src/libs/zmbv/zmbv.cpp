@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2013  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,14 +13,20 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
+
+#include "config.h"
+
+#if (C_SSHOT)
 
 #include <zlib.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
 #include <math.h>
+#include <png.h>
 
 #include "zmbv.h"
 
@@ -433,7 +439,7 @@ bool VideoCodec::DecompressFrame(void * framedata, int size) {
 	zstream.avail_out = (unsigned int)bufsize;
 	zstream.total_out = 0;
 	inflate(&zstream, Z_FINISH);
-	workUsed= zstream.total_out;
+	workUsed= (int)zstream.total_out;
 	workPos = 0;
 	if (tag & Mask_KeyFrame) {
 		if (palsize) {
@@ -553,3 +559,5 @@ VideoCodec::VideoCodec() {
 	work = 0;
 	memset( &zstream, 0, sizeof(zstream));
 }
+
+#endif //(C_SSHOT)

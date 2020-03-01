@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2013  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,9 +13,13 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
+// Tell Mac OS X to shut up about deprecated OpenGL calls
+#ifndef GL_SILENCE_DEPRECATION
+#define GL_SILENCE_DEPRECATION
+#endif
 
 #include <stdlib.h>
 #include <math.h>
@@ -30,9 +34,9 @@
 
 /* NTS: This causes errors in Linux because MesaGL already defines these */
 #ifdef WIN32
-PFNGLMULTITEXCOORD4FVARBPROC glMultiTexCoord4fvARB = NULL;
-PFNGLMULTITEXCOORD4FARBPROC glMultiTexCoord4fARB = NULL;
-PFNGLACTIVETEXTUREARBPROC glActiveTextureARB = NULL;
+PFNGLMULTITEXCOORD4FVARBPROC __glMultiTexCoord4fvARB = NULL;
+PFNGLMULTITEXCOORD4FARBPROC __glMultiTexCoord4fARB = NULL;
+PFNGLACTIVETEXTUREARBPROC __glActiveTextureARB = NULL;
 #endif
 
 PFNGLCREATESHADEROBJECTARBPROC glCreateShaderObjectARB = NULL;
@@ -169,20 +173,20 @@ bool VOGL_Initialize(void) {
 	VOGL_InitVersion();
 
 #ifdef WIN32
-	glActiveTextureARB = (PFNGLACTIVETEXTUREARBPROC)((uintptr_t)SDL_GL_GetProcAddress("glActiveTextureARB"));
-	if (!glActiveTextureARB) {
+	__glActiveTextureARB = (PFNGLACTIVETEXTUREARBPROC)((uintptr_t)SDL_GL_GetProcAddress("glActiveTextureARB"));
+	if (!__glActiveTextureARB) {
 		LOG_MSG("opengl: glActiveTextureARB extension not supported");
 		return false;
 	}
 
-	glMultiTexCoord4fARB = (PFNGLMULTITEXCOORD4FARBPROC)((uintptr_t)SDL_GL_GetProcAddress("glMultiTexCoord4fARB"));
-	if (!glMultiTexCoord4fARB) {
+	__glMultiTexCoord4fARB = (PFNGLMULTITEXCOORD4FARBPROC)((uintptr_t)SDL_GL_GetProcAddress("glMultiTexCoord4fARB"));
+	if (!__glMultiTexCoord4fARB) {
 		LOG_MSG("opengl: glMultiTexCoord4fARB extension not supported");
 		return false;
 	}
 
-	glMultiTexCoord4fvARB = (PFNGLMULTITEXCOORD4FVARBPROC)((uintptr_t)SDL_GL_GetProcAddress("glMultiTexCoord4fvARB"));
-	if (!glMultiTexCoord4fvARB) {
+	__glMultiTexCoord4fvARB = (PFNGLMULTITEXCOORD4FVARBPROC)((uintptr_t)SDL_GL_GetProcAddress("glMultiTexCoord4fvARB"));
+	if (!__glMultiTexCoord4fvARB) {
 		LOG_MSG("opengl: glMultiTexCoord4fvARB extension not supported");
 		return false;
 	}

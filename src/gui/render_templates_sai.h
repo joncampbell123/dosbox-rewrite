@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2013  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,18 +13,18 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 static inline int conc2d(GetResult,SBPP)(PTYPE A, PTYPE B, PTYPE C, PTYPE D) {
 	const bool ac = (A==C);
 	const bool bc = (B==C);
 	const int x1 = ac;
-	const int y1 = (bc & !ac);
+	const int y1 = (bc && !ac);
 	const bool ad = (A==D);
 	const bool bd = (B==D);
 	const int x2 = ad;
-	const int y2 = (bd & !ad);
+	const int y2 = (bd && !ad);
 	const int x = x1+x2;
 	const int y = y1+y2;
 	static const int rmap[3][3] = {

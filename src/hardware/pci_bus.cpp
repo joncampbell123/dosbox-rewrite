@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -54,7 +54,7 @@ static void write_pci_addr(Bitu port,Bitu val,Bitu iolen) {
     (void)iolen;//UNUSED
     (void)port;//UNUSED
     if (log_pci) LOG(LOG_PCI,LOG_DEBUG)("Write PCI address :=%x",(int)val);
-	pci_caddress=val;
+	pci_caddress=(Bit32u)val;
 }
 
 static void write_pci(Bitu port,Bitu val,Bitu iolen) {
@@ -72,7 +72,7 @@ static void write_pci(Bitu port,Bitu val,Bitu iolen) {
 
 		PCI_Device* dev=pci_devices[busnum][devnum];
 		if (dev == NULL) return;
-		dev->config_write(regnum,iolen,val);
+		dev->config_write(regnum,iolen,(Bit32u)val);
 	}
 }
 
@@ -245,20 +245,20 @@ public:
 					if (getDeviceID() >= 2) {
 						oscillator_ctr++;
 						pci_ctr--;
-						return (oscillator_ctr | ((pci_ctr<<16ul) & 0x0fff0000ul)) & 0xffu;
+						return (oscillator_ctr | (((unsigned long)pci_ctr<<16ul) & 0x0fff0000ul)) & 0xffu;
 					}
 					break;
 				case 0x55:
 					if (getDeviceID() >= 2)
-						return ((oscillator_ctr | ((pci_ctr<<16ul) & 0x0fff0000ul)) >> 8ul) & 0xffu;
+						return ((oscillator_ctr | (((unsigned long)pci_ctr<<16ul) & 0x0fff0000ul)) >> 8ul) & 0xffu;
 					break;
 				case 0x56:
 					if (getDeviceID() >= 2)
-						return ((oscillator_ctr | ((pci_ctr<<16ul) & 0x0fff0000ul)) >> 16ul) & 0xffu;
+						return ((oscillator_ctr | (((unsigned long)pci_ctr<<16ul) & 0x0fff0000ul)) >> 16ul) & 0xffu;
 					break;
 				case 0x57:
 					if (getDeviceID() >= 2)
-						return ((oscillator_ctr | ((pci_ctr<<16ul) & 0x0fff0000ul)) >> 24ul) & 0xffu;
+						return ((oscillator_ctr | (((unsigned long)pci_ctr<<16ul) & 0x0fff0000ul)) >> 24ul) & 0xffu;
 					break;
 				default:
 					break;
@@ -389,8 +389,10 @@ static void Deinitialize(void) {
 static PCI_Device *S3_PCI=NULL;
 static PCI_Device *SST_PCI=NULL;
 
+extern bool enable_pci_vga;
+
 void PCI_AddSVGAS3_Device(void) {
-	if (!pcibus_enable) return;
+	if (!pcibus_enable || !enable_pci_vga) return;
 
 	if (S3_PCI == NULL) {
 		if ((S3_PCI=new PCI_VGADevice()) == NULL)

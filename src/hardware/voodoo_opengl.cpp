@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2013  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,9 +13,13 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
+// Tell Mac OS X to shut up about deprecated OpenGL calls
+#ifndef GL_SILENCE_DEPRECATION
+#define GL_SILENCE_DEPRECATION
+#endif
 
 #include <stdlib.h>
 #include <math.h>
@@ -26,7 +30,7 @@
 
 #include "voodoo_emu.h"
 #include "voodoo_opengl.h"
-
+#include "sdlmain.h"
 
 #if C_OPENGL
 
@@ -119,7 +123,7 @@ static void ogl_get_depth(voodoo_state* VV, INT32 ITERZ, INT64 ITERW, INT32 *dep
 		*depthval = wfloat;
 	else
 	{
-		if ((ITERZ) & 0xf0000000l)
+		if ((unsigned int)(ITERZ) & 0xf0000000l)
 			*depthval = 0x0000;
 		else
 		{
@@ -199,7 +203,7 @@ void ogl_get_fog_blend(voodoo_state* v, INT32 wfloat, INT32 ITERZ, INT64 ITERW, 
 
 void ogl_get_vertex_data(INT32 x, INT32 y, const void *extradata, ogl_vertex_data *vd) {
 	const poly_extra_data *extra = (const poly_extra_data *)extradata;
-	voodoo_state *v=(voodoo_state*)extra->state;
+	v=(voodoo_state*)extra->state;
 	INT32 iterr, iterg, iterb, itera;
 	INT32 iterz;
 	INT64 iterw;
@@ -216,7 +220,7 @@ void ogl_get_vertex_data(INT32 x, INT32 y, const void *extradata, ogl_vertex_dat
 	iterw = extra->startw + ((dy * extra->dwdy)>>4) + ((dx * extra->dwdx)>>4);
 
 	for (Bitu i=0; i<extra->texcount; i++) {
-		INT64 iters,itert,iterw;
+		INT64 iters,itert,iterw2;
 		UINT32 smax,tmax;
 		INT64 s, t;
 		INT32 lod=0;
@@ -225,8 +229,6 @@ void ogl_get_vertex_data(INT32 x, INT32 y, const void *extradata, ogl_vertex_dat
 		UINT32 TEXMODE = texmode;
 		INT32 LODBASE = (i==0) ? extra->lodbase0 : extra->lodbase1;
 
-		INT64 oow;
-
 		UINT32 ilod = (UINT32)(v->tmu[i].lodmin >> 8);
 		if (!((v->tmu[i].lodmask >> ilod) & 1))
 			ilod++;
@@ -234,14 +236,14 @@ void ogl_get_vertex_data(INT32 x, INT32 y, const void *extradata, ogl_vertex_dat
 		smax = (v->tmu[i].wmask >> ilod) + 1;
 		tmax = (v->tmu[i].hmask >> ilod) + 1;
 
-		iterw = v->tmu[i].startw + ((dy * v->tmu[i].dwdy)>>4) + ((dx * v->tmu[i].dwdx)>>4);
+		iterw2 = v->tmu[i].startw + ((dy * v->tmu[i].dwdy)>>4) + ((dx * v->tmu[i].dwdx)>>4);
 		iters = v->tmu[i].starts + ((dy * v->tmu[i].dsdy)>>4) + ((dx * v->tmu[i].dsdx)>>4);
 		itert = v->tmu[i].startt + ((dy * v->tmu[i].dtdy)>>4) + ((dx * v->tmu[i].dtdx)>>4);
 
 		/* determine the S/T/LOD values for this texture */
 		if (TEXMODE_ENABLE_PERSPECTIVE(texmode))
 		{
-			oow = fast_reciplog((iterw), &lod);
+			INT64 oow = fast_reciplog((iterw2), &lod);
 			s = (oow * (iters)) >> 29;
 			t = (oow * (itert)) >> 29;
 			lod += LODBASE;
@@ -263,14 +265,14 @@ void ogl_get_vertex_data(INT32 x, INT32 y, const void *extradata, ogl_vertex_dat
 			lod = v->tmu[i].lodmax;
 
 		/* clamp W */
-		if (TEXMODE_CLAMP_NEG_W(texmode) && (iterw) < 0)
+		if (TEXMODE_CLAMP_NEG_W(texmode) && (iterw2) < 0)
 			s = t = 0;
 
 		if (s != 0) vd->m[i].s = (float)((float)s/(float)(smax*(1u<<(18u+ilod))));
 		else vd->m[i].s = 0.0f;
 		if (t != 0) vd->m[i].t = (float)((float)t/(float)(tmax*(1u<<(18u+ilod))));
 		else vd->m[i].t = 0.0f;
-		if (iterw != 0) vd->m[i].w = (float)((float)iterw/(float)(0xffffff));
+		if (iterw2 != 0) vd->m[i].w = (float)((float)iterw2/(float)(0xffffff));
 		else vd->m[i].w = 0.0f;
 
 		vd->m[i].sw = vd->m[i].s * vd->m[i].w;
@@ -377,26 +379,23 @@ UINT32 calculate_palsum(UINT32 tmunum) {
 }
 
 void ogl_cache_texture(const poly_extra_data *extra, ogl_texture_data *td) {
-	voodoo_state *v=(voodoo_state*)extra->state;
-	UINT32 texbase;
+	v=(voodoo_state*)extra->state;
 
 	INT32 smax, tmax;
 	UINT32 *texrgbp;
 	GLuint texID;
 
-	UINT32 TEXMODE;
-
 	UINT32 num_tmus = 1;
 	if (v->tmu[1].ram != NULL) num_tmus++;
 
 	for (UINT32 j=0; j<num_tmus; j++) {
-		TEXMODE = (UINT32)(j==0 ? extra->r_textureMode0 : extra->r_textureMode1);
+		UINT32 TEXMODE = (UINT32)(j==0 ? extra->r_textureMode0 : extra->r_textureMode1);
 
 		UINT32 ilod = (UINT32)(v->tmu[j].lodmin >> 8);
 		if (!((v->tmu[j].lodmask >> ilod) & 1))
 			ilod++;
 
-		texbase = v->tmu[j].lodoffset[ilod];
+		UINT32 texbase = v->tmu[j].lodoffset[ilod];
 
 		if ( extra->texcount && (extra->texcount >= j) && (v->tmu[j].lodmin < (8 << 8)) ) {
 			bool valid_texid = true;
@@ -422,8 +421,7 @@ void ogl_cache_texture(const poly_extra_data *extra, ogl_texture_data *td) {
 						valid_texid = false;
 //						LOG_MSG("texture removed... size %d",t->second.ids->size());
 						if (t->second.ids->size() > 8) {
-							std::map<const UINT32, GLuint>::iterator u;
-							for (u=t->second.ids->begin(); u!=t->second.ids->end(); u++) {
+							for (u=t->second.ids->begin(); u!=t->second.ids->end(); ++u) {
 								glDeleteTextures(1,&u->second);
 							}
 							t->second.ids->clear();
@@ -505,9 +503,8 @@ void ogl_cache_texture(const poly_extra_data *extra, ogl_texture_data *td) {
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, smax, tmax, 0, GL_BGRA_EXT, GL_UNSIGNED_INT_8_8_8_8_REV, texrgbp);
 				extern PFNGLGENERATEMIPMAPEXTPROC glGenerateMipmapEXT;
 				glGenerateMipmapEXT(GL_TEXTURE_2D);
-				UINT32 palsum=0;
 				if ((TEXMODE_FORMAT(v->tmu[j].reg[textureMode].u)==0x05) || (TEXMODE_FORMAT(v->tmu[j].reg[textureMode].u)==0x0e)) {
-					palsum = calculate_palsum(j);
+					UINT32 palsum = calculate_palsum(j);
 					if (t == textures[j].end()) {
 						std::map<const UINT32, GLuint>* ids = new std::map<const UINT32, GLuint>();
 						(*ids)[palsum] = texID;
@@ -536,7 +533,7 @@ void ogl_cache_texture(const poly_extra_data *extra, ogl_texture_data *td) {
 void voodoo_ogl_invalidate_paltex(void) {
 	std::map<const UINT32, ogl_texmap>::iterator t;
 	for (int j=0; j<2; j++) {
-		for (t=textures[j].begin(); t!=textures[j].end(); t++) {
+		for (t=textures[j].begin(); t!=textures[j].end(); ++t) {
 			if ((t->second.format == 0x05) || (t->second.format == 0x0e)) {
 				t->second.valid_pal = false;
 			}
@@ -552,13 +549,12 @@ void ogl_printInfoLog(GLhandleARB obj)
 {
     int infologLength = 0;
     int charsWritten  = 0;
-    char *infoLog;
 
     glGetObjectParameterivARB(obj, GL_OBJECT_INFO_LOG_LENGTH_ARB, &infologLength);
 
     if (infologLength > 0)
     {
-		infoLog = (char *)malloc((size_t)infologLength);
+		char *infoLog = (char *)malloc((size_t)infologLength);
 		glGetInfoLogARB(obj, infologLength, &charsWritten, infoLog);
 		LOG_MSG("%s\n",infoLog);
 		free(infoLog);
@@ -566,7 +562,7 @@ void ogl_printInfoLog(GLhandleARB obj)
 }
 
 void ogl_sh_tex_combine(std::string *strFShader, const int TMU, const poly_extra_data *extra) {
-	voodoo_state *v=(voodoo_state*)extra->state;
+	v=(voodoo_state*)extra->state;
 
 	UINT32 TEXMODE     = v->tmu[TMU].reg[textureMode].u;
 
@@ -670,7 +666,7 @@ void ogl_sh_tex_combine(std::string *strFShader, const int TMU, const poly_extra
 }
 
 void ogl_sh_color_path(std::string *strFShader, const poly_extra_data *extra) {
-	voodoo_state *v=(voodoo_state*)extra->state;
+	v=(voodoo_state*)extra->state;
 
 	UINT32 FBZCOLORPATH = v->reg[fbzColorPath].u;
 	UINT32 FBZMODE = v->reg[fbzMode].u;
@@ -879,7 +875,7 @@ void ogl_sh_color_path(std::string *strFShader, const poly_extra_data *extra) {
 }
 
 void ogl_sh_fog(std::string *strFShader, const poly_extra_data *extra) {
-	voodoo_state *v=(voodoo_state*)extra->state;
+	v=(voodoo_state*)extra->state;
 
 	UINT32 FOGMODE = v->reg[fogMode].u;
 
@@ -935,7 +931,7 @@ void ogl_sh_fog(std::string *strFShader, const poly_extra_data *extra) {
 
 
 void ogl_shaders(const poly_extra_data *extra) {
-	voodoo_state *v=(voodoo_state*)extra->state;
+	v=(voodoo_state*)extra->state;
 
 	GLint res;
 	std::string strVShader, strFShader;
@@ -1122,7 +1118,7 @@ void ogl_shaders(const poly_extra_data *extra) {
 
 
 void voodoo_ogl_draw_triangle(poly_extra_data *extra) {
-	voodoo_state *v=extra->state;
+	v=extra->state;
 	ogl_texture_data td[2];
 	ogl_vertex_data vd[3];
 
@@ -1307,7 +1303,7 @@ void voodoo_ogl_texture_clear(UINT32 texbase, int TMU) {
 		VOGL_ClearBeginMode();
 		if (t->second.ids != NULL) {
 			std::map<const UINT32, GLuint>::iterator u;
-			for (u=t->second.ids->begin(); u!=t->second.ids->end(); u++) {
+			for (u=t->second.ids->begin(); u!=t->second.ids->end(); ++u) {
 				glDeleteTextures(1,&u->second);
 			}
 			delete t->second.ids;
@@ -1620,6 +1616,9 @@ void voodoo_ogl_reset_videomode(void) {
     DOSBox_SetMenu();
 #endif
 
+#if defined(C_SDL2)
+    E_Exit("SDL2 3Dfx OpenGL emulation not implemented yet");
+#else
     GFX_PreventFullscreen(true);
 
 	last_clear_color=0;
@@ -1749,9 +1748,7 @@ void voodoo_ogl_reset_videomode(void) {
 
 	GLint depth_csize;
 	glGetIntegerv(GL_DEPTH_BITS, &depth_csize);
-	if (depth_csize == 24) {
-	} else if (depth_csize == 16) {
-	} else if (depth_csize < 16) {
+	if (depth_csize < 16) {
 		LOG_MSG("VOODOO: OpenGL: invalid depth size %d",depth_csize);
 	}
 
@@ -1766,6 +1763,7 @@ void voodoo_ogl_reset_videomode(void) {
 	glShadeModel(GL_SMOOTH);
 
 	LOG_MSG("VOODOO: OpenGL: mode set, resolution %d:%d %s", v->fbi.width, v->fbi.height, (sdl_flags & SDL_FULLSCREEN) ? "(fullscreen)" : "");
+#endif
 }
 
 void voodoo_ogl_update_dimensions(void) {
@@ -1826,10 +1824,10 @@ void voodoo_ogl_leave(bool leavemode) {
 
 	std::map<const UINT32, ogl_texmap>::iterator t;
 	for (int j=0; j<2; j++) {
-		for (t=textures[j].begin(); t!=textures[j].end(); t++) {
+		for (t=textures[j].begin(); t!=textures[j].end(); ++t) {
 			if (t->second.ids != NULL) {
 				std::map<const UINT32, GLuint>::iterator u;
-				for (u=t->second.ids->begin(); u!=t->second.ids->end(); u++) {
+				for (u=t->second.ids->begin(); u!=t->second.ids->end(); ++u) {
 					glDeleteTextures(1,&u->second);
 				}
 				if (!t->second.ids->empty()) t->second.ids->clear();

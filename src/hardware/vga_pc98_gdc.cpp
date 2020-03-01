@@ -1,3 +1,20 @@
+/*
+ *  Copyright (C) 2018  Jon Campbell
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
+ */
 
 #include "dosbox.h"
 #include "setup.h"
@@ -26,7 +43,9 @@
 using namespace std;
 
 extern bool                 gdc_5mhz_mode;
+extern bool                 gdc_5mhz_mode_initial;
 extern bool                 GDC_vsync_interrupt;
+extern bool                 pc98_256kb_boundary;
 extern uint8_t              GDC_display_plane;
 extern uint8_t              GDC_display_plane_pending;
 extern uint8_t              GDC_display_plane_wait_for_vsync;
@@ -34,6 +53,45 @@ extern uint8_t              GDC_display_plane_wait_for_vsync;
 double                      gdc_proc_delay = 0.001; /* time from FIFO to processing in GDC (1us) FIXME: Is this right? */
 bool                        gdc_proc_delay_set = false;
 struct PC98_GDC_state       pc98_gdc[2];
+
+void pc98_update_display_page_ptr(void) {
+    if (pc98_256kb_boundary) {
+        /* GDC display plane has no effect in 256KB boundary mode */
+        pc98_pgraph_current_display_page = vga.mem.linear +
+            PC98_VRAM_GRAPHICS_OFFSET;
+    }
+    else {
+        if (pc98_gdc_vramop & (1 << VOPBIT_VGA)) {
+            pc98_pgraph_current_display_page = vga.mem.linear +
+                PC98_VRAM_GRAPHICS_OFFSET +
+                (GDC_display_plane * PC98_VRAM_PAGEFLIP256_SIZE);
+        }
+        else {
+            pc98_pgraph_current_display_page = vga.mem.linear +
+                PC98_VRAM_GRAPHICS_OFFSET +
+                (GDC_display_plane * PC98_VRAM_PAGEFLIP_SIZE);
+        }
+    }
+}
+
+void pc98_update_cpu_page_ptr(void) {
+    if (pc98_gdc_vramop & (1 << VOPBIT_VGA)) {
+        /* "Drawing screen selection register" is not valid in extended modes
+         * [http://hackipedia.org/browse.cgi/Computer/Platform/PC%2c%20NEC%20PC%2d98/Collections/Undocumented%209801%2c%209821%20Volume%202%20%28webtech.co.jp%29/io%5fdisp%2etxt] */
+        pc98_pgraph_current_cpu_page = vga.mem.linear +
+            PC98_VRAM_GRAPHICS_OFFSET;
+    }
+    else {
+        pc98_pgraph_current_cpu_page = vga.mem.linear +
+            PC98_VRAM_GRAPHICS_OFFSET +
+            ((pc98_gdc_vramop & (1 << VOPBIT_ACCESS)) ? PC98_VRAM_PAGEFLIP_SIZE : 0);
+    }
+}
+
+void pc98_update_page_ptrs(void) {
+    pc98_update_display_page_ptr();
+    pc98_update_cpu_page_ptr();
+}
 
 void gdc_proc_schedule_delay(void);
 void gdc_proc_schedule_cancel(void);
@@ -45,6 +103,9 @@ void pc98_port68_command_write(unsigned char b);
 
 PC98_GDC_state::PC98_GDC_state() {
     memset(param_ram,0,sizeof(param_ram));
+    memset(cmd_parm_tmp, 0, sizeof(cmd_parm_tmp));
+    memset(rfifo, 0, sizeof(rfifo));
+    memset(fifo, 0, sizeof(fifo));
 
     // make a display partition area to cover the screen, whatever it is.
     param_ram[0] = 0x00;        // SAD=0
@@ -52,10 +113,14 @@ PC98_GDC_state::PC98_GDC_state() {
     param_ram[2] = 0xF0;        // LEN=3FF
     param_ram[3] = 0x3F;        // LEN=3FF WD1=0
 
+    IM_bit = false;
     display_partition_mask = 3;
     doublescan = false;
     param_ram_wptr = 0;
     display_partition = 0;
+    display_partition_rem_lines = 0;
+    active_display_lines = 0;
+    active_display_words_per_line = 0;
     row_line = 0;
     row_height = 16;
     scan_address = 0;
@@ -63,6 +128,7 @@ PC98_GDC_state::PC98_GDC_state() {
     proc_step = 0xFF;
     display_enable = true;
     display_mode = 0;
+    display_pitch = 0;
     cursor_enable = true;
     cursor_blink_state = 0;
     cursor_blink_count = 0;
@@ -73,6 +139,12 @@ PC98_GDC_state::PC98_GDC_state() {
     dynamic_ram_refresh = 0;
     cursor_blink = true;
     idle = false;
+    horizontal_sync_width = 0;
+    vertical_sync_width = 0;
+    horizontal_front_porch_width = 0;
+    horizontal_back_porch_width = 0;
+    vertical_front_porch_width = 0;
+    vertical_back_porch_width = 0;
     reset_fifo();
     reset_rfifo();
 }
@@ -199,7 +271,7 @@ void PC98_GDC_state::take_cursor_char_setup(unsigned char bi) {
 
 		vga.crtc.maximum_scan_line = cmd_parm_tmp[0] & 0x1F;
 		vga.draw.address_line_total = vga.crtc.maximum_scan_line + 1u;
-        row_height = vga.draw.address_line_total;
+        row_height = (uint8_t)vga.draw.address_line_total;
         if (!master_sync) doublescan = (row_height > 1);
     }
 
@@ -264,10 +336,10 @@ void PC98_GDC_state::idle_proc(void) {
             case GDC_CMD_PITCH_SPEC:          // 0x47        0 1 0 0 0 1 1 1
                 break;
             case GDC_CMD_CURSOR_POSITION:     // 0x49        0 1 0 0 1 0 0 1
-                LOG_MSG("GDC: cursor pos");
+//              LOG_MSG("GDC: cursor pos");
                 break;
             case GDC_CMD_CURSOR_CHAR_SETUP:   // 0x4B        0 1 0 0 1 0 1 1
-                LOG_MSG("GDC: cursor setup");
+//              LOG_MSG("GDC: cursor setup");
                 break;
             case GDC_CMD_START_DISPLAY:       // 0x6B        0 1 1 0 1 0 1 1
                 display_enable = true;
@@ -298,10 +370,17 @@ void PC98_GDC_state::idle_proc(void) {
                 param_ram_wptr = current_command & 0xF;
                 current_command = GDC_CMD_PARAMETER_RAM_LOAD;
                 break;
-            default:
-                LOG_MSG("GDC: Unknown command 0x%x",current_command);
+            case GDC_CMD_CURSOR_ADDRESS_READ:  // 0xE0       1 1 1 0 0 0 0 0
+                write_rfifo((unsigned char)( vga.config.cursor_start         & 0xFFu));
+                write_rfifo((unsigned char)((vga.config.cursor_start >>  8u) & 0xFFu));
+                write_rfifo((unsigned char)((vga.config.cursor_start >> 16u) & 0xFFu));
+                write_rfifo(0x00); // TODO
+                write_rfifo(0x00); // TODO
                 break;
-        };
+            default:
+                LOG_MSG("GDC: %s: Unknown command 0x%x",master_sync?"master":"slave",current_command);
+                break;
+        }
     }
     else {
         /* parameter parsing */
@@ -338,7 +417,7 @@ void PC98_GDC_state::idle_proc(void) {
                 param_ram[param_ram_wptr] = (uint8_t)val;
                 if ((++param_ram_wptr) >= 16) param_ram_wptr = 0;
                 break;
-        };
+        }
     }
 
     if (!fifo_empty())
@@ -360,8 +439,16 @@ Bit16u PC98_GDC_state::read_fifo(void) {
 }
 
 void PC98_GDC_state::next_line(void) {
-    if ((++row_line) == row_height) {
-        scan_address += display_pitch;
+    /* */
+
+    row_line++;
+    if (row_line == row_height || /*HACK! See comments!*/(!master_sync/*graphics layer*/ && (pc98_gdc_vramop & (1u << VOPBIT_VGA)))) {
+        /* NTS: According to real PC-9821 hardware, doublescan is ignored entirely in 256-color mode.
+         *      The bits are still there in the GDC, and doublescan comes right back when 256-color mode is switched off.
+         *      Perhaps the hardware uses an entirely different address counting register during video raster?
+         *      Forcing this case at all times for 256-color mode is meant to emulate that fact.
+         *      This fixes issues with booting an HDI image of "Alone in the Dark" */
+        scan_address += display_pitch >> (IM_bit ? 1u : 0u);
         row_line = 0;
     }
     else if (row_line & 0x20) {
@@ -404,6 +491,7 @@ void PC98_GDC_state::load_display_partition(void) {
      *
      * RAM+3 = WD1 0 LEN1 (H) [5:0] */
         scan_address &= 0x1FFF;
+        IM_bit = false;
     }
     else { /* graphics mode */
     /* RAM+0 = SAD1 (L)
@@ -413,6 +501,7 @@ void PC98_GDC_state::load_display_partition(void) {
      * RAM+2 = LEN1 (L) [7:4]  0 0   SAD1 (H) [1:0]
      *
      * RAM+3 = WD1 IM LEN1 (H) [5:0] */
+        IM_bit = !!(pram[3] & 0x40); /* increment the address every other cycle if set, mixed text/graphics only */
     }
 }
 
@@ -445,6 +534,14 @@ void PC98_GDC_state::flush_fifo_old(void) {
     }
 }
 
+bool PC98_GDC_state::write_rfifo(const uint8_t c) {
+    if (rfifo_write >= PC98_GDC_FIFO_SIZE)
+        return false;
+
+    rfifo[rfifo_write++] = c;
+    return true;
+}
+
 bool PC98_GDC_state::write_fifo(const uint16_t c) {
     if (fifo_write >= PC98_GDC_FIFO_SIZE)
         flush_fifo_old();
@@ -475,14 +572,9 @@ uint8_t PC98_GDC_state::read_status(void) {
 
     ret  = 0x00; // light pen not present
 
-	if (timeInFrame >= vga.draw.delay.vdend) {
-        ret |= 0x40; // vertical blanking
-    }
-    else {
-        if (timeInLine >= vga.draw.delay.hblkstart && 
-            timeInLine <= vga.draw.delay.hblkend)
-            ret |= 0x40; // horizontal blanking
-    }
+    if (timeInLine >= vga.draw.delay.hblkstart && 
+        timeInLine <= vga.draw.delay.hblkend)
+        ret |= 0x40; // horizontal blanking
 
     if (timeInFrame >= vga.draw.delay.vrstart &&
         timeInFrame <= vga.draw.delay.vrend)
@@ -557,9 +649,29 @@ void GDC_ProcDelay(Bitu /*val*/) {
         pc98_gdc[i].idle_proc(); // may schedule another delayed proc
 }
 
+bool gdc_5mhz_according_to_bios(void) {
+    return !!(mem_readb(0x54D) & 0x04);
+}
+
 void gdc_5mhz_mode_update_vars(void) {
-// FIXME: Is this right?
-    mem_writeb(0x54D,(mem_readb(0x54D) & (~0x20)) | (gdc_5mhz_mode ? 0x20 : 0x00));
+    unsigned char b;
+
+    b = mem_readb(0x54D);
+
+    /* bit[5:5] = GDC at 5.0MHz at boot up (copy of DIP switch 2-8 at startup)      1=yes 0=no
+     * bit[2:2] = GDC clock                                                         1=5MHz 0=2.5MHz */
+
+    if (gdc_5mhz_mode_initial)
+        b |=  0x20;
+    else
+        b &= ~0x20;
+
+    if (gdc_5mhz_mode)
+        b |=  0x04;
+    else
+        b &= ~0x04;
+
+    mem_writeb(0x54D,b);
 }
 
 /*==================================================*/
@@ -575,11 +687,11 @@ void pc98_gdc_write(Bitu port,Bitu val,Bitu iolen) {
 
     switch (port&0xE) {
         case 0x00:      /* 0x60/0xA0 param write fifo */
-            if (!gdc->write_fifo_param(val))
+            if (!gdc->write_fifo_param((unsigned char)val))
                 LOG_MSG("GDC warning: FIFO param overrun");
             break;
         case 0x02:      /* 0x62/0xA2 command write fifo */
-            if (!gdc->write_fifo_command(val))
+            if (!gdc->write_fifo_command((unsigned char)val))
                 LOG_MSG("GDC warning: FIFO command overrun");
             break;
         case 0x04:      /* 0x64: set trigger to signal vsync interrupt (IRQ 2) */
@@ -594,8 +706,10 @@ void pc98_gdc_write(Bitu port,Bitu val,Bitu iolen) {
                  * But: For the user's preference, we do offer a hack to delay display plane
                  *      change until vsync to try to alleviate tearlines. */
                 GDC_display_plane_pending = (val&1);
-                if (!GDC_display_plane_wait_for_vsync)
+                if (!GDC_display_plane_wait_for_vsync) {
                     GDC_display_plane = GDC_display_plane_pending;
+                    pc98_update_display_page_ptr();
+                }
             }
             break;
         case 0x06:      /* 0x66: ??
@@ -603,6 +717,7 @@ void pc98_gdc_write(Bitu port,Bitu val,Bitu iolen) {
             if (port == 0xA6) {
                 pc98_gdc_vramop &= ~(1 << VOPBIT_ACCESS);
                 pc98_gdc_vramop |=  (val&1) << VOPBIT_ACCESS;
+                pc98_update_cpu_page_ptr();
             }
             else {
                 goto unknown;
@@ -615,14 +730,14 @@ void pc98_gdc_write(Bitu port,Bitu val,Bitu iolen) {
                         /* NTS: Sadly, "undocumented PC-98" reference does not mention the analog 16-color palette. */
             if (port == 0xA8) {
                 if (gdc_analog) { /* 16/256-color mode */
-                    pc98_16col_analog_rgb_palette_index = val; /* it takes all 8 bits I assume because of 256-color mode */
+                    pc98_16col_analog_rgb_palette_index = (uint8_t)val; /* it takes all 8 bits I assume because of 256-color mode */
                 }
                 else {
-                    pc98_set_digpal_pair(3,val);
+                    pc98_set_digpal_pair(3,(unsigned char)val);
                 }
             }
             else {
-                pc98_port68_command_write(val);
+                pc98_port68_command_write((unsigned char)val);
             }
             break;
         case 0x0A:      /* 0xAA:
@@ -631,16 +746,23 @@ void pc98_gdc_write(Bitu port,Bitu val,Bitu iolen) {
                            256-color: 4-bit green intensity. Color index is 8-bit palette index. */
             if (port == 0xAA) { /* TODO: If 8-color... else if 16-color... else if 256-color... */
                 if (gdc_analog) { /* 16/256-color mode */
-                    pc98_pal_analog[(3*(pc98_16col_analog_rgb_palette_index&0xF)) + 0] = val&0x0F;
-                    vga.dac.rgb[pc98_16col_analog_rgb_palette_index & 0xF].green = dac_4to6(val&0xF); /* re-use VGA DAC */
-                    VGA_DAC_UpdateColor(pc98_16col_analog_rgb_palette_index & 0xF);
+                    if (pc98_gdc_vramop & (1 << VOPBIT_VGA)) {
+                        pc98_pal_vga[(3*pc98_16col_analog_rgb_palette_index) + 0] = (uint8_t)val;
+                        vga.dac.rgb[pc98_16col_analog_rgb_palette_index].green = (Bit8u)val;
+                        VGA_DAC_UpdateColor(pc98_16col_analog_rgb_palette_index);
+                    }
+                    else {
+                        pc98_pal_analog[(3*(pc98_16col_analog_rgb_palette_index&0xF)) + 0] = val&0x0F;
+                        vga.dac.rgb[pc98_16col_analog_rgb_palette_index & 0xF].green = dac_4to6(val&0xF); /* re-use VGA DAC */
+                        VGA_DAC_UpdateColor(pc98_16col_analog_rgb_palette_index & 0xF);
+                    }
                 }
                 else {
-                    pc98_set_digpal_pair(1,val);
+                    pc98_set_digpal_pair(1,(unsigned char)val);
                 }
             }
             else {
-                pc98_port6A_command_write(val);
+                pc98_port6A_command_write((unsigned char)val);
             }
             break;
         case 0x0C:      /* 0xAC:
@@ -649,12 +771,19 @@ void pc98_gdc_write(Bitu port,Bitu val,Bitu iolen) {
                            256-color: 4-bit red intensity. Color index is 8-bit palette index. */
             if (port == 0xAC) { /* TODO: If 8-color... else if 16-color... else if 256-color... */
                 if (gdc_analog) { /* 16/256-color mode */
-                    pc98_pal_analog[(3*(pc98_16col_analog_rgb_palette_index&0xF)) + 1] = val&0x0F;
-                    vga.dac.rgb[pc98_16col_analog_rgb_palette_index & 0xF].red = dac_4to6(val&0xF); /* re-use VGA DAC */
-                    VGA_DAC_UpdateColor(pc98_16col_analog_rgb_palette_index & 0xF);
+                    if (pc98_gdc_vramop & (1 << VOPBIT_VGA)) {
+                        pc98_pal_vga[(3*pc98_16col_analog_rgb_palette_index) + 1] = (uint8_t)val;
+                        vga.dac.rgb[pc98_16col_analog_rgb_palette_index].red = (Bit8u)val;
+                        VGA_DAC_UpdateColor(pc98_16col_analog_rgb_palette_index);
+                    }
+                    else {
+                        pc98_pal_analog[(3*(pc98_16col_analog_rgb_palette_index&0xF)) + 1] = val&0x0F;
+                        vga.dac.rgb[pc98_16col_analog_rgb_palette_index & 0xF].red = dac_4to6(val&0xF); /* re-use VGA DAC */
+                        VGA_DAC_UpdateColor(pc98_16col_analog_rgb_palette_index & 0xF);
+                    }
                 }
                 else {
-                    pc98_set_digpal_pair(2,val);
+                    pc98_set_digpal_pair(2,(unsigned char)val);
                 }
             }
             else {
@@ -667,12 +796,19 @@ void pc98_gdc_write(Bitu port,Bitu val,Bitu iolen) {
                            256-color: 4-bit blue intensity. Color index is 8-bit palette index. */
             if (port == 0xAE) { /* TODO: If 8-color... else if 16-color... else if 256-color... */
                 if (gdc_analog) { /* 16/256-color mode */
-                    pc98_pal_analog[(3*(pc98_16col_analog_rgb_palette_index&0xF)) + 2] = val&0x0F;
-                    vga.dac.rgb[pc98_16col_analog_rgb_palette_index & 0xF].blue = dac_4to6(val&0xF); /* re-use VGA DAC */
-                    VGA_DAC_UpdateColor(pc98_16col_analog_rgb_palette_index & 0xF);
+                    if (pc98_gdc_vramop & (1 << VOPBIT_VGA)) {
+                        pc98_pal_vga[(3*pc98_16col_analog_rgb_palette_index) + 2] = (uint8_t)val;
+                        vga.dac.rgb[pc98_16col_analog_rgb_palette_index].blue = (Bit8u)val;
+                        VGA_DAC_UpdateColor(pc98_16col_analog_rgb_palette_index);
+                    }
+                    else {
+                        pc98_pal_analog[(3*(pc98_16col_analog_rgb_palette_index&0xF)) + 2] = val&0x0F;
+                        vga.dac.rgb[pc98_16col_analog_rgb_palette_index & 0xF].blue = dac_4to6(val&0xF); /* re-use VGA DAC */
+                        VGA_DAC_UpdateColor(pc98_16col_analog_rgb_palette_index & 0xF);
+                    }
                 }
                 else {
-                    pc98_set_digpal_pair(0,val);
+                    pc98_set_digpal_pair(0,(unsigned char)val);
                 }
             }
             else {
@@ -683,7 +819,7 @@ void pc98_gdc_write(Bitu port,Bitu val,Bitu iolen) {
             unknown:
             LOG_MSG("GDC unexpected write to port 0x%x val=0x%x",(unsigned int)port,(unsigned int)val);
             break;
-    };
+    }
 }
 
 Bitu pc98_gdc_read(Bitu port,Bitu iolen) {
@@ -700,9 +836,27 @@ Bitu pc98_gdc_read(Bitu port,Bitu iolen) {
             return gdc->read_status();
         case 0x02:      /* 0x62/0xA2 read fifo */
             if (!gdc->rfifo_has_content())
-                LOG_MSG("GDC warning: FIFO read underrun");
-            return gdc->rfifo_read_data();
+                return gdc->read_status();//FIXME this stops "Battle Skin Panic" from getting stuck is this correct behavior?
 
+            return gdc->rfifo_read_data();
+        case 0x04:      /* 0x64: nothing */
+                        /* 0xA4: Bit 0 select display "plane" */
+            if (port == 0x64) {
+                goto unknown;
+            }
+            else {
+                return GDC_display_plane_pending;
+            }
+            break;
+        case 0x06:      /* 0x66: ??
+                           0xA6: Bit 0 indicates current CPU access "plane" */
+            if (port == 0xA6) {
+                return (pc98_gdc_vramop & (1 << VOPBIT_ACCESS)) ? 1 : 0;
+            }
+            else {
+                goto unknown;
+            }
+            break;
         case 0x08:
             if (port == 0xA8) {
                 if (gdc_analog) { /* 16/256-color mode */
@@ -719,7 +873,10 @@ Bitu pc98_gdc_read(Bitu port,Bitu iolen) {
         case 0x0A:
             if (port == 0xAA) { /* TODO: If 8-color... else if 16-color... else if 256-color... */
                 if (gdc_analog) { /* 16/256-color mode */
-                    return pc98_pal_analog[(3*(pc98_16col_analog_rgb_palette_index&0xF)) + 0];
+                    if (pc98_gdc_vramop & (1 << VOPBIT_VGA))
+                        return pc98_pal_vga[(3*pc98_16col_analog_rgb_palette_index) + 0];
+                    else
+                        return pc98_pal_analog[(3*(pc98_16col_analog_rgb_palette_index&0xF)) + 0];
                 }
                 else {
                     return pc98_get_digpal_pair(1);
@@ -732,7 +889,10 @@ Bitu pc98_gdc_read(Bitu port,Bitu iolen) {
         case 0x0C:
             if (port == 0xAC) { /* TODO: If 8-color... else if 16-color... else if 256-color... */
                 if (gdc_analog) { /* 16/256-color mode */
-                    return pc98_pal_analog[(3*(pc98_16col_analog_rgb_palette_index&0xF)) + 1];
+                    if (pc98_gdc_vramop & (1 << VOPBIT_VGA))
+                        return pc98_pal_vga[(3*pc98_16col_analog_rgb_palette_index) + 1];
+                    else
+                        return pc98_pal_analog[(3*(pc98_16col_analog_rgb_palette_index&0xF)) + 1];
                 }
                 else {
                     return pc98_get_digpal_pair(2);
@@ -745,7 +905,10 @@ Bitu pc98_gdc_read(Bitu port,Bitu iolen) {
         case 0x0E:
             if (port == 0xAE) { /* TODO: If 8-color... else if 16-color... else if 256-color... */
                 if (gdc_analog) { /* 16/256-color mode */
-                    return pc98_pal_analog[(3*(pc98_16col_analog_rgb_palette_index&0xF)) + 2];
+                    if (pc98_gdc_vramop & (1 << VOPBIT_VGA))
+                        return pc98_pal_vga[(3*pc98_16col_analog_rgb_palette_index) + 2];
+                    else
+                        return pc98_pal_analog[(3*(pc98_16col_analog_rgb_palette_index&0xF)) + 2];
                 }
                 else {
                     return pc98_get_digpal_pair(0);
@@ -759,7 +922,7 @@ Bitu pc98_gdc_read(Bitu port,Bitu iolen) {
             unknown:
             LOG_MSG("GDC unexpected read from port 0x%x",(unsigned int)port);
             break;
-    };
+    }
 
     return ~0ul;
 }

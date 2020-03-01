@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2013  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -520,23 +520,65 @@ static Bit8u video_parameter_table_ega[0x40*0x17]={
   0x00, 0x00, 0x00, 0x00, 0x00, 0x10, 0x0e, 0x0f, 0xff // graphics registers 0-8
 };
 
+// TODO: Apparent MCGA video parameter table
+//
+// +0x0000-0x002F = ??
+// +0x0030-0x006F = Video mode 0/1 params
+// +0x0070-0x00AF = Video mode 2/3 params
+// +0x00B0-0x00EF = Video mode 4/5 params
+// +0x00F0-0x012F = Video mode 6 params
+// +0x0130-0x014F = Video mode 17 (0x11) params
+// +0x0150-0x016F = Video mode 19 (0x13) params
+//
+// BIOS code:
+//
+// ES:BX = [40:A8]          READ TABLE LOCATION FROM 40:A8
+// ES:BX = [ES:BX]          READ FROM FIRST POINTER IN TABLE
+// BX += 0x30               TABLE ENTRIES OFFSET BY 0x30 BYTES (?)
+// IF AH <= 6 THEN
+//   CX = VIDEO MODE
+//   IF CX != 0 THEN
+//     DO
+//       IF (CX & 1) == 0 THEN
+//         BX += 0x40
+//       ENDIF
+//       CX--
+//     WHILE CX != 0
+//   ENDIF
+//   GOTO END
+// ENDIF
+// IF AH != 0x11
+//   IF AH != 0x13
+//     GOTO END
+//   ENDIF
+//   BX += 0x120            AH = 0x13 HERE
+//   GOTO END
+// ENDIF
+// BX += 0x100              AH = 0x11 HERE
+// GOTO END
+// END:
+//   (RETURN)
+//
+// TODO: Copy 0x170 bytes of video parameter table from MCGA BIOS.
+//       Refer to NOTES, which has a snapshot of the MCGA BIOS within it.
 
 Bit16u INT10_SetupVideoParameterTable(PhysPt basepos) {
 	if (IS_VGA_ARCH) {
-		for (Bitu i=0;i<0x40*0x1d;i++) {
+		for (Bit16u i=0;i<0x40*0x1d;i++) {
 			phys_writeb(basepos+i,video_parameter_table_vga[i]);
 		}
 		return 0x40*0x1d;
 	} else {
-		for (Bitu i=0;i<0x40*0x17;i++) {
+		for (Bit16u i=0;i<0x40*0x17;i++) {
 			phys_writeb(basepos+i,video_parameter_table_ega[i]);
 		}
 		return 0x40*0x17;
 	}
+    // TODO: MCGA
 }
 
 Bitu RealToPhys(Bitu x) {
-	return PhysMake(x>>16,x&0xFFFF);
+	return PhysMake((Bit16u)(x>>16),x&0xFFFF);
 }
 
 void INT10_SetupBasicVideoParameterTable(void) {
@@ -564,10 +606,7 @@ void INT10_SetupBasicVideoParameterTable(void) {
 			/* TODO: Free previous block */
 
 			BIOS_VIDEO_TABLE_SIZE = (Bitu)copy_sz;
-			if (mainline_compatible_bios_mapping)
-				BIOS_VIDEO_TABLE_LOCATION = RealMake(0xf000,0xf0a4);
-			else
-				BIOS_VIDEO_TABLE_LOCATION = (Bitu)PhysToReal416(ROMBIOS_GetMemory((Bitu)copy_sz,"BIOS video table (INT 1Dh)")); /* TODO: make option */
+            BIOS_VIDEO_TABLE_LOCATION = (Bitu)PhysToReal416((PhysPt)ROMBIOS_GetMemory((Bitu)copy_sz,"BIOS video table (INT 1Dh)")); /* TODO: make option */
 
 			/* NTS: Failure to allocate means BIOS_VIDEO_TABLE_LOCATION == 0 */
 		}
@@ -576,12 +615,12 @@ void INT10_SetupBasicVideoParameterTable(void) {
 		}
 	}
 
-	RealSetVec(0x1d,BIOS_VIDEO_TABLE_LOCATION);
+	RealSetVec(0x1d,(RealPt)BIOS_VIDEO_TABLE_LOCATION);
 	ofs = RealToPhys(BIOS_VIDEO_TABLE_LOCATION);
 	if (ofs != 0) {
 		if (copy && copy_sz <= BIOS_VIDEO_TABLE_SIZE) {
 			for (size_t i=0;i < copy_sz;i++)
-				phys_writeb(ofs+(PhysPt)i,copy[i]);
+				phys_writeb((PhysPt)(ofs+(PhysPt)i),copy[i]);
 		}
 		else {
 			E_Exit("Somehow, INT 10 video param table too large");

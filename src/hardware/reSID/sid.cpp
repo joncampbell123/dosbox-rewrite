@@ -14,7 +14,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335 USA  USA
 //  ---------------------------------------------------------------------------
 
 #include "sid.h"
@@ -395,14 +395,14 @@ double SID2::I0(double x)
   // Max error acceptable in I0.
   const double I0e = 1e-6;
 
-  double sum, u, halfx, temp;
+  double sum, u, halfx;
   int n;
 
   sum = u = n = 1;
   halfx = x/2.0;
 
   do {
-    temp = halfx/n++;
+    double temp = halfx/n++;
     u *= temp*temp;
     sum += u;
   } while (u >= I0e*sum);
@@ -679,7 +679,7 @@ void SID2::clock(cycle_count delta_t)
 
       // Clock on MSB off if MSB is on, clock on MSB on if MSB is off.
       reg24 delta_accumulator =
-	(accumulator & 0x800000 ? 0x1000000 : 0x800000) - accumulator;
+	((accumulator & 0x800000) ? 0x1000000 : 0x800000) - accumulator;
 
       cycle_count delta_t_next = (cycle_count)((unsigned int)delta_accumulator / (unsigned int)freq);
       if (delta_accumulator%freq) {

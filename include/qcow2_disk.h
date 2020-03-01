@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -52,7 +52,7 @@ public:
 	
 	static QCow2Header read_header(FILE* qcow2File);
 
-	QCow2Image(QCow2Header qcow2Header, FILE *qcow2File, const char* imageName, Bit32u sectorSizeBytes);
+	QCow2Image(QCow2Header& qcow2Header, FILE *qcow2File, const char* imageName, Bit32u sectorSizeBytes);
 
 	virtual ~QCow2Image();
 	
@@ -123,7 +123,7 @@ class QCow2Disk : public imageDisk{
 
 public:
 	
-	QCow2Disk(QCow2Image::QCow2Header qcow2Header, FILE *qcow2File, Bit8u *imgName, Bit32u imgSizeK, Bit32u sectorSizeBytes, bool isHardDisk);
+	QCow2Disk(QCow2Image::QCow2Header& qcow2Header, FILE *qcow2File, Bit8u *imgName, Bit32u imgSizeK, Bit32u sectorSizeBytes, bool isHardDisk);
 
 	virtual ~QCow2Disk();
 	

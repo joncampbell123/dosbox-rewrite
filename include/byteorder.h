@@ -1,6 +1,11 @@
 
+/* Emscripten does not have endian.h */
+# if defined(EMSCRIPTEN)
+
+#  include <endian.h>
+
 /* MinGW implements some MSVC idioms, so always test for MinGW first. */
-#if defined(__MINGW32__)
+# elif defined(__MINGW32__) || defined(__riscos__)
 
 # if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
 
@@ -103,6 +108,11 @@
 
 #elif defined(__linux__) || defined(__CYGWIN__)
 
+#include <endian.h>
+
+#elif defined(__HAIKU__)
+
+#define _BSD_SOURCE
 #include <endian.h>
 
 #elif defined(__OpenBSD__)

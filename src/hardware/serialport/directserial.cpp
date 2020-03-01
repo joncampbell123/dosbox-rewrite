@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -38,6 +38,7 @@ CDirectSerial::CDirectSerial (Bitu id, CommandLine* cmd)
 
 	rx_retry = 0;
     rx_retry_max = 0;
+    rx_state = 0;
 
 	std::string tmpstring;
 	if(!cmd->FindStringBegin("realport:",tmpstring,false)) return;
@@ -51,11 +52,6 @@ CDirectSerial::CDirectSerial (Bitu id, CommandLine* cmd)
 		LOG_MSG("%s",errorbuffer);
 		return;
 	}
-
-#if SERIAL_DEBUG
-	dbgmsg_poll_block=false;
-	dbgmsg_rx_block=false;
-#endif
 
 	// rxdelay: How many milliseconds to wait before causing an
 	// overflow when the application is unresponsive.
@@ -305,7 +301,7 @@ void CDirectSerial::updatePortConfig (Bit16u divider, Bit8u lcr) {
 		else stopbits = SERIAL_2STOP;
 	} else stopbits = SERIAL_1STOP;
 
-	if(!SERIAL_setCommParameters(comport, baudrate, (char)parity, (char)stopbits, (char)bytelength)) {
+	if(!SERIAL_setCommParameters(comport, (int)baudrate, (char)parity, (char)stopbits, (char)bytelength)) {
 #if SERIAL_DEBUG
 		log_ser(dbg_aux,"Serial port settings not supported by host." );
 #endif
@@ -318,10 +314,10 @@ void CDirectSerial::updatePortConfig (Bit16u divider, Bit8u lcr) {
 void CDirectSerial::updateMSR () {
 	int new_status = SERIAL_getmodemstatus(comport);
 
-	setCTS(new_status&SERIAL_CTS? true:false);
-	setDSR(new_status&SERIAL_DSR? true:false);
-	setRI(new_status&SERIAL_RI? true:false);
-	setCD(new_status&SERIAL_CD? true:false);
+	setCTS((new_status&SERIAL_CTS)? true:false);
+	setDSR((new_status&SERIAL_DSR)? true:false);
+	setRI((new_status&SERIAL_RI)? true:false);
+	setCD((new_status&SERIAL_CD)? true:false);
 }
 
 void CDirectSerial::transmitByte (Bit8u val, bool first) {

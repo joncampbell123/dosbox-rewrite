@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 #include "adlib.h"
@@ -176,10 +176,10 @@ struct Channel {
 	void SetChanData( const Chip* chip, Bit32u data );
 	//Change in the chandata, check for new values and if we have to forward to operators
 	void UpdateFrequency( const Chip* chip, Bit8u fourOp );
+	void UpdateSynth(const Chip* chip);
 	void WriteA0( const Chip* chip, Bit8u val );
 	void WriteB0( const Chip* chip, Bit8u val );
 	void WriteC0( const Chip* chip, Bit8u val );
-	void ResetC0( const Chip* chip );
 
 	//call this for the first channel
 	template< bool opl3Mode >
@@ -193,20 +193,20 @@ struct Channel {
 
 struct Chip {
 	//This is used as the base counter for vibrato and tremolo
-	Bit32u lfoCounter;
-	Bit32u lfoAdd;
+	Bit32u lfoCounter = 0;
+	Bit32u lfoAdd = 0;
 	
 
-	Bit32u noiseCounter;
-	Bit32u noiseAdd;
-	Bit32u noiseValue;
+	Bit32u noiseCounter = 0;
+	Bit32u noiseAdd = 0;
+	Bit32u noiseValue = 0;
 
 	//Frequency scales for the different multiplications
-	Bit32u freqMul[16];
+    Bit32u freqMul[16] = {};
 	//Rates for decay and release for rate of this chip
-	Bit32u linearRates[76];
+    Bit32u linearRates[76] = {};
 	//Best match attack rates for the rate of this chip
-	Bit32u attackRates[76];
+    Bit32u attackRates[76] = {};
 
 	//18 channels with 2 operators each
 	Channel chan[18];
@@ -215,15 +215,15 @@ struct Chip {
 	Bit8u reg08;
 	Bit8u reg04;
 	Bit8u regBD;
-	Bit8u vibratoIndex;
-	Bit8u tremoloIndex;
-	Bit8s vibratoSign;
-	Bit8u vibratoShift;
-	Bit8u tremoloValue;
-	Bit8u vibratoStrength;
-	Bit8u tremoloStrength;
+	Bit8u vibratoIndex = 0;
+	Bit8u tremoloIndex = 0;
+	Bit8s vibratoSign = 0;
+	Bit8u vibratoShift = 0;
+	Bit8u tremoloValue = 0;
+	Bit8u vibratoStrength = 0;
+	Bit8u tremoloStrength = 0;
 	//Mask for allowed wave forms
-	Bit8u waveFormMask;
+	Bit8u waveFormMask = 0;
 	//0 or -1 when enabled
 	Bit8s opl3Active;
 
@@ -236,11 +236,13 @@ struct Chip {
 
 	Bit32u WriteAddr( Bit32u port, Bit8u val );
 
-	void GenerateBlock2( Bitu samples, Bit32s* output );
-	void GenerateBlock3( Bitu samples, Bit32s* output );
+	void GenerateBlock2( Bitu total, Bit32s* output );
+	void GenerateBlock3( Bitu total, Bit32s* output );
 
+	//Update the synth handlers in all channels
+	void UpdateSynths();
 	void Generate( Bit32u samples );
-	void Setup( Bit32u r );
+	void Setup( Bit32u rate );
 
 	Chip();
 };

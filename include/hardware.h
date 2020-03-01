@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -24,7 +24,7 @@
 
 class Section;
 enum OPL_Mode {
-	OPL_none,OPL_cms,OPL_opl2,OPL_dualopl2,OPL_opl3,OPL_hardware,OPL_hardwareCMS
+	OPL_none,OPL_cms,OPL_opl2,OPL_dualopl2,OPL_opl3,OPL_opl3gold,OPL_hardware,OPL_hardwareCMS
 };
 #define CAPTURE_WAVE	0x01
 #define CAPTURE_OPL		0x02
@@ -35,7 +35,7 @@ enum OPL_Mode {
 
 extern Bitu CaptureState;
 
-void OPL_Init(Section* sec,OPL_Mode mode);
+void OPL_Init(Section* sec,OPL_Mode oplmode);
 void CMS_Init(Section* sec);
 void OPL_ShutDown(Section* sec);
 void CMS_ShutDown(Section* sec);
@@ -49,6 +49,7 @@ FILE * OpenCaptureFile(const char * type,const char * ext);
 void CAPTURE_AddWave(Bit32u freq, Bit32u len, Bit16s * data);
 #define CAPTURE_FLAG_DBLW	0x1
 #define CAPTURE_FLAG_DBLH	0x2
+#define CAPTURE_FLAG_NOCHANGE   0x4
 void CAPTURE_AddImage(Bitu width, Bitu height, Bitu bpp, Bitu pitch, Bitu flags, float fps, Bit8u * data, Bit8u * pal);
 void CAPTURE_AddMidi(bool sysex, Bitu len, Bit8u * data);
 

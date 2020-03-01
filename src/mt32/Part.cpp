@@ -46,7 +46,7 @@ static const float floatKeyfollow[17] = {
 RhythmPart::RhythmPart(Synth *useSynth, unsigned int usePartNum): Part(useSynth, usePartNum) {
 	strcpy(name, "Rhythm");
 	rhythmTemp = &synth->mt32ram.rhythmTemp[0];
-	refresh();
+	RhythmPart::refresh();
 }
 
 Part::Part(Synth *useSynth, unsigned int usePartNum) {
@@ -59,7 +59,7 @@ Part::Part(Synth *useSynth, unsigned int usePartNum) {
 		// Nasty hack for rhythm
 		timbreTemp = NULL;
 	} else {
-		sprintf(name, "Part %d", partNum + 1);
+		sprintf(name, "Part %u", partNum + 1);
 		timbreTemp = &synth->mt32ram.timbreTemp[partNum];
 	}
 	currentInstr[0] = 0;

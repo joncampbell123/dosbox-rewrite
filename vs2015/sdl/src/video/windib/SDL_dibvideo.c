@@ -515,6 +515,10 @@ extern volatile BOOL ParentWindowIsBeingResized;
 extern volatile RECT ParentWindowDeferredResizeRect;
 #endif
 
+#ifndef SDL_WIN32_NO_PARENT_WINDOW
+extern CRITICAL_SECTION ParentWindowCritSec;
+#endif
+
 unsigned char wants_topmost = 0;
 
 void sdl1_hax_set_topmost(unsigned char topmost) {
@@ -531,8 +535,22 @@ void sdl1_hax_set_topmost(unsigned char topmost) {
 /* Various screen update functions available */
 static void DIB_NormalUpdate(_THIS, int numrects, SDL_Rect *rects);
 
+static unsigned char saved_winpos_valid = 0;
+static POINT saved_winpos;
+
 static void DIB_ResizeWindow(_THIS, int width, int height, int prev_width, int prev_height, Uint32 flags)
 {
+#if defined(SDL_WIN32_HX_DOS)
+    /* Windows XP understands the window is maximized, and route cursor input like so.
+     * HX DOS needs a little help to let cursor input work correctly */
+    if (SDL_VideoSurface != NULL)
+        SetWindowPos(SDL_Window, HWND_TOP, 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN), SWP_NOACTIVATE | SWP_SHOWWINDOW);
+
+	if (!IsZoomed(ParentWindowHWND))
+		ShowWindow(SDL_Window, SW_MAXIMIZE);
+
+	return;
+#endif
 	RECT bounds;
 	int x, y;
 
@@ -574,15 +592,22 @@ static void DIB_ResizeWindow(_THIS, int width, int height, int prev_width, int p
 #endif
 		width = bounds.right-bounds.left;
 		height = bounds.bottom-bounds.top;
-		if ( (flags & SDL_FULLSCREEN) ) {
-			x = (GetSystemMetrics(SM_CXSCREEN)-width)/2;
-			y = (GetSystemMetrics(SM_CYSCREEN)-height)/2;
-		} else if ( center ) {
-			x = (GetSystemMetrics(SM_CXSCREEN)-width)/2;
-			y = (GetSystemMetrics(SM_CYSCREEN)-height)/2;
-		} else if ( SDL_windowX || SDL_windowY || window ) {
-			x = bounds.left;
-			y = bounds.top;
+		if ( (flags & SDL_FULLSCREEN) || center ) {
+            // TODO move to header
+            int SDL_windib_multimonitor_adjust_from_window(int *x, int *y, int width, int height, HWND hwnd);
+
+            x = y = 0;
+            if (SDL_windib_multimonitor_adjust_from_window(&x, &y, width, height, ParentWindowHWND) < 0) {
+                x = (GetSystemMetrics(SM_CXSCREEN)-width)/2;
+                y = (GetSystemMetrics(SM_CYSCREEN)-height)/2;
+            }
+        } else if ( SDL_windowX || SDL_windowY || window ) {
+            x = bounds.left;
+            y = bounds.top;
+        } else if (saved_winpos_valid) { /* coming from fullscreen for example */
+            saved_winpos_valid = 0;
+            x = saved_winpos.x;
+            y = saved_winpos.y;
 		} else {
 			x = y = -1;
 			swp_flags |= SWP_NOMOVE;
@@ -598,9 +623,10 @@ static void DIB_ResizeWindow(_THIS, int width, int height, int prev_width, int p
 #endif
 
 #ifndef SDL_WIN32_NO_PARENT_WINDOW
-		if (SDL_VideoSurface != NULL)
+        if (SDL_VideoSurface != NULL)
 			SetWindowPos(SDL_Window, HWND_TOP, 0, 0, SDL_VideoSurface->w, SDL_VideoSurface->h, SWP_NOACTIVATE | SWP_SHOWWINDOW);
 
+        EnterCriticalSection(&ParentWindowCritSec);
 		/* Windows 10 has developed a strange deadlock that can happen if the user is resizing the parent window
 		   and we call SetWindowPos() to confirm the size here. Use SWP_NOMOVE just in case that's problematic too. */
 		if (ParentWindowIsBeingResized) {
@@ -612,6 +638,7 @@ static void DIB_ResizeWindow(_THIS, int width, int height, int prev_width, int p
 			/* tell SetWindowPos() not to move or resize */
 			swp_flags |= SWP_NOSIZE | SWP_NOMOVE;
 		}
+        LeaveCriticalSection(&ParentWindowCritSec);
 
 		SetWindowPos(ParentWindowHWND, top, x, y, width, height, swp_flags);
 #else
@@ -668,6 +695,20 @@ SDL_Surface *DIB_SetVideoMode(_THIS, SDL_Surface *current,
 	BITMAPINFO *binfo;
 	HDC hdc;
 	Uint32 Rmask, Gmask, Bmask;
+
+    /* save window position if going into fullscreen mode */
+    if (!(current->flags & SDL_FULLSCREEN) && (flags & SDL_FULLSCREEN)) {
+        RECT r;
+
+#ifndef SDL_WIN32_NO_PARENT_WINDOW
+        GetWindowRect(ParentWindowHWND, &r);
+#else
+        GetWindowRect(SDL_Window, &r);
+#endif
+        saved_winpos_valid = 1;
+        saved_winpos.x = r.left;
+        saved_winpos.y = r.top;
+    }
 
 	prev_w = current->w;
 	prev_h = current->h;
@@ -877,7 +918,7 @@ SDL_Surface *DIB_SetVideoMode(_THIS, SDL_Surface *current,
 	}
 
 #ifdef SDL_WIN32_HX_DOS
-	/* do not change window style */
+	/* nothing */
 #else
 	style = GetWindowLong(ParentWindowHWND/*SDL_Window*/, GWL_STYLE);
 	style &= ~(resizestyle|WS_MAXIMIZE);
@@ -908,11 +949,11 @@ SDL_Surface *DIB_SetVideoMode(_THIS, SDL_Surface *current,
 	}
 #endif
 
+#ifndef SDL_WIN32_HX_DOS
 	/* DJM: Don't piss of anyone who has setup his own window */
 	if ( !SDL_windowid )
 		SetWindowLong(ParentWindowHWND, GWL_STYLE, style);
 
-#ifndef SDL_WIN32_HX_DOS
 	/* show/hide menu according to fullscreen */
 	if ((current->flags & SDL_FULLSCREEN) == SDL_FULLSCREEN)
 		SetMenu(ParentWindowHWND, NULL);

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *  OPL2/OPL3 emulation library
  *
  *  This library is free software; you can redistribute it and/or
@@ -27,6 +27,7 @@
 
 #include <math.h>
 #include <stdlib.h> // rand()
+#include <string.h> // memset()
 #include "dosbox.h"
 #include "opl.h"
 #include <string.h>
@@ -440,7 +441,7 @@ void change_frequency(Bitu chanbase, Bitu regbase, op_type* op_pt) {
 	if (!(adlibreg[ARC_TVS_KSR_MUL+regbase]&0x10)) op_pt->toff >>= 2;
 
 	// 20+a0+b0:
-	op_pt->tinc = (Bit32u)((((fltype)(frn<<oct))*frqmul[adlibreg[ARC_TVS_KSR_MUL+regbase]&15]));
+	op_pt->tinc = (Bit32u)(((fltype)(frn<<oct))*frqmul[adlibreg[ARC_TVS_KSR_MUL+regbase]&15]);
 	// 40+a0+b0:
 	fltype vol_in = (fltype)((fltype)(adlibreg[ARC_KSL_OUTLEV+regbase]&63) +
 							kslmul[adlibreg[ARC_KSL_OUTLEV+regbase]>>6]*kslev[oct][frn>>6]);
@@ -477,7 +478,7 @@ void disable_operator(op_type* op_pt, Bit32u act_type) {
 }
 
 void adlib_init(Bit32u samplerate) {
-	Bits i, j, oct;
+    Bit16s i;
 
 	int_samplerate = samplerate;
 
@@ -568,7 +569,7 @@ void adlib_init(Bit32u samplerate) {
 
 		// create waveform tables
 		for (i=0;i<(WAVEPREC>>1);i++) {
-			wavtable[(i<<1)  +WAVEPREC]	= (Bit16s)(16384*sin((fltype)((i<<1)  )*PI*2/WAVEPREC));
+			wavtable[(i<<1)  +WAVEPREC]	= (Bit16s)(16384*sin((fltype)(i<<1)*PI*2/WAVEPREC));
 			wavtable[(i<<1)+1+WAVEPREC]	= (Bit16s)(16384*sin((fltype)((i<<1)+1)*PI*2/WAVEPREC));
 			wavtable[i]					= wavtable[(i<<1)  +WAVEPREC];
 			// alternative: (zero-less)
@@ -586,9 +587,9 @@ void adlib_init(Bit32u samplerate) {
 		kslev[7][4] = 40;	kslev[7][5] = 43;	kslev[7][6] = 45;	kslev[7][7] = 47;
 		kslev[7][8] = 48;
 		for (i=9;i<16;i++) kslev[7][i] = (Bit8u)(i+41);
-		for (j=6;j>=0;j--) {
+		for (Bits j=6;j>=0;j--) {
 			for (i=0;i<16;i++) {
-				oct = (Bits)kslev[j+1][i]-8;
+				Bits oct = (Bits)kslev[j+1][i]-8;
 				if (oct < 0) oct = 0;
 				kslev[j][i] = (Bit8u)oct;
 			}

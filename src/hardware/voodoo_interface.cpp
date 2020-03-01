@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2013  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 
@@ -38,53 +38,54 @@ static voodoo_draw vdraw;
 Voodoo_PageHandler * voodoo_pagehandler;
 
 
-Bitu Voodoo_PageHandler::readb(PhysPt addr) {
+Bit8u Voodoo_PageHandler::readb(PhysPt addr) {
     (void)addr;//UNUSED
 //	LOG_MSG("voodoo readb at %x",addr);
-	return (Bitu)-1;
+	return (Bit8u)-1;
 }
-void Voodoo_PageHandler::writeb(PhysPt addr,Bitu val) {
+void Voodoo_PageHandler::writeb(PhysPt addr,Bit8u val) {
     (void)addr;//UNUSED
     (void)val;//UNUSED
 //	LOG_MSG("voodoo writeb at %x",addr);
 }
 
-Bitu Voodoo_PageHandler::readw(PhysPt addr) {
+Bit16u Voodoo_PageHandler::readw(PhysPt addr) {
 	addr = PAGING_GetPhysicalAddress(addr);
     if (addr&1) {
         LOG_MSG("voodoo readw unaligned");
-        return (Bitu)-1;
+        return (Bit16u)-1;
     }
 
-	Bitu retval=voodoo_r((addr>>2)&0x3FFFFF);
+	Bit32u retval = voodoo_r((addr>>2)&0x3FFFFF);
 	if (addr&3)
 		retval >>= 16;
 	else
 		retval &= 0xffff;
-	return retval;
+
+	return (Bit16u)retval;
 }
 
-void Voodoo_PageHandler::writew(PhysPt addr,Bitu val) {
+void Voodoo_PageHandler::writew(PhysPt addr,Bit16u val) {
 	addr = PAGING_GetPhysicalAddress(addr);
-	if (addr&1) {
+	if (addr&1u) {
         LOG_MSG("voodoo writew unaligned");
         return;
     }
 
-	if (addr&3)
-		voodoo_w((addr>>2)&0x3FFFFF,val<<16,0xffff0000);
+	if (addr&3u)
+		voodoo_w((addr>>2u)&0x3FFFFFu,(UINT32)(val<<16u),0xffff0000u);
 	else
-		voodoo_w((addr>>2)&0x3FFFFF,val,0x0000ffff);
+		voodoo_w((addr>>2u)&0x3FFFFFu,val,0x0000ffffu);
 }
 
-Bitu Voodoo_PageHandler::readd(PhysPt addr) {
+Bit32u Voodoo_PageHandler::readd(PhysPt addr) {
 	addr = PAGING_GetPhysicalAddress(addr);
 	if (!(addr&3)) {
 		return voodoo_r((addr>>2)&0x3FFFFF);
 	} else {
 		if (!(addr&1)) {
-			Bitu low = voodoo_r((addr>>2)&0x3FFFFF);
-			Bitu high = voodoo_r(((addr>>2)+1)&0x3FFFFF);
+			Bit32u low = voodoo_r((addr>>2)&0x3FFFFF);
+			Bit32u high = voodoo_r(((addr>>2)+1)&0x3FFFFF);
 			return (low>>16) | (high<<16);
 		} else {
 			LOG_MSG("voodoo readd unaligned");
@@ -93,7 +94,7 @@ Bitu Voodoo_PageHandler::readd(PhysPt addr) {
 	return 0xffffffff;
 }
 
-void Voodoo_PageHandler::writed(PhysPt addr,Bitu val) {
+void Voodoo_PageHandler::writed(PhysPt addr,Bit32u val) {
 	addr = PAGING_GetPhysicalAddress(addr);
 	if (!(addr&3)) {
 		voodoo_w((addr>>2)&0x3FFFFF,val,0xffffffff);
@@ -309,7 +310,7 @@ void Voodoo_Shut_Down() {
 }
 
 void Voodoo_PCI_InitEnable(Bitu val) {
-	v->pci.init_enable = val;
+	v->pci.init_enable = (UINT32)val;
 }
 
 void Voodoo_PCI_Enable(bool enable) {

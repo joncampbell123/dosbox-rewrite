@@ -21,7 +21,8 @@ enum {
 	VOPBIT_EGC		= 1,
 	VOPBIT_GRCG		= 2,
 	VOPBIT_ANALOG	= 4,
-	VOPBIT_VGA		= 5
+	VOPBIT_VGA		= 5,
+    VOPBIT_PEGC_PLANAR = 6
 };
 
 union pc98_tile {
@@ -35,6 +36,7 @@ struct PC98_GDC_state {
     void reset_rfifo(void);
     void flush_fifo_old(void);
     bool write_fifo(const uint16_t c);
+    bool write_rfifo(const uint8_t c);
     bool write_fifo_command(const unsigned char c);
     bool write_fifo_param(const unsigned char c);
     bool rfifo_has_content(void);
@@ -113,6 +115,7 @@ struct PC98_GDC_state {
     bool                    display_enable;
     bool                    cursor_enable;
     bool                    cursor_blink;
+    bool                    IM_bit;                     /* display partition, IM bit */
     bool                    idle;
 
     bool                    doublescan;                 /* 200-line as 400-line */

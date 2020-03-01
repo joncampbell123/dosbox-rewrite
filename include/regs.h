@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 #ifndef DOSBOX_REGS_H
@@ -98,13 +98,6 @@ struct CPU_Regs {
 extern Segments Segs;
 extern CPU_Regs cpu_regs;
 
-//serialization
-std::ostream& operator<<(std::ostream& stream, const Segments& seg);
-std::istream& operator>>(std::istream& stream, Segments& seg);
-
-std::ostream& operator<<(std::ostream& stream, const CPU_Regs& reg);
-std::istream& operator>>(std::istream& stream, CPU_Regs& reg);
-
 static INLINE PhysPt SegLimit(SegNames index) {
 	return Segs.limit[index];
 }
@@ -142,7 +135,7 @@ enum {
 //macros to convert a 3-bit register index to the correct register
 #define reg_8l(reg) (cpu_regs.regs[(reg)].byte[BL_INDEX])
 #define reg_8h(reg) (cpu_regs.regs[(reg)].byte[BH_INDEX])
-#define reg_8(reg) ((reg) & 4 ? reg_8h((reg) & 3) : reg_8l((reg) & 3))
+#define reg_8(reg) ((reg & 4) ? reg_8h((reg) & 3) : reg_8l((reg) & 3))
 #define reg_16(reg) (cpu_regs.regs[(reg)].word[W_INDEX])
 #define reg_32(reg) (cpu_regs.regs[(reg)].dword[DW_INDEX])
 

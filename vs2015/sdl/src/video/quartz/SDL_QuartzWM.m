@@ -14,7 +14,7 @@
 
     You should have received a copy of the GNU Library General Public
     License along with this library; if not, write to the Free
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335 USA  USA
 
     Sam Lantinga
     slouken@libsdl.org
@@ -55,8 +55,8 @@ WMcursor*    QZ_CreateWMCursor   (_THIS, Uint8 *data, Uint8 *mask,
     
     /* copy data and mask, extending the mask to all black pixels because the inversion effect doesn't work with Cocoa's alpha-blended cursors */
     for (i = 0; i < (w+7)/8*h; i++) {
-        planes[0][i] = data[i] ^ 0xFF;
-        planes[1][i] = mask[i] | data[i];
+        planes[0][i] = ~data[i] & mask[i];
+        planes[1][i] =  mask[i] | data[i];
     }
 
     /* create image and cursor */
@@ -161,15 +161,28 @@ void QZ_PrivateLocalToGlobal (_THIS, NSPoint *p) {
 		*p = [ qz_window convertBaseToScreen:*p ];
 }
 
+extern bool sdl1_hax_highdpi_enable;
+
 /* Convert SDL coordinate to Cocoa coordinate */
 void QZ_PrivateSDLToCocoa (_THIS, NSPoint *p) {
+    {
+        /* In OpenGL mode HighDPI we have to force scaling down by setting the bounds to twice the frame width */
+        NSRect b = [ window_view bounds ];
+        NSRect f = [ window_view frame ];
+        p->x = (p->x * b.size.width) / f.size.width;
+        p->y = (p->y * b.size.height) / f.size.height;
+    }
+
+    if (sdl1_hax_highdpi_enable && qz_window) {
+        const CGFloat scale = [ qz_window backingScaleFactor ];//FIXME: Anything better?
+        p->x /= scale;
+        p->y /= scale;
+    }
 
     if ( CGDisplayIsCaptured (display_id) ) { /* capture signals fullscreen */
-    
         p->y = CGDisplayPixelsHigh (display_id) - p->y;
     }
     else {
-       
         *p = [ window_view convertPoint:*p toView: nil ];
         p->y = [window_view frame].size.height - p->y;
     }
@@ -177,15 +190,26 @@ void QZ_PrivateSDLToCocoa (_THIS, NSPoint *p) {
 
 /* Convert Cocoa coordinate to SDL coordinate */
 void QZ_PrivateCocoaToSDL (_THIS, NSPoint *p) {
+    {
+        /* In OpenGL mode HighDPI we have to force scaling down by setting the bounds to twice the frame width */
+        NSRect b = [ window_view bounds ];
+        NSRect f = [ window_view frame ];
+        p->x = (p->x * f.size.width) / b.size.width;
+        p->y = (p->y * f.size.height) / b.size.height;
+    }
 
     if ( CGDisplayIsCaptured (display_id) ) { /* capture signals fullscreen */
-    
         p->y = CGDisplayPixelsHigh (display_id) - p->y;
     }
     else {
-
         *p = [ window_view convertPoint:*p fromView: nil ];
         p->y = [window_view frame].size.height - p->y;
+    }
+
+    if (sdl1_hax_highdpi_enable && qz_window) {
+        const CGFloat scale = [ qz_window backingScaleFactor ];//FIXME: Anything better?
+        p->x *= scale;
+        p->y *= scale;
     }
 }
 

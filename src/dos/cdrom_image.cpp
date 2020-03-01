@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2015  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 #include <cctype>
@@ -51,6 +51,7 @@ CDROM_Interface_Image::BinaryFile::BinaryFile(const char *filename, bool &error)
 CDROM_Interface_Image::BinaryFile::~BinaryFile()
 {
 	delete file;
+	file = NULL;
 }
 
 bool CDROM_Interface_Image::BinaryFile::read(Bit8u *buffer, int seek, int count)
@@ -72,10 +73,11 @@ int CDROM_Interface_Image::BinaryFile::getLength()
 int CDROM_Interface_Image::refCount = 0;
 CDROM_Interface_Image* CDROM_Interface_Image::images[26] = {NULL};
 CDROM_Interface_Image::imagePlayer CDROM_Interface_Image::player = {
-	NULL, NULL, NULL, {0}, 0, 0, 0, false, false, false, {0} };
+	NULL, NULL, NULL, {0}, 0, 0, 0, false, false, false, { {0}, {0} } };
 
 	
 CDROM_Interface_Image::CDROM_Interface_Image(Bit8u subUnit)
+//                      :subUnit(subUnit)
 {
 	images[subUnit] = this;
 	if (refCount == 0) {
@@ -143,7 +145,7 @@ bool CDROM_Interface_Image::GetAudioTrackInfo(int track, TMSF& start, unsigned c
 {
 	if (track < 1 || track > (int)tracks.size()) return false;
 	FRAMES_TO_MSF((unsigned int)tracks[(unsigned int)track - 1u].start + 150u, &start.min, &start.sec, &start.fr);
-	attr = tracks[(unsigned int)track - 1u].attr;
+	attr = tracks[(Bitu)track - 1u].attr;
 	return true;
 }
 
@@ -155,7 +157,7 @@ bool CDROM_Interface_Image::GetAudioSub(unsigned char& attr, unsigned char& trac
 	attr = tracks[track - 1u].attr;
 	index = 1;
 	FRAMES_TO_MSF((unsigned int)player.currFrame + 150u, &absPos.min, &absPos.sec, &absPos.fr);
-	FRAMES_TO_MSF((unsigned int)player.currFrame - (unsigned int)tracks[track - 1u].start + 150u, &relPos.min, &relPos.sec, &relPos.fr);
+	FRAMES_TO_MSF((unsigned int)player.currFrame - (unsigned int)tracks[track - 1u].start, &relPos.min, &relPos.sec, &relPos.fr);
 	return true;
 }
 
@@ -179,9 +181,9 @@ bool CDROM_Interface_Image::PlayAudioSector(unsigned long start,unsigned long le
 	// We might want to do some more checks. E.g valid start and length
 	SDL_mutexP(player.mutex);
 	player.cd = this;
-	player.currFrame = start;
-	player.targetFrame = start + len;
-	int track = GetTrack(start) - 1;
+	player.currFrame = int(start);
+	player.targetFrame = int(start + len);
+	int track = GetTrack((int)start) - 1;
 	if(track >= 0 && tracks[(unsigned int)track].attr == 0x40) {
 		LOG(LOG_MISC,LOG_WARN)("Game tries to play the data track. Not doing this");
 		player.isPlaying = false;
@@ -236,7 +238,7 @@ bool CDROM_Interface_Image::ReadSectorsHost(void *buffer, bool raw, unsigned lon
 	unsigned int sectorSize = raw ? RAW_SECTOR_SIZE : COOKED_SECTOR_SIZE;
 	bool success = true; //Gobliiins reads 0 sectors
 	for(unsigned long i = 0; i < num; i++) {
-		success = ReadSector((Bit8u*)buffer + (i * sectorSize), raw, sector + i);
+		success = ReadSector((Bit8u*)buffer + (i * (Bitu)sectorSize), raw, sector + i);
 		if (!success) break;
 	}
 
@@ -258,14 +260,14 @@ int CDROM_Interface_Image::GetTrack(int sector)
 		Track &curr = *i;
 		Track &next = *(i + 1);
 		if (curr.start <= sector && sector < next.start) return curr.number;
-		i++;
+		++i;
 	}
 	return -1;
 }
 
 bool CDROM_Interface_Image::ReadSector(Bit8u *buffer, bool raw, unsigned long sector)
 {
-	int track = GetTrack(sector) - 1;
+	int track = GetTrack((int)sector) - 1;
 	if (track < 0) return false;
 
 	if (tracks[(unsigned int)track].sectorSize != RAW_SECTOR_SIZE && raw) return false;
@@ -293,7 +295,7 @@ bool CDROM_Interface_Image::ReadSector(Bit8u *buffer, bool raw, unsigned long se
 	if (tracks[(unsigned int)track].sectorSize == RAW_SECTOR_SIZE && !tracks[(unsigned int)track].mode2 && !raw) seek += 16ul;
 	if (tracks[(unsigned int)track].mode2 && !raw) seek += 24ul;
 
-	return tracks[(unsigned int)track].file->read(buffer, seek, (int)length);
+	return tracks[(unsigned int)track].file->read(buffer, (int)seek, (int)length);
 }
 
 void CDROM_Interface_Image::CDAudioCallBack(Bitu len)
@@ -317,15 +319,15 @@ void CDROM_Interface_Image::CDAudioCallBack(Bitu len)
 			player.bufLen += RAW_SECTOR_SIZE;
 		} else {
 			memset(&player.buffer[player.bufLen], 0, (size_t)(len - (Bitu)player.bufLen));
-			player.bufLen = len;
+			player.bufLen = (int)len;
 			player.isPlaying = false;
 		}
 	}
 	SDL_mutexV(player.mutex);
 	if (player.ctrlUsed) {
-		Bit16s sample0,sample1;
 		Bit16s * samples=(Bit16s *)&player.buffer;
 		for (Bitu pos=0;pos<len/4;pos++) {
+			Bit16s sample0,sample1;
 #if defined(WORDS_BIGENDIAN)
 			sample0=(Bit16s)host_readw((HostPt)&samples[pos*2+player.ctrlData.out[0]]);
 			sample1=(Bit16s)host_readw((HostPt)&samples[pos*2+player.ctrlData.out[1]]);
@@ -357,6 +359,7 @@ bool CDROM_Interface_Image::LoadIsoFile(char* filename)
 	track.file = new BinaryFile(filename, error);
 	if (error) {
 		delete track.file;
+		track.file = NULL;
 		return false;
 	}
 	track.number = 1;
@@ -511,6 +514,7 @@ bool CDROM_Interface_Image::LoadCueSheet(char *cuefile)
 			}
 			if (error) {
 				delete track.file;
+				track.file = NULL;
 				success = false;
 			}
 		}
@@ -592,7 +596,7 @@ bool CDROM_Interface_Image::AddTrack(Track &curr, int &shift, int prestart, int 
 bool CDROM_Interface_Image::HasDataTrack(void)
 {
 	//Data track has attribute 0x40
-	for(track_it it = tracks.begin(); it != tracks.end(); it++) {
+	for(track_it it = tracks.begin(); it != tracks.end(); ++it) {
 		if ((*it).attr == 0x40) return true;
 	}
 	return false;
@@ -702,7 +706,7 @@ void CDROM_Interface_Image::ClearTracks()
 			delete curr.file;
 			last = curr.file;
 		}
-		i++;
+		++i;
 	}
 	tracks.clear();
 }

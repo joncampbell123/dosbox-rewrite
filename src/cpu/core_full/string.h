@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2013  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,14 +13,14 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 {
 	extern int cpu_rep_max;
 	static PhysPt  si_base,di_base;
-	static Bitu	si_index,di_index;
-	static Bitu	add_mask;
+	static Bit32u	si_index,di_index;
+	static Bit32u	add_mask;
 	static Bitu	count,count_left;
 	static Bits	add_index;
 

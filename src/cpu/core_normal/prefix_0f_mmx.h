@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2002-2013  The DOSBox Team
+ *  Copyright (C) 2002-2019  The DOSBox Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
 /* State Management */
@@ -978,7 +978,6 @@
 		dest->ub.b3 = src.ub.b1;
 		dest->ub.b2 = dest->ub.b1;
 		dest->ub.b1 = src.ub.b0;
-		dest->ub.b0 = dest->ub.b0;
 		break;
 	}
 	CASE_0F_D(0x61)												/* PUNPCKLWD Pq,Qq */
@@ -995,7 +994,6 @@
 		dest->uw.w3 = src.uw.w1;
 		dest->uw.w2 = dest->uw.w1;
 		dest->uw.w1 = src.uw.w0;
-		dest->uw.w0 = dest->uw.w0;
 		break;
 	}
 	CASE_0F_D(0x62)												/* PUNPCKLDQ Pq,Qq */
