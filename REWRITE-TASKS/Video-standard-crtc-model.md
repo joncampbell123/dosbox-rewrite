@@ -28,7 +28,7 @@ EGA/VGA standard graphics modes will use pixelsperclock == 8. If a VGA register 
 
 EGA/VGA standard modes will use a 25MHz/28MHz dot clock, unless a bit is set to divide the dot clock by two which will not change the content sent to the shift register but will halve the rate the shift register is emptied to the DAC.
 
-Note that 320x200 256-color VGA mode is the only 320-column graphics mode that does NOT divide the dot clock by two due to behavior behind the scenes in which 4 bits are shifted per dot clock and latched to output every other dot clock.
+Note that 320x200 256-color VGA mode is the only 320-column graphics mode that does NOT divide the dot clock by two due to behavior behind the scenes in which 4 bits are shifted per dot clock and latched to output every other dot clock. This can be confirmed from the horizontal CRTC timing written to registers that match 80-column alphanumeric and 640-pixel wide graphics modes.
 
 VGA 256-color mode will render 4 pixels doubled to 8, with 8 pixels per clock, to reflect how actual hardware behaves. If the VGA registers are programmed to leave on 256-color mode, but the bit is cleared that latches only every other dot clock, then 8 pixels will be rendered to reflect the 4-bit shifting behavior behind the scenes that makes 256-color mode possible as a strange 640x200 256-color mode.
 
