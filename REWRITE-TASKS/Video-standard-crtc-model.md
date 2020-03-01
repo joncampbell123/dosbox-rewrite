@@ -23,8 +23,14 @@ At this time PCjr is assumed to have the same constraints as CGA, but _additiona
 Tandy is unknown at this time.
 
 EGA/VGA standard alphanumeric modes will use pixelsperclock == 8 or pixelsperclock == 9 according to register settings.
-EGA/VGA standard graphics modes, except 256-color mode, will use pixelsperclock == 8.
-VGA 256-color mode will use pixelsperclock == 16 because of how 256-color mode is rendered in hardware, in which the output is latched to the DAC every other dot clock and shifted 4 bits at a time behind the scenes. No, really, check the Hackipedia VGA register dumps, that's how it works. 8 pixels will be doubled to 16, unless the 256-color bit is disabled, in which case the 4-bit shifting behavior is made apparent as a strange psuedo 256-color 640x200 mode on most VGA hardware.
+
+EGA/VGA standard graphics modes will use pixelsperclock == 8. If a VGA register bit, normally reserved for 256-color mode, is set, then only every other pixel will sent and doubled to the shift register, as observed on real hardware.
+
+EGA/VGA standard modes will use a 25MHz/28MHz dot clock, unless a bit is set to divide the dot clock by two which will not change the content sent to the shift register but will halve the rate the shift register is emptied to the DAC.
+
+Note that 320x200 256-color VGA mode is the only 320-column graphics mode that does NOT divide the dot clock by two due to behavior behind the scenes in which 4 bits are shifted per dot clock and latched to output every other dot clock.
+
+VGA 256-color mode will render 4 pixels doubled to 8, with 8 pixels per clock, to reflect how actual hardware behaves. If the VGA registers are programmed to leave on 256-color mode, but the bit is cleared that latches only every other dot clock, then 8 pixels will be rendered to reflect the 4-bit shifting behavior behind the scenes that makes 256-color mode possible as a strange 640x200 256-color mode.
 
 _Additional study needs to be done on what happens if EGA/VGA graphics modes are programmed with 9 pixels per clock instead of 8._
 
