@@ -38,8 +38,6 @@
 #endif
 
 extern bool dpi_aware_enable;
-extern bool log_int21;
-extern bool log_fileio;
 
 bool OpenGL_using(void);
 void GFX_OpenGLRedrawScreen(void);
@@ -6397,24 +6395,6 @@ bool dos_pc98_clock_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * con
     return true;
 }
 
-bool dos_debug_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem) {
-    (void)menu;//UNUSED
-    (void)menuitem;//UNUSED
-
-    const auto &ts = menuitem->get_name();
-
-    if (ts == "debug_logint21") {
-        log_int21 = !log_int21;
-        mainMenu.get_item("debug_logint21").check(log_int21).refresh_item(mainMenu);
-    }
-    else if (ts == "debug_logfileio") {
-        log_fileio = !log_fileio;
-        mainMenu.get_item("debug_logfileio").check(log_fileio).refresh_item(mainMenu);
-    }
-
-    return true;
-}
-
 void SetScaleForced(bool forced);
 void OutputSettingMenuUpdate(void);
 
@@ -7777,18 +7757,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
                         set_callback_function(dos_pc98_clock_menu_callback);
                 }
             }
-
-            {
-                DOSBoxMenu::item &item = mainMenu.alloc_item(DOSBoxMenu::submenu_type_id,"DOSDebugMenu");
-                item.set_text("Debug");
-
-                {
-                    mainMenu.alloc_item(DOSBoxMenu::item_type_id,"debug_logint21").set_text("Log INT 21h calls").
-                        set_callback_function(dos_debug_menu_callback);
-                    mainMenu.alloc_item(DOSBoxMenu::item_type_id,"debug_logfileio").set_text("Log file I/O").
-                        set_callback_function(dos_debug_menu_callback);
-                }
-            }
         }
 #if !defined(C_EMSCRIPTEN)
         {
@@ -8003,9 +7971,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
         mainMenu.get_item("mixer_mute").check(MENU_get_mute()).refresh_item(mainMenu);
 
         mainMenu.get_item("scaler_forced").check(render.scale.forced);
-
-        mainMenu.get_item("debug_logint21").check(log_int21);
-        mainMenu.get_item("debug_logfileio").check(log_fileio);
 
         mainMenu.get_item("pc98_5mhz_gdc").enable(IS_PC98_ARCH);
         mainMenu.get_item("pc98_allow_200scanline").enable(IS_PC98_ARCH);

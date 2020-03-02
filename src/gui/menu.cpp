@@ -332,8 +332,6 @@ static const char *def_menu_dos[] =
     "mapper_swapcd",
     "--",
     "mapper_rescanall",
-    "--",
-    "DOSDebugMenu",
     NULL
 };
 
@@ -352,14 +350,6 @@ static const char *def_menu_dos_pc98[] =
 {
     "dos_pc98_pit_4mhz",
     "dos_pc98_pit_5mhz",
-    NULL
-};
-
-/* DOS debug ("DOSDebugMenu") */
-static const char *def_menu_dos_debug[] =
-{
-    "debug_logint21",
-    "debug_logfileio",
     NULL
 };
 
@@ -1103,9 +1093,6 @@ void ConstructMenu(void) {
 
     /* DOS PC-98 menu */
     ConstructSubMenu(mainMenu.get_item("DOSPC98Menu").get_master_id(), def_menu_dos_pc98);
-
-    /* DOS debug menu */
-    ConstructSubMenu(mainMenu.get_item("DOSDebugMenu").get_master_id(), def_menu_dos_debug);
 
 #if !defined(C_EMSCRIPTEN)
     /* capture menu */

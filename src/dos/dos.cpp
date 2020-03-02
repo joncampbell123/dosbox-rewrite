@@ -37,9 +37,6 @@
 #include "serialport.h"
 #include "dos_network.h"
 
-extern bool log_int21;
-extern bool log_fileio;
-
 Bitu INT29_HANDLER(void);
 Bit32u BIOS_get_PC98_INT_STUB(void);
 
@@ -417,14 +414,6 @@ void XMS_DOS_LocalA20EnableIfNotEnabled(void);
 #define DOSNAMEBUF 256
 static Bitu DOS_21Handler(void) {
     bool unmask_irq0 = false;
-
-    /* NTS to ognjenmi: Your INT 21h logging patch was modified to log ALL INT 21h calls (the original
-     *                  placement put it after the ignore case below), and is now conditional on
-     *                  whether INT 21h logging is enabled. Also removed unnecessary copying of reg_al
-     *                  and reg_ah to auto type variables. */
-    if (log_int21) {
-        LOG(LOG_CPU, LOG_DEBUG)("Executing interrupt 21, ah=%x, al=%x", reg_ah, reg_al);
-    }
 
     /* Real MS-DOS behavior:
      *   If HIMEM.SYS is loaded and CONFIG.SYS says DOS=HIGH, DOS will load itself into the HMA area.

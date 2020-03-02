@@ -42,9 +42,6 @@
 
 using namespace std;
 
-bool log_int21 = false;
-bool log_fileio = false;
-
 static bool has_LOG_Init = false;
 static bool has_LOG_EarlyInit = false;
 static bool do_LOG_stderr = false;
@@ -829,9 +826,6 @@ void LOG::Init() {
 		debuglog=0;
 	}
 
-    log_int21 = sect->Get_bool("int21") || control->opt_logint21;
-    log_fileio = sect->Get_bool("fileio") || control->opt_logfileio;
-
 	/* end of early init logging */
 	do_LOG_stderr = false;
 
@@ -930,13 +924,5 @@ void LOG::SetupConfigSection(void) {
 		Pstring->Set_values(log_values);
 		Pstring->Set_help("Enable/Disable logging of this type.");
     }
-
-    Prop_bool* Pbool;
-
-    Pbool = sect->Add_bool("int21",Property::Changeable::Always,false);
-    Pbool->Set_help("Log all INT 21h calls");
-
-    Pbool = sect->Add_bool("fileio",Property::Changeable::Always,false);
-    Pbool->Set_help("Log file I/O through INT 21h");
 }
 
