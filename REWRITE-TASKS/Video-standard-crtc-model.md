@@ -127,3 +127,5 @@ vertical frame rate interlaced = dot clock / (((htotal * vtotal) + htotal interl
 Standard simulation will signal hsync when hsync happens and vsync when vsync happens. Blanking will be emulated as well.
 For EGA/VGA, non-blanking areas outside the active display area will be filled with the overscan color as set in the Attribute Controller.
 
+VGA emulation can change htotal during active display, which is not recommended, but should be emulated to show the picture distortion that results when a DOS program fiddles with hsync/htotal during active display. Monitor emulation is expected to render a distorted display in the manner that a CRT would handle it.
+
