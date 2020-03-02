@@ -175,27 +175,7 @@ ScreenSizeInfo          screen_size_info;
 
 extern bool dos_kernel_disabled;
 
-bool drive_rescan_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem) {
-    return true;
-}
-
 void MenuUnmountDrive(char drv);
-
-bool drive_unmount_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem) {
-    return true;
-}
-
-const DOSBoxMenu::callback_t drive_callbacks[] = {
-    drive_rescan_menu_callback,
-    drive_unmount_menu_callback,
-    NULL
-};
-
-const char *drive_opts[][2] = {
-    { "rescan",                 "Rescan" },
-    { "unmount",                "Unmount" },
-    { NULL, NULL }
-};
 
 const char *scaler_menu_opts[][2] = {
     { "none",                   "None" },
