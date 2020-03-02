@@ -176,51 +176,12 @@ ScreenSizeInfo          screen_size_info;
 extern bool dos_kernel_disabled;
 
 bool drive_rescan_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem) {
-    (void)menu;//UNUSED
-    (void)menuitem;//UNUSED
-
-    /* menu item has name "drive_A_" ... */
-    int drive;
-    const char *mname = menuitem->get_name().c_str();
-    if (!strncmp(mname,"drive_",6)) {
-        drive = mname[6] - 'A';
-        if (drive < 0 || drive >= DOS_DRIVES) return false;
-    }
-    else {
-        return false;
-    }
-
-    if (dos_kernel_disabled) return true;
-
-    if (drive < DOS_DRIVES && Drives[drive]) {
-        LOG(LOG_DOSMISC,LOG_DEBUG)("Triggering rescan on drive %c",drive+'A');
-        Drives[drive]->EmptyCache();
-    }
-
     return true;
 }
 
 void MenuUnmountDrive(char drv);
 
 bool drive_unmount_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem) {
-    (void)menu;//UNUSED
-    (void)menuitem;//UNUSED
-
-    /* menu item has name "drive_A_" ... */
-    int drive;
-    const char *mname = menuitem->get_name().c_str();
-    if (!strncmp(mname,"drive_",6)) {
-        drive = mname[6] - 'A';
-        if (drive < 0 || drive >= DOS_DRIVES) return false;
-    }
-    else {
-        return false;
-    }
-
-    if (dos_kernel_disabled) return true;
-
-    MenuUnmountDrive(drive+'A');
-
     return true;
 }
 
@@ -8014,28 +7975,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
         }
 # endif
 #endif
-        {
-            DOSBoxMenu::item &item = mainMenu.alloc_item(DOSBoxMenu::submenu_type_id,"DriveMenu");
-            item.set_text("Drive");
-
-            for (char c='A';c <= 'Z';c++) {
-                std::string dmenu = "Drive";
-                dmenu += c;
-
-                std::string dmenut;
-                dmenut = c;
-
-                DOSBoxMenu::item &ditem = mainMenu.alloc_item(DOSBoxMenu::submenu_type_id,dmenu.c_str());
-                ditem.set_text(dmenut.c_str());
-
-                for (size_t i=0;drive_opts[i][0] != NULL;i++) {
-                    const std::string name = std::string("drive_") + c + "_" + drive_opts[i][0];
-
-                    mainMenu.alloc_item(DOSBoxMenu::item_type_id,name).set_text(drive_opts[i][1]).
-                        set_callback_function(drive_callbacks[i]);
-                }
-            }
-        }
 
         if (control->opt_startui)
             GUI_Run(false);
