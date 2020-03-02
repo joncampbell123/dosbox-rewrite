@@ -112,15 +112,15 @@ am__libgui_a_SOURCES_DIST = sdlmain_linux.cpp sdlmain.cpp \
 	render_simple.h render_templates_sai.h render_templates_hq.h \
 	render_templates_hq2x.h render_templates_hq3x.h midi.cpp \
 	midi_win32.h midi_oss.h midi_coreaudio.h midi_alsa.h \
-	midi_coremidi.h sdl_gui.cpp dosbox_splash.h menu.cpp bitop.cpp \
-	ptrop.cpp zipcrc.c zipfile.cpp midi_mt32.h menu_osx.mm
+	midi_coremidi.h dosbox_splash.h menu.cpp bitop.cpp ptrop.cpp \
+	zipcrc.c zipfile.cpp midi_mt32.h menu_osx.mm
 am__objects_1 =
 @MACOSX_TRUE@am__objects_2 = menu_osx.$(OBJEXT)
 am_libgui_a_OBJECTS = sdlmain_linux.$(OBJEXT) sdlmain.$(OBJEXT) \
 	sdl_mapper.$(OBJEXT) render.$(OBJEXT) render_scalers.$(OBJEXT) \
-	midi.$(OBJEXT) sdl_gui.$(OBJEXT) menu.$(OBJEXT) \
-	bitop.$(OBJEXT) ptrop.$(OBJEXT) zipcrc.$(OBJEXT) \
-	zipfile.$(OBJEXT) $(am__objects_1) $(am__objects_2)
+	midi.$(OBJEXT) menu.$(OBJEXT) bitop.$(OBJEXT) ptrop.$(OBJEXT) \
+	zipcrc.$(OBJEXT) zipfile.$(OBJEXT) $(am__objects_1) \
+	$(am__objects_2)
 libgui_a_OBJECTS = $(am_libgui_a_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -327,8 +327,8 @@ libgui_a_SOURCES = sdlmain_linux.cpp sdlmain.cpp sdl_mapper.cpp \
 	render_templates_sai.h render_templates_hq.h \
 	render_templates_hq2x.h render_templates_hq3x.h midi.cpp \
 	midi_win32.h midi_oss.h midi_coreaudio.h midi_alsa.h \
-	midi_coremidi.h sdl_gui.cpp dosbox_splash.h menu.cpp bitop.cpp \
-	ptrop.cpp zipcrc.c zipfile.cpp $(am__append_2) $(am__append_3)
+	midi_coremidi.h dosbox_splash.h menu.cpp bitop.cpp ptrop.cpp \
+	zipcrc.c zipfile.cpp $(am__append_2) $(am__append_3)
 all: all-am
 
 .SUFFIXES:
@@ -385,7 +385,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ptrop.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/render.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/render_scalers.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sdl_gui.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sdl_mapper.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sdlmain.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sdlmain_linux.Po@am__quote@

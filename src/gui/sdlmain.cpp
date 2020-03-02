@@ -550,8 +550,6 @@ void UpdateWindowDimensions(void)
 #endif
 
 void                        GUI_ResetResize(bool);
-void                        GUI_LoadFonts();
-void                        GUI_Run(bool);
 
 const char*                 titlebar = NULL;
 extern const char*              RunningProgram;
@@ -3037,7 +3035,6 @@ static void GUI_StartUp() {
 #endif
 
     AddExitFunction(AddExitFunctionFuncPair(GUI_ShutDown));
-    GUI_LoadFonts();
 
     sdl.active=false;
     sdl.updating=false;
@@ -3340,9 +3337,6 @@ static void GUI_StartUp() {
 #if DOSBOXMENU_TYPE == DOSBOXMENU_NSMENU
     pause_menu_item_tag = mainMenu.get_item("mapper_pause").get_master_id() + DOSBoxMenu::nsMenuMinimumID;
 #endif
-
-    MAPPER_AddHandler(&GUI_Run, MK_nothing, 0, "gui", "ShowGUI", &item);
-    item->set_text("Configuration GUI");
 
     MAPPER_AddHandler(&GUI_ResetResize, MK_nothing, 0, "resetsize", "ResetSize", &item);
     item->set_text("Reset window size");
@@ -4996,8 +4990,6 @@ void GFX_Events() {
                             MAPPER_Run(false);
                             break;
                         case ID_WIN_SYSMENU_CFG_GUI:
-                            extern void GUI_Run(bool pressed);
-                            GUI_Run(false);
                             break;
                         case ID_WIN_SYSMENU_PAUSE:
                             extern void PauseDOSBox(bool pressed);
@@ -6421,13 +6413,6 @@ bool dos_mouse_y_axis_reverse_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::
     return true;
 }
 
-bool dos_mouse_sensitivity_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem) {
-    (void)menu;//UNUSED
-    (void)menuitem;//UNUSED
-    GUI_Shortcut(2);
-    return true;
-}
-
 extern bool                         gdc_5mhz_mode_initial;
 
 bool vid_pc98_5mhz_gdc_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem) {
@@ -6767,9 +6752,6 @@ bool vsync_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuit
 bool vsync_set_syncrate_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem) {
     (void)menu;//UNUSED
     (void)menuitem;//UNUSED
-#if !defined(C_SDL2)
-    GUI_Shortcut(17);
-#endif
     return true;
 }
 
@@ -7039,31 +7021,6 @@ bool sendkey_preset_menu_callback(DOSBoxMenu * const menu, DOSBoxMenu::item * co
     }
 
     return true;
-}
-
-void SetCyclesCount_mapper_shortcut_RunInternal(void) {
-    void MAPPER_ReleaseAllKeys(void);
-    MAPPER_ReleaseAllKeys();
-
-    GFX_LosingFocus();
-
-    GUI_Shortcut(16);
-
-    void MAPPER_ReleaseAllKeys(void);
-    MAPPER_ReleaseAllKeys();
-
-    GFX_LosingFocus();
-}
-
-void SetCyclesCount_mapper_shortcut_RunEvent(Bitu /*val*/) {
-    KEYBOARD_ClrBuffer();   //Clear buffer
-    GFX_LosingFocus();      //Release any keys pressed (buffer gets filled again).
-    SetCyclesCount_mapper_shortcut_RunInternal();
-}
-
-void SetCyclesCount_mapper_shortcut(bool pressed) {
-    if (!pressed) return;
-    PIC_AddEvent(SetCyclesCount_mapper_shortcut_RunEvent, 0.0001f); //In case mapper deletes the key object that ran it
 }
 
 void AspectRatio_mapper_shortcut(bool pressed) {
@@ -7704,8 +7661,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
                         set_callback_function(dos_mouse_enable_int33_menu_callback);
                     mainMenu.alloc_item(DOSBoxMenu::item_type_id,"dos_mouse_y_axis_reverse").set_text("Y-axis Reverse").
                         set_callback_function(dos_mouse_y_axis_reverse_menu_callback);
-                    mainMenu.alloc_item(DOSBoxMenu::item_type_id,"dos_mouse_sensitivity").set_text("Sensitivity").
-                        set_callback_function(dos_mouse_sensitivity_menu_callback);
                 }
             }
 
@@ -7743,8 +7698,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
 # endif
 #endif
 
-        if (control->opt_startui)
-            GUI_Run(false);
         if (control->opt_editconf.length() != 0)
             launcheditor(control->opt_editconf);
         if (control->opt_opencaptures.length() != 0)
@@ -7795,9 +7748,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
         /* more */
         {
             DOSBoxMenu::item *item;
-
-            MAPPER_AddHandler(&SetCyclesCount_mapper_shortcut, MK_nothing, 0, "editcycles", "EditCycles", &item);
-            item->set_text("Edit cycles");
 
             MAPPER_AddHandler(&HideMenu_mapper_shortcut, MK_escape, MMODHOST, "togmenu", "TogMenu", &item);
             item->set_text("Hide/show menu bar");

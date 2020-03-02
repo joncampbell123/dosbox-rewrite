@@ -327,8 +327,6 @@ static const char *def_menu_dos_mouse[] =
 {
     "dos_mouse_enable_int33",
     "dos_mouse_y_axis_reverse",
-    "--",
-    "dos_mouse_sensitivity",
     NULL
 };
 
@@ -1611,8 +1609,6 @@ void MSG_WM_COMMAND_handle(SDL_SysWMmsg &Message) {
             MAPPER_Run(false);
         }
         if (LOWORD(Message.wParam) == ID_WIN_SYSMENU_CFG_GUI) {
-            extern void GUI_Run(bool pressed);
-            GUI_Run(false);
         }
         if (LOWORD(Message.wParam) == ID_WIN_SYSMENU_PAUSE) {
             extern void PauseDOSBox(bool pressed);

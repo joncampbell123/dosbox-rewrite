@@ -178,9 +178,6 @@ void menu_osx_set_menuobj(DOSBoxMenu *new_altMenu) {
 - (void)DOSBoxXMenuActionCfgGUI:(id)sender
 {
     (void)sender;
-    if (is_paused || MAPPER_IsRunning() || GUI_IsRunning()) return;
-    extern void GUI_Run(bool pressed);
-    GUI_Run(false);
 }
 
 - (void)DOSBoxXMenuActionPause:(id)sender

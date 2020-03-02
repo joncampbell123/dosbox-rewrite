@@ -599,12 +599,9 @@ static void MOUNT_ProgramStart(Program * * make) {
     *make=new MOUNT;
 }
 
-void GUI_Run(bool pressed);
-
 class SHOWGUI : public Program {
 public:
     void Run(void) {
-        GUI_Run(false); /* So that I don't have to run the keymapper on every setup of mine just to get the GUI --J.C */
     }
 };
 
