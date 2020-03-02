@@ -85,8 +85,8 @@ PC-98 emulation will use an array of 16-bit WORDs for the master GDC and text di
 PC-98 graphics will be stored as an array of 64-bit QWORDs, 16-bits per plane. For the same reason as planar VGA, the storage will permit higher performance code to carry out raw, tile, and EGC binary and shift operations. The 64-bit format reflects the 16-bit nature of the hardware, and the way that planar modes appear to be actually stored. On actual hardware, switching from 8/16-color planar to 256-color packed reveals that the 16-bit WORDs of the bitplanes are stored such that bitplanes E G R B become B G R E sequentially in memory. However implementation of that detail is not high priority, I have yet to find a PC-98 game that relies on that quirk. If a game does use 256-color packed mode it usually does not rely on any particular behavior regarding old/new format and layout. _This description will change if any of this is wrong_.
 
     E      G      R      B
-    E0000h B8000h B0000h A8000h     8/16 planar
-    A8006h A8002h A8004h A8000h     256-color packed
+    E0000h B8000h B0000h A8000h     8/16 planar memory address of a WORD of data
+    A8006h A8002h A8004h A8000h     256-color packed memory address of the same WORD of data
     
     ------------------------------------------------
     
