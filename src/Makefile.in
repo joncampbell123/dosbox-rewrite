@@ -80,11 +80,9 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 bin_PROGRAMS = dosbox-x$(EXEEXT)
-@C_XBRZ_TRUE@am__append_1 = xBRZ
-@EMSCRIPTEN_FALSE@am__append_2 = aviwriter/libaviwriter.a
-@C_DIRECT3D_TRUE@am__append_3 = output/direct3d/liboutputdirect3d.a
-@C_XBRZ_TRUE@@EMSCRIPTEN_FALSE@am__append_4 = xBRZ/libxbrz.a
-@C_MT32_TRUE@@EMSCRIPTEN_FALSE@am__append_5 = mt32/libmt32.a
+@EMSCRIPTEN_FALSE@am__append_1 = aviwriter/libaviwriter.a
+@C_DIRECT3D_TRUE@am__append_2 = output/direct3d/liboutputdirect3d.a
+@C_MT32_TRUE@@EMSCRIPTEN_FALSE@am__append_3 = mt32/libmt32.a
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(srcdir)/dosbox.plist.in $(top_srcdir)/depcomp
@@ -110,8 +108,7 @@ dosbox_x_DEPENDENCIES = debug/libdebug.a dos/libdos.a shell/libshell.a \
 	libs/gui_tk/libgui_tk.a hardware/libhardware.a cpu/libcpu.a \
 	hardware/reSID/libresid.a fpu/libfpu.a gui/libgui.a \
 	output/liboutput.a hardware/mame/libmame.a libs/zmbv/libzmbv.a \
-	$(am__append_2) $(am__append_3) $(am__append_4) \
-	$(am__append_5)
+	$(am__append_1) $(am__append_2) $(am__append_3)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -211,8 +208,7 @@ am__define_uniq_tagged_files = \
   done | $(am__uniquify_input)`
 ETAGS = etags
 CTAGS = ctags
-DIST_SUBDIRS = cpu debug dos fpu gui hardware libs ints misc shell \
-	builtin platform mt32 aviwriter output xBRZ
+DIST_SUBDIRS = $(SUBDIRS)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 am__relativize = \
   dir0=`pwd`; \
@@ -355,8 +351,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CPPFLAGS = -I$(top_srcdir)/include "-DRESDIR=\"$(resdir)\""
-SUBDIRS = cpu debug dos fpu gui hardware libs ints misc shell builtin \
-	platform mt32 aviwriter output $(am__append_1)
+SUBDIRS = cpu debug dos fpu gui hardware libs ints misc shell builtin platform mt32 aviwriter output
 resdir = $(datarootdir)/dosbox-x
 res_DATA = \
 	../dosbox.reference.conf \
@@ -372,8 +367,7 @@ dosbox_x_LDADD = debug/libdebug.a dos/libdos.a shell/libshell.a \
 	libs/gui_tk/libgui_tk.a hardware/libhardware.a cpu/libcpu.a \
 	hardware/reSID/libresid.a fpu/libfpu.a gui/libgui.a \
 	output/liboutput.a hardware/mame/libmame.a libs/zmbv/libzmbv.a \
-	$(am__append_2) $(am__append_3) $(am__append_4) \
-	$(am__append_5)
+	$(am__append_1) $(am__append_2) $(am__append_3)
 EXTRA_DIST = winres.rc dosbox.ico
 all: all-recursive
 

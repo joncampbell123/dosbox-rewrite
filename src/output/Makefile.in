@@ -103,7 +103,7 @@ liboutput_a_LIBADD =
 am_liboutput_a_OBJECTS = output_direct3d.$(OBJEXT) \
 	output_opengl.$(OBJEXT) output_surface.$(OBJEXT) \
 	output_surface_sdl2.$(OBJEXT) output_surface_sdl.$(OBJEXT) \
-	output_tools.$(OBJEXT) output_tools_xbrz.$(OBJEXT)
+	output_tools.$(OBJEXT)
 liboutput_a_OBJECTS = $(am_liboutput_a_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -321,7 +321,7 @@ top_srcdir = @top_srcdir@
 AM_CPPFLAGS = -I$(top_srcdir)/include -I$(top_srcdir)/src
 SUBDIRS = $(am__append_1)
 noinst_LIBRARIES = liboutput.a
-liboutput_a_SOURCES = output_direct3d.cpp output_opengl.cpp output_surface.cpp output_surface_sdl2.cpp output_surface_sdl.cpp output_tools.cpp output_tools_xbrz.cpp
+liboutput_a_SOURCES = output_direct3d.cpp output_opengl.cpp output_surface.cpp output_surface_sdl2.cpp output_surface_sdl.cpp output_tools.cpp
 all: all-recursive
 
 .SUFFIXES:
@@ -377,7 +377,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/output_surface_sdl.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/output_surface_sdl2.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/output_tools.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/output_tools_xbrz.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
