@@ -166,14 +166,6 @@ Bitu OUTPUT_DIRECT3D_SetSize()
         sdl.clip.w = windowWidth; sdl.clip.h = windowHeight;
     }
 
-    // when xBRZ scaler is used, we can adjust render target size to exactly what xBRZ scaler will output, leaving final scaling to default D3D scaler / shaders
-#if C_XBRZ
-    if (sdl_xbrz.enable && xBRZ_SetScaleParameters(sdl.draw.width, sdl.draw.height, sdl.clip.w, sdl.clip.h)) 
-    {
-        adjTexWidth = sdl.draw.width * sdl_xbrz.scale_factor;
-        adjTexHeight = sdl.draw.height * sdl_xbrz.scale_factor;
-    }
-#endif
     // Calculate texture size
     if ((!d3d->square) && (!d3d->pow2)) 
     {
@@ -268,67 +260,12 @@ Bitu OUTPUT_DIRECT3D_SetSize()
 
 bool OUTPUT_DIRECT3D_StartUpdate(Bit8u* &pixels, Bitu &pitch)
 {
-#if C_XBRZ
-    if (sdl_xbrz.enable && sdl_xbrz.scale_on) 
-    {
-        sdl_xbrz.renderbuf.resize(sdl.draw.width * sdl.draw.height);
-        pixels = sdl_xbrz.renderbuf.empty() ? nullptr : reinterpret_cast<Bit8u*>(&sdl_xbrz.renderbuf[0]);
-        pitch = sdl.draw.width * sizeof(uint32_t);
-        sdl.updating = true;
-    }
-    else
-    {
-        sdl.updating = d3d->LockTexture(pixels, pitch);
-    }
-#else
     sdl.updating = d3d->LockTexture(pixels, pitch);
-#endif
     return sdl.updating;
 }
 
 void OUTPUT_DIRECT3D_EndUpdate(const Bit16u *changedLines)
 {
-#if C_XBRZ
-    if (sdl_xbrz.enable && sdl_xbrz.scale_on) 
-    {
-        // we have xBRZ pseudo render buffer to be output to the pre-sized texture, do the xBRZ part
-        const int srcWidth = sdl.draw.width;
-        const int srcHeight = sdl.draw.height;
-        if (sdl_xbrz.renderbuf.size() == srcWidth * srcHeight && srcWidth > 0 && srcHeight > 0)
-        {
-            // we assume render buffer is *not* scaled!
-            int xbrzWidth = srcWidth * sdl_xbrz.scale_factor;
-            int xbrzHeight = srcHeight * sdl_xbrz.scale_factor;
-            sdl_xbrz.pixbuf.resize(xbrzWidth * xbrzHeight);
-
-            const uint32_t* renderBuf = &sdl_xbrz.renderbuf[0]; // help VS compiler a little + support capture by value
-            uint32_t* xbrzBuf = &sdl_xbrz.pixbuf[0];
-            xBRZ_Render(renderBuf, xbrzBuf, changedLines, srcWidth, srcHeight, sdl_xbrz.scale_factor);
-
-            // D3D texture can be not of exactly size we expect, so we copy xBRZ buffer to the texture there, adjusting for texture pitch
-            Bit8u *tgtPix;
-            Bitu tgtPitch;
-            if (d3d->LockTexture(tgtPix, tgtPitch) && tgtPix) // if locking fails, target texture can be nullptr
-            {
-                uint32_t* tgtTex = reinterpret_cast<uint32_t*>(static_cast<Bit8u*>(tgtPix));
-# if defined(XBRZ_PPL)
-                concurrency::task_group tg;
-                for (int i = 0; i < xbrzHeight; i += sdl_xbrz.task_granularity)
-                {
-                    tg.run([=] {
-                        const int iLast = min(i + sdl_xbrz.task_granularity, xbrzHeight);
-                        xbrz::pitchChange(&xbrzBuf[0], &tgtTex[0], (int)xbrzWidth, (int)xbrzHeight, (int)(xbrzWidth * sizeof(uint32_t)), (int)tgtPitch, (int)i, (int)iLast, [](uint32_t pix) { return pix; });
-                    });
-                }
-                tg.wait();
-# else
-                xbrz::pitchChange(&xbrzBuf[0], &tgtTex[0], xbrzWidth, xbrzHeight, xbrzWidth * sizeof(uint32_t), tgtPitch, 0, xbrzHeight, [](uint32_t pix) { return pix; });
-# endif
-            }
-        }
-    }
-#endif
-
     if (!menu.hidecycles) frames++; //implemented
     if (GCC_UNLIKELY(!d3d->UnlockTexture(changedLines)))
         E_Exit("Failed to draw screen!");
