@@ -15,15 +15,11 @@ fi
 ./autogen.sh || exit 1
 
 # prefer to compile against our own copy of SDL 2.x IF the system does not provide one
-if [[ "$no_host_sdl2" ]]; then
-    x= # doesn't work well cross-compiling
-else
-    x=`which sdl2-config`
-fi
-if test -z "$x" ; then
+#x=`which sdl2-config`
+#if test -z "$x" ; then
     echo Compiling our internal SDL 2.x
     (cd vs2015/sdl2 && ./build-dosbox.sh) || exit 1
-fi
+#fi
 
 chmod +x configure
 ./configure --enable-core-inline --enable-debug=heavy --enable-avcodec --prefix=/usr --enable-sdl2 "$@" $opt || exit 1
