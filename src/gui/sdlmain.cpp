@@ -7706,10 +7706,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
                 mainMenu.alloc_item(DOSBoxMenu::item_type_id,"pc98_clear_graphics").set_text("Clear graphics layer").
                     set_callback_function(vid_pc98_graphics_menu_callback);
             }
-            {
-                DOSBoxMenu::item &item = mainMenu.alloc_item(DOSBoxMenu::submenu_type_id,"VideoDebugMenu");
-                item.set_text("Debug");
-            }
 #ifdef C_D3DSHADERS
             {
                 mainMenu.alloc_item(DOSBoxMenu::item_type_id, "load_d3d_shader").set_text("Select pixel shader...").
