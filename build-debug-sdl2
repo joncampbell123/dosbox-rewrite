@@ -14,9 +14,6 @@ fi
 # and just autoregen.
 ./autogen.sh || exit 1
 
-# fix
-chmod +x vs2015/sdl/build-scripts/strip_fPIC.sh
-
 # prefer to compile against our own copy of SDL 2.x IF the system does not provide one
 if [[ "$no_host_sdl2" ]]; then
     x= # doesn't work well cross-compiling
