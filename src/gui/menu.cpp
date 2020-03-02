@@ -96,7 +96,6 @@ static const char *def_menu__toplevel[] =
     "MainMenu",
     "CpuMenu",
     "VideoMenu",
-    "SoundMenu",
     "DOSMenu",
 #if !defined(C_EMSCRIPTEN)
     "CaptureMenu",
@@ -338,17 +337,6 @@ static const char *def_menu_dos_pc98[] =
 {
     "dos_pc98_pit_4mhz",
     "dos_pc98_pit_5mhz",
-    NULL
-};
-
-/* sound menu ("SoundMenu") */
-static const char *def_menu_sound[] =
-{
-    "mapper_volup",
-    "mapper_voldown",
-    "--",
-    "mixer_mute",
-    "mixer_swapstereo",
     NULL
 };
 
@@ -1066,9 +1054,6 @@ void ConstructMenu(void) {
 
     /* video PC-98 menu */
     ConstructSubMenu(mainMenu.get_item("VideoPC98Menu").get_master_id(), def_menu_video_pc98);
-
-    /* sound menu */
-    ConstructSubMenu(mainMenu.get_item("SoundMenu").get_master_id(), def_menu_sound);
 
     /* DOS menu */
     ConstructSubMenu(mainMenu.get_item("DOSMenu").get_master_id(), def_menu_dos);

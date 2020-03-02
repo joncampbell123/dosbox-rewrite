@@ -6405,26 +6405,6 @@ bool scaler_forced_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * cons
     return true;
 }
 
-void MENU_swapstereo(bool enabled);
-bool MENU_get_swapstereo(void);
-
-bool mixer_swapstereo_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem) {
-    (void)menu;//UNUSED
-    (void)menuitem;//UNUSED
-    MENU_swapstereo(!MENU_get_swapstereo());
-    return true;
-}
-
-void MENU_mute(bool enabled);
-bool MENU_get_mute(void);
-
-bool mixer_mute_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem) {
-    (void)menu;//UNUSED
-    (void)menuitem;//UNUSED
-    MENU_mute(!MENU_get_mute());
-    return true;
-}
-
 bool dos_mouse_enable_int33_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem) {
     (void)menu;//UNUSED
     (void)menuitem;//UNUSED
@@ -7714,17 +7694,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
 #endif
         }
         {
-            DOSBoxMenu::item &item = mainMenu.alloc_item(DOSBoxMenu::submenu_type_id,"SoundMenu");
-            item.set_text("Sound");
-
-            {
-                mainMenu.alloc_item(DOSBoxMenu::item_type_id,"mixer_swapstereo").set_text("Swap stereo").
-                    set_callback_function(mixer_swapstereo_menu_callback);
-                mainMenu.alloc_item(DOSBoxMenu::item_type_id,"mixer_mute").set_text("Mute").
-                    set_callback_function(mixer_mute_menu_callback);
-            }
-        }
-        {
             DOSBoxMenu::item &item = mainMenu.alloc_item(DOSBoxMenu::submenu_type_id,"DOSMenu");
             item.set_text("DOS");
 
@@ -7959,12 +7928,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
         mainMenu.alloc_item(DOSBoxMenu::item_type_id,"highdpienable").set_text("High DPI enable").set_callback_function(highdpienable_menu_callback).check(dpi_aware_enable);
 
         mainMenu.get_item("mapper_blankrefreshtest").set_text("Refresh test (blank display)").set_callback_function(refreshtest_menu_callback).refresh_item(mainMenu);
-
-        bool MENU_get_swapstereo(void);
-        mainMenu.get_item("mixer_swapstereo").check(MENU_get_swapstereo()).refresh_item(mainMenu);
-
-        bool MENU_get_mute(void);
-        mainMenu.get_item("mixer_mute").check(MENU_get_mute()).refresh_item(mainMenu);
 
         mainMenu.get_item("scaler_forced").check(render.scale.forced);
 
