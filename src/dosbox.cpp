@@ -1068,9 +1068,6 @@ void DOSBOX_SetupConfigSections(void) {
 
     const char* scalers[] = { 
         "none", "normal2x", "normal3x", "normal4x", "normal5x",
-#if RENDER_USE_ADVANCED_SCALERS>0
-        "tv2x", "tv3x", "rgb2x", "rgb3x", "scan2x", "scan3x", "gray", "gray2x",
-#endif
         "hardware_none", "hardware2x", "hardware3x", "hardware4x", "hardware5x",
 #if C_XBRZ
         "xbrz", "xbrz_bilinear",

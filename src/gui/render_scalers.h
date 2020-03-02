@@ -21,15 +21,9 @@
 
 //#include "render.h"
 #include "video.h"
-#if RENDER_USE_ADVANCED_SCALERS>0
+
 #define SCALER_MAXWIDTH		1920
 #define SCALER_MAXHEIGHT	1440
-#else
-// reduced to save some memory
-#define SCALER_MAXWIDTH		800 
-#define SCALER_MAXHEIGHT	600
-#endif
-
 
 #define SCALER_BLOCKSIZE	16
 
@@ -39,12 +33,6 @@ typedef enum {
 
 typedef enum scalerOperation {
 	scalerOpNormal,
-#if RENDER_USE_ADVANCED_SCALERS>0
-	scalerOpTV,
-	scalerOpRGB,
-	scalerOpScan,
-	scalerOpGray,
-#endif
 	scalerLast
 } scalerOperation_t;
 
@@ -94,19 +82,5 @@ extern ScalerSimpleBlock_t ScaleNormal4x;
 extern ScalerSimpleBlock_t ScaleNormal5x;
 extern ScalerSimpleBlock_t ScaleNormal2xDw;
 extern ScalerSimpleBlock_t ScaleNormal2xDh;
-#if RENDER_USE_ADVANCED_SCALERS>0
-extern ScalerSimpleBlock_t ScaleTV2x;
-extern ScalerSimpleBlock_t ScaleTVDh;
-extern ScalerSimpleBlock_t ScaleTV3x;
-extern ScalerSimpleBlock_t ScaleRGB2x;
-extern ScalerSimpleBlock_t ScaleRGB3x;
-extern ScalerSimpleBlock_t ScaleScan2x;
-extern ScalerSimpleBlock_t ScaleScanDh;
-extern ScalerSimpleBlock_t ScaleScan3x;
-extern ScalerSimpleBlock_t ScaleGrayNormal;
-extern ScalerSimpleBlock_t ScaleGrayDw;
-extern ScalerSimpleBlock_t ScaleGrayDh;
-extern ScalerSimpleBlock_t ScaleGray2x;
-#endif
 /* Complex scalers */
 #endif
