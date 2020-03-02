@@ -115,8 +115,6 @@ typedef enum PROCESS_DPI_AWARENESS {
 # include <emscripten.h>
 #endif
 
-#include "../src/libs/gui_tk/gui_tk.h"
-
 #ifdef __WIN32__
 # include "callback.h"
 # include "dos_inc.h"
