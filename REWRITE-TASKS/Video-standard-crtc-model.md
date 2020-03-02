@@ -114,3 +114,16 @@ PC-98 graphics will be stored as an array of 64-bit QWORDs, 16-bits per plane. F
 # Standard video timing model: Separation of VGA registers from timing tracking
 
 To help keep the code clean, the rewrite will track timing from raster state that is updated from VGA registers, but will not directly count from VGA registers. This is to avoid the mess seen in current DOSBox SVN code and forks which uses the VGA register values directly all over the place, and to simplify video raster emulation. Note that the mess makes it more difficult to implement additional SVGA cards and requires other SVGA hardware to patch into S3 registers, or the mode setting code to implement a case for each new SVGA card.
+
+The standard model will count dot clock vs pixels horizontally, and scanlines vertically. It is up to VGA emulation to fill in the pixel counts properly, and track shift register vs pixel output properly when asked.
+
+The standard model will allow an extra half a scanline to emulate interlaced video output, in which case the current field will be tracked as well.
+
+horizontal refresh rate = dot clock / htotal
+vertical refresh rate = dot clock / (htotal * vtotal)
+vertical refresh rate interlaced = dot clock / ((htotal * vtotal) + htotal interlaced half a scan line)
+vertical frame rate interlaced = dot clock / (((htotal * vtotal) + htotal interlaced half a scan line) * 2)
+
+Standard simulation will signal hsync when hsync happens and vsync when vsync happens. Blanking will be emulated as well.
+For EGA/VGA, non-blanking areas outside the active display area will be filled with the overscan color as set in the Attribute Controller.
+
