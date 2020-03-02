@@ -1791,9 +1791,6 @@ void DOSBOX_SetupConfigSections(void) {
                     "This option forces VGA emulation to ignore odd/even mode except in text and CGA modes.");
 
     secprop=control->AddSection_prop("render",&Null_Init,true);
-    Pint = secprop->Add_int("frameskip",Property::Changeable::Always,0);
-    Pint->SetMinMax(0,10);
-    Pint->Set_help("How many frames DOSBox skips before drawing one.");
 
     Pbool = secprop->Add_bool("alt render",Property::Changeable::Always,false);
     Pbool->Set_help("If set, use a new experimental rendering engine");

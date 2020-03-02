@@ -68,12 +68,6 @@ typedef struct {
 		double scrn_ratio;
 	} src;
 	struct {
-		Bitu count;
-		Bitu max;
-		Bitu index;
-		Bit8u hadSkip[RENDER_SKIP_CACHE];
-	} frameskip;
-	struct {
 		Bitu size;
 		scalerMode_t inMode;
 		scalerMode_t outMode;

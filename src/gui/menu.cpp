@@ -212,23 +212,6 @@ static const char *def_menu_cpu[] =
     NULL
 };
 
-/* video frameskip menu ("VideoFrameskipMenu") */
-static const char *def_menu_video_frameskip[] =
-{
-    "frameskip_0",
-    "frameskip_1",
-    "frameskip_2",
-    "frameskip_3",
-    "frameskip_4",
-    "frameskip_5",
-    "frameskip_6",
-    "frameskip_7",
-    "frameskip_8",
-    "frameskip_9",
-    "frameskip_10",
-    NULL
-};
-
 /* video scaler menu ("VideoScalerMenu") */
 static const char *def_menu_video_scaler[] =
 {
@@ -321,8 +304,6 @@ static const char *def_menu_video[] =
 #if !defined(HX_DOS)
     "mapper_resetsize",
 #endif
-    "--",
-    "VideoFrameskipMenu",
     "--",
     "scaler_forced",
     "VideoScalerMenu",
@@ -1072,9 +1053,6 @@ void ConstructMenu(void) {
 
     /* video menu */
     ConstructSubMenu(mainMenu.get_item("VideoMenu").get_master_id(), def_menu_video);
-
-    /* video frameskip menu */
-    ConstructSubMenu(mainMenu.get_item("VideoFrameskipMenu").get_master_id(), def_menu_video_frameskip);
 
     /* video scaler menu */
     ConstructSubMenu(mainMenu.get_item("VideoScalerMenu").get_master_id(), def_menu_video_scaler);

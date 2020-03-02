@@ -6916,17 +6916,6 @@ void PauseWithInterrupts_mapper_shortcut(bool pressed) {
     mainMenu.get_item("mapper_pauseints").check(pausewithinterrupts_enable).refresh_item(mainMenu);
 }
 
-bool video_frameskip_common_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem) {
-    (void)menu;//UNUSED
-
-    int f = atoi(menuitem->get_text().c_str()); /* Off becomes 0 */
-    char tmp[64];
-
-    sprintf(tmp,"%d",f);
-    SetVal("render", "frameskip", tmp);
-    return true;
-}
-
 bool show_console_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem) {
 #if !defined(C_EMSCRIPTEN)
     (void)menu;//UNUSED
@@ -7670,23 +7659,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
         {
             DOSBoxMenu::item &item = mainMenu.alloc_item(DOSBoxMenu::submenu_type_id,"VideoMenu");
             item.set_text("Video");
-            {
-                DOSBoxMenu::item &item = mainMenu.alloc_item(DOSBoxMenu::submenu_type_id,"VideoFrameskipMenu");
-                item.set_text("Frameskip");
-        
-                mainMenu.alloc_item(DOSBoxMenu::item_type_id,"frameskip_0").set_text("Off").
-                    set_callback_function(video_frameskip_common_menu_callback);
-
-                for (unsigned int f=1;f <= 10;f++) {
-                    char tmp1[64],tmp2[64];
-
-                    sprintf(tmp1,"frameskip_%u",f);
-                    sprintf(tmp2,"%u frame",f);
-
-                    mainMenu.alloc_item(DOSBoxMenu::item_type_id,tmp1).set_text(tmp2).
-                        set_callback_function(video_frameskip_common_menu_callback);
-                }
-            }
             {
                 DOSBoxMenu::item &item = mainMenu.alloc_item(DOSBoxMenu::submenu_type_id,"VideoScalerMenu");
                 item.set_text("Scaler");

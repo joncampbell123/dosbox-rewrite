@@ -272,11 +272,6 @@ bool RENDER_StartUpdate(void) {
         return false;
     if (GCC_UNLIKELY(!render.active))
         return false;
-    if (GCC_UNLIKELY(render.frameskip.count<render.frameskip.max)) {
-        render.frameskip.count++;
-        return false;
-    }
-    render.frameskip.count=0;
     if (render.scale.inMode == scalerMode8) {
         Check_Palette();
     }
@@ -342,8 +337,6 @@ void RENDER_EndUpdate( bool abort ) {
         }
         float fps = render.src.fps;
         pitch = render.scale.cachePitch;
-        if (render.frameskip.max)
-            fps /= 1+render.frameskip.max;
 
         if (Scaler_ChangedLineIndex == 0)
             flags |= CAPTURE_FLAG_NOCHANGE;
@@ -353,20 +346,11 @@ void RENDER_EndUpdate( bool abort ) {
     }
     if ( render.scale.outWrite ) {
         GFX_EndUpdate( abort? NULL : Scaler_ChangedLines );
-        render.frameskip.hadSkip[render.frameskip.index] = 0;
     } else {
-#if 0
-        Bitu total = 0, i;
-        render.frameskip.hadSkip[render.frameskip.index] = 1;
-        for (i = 0;i<RENDER_SKIP_CACHE;i++) 
-            total += render.frameskip.hadSkip[i];
-        LOG_MSG( "Skipped frame %d %d", PIC_Ticks, (total * 100) / RENDER_SKIP_CACHE );
-#endif
         // Force output to update the screen even if nothing changed...
         // works only with Direct3D output (GFX_StartUpdate() was probably not even called)
         if (render.forceUpdate) GFX_EndUpdate( 0 );
     }
-    render.frameskip.index = (render.frameskip.index + 1) & (RENDER_SKIP_CACHE - 1);
     render.updating=false;
 
     if (pause_on_vsync) {
@@ -708,22 +692,6 @@ static void BlankTestRefresh(bool pressed) {
     BlankDisplay();
 }
 
-//extern void GFX_SetTitle(Bit32s cycles, Bits frameskip, Bits timing, bool paused);
-static void IncreaseFrameSkip(bool pressed) {
-    if (!pressed)
-        return;
-    if (render.frameskip.max<10) render.frameskip.max++;
-    LOG_MSG("Frame Skip at %d",(int)render.frameskip.max);
-    GFX_SetTitle(-1,(Bits)render.frameskip.max,-1,false);
-}
-
-static void DecreaseFrameSkip(bool pressed) {
-    if (!pressed)
-        return;
-    if (render.frameskip.max>0) render.frameskip.max--;
-    LOG_MSG("Frame Skip at %d",(int)render.frameskip.max);
-    GFX_SetTitle(-1,(Bits)render.frameskip.max,-1,false);
-}
 /* Disabled as I don't want to waste a keybind for that. Might be used in the future (Qbix)
 static void ChangeScaler(bool pressed) {
     if (!pressed)
@@ -746,13 +714,6 @@ void RENDER_SetForceUpdate(bool f) {
 }
 
 void RENDER_UpdateFrameskipMenu(void) {
-    char tmp[64];
-
-    for (unsigned int f=0;f <= 10;f++) {
-        sprintf(tmp,"frameskip_%u",f);
-        DOSBoxMenu::item &item = mainMenu.get_item(tmp);
-        item.check(render.frameskip.max == f);
-    }
 }
 
 void VGA_SetupDrawing(Bitu /*val*/);
@@ -771,8 +732,6 @@ void RENDER_OnSectionPropChange(Section *x) {
     if (s_aspect == "nearest") render.aspect = ASPECT_NEAREST;
     if (s_aspect == "bilinear") render.aspect = ASPECT_BILINEAR;
 #endif
-
-    render.frameskip.max = (Bitu)section->Get_int("frameskip");
 
     if (render.aspect != p_aspect)
         RENDER_CallBack(GFX_CallBackReset);
@@ -880,17 +839,10 @@ void RENDER_Init() {
     if (s_aspect == "bilinear") render.aspect = ASPECT_BILINEAR;
 #endif
 
-    render.frameskip.max=(Bitu)section->Get_int("frameskip");
-
     mainMenu.get_item("mapper_aspratio").check(render.aspect).refresh_item(mainMenu);
 
     RENDER_UpdateFrameskipMenu();
-
-    /* BUG FIX: Some people's dosbox.conf files have frameskip=-1 WTF?? */
-    /* without this fix, nothing displays, EVER */
-    if ((int)render.frameskip.max < 0) render.frameskip.max = 0;
                                 
-    render.frameskip.count=0;
     render.forceUpdate=false;
     std::string cline;
     std::string scaler;
@@ -918,13 +870,10 @@ void RENDER_Init() {
     if(!running) render.updating=true;
     running = true;
 
-    MAPPER_AddHandler(DecreaseFrameSkip,MK_nothing,0,"decfskip","Dec Fskip");
-    MAPPER_AddHandler(IncreaseFrameSkip,MK_nothing,0,"incfskip","Inc Fskip");
-
     // DEBUG option
     MAPPER_AddHandler(BlankTestRefresh,MK_nothing,0,"blankrefreshtest","RefrshTest");
 
-    GFX_SetTitle(-1,(Bits)render.frameskip.max,-1,false);
+    GFX_SetTitle(-1,0,-1,false);
 
     RENDER_UpdateScalerMenu();
 }
