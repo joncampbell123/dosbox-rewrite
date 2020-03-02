@@ -36,9 +36,6 @@ static union {
 } scalerWriteCache;
 //scalerFrameCache_t scalerFrameCache;
 scalerSourceCache_t scalerSourceCache;
-#if RENDER_USE_ADVANCED_SCALERS>1
-scalerChangeCache_t scalerChangeCache;
-#endif
 
 #define _conc2(A,B) A ## B
 #define _conc3(A,B,C) A ## B ## C
@@ -175,16 +172,6 @@ static INLINE void ScalerAddLines( Bitu changed, Bitu count ) {
 #undef SBPP
 #undef DBPP
 
-
-#if RENDER_USE_ADVANCED_SCALERS>1
-ScalerLineBlock_t ScalerCache = {
-{	Cache_8_8,	Cache_8_15 ,	Cache_8_16 ,	Cache_8_32 },
-{	        0,	Cache_15_15,	Cache_15_16,	Cache_15_32},
-{	        0,	Cache_16_15,	Cache_16_16,	Cache_16_32},
-{	        0,	Cache_32_15,	Cache_32_16,	Cache_32_32},
-{	Cache_8_8,	Cache_9_15 ,	Cache_9_16 ,	Cache_9_32 }
-};
-#endif
 
 ScalerSimpleBlock_t ScaleNormal1x = {
 	"Normal",

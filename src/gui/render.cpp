@@ -515,14 +515,7 @@ forcenormal:
         }
     }
     if (complexBlock) {
-#if RENDER_USE_ADVANCED_SCALERS>1
-        if ((width >= SCALER_COMPLEXWIDTH - 16) || height >= SCALER_COMPLEXHEIGHT - 16) {
-            LOG_MSG("Scaler can't handle this resolution, going back to normal");
-            goto forcenormal;
-        }
-#else
         goto forcenormal;
-#endif
         gfx_flags = complexBlock->gfxFlags;
         xscale = complexBlock->xscale;  
         yscale = complexBlock->yscale;
@@ -645,23 +638,11 @@ forcenormal:
         E_Exit("Failed to create a rendering output");
     ScalerLineBlock_t *lineBlock;
     if (gfx_flags & GFX_HARDWARE) {
-#if RENDER_USE_ADVANCED_SCALERS>1
-        if (complexBlock) {
-            lineBlock = &ScalerCache;
-            render.scale.complexHandler = complexBlock->Linear[ render.scale.outMode ];
-        } else
-#endif
         {
             render.scale.complexHandler = 0;
             lineBlock = &simpleBlock->Linear;
         }
     } else {
-#if RENDER_USE_ADVANCED_SCALERS>1
-        if (complexBlock) {
-            lineBlock = &ScalerCache;
-            render.scale.complexHandler = complexBlock->Random[ render.scale.outMode ];
-        } else
-#endif
         {
             render.scale.complexHandler = 0;
             lineBlock = &simpleBlock->Random;
