@@ -255,15 +255,6 @@ const char *scaler_menu_opts[][2] = {
     { "scan3x",                 "Scan 3X" },
     { "rgb2x",                  "RGB 2X" },
     { "rgb3x",                  "RGB 3X" },
-    { "advmame2x",              "Advanced MAME 2X" },
-    { "advmame3x",              "Advanced MAME 3X" },
-    { "hq2x",                   "HQ 2X" },
-    { "hq3x",                   "HQ 3X" },
-    { "advinterp2x",            "Advanced Interpolation 2X" },
-    { "advinterp3x",            "Advanced Interpolation 3X" },
-    { "2xsai",                  "2xSai" },
-    { "super2xsai",             "Super2xSai" },
-    { "supereagle",             "SuperEagle" },
     { NULL, NULL }
 };
 
