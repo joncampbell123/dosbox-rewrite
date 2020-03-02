@@ -64,4 +64,4 @@ This design ensures emulation that is close to how most hardware functions.
 
 # Standard video timing model: Separation of VGA registers from timing tracking
 
-To help keep the code clean, the rewrite will track timing from raster state that is updated from VGA registers, but will not directly count from VGA registers. This is to avoid the mess seen in current DOSBox SVN code and forks which uses the VGA register values directly all over the place, and to simplify video raster emulation.
+To help keep the code clean, the rewrite will track timing from raster state that is updated from VGA registers, but will not directly count from VGA registers. This is to avoid the mess seen in current DOSBox SVN code and forks which uses the VGA register values directly all over the place, and to simplify video raster emulation. Note that the mess makes it more difficult to implement additional SVGA cards and requires other SVGA hardware to patch into S3 registers, or the mode setting code to implement a case for each new SVGA card.
