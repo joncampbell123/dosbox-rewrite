@@ -93,13 +93,11 @@ void DOS_GetMemory_Choose() {
         DOS_PRIVATE_SEGMENT_END= (Bit16u)(DOS_PRIVATE_SEGMENT + DOS_PRIVATE_SEGMENT_Size);
 
         if (IS_PC98_ARCH) {
-            bool PC98_FM_SoundBios_Enabled(void);
-
             /* Do not let the private segment overlap with anything else after segment C800:0000 including the SOUND ROM at CC00:0000.
              * Limiting to 32KB also leaves room for UMBs if enabled between C800:0000 and the EMS page frame at (usually) D000:0000 */
             unsigned int limit = 0xD000;
 
-            if (PC98_FM_SoundBios_Enabled()) {
+            if (false) {
                 // TODO: What about sound BIOSes larger than 16KB?
                 if (limit > 0xCC00)
                     limit = 0xCC00;
