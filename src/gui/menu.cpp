@@ -269,7 +269,6 @@ static const char *def_menu_video_vsync[] =
 static const char *def_menu_video_compat[] =
 {
     "vga_9widetext",
-    "doublescan",
     NULL
 };
 

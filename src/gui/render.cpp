@@ -776,7 +776,7 @@ void RENDER_OnSectionPropChange(Section *x) {
 
     render.frameskip.max = (Bitu)section->Get_int("frameskip");
 
-    vga.draw.doublescan_set=section->Get_bool("doublescan");
+    vga.draw.doublescan_set=true;
     vga.draw.char9_set=section->Get_bool("char9");
 
     if (render.aspect != p_aspect || vga.draw.doublescan_set != p_doublescan || vga.draw.char9_set != p_char9)
@@ -785,7 +785,6 @@ void RENDER_OnSectionPropChange(Section *x) {
         VGA_StartResize();
 
     mainMenu.get_item("vga_9widetext").check(vga.draw.char9_set).refresh_item(mainMenu);
-    mainMenu.get_item("doublescan").check(vga.draw.doublescan_set).refresh_item(mainMenu);
     mainMenu.get_item("mapper_aspratio").check(render.aspect).refresh_item(mainMenu);
 
     RENDER_UpdateFrameskipMenu();
@@ -848,7 +847,7 @@ void RENDER_Init() {
 
     control->GetSection("render")->onpropchange.push_back(&RENDER_OnSectionPropChange);
 
-    vga.draw.doublescan_set=section->Get_bool("doublescan");
+    vga.draw.doublescan_set=true;
     vga.draw.char9_set=section->Get_bool("char9");
 
 	//Set monochrome mode color and brightness
@@ -895,7 +894,6 @@ void RENDER_Init() {
     render.frameskip.max=(Bitu)section->Get_int("frameskip");
 
     mainMenu.get_item("vga_9widetext").check(vga.draw.char9_set).refresh_item(mainMenu);
-    mainMenu.get_item("doublescan").check(vga.draw.doublescan_set).refresh_item(mainMenu);
     mainMenu.get_item("mapper_aspratio").check(render.aspect).refresh_item(mainMenu);
 
     RENDER_UpdateFrameskipMenu();
