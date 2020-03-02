@@ -84,6 +84,33 @@ PC-98 emulation will use an array of 16-bit WORDs for the master GDC and text di
 
 PC-98 graphics will be stored as an array of 64-bit QWORDs, 16-bits per plane. For the same reason as planar VGA, the storage will permit higher performance code to carry out raw, tile, and EGC binary and shift operations. The 64-bit format reflects the 16-bit nature of the hardware, and the way that planar modes appear to be actually stored. On actual hardware, switching from 8/16-color planar to 256-color packed reveals that the 16-bit WORDs of the bitplanes are stored such that bitplanes E G R B become B G R E sequentially in memory. However implementation of that detail is not high priority, I have yet to find a PC-98 game that relies on that quirk. If a game does use 256-color packed mode it usually does not rely on any particular behavior regarding old/new format and layout. _This description will change if any of this is wrong_.
 
+    E      G      R      B
+    E0000h B8000h B0000h A8000h     8/16 planar
+    A8006h A8002h A8004h A8000h     256-color packed
+    
+    ------------------------------------------------
+    
+    A0000h B8000h B0000h A8000h     8/16 planar, (memory address & 0x18000) | 0xA0000
+    
+    ------------------------------------------------
+    
+    0      3      2      1          8/16 planar, (memory address >> 15) & 3
+    3      2      1      0          8/16 planar, ((memory address >> 15) + 3) & 3
+    3      1      2      0          8/16 planar, swap_two_bits(((memory address >> 15) + 3) & 3)
+    
+    8/16 planar E G R B (3 1 2 0) becomes 256-color packed B G R E (0 1 2 3)
+    
+    ------------------------------------------------
+    
+    A8006h A8002h A8004h A8000h     A8000h + (swap_two_bits(((memory address >> 15) + 3) & 3) * 2)
+    
+    ------------------------------------------------
+    
+    0      1      2      3          Decimal value
+    00b    01b    10b    11b        Binary value
+    00b    10b    01b    11b        Binary value, bits swapped
+    0      2      1      3          Decimal value of binary value after bits swapped
+
 # Standard video timing model: Separation of VGA registers from timing tracking
 
 To help keep the code clean, the rewrite will track timing from raster state that is updated from VGA registers, but will not directly count from VGA registers. This is to avoid the mess seen in current DOSBox SVN code and forks which uses the VGA register values directly all over the place, and to simplify video raster emulation. Note that the mess makes it more difficult to implement additional SVGA cards and requires other SVGA hardware to patch into S3 registers, or the mode setting code to implement a case for each new SVGA card.
