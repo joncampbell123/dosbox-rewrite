@@ -774,8 +774,6 @@ void RENDER_OnSectionPropChange(Section *x) {
 
     render.frameskip.max = (Bitu)section->Get_int("frameskip");
 
-    vga.draw.char9_set=true;
-
     if (render.aspect != p_aspect)
         RENDER_CallBack(GFX_CallBackReset);
 
@@ -840,8 +838,6 @@ void RENDER_Init() {
     LOG(LOG_MISC,LOG_DEBUG)("Initializing renderer");
 
     control->GetSection("render")->onpropchange.push_back(&RENDER_OnSectionPropChange);
-
-    vga.draw.char9_set=true;
 
 	//Set monochrome mode color and brightness
 	vga.draw.monochrome_pal=0;

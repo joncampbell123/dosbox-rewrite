@@ -197,7 +197,7 @@ typedef struct {
 	bool vga_override;
 	static constexpr bool doublescan_set = true;
 	static constexpr bool doublescan_effect = true;
-	bool char9_set;
+	static constexpr bool char9_set = true;
 	Bitu bpp;
 	double clock;
 	double oscclock;
