@@ -1068,7 +1068,6 @@ void DOSBOX_SetupConfigSections(void) {
 
     const char* scalers[] = { 
         "none", "normal2x", "normal3x", "normal4x", "normal5x",
-        "hardware_none", "hardware2x", "hardware3x", "hardware4x", "hardware5x",
         0 };
 
     const char* cores[] = { "auto",
