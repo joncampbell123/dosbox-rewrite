@@ -762,7 +762,6 @@ void RENDER_OnSectionPropChange(Section *x) {
     (void)x;//UNUSED
     Section_prop * section = static_cast<Section_prop *>(control->GetSection("render"));
 
-    bool p_doublescan = vga.draw.doublescan_set;
     bool p_char9 = vga.draw.char9_set;
     int p_aspect = render.aspect;
 
@@ -776,12 +775,11 @@ void RENDER_OnSectionPropChange(Section *x) {
 
     render.frameskip.max = (Bitu)section->Get_int("frameskip");
 
-    vga.draw.doublescan_set=true;
     vga.draw.char9_set=section->Get_bool("char9");
 
-    if (render.aspect != p_aspect || vga.draw.doublescan_set != p_doublescan || vga.draw.char9_set != p_char9)
+    if (render.aspect != p_aspect || vga.draw.char9_set != p_char9)
         RENDER_CallBack(GFX_CallBackReset);
-    if (vga.draw.doublescan_set != p_doublescan || vga.draw.char9_set != p_char9)
+    if (vga.draw.char9_set != p_char9)
         VGA_StartResize();
 
     mainMenu.get_item("vga_9widetext").check(vga.draw.char9_set).refresh_item(mainMenu);
@@ -847,7 +845,6 @@ void RENDER_Init() {
 
     control->GetSection("render")->onpropchange.push_back(&RENDER_OnSectionPropChange);
 
-    vga.draw.doublescan_set=true;
     vga.draw.char9_set=section->Get_bool("char9");
 
 	//Set monochrome mode color and brightness

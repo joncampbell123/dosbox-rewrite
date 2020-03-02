@@ -195,8 +195,8 @@ typedef struct {
 	bool has_split;
 	bool vret_triggered;
 	bool vga_override;
-	bool doublescan_set;
-	bool doublescan_effect;
+	static constexpr bool doublescan_set = true;
+	static constexpr bool doublescan_effect = true;
 	bool char9_set;
 	Bitu bpp;
 	double clock;

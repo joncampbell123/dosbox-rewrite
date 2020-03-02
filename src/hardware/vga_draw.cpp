@@ -3355,7 +3355,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
     // multiscan -- zooming effects - only makes sense if linewise is enabled
     // linewise -- scan display line by line instead of 4 blocks
     // keep compatibility with other builds of DOSBox for vgaonly.
-    vga.draw.doublescan_effect = true;
     vga.draw.render_step = 0;
     vga.draw.render_max = 1;
 
@@ -3808,41 +3807,20 @@ void VGA_SetupDrawing(Bitu /*val*/) {
             }
             /* fall through if vga_alt_new_mode */
         default:
-            vga.draw.doublescan_effect = vga.draw.doublescan_set;
-
             if (vga_alt_new_mode) {
                 if (IS_VGA_ARCH && (vga.crtc.maximum_scan_line & 0x80))
                     vga.draw_2[0].doublescan_max = 1;
                 else
                     vga.draw_2[0].doublescan_max = 0;
-
-                if (!vga.draw.doublescan_effect) {
-                    if (IS_VGA_ARCH && (vga.crtc.maximum_scan_line & 0x80)) /* CGA/EGA modes on VGA */
-                        height /= 2;
-                    else if ((vga.crtc.maximum_scan_line & 1) == 1) /* multiple of 2, 256-color mode on VGA, for example */
-                        height /= 2;
-                    else
-                        vga.draw.doublescan_effect = true;
-                }
             }
             else {
                 if (vga.crtc.maximum_scan_line & 0x80)
                     vga.draw.address_line_total *= 2;
-
-                /* if doublescan=false and line_total is even, then halve the height.
-                 * the VGA raster scan will skip every other line to accomodate that. */
-                if ((!vga.draw.doublescan_effect) && (vga.draw.address_line_total & 1) == 0)
-                    height /= 2;
-                else
-                    vga.draw.doublescan_effect = true;
             }
 
             break;
         }
     }
-
-    if (!vga.draw.doublescan_effect)
-        vga.draw.render_max = 2; /* count all lines but render only every other line */
 
     //Set the bpp
     Bitu bpp;
