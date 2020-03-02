@@ -1826,9 +1826,6 @@ void DOSBOX_SetupConfigSections(void) {
 #endif
     );
 
-    Pbool = secprop->Add_bool("char9",Property::Changeable::Always,true);
-    Pbool->Set_help("Allow 9-pixel wide text mode fonts.");
-
     Pmulti = secprop->Add_multi("scaler",Property::Changeable::Always," ");
     Pmulti->SetValue("normal2x",/*init*/true);
     Pmulti->Set_help("Scaler used to enlarge/enhance low resolution modes. If 'forced' is appended,\n"

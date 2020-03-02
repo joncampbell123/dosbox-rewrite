@@ -265,13 +265,6 @@ static const char *def_menu_video_vsync[] =
     NULL
 };
 
-/* video output menu ("VideoCompatMenu") */
-static const char *def_menu_video_compat[] =
-{
-    "vga_9widetext",
-    NULL
-};
-
 /* video output menu ("VideoPC98Menu") */
 static const char *def_menu_video_pc98[] =
 {
@@ -337,7 +330,6 @@ static const char *def_menu_video[] =
 #if !defined(C_SDL2)
     "VideoVsyncMenu",
 #endif
-    "VideoCompatMenu",
     "VideoPC98Menu",
     "--",
     "VideoDebugMenu",
@@ -1115,9 +1107,6 @@ void ConstructMenu(void) {
 
     /* video vsync menu */
     ConstructSubMenu(mainMenu.get_item("VideoVsyncMenu").get_master_id(), def_menu_video_vsync);
-
-    /* video compat menu */
-    ConstructSubMenu(mainMenu.get_item("VideoCompatMenu").get_master_id(), def_menu_video_compat);
 
     /* video PC-98 menu */
     ConstructSubMenu(mainMenu.get_item("VideoPC98Menu").get_master_id(), def_menu_video_pc98);

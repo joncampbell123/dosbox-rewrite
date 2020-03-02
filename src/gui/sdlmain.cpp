@@ -6875,13 +6875,6 @@ bool output_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menui
 
 bool MENU_SetBool(std::string secname, std::string value);
 
-bool vga_9widetext_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem) {
-    (void)menu;//UNUSED
-    (void)menuitem;//UNUSED
-    MENU_SetBool("render", "char9");
-    return true;
-}
-
 bool scaler_set_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem) {
     (void)menu;//UNUSED
 
@@ -7729,13 +7722,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
                 }
             }
             {
-                DOSBoxMenu::item &item = mainMenu.alloc_item(DOSBoxMenu::submenu_type_id,"VideoCompatMenu");
-                item.set_text("Compatibility");
-
-                mainMenu.alloc_item(DOSBoxMenu::item_type_id,"vga_9widetext").set_text("Allow 9-pixel wide text mode").
-                    set_callback_function(vga_9widetext_menu_callback);
-            }
-            {
                 DOSBoxMenu::item &item = mainMenu.alloc_item(DOSBoxMenu::submenu_type_id,"VideoOutputMenu");
                 item.set_text("Output");
 
@@ -8068,8 +8054,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
 
         mainMenu.get_item("debug_logint21").check(log_int21);
         mainMenu.get_item("debug_logfileio").check(log_fileio);
-
-        mainMenu.get_item("vga_9widetext").enable(!IS_PC98_ARCH);
 
         mainMenu.get_item("pc98_5mhz_gdc").enable(IS_PC98_ARCH);
         mainMenu.get_item("pc98_allow_200scanline").enable(IS_PC98_ARCH);
