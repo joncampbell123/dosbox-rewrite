@@ -181,10 +181,7 @@ Bitu                VGA_BIOS_SEG = 0xC000;
 Bitu                VGA_BIOS_SEG_END = 0xC800;
 Bitu                VGA_BIOS_Size = 0x8000;
 
-Bit32u                  emulator_speed = 100;
-
 static Bit32u           ticksRemain;
-static Bit32u           ticksRemainSpeedFrac;
 static Bit32u           ticksLast;
 static Bit32u           ticksLastFramecounter;
 static Bit32u           ticksLastRTcounter;
@@ -409,7 +406,6 @@ void increaseticks() { //Make it return ticksRemain and set it in the function a
     static Bit32s lastsleepDone = -1;
     static Bitu sleep1count = 0;
     if (GCC_UNLIKELY(ticksLocked)) { // For Fast Forward Mode
-        ticksRemainSpeedFrac = 0;
         ticksRemain = 5;
         /* Reset any auto cycle guessing for this frame */
         ticksLast = GetTicks();
@@ -453,16 +449,6 @@ void increaseticks() { //Make it return ticksRemain and set it in the function a
 
     //ticksNew > ticksLast
     ticksRemain = ticksNew - ticksLast;
-
-    if (emulator_speed != 100u) {
-        ticksRemain *= emulator_speed;
-        ticksRemain += ticksRemainSpeedFrac;
-        ticksRemainSpeedFrac = ticksRemain % 100u;
-        ticksRemain /= 100u;
-    }
-    else {
-        ticksRemainSpeedFrac = 0;
-    }
 
     ticksLast = ticksNew;
     ticksDone += (Bit32s)ticksRemain;
@@ -631,43 +617,6 @@ void DOSBOX_UnlockSpeed2( bool pressed ) {
     }
 }
 
-void DOSBOX_NormalSpeed( bool pressed ) {
-    if (pressed) {
-        /* should also cancel turbo mode */
-        if (ticksLocked)
-            DOSBOX_UnlockSpeed2(true);
-
-        LOG_MSG("Emulation speed restored to normal (100%%)");
-
-        emulator_speed = 100;
-        ticksRemainSpeedFrac = 0;
-    }
-}
-
-void DOSBOX_SpeedUp( bool pressed ) {
-    if (pressed) {
-        ticksRemainSpeedFrac = 0;
-        if (emulator_speed >= 5)
-            emulator_speed += 5;
-        else
-            emulator_speed = 5;
-
-        LOG_MSG("Emulation speed increased to (%u%%)",(unsigned int)emulator_speed);
-    }
-}
-
-void DOSBOX_SlowDown( bool pressed ) {
-    if (pressed) {
-        ticksRemainSpeedFrac = 0;
-        if (emulator_speed  > 5)
-            emulator_speed -= 5;
-        else
-            emulator_speed = 1;
-
-        LOG_MSG("Emulation speed decreased to (%u%%)",(unsigned int)emulator_speed);
-    }
-}
-
 void notifyError(const std::string& message)
 {
 #ifdef WIN32
@@ -826,19 +775,6 @@ void DOSBOX_RealInit() {
         MAPPER_AddHandler(DOSBOX_UnlockSpeed2, MK_nothing, 0, "speedlock2", "Speedlock2", &item);
         item->set_description("Toggle emulation speed, to allow running faster than realtime (fast forward)");
         item->set_text("Turbo (Fast Forward)");
-    }
-    {
-        MAPPER_AddHandler(DOSBOX_NormalSpeed, MK_leftarrow, MMODHOST, "speednorm","SpeedNrm", &item);
-        item->set_description("Restore normal emulation speed");
-        item->set_text("Normal speed");
-    }
-    {
-        MAPPER_AddHandler(DOSBOX_SpeedUp, MK_rbracket, MMODHOST, "speedup","SpeedUp", &item);
-        item->set_text("Speed up");
-    }
-    {
-        MAPPER_AddHandler(DOSBOX_SlowDown, MK_lbracket, MMODHOST,"slowdown","SlowDn", &item);
-        item->set_text("Slow down");
     }
 
     Section_prop *section = static_cast<Section_prop *>(control->GetSection("dosbox"));
