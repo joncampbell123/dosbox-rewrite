@@ -52,59 +52,18 @@ uint8_t                     pc98_pal_analog[256*3]; /* G R B    0x0..0xF */
 uint8_t                     pc98_pal_digital[8];    /* G R B    0x0..0x7 */
 
 void pc98_update_palette(void) {
-    if (pc98_gdc_vramop & (1 << VOPBIT_VGA)) {
-        vga_8bit_dac = true;
-
-        for (unsigned int i=0;i < 256;i++) {
-            vga.dac.rgb[i].green = pc98_pal_vga[(3*i) + 0]; /* re-use VGA DAC */
-            vga.dac.rgb[i].red   = pc98_pal_vga[(3*i) + 1]; /* re-use VGA DAC */
-            vga.dac.rgb[i].blue  = pc98_pal_vga[(3*i) + 2]; /* re-use VGA DAC */
-            VGA_DAC_UpdateColor(i);
-        }
-    }
-    else if (pc98_gdc_vramop & (1 << VOPBIT_ANALOG)) {
-        vga_8bit_dac = false;
-
-        for (unsigned int i=0;i < 16;i++) {
-            vga.dac.rgb[i].green = dac_4to6(pc98_pal_analog[(3*i) + 0]&0xF); /* re-use VGA DAC */
-            vga.dac.rgb[i].red   = dac_4to6(pc98_pal_analog[(3*i) + 1]&0xF); /* re-use VGA DAC */
-            vga.dac.rgb[i].blue  = dac_4to6(pc98_pal_analog[(3*i) + 2]&0xF); /* re-use VGA DAC */
-            VGA_DAC_UpdateColor(i);
-        }
-    }
-    else {
-        vga_8bit_dac = false;
-
-        for (unsigned int i=0;i < 8;i++) {
-            pc98_update_digpal(i);
-            VGA_DAC_UpdateColor(i);
-        }
-    }
 }
 
 void pc98_update_digpal(unsigned char ent) {
-    unsigned char grb = pc98_pal_digital[ent];
-
-    vga.dac.rgb[ent].green = (grb & 4) ? 0x3F : 0x00;
-    vga.dac.rgb[ent].red =   (grb & 2) ? 0x3F : 0x00;
-    vga.dac.rgb[ent].blue =  (grb & 1) ? 0x3F : 0x00;
-    VGA_DAC_UpdateColor(ent);
 }
 
 void pc98_set_digpal_entry(unsigned char ent,unsigned char grb) {
-    pc98_pal_digital[ent] = grb;
-
-    if (!gdc_analog)
-        pc98_update_digpal(ent);
 }
 
 void pc98_set_digpal_pair(unsigned char start,unsigned char pair) {
-    /* assume start 0..3 */
-    pc98_set_digpal_entry(start,  pair >> 4);
-    pc98_set_digpal_entry(start+4,pair & 0xF);
 }
 
 unsigned char pc98_get_digpal_pair(unsigned char start) {
-    return (pc98_pal_digital[start] << 4) + pc98_pal_digital[start+4];
+    return 0;
 }
 
