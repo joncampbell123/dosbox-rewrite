@@ -161,13 +161,6 @@ static const char *def_menu_cpu_core[] =
     "mapper_cycauto",
     "--",
     "mapper_normal",
-#if !defined(C_EMSCRIPTEN)//FIXME: Shutdown causes problems with Emscripten
-    "mapper_full",
-    "mapper_simple",
-#endif
-#if defined(C_DYNAMIC_X86) || defined(C_DYNREC)
-    "mapper_dynamic",
-#endif
     NULL
 };
 
