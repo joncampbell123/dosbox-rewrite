@@ -428,59 +428,6 @@ fi
 AM_CONDITIONAL(MACOSX, test x"$macosx" == x"1")
 AM_CONDITIONAL(EMSCRIPTEN, test x"$enable_emscripten" == x"yes")
 
-dnl The target cpu checks for dynamic cores
-AH_TEMPLATE(C_TARGETCPU,[The type of cpu this target has])
-AC_MSG_CHECKING(for target cpu type) 
-case "$host_cpu" in
-  x86_64 | amd64)
-    AC_DEFINE(C_TARGETCPU,X86_64)
-    AC_MSG_RESULT(x86-64 bit compatible)
-    c_targetcpu="x86_64"
-    c_unalignedmemory=yes
-    ;;
-  i?86)
-    AC_DEFINE(C_TARGETCPU,X86)
-    AC_MSG_RESULT(x86 compatible)
-    c_targetcpu="x86"
-    c_unalignedmemory=yes
-    ;;
-   powerpc*)
-    AC_DEFINE(C_TARGETCPU,POWERPC)
-    AC_MSG_RESULT(Power PC)
-    c_targetcpu="powerpc"
-    c_unalignedmemory=yes
-    ;;
-   m68k*)
-    AC_DEFINE(C_TARGETCPU,M68K)
-    AC_MSG_RESULT(Motorola 68000)
-    c_targetcpu="m68k"
-    c_unalignedmemory=yes
-    ;;
-   armv7l)
-    AC_DEFINE(C_TARGETCPU,ARMV7LE)
-    AC_MSG_RESULT(ARMv7 Little Endian)
-    c_targetcpu="arm"
-    c_unalignedmemory=yes
-    ;;
-   armv6l)
-    AC_DEFINE(C_TARGETCPU,ARMV4LE)
-    AC_MSG_RESULT(ARMv6 Little Endian)
-    c_targetcpu="arm"
-    dnl c_unalignedmemory=yes
-    ;;
-   aarch64)
-    AC_DEFINE(C_TARGETCPU,ARMV8LE)
-    AC_MSG_RESULT(ARMv8 Little Endian 64-bit)
-    c_targetcpu="arm"
-    c_unalignedmemory=yes
-    ;;
-   *)
-    AC_DEFINE(C_TARGETCPU,UNKNOWN)
-    AC_MSG_RESULT(unknown)
-    c_unalignedmemory=no
-    ;;
-esac
-
 dnl TODO: Need GCC to know this code is using C++ lamda functions
 
 dnl LIBRARY TEST: ALSA
@@ -717,53 +664,6 @@ if test x$enable_core_inline = xyes ; then
     AC_DEFINE(C_CORE_INLINE,1)
 else
     AC_MSG_RESULT(no)
-fi
-
-dnl automake 1.14 and upwards rewrite the host to have always 64 bit unless i386 as host is passed
-dnl this can make building a 32 bit executable a bit tricky, as dosbox relies on the host to select the
-dnl dynamic/dynrec core
-AC_MSG_CHECKING([whether Apple user wants to override the build process to produce a 32 bit binary])
-case "$host" in 
-  *-*-darwin*)
-   if test x$c_targetcpu = xx86_64 -a x$c_sizep = x4 ; then
-     AC_MSG_RESULT(yes)
-     AC_DEFINE(C_TARGETCPU,X86)
-     c_targetcpu="x86"
-   else
-     AC_MSG_RESULT(no)
-   fi
-   ;;
-  *)
-   AC_MSG_RESULT([no, not on Apple])
-   ;;
-esac
-
-dnl FEATURE: Whether to enable dynamic core
-AC_ARG_ENABLE(dynamic-core,AC_HELP_STRING([--disable-dynamic-core],[Disable all dynamic cores]),,enable_dynamic_core=yes)
-
-AH_TEMPLATE(C_DYNREC,[Define to 1 to use recompiling cpu core. Can not be used together with the dynamic-x86 core])
-AC_ARG_ENABLE(dynrec,AC_HELP_STRING([--disable-dynrec],[Disable recompiling cpu core]),,enable_dynrec=yes)
-AC_MSG_CHECKING(whether recompiling cpu core will be enabled) 
-if test x$enable_dynrec = xno -o x$enable_dynamic_core = xno; then 
-   AC_MSG_RESULT(no)
-else
-dnl x86 only enable it if dynamic-x86 is disabled.
-  if test x$c_targetcpu = xx86 ; then
-    AC_DEFINE(C_DYNREC,1)
-    AC_MSG_RESULT(yes)
-  else 
-    if test x$c_targetcpu = xx86_64 ; then
-        AC_DEFINE(C_DYNREC,1)
-        AC_MSG_RESULT(yes)
-    else
-      if test x$c_targetcpu = xarm ; then
-        AC_DEFINE(C_DYNREC,1)
-	AC_MSG_RESULT(yes)
-      else 
-        AC_MSG_RESULT(no)
-      fi
-    fi
-  fi
 fi
 
 dnl FEATURE: Whether to emulate the floating point unit
