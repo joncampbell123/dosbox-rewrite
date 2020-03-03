@@ -6823,39 +6823,6 @@ void CALLBACK_Idle(void);
 
 bool pausewithinterrupts_enable = false;
 
-void PauseWithInterruptsEnabled(Bitu /*val*/) {
-    /* we can ONLY do this when the CPU is either in real mode or v86 mode.
-     * doing this from protected mode will only crash the game.
-     * also require that interrupts are enabled before pausing. */
-    if (cpu.pmode) {
-        if (!(reg_flags & FLAG_VM)) {
-            PIC_AddEvent(PauseWithInterruptsEnabled,0.001);
-            return;
-        }
-    }
-
-    if (!(reg_flags & FLAG_IF)) {
-        PIC_AddEvent(PauseWithInterruptsEnabled,0.001);
-        return;
-    }
-
-    while (pausewithinterrupts_enable) CALLBACK_Idle();
-}
-
-void PauseWithInterrupts_mapper_shortcut(bool pressed) {
-    if (!pressed) return;
-
-    if (!pausewithinterrupts_enable) {
-        pausewithinterrupts_enable = true;
-        PIC_AddEvent(PauseWithInterruptsEnabled,0.001);
-    }
-    else {
-        pausewithinterrupts_enable = false;
-    }
-
-    mainMenu.get_item("mapper_pauseints").check(pausewithinterrupts_enable).refresh_item(mainMenu);
-}
-
 bool show_console_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem) {
 #if !defined(C_EMSCRIPTEN)
     (void)menu;//UNUSED
@@ -7709,9 +7676,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
 
             MAPPER_AddHandler(&HideMenu_mapper_shortcut, MK_escape, MMODHOST, "togmenu", "TogMenu", &item);
             item->set_text("Hide/show menu bar");
-
-            MAPPER_AddHandler(&PauseWithInterrupts_mapper_shortcut, MK_nothing, 0, "pauseints", "PauseInts", &item);
-            item->set_text("Pause with interrupts enabled");
         }
 
         {
