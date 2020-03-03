@@ -136,8 +136,6 @@ Bit32u              guest_msdos_LoL = 0;
 Bit16u              guest_msdos_mcb_chain = 0;
 int                 boothax = BOOTHAX_NONE;
 
-bool                want_fm_towns = false;
-
 bool                dos_con_use_int16_to_detect_input = true;
 
 bool                dbg_zero_on_dos_allocmem = true;
@@ -843,13 +841,11 @@ void DOSBOX_RealInit() {
     else if (mtype == "svga_paradise") { svgaCard = SVGA_ParadisePVGA1A; }
     else if (mtype == "vgaonly")       { svgaCard = SVGA_None; }
     else if (mtype == "amstrad")       { machine = MCH_AMSTRAD; }
-    else if (mtype == "pc98")          { machine = MCH_PC98; }
-    else if (mtype == "pc9801")        { machine = MCH_PC98; } /* Future differentiation */
-    else if (mtype == "pc9821")        { machine = MCH_PC98; } /* Future differentiation */
 
-    else if (mtype == "fm_towns")      { machine = MCH_VGA; want_fm_towns = true; /*machine = MCH_FM_TOWNS;*/ }
-
-    else E_Exit("DOSBOX:Unknown machine type %s",mtype.c_str());
+    else {
+        machine = MCH_VGA;
+        LOG_MSG("DOSBOX:Unknown machine type %s",mtype.c_str());
+    }
 
     // TODO: should be parsed by motherboard emulation
     // FIXME: This re-uses the existing ISA bus delay code for C-BUS in PC-98 mode
@@ -906,13 +902,6 @@ void DOSBOX_RealInit() {
     clockdom_ISA_OSC.set_name("ISA OSC");
     clockdom_ISA_BCLK.set_name("ISA BCLK");
     clockdom_PCI_BCLK.set_name("PCI BCLK");
-
-    // FM TOWNS is stub so far. According to sources like Wikipedia though,
-    // it boots from DOS in ROM that then loads bootcode from CD-ROM. So
-    // for now, allow booting into FM TOWNS mode with a warning. The
-    // switch to FM Towns will begin in the BOOT command with a flag to
-    // indicate the ISO is intended for FM TOwns.
-    if (IS_FM_TOWNS || want_fm_towns) LOG_MSG("FM Towns emulation not yet implemented. It's currently just a stub for future development.");
 }
 
 void DOSBOX_SetupConfigSections(void) {
