@@ -3052,7 +3052,7 @@ static void GUI_StartUp() {
     assert(section != NULL);
 
     sdl.desktop.fullscreen=section->Get_bool("fullscreen");
-    sdl.wait_on_error=section->Get_bool("waitonerror");
+    sdl.wait_on_error=true;
 
     Prop_multival* p=section->Get_multival("priority");
     std::string focus = p->GetSection()->Get_string("active");
@@ -4469,11 +4469,7 @@ bool GFX_IsFullscreen(void) {
 }
 
 void* GetSetSDLValue(int isget, std::string& target, void* setval) {
-    if (target == "wait_on_error") {
-        if (isget) return (void*) sdl.wait_on_error;
-        else sdl.wait_on_error = setval;
-    }
-    else if (target == "opengl.bilinear") {
+    if (target == "opengl.bilinear") {
 #if C_OPENGL
         if (isget) return (void*) sdl_opengl.bilinear;
         else sdl_opengl.bilinear = setval;
@@ -6833,16 +6829,6 @@ bool show_console_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const
     return true;
 }
 
-bool wait_on_error_menu_callback(DOSBoxMenu * const menu, DOSBoxMenu::item * const menuitem) {
-#if !defined(C_EMSCRIPTEN)
-    (void)menu;//UNUSED
-    (void)menuitem;//UNUSED
-    sdl.wait_on_error = !sdl.wait_on_error;
-    mainMenu.get_item("wait_on_error").check(sdl.wait_on_error).refresh_item(mainMenu);
-#endif
-    return true;
-}
-
 bool doublebuf_menu_callback(DOSBoxMenu * const menu, DOSBoxMenu::item * const menuitem) {
     (void)menu;//UNUSED
     (void)menuitem;//UNUSED
@@ -7785,7 +7771,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
 #if !defined(C_EMSCRIPTEN)
         mainMenu.alloc_item(DOSBoxMenu::item_type_id,"show_console").set_text("Show console").set_callback_function(show_console_menu_callback);
 #endif
-        mainMenu.alloc_item(DOSBoxMenu::item_type_id,"wait_on_error").set_text("Wait on error").set_callback_function(wait_on_error_menu_callback).check(sdl.wait_on_error);
         mainMenu.alloc_item(DOSBoxMenu::item_type_id,"doublebuf").set_text("Double Buffering (Fullscreen)").set_callback_function(doublebuf_menu_callback).check(!!GetSetSDLValue(1, doubleBufString, 0));
         mainMenu.alloc_item(DOSBoxMenu::item_type_id,"alwaysontop").set_text("Always on top").set_callback_function(alwaysontop_menu_callback).check(is_always_on_top());
         mainMenu.alloc_item(DOSBoxMenu::item_type_id,"showdetails").set_text("Show details").set_callback_function(showdetails_menu_callback).check(!menu.hidecycles && !menu.showrt);

@@ -109,9 +109,6 @@ static const char *def_menu_main[] =
     "mapper_mapper",
     "mapper_gui",
     "--",
-#if !defined(C_EMSCRIPTEN)
-    "wait_on_error",
-#endif
     "showdetails",
 #if C_DEBUG
     "--",
