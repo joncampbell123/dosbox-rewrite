@@ -152,7 +152,6 @@ void					DOSBOX_SetNormalLoop();
 #define TANDY_ARCH_CASE			MCH_TANDY: case MCH_PCJR
 #define EGAVGA_ARCH_CASE		MCH_EGA: case MCH_VGA
 #define VGA_ARCH_CASE			MCH_VGA
-#define PC98_ARCH_CASE			MCH_PC98
 
 #ifndef DOSBOX_LOGGING_H
 #include "logging.h"

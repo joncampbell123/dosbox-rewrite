@@ -2248,55 +2248,6 @@ void VGA_SetupHandlers(void) {
 		goto range_done;
 	case EGAVGA_ARCH_CASE:
         break;
-    case PC98_ARCH_CASE:
-        MEM_SetPageHandler(             VGA_PAGE_A0 + 0x00, 0x02, &vgaph.pc98_text );/* A0000-A1FFFh text layer, character data */
-        MEM_SetPageHandler(             VGA_PAGE_A0 + 0x02, 0x02, &vgaph.pc98_text );/* A2000-A3FFFh text layer, attribute data + non-volatile RAM */
-        MEM_SetPageHandler(             VGA_PAGE_A0 + 0x04, 0x01, &vgaph.pc98_cg );  /* A4000-A4FFFh character generator memory-mapped I/O */
-        MEM_ResetPageHandler_Unmapped(  VGA_PAGE_A0 + 0x05, 0x03);                   /* A5000-A7FFFh not mapped */
-
-        if (pc98_gdc_vramop & (1 << VOPBIT_VGA)) {
-            if (pc98_gdc_vramop & (1 << VOPBIT_PEGC_PLANAR)) {
-                MEM_SetPageHandler(             VGA_PAGE_A0 + 0x08, 0x10, &vgaph.pc98_256planar );/* A8000-B7FFFh planar graphics (???) */
-                MEM_ResetPageHandler_Unmapped(  VGA_PAGE_A0 + 0x18, 0x08);                        /* B8000-BFFFFh graphics layer, not mapped */
-            }
-            else {
-                MEM_SetPageHandler(             VGA_PAGE_A0 + 0x08, 0x08, &vgaph.pc98_256bank0 );/* A8000-AFFFFh graphics layer, bank 0 */
-                MEM_SetPageHandler(             VGA_PAGE_A0 + 0x10, 0x08, &vgaph.pc98_256bank1 );/* B0000-B7FFFh graphics layer, bank 1 */
-                MEM_ResetPageHandler_Unmapped(  VGA_PAGE_A0 + 0x18, 0x08);                       /* B8000-BFFFFh graphics layer, not mapped */
-            }
-        }
-        else {
-            MEM_SetPageHandler(             VGA_PAGE_A0 + 0x08, 0x08, &vgaph.pc98 );/* A8000-AFFFFh graphics layer, B bitplane */
-            MEM_SetPageHandler(             VGA_PAGE_A0 + 0x10, 0x08, &vgaph.pc98 );/* B0000-B7FFFh graphics layer, R bitplane */
-            MEM_SetPageHandler(             VGA_PAGE_A0 + 0x18, 0x08, &vgaph.pc98 );/* B8000-BFFFFh graphics layer, G bitplane */
-        }
-
-        /* E0000-E7FFFh graphics layer
-         *  - In 8-color mode, E0000-E7FFFh is not mapped
-         *  - In 16-color mode, E0000-E7FFFh is the 4th bitplane (E)
-         *  - In 256-color mode, E0000-E7FFFh is memory-mapped I/O that controls the 256-color mode */
-        if (pc98_gdc_vramop & (1 << VOPBIT_VGA))
-            MEM_SetPageHandler(0xE0, 8, &vgaph.pc98_256mmio );
-        else if (pc98_gdc_vramop & (1 << VOPBIT_ANALOG))
-            MEM_SetPageHandler(0xE0, 8, &vgaph.pc98 );
-        else
-            MEM_ResetPageHandler_Unmapped(0xE0, 8);
-
-        // TODO: What about PC-9821 systems with more than 15MB of RAM? Do they maintain a "hole"
-        //       in memory for this linear framebuffer? Intel motherboard chipsets of that era do
-        //       support a 15MB memory hole.
-        if (MEM_TotalPages() <= 0xF00/*FIXME*/) {
-            /* F00000-FF7FFFh linear framebuffer (256-packed)
-             *  - Does not exist except in 256-color mode.
-             *  - Switching from 256-color mode immediately unmaps this linear framebuffer.
-             *  - Switching to 256-color mode will immediately map the linear framebuffer if the enable bit is set in the PEGC MMIO registers */
-            if ((pc98_gdc_vramop & (1 << VOPBIT_VGA)) && pc98_pegc_linear_framebuffer_enabled())
-                MEM_SetPageHandler(0xF00, 512/*kb*/ / 4/*kb*/, &vgaph.map_lfb_pc98 );
-            else
-                MEM_ResetPageHandler_Unmapped(0xF00, 512/*kb*/ / 4/*kb*/);
-        }
-
-        goto range_done;
 	default:
 		LOG_MSG("Illegal machine type %d", machine );
 		return;
