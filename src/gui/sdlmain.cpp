@@ -6989,40 +6989,6 @@ bool highdpienable_menu_callback(DOSBoxMenu * const menu, DOSBoxMenu::item * con
     return true;
 }
 
-bool sendkey_preset_menu_callback(DOSBoxMenu * const menu, DOSBoxMenu::item * const menuitem) {
-    (void)menu;//UNUSED
-    if (menuitem->get_name() == "sendkey_ctrlesc") {
-        KEYBOARD_AddKey(KBD_leftctrl, true);
-        KEYBOARD_AddKey(KBD_esc, true);
-        KEYBOARD_AddKey(KBD_leftctrl, false);
-        KEYBOARD_AddKey(KBD_esc, false);
-    }
-    else if (menuitem->get_name() == "sendkey_alttab") {
-        KEYBOARD_AddKey(KBD_leftalt, true);
-        KEYBOARD_AddKey(KBD_tab, true);
-        KEYBOARD_AddKey(KBD_leftalt, false);
-        KEYBOARD_AddKey(KBD_tab, false);
-    }
-    else if (menuitem->get_name() == "sendkey_winlogo") {
-        KEYBOARD_AddKey(KBD_lwindows, true);
-        KEYBOARD_AddKey(KBD_lwindows, false);
-    }
-    else if (menuitem->get_name() == "sendkey_winmenu") {
-        KEYBOARD_AddKey(KBD_rwinmenu, true);
-        KEYBOARD_AddKey(KBD_rwinmenu, false);
-    }
-    else if (menuitem->get_name() == "sendkey_cad") {
-        KEYBOARD_AddKey(KBD_leftctrl, true);
-        KEYBOARD_AddKey(KBD_leftalt, true);
-        KEYBOARD_AddKey(KBD_delete, true);
-        KEYBOARD_AddKey(KBD_leftctrl, false);
-        KEYBOARD_AddKey(KBD_leftalt, false);
-        KEYBOARD_AddKey(KBD_delete, false);
-    }
-
-    return true;
-}
-
 void AspectRatio_mapper_shortcut(bool pressed) {
     if (!pressed) return;
 
@@ -7865,11 +7831,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
 #endif
         mainMenu.alloc_item(DOSBoxMenu::item_type_id,"wait_on_error").set_text("Wait on error").set_callback_function(wait_on_error_menu_callback).check(sdl.wait_on_error);
         mainMenu.alloc_item(DOSBoxMenu::item_type_id,"auto_lock_mouse").set_text("Autolock mouse").set_callback_function(autolock_mouse_menu_callback).check(sdl.mouse.autoenable);
-        mainMenu.alloc_item(DOSBoxMenu::item_type_id,"sendkey_ctrlesc").set_text("Ctrl+Esc").set_callback_function(sendkey_preset_menu_callback);
-        mainMenu.alloc_item(DOSBoxMenu::item_type_id,"sendkey_alttab").set_text("Alt+Tab").set_callback_function(sendkey_preset_menu_callback);
-        mainMenu.alloc_item(DOSBoxMenu::item_type_id,"sendkey_winlogo").set_text("Logo key").set_callback_function(sendkey_preset_menu_callback);
-        mainMenu.alloc_item(DOSBoxMenu::item_type_id,"sendkey_winmenu").set_text("Menu key").set_callback_function(sendkey_preset_menu_callback);
-        mainMenu.alloc_item(DOSBoxMenu::item_type_id,"sendkey_cad").set_text("Ctrl+Alt+Del").set_callback_function(sendkey_preset_menu_callback);
         mainMenu.alloc_item(DOSBoxMenu::item_type_id,"doublebuf").set_text("Double Buffering (Fullscreen)").set_callback_function(doublebuf_menu_callback).check(!!GetSetSDLValue(1, doubleBufString, 0));
         mainMenu.alloc_item(DOSBoxMenu::item_type_id,"alwaysontop").set_text("Always on top").set_callback_function(alwaysontop_menu_callback).check(is_always_on_top());
         mainMenu.alloc_item(DOSBoxMenu::item_type_id,"showdetails").set_text("Show details").set_callback_function(showdetails_menu_callback).check(!menu.hidecycles && !menu.showrt);
