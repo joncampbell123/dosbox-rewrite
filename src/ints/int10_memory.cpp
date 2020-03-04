@@ -192,49 +192,6 @@ void INT10_SetupRomMemory(void) {
             RealSetVec(0x43,int10.rom.font_8_first);
 
 		RealSetVec(0x1F,int10.rom.font_8_second);
-
-        if (machine == MCH_MCGA) {
-            Bitu ROMBIOS_GetMemory(Bitu bytes,const char *who,Bitu alignment,Bitu must_be_at);
-
-            Bitu base = ROMBIOS_GetMemory((Bitu)(256*16),"MCGA 16-line font",1,0u);
-            if (base == 0) E_Exit("Unable to alloc MCGA 16x font");
-
-            for (unsigned int i=0;i<256*16;i++)
-                phys_writeb((PhysPt)base+i,int10_font_16[i]);
-
-            int10.rom.font_16 = RealMake((Bit16u)(base >> 4u),(Bit16u)(base & 0xF));
-
-            // MCGA has the pointer at 40:A8 (BIOSMEM_VS_POINTER), confirmed on real hardware.
-            // It points into the BIOS, because MCGA systems do not have a BIOS at C000:0000
-            Bitu vptr = ROMBIOS_GetMemory((Bitu)(0x600),"MCGA video save pointer and structs",1,0u);
-            Bitu vptrseg = vptr >> 4;
-            Bitu vptroff = vptr & 0xF;
-            vptr -= vptroff;
-            Bitu vptroff_limit = vptroff + 0x600;
-
-            int10.rom.video_parameter_table=RealMake((Bit16u)vptrseg, (Bit16u)vptroff);
-            vptroff+=INT10_SetupVideoParameterTable((PhysPt)(vptr+vptroff));
-
-            // The dynamic save area should be in RAM, it cannot exist in ROM
-            int10.rom.video_dynamic_save_area=0;
-
-            int10.rom.video_save_pointers=RealMake((Bit16u)vptrseg, (Bit16u)vptroff);
-            phys_writed((PhysPt)(vptr+vptroff),int10.rom.video_parameter_table);
-            vptroff+=4;
-            phys_writed((PhysPt)(vptr+vptroff),int10.rom.video_dynamic_save_area);		// dynamic save area pointer
-            vptroff+=4;
-            phys_writed((PhysPt)(vptr+vptroff),0);		// alphanumeric character set override
-            vptroff+=4;
-            phys_writed((PhysPt)(vptr+vptroff),0);		// graphics character set override
-            vptroff+=4;
-            phys_writed((PhysPt)(vptr+vptroff),0);		// secondary save pointer table
-            vptroff+=4;
-            phys_writed((PhysPt)(vptr+vptroff),0); vptroff+=4;
-            phys_writed((PhysPt)(vptr+vptroff),0); vptroff+=4;
-
-            if (vptroff > vptroff_limit) E_Exit("MCGA ptr overrun");
-        }
-
 		return;
 	}
 

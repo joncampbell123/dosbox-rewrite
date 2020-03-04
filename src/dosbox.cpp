@@ -827,7 +827,6 @@ void DOSBOX_RealInit() {
     else if (mtype == "cga_rgb")       { machine = MCH_CGA; mono_cga = false; cga_comp = 2; }
     else if (mtype == "cga_composite") { machine = MCH_CGA; mono_cga = false; cga_comp = 1; new_cga = false; }
     else if (mtype == "cga_composite2"){ machine = MCH_CGA; mono_cga = false; cga_comp = 1; new_cga = true; }
-    else if (mtype == "mcga")          { machine = MCH_MCGA; }
     else if (mtype == "tandy")         { machine = MCH_TANDY; }
     else if (mtype == "pcjr")          { machine = MCH_PCJR; }
     else if (mtype == "hercules")      { machine = MCH_HERC; }
@@ -840,7 +839,6 @@ void DOSBOX_RealInit() {
     else if (mtype == "svga_et3000")   { svgaCard = SVGA_TsengET3K; }
     else if (mtype == "svga_paradise") { svgaCard = SVGA_ParadisePVGA1A; }
     else if (mtype == "vgaonly")       { svgaCard = SVGA_None; }
-    else if (mtype == "amstrad")       { machine = MCH_AMSTRAD; }
 
     else {
         machine = MCH_VGA;

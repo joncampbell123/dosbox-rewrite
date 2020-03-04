@@ -2866,58 +2866,6 @@ unsigned char KEYBOARD_AUX_SampleRate();
 void KEYBOARD_ClrBuffer(void);
 
 static Bitu INT15_Handler(void) {
-    if( ( machine==MCH_AMSTRAD ) && ( reg_ah<0x07 ) ) {
-        switch(reg_ah) {
-            case 0x00:
-                // Read/Reset Mouse X/Y Counts.
-                // CX = Signed X Count.
-                // DX = Signed Y Count.
-                // CC.
-            case 0x01:
-                // Write NVR Location.
-                // AL = NVR Address to be written (0-63).
-                // BL = NVR Data to be written.
-
-                // AH = Return Code.
-                // 00 = NVR Written Successfully.
-                // 01 = NVR Address out of range.
-                // 02 = NVR Data write error.
-                // CC.
-            case 0x02:
-                // Read NVR Location.
-                // AL = NVR Address to be read (0-63).
-
-                // AH = Return Code.
-                // 00 = NVR read successfully.
-                // 01 = NVR Address out of range.
-                // 02 = NVR checksum error.
-                // AL = Byte read from NVR.
-                // CC.
-            default:
-                LOG(LOG_BIOS,LOG_NORMAL)("INT15 Unsupported PC1512 Call %02X",reg_ah);
-                return CBRET_NONE;
-            case 0x03:
-                // Write VDU Colour Plane Write Register.
-                vga.amstrad.write_plane = reg_al & 0x0F;
-                CALLBACK_SCF(false);
-                break;
-            case 0x04:
-                // Write VDU Colour Plane Read Register.
-                vga.amstrad.read_plane = reg_al & 0x03;
-                CALLBACK_SCF(false);
-                break;
-            case 0x05:
-                // Write VDU Graphics Border Register.
-                vga.amstrad.border_color = reg_al & 0x0F;
-                CALLBACK_SCF(false);
-                break;
-            case 0x06:
-                // Return ROS Version Number.
-                reg_bx = 0x0001;
-                CALLBACK_SCF(false);
-                break;
-        }
-    }
     switch (reg_ah) {
     case 0x06:
         LOG(LOG_BIOS,LOG_NORMAL)("INT15 Unkown Function 6 (Amstrad?)");
@@ -3646,7 +3594,7 @@ static Bitu INT15_Handler(void) {
             reg_ah=0x86;
             CALLBACK_SCF(true);
             LOG_MSG("APM BIOS call attempted. set apmbios=1 if you want power management\n");
-            if ((IS_EGAVGA_ARCH) || (machine==MCH_CGA) || (machine==MCH_AMSTRAD)) {
+            if ((IS_EGAVGA_ARCH) || (machine==MCH_CGA)) {
                 /* relict from comparisons, as int15 exits with a retf2 instead of an iret */
                 CALLBACK_SZF(false);
             }
@@ -3714,7 +3662,7 @@ static Bitu INT15_Handler(void) {
                 LOG(LOG_BIOS,LOG_ERROR)("INT15:Unknown call ah=E8, al=%2X",reg_al);
                 reg_ah=0x86;
                 CALLBACK_SCF(true);
-                if ((IS_EGAVGA_ARCH) || (machine==MCH_CGA) || (machine==MCH_AMSTRAD)) {
+                if ((IS_EGAVGA_ARCH) || (machine==MCH_CGA)) {
                     /* relict from comparisons, as int15 exits with a retf2 instead of an iret */
                     CALLBACK_SZF(false);
                 }
@@ -3724,7 +3672,7 @@ static Bitu INT15_Handler(void) {
         LOG(LOG_BIOS,LOG_ERROR)("INT15:Unknown call ax=%4X",reg_ax);
         reg_ah=0x86;
         CALLBACK_SCF(true);
-        if ((IS_EGAVGA_ARCH) || (machine==MCH_CGA) || (machine==MCH_AMSTRAD)) {
+        if ((IS_EGAVGA_ARCH) || (machine==MCH_CGA)) {
             /* relict from comparisons, as int15 exits with a retf2 instead of an iret */
             CALLBACK_SZF(false);
         }
@@ -4370,9 +4318,7 @@ private:
                     break;
                 case EGAVGA_ARCH_CASE:
                 case MCH_CGA:
-                case MCH_MCGA:
                 case TANDY_ARCH_CASE:
-                case MCH_AMSTRAD:
                     //Startup 80x25 color
                     config|=0x20;
                     break;
@@ -4430,11 +4376,7 @@ private:
                     /* Tandy doesn't have a 2nd PIC, left as is for now */
                     phys_writeb(data+5,(1<<6)|(1<<5)|(1<<4));   // Feature Byte 1
                 } else {
-                    if (machine==MCH_MCGA) {
-                        /* PC/2 model 30 model */
-                        phys_writeb(data+2,0xFA);
-                        phys_writeb(data+3,0x00);                   // Submodel ID (PS/2) model 30
-                    } else if (PS1AudioCard) { /* FIXME: Won't work because BIOS_Init() comes before PS1SOUND_Init() */
+                    if (PS1AudioCard) { /* FIXME: Won't work because BIOS_Init() comes before PS1SOUND_Init() */
                         phys_writeb(data+2,0xFC);                   // Model ID (PC)
                         phys_writeb(data+3,0x0B);                   // Submodel ID (PS/1).
                     } else {
@@ -4815,7 +4757,7 @@ private:
 
             DrawDOSBoxLogoVGA((unsigned int)logo_x*8u,(unsigned int)logo_y*(unsigned int)rowheight);
         }
-        else if (machine == MCH_CGA || machine == MCH_MCGA || machine == MCH_PCJR || machine == MCH_AMSTRAD || machine == MCH_TANDY) {
+        else if (machine == MCH_CGA || machine == MCH_PCJR || machine == MCH_TANDY) {
             rowheight = 8;
             reg_eax = 6;        // 640x200 2-color
             CALLBACK_RunRealInt(0x10);
@@ -4860,9 +4802,6 @@ private:
                 case MCH_CGA:
                     card = "IBM Color Graphics Adapter";
                     break;
-                case MCH_MCGA:
-                    card = "IBM Multi Color Graphics Adapter";
-                    break;
                 case MCH_MDA:
                     card = "IBM Monochrome Display Adapter";
                     break;
@@ -4897,9 +4836,6 @@ private:
                             break;
                     }
 
-                    break;
-                case MCH_AMSTRAD:
-                    card = "Amstrad graphics";
                     break;
                 default:
                     abort(); // should not happen
@@ -5108,9 +5044,8 @@ public:
         for(Bitu i = 0; i < strlen(bios_date_string); i++) phys_writeb(0xffff5+i,(Bit8u)bios_date_string[i]);
 
         /* model byte */
-        if (machine==MCH_TANDY || machine==MCH_AMSTRAD) phys_writeb(0xffffe,0xff);  /* Tandy model */
+        if (machine==MCH_TANDY) phys_writeb(0xffffe,0xff);  /* Tandy model */
         else if (machine==MCH_PCJR) phys_writeb(0xffffe,0xfd);  /* PCJr model */
-        else if (machine==MCH_MCGA) phys_writeb(0xffffe,0xfa);  /* PC/2 model 30 model */
         else phys_writeb(0xffffe,0xfc); /* PC (FIXME: This is listed as model byte PS/2 model 60) */
 
         // signature

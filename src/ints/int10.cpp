@@ -135,11 +135,7 @@ Bitu INT10_Handler(void) {
 		reg_ah=(Bit8u)real_readw(BIOSMEM_SEG,BIOSMEM_NB_COLS);
 		break;					
 	case 0x10:								/* Palette functions */
-        if (machine==MCH_MCGA) {
-            if (!(reg_al == 0x10 || reg_al == 0x12 || reg_al == 0x15 || reg_al == 0x17 || reg_al == 0x18 || reg_al == 0x19))
-                break;
-        }
-        else if (machine==MCH_PCJR) {
+        if (machine==MCH_PCJR) {
             if (reg_al>0x02) /* "Looking at the PCjr tech ref page A-61, ... the BIOS listing stops at subfunction 2." */
                 break;
         }
@@ -209,11 +205,7 @@ Bitu INT10_Handler(void) {
 		}
 		break;
 	case 0x11:								/* Character generator functions */
-        if (machine==MCH_MCGA) {
-            if (!(reg_al == 0x24 || reg_al == 0x30))
-                break;
-        }
-        else {
+        {
             if (!IS_EGAVGA_ARCH)
                 break;
         }
@@ -330,11 +322,11 @@ graphics_chars:
 		if ((reg_al&0xf0)==0x10) Mouse_AfterNewVideoMode(false);
 		break;
 	case 0x12:								/* alternate function select */
-		if (!IS_EGAVGA_ARCH && machine != MCH_MCGA) 
+		if (!IS_EGAVGA_ARCH) 
 			break;
 		switch (reg_bl) {
 		case 0x10:							/* Get EGA Information */
-            if (machine != MCH_MCGA) {
+            {
                 /* This call makes no sense on MCGA systems because it's designed to return EGA information.
                  *
                  * Furthermore the MS-DOS port of Thexder calls this function and validates the values
@@ -531,7 +523,7 @@ CX	640x480	800x600	  1024x768/1280x1024
 		INT10_WriteString(reg_dh,reg_dl,reg_al,reg_bl,SegPhys(es)+reg_bp,reg_cx,reg_bh);
 		break;
 	case 0x1A:								/* Display Combination */
-		if (!IS_VGA_ARCH && machine != MCH_MCGA) break;
+		if (!IS_VGA_ARCH) break;
 		if (reg_al<2) {
 			INT10_DisplayCombinationCode(&reg_bx,(reg_al==1));
 			reg_ax=0x1A;	// high part destroyed or zeroed depending on BIOS
