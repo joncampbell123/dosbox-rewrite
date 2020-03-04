@@ -1,6 +1,6 @@
 AM_CPPFLAGS = -I$(top_srcdir)/include "-DRESDIR=\"$(resdir)\""
 
-SUBDIRS = cpu debug dos fpu gui hardware libs ints misc shell builtin platform mt32 aviwriter output
+SUBDIRS = cpu debug dos fpu gui hardware libs ints misc shell builtin platform aviwriter output
 
 bin_PROGRAMS = dosbox-x
 
@@ -31,12 +31,6 @@ endif
 
 if C_DIRECT3D
 dosbox_x_LDADD += output/direct3d/liboutputdirect3d.a
-endif
-
-if C_MT32
-if !EMSCRIPTEN
-dosbox_x_LDADD += mt32/libmt32.a
-endif
 endif
 
 if EMSCRIPTEN

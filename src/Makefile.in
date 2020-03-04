@@ -82,7 +82,6 @@ host_triplet = @host@
 bin_PROGRAMS = dosbox-x$(EXEEXT)
 @EMSCRIPTEN_FALSE@am__append_1 = aviwriter/libaviwriter.a
 @C_DIRECT3D_TRUE@am__append_2 = output/direct3d/liboutputdirect3d.a
-@C_MT32_TRUE@@EMSCRIPTEN_FALSE@am__append_3 = mt32/libmt32.a
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(srcdir)/dosbox.plist.in $(top_srcdir)/depcomp
@@ -106,7 +105,7 @@ dosbox_x_DEPENDENCIES = debug/libdebug.a dos/libdos.a shell/libshell.a \
 	libs/porttalk/libporttalk.a gui/libgui.a \
 	hardware/libhardware.a cpu/libcpu.a fpu/libfpu.a gui/libgui.a \
 	output/liboutput.a libs/zmbv/libzmbv.a $(am__append_1) \
-	$(am__append_2) $(am__append_3)
+	$(am__append_2)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -349,7 +348,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CPPFLAGS = -I$(top_srcdir)/include "-DRESDIR=\"$(resdir)\""
-SUBDIRS = cpu debug dos fpu gui hardware libs ints misc shell builtin platform mt32 aviwriter output
+SUBDIRS = cpu debug dos fpu gui hardware libs ints misc shell builtin platform aviwriter output
 resdir = $(datarootdir)/dosbox-x
 res_DATA = \
 	../dosbox.reference.conf \
@@ -363,7 +362,7 @@ dosbox_x_LDADD = debug/libdebug.a dos/libdos.a shell/libshell.a \
 	libs/porttalk/libporttalk.a gui/libgui.a \
 	hardware/libhardware.a cpu/libcpu.a fpu/libfpu.a gui/libgui.a \
 	output/liboutput.a libs/zmbv/libzmbv.a $(am__append_1) \
-	$(am__append_2) $(am__append_3)
+	$(am__append_2)
 EXTRA_DIST = winres.rc dosbox.ico
 all: all-recursive
 
