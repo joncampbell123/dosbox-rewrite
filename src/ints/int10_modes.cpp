@@ -798,8 +798,6 @@ static void FinishSetMode(bool clearmem) {
 	VGA_DAC_UpdateColorPalette();
 }
 
-extern bool en_int33;
-
 bool INT10_SetVideoMode_OTHER(Bit16u mode,bool clearmem) {
 	switch (machine) {
 	case MCH_CGA:
@@ -1084,8 +1082,6 @@ bool INT10_SetVideoMode_OTHER(Bit16u mode,bool clearmem) {
 				RealOff(vparams) + i + crtc_block_index*16) << 8)));
 	}
 	FinishSetMode(clearmem);
-
-	if (en_int33) INT10_SetCurMode();
 
 	return true;
 }
@@ -1994,8 +1990,6 @@ dac_text16:
 	// Enable screen memory access
 	IO_Write(0x3c4,1); IO_Write(0x3c5,seq_data[1] & ~0x20);
 	//LOG_MSG("setmode end");
-
-	if (en_int33) INT10_SetCurMode();
 
 	return true;
 }
