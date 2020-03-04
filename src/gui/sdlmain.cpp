@@ -6166,7 +6166,6 @@ void SERIAL_Init();
 #if C_PRINTER
 void PRINTER_Init();
 #endif
-void PARALLEL_Init();
 void DONGLE_Init();
 void DOS_Init();
 void XMS_Init();
@@ -7393,7 +7392,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
 #if C_PRINTER
         PRINTER_Init();
 #endif
-        PARALLEL_Init();
 #if C_NE2000
         NE2K_Init();
 #endif
