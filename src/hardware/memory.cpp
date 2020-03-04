@@ -185,22 +185,13 @@ public:
         flags=PFLAG_READABLE|PFLAG_HASROM;
     }
     void writeb(PhysPt addr,Bit8u val){
-        if (IS_PC98_ARCH && (addr & ~0x7FFF) == 0xE0000u)
-            { /* Many PC-98 games and programs will zero 0xE0000-0xE7FFF whether or not the 4th bitplane is mapped */ }
-        else
-            LOG(LOG_CPU,LOG_ERROR)("Write %x to rom at %x",(int)val,(int)addr);
+        LOG(LOG_CPU,LOG_ERROR)("Write %x to rom at %x",(int)val,(int)addr);
     }
     void writew(PhysPt addr,Bit16u val){
-        if (IS_PC98_ARCH && (addr & ~0x7FFF) == 0xE0000u)
-            { /* Many PC-98 games and programs will zero 0xE0000-0xE7FFF whether or not the 4th bitplane is mapped */ }
-        else
-            LOG(LOG_CPU,LOG_ERROR)("Write %x to rom at %x",(int)val,(int)addr);
+        LOG(LOG_CPU,LOG_ERROR)("Write %x to rom at %x",(int)val,(int)addr);
     }
     void writed(PhysPt addr,Bit32u val){
-        if (IS_PC98_ARCH && (addr & ~0x7FFF) == 0xE0000u)
-            { /* Many PC-98 games and programs will zero 0xE0000-0xE7FFF whether or not the 4th bitplane is mapped */ }
-        else
-            LOG(LOG_CPU,LOG_ERROR)("Write %x to rom at %x",(int)val,(int)addr);
+        LOG(LOG_CPU,LOG_ERROR)("Write %x to rom at %x",(int)val,(int)addr);
     }
 };
 
@@ -1307,7 +1298,6 @@ void On_Software_286_reset_vector(unsigned char code) {
 void CPU_Exception_Level_Reset();
 
 extern bool custom_bios;
-extern bool PC98_SHUT0,PC98_SHUT1;
 
 void On_Software_CPU_Reset() {
     unsigned char c;
@@ -1317,75 +1307,7 @@ void On_Software_CPU_Reset() {
     if (custom_bios) {
         /* DO NOTHING */
         LOG_MSG("CPU RESET: Doing nothing, custom BIOS loaded");
-
-        if (IS_PC98_ARCH)
-            LOG_MSG("CPU RESET: SHUT0=%u SHUT1=%u",PC98_SHUT0,PC98_SHUT1);
-        else
-            LOG_MSG("CPU RESET: CMOS BYTE 0x%02x",CMOS_GetShutdownByte());
-    }
-    else if (IS_PC98_ARCH) {
-        /* From Undocumented 9801, 9821 Volume 2:
-         *
-         * SHUT0 | SHUT1 | Meaning
-         * -----------------------
-         * 1       1       System reset (BIOS performs full reinitialization)
-         * 1       0       Invalid (BIOS will show "SYSTEM SHUTDOWN" and stop)
-         * 0       x       Continue program execution after CPU reset.
-         *                    BIOS loads SS:SP from 0000:0404 and then executes RETF */
-        if (PC98_SHUT0) {
-            if (!PC98_SHUT1)
-                E_Exit("PC-98 invalid reset aka SYSTEM SHUTDOWN (SHUT0=1 SHUT1=0)");
-        }
-        else { // SHUT0=0 SHUT1=x
-            void CPU_Snap_Back_To_Real_Mode();
-            void CPU_Snap_Back_Forget();
-
-            /* fake CPU reset */
-            CPU_Snap_Back_To_Real_Mode();
-            CPU_Snap_Back_Forget();
-
-            /* following CPU reset, and coming from the BIOS, CPU registers are trashed */
-            /* FIXME: VEM486.EXE appears to use this reset vector trick, then when regaining control,
-             *        checks to see if DX is 0x00F0 just as it was when it issued the OUT DX,AL
-             *        instruction. Why? If DX != 0x00F0 it writes whatever DX is to 0000:0486 and
-             *        then proceeds anyway. */
-            reg_eax = 0x2010000;
-            reg_ebx = 0x2111;
-            reg_ecx = 0;
-            reg_edx = 0xABCD;
-            reg_esi = 0;
-            reg_edi = 0;
-            reg_ebp = 0;
-            reg_esp = 0x4F8;
-            CPU_SetSegGeneral(ds,0x0040);
-            CPU_SetSegGeneral(es,0x0000);
-            CPU_SetSegGeneral(ss,0x0000);
-
-            /* continue program execution after CPU reset */
-            Bit16u reset_sp = mem_readw(0x404);
-            Bit16u reset_ss = mem_readw(0x406);
-
-            LOG_MSG("PC-98 reset and continue: SS:SP = %04x:%04x",reset_ss,reset_sp);
-
-            reg_esp = reset_sp;
-            CPU_SetSegGeneral(ss,reset_ss);
-
-            Bit16u new_ip = CPU_Pop16();
-            Bit16u new_cs = CPU_Pop16();
-
-            reg_eip = new_ip;
-            CPU_SetSegGeneral(cs,new_cs);
-
-            LOG_MSG("PC-98 reset and continue: RETF to %04x:%04x",SegValue(cs),reg_ip);
-
-            // DEBUG
-//            Bitu DEBUG_EnableDebugger(void);
-  //          DEBUG_EnableDebugger();
-
-            /* force execution change (FIXME: Is there a better way to do this?) */
-            throw int(4);
-            /* does not return */
-        }
+        LOG_MSG("CPU RESET: CMOS BYTE 0x%02x",CMOS_GetShutdownByte());
     }
     else {
         /* IBM reset vector or system reset by CMOS shutdown byte */
@@ -1439,29 +1361,6 @@ static Bitu read_p92(Bitu port,Bitu iolen) {
     (void)iolen;//UNUSED
     (void)port;//UNUSED
     return (Bitu)memory.a20.controlport | (memory.a20.enabled ? 0x02u : 0);
-}
-
-static Bitu read_pc98_a20(Bitu port,Bitu iolen) {
-    (void)iolen;//UNUSED
-    if (port == 0xF2)
-        return (memory.a20.enabled ? 0x00 : 0x01); // bit 0 indicates whether A20 is MASKED, not ENABLED
-
-    return ~0ul;
-}
-
-static void write_pc98_a20(Bitu port,Bitu val,Bitu iolen) {
-    (void)iolen;//UNUSED
-    if (port == 0xF2) {
-        MEM_A20_Enable(1); // writing port 0xF2 unmasks (enables) A20 regardless of value
-    }
-    else if (port == 0xF6) {
-        if ((val & 0xFE) == 0x02) { // A20 gate control 0000 001x  x=mask A20 if set
-            MEM_A20_Enable(!(val & 1));
-        }
-        else {
-            LOG_MSG("PC-98 port F6h unknown value 0x%x",(unsigned int)val);
-        }
-    }
 }
 
 void RemoveEMSPageFrame(void) {
@@ -2017,16 +1916,7 @@ void PS2Port92_OnReset(Section *sec) {
     PS2_Port_92h_WriteHandler.Uninstall();
     PS2_Port_92h_ReadHandler.Uninstall();
 
-    if (IS_PC98_ARCH) {
-        // TODO: add separate dosbox.conf variable for A20 gate control on PC-98
-        enable_port92 = true;
-        if (enable_port92) {
-            PS2_Port_92h_WriteHandler2.Install(0xF6,write_pc98_a20,IO_MB);
-            PS2_Port_92h_WriteHandler.Install(0xF2,write_pc98_a20,IO_MB);
-            PS2_Port_92h_ReadHandler.Install(0xF2,read_pc98_a20,IO_MB);
-        }
-    }
-    else {
+    {
         // TODO: this should be handled in a motherboard init routine
         enable_port92 = section->Get_bool("enable port 92");
         if (enable_port92) {

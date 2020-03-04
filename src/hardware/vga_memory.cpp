@@ -33,13 +33,8 @@
 
 extern ZIPFile savestate_zip;
 
-unsigned char pc98_pegc_mmio[0x200] = {0}; /* PC-98 memory-mapped PEGC registers at E0000h */
-uint32_t pc98_pegc_banks[2] = {0x0000,0x0000}; /* bank switching offsets */
-
 extern bool non_cga_ignore_oddeven;
 extern bool non_cga_ignore_oddeven_engage;
-extern bool enable_pc98_256color_planar;
-extern bool enable_pc98_256color;
 
 #ifndef C_VGARAM_CHECKED
 #define C_VGARAM_CHECKED 1
@@ -148,19 +143,6 @@ INLINE static Bit32u ModeOperation(Bit8u val) {
 		break;
 	}
 	return full;
-}
-
-bool pc98_pegc_linear_framebuffer_enabled(void) {
-    return false;
-}
-
-// TODO: This code may have to handle 16-bit MMIO reads
-Bit8u pc98_pegc_mmio_read(unsigned int reg) {
-    return 0;
-}
-
-// TODO: This code may have to handle 16-bit MMIO writes
-void pc98_pegc_mmio_write(unsigned int reg,Bit8u val) {
 }
 
 /* Gonna assume that whoever maps vga memory, maps it on 32/64kb boundary */
@@ -544,9 +526,6 @@ public:
 		vga.tandy.mem_base[addr] = val;
 	}
 };
-
-void pc98_msw3_set_ramsize(const unsigned char b) {
-}
 
 class VGA_Map_Handler : public PageHandler {
 public:
