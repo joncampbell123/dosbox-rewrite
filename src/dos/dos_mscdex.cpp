@@ -822,13 +822,7 @@ Bit32u CMscdex::GetDeviceStatus(Bit8u subUnit) {
 }
 
 bool CMscdex::GetMediaStatus(Bit8u subUnit, Bit8u& status) {
-	if (subUnit>=numDrives) return false;
-/*	bool media,changed,open,result;
-	result = GetMediaStatus(subUnit,media,changed,open);
-	status = changed ? 0xFF : 0x01;
-	return result; */
-	status = getSwapRequest() ? 0xFF : 0x01;
-	return true;
+	return false;
 }
 
 bool CMscdex::LoadUnloadMedia(Bit8u subUnit, bool unload) {

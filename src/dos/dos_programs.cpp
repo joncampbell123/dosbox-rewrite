@@ -906,53 +906,15 @@ public:
                 return;
             }
 
-            if (i > 1) {
-                /* if more than one image is given, then this drive becomes the focus of the swaplist */
-                if (swapInDisksSpecificDrive >= 0 && swapInDisksSpecificDrive != (drive - 65)) {
-                    WriteOut("Multiple disk images specified and another drive is already connected to the swap list");
-                    return;
-                }
-                else if (swapInDisksSpecificDrive < 0 && swaponedrive) {
-                    swapInDisksSpecificDrive = drive - 65;
-                }
-
-                /* transfer to the diskSwap array */
-                for (size_t si=0;si < MAX_SWAPPABLE_DISKS;si++) {
-                    if (diskSwap[si] != NULL) {
-                        diskSwap[si]->Release();
-                        diskSwap[si] = NULL;
-                    }
-
-                    diskSwap[si] = newDiskSwap[si];
-                    newDiskSwap[si] = NULL;
-                }
-
-                swapPosition = 0;
-                swapInDisks();
+            /* attach directly without using the swap list */
+            if (imageDiskList[drive-65] != NULL) {
+                imageDiskChange[drive-65] = true;
+                imageDiskList[drive-65]->Release();
+                imageDiskList[drive-65] = NULL;
             }
-            else {
-                if (swapInDisksSpecificDrive == (drive - 65)) {
-                    /* if we're replacing the diskSwap drive clear it now */
-                    for (size_t si=0;si < MAX_SWAPPABLE_DISKS;si++) {
-                        if (diskSwap[si] != NULL) {
-                            diskSwap[si]->Release();
-                            diskSwap[si] = NULL;
-                        }
-                    }
 
-                    swapInDisksSpecificDrive = -1;
-                }
-
-                /* attach directly without using the swap list */
-                if (imageDiskList[drive-65] != NULL) {
-                    imageDiskChange[drive-65] = true;
-                    imageDiskList[drive-65]->Release();
-                    imageDiskList[drive-65] = NULL;
-                }
-
-                imageDiskList[drive-65] = newDiskSwap[0];
-                newDiskSwap[0] = NULL;
-            }
+            imageDiskList[drive-65] = newDiskSwap[0];
+            newDiskSwap[0] = NULL;
         }
 
         if(imageDiskList[drive-65]==NULL) {
@@ -2634,20 +2596,6 @@ public:
         } else if (fstype=="none") {
             unsigned char driveIndex = drive - '0';
 
-            if (paths.size() > 1) {
-                if (driveIndex <= 1) {
-                    if (swapInDisksSpecificDrive >= 0 && swapInDisksSpecificDrive <= 1 &&
-                        swapInDisksSpecificDrive != driveIndex) {
-                        WriteOut("Multiple images given and another drive already uses multiple images");
-                        return;
-                    }
-                }
-                else {
-                    WriteOut("Multiple disk images not supported for that drive");
-                    return;
-                }
-            }
-
             if (el_torito != "") {
                 newImage = new imageDiskElToritoFloppy((unsigned char)el_torito_cd_drive, el_torito_floppy_base, el_torito_floppy_type);
             }
@@ -2680,8 +2628,6 @@ public:
                         /* slot 0 is the image we already assigned */
                         diskSwap[0] = newImage;
                         diskSwap[0]->Addref();
-                        swapPosition = 0;
-                        swapInDisksSpecificDrive = driveIndex;
 
                         for (size_t si=1;si < MAX_SWAPPABLE_DISKS && si < paths.size();si++) {
                             imageDisk *img = MountImageNone(paths[si].c_str(), sizes, reserved_cylinders);

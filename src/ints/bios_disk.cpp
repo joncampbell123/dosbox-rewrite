@@ -65,7 +65,6 @@ static bool swapping_requested;
 bool imageDiskChange[MAX_DISK_IMAGES]={false};
 imageDisk *imageDiskList[MAX_DISK_IMAGES]={NULL};
 imageDisk *diskSwap[MAX_SWAPPABLE_DISKS]={NULL};
-Bit32s swapPosition;
 
 imageDisk *GetINT13FloppyDrive(unsigned char drv) {
     if (drv >= 2)
@@ -130,97 +129,6 @@ void incrementFDD(void) {
     } else equipment|=1;
     mem_writew(BIOS_CONFIGURATION,equipment);
 }
-
-int swapInDisksSpecificDrive = -1;
-// -1 = swap across A: and B: (DOSBox / DOSBox-X default behavior)
-//  0 = swap across A: only
-//  1 = swap across B: only
-
-void swapInDisks(void) {
-    bool allNull = true;
-    Bit32s diskcount = 0;
-    Bits diskswapcount = 2;
-    Bits diskswapdrive = 0;
-    Bit32s swapPos = swapPosition;
-    Bit32s i;
-
-    /* Check to make sure that  there is at least one setup image */
-    for(i=0;i<MAX_SWAPPABLE_DISKS;i++) {
-        if(diskSwap[i]!=NULL) {
-            allNull = false;
-            break;
-        }
-    }
-
-    /* No disks setup... fail */
-    if (allNull) return;
-
-    /* if a specific drive is to be swapped, then adjust to focus on it */
-    if (swapInDisksSpecificDrive >= 0 && swapInDisksSpecificDrive <= 1) {
-        diskswapdrive = swapInDisksSpecificDrive;
-        diskswapcount = 1;
-    }
-
-    /* If only one disk is loaded, this loop will load the same disk in dive A and drive B */
-    while(diskcount < diskswapcount) {
-        if(diskSwap[swapPos] != NULL) {
-            LOG_MSG("Loaded drive %d disk %d from swaplist position %d - \"%s\"", (int)diskswapdrive, (int)diskcount, (int)swapPos, diskSwap[swapPos]->diskname.c_str());
-
-            if (imageDiskList[diskswapdrive] != NULL)
-                imageDiskList[diskswapdrive]->Release();
-
-            imageDiskList[diskswapdrive] = diskSwap[swapPos];
-            imageDiskList[diskswapdrive]->Addref();
-
-            imageDiskChange[diskswapdrive] = true;
-
-            diskcount++;
-            diskswapdrive++;
-        }
-
-        swapPos++;
-        if(swapPos>=MAX_SWAPPABLE_DISKS) swapPos=0;
-    }
-}
-
-bool getSwapRequest(void) {
-    bool sreq=swapping_requested;
-    swapping_requested = false;
-    return sreq;
-}
-
-void swapInNextDisk(bool pressed) {
-    if (!pressed)
-        return;
-    DriveManager::CycleAllDisks();
-    /* Hack/feature: rescan all disks as well */
-    LOG_MSG("Diskcaching reset for floppy drives.");
-    for(Bitu i=0;i<2;i++) { /* Swap A: and B: where DOSBox mainline would run through ALL drive letters */
-        if (Drives[i] != NULL) {
-            Drives[i]->EmptyCache();
-            Drives[i]->MediaChange();
-        }
-    }
-    swapPosition++;
-    if(diskSwap[swapPosition] == NULL) swapPosition = 0;
-    swapInDisks();
-    swapping_requested = true;
-}
-
-void swapInNextCD(bool pressed) {
-    if (!pressed)
-        return;
-    DriveManager::CycleAllCDs();
-    /* Hack/feature: rescan all disks as well */
-    LOG_MSG("Diskcaching reset for normal mounted drives.");
-    for(Bitu i=2;i<DOS_DRIVES;i++) { /* Swap C: D: .... Z: TODO: Need to swap ONLY if a CD-ROM drive! */
-        if (Drives[i] != NULL) {
-            Drives[i]->EmptyCache();
-            Drives[i]->MediaChange();
-        }
-    }
-}
-
 
 Bit8u imageDisk::Read_Sector(Bit32u head,Bit32u cylinder,Bit32u sector,void * data,unsigned int req_sector_size) {
     Bit32u sectnum;
@@ -1220,7 +1128,6 @@ void BIOS_SetupDisks(void) {
     CALLBACK_SetDescription(diskparm0,"BIOS Disk 0 parameter table");
     diskparm1 = CALLBACK_Allocate();
     CALLBACK_SetDescription(diskparm1,"BIOS Disk 1 parameter table");
-    swapPosition = 0;
 
     RealSetVec(0x41,CALLBACK_RealPointer(diskparm0));
     RealSetVec(0x46,CALLBACK_RealPointer(diskparm1));

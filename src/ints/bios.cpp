@@ -4706,9 +4706,6 @@ void BIOS_OnPowerOn(Section* sec) {
     test = new BIOS(control->GetSection("joystick"));
 }
 
-void swapInNextDisk(bool pressed);
-void swapInNextCD(bool pressed);
-
 void INT10_OnResetComplete();
 void CALLBACK_DeAllocate(Bitu in);
 
@@ -4750,13 +4747,6 @@ void BIOS_Init() {
     ISAPNP_SysDevNodeCount = 0;
     ISAPNP_SysDevNodeLargest = 0;
     for (int i=0;i < MAX_ISA_PNP_SYSDEVNODES;i++) ISAPNP_SysDevNodes[i] = NULL;
-
-    /* make sure CD swap and floppy swap mapper events are available */
-    MAPPER_AddHandler(swapInNextDisk,MK_d,MMODHOST|MMOD1,"swapimg","SwapFloppy",&item); /* Originally "Swap Image" but this version does not swap CDs */
-    item->set_text("Swap floppy");
-
-    MAPPER_AddHandler(swapInNextCD,MK_c,MMODHOST|MMOD1,"swapcd","SwapCD",&item); /* Variant of "Swap Image" for CDs */
-    item->set_text("Swap CD");
 
     /* NTS: VM_EVENT_BIOS_INIT this callback must be first. */
     AddExitFunction(AddExitFunctionFuncPair(BIOS_Destroy),false);

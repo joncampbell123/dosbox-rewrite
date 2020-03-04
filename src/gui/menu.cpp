@@ -262,9 +262,6 @@ static const char *def_menu_video[] =
 /* DOS menu ("DOSMenu") */
 static const char *def_menu_dos[] =
 {
-    "mapper_swapimg",
-    "mapper_swapcd",
-    "--",
     "mapper_rescanall",
     NULL
 };
