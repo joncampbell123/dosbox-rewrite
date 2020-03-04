@@ -1195,7 +1195,6 @@ public:
         emulated_axes=2;
         emulated_buttons=2;
         emulated_hats=0;
-        JOYSTICK_Enable(emustick,true);
 
         sdl_joystick=SDL_JoystickOpen((int)_stick);
         if (sdl_joystick==NULL) {
@@ -1294,10 +1293,6 @@ public:
             case SDL_JOYAXISMOTION:
                 jaxis = &event->jaxis;
                 if((unsigned int)jaxis->which == (unsigned int)stick) {
-                    if(jaxis->axis == 0)
-                        JOYSTICK_Move_X(emustick,(float)(jaxis->value/32768.0));
-                    else if(jaxis->axis == 1)
-                        JOYSTICK_Move_Y(emustick,(float)(jaxis->value/32768.0));
                 }
                 break;
             case SDL_JOYBUTTONDOWN:
@@ -1308,7 +1303,6 @@ public:
                     state=jbutton->type==SDL_JOYBUTTONDOWN;
                     Bitu but = jbutton->button % emulated_buttons;
                     if ((unsigned int)jbutton->which == (unsigned int)stick) {
-                        JOYSTICK_Button(emustick, but, state);
                     }
                 }
                 break;
@@ -1329,15 +1323,7 @@ public:
                 button_pressed[i % button_wrap]=true;
         }
         for (i=0; i<emulated_buttons; i++) {
-            if (autofire && (button_pressed[i]))
-                JOYSTICK_Button(emustick,i,(++button_autofire[i])&1);
-            else
-                JOYSTICK_Button(emustick,i,button_pressed[i]);
         }
-
-        auto v = GetJoystickVector((int)emustick, 0, 0, 1);
-        JOYSTICK_Move_X(emustick, v.X);
-        JOYSTICK_Move_Y(emustick, v.Y);
     }
 
     void ActivateJoystickBoundEvents() {
@@ -1547,8 +1533,6 @@ public:
         if (axes_cap>axes) axes_cap=axes;
         hats_cap=emulated_hats;
         if (hats_cap>hats) hats_cap=hats;
-
-        JOYSTICK_Enable(1,true);
     }
     virtual ~C4AxisBindGroup() {}
 
@@ -1561,10 +1545,6 @@ public:
             case SDL_JOYAXISMOTION:
                 jaxis = &event->jaxis;
                 if((unsigned int)jaxis->which == (unsigned int)stick && jaxis->axis < 4) {
-                    if(jaxis->axis & 1)
-                        JOYSTICK_Move_Y(jaxis->axis>>1 & 1,(float)(jaxis->value/32768.0));
-                    else
-                        JOYSTICK_Move_X(jaxis->axis>>1 & 1,(float)(jaxis->value/32768.0));
                 }
                 break;
             case SDL_JOYBUTTONDOWN:
@@ -1574,7 +1554,6 @@ public:
                 state=jbutton->type==SDL_JOYBUTTONDOWN;
                 but = jbutton->button % emulated_buttons;
                 if ((unsigned int)jbutton->which == (unsigned int)stick) {
-                    JOYSTICK_Button((but >> 1),(but & 1),state);
                 }
                 break;
         }
@@ -1594,18 +1573,10 @@ public:
             
         }
         for (i=0; i<emulated_buttons; i++) {
-            if (autofire && (button_pressed[i]))
-                JOYSTICK_Button(i>>1,i&1,(++button_autofire[i])&1);
-            else
-                JOYSTICK_Button(i>>1,i&1,button_pressed[i]);
         }
 
         auto v1 = GetJoystickVector(0, 0, 0, 1);
         auto v2 = GetJoystickVector(0, 1, 2, 3);
-        JOYSTICK_Move_X(0, v1.X);
-        JOYSTICK_Move_Y(0, v1.Y);
-        JOYSTICK_Move_X(1, v2.X);
-        JOYSTICK_Move_Y(1, v2.Y);
     }
 };
 
@@ -1622,9 +1593,6 @@ public:
         if (axes_cap>axes) axes_cap=axes;
         hats_cap=emulated_hats;
         if (hats_cap>hats) hats_cap=hats;
-
-        JOYSTICK_Enable(1,true);
-        JOYSTICK_Move_Y(1,1.0);
     }
     virtual ~CFCSBindGroup() {}
 
@@ -1638,12 +1606,6 @@ public:
             case SDL_JOYAXISMOTION:
                 jaxis = &event->jaxis;
                 if((unsigned int)jaxis->which == (unsigned int)stick) {
-                    if(jaxis->axis == 0)
-                        JOYSTICK_Move_X(0,(float)(jaxis->value/32768.0));
-                    else if(jaxis->axis == 1)
-                        JOYSTICK_Move_Y(0,(float)(jaxis->value/32768.0));
-                    else if(jaxis->axis == 2)
-                        JOYSTICK_Move_X(1,(float)(jaxis->value/32768.0));
                 }
                 break;
             case SDL_JOYHATMOTION:
@@ -1657,7 +1619,6 @@ public:
                 state=jbutton->type==SDL_JOYBUTTONDOWN;
                 but = jbutton->button % emulated_buttons;
                 if ((unsigned int)jbutton->which == (unsigned int)stick) {
-                        JOYSTICK_Button((but >> 1),(but & 1),state);
                 }
                 break;
         }
@@ -1677,17 +1638,10 @@ public:
             
         }
         for (i=0; i<emulated_buttons; i++) {
-            if (autofire && (button_pressed[i]))
-                JOYSTICK_Button(i>>1,i&1,(++button_autofire[i])&1);
-            else
-                JOYSTICK_Button(i>>1,i&1,button_pressed[i]);
         }
 
         auto v1 = GetJoystickVector(0, 0, 0, 1);
         auto v2 = GetJoystickVector(0, 1, 2, 3);
-        JOYSTICK_Move_X(0, v1.X);
-        JOYSTICK_Move_Y(0, v1.Y);
-        JOYSTICK_Move_X(1, v2.X);
 
         Uint8 hat_pos=0;
         if (virtual_joysticks[0].hat_pressed[0]) hat_pos|=SDL_HAT_UP;
@@ -1707,43 +1661,22 @@ private:
     void DecodeHatPosition(Uint8 hat_pos) {
         switch(hat_pos) {
             case SDL_HAT_CENTERED:
-                JOYSTICK_Move_Y(1,1.0);
                 break;
             case SDL_HAT_UP:
-                JOYSTICK_Move_Y(1,-1.0);
                 break;
             case SDL_HAT_RIGHT:
-                JOYSTICK_Move_Y(1,-0.5);
                 break;
             case SDL_HAT_DOWN:
-                JOYSTICK_Move_Y(1,0.0);
                 break;
             case SDL_HAT_LEFT:
-                JOYSTICK_Move_Y(1,0.5);
                 break;
             case SDL_HAT_LEFTUP:
-                if(JOYSTICK_GetMove_Y(1) < 0)
-                    JOYSTICK_Move_Y(1,0.5);
-                else
-                    JOYSTICK_Move_Y(1,-1.0);
                 break;
             case SDL_HAT_RIGHTUP:
-                if(JOYSTICK_GetMove_Y(1) < -0.7)
-                    JOYSTICK_Move_Y(1,-0.5);
-                else
-                    JOYSTICK_Move_Y(1,-1.0);
                 break;
             case SDL_HAT_RIGHTDOWN:
-                if(JOYSTICK_GetMove_Y(1) < -0.2)
-                    JOYSTICK_Move_Y(1,0.0);
-                else
-                    JOYSTICK_Move_Y(1,-0.5);
                 break;
             case SDL_HAT_LEFTDOWN:
-                if(JOYSTICK_GetMove_Y(1) > 0.2)
-                    JOYSTICK_Move_Y(1,0.0);
-                else
-                    JOYSTICK_Move_Y(1,0.5);
                 break;
         }
     }
@@ -1762,7 +1695,6 @@ public:
         hats_cap=emulated_hats;
         if (hats_cap>hats) hats_cap=hats;
 
-        JOYSTICK_Enable(1,true);
         button_state=0;
     }
     virtual ~CCHBindGroup() {}
@@ -1779,10 +1711,6 @@ public:
             case SDL_JOYAXISMOTION:
                 jaxis = &event->jaxis;
                 if((unsigned int)jaxis->which == (unsigned int)stick && jaxis->axis < 4) {
-                    if(jaxis->axis & 1)
-                        JOYSTICK_Move_Y(jaxis->axis>>1 & 1,(float)(jaxis->value/32768.0));
-                    else
-                        JOYSTICK_Move_X(jaxis->axis>>1 & 1,(float)(jaxis->value/32768.0));
                 }
                 break;
             case SDL_JOYHATMOTION:
@@ -1818,10 +1746,6 @@ public:
         Bit16u j;
         j=button_state;
         for(i=0;i<16;i++) if (j & 1) break; else j>>=1;
-        JOYSTICK_Button(0,0,i&1);
-        JOYSTICK_Button(0,1,(i>>1)&1);
-        JOYSTICK_Button(1,0,(i>>2)&1);
-        JOYSTICK_Button(1,1,(i>>3)&1);
         return false;
     }
 
@@ -1834,10 +1758,6 @@ public:
 
         auto v1 = GetJoystickVector(0, 0, 0, 1);
         auto v2 = GetJoystickVector(0, 1, 2, 3);
-        JOYSTICK_Move_X(0, v1.X);
-        JOYSTICK_Move_X(0, v1.Y);
-        JOYSTICK_Move_X(1, v2.X);
-        JOYSTICK_Move_X(1, v2.Y);
 
         Bitu bt_state=15;
 
@@ -1872,10 +1792,6 @@ public:
         }
 
         if (bt_state>15) bt_state=15;
-        JOYSTICK_Button(0,0,(bt_state&8)==0);
-        JOYSTICK_Button(0,1,(bt_state&4)==0);
-        JOYSTICK_Button(1,0,(bt_state&2)==0);
-        JOYSTICK_Button(1,1,(bt_state&1)==0);
     }
 
 protected:

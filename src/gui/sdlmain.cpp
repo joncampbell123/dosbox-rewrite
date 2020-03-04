@@ -4720,8 +4720,6 @@ void GFX_Events() {
         poll_delay = time;
         if (sdl.num_joysticks > 0)
         {
-            SDL_JoystickUpdate();
-            MAPPER_UpdateJoysticks();
         }
     }
 #endif
@@ -4903,8 +4901,6 @@ void GFX_Events() {
         poll_delay=time;
         if (sdl.num_joysticks>0)
         {
-            SDL_JoystickUpdate();
-            MAPPER_UpdateJoysticks();
         }
     }
 #endif
@@ -6157,7 +6153,6 @@ void DEBUG_Init();
 #endif
 void BIOS_Init();
 void INT10_Init();
-void JOYSTICK_Init();
 #if C_PRINTER
 void PRINTER_Init();
 #endif
@@ -7369,7 +7364,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
         VGA_Init();
         ISAPNP_Cfg_Init();
         KEYBOARD_Init();
-        JOYSTICK_Init();
         BIOS_Init();
         INT10_Init();
 #if C_PRINTER
