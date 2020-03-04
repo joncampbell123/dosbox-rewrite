@@ -820,28 +820,12 @@ void DOSBOX_RealInit() {
     std::string mtype(section->Get_string("machine"));
     svgaCard = SVGA_None;
     machine = MCH_VGA;
+    svgaCard = SVGA_None;
     int10.vesa_nolfb = false;
     int10.vesa_oldvbe = false;
-    if      (mtype == "cga")           { machine = MCH_CGA; mono_cga = false; }
-    else if (mtype == "cga_mono")      { machine = MCH_CGA; mono_cga = true; }
-    else if (mtype == "cga_rgb")       { machine = MCH_CGA; mono_cga = false; cga_comp = 2; }
-    else if (mtype == "cga_composite") { machine = MCH_CGA; mono_cga = false; cga_comp = 1; new_cga = false; }
-    else if (mtype == "cga_composite2"){ machine = MCH_CGA; mono_cga = false; cga_comp = 1; new_cga = true; }
-    else if (mtype == "tandy")         { machine = MCH_TANDY; }
-    else if (mtype == "pcjr")          { machine = MCH_PCJR; }
-    else if (mtype == "hercules")      { machine = MCH_HERC; }
-    else if (mtype == "mda")           { machine = MCH_MDA; }
-    else if (mtype == "ega")           { machine = MCH_EGA; }
-    else if (mtype == "svga_s3")       { svgaCard = SVGA_S3Trio; }
-    else if (mtype == "vesa_nolfb")    { svgaCard = SVGA_S3Trio; int10.vesa_nolfb = true;}
-    else if (mtype == "vesa_oldvbe")   { svgaCard = SVGA_S3Trio; int10.vesa_oldvbe = true;}
-    else if (mtype == "svga_et4000")   { svgaCard = SVGA_TsengET4K; }
-    else if (mtype == "svga_et3000")   { svgaCard = SVGA_TsengET3K; }
-    else if (mtype == "svga_paradise") { svgaCard = SVGA_ParadisePVGA1A; }
-    else if (mtype == "vgaonly")       { svgaCard = SVGA_None; }
-
+    if (mtype == "vgaonly") {
+    }
     else {
-        machine = MCH_VGA;
         LOG_MSG("DOSBOX:Unknown machine type %s",mtype.c_str());
     }
 
