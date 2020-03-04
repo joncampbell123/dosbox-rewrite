@@ -80,9 +80,6 @@ double vga_fps = 70;
 double vga_mode_time_base = -1;
 int vga_mode_frames_since_time_base = 0;
 
-bool pc98_display_enable = true;
-
-extern bool pc98_40col_text;
 extern bool vga_3da_polled;
 extern bool vga_page_flip_occurred;
 extern bool vga_enable_hpel_effects;
@@ -91,9 +88,6 @@ extern unsigned int vga_display_start_hretrace;
 extern float hretrace_fx_avg_weight;
 extern bool ignore_vblank_wraparound;
 extern bool vga_double_buffered_line_compare;
-extern bool pc98_crt_mode;      // see port 6Ah command 40h/41h.
-
-extern bool pc98_31khz_mode;
 
 void memxor(void *_d,unsigned int byte,size_t count) {
     unsigned char *d = (unsigned char*)_d;
@@ -128,7 +122,6 @@ static float hretrace_fx_avg = 0;
 
 void VGA_MarkCaptureAcquired(void);
 void VGA_MarkCaptureInProgress(bool en);
-void pc98_update_display_page_ptr(void);
 bool VGA_CaptureValidateCurrentFrame(void);
 void VGA_CaptureStartNextFrame(void);
 void VGA_MarkCaptureRetrace(void);
@@ -1717,116 +1710,6 @@ static Bit8u* Alt_VGA_TEXT_Xlat32_Draw_Line(Bitu /*vidstart*/, Bitu /*line*/) {
     return Alt_EGAVGA_TEXT_Combined_Draw_Line<MCH_VGA,Bit32u>();
 }
 
-extern bool pc98_attr4_graphic;
-extern uint8_t GDC_display_plane;
-extern uint8_t GDC_display_plane_pending;
-extern bool pc98_graphics_hide_odd_raster_200line;
-extern bool pc98_allow_scanline_effect;
-extern bool gdc_analog;
-
-unsigned char       pc98_text_first_row_scanline_start = 0x00;  /* port 70h */
-unsigned char       pc98_text_first_row_scanline_end = 0x0F;    /* port 72h */
-unsigned char       pc98_text_row_scanline_blank_at = 0x10;     /* port 74h */
-unsigned char       pc98_text_row_scroll_lines = 0x00;          /* port 76h */
-unsigned char       pc98_text_row_scroll_count_start = 0x00;    /* port 78h */
-unsigned char       pc98_text_row_scroll_num_lines = 0x00;      /* port 7Ah */
-
-// Text layer rendering state.
-// Track row, row count, scanline row within the cell,
-// for accurate emulation
-struct Text_Draw_State {
-    void begin_frame(void) {
-    }
-    void next_line(void) {
-    }
-    void update_scroll_line(void) {
-    }
-    void next_character_row(void) {
-    }
-    void check_scroll_region(void) {
-    }
-    bool in_scroll_region(void) const {
-        return false;
-    }
-};
-
-Text_Draw_State     pc98_text_draw;
-
-/* NEC PC-9821Lt2 memory layout notes:
- *
- * - At first glance, the 8/16 color modes appear to be a sequence of bytes that are read
- *   in parallel to form 8 or 16 colors.
- * - Switching on 256-color mode disables the planar memory mapping, and appears to reveal
- *   how the planar memory is ACTUALLY laid out.
- * - Much like how VGA planar memory could be thought of as 32 bits per unit, 8 bits per plane,
- *   PC-98 planar memory seems to behave as 64 bits per unit, 16 bits per plane.
- * - 256-color mode seems to reveal that the bitplanes exposed at A800, B000, B800, E000
- *   are in fact just interleaved WORDS in video memory in BGRE order, meaning that the
- *   first 4 WORDs visible in 256-color mode are the same as, in 16-color mode, the first
- *   word of (in this order) A800, B800, B000, E000. The traditional E/G/R/B
- *   (E000, B800, B000, A800) planar order is actually stored in memory in BGRE order.
- *
- *   Example:
- *
- *      1. Enable 16-color mode
- *      2. Turn OFF 256-color mode
- *      3. Write 0x11 0x22 to A800:0000
- *      4. Write 0x33 0x44 to B000:0000
- *      5. Write 0x55 0x66 to B800:0000
- *      6. Write 0x77 0x88 to E000:0000
- *      7. Turn ON 256-color mode. Memory map will change.
- *      8. Observe at A800:0000 the values 0x11 0x22 0x55 0x66 0x33 0x44 0x77 0x88
- *
- * Also, if you use I/O port A6h to write to page 1 instead of page 0, what you write will
- * appear in 256-color mode at SVGA memory bank 4 (offset 128KB) instead of memory bank 0
- * (offset 0KB). Considering 4 planes * 32KB = 128KB this makes sense.
- *
- * So either the video memory is planar in design, and the 256-color mode is just the bitplanes
- * "chained" together (same as 256-color VGA mode), OR, the 256-color mode reflects how memory
- * is actually laid out and the planar memory is just emulated by packing each bitplane's WORDs
- * together like that.
- *
- * Proper emulation will require determining which is true and rewriting the draw and memory
- * access code to reflect the true layout so mode changes behave in DOSBox-X exactly as they
- * behave on real hardware.
- *
- * I have a hunch it's the case of 4 16-bit bitplanes shifted a byte at a time since doing that
- * allows 256-color mode without having to reprogram any other parameters of the GDC or change
- * anything significant about the hardware.
- *
- * Think about it: VGA has planar memory, and each 8-bit byte is shifted out one bit at a time
- * in parallel to produce a 4-bit value for each pixel, but VGA also permits the hardware to
- * switch to shifting out each planar byte instead to produce a 256-color packed mode.
- *
- * As noted elsewhere in this source code, VGA memory is 4 planes tied together, even in standard
- * 256-color mode where the planes are chained together to give the CPU the impression of a linear
- * packed framebuffer.
- *
- * Since PC-98 also has planar memory, it wouldn't surprise me if the 256-color mode is just the
- * same trick except with 16-bit quantitites loaded from memory instead of VGA's 8-bit quantities.
- *
- * The behavior of the hardware suggest to me that it also allowed NEC to change as little about
- * the video hardware as possible, except how it shifts and interprets the planar word data.
- *
- * The distorted screen that the PC-98 version of Windows 3.1 presents if you select the 640x400
- * 256-color driver seems to confirm my theory, along with the fact that you can apparently use
- * EGC ROPs in 256-color mode.
- *
- * However it's very likely the few PC-98 games that use the 256-color mode only care about the
- * mode as it exists, and that they don't care about what the prior contents of video memory look
- * like, so this isn't a problem in running the games, only a minor problem in emulation accuracy.
- *
- * Very likely, the same as IBM PC games that set up VGA unchained modes and do not necessarily
- * care what happens to the display of prior video memory contents (except of course some lazy
- * written code in the Demoscene that switches freely between the two modes).
- *
- * Please note this behavior so far has been noted from one PC-9821 laptop. It may be consistent
- * across other models I have available for testing, or it may not. --J.C.
- */
-
-extern bool                 pc98_256kb_boundary;
-extern bool                 gdc_5mhz_mode;
-
 static Bit8u* VGA_PC98_Xlat32_Draw_Line(Bitu vidstart, Bitu line) {
     return TempLine;
 }
@@ -2395,11 +2278,6 @@ void VGA_CaptureWriteScanline(const uint8_t *raw) {
 
 static void VGA_VerticalTimer(Bitu /*val*/) {
     double current_time = PIC_GetCurrentEventTime();
-
-    if (IS_PC98_ARCH) {
-        GDC_display_plane = GDC_display_plane_pending;
-        pc98_update_display_page_ptr();
-    }
 
     if (VGA_IsCaptureEnabled()) {
         if (VGA_IsCaptureInProgress()) {
@@ -3028,7 +2906,7 @@ void VGA_SetupDrawing(Bitu /*val*/) {
         vbstart = vga.crtc.start_vertical_blanking | ((vga.crtc.overflow & 0x08u) << 5u);
         vrstart = vga.crtc.vertical_retrace_start + ((vga.crtc.overflow & 0x04u) << 6u);
         
-        if (IS_VGA_ARCH || IS_PC98_ARCH) {
+        if (IS_VGA_ARCH) {
             // additional bits only present on vga cards
             htotal |= (vga.s3.ex_hor_overflow & 0x1u) << 8u;
             htotal += 3u;
@@ -3091,16 +2969,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
 
         if (svga.get_clock) {
             oscclock = svga.get_clock();
-        } else if (vga.mode == M_PC98) {
-            if (false/*future 15KHz hsync*/) {
-                oscclock = 14318180;
-            }
-            else if (!pc98_31khz_mode/*24KHz hsync*/) {
-                oscclock = 21052600;
-            }
-            else {/*31KHz VGA-like hsync*/
-                oscclock = 25175000;
-            }
         } else {
             switch ((vga.misc_output >> 2) & 3) {
             case 0: 

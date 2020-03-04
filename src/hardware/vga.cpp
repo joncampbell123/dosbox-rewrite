@@ -149,9 +149,6 @@ extern ZIPFile savestate_zip;
 
 using namespace std;
 
-Bitu pc98_read_9a8(Bitu /*port*/,Bitu /*iolen*/);
-void pc98_write_9a8(Bitu port,Bitu val,Bitu iolen);
-
 bool VGA_IsCaptureEnabled(void);
 void VGA_UpdateCapturePending(void);
 bool VGA_CaptureHasNextFrame(void);
@@ -159,38 +156,11 @@ void VGA_CaptureStartNextFrame(void);
 void VGA_CaptureMarkError(void);
 bool VGA_CaptureValidateCurrentFrame(void);
 
-/* current dosplay page (controlled by A4h) */
-unsigned char*                      pc98_pgraph_current_display_page;
-/* current CPU page (controlled by A6h) */
-unsigned char*                      pc98_pgraph_current_cpu_page;
-
 bool                                vga_8bit_dac = false;
 bool                                vga_alt_new_mode = false;
 bool                                enable_vga_8bit_dac = true;
 
-bool                                pc98_crt_mode = false;      // see port 6Ah command 40h/41h.
-                                                                // this boolean is the INVERSE of the bit.
-
 extern int                          vga_memio_delay_ns;
-extern bool                         gdc_5mhz_mode;
-extern bool                         gdc_5mhz_mode_initial;
-extern bool                         enable_pc98_egc;
-extern bool                         enable_pc98_grcg;
-extern bool                         enable_pc98_16color;
-extern bool                         enable_pc98_256color;
-extern bool                         enable_pc98_256color_planar;
-extern bool                         enable_pc98_188usermod;
-extern bool                         GDC_vsync_interrupt;
-extern uint8_t                      GDC_display_plane;
-extern bool                         pc98_256kb_boundary;
-
-extern uint8_t                      pc98_gdc_tile_counter;
-extern uint8_t                      pc98_gdc_modereg;
-extern uint8_t                      pc98_gdc_vramop;
-
-extern uint8_t                      pc98_egc_srcmask[2]; /* host given (Neko: egc.srcmask) */
-extern uint8_t                      pc98_egc_maskef[2]; /* effective (Neko: egc.mask2) */
-extern uint8_t                      pc98_egc_mask[2]; /* host given (Neko: egc.mask) */
 
 uint32_t S3_LFB_BASE =              S3_LFB_BASE_DEFAULT;
 
@@ -234,13 +204,6 @@ bool non_cga_ignore_oddeven = false;
 bool non_cga_ignore_oddeven_engage = false;
 bool vga_palette_update_on_full_load = true;
 bool vga_double_buffered_line_compare = false;
-bool pc98_allow_scanline_effect = true;
-bool pc98_allow_4_display_partitions = false;
-bool pc98_graphics_hide_odd_raster_200line = false;
-bool pc98_attr4_graphic = false;
-bool pc98_40col_text = false;
-bool gdc_analog = true;
-bool pc98_31khz_mode = false;
 bool int10_vesa_map_as_128kb = false;
 
 unsigned char VGA_AC_remap = AC_4x4;
@@ -261,23 +224,6 @@ bool allow_vesa_15bpp = true;
 bool allow_vesa_8bpp = true;
 bool allow_vesa_4bpp = true;
 bool allow_vesa_tty = true;
-
-void gdc_5mhz_mode_update_vars(void);
-void pc98_port6A_command_write(unsigned char b);
-void pc98_wait_write(Bitu port,Bitu val,Bitu iolen);
-void pc98_crtc_write(Bitu port,Bitu val,Bitu iolen);
-void pc98_port68_command_write(unsigned char b);
-Bitu pc98_read_9a0(Bitu /*port*/,Bitu /*iolen*/);
-void pc98_write_9a0(Bitu port,Bitu val,Bitu iolen);
-Bitu pc98_crtc_read(Bitu port,Bitu iolen);
-Bitu pc98_a1_read(Bitu port,Bitu iolen);
-void pc98_a1_write(Bitu port,Bitu val,Bitu iolen);
-void pc98_gdc_write(Bitu port,Bitu val,Bitu iolen);
-Bitu pc98_gdc_read(Bitu port,Bitu iolen);
-Bitu pc98_egc4a0_read(Bitu port,Bitu iolen);
-void pc98_egc4a0_write(Bitu port,Bitu val,Bitu iolen);
-Bitu pc98_egc4a0_read_warning(Bitu port,Bitu iolen);
-void pc98_egc4a0_write_warning(Bitu port,Bitu val,Bitu iolen);
 
 void page_flip_debug_notify() {
     if (enable_page_flip_debugging_marker)
@@ -578,7 +524,6 @@ static inline unsigned int int_log2(unsigned int val) {
 
 extern bool pcibus_enable;
 extern int hack_lfb_yadjust;
-extern uint8_t GDC_display_plane_wait_for_vsync;
 
 void VGA_VsyncUpdateMode(VGA_Vsync vsyncmode);
 
@@ -606,8 +551,6 @@ void VGA_Reset(Section*) {
 //    Bit64u cpu_max_addr = (Bit64u)1 << (Bit64u)cpu_addr_bits;
 
     LOG(LOG_MISC,LOG_DEBUG)("VGA_Reset() reinitializing VGA emulation");
-
-    GDC_display_plane_wait_for_vsync = section->Get_bool("pc-98 buffer page flip");
 
     enable_pci_vga = section->Get_bool("pci vga");
 
@@ -699,42 +642,6 @@ void VGA_Reset(Section*) {
     if (IS_VGA_ARCH && svgaCard == SVGA_S3Trio && cpu_addr_bits < 31 && S3_LFB_BASE < 0x1000000ul) /* below 16MB and memalias == 31 bits */
         LOG(LOG_VGA,LOG_WARN)("S3 linear framebuffer warning: A linear framebuffer below the 16MB mark in physical memory when memalias < 31 is known to have problems with the Windows 3.1 S3 driver");
 
-    pc98_allow_scanline_effect = section->Get_bool("pc-98 allow scanline effect");
-    mainMenu.get_item("pc98_allow_200scanline").check(pc98_allow_scanline_effect).refresh_item(mainMenu);
-
-    // whether the GDC is running at 2.5MHz or 5.0MHz.
-    // Some games require the GDC to run at 5.0MHz.
-    // To enable these games we default to 5.0MHz.
-    // NTS: There are also games that refuse to run if 5MHz switched on (TH03)
-    gdc_5mhz_mode = section->Get_bool("pc-98 start gdc at 5mhz");
-    mainMenu.get_item("pc98_5mhz_gdc").check(gdc_5mhz_mode).refresh_item(mainMenu);
-
-    // record the initial setting.
-    // the guest can change it later.
-    // however the 8255 used to hold dip switch settings needs to reflect the
-    // initial setting.
-    gdc_5mhz_mode_initial = gdc_5mhz_mode;
-
-    enable_pc98_egc = section->Get_bool("pc-98 enable egc");
-    enable_pc98_grcg = section->Get_bool("pc-98 enable grcg");
-    enable_pc98_16color = section->Get_bool("pc-98 enable 16-color");
-    enable_pc98_256color = section->Get_bool("pc-98 enable 256-color");
-    enable_pc98_188usermod = section->Get_bool("pc-98 enable 188 user cg");
-    enable_pc98_256color_planar = section->Get_bool("pc-98 enable 256-color planar");
-
-#if 0//TODO: Do not enforce until 256-color mode is fully implemented.
-     //      Some users out there may expect the EGC, GRCG, 16-color options to disable the emulation.
-     //      Having 256-color mode on by default, auto-enable them, will cause surprises and complaints.
-    // 256-color mode implies EGC, 16-color, GRCG
-    if (enable_pc98_256color) enable_pc98_grcg = enable_pc98_16color = true;
-#endif
-
-    // EGC implies GRCG
-    if (enable_pc98_egc) enable_pc98_grcg = true;
-
-    // EGC implies 16-color
-    if (enable_pc98_16color) enable_pc98_16color = true;
-
     str = section->Get_string("vga attribute controller mapping");
     if (str == "4x4")
         VGA_AC_remap = AC_4x4;
@@ -751,27 +658,6 @@ void VGA_Reset(Section*) {
                 VGA_AC_remap = AC_low4;
         }
     }
-
-    str = section->Get_string("pc-98 video mode");
-    if (str == "31khz")
-        pc98_31khz_mode = true;
-    else if (str == "15khz")/*TODO*/
-        pc98_31khz_mode = false;
-    else
-        pc98_31khz_mode = false;
-    //TODO: Announce 31-KHz mode in BIOS config area. --yksoft1
-    
-    i = section->Get_int("pc-98 allow 4 display partition graphics");
-    pc98_allow_4_display_partitions = (i < 0/*auto*/ || i == 1/*on*/);
-    mainMenu.get_item("pc98_allow_4partitions").check(pc98_allow_4_display_partitions).refresh_item(mainMenu);
-    // TODO: "auto" will default to true if old PC-9801, false if PC-9821, or
-    //       a more refined automatic choice according to actual hardware.
-
-    mainMenu.get_item("pc98_enable_egc").check(enable_pc98_egc).refresh_item(mainMenu);
-    mainMenu.get_item("pc98_enable_grcg").check(enable_pc98_grcg).refresh_item(mainMenu);
-    mainMenu.get_item("pc98_enable_analog").check(enable_pc98_16color).refresh_item(mainMenu);
-    mainMenu.get_item("pc98_enable_analog256").check(enable_pc98_256color).refresh_item(mainMenu);
-    mainMenu.get_item("pc98_enable_188user").check(enable_pc98_188usermod).refresh_item(mainMenu);
 
     vga_force_refresh_rate = -1;
     str=section->Get_string("forcerate");
@@ -1071,7 +957,6 @@ void VGA_OnEnterPC98_phase2(Section *sec) {
 void VGA_Destroy(Section*) {
 }
 
-void pc98_update_palette(void);
 void UpdateCGAFromSaveState(void);
 
 void VGA_LoadState(Section *sec) {
