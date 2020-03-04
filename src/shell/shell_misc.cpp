@@ -313,12 +313,6 @@ void DOS_Shell::InputCommand(char * line) {
                 break;
 
             case 0x5200:    /* INS */
-                if (IS_PC98_ARCH) { // INS state handled by IBM PC/AT BIOS, faked for PC-98 mode
-                    extern bool pc98_doskey_insertmode;
-
-                    // NTS: No visible change to the cursor, just like DOSKEY on PC-98 MS-DOS
-                    pc98_doskey_insertmode = !pc98_doskey_insertmode;
-                }
                 break;
 
             case 0x4F00:	/* END */

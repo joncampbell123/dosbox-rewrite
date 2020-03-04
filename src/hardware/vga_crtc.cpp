@@ -54,10 +54,6 @@ void vga_write_p3d4(Bitu port,Bitu val,Bitu iolen) {
 	crtc(index)=(Bit8u)val;
 }
 
-void vga_pc98_direct_cursor_pos(Bit16u address) {
-	vga.config.cursor_start = address;
-}
-
 Bitu vga_read_p3d4(Bitu port,Bitu iolen) {
     (void)port;//UNUSED
     (void)iolen;//UNUSED

@@ -47,8 +47,6 @@ void KEYBOARD_AddBuffer(Bit16u data);
 static void KEYBOARD_Add8042Response(Bit8u data);
 void KEYBOARD_SetLEDs(Bit8u bits);
 
-bool enable_pc98_bus_mouse = true;
-
 static unsigned int aux_warning = 0;
 
 enum AuxCommands {
@@ -1200,14 +1198,6 @@ void KEYBOARD_AddKey2(KBD_KEYS keytype,bool pressed) {
         KEYBOARD_AddBuffer(ret2);
     }
 }
-
-bool pc98_caps(void);
-bool pc98_kana(void);
-void pc98_caps_toggle(void);
-void pc98_kana_toggle(void);
-void pc98_numlock_toggle(void);
-void pc98_keyboard_send(const unsigned char b);
-bool pc98_force_ibm_layout = false;
 
 void KEYBOARD_AddKey1(KBD_KEYS keytype,bool pressed) {
     Bit8u ret=0,ret2=0;bool extend=false;
