@@ -473,7 +473,6 @@ void ReadCharAttr(Bit16u col,Bit16u row,Bit8u page,Bit16u * result) {
         split_chr = true;
         switch (machine) {
         case MCH_CGA:
-        case MCH_HERC:
             fontdata=PhysMake(0xf000,0xfa6e);
             break;
         default:
@@ -561,7 +560,6 @@ void WriteChar(Bit16u col,Bit16u row,Bit8u page,Bit16u chr,Bit8u attr,bool useat
         }
         switch (machine) {
         case MCH_CGA:
-        case MCH_HERC:
             fontdata=PhysMake(0xf000,0xfa6e);
             break;
         default:

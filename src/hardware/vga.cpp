@@ -703,7 +703,7 @@ void VGA_Reset(Section*) {
                 vga_memio_delay_ns = (int)floor(t);
             }
         }
-        else if (machine == MCH_CGA || machine == MCH_HERC) {
+        else if (machine == MCH_CGA) {
             /* default IBM PC/XT 4.77MHz timing. this is carefully tuned so that Trixter's CGA test program
              * times our CGA emulation as having about 305KB/sec reading speed. */
             double t = (1000000000.0 * clockdom_ISA_OSC.freq_div * 143) / (clockdom_ISA_OSC.freq * 3);
@@ -757,9 +757,6 @@ void VGA_Reset(Section*) {
      * FIXME: Again it was foolish for DOSBox to standardize on machine=
      * for selecting machine type AND video card. */
     switch (machine) {
-        case MCH_HERC:
-            if (vga.mem.memsize < _KB_bytes(64)) vga.mem.memsize = _KB_bytes(64);
-            break;
         case MCH_CGA:
             if (vga.mem.memsize < _KB_bytes(16)) vga.mem.memsize = _KB_bytes(16);
             break;

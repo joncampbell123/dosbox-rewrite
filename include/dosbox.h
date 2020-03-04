@@ -96,7 +96,7 @@ class Section;
 #endif
 
 enum MachineType {
-	MCH_HERC,
+	MCH_DEL_HERC,
 	MCH_CGA,
 	MCH_DEL_TANDY,
 	MCH_PCJR,

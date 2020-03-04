@@ -117,7 +117,6 @@ static void LogEMUMachine(void) {
         const char *cardName = "";
 
         switch (machine) {
-            case MCH_HERC:      m="Hercules";   break;
             case MCH_CGA:       m="CGA";        break;
             case MCH_PCJR:      m="PCjr";       break;
             case MCH_EGA:       m="EGA";        break;

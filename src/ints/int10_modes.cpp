@@ -664,8 +664,6 @@ bool INT10_SetCurMode(void) {
 		case MCH_CGA:
 			if (bios_mode<7) mode_changed=SetCurMode(ModeList_OTHER,bios_mode);
 			break;
-		case MCH_HERC:
-			break;
 		case MCH_EGA:
 			mode_changed=SetCurMode(ModeList_EGA,bios_mode);
 			break;
@@ -790,23 +788,13 @@ bool INT10_SetVideoMode_OTHER(Bit16u mode,bool clearmem) {
 	switch (machine) {
 	case MCH_CGA:
 		if (mode>6) return false;
-    case MCH_HERC:
-		// Allow standard color modes if equipment word is not set to mono (Victory Road)
-		if ((real_readw(BIOSMEM_SEG,BIOSMEM_INITIAL_MODE)&0x30)!=0x30 && mode<7) {
-			SetCurMode(ModeList_OTHER,mode);
-			FinishSetMode(clearmem);
-			return true;
-		}
-		CurMode=&Hercules_Mode;
-		mode=7; // in case the video parameter table is modified
-		break;
 	default:
 		break;
 	}
 	LOG(LOG_INT10,LOG_NORMAL)("Set Video Mode %X",mode);
 
 	/* Setup the CRTC */
-	Bit16u crtc_base=(machine==MCH_HERC) ? 0x3b4 : 0x3d4;
+	Bit16u crtc_base=0x3d4;
 
 	//Horizontal total
 	IO_WriteW(crtc_base,(Bit16u)(0x00 | (CurMode->htotal) << 8));
@@ -821,8 +809,7 @@ bool INT10_SetVideoMode_OTHER(Bit16u mode,bool clearmem) {
 	// newer "compatible" CGA BIOS does the same
 	// The IBM CGA card seems to limit retrace pulse widths
 	Bitu syncwidth;
-	if(machine==MCH_HERC) syncwidth = 0xf;
-	else if(CurMode->hdispend==80) syncwidth = 0xc;
+	if(CurMode->hdispend==80) syncwidth = 0xc;
 	else syncwidth = 0x6;
 	
 	IO_WriteW(crtc_base,(Bit16u)(0x03 | (syncwidth) << 8));
@@ -839,8 +826,7 @@ bool INT10_SetVideoMode_OTHER(Bit16u mode,bool clearmem) {
 	scanline=8;
 	switch(CurMode->type) {
 	case M_TEXT: // text mode character height
-		if (machine==MCH_HERC) scanline=14;
-		else scanline=8;
+		scanline=8;
 		break;
     case M_CGA2: // graphics mode: even/odd banks interleaved
         scanline = 2;
@@ -878,14 +864,6 @@ bool INT10_SetVideoMode_OTHER(Bit16u mode,bool clearmem) {
 	};
 	Bit8u mode_control,color_select;
 	switch (machine) {
-	case MCH_HERC:
-		IO_WriteB(0x3b8,0x28);	// TEXT mode and blinking characters
-
-		Herc_Palette();
-		VGA_DAC_CombineColor(0,0);
-
-		real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_MSR,0x29); // attribute controls blinking
-		break;
 	case MCH_CGA:
         if (CurMode->mode < sizeof(mode_control_list))
             mode_control=mode_control_list[CurMode->mode];

@@ -943,29 +943,13 @@ Bitu read_herc_status(Bitu /*port*/,Bitu /*iolen*/) {
 	Bit8u retval=0x72; // Hercules ident; from a working card (Winbond W86855AF)
 					// Another known working card has 0x76 ("KeysoGood", full-length)
 
-    if (machine == MCH_HERC) {
-        /* NTS: Vertical retrace bit is hercules-specific, as documented.
-         *      DOSLIB uses this to detect MDA vs Hercules.
-         *
-         *      This (and DOSLIB) will be revised when I get around to
-         *      plugging in my old MDA in one machine and Hercules card
-         *      in another machine to double-check ---J.C. */
-        if (timeInFrame < vga.draw.delay.vrstart ||
-                timeInFrame > vga.draw.delay.vrend) retval |= 0x80;
-    }
-    else {
+    {
         retval |= 0x80; // bit 7 always set on MDA (right??)
     }
 
 	double timeInLine=fmod(timeInFrame,vga.draw.delay.htotal);
 	if (timeInLine >= vga.draw.delay.hrstart &&
 		timeInLine <= vga.draw.delay.hrend) retval |= 0x1;
-
-    if (machine == MCH_HERC) {
-        // 688 Attack sub checks bit 3 - as a workaround have the bit enabled
-        // if no sync active (corresponds to a completely white screen)
-        if ((retval&0x81)==0x80) retval |= 0x8;
-    }
 
 	return retval;
 }
@@ -992,16 +976,9 @@ void VGA_SetupOther(void) {
 		for (Bitu i=0;i<256;i++)	memcpy(&vga.draw.font[i*32],&int10_font_08[i*8],8);
 		vga.draw.font_tables[0]=vga.draw.font_tables[1]=vga.draw.font;
 	}
-	if (machine==MCH_CGA || machine==MCH_HERC) {
+	if (machine==MCH_CGA) {
 		IO_RegisterWriteHandler(0x3db,write_lightpen,IO_MB);
 		IO_RegisterWriteHandler(0x3dc,write_lightpen,IO_MB);
-	}
-	if (machine==MCH_HERC) {
-		extern Bit8u int10_font_14[256 * 14];
-		for (Bitu i=0;i<256;i++)	memcpy(&vga.draw.font[i*32],&int10_font_14[i*14],14);
-		vga.draw.font_tables[0]=vga.draw.font_tables[1]=vga.draw.font;
-		MAPPER_AddHandler(HercBlend,MK_nothing,0,"hercblend","Herc Blend");
-		MAPPER_AddHandler(CycleHercPal,MK_nothing,0,"hercpal","Herc Pal");
 	}
 	if (machine==MCH_CGA) {
 		vga.amstrad.mask_plane = 0x07070707;
@@ -1027,31 +1004,6 @@ void VGA_SetupOther(void) {
 		write_pcjr( 0x3df, 0x7 | (0x7 << 3), 0 );
 		IO_RegisterWriteHandler(0x3da,write_pcjr,IO_MB);
 		IO_RegisterWriteHandler(0x3df,write_pcjr,IO_MB);
-	}
-	if (machine==MCH_HERC) {
-		Bitu base=0x3b0;
-		for (Bitu i = 0; i < 4; i++) {
-			// The registers are repeated as the address is not decoded properly;
-			// The official ports are 3b4, 3b5
-			IO_RegisterWriteHandler(base+i*2,write_crtc_index_other,IO_MB);
-			IO_RegisterWriteHandler(base+i*2+1,write_crtc_data_other,IO_MB);
-			IO_RegisterReadHandler(base+i*2,read_crtc_index_other,IO_MB);
-			IO_RegisterReadHandler(base+i*2+1,read_crtc_data_other,IO_MB);
-		}
-		vga.herc.blend=false;
-		vga.herc.enable_bits=0;
-
-        if (machine==MCH_HERC)
-            vga.herc.mode_control=0xa; // first mode written will be text mode
-        else
-            vga.herc.mode_control=0x8; // first mode written will be text mode
-
-		vga.crtc.underline_location = 13;
-		IO_RegisterReadHandler(0x3ba,read_herc_status,IO_MB);
-        IO_RegisterWriteHandler(0x3b8,write_hercules,IO_MB);
-    }
-	if (machine==MCH_HERC) {
-		IO_RegisterWriteHandler(0x3bf,write_hercules,IO_MB);
 	}
 	if (machine==MCH_CGA) {
 		Bitu base=0x3d0;

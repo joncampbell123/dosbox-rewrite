@@ -226,18 +226,6 @@ void VGA_Draw2_Recompute_CRTC_MaskAdd(void) {
         vga.draw_2[0].crtc_mask = (unsigned int)new_mask;  // 8KB character clocks (16KB bytes)
         vga.draw_2[0].crtc_add = (unsigned int)new_add;
     }
-    else if (machine == MCH_HERC) {
-        vga.draw_2[0].draw_base = vga.tandy.mem_base;
-
-        if (vga.herc.mode_control & 2) { /* graphics */
-            vga.draw_2[0].crtc_mask = 0xFFFu;  // 4KB character clocks (8KB bytes)
-            vga.draw_2[0].crtc_add = (vga.draw_2[0].vert.current_char_pixel & 3u) << 12u;
-        }
-        else { /* text */
-            vga.draw_2[0].crtc_mask = 0x7FFu;  // 2KB character clocks (4KB bytes)
-            vga.draw_2[0].crtc_add = 0;
-        }
-    }
     else {
         /* TODO: PCjr/Tandy 16-color extended modes */
 
@@ -2401,7 +2389,6 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
         PIC_AddEvent(VGA_Other_VertInterrupt, (float)vga.draw.delay.vrend, 0);
         // fall-through
     case MCH_CGA:
-    case MCH_HERC:
         // MC6845-powered graphics: Loading the display start latch happens somewhere
         // after vsync off and before first visible scanline, so probably here
         VGA_DisplayStartLatch(0);
@@ -2556,8 +2543,7 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
         // fall-through
     case M_TANDY_TEXT:
     case M_HERC_TEXT:
-        if (machine==MCH_HERC) vga.draw.linear_mask = 0xfff; // 1 page
-        else if (IS_EGAVGA_ARCH) {
+        if (IS_EGAVGA_ARCH) {
             if (vga.config.compatible_chain4 || svgaCard == SVGA_None)
                 vga.draw.linear_mask = vga.mem.memmask & 0x3ffff;
             else
@@ -2965,15 +2951,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
                 if (!(vga.tandy.mode_control & 1)) clock /= 2;
             }
             oscclock = clock * 8;
-            break;
-        case MCH_HERC:
-            oscclock=16257000;
-            if (vga.mode == M_HERC_GFX)
-                clock=oscclock/8;
-            else
-                clock=oscclock/9;
-
-            if (vga.herc.mode_control & 0x2) clock /= 2;
             break;
         default:
             clock = (PIT_TICK_RATE*12)/8;
@@ -3528,9 +3505,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
         case MCH_PCJR:
             scanfield_ratio = 1.382;
             break;
-        case MCH_HERC:
-            scanfield_ratio = 1.535;
-            break;
         case MCH_EGA:
             switch (vga.misc_output >> 6) {
             case 0: // 200 lines:
@@ -3634,10 +3608,7 @@ void VGA_SetupDrawing(Bitu /*val*/) {
     }
     vga.draw.delay.singleline_delay = (float)vga.draw.delay.htotal;
 
-    if (machine == MCH_HERC) {
-        Herc_Palette();
-    }
-    else {
+    {
         /* FIXME: Why is this required to prevent VGA palette errors with Crystal Dream II?
          *        What is this code doing to change the palette prior to this point? */
         VGA_DAC_UpdateColorPalette();
