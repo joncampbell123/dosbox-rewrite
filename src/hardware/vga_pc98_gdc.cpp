@@ -52,7 +52,6 @@ extern uint8_t              GDC_display_plane_wait_for_vsync;
 
 double                      gdc_proc_delay = 0.001; /* time from FIFO to processing in GDC (1us) FIXME: Is this right? */
 bool                        gdc_proc_delay_set = false;
-struct PC98_GDC_state       pc98_gdc[2];
 
 void pc98_update_display_page_ptr(void) {
 }
@@ -70,87 +69,6 @@ void GDC_ProcDelay(Bitu /*val*/);
 void PC98_show_cursor(bool show);
 void pc98_port6A_command_write(unsigned char b);
 void pc98_port68_command_write(unsigned char b);
-
-PC98_GDC_state::PC98_GDC_state() {
-}
-
-size_t PC98_GDC_state::fifo_can_read(void) {
-}
-
-void PC98_GDC_state::take_reset_sync_parameters(void) {
-}
-
-void PC98_GDC_state::cursor_advance(void) {
-}
-
-void PC98_GDC_state::take_cursor_pos(unsigned char bi) {
-}
-
-void PC98_GDC_state::take_cursor_char_setup(unsigned char bi) {
-}
-
-void PC98_GDC_state::idle_proc(void) {
-}
-
-bool PC98_GDC_state::fifo_empty(void) {
-    return true;
-}
-
-Bit16u PC98_GDC_state::read_fifo(void) {
-    return 0;
-}
-
-void PC98_GDC_state::next_line(void) {
-}
-
-void PC98_GDC_state::begin_frame(void) {
-}
-
-void PC98_GDC_state::load_display_partition(void) {
-}
-
-void PC98_GDC_state::force_fifo_complete(void) {
-}
-
-void PC98_GDC_state::next_display_partition(void) {
-}
-
-void PC98_GDC_state::reset_fifo(void) {
-}
-
-void PC98_GDC_state::reset_rfifo(void) {
-}
-
-void PC98_GDC_state::flush_fifo_old(void) {
-}
-
-bool PC98_GDC_state::write_rfifo(const uint8_t c) {
-    return true;
-}
-
-bool PC98_GDC_state::write_fifo(const uint16_t c) {
-    return true;
-}
-
-bool PC98_GDC_state::write_fifo_command(const unsigned char c) {
-    return true;
-}
-
-bool PC98_GDC_state::write_fifo_param(const unsigned char c) {
-    return true;
-}
-
-bool PC98_GDC_state::rfifo_has_content(void) {
-    return false;
-}
-
-uint8_t PC98_GDC_state::read_status(void) {
-    return 0;
-}
-
-uint8_t PC98_GDC_state::rfifo_read_data(void) {
-    return 0;
-}
 
 void gdc_proc_schedule_delay(void) {
 }
