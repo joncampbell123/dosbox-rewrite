@@ -1051,7 +1051,6 @@ void fatDrive::UpdateDPB(unsigned char dos_drive) {
 
 void fatDrive::fatDriveInit(const char *sysFilename, Bit32u bytesector, Bit32u cylsector, Bit32u headscyl, Bit32u cylinders, Bit64u filesize, std::vector<std::string> &options) {
 	Bit32u startSector;
-	bool pc98_512_to_1024_allow = false;
     int opt_partition_index = -1;
 	bool is_hdd = (filesize > 2880);
 	struct partTable mbrData;
@@ -1109,101 +1108,7 @@ void fatDrive::fatDriveInit(const char *sysFilename, Bit32u bytesector, Bit32u c
 		if(mbrData.magic1!= 0x55 ||	mbrData.magic2!= 0xaa) LOG_MSG("Possibly invalid partition table in disk image.");
 
         startSector = 63;
-
-        /* PC-98 bootloader support.
-         * These can be identified by the "IPL1" in the boot sector.
-         * These boot sectors do not have a valid partition table though the code below might
-         * pick up a false partition #3 with a zero offset. Partition table is in sector 1 */
-        if (!memcmp(mbrData.booter+4,"IPL1",4)) {
-            unsigned char ipltable[SECTOR_SIZE_MAX];
-            unsigned int max_entries = (std::min)(16UL,(unsigned long)(loadedDisk->getSectSize() / sizeof(_PC98RawPartition)));
-            Bitu i;
-
-            LOG_MSG("PC-98 IPL1 signature detected");
-
-            assert(sizeof(_PC98RawPartition) == 32);
-
-            memset(ipltable,0,sizeof(ipltable));
-            loadedDisk->Read_Sector(0,0,2,ipltable);
-
-            if (opt_partition_index >= 0) {
-                /* user knows best! */
-                if ((unsigned int)opt_partition_index >= max_entries) {
-                    LOG_MSG("Partition index out of range");
-                    created_successfully = false;
-                    return;
-                }
-
-                i = (unsigned int)opt_partition_index;
-                _PC98RawPartition *pe = (_PC98RawPartition*)(ipltable+(i * 32));
-
-                /* unfortunately start and end are in C/H/S geometry, so we have to translate.
-                 * this is why it matters so much to read the geometry from the HDI header.
-                 *
-                 * NOTE: C/H/S values in the IPL1 table are similar to IBM PC except that sectors are counted from 0, not 1 */
-                startSector =
-                    (pe->cyl * loadedDisk->sectors * loadedDisk->heads) +
-                    (pe->head * loadedDisk->sectors) +
-                    pe->sector;
-
-                /* Many HDI images I've encountered so far indicate 512 bytes/sector,
-                 * but then the FAT filesystem itself indicates 1024 bytes per sector. */
-                pc98_512_to_1024_allow = true;
-
-                {
-                    /* FIXME: What if the label contains SHIFT-JIS? */
-                    std::string name = std::string(pe->name,sizeof(pe->name));
-
-                    LOG_MSG("Using IPL1 entry %lu name '%s' which starts at sector %lu",
-                        (unsigned long)i,name.c_str(),(unsigned long)startSector);
-                }
-            }
-            else {
-                for (i=0;i < max_entries;i++) {
-                    _PC98RawPartition *pe = (_PC98RawPartition*)(ipltable+(i * 32));
-
-                    if (pe->mid == 0 && pe->sid == 0 &&
-                            pe->ipl_sect == 0 && pe->ipl_head == 0 && pe->ipl_cyl == 0 &&
-                            pe->sector == 0 && pe->head == 0 && pe->cyl == 0 &&
-                            pe->end_sector == 0 && pe->end_head == 0 && pe->end_cyl == 0)
-                        continue; /* unused */
-
-                    /* We're looking for MS-DOS partitions.
-                     * I've heard that some other OSes were once ported to PC-98, including Windows NT and OS/2,
-                     * so I would rather not mistake NTFS or HPFS as FAT and cause damage. --J.C.
-                     * FIXME: Is there a better way? */
-                    if (!strncasecmp(pe->name,"MS-DOS",6) ||
-                        !strncasecmp(pe->name,"MSDOS",5) ||
-                        !strncasecmp(pe->name,"Windows",7)) {
-                        /* unfortunately start and end are in C/H/S geometry, so we have to translate.
-                         * this is why it matters so much to read the geometry from the HDI header.
-                         *
-                         * NOTE: C/H/S values in the IPL1 table are similar to IBM PC except that sectors are counted from 0, not 1 */
-                        startSector =
-                            (pe->cyl * loadedDisk->sectors * loadedDisk->heads) +
-                            (pe->head * loadedDisk->sectors) +
-                            pe->sector;
-
-                        /* Many HDI images I've encountered so far indicate 512 bytes/sector,
-                         * but then the FAT filesystem itself indicates 1024 bytes per sector. */
-                        pc98_512_to_1024_allow = true;
-
-                        {
-                            /* FIXME: What if the label contains SHIFT-JIS? */
-                            std::string name = std::string(pe->name,sizeof(pe->name));
-
-                            LOG_MSG("Using IPL1 entry %lu name '%s' which starts at sector %lu",
-                                (unsigned long)i,name.c_str(),(unsigned long)startSector);
-                            break;
-                        }
-                    }
-                }
-            }
-
-            if (i == max_entries)
-                LOG_MSG("No partitions found in the IPL1 table");
-        }
-        else {
+        {
             /* IBM PC master boot record search */
             int m;
 
@@ -1322,48 +1227,6 @@ void fatDrive::fatDriveInit(const char *sysFilename, Bit32u bytesector, Bit32u c
 
     /* work at this point in logical sectors */
 	sector_size = loadedDisk->getSectSize();
-
-    /* Many HDI images indicate a disk format of 256 or 512 bytes per sector combined with a FAT filesystem
-     * that indicates 1024 bytes per sector. */
-    if (pc98_512_to_1024_allow &&
-         bootbuffer.bytespersector != fatDrive::getSectSize() &&
-         bootbuffer.bytespersector >  fatDrive::getSectSize() &&
-        (bootbuffer.bytespersector %  fatDrive::getSectSize()) == 0) {
-        unsigned int ratioshift = 1;
-
-        while ((unsigned int)(bootbuffer.bytespersector >> ratioshift) > fatDrive::getSectSize())
-            ratioshift++;
-
-        unsigned int ratio = 1u << ratioshift;
-
-        LOG_MSG("Disk indicates %u bytes/sector, FAT filesystem indicates %u bytes/sector. Ratio=%u:1 shift=%u",
-                fatDrive::getSectSize(),bootbuffer.bytespersector,ratio,ratioshift);
-
-        if ((unsigned int)(bootbuffer.bytespersector >> ratioshift) == fatDrive::getSectSize()) {
-            assert(ratio >= 2);
-
-            /* we can hack things in place IF the starting sector is an even number */
-            if ((partSectOff & (ratio - 1)) == 0) {
-                partSectOff >>= ratioshift;
-                startSector >>= ratioshift;
-                sector_size = bootbuffer.bytespersector;
-                LOG_MSG("Using logical sector size %u",sector_size);
-            }
-            else {
-                LOG_MSG("However there's nothing I can do, because the partition starts on an odd sector");
-            }
-        }
-    }
-
-    /* NTS: PC-98 floppies (the 1024 byte/sector format) do not have magic bytes */
-    if (fatDrive::getSectSize() == 512 && !IS_PC98_ARCH) {
-        if ((bootbuffer.magic1 != 0x55) || (bootbuffer.magic2 != 0xaa)) {
-            /* Not a FAT filesystem */
-            LOG_MSG("Loaded image has no valid magicnumbers at the end!");
-            created_successfully = false;
-            return;
-        }
-    }
 
 	if (bootbuffer.sectorsperfat == 0) {
 		/* FAT32 not implemented yet */
