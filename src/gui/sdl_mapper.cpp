@@ -1215,10 +1215,6 @@ public:
         buttons=(Bitu)SDL_JoystickNumButtons(sdl_joystick);
         button_wrap=buttons;
         button_cap=buttons;
-        if (button_wrapping_enabled) {
-            button_wrap=emulated_buttons;
-            if (buttons>MAXBUTTON_CAP) button_cap = MAXBUTTON_CAP;
-        }
         if (button_wrap > MAXBUTTON) button_wrap = MAXBUTTON;
 
 #if defined(C_SDL2)
@@ -1527,7 +1523,6 @@ public:
     C4AxisBindGroup(Bitu _stick,Bitu _emustick) : CStickBindGroup (_stick,_emustick){
         emulated_axes=4;
         emulated_buttons=4;
-        if (button_wrapping_enabled) button_wrap=emulated_buttons;
 
         axes_cap=emulated_axes;
         if (axes_cap>axes) axes_cap=axes;
@@ -1587,7 +1582,6 @@ public:
         emulated_buttons=4;
         old_hat_position=0;
         emulated_hats=1;
-        if (button_wrapping_enabled) button_wrap=emulated_buttons;
 
         axes_cap=emulated_axes;
         if (axes_cap>axes) axes_cap=axes;
@@ -1688,7 +1682,6 @@ public:
         emulated_axes=4;
         emulated_buttons=6;
         emulated_hats=1;
-        if (button_wrapping_enabled) button_wrap=emulated_buttons;
 
         axes_cap=emulated_axes;
         if (axes_cap>axes) axes_cap=axes;
@@ -2974,90 +2967,11 @@ static void CreateLayout(void) {
     cjaxis=AddJAxisButton  (PX(XO),PY(YO+1),BW,BH,"X-",0,0,false,NULL);
     AddJAxisButton  (PX(XO+2),PY(YO+1),BW,BH,"X+",0,0,true,cjaxis);
 
-    if (joytype==JOY_2AXIS) {
-        /* Buttons 1+2 of 2nd Joystick */
-        AddJButtonButton(PX(XO+4),PY(YO),BW,BH,"1" ,1,0);
-        AddJButtonButton(PX(XO+4+2),PY(YO),BW,BH,"2" ,1,1);
-        /* Buttons 3+4 of 1st Joystick, not accessible */
-        AddJButtonButton_hidden(0,2);
-        AddJButtonButton_hidden(0,3);
-
-        /* Axes 1+2 (X+Y) of 2nd Joystick */
-        cjaxis= AddJAxisButton(PX(XO+4),PY(YO+1),BW,BH,"X-",1,0,false,NULL);
-                AddJAxisButton(PX(XO+4+2),PY(YO+1),BW,BH,"X+",1,0,true,cjaxis);
-        cjaxis= AddJAxisButton(PX(XO+4+1),PY(YO+0),BW,BH,"Y-",1,1,false,NULL);
-                AddJAxisButton(PX(XO+4+1),PY(YO+1),BW,BH,"Y+",1,1,true,cjaxis);
-        /* Axes 3+4 (X+Y) of 1st Joystick, not accessible */
-        cjaxis= AddJAxisButton_hidden(0,2,false,NULL);
-                AddJAxisButton_hidden(0,2,true,cjaxis);
-        cjaxis= AddJAxisButton_hidden(0,3,false,NULL);
-                AddJAxisButton_hidden(0,3,true,cjaxis);
-    } else {
-        /* Buttons 3+4 of 1st Joystick */
-        AddJButtonButton(PX(XO+4),PY(YO),BW,BH,"3" ,0,2);
-        AddJButtonButton(PX(XO+4+2),PY(YO),BW,BH,"4" ,0,3);
-        /* Buttons 1+2 of 2nd Joystick, not accessible */
-        AddJButtonButton_hidden(1,0);
-        AddJButtonButton_hidden(1,1);
-
-        /* Axes 3+4 (X+Y) of 1st Joystick */
-        cjaxis= AddJAxisButton(PX(XO+4),PY(YO+1),BW,BH,"X-",0,2,false,NULL);
-                AddJAxisButton(PX(XO+4+2),PY(YO+1),BW,BH,"X+",0,2,true,cjaxis);
-        cjaxis= AddJAxisButton(PX(XO+4+1),PY(YO+0),BW,BH,"Y-",0,3,false,NULL);
-                AddJAxisButton(PX(XO+4+1),PY(YO+1),BW,BH,"Y+",0,3,true,cjaxis);
-        /* Axes 1+2 (X+Y) of 2nd Joystick , not accessible*/
-        cjaxis= AddJAxisButton_hidden(1,0,false,NULL);
-                AddJAxisButton_hidden(1,0,true,cjaxis);
-        cjaxis= AddJAxisButton_hidden(1,1,false,NULL);
-                AddJAxisButton_hidden(1,1,true,cjaxis);
-    }
-
-    if (joytype==JOY_CH) {
-        /* Buttons 5+6 of 1st Joystick */
-        AddJButtonButton(PX(XO+8),PY(YO),BW,BH,"5" ,0,4);
-        AddJButtonButton(PX(XO+8+2),PY(YO),BW,BH,"6" ,0,5);
-    } else {
-        /* Buttons 5+6 of 1st Joystick, not accessible */
-        AddJButtonButton_hidden(0,4);
-        AddJButtonButton_hidden(0,5);
-    }
-
     /* Hat directions up, left, down, right */
     AddJHatButton(PX(XO+8+1),PY(YO),BW,BH,"UP",0,0,0);
     AddJHatButton(PX(XO+8+0),PY(YO+1),BW,BH,"LFT",0,0,3);
     AddJHatButton(PX(XO+8+1),PY(YO+1),BW,BH,"DWN",0,0,2);
     AddJHatButton(PX(XO+8+2),PY(YO+1),BW,BH,"RGT",0,0,1);
-
-    /* Labels for the joystick */
-    CTextButton* btn;
-    if (joytype ==JOY_2AXIS) {
-        new CTextButton(PX(XO+0),PY(YO-1),3*BW,BH,"Joystick 1");
-        new CTextButton(PX(XO+4),PY(YO-1),3*BW,BH,"Joystick 2");
-        btn = new CTextButton(PX(XO + 8), PY(YO - 1), 3 * BW, BH, "Disabled");
-        btn->SetColor(CLR_GREY);
-    } else if(joytype ==JOY_4AXIS || joytype == JOY_4AXIS_2) {
-        new CTextButton(PX(XO+0),PY(YO-1),3*BW,BH,"Axis 1/2");
-        new CTextButton(PX(XO+4),PY(YO-1),3*BW,BH,"Axis 3/4");
-        btn = new CTextButton(PX(XO + 8), PY(YO - 1), 3 * BW, BH, "Disabled");
-        btn->SetColor(CLR_GREY);
-    } else if(joytype == JOY_CH) {
-        new CTextButton(PX(XO+0),PY(YO-1),3*BW,BH,"Axis 1/2");
-        new CTextButton(PX(XO+4),PY(YO-1),3*BW,BH,"Axis 3/4");
-        new CTextButton(PX(XO+8),PY(YO-1),3*BW,BH,"Hat/D-pad");
-    } else if ( joytype==JOY_FCS) {
-        new CTextButton(PX(XO+0),PY(YO-1),3*BW,BH,"Axis 1/2");
-        new CTextButton(PX(XO+4),PY(YO-1),3*BW,BH,"Axis 3");
-        new CTextButton(PX(XO+8),PY(YO-1),3*BW,BH,"Hat/D-pad");
-    } else if(joytype == JOY_NONE) {
-        btn = new CTextButton(PX(XO + 0), PY(YO - 1), 3 * BW, BH, "Disabled");
-        btn->SetColor(CLR_GREY);
-        btn = new CTextButton(PX(XO + 4), PY(YO - 1), 3 * BW, BH, "Disabled");
-        btn->SetColor(CLR_GREY);
-        btn = new CTextButton(PX(XO + 8), PY(YO - 1), 3 * BW, BH, "Disabled");
-        btn->SetColor(CLR_GREY);
-    }
-   
-   
    
     /* The modifier buttons */
     AddModButton(PX(0),PY(17),50,BH,"Mod1",1);
@@ -3743,62 +3657,6 @@ void BIND_MappingEvents(void) {
 static void InitializeJoysticks(void) {
     mapper.sticks.num=0;
     mapper.sticks.num_groups=0;
-    if (joytype != JOY_NONE) {
-        mapper.sticks.num=(Bitu)SDL_NumJoysticks();
-        LOG(LOG_MISC,LOG_DEBUG)("Joystick type != none, SDL reports %u sticks",(unsigned int)mapper.sticks.num);
-        if (joytype==JOY_AUTO) {
-            // try to figure out what joystick type to select
-            // depending on the number of physically attached joysticks
-            if (mapper.sticks.num>1) {
-                // more than one joystick present; if all are acceptable use 2axis
-                // to allow emulation of two joysticks
-                bool first_usable=false;
-                SDL_Joystick* tmp_stick1=SDL_JoystickOpen(0);
-                if (tmp_stick1) {
-                    if ((SDL_JoystickNumAxes(tmp_stick1)>1) || (SDL_JoystickNumButtons(tmp_stick1)>0)) {
-                        first_usable=true;
-                    }
-                    SDL_JoystickClose(tmp_stick1);
-                }
-                bool second_usable=false;
-                SDL_Joystick* tmp_stick2=SDL_JoystickOpen(1);
-                if (tmp_stick2) {
-                    if ((SDL_JoystickNumAxes(tmp_stick2)>1) || (SDL_JoystickNumButtons(tmp_stick2)>0)) {
-                        second_usable=true;
-                    }
-                    SDL_JoystickClose(tmp_stick2);
-                }
-                // choose joystick type now that we know which physical joysticks are usable
-                if (first_usable) {
-                    if (second_usable) {
-                        joytype=JOY_2AXIS;
-                        LOG_MSG("Two or more joysticks reported, initializing with 2axis");
-                    } else {
-                        joytype=JOY_4AXIS;
-                        LOG_MSG("One joystick reported, initializing with 4axis");
-                    }
-                } else if (second_usable) {
-                    joytype=JOY_4AXIS_2;
-                    LOG_MSG("One joystick reported, initializing with 4axis_2");
-                }
-            } else if (mapper.sticks.num) {
-                // one joystick present; if it is acceptable use 4axis
-                joytype=JOY_NONE;
-                SDL_Joystick* tmp_stick1=SDL_JoystickOpen(0);
-                if (tmp_stick1) {
-                    if ((SDL_JoystickNumAxes(tmp_stick1)>0) || (SDL_JoystickNumButtons(tmp_stick1)>0)) {
-                        joytype=JOY_4AXIS;
-                        LOG_MSG("One joystick reported, initializing with 4axis");
-                    }
-                }
-            } else {
-                joytype=JOY_NONE;
-            }
-        }
-    }
-    else {
-        LOG(LOG_MISC,LOG_DEBUG)("Joystick type none, not initializing");
-    }
 }
 
 static void CreateBindGroups(void) {
@@ -3808,46 +3666,6 @@ static void CreateBindGroups(void) {
 #else
     new CKeyBindGroup(SDLK_LAST);
 #endif
-    if (joytype != JOY_NONE) {
-#if defined (REDUCE_JOYSTICK_POLLING)
-        // direct access to the SDL joystick, thus removed from the event handling
-        if (mapper.sticks.num) SDL_JoystickEventState(SDL_DISABLE);
-#else
-        // enable joystick event handling
-        if (mapper.sticks.num) SDL_JoystickEventState(SDL_ENABLE);
-        else return;
-#endif
-        Bit8u joyno=0;
-        switch (joytype) {
-        case JOY_NONE:
-            break;
-        case JOY_4AXIS:
-            mapper.sticks.stick[mapper.sticks.num_groups++]=new C4AxisBindGroup(joyno,joyno);
-            new CStickBindGroup(joyno+1U,joyno+1U,true);
-            break;
-        case JOY_4AXIS_2:
-            mapper.sticks.stick[mapper.sticks.num_groups++]=new C4AxisBindGroup(joyno+1U,joyno);
-            new CStickBindGroup(joyno,joyno+1U,true);
-            break;
-        case JOY_FCS:
-            mapper.sticks.stick[mapper.sticks.num_groups++]=new CFCSBindGroup(joyno,joyno);
-            new CStickBindGroup(joyno+1U,joyno+1U,true);
-            break;
-        case JOY_CH:
-            mapper.sticks.stick[mapper.sticks.num_groups++]=new CCHBindGroup(joyno,joyno);
-            new CStickBindGroup(joyno+1U,joyno+1U,true);
-            break;
-        case JOY_2AXIS:
-        default:
-            mapper.sticks.stick[mapper.sticks.num_groups++]=new CStickBindGroup(joyno,joyno);
-            if((joyno+1U) < mapper.sticks.num) {
-                mapper.sticks.stick[mapper.sticks.num_groups++]=new CStickBindGroup(joyno+1U,joyno+1U);
-            } else {
-                new CStickBindGroup(joyno+1U,joyno+1U,true);
-            }
-            break;
-        }
-    }
 }
 
 #if defined (REDUCE_JOYSTICK_POLLING)
