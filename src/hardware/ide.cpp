@@ -63,8 +63,6 @@ static const unsigned short IDE_default_alts[4] = {
 
 bool fdc_takes_port_3F7();
 
-static void ide_pc98ctlio_w(Bitu port,Bitu val,Bitu iolen);
-static Bitu ide_pc98ctlio_r(Bitu port,Bitu iolen);
 static void ide_altio_w(Bitu port,Bitu val,Bitu iolen);
 static Bitu ide_altio_r(Bitu port,Bitu iolen);
 static void ide_baseio_w(Bitu port,Bitu val,Bitu iolen);
@@ -3152,13 +3150,8 @@ void IDEController::lower_irq() {
     }
 }
 
-unsigned int pc98_ide_select = 0;
-
 IDEController *match_ide_controller(Bitu port) {
-    if (IS_PC98_ARCH) {
-        return idecontroller[pc98_ide_select];
-    }
-    else {
+    {
         for (unsigned int i=0;i < MAX_IDE_CONTROLLERS;i++) {
             IDEController *ide = idecontroller[i];
             if (ide == NULL) continue;
@@ -3715,56 +3708,6 @@ IDEController::~IDEController() {
     }
 }
 
-static void IDE_PC98_Select(Bitu val) {
-    val &= 1;
-    pc98_ide_select = val;
-    // TODO: IRQ raise by signal
-}
-
-static void ide_pc98ctlio_w(Bitu port,Bitu val,Bitu iolen) {
-    (void)iolen;
-
-    switch (port & 7) {
-        case 0:     // 430h
-            // ???
-            break;
-        case 2:     // 432h
-            if (val & 0x80) {
-                // test write?
-            }
-            else {
-                IDE_PC98_Select(val & 1);
-            }
-            break;
-        case 5:     // 435h
-            // ???
-            break;
-    }
-}
-
-static Bitu ide_pc98ctlio_r(Bitu port,Bitu iolen) {
-    (void)iolen;
-
-    switch (port & 7) {
-        case 0:     // 430h
-            return pc98_ide_select;
-        case 2:     // 432h
-            return pc98_ide_select;
-        case 5:     // 435h
-            {
-                Bitu bf = ~0ul;
-                if (idecontroller[0] != NULL)
-                    bf &= ~(1u << 0u);
-                if (idecontroller[1] != NULL)
-                    bf &= ~(1u << 1u);
-
-                return bf;
-            }
-    }
-
-    return ~0ul;
-}
-
 static void ide_altio_w(Bitu port,Bitu val,Bitu iolen) {
     IDEController *ide = match_ide_controller(port);
     if (ide == NULL) {
@@ -4151,15 +4094,6 @@ void IDE_OnReset(Section *sec) {
             PC98_WriteHandlerSel[i].Uninstall();
             PC98_ReadHandlerSel[i].Uninstall();
         }
-
-        PC98_WriteHandlerSel[0].Install(0x430,ide_pc98ctlio_w,IO_MA);
-        PC98_ReadHandlerSel[0].Install(0x430,ide_pc98ctlio_r,IO_MA);
-
-        PC98_WriteHandlerSel[1].Install(0x432,ide_pc98ctlio_w,IO_MA);
-        PC98_ReadHandlerSel[1].Install(0x432,ide_pc98ctlio_r,IO_MA);
-
-        PC98_WriteHandlerSel[2].Install(0x435,ide_pc98ctlio_w,IO_MA);
-        PC98_ReadHandlerSel[2].Install(0x435,ide_pc98ctlio_r,IO_MA);
     }
 }
 
