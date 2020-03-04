@@ -673,40 +673,6 @@ void PC98_BIOS_Bank_Switch(void) {
     PAGING_ClearTLB();
 }
 
-// BIOS behavior suggests a reset signal puts the BIOS back
-void PC98_BIOS_Bank_Switch_Reset(void) {
-    LOG_MSG("PC-98 43Dh mapping BIOS back into top of RAM");
-    PC98_BANK_Select = 0x12;
-    PC98_BIOS_Bank_Switch();
-#if 0
-    Bitu DEBUG_EnableDebugger(void);
-    DEBUG_EnableDebugger();
-#endif
-}
-
-void pc98_43d_write(Bitu port,Bitu val,Bitu iolen) {
-    (void)port;
-    (void)iolen;
-
-    LOG_MSG("PC-98 43Dh BIOS bank switching write: 0x%02x",(unsigned int)val);
-
-    switch (val) {
-        case 0x00: // ITF
-        case 0x10:
-        case 0x18:
-            PC98_BANK_Select = 0x00;
-            PC98_BIOS_Bank_Switch();
-            break;
-        case 0x12: // BIOS
-            PC98_BANK_Select = 0x12;
-            PC98_BIOS_Bank_Switch();
-            break;
-        default:
-            LOG_MSG("PC-98 43Dh BIOS bank switching write: 0x%02x unknown value",(unsigned int)val);
-            break;
-    }
-}
-
 /*! \brief          BOOT.COM utility to boot a floppy or hard disk device.
  *
  *  \description    Users will use this command to boot a guest operating system from
@@ -824,11 +790,7 @@ public:
     /*! \brief      Program entry point, when the command is run
      */
     void Run(void) {
-        std::string bios;
         std::string boothax_str;
-        bool pc98_640x200 = true;
-        bool pc98_show_graphics = false;
-        bool bios_boot = false;
         bool swaponedrive = false;
         bool force = false;
 
@@ -842,19 +804,8 @@ public:
         if (cmd->FindExist("-swap-one-drive",true))
             swaponedrive = true;
 
-        // debugging options
-        if (cmd->FindExist("-pc98-640x200",true))
-            pc98_640x200 = true;
-        if (cmd->FindExist("-pc98-640x400",true))
-            pc98_640x200 = false;
-        if (cmd->FindExist("-pc98-graphics",true))
-            pc98_show_graphics = true;
-
         if (cmd->FindExist("-force",true))
             force = true;
-
-        if (cmd->FindString("-bios",bios,true))
-            bios_boot = true;
 
         cmd->FindString("-boothax",boothax_str,true);
 
@@ -872,86 +823,6 @@ public:
         if(control->SecureMode()) {
             WriteOut(MSG_Get("PROGRAM_CONFIG_SECURE_DISALLOW"));
             return;
-        }
-
-        if (bios_boot) {
-            Bit32u isz1,isz2;
-
-            if (bios.empty()) {
-                WriteOut("Must specify BIOS image to boot\n");
-                return;
-            }
-
-            // NOTES:
-            // 
-            // Regarding PC-98 mode, you should use an older BIOS image.
-            // The PC-9821 ROM image(s) I have appear to rely on bank
-            // switching parts of itself to boot up and operate.
-            //
-            // Update: I found some PC-9801 ROM BIOS images online, which
-            //         ALSO seem to have a BIOS.ROM, ITF.ROM, etc...
-            //
-            //         So, this command will not be able to run those
-            //         images until port 43Dh (the I/O port used for
-            //         bank switching) is implemented in DOSBox-X.
-            //
-            // In IBM PC/AT mode, this should hopefully allow using old
-            // 386/486 BIOSes in DOSBox-X.
-
-            /* load it */
-            FILE *romfp = getFSFile(bios.c_str(), &isz1, &isz2);
-            if (romfp == NULL) {
-                WriteOut("Unable to open BIOS image\n");
-                return;
-            }
-            Bitu loadsz = (isz2 + 0xFU) & (~0xFU);
-            if (loadsz == 0) loadsz = 0x10;
-            if (loadsz > (IS_PC98_ARCH ? 0x18000u : 0x20000u)) loadsz = (IS_PC98_ARCH ? 0x18000u : 0x20000u);
-            Bitu segbase = 0x100000 - loadsz;
-            LOG_MSG("Loading BIOS image %s to 0x%lx, 0x%lx bytes",bios.c_str(),(unsigned long)segbase,(unsigned long)loadsz);
-            fseek(romfp, 0, SEEK_SET);
-            size_t readResult = fread(GetMemBase()+segbase,loadsz,1,romfp);
-            fclose(romfp);
-            if (readResult != 1) {
-                LOG(LOG_IO, LOG_ERROR) ("Reading error in Run\n");
-                return;
-            }
-
-            // The PC-98 BIOS has a bank switching system where at least the last 32KB
-            // can be switched to an Initial Firmware Test BIOS, which initializes the
-            // system then switches back to the full 96KB visible during runtime.
-            //
-            // We can emulate the same if a file named ITF.ROM exists in the same directory
-            // as the BIOS image we were given.
-            //
-            // To enable multiple ITFs per ROM image, we first try <bios filename>.itf.rom
-            // before trying itf.rom, for the user's convenience.
-            FILE *itffp;
-
-                               itffp = getFSFile((bios + ".itf.rom").c_str(), &isz1, &isz2);
-            if (itffp == NULL) itffp = getFSFile((bios + ".ITF.ROM").c_str(), &isz1, &isz2);
-            if (itffp == NULL) itffp = getFSFile("itf.rom", &isz1, &isz2);
-            if (itffp == NULL) itffp = getFSFile("ITF.ROM", &isz1, &isz2);
-
-            if (itffp != NULL && isz2 <= 0x8000ul) {
-                LOG_MSG("Found ITF (initial firmware test) BIOS image (0x%lx bytes)",(unsigned long)isz2);
-
-                memset(PC98_ITF_ROM,0xFF,sizeof(PC98_ITF_ROM));
-                readResult = fread(PC98_ITF_ROM,isz2,1,itffp);
-                fclose(itffp);
-                if (readResult != 1) {
-                    LOG(LOG_IO, LOG_ERROR) ("Reading error in Run\n");
-                    return;
-                }
-                PC98_ITF_ROM_init = true;
-            }
-
-            IO_RegisterWriteHandler(0x43D,pc98_43d_write,IO_MB);
-
-            custom_bios = true;
-
-            /* boot it */
-            throw int(8);
         }
 
         bool bootbyDrive=false;
@@ -1172,35 +1043,7 @@ public:
         imageDiskChange[drive-65] = false;
 
         bool has_read = false;
-        bool pc98_sect128 = false;
         unsigned int bootsize = imageDiskList[drive-65]->getSectSize();
-
-        if (!has_read && IS_PC98_ARCH && drive < 'C') {
-            /* this may be one of those odd FDD images where track 0, head 0 is all 128-byte sectors
-             * and the rest of the disk is 256-byte sectors. */
-            if (imageDiskList[drive - 65]->Read_Sector(0, 0, 1, (Bit8u *)&bootarea, 128) == 0 &&
-                imageDiskList[drive - 65]->Read_Sector(0, 0, 2, (Bit8u *)&bootarea + 128, 128) == 0 &&
-                imageDiskList[drive - 65]->Read_Sector(0, 0, 3, (Bit8u *)&bootarea + 256, 128) == 0 &&
-                imageDiskList[drive - 65]->Read_Sector(0, 0, 4, (Bit8u *)&bootarea + 384, 128) == 0) {
-                LOG_MSG("First sector is 128 byte/sector. Booting from first four sectors.");
-                has_read = true;
-                bootsize = 512; // 128 x 4
-                pc98_sect128 = true;
-            }
-        }
-
-        if (!has_read && IS_PC98_ARCH && drive < 'C') {
-            /* another nonstandard one with track 0 having 256 bytes/sector while the rest have 1024 bytes/sector */
-            if (imageDiskList[drive - 65]->Read_Sector(0, 0, 1, (Bit8u *)&bootarea,       256) == 0 &&
-                imageDiskList[drive - 65]->Read_Sector(0, 0, 2, (Bit8u *)&bootarea + 256, 256) == 0 &&
-                imageDiskList[drive - 65]->Read_Sector(0, 0, 3, (Bit8u *)&bootarea + 512, 256) == 0 &&
-                imageDiskList[drive - 65]->Read_Sector(0, 0, 4, (Bit8u *)&bootarea + 768, 256) == 0) {
-                LOG_MSG("First sector is 256 byte/sector. Booting from first two sectors.");
-                has_read = true;
-                bootsize = 1024; // 256 x 4
-                pc98_sect128 = true;
-            }
-        }
 
         /* NTS: Load address is 128KB - sector size */
         load_seg=IS_PC98_ARCH ? (0x2000 - (bootsize/16U)) : 0x07C0;
@@ -1473,154 +1316,7 @@ public:
             }
 
             /* standard method */
-            if (IS_PC98_ARCH) {
-                /* Based on a CPU register dump at boot time on a real PC-9821:
-                 *
-                 * DUMP:
-                 *
-                 * SP: 00D8 SS: 0030 ES: 1FE0 DS: 0000 CS: 1FE0 FL: 0246 BP: 0000
-                 * DI: 055C SI: 1FE0 DX: 0001 CX: 0200 BX: 0200 AX: 0030 IP: 0000
-                 *
-                 * So:
-                 *
-                 * Stack at 0030:00D8
-                 *
-                 * CS:IP at load_seg:0000
-                 *
-                 * load_seg at 0x1FE0 which on the original 128KB PC-98 puts it at the top of memory
-                 *
-                 */
-                SegSet16(cs, (Bit16u)load_seg);
-                SegSet16(ds, 0x0000);
-                SegSet16(es, (Bit16u)load_seg);
-                reg_ip = 0;
-                reg_ebx = 0x200;
-                reg_esp = 0xD8;
-                /* set up stack at a safe place */
-                SegSet16(ss, (Bit16u)stack_seg);
-                reg_esi = (Bit32u)load_seg;
-                reg_ecx = 0x200;
-                reg_ebp = 0;
-                reg_eax = 0x30;
-                reg_edx = 0x1;
-
-                /* It seems 640x200 8-color digital mode is the state of the graphics hardware when the
-                 * BIOS boots the OS, and some games like Ys II assume the hardware is in this state.
-                 *
-                 * If I am wrong, you can pass --pc98-640x400 as a command line option to disable this. */
-                if (pc98_640x200) {
-                    reg_eax = 0x4200;   // setup 640x200 graphics
-                    reg_ecx = 0x8000;   // lower
-                    CALLBACK_RunRealInt(0x18);
-                }
-                else {
-                    reg_eax = 0x4200;   // setup 640x400 graphics
-                    reg_ecx = 0xC000;   // full
-                    CALLBACK_RunRealInt(0x18);
-                }
-
-                /* Some HDI images of Orange House games need this option because it assumes NEC MOUSE.COM
-                 * behavior where mouse driver init and reset show the graphics layer. Unfortunately the HDI
-                 * image uses QMOUSE which does not show the graphics layer. Use this option with those
-                 * HDI images to make them playable anyway. */
-                if (pc98_show_graphics) {
-                    reg_eax = 0x4000;   // show graphics
-                    CALLBACK_RunRealInt(0x18);
-                }
-                else {
-                    reg_eax = 0x4100;   // hide graphics (normal state of graphics layer on startup). INT 33h emulation might have enabled it.
-                    CALLBACK_RunRealInt(0x18);
-                }
-
-                /* PC-98 MS-DOS boot sector behavior suggests that the BIOS does a CALL FAR
-                 * to the boot sector, and the boot sector can RETF back to the BIOS on failure. */
-                CPU_Push16((Bit16u)(BIOS_bootfail_code_offset >> 4)); /* segment */
-                CPU_Push16(BIOS_bootfail_code_offset & 0xF); /* offset */
-
-                /* clear the text layer */
-                for (i=0;i < (80*25*2);i += 2) {
-                    mem_writew((PhysPt)(0xA0000+i),0x0000);
-                    mem_writew((PhysPt)(0xA2000+i),0x00E1);
-                }
-
-                /* hide the cursor */
-                void PC98_show_cursor(bool show);
-                PC98_show_cursor(false);
-
-                /* There is a byte at 0x584 that describes the boot drive + type.
-                 * This is confirmed in Neko Project II source and by the behavior
-                 * of an MS-DOS boot disk formatted by a PC-98 system.
-                 *
-                 * There are three values for three different floppy formats, and
-                 * one for hard drives */
-                Bit32u heads,cyls,sects,ssize;
-
-                imageDiskList[drive-65]->Get_Geometry(&heads,&cyls,&sects,&ssize);
-
-                Bit8u RDISK_EQUIP = 0; /* 488h (ref. PC-9800 Series Technical Data Book - BIOS 1992 page 233 */
-                /* bits [7:4] = 640KB FD drives 3:0
-                 * bits [3:0] = 1MB FD drives 3:0 */
-                Bit8u F2HD_MODE = 0; /* 493h (ref. PC-9800 Series Technical Data Book - BIOS 1992 page 233 */
-                /* bits [7:4] = 640KB FD drives 3:0 ??
-                 * bits [3:0] = 1MB FD drives 3:0 ?? */
-                Bit8u F2DD_MODE = 0; /* 5CAh (ref. PC-9800 Series Technical Data Book - BIOS 1992 page 233 */
-                /* bits [7:4] = 640KB FD drives 3:0 ??
-                 * bits [3:0] = 1MB FD drives 3:0 ?? */
-                Bit16u disk_equip = 0, disk_equip_144 = 0;
-                Bit8u scsi_equip = 0;
-
-                /* FIXME: MS-DOS appears to be able to see disk image B: but only
-                 *        if the disk format is the same, for some reason.
-                 *
-                 *        So, apparently you cannot put a 1.44MB image in drive A:
-                 *        and a 1.2MB image in drive B: */
-
-                for (i=0;i < 2;i++) {
-                    if (imageDiskList[i] != NULL) {
-                        disk_equip |= (0x0111u << i); /* 320KB[15:12] 1MB[11:8] 640KB[7:4] unit[1:0] */
-                        disk_equip_144 |= (1u << i);
-                        F2HD_MODE |= (0x11u << i);
-                    }
-                }
-
-                for (i=0;i < 2;i++) {
-                    if (imageDiskList[i+2] != NULL) {
-                        scsi_equip |= (1u << i);
-
-                        Bit16u m = 0x460u + ((Bit16u)i * 4u);
-
-                        mem_writeb(m+0u,sects);
-                        mem_writeb(m+1u,heads);
-                        mem_writew(m+2u,(cyls & 0xFFFu) + (ssize == 512u ? 0x1000u : 0u) + (ssize == 1024u ? 0x2000u : 0) + 0x8000u/*NP2:hwsec*/);
-                    }
-                }
-
-                mem_writew(0x55C,disk_equip);   /* disk equipment (drive 0 is present) */
-                mem_writew(0x5AE,disk_equip_144);   /* disk equipment (drive 0 is present, 1.44MB) */
-                mem_writeb(0x482,scsi_equip);
-                mem_writeb(0x488,RDISK_EQUIP); /* RAM disk equip */
-                mem_writeb(0x493,F2HD_MODE);
-                mem_writeb(0x5CA,F2DD_MODE);
-
-                if (drive >= 'C') {
-                    /* hard drive */
-                    mem_writeb(0x584,0xA0/*type*/ + (drive - 'C')/*drive*/);
-                }
-                else if ((ssize == 1024 && heads == 2 && cyls == 77 && sects == 8) || pc98_sect128) {
-                    mem_writeb(0x584,0x90/*type*/ + (drive - 65)/*drive*/); /* 1.2MB 3-mode */
-                }
-                else if (ssize == 512 && heads == 2 && cyls == 80 && sects == 18) {
-                    mem_writeb(0x584,0x30/*type*/ + (drive - 65)/*drive*/); /* 1.44MB */
-                }
-                else {
-                    // FIXME
-                    LOG_MSG("PC-98 boot: Unable to determine boot drive type for ssize=%u heads=%u cyls=%u sects=%u. Guessing.",
-                        ssize,heads,cyls,sects);
-
-                    mem_writeb(0x584,(ssize < 1024 ? 0x30 : 0x90)/*type*/ + (drive - 65)/*drive*/);
-                }
-            }
-            else {
+            {
                 SegSet16(cs, 0);
                 SegSet16(ds, 0);
                 SegSet16(es, 0);
