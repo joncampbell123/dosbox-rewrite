@@ -672,7 +672,6 @@ static void write_p61(Bitu, Bitu val, Bitu) {
     if (diff & 0x3) {
         bool pit_clock_gate_enabled = !!(val & 0x1);
         bool pit_output_enabled = !!(val & 0x2);
-        PCSPEAKER_SetType(pit_clock_gate_enabled, pit_output_enabled);
     }
     port_61_data = val;
 }

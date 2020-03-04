@@ -6156,7 +6156,6 @@ void MIXER_Init();
 #if C_DEBUG
 void DEBUG_Init();
 #endif
-void PCSPEAKER_Init();
 void BIOS_Init();
 void INT10_Init();
 void JOYSTICK_Init();
@@ -7364,7 +7363,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
 #endif
         Init_VGABIOS();
         PROGRAMS_Init(); /* <- NTS: Does not init programs, it inits the callback used later when creating the .COM programs on drive Z: */
-        PCSPEAKER_Init();
         MIXER_Init();
         CPU_Init();
 #if C_FPU
