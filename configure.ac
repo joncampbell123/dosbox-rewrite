@@ -914,9 +914,6 @@ src/fpu/Makefile
 src/gui/Makefile
 src/mt32/Makefile
 src/hardware/Makefile
-src/hardware/mame/Makefile
-src/hardware/serialport/Makefile
-src/hardware/reSID/Makefile
 src/aviwriter/Makefile
 src/ints/Makefile
 src/libs/Makefile

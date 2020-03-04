@@ -490,25 +490,10 @@ static Bitu DOS_21Handler(void) {
             break;
         case 0x03:      /* Read character from STDAUX */
             {
-                Bit16u port = real_readw(0x40,0);
-                if(port!=0 && serialports[0]) {
-                    Bit8u status;
-                    // RTS/DTR on
-                    IO_WriteB((Bitu)port + 4u, 0x3u);
-                    serialports[0]->Getchar(&reg_al, &status, true, 0xFFFFFFFF);
-                }
             }
             break;
         case 0x04:      /* Write Character to STDAUX */
             {
-                Bit16u port = real_readw(0x40,0);
-                if(port!=0 && serialports[0]) {
-                    // RTS/DTR on
-                    IO_WriteB((Bitu)port + 4u, 0x3u);
-                    serialports[0]->Putchar(reg_dl,true,true, 0xFFFFFFFF);
-                    // RTS off
-                    IO_WriteB((Bitu)port + 4u, 0x1u);
-                }
             }
             break;
         case 0x05:      /* Write Character to PRINTER */

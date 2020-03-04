@@ -3973,9 +3973,6 @@ private:
             mem_writeb(BIOS_COM2_TIMEOUT,1);
             mem_writeb(BIOS_COM3_TIMEOUT,1);
             mem_writeb(BIOS_COM4_TIMEOUT,1);
-
-            void BIOS_Post_register_comports();
-            BIOS_Post_register_comports();
         }
 
         {
@@ -3984,8 +3981,6 @@ private:
 
             //Bit16u config=0x4400; //1 Floppy, 2 serial and 1 parallel 
             Bit16u config = 0x0;
-
-            config |= bios_post_comport_count() << 9;
 
 #if (C_FPU)
             extern bool enable_fpu;
@@ -4309,9 +4304,6 @@ private:
                         LOG_MSG("ISAPNP register failed\n");
                 }
             }
-
-            void BIOS_Post_register_comports_PNP();
-            BIOS_Post_register_comports_PNP();
 
             void BIOS_Post_register_IDE();
             BIOS_Post_register_IDE();

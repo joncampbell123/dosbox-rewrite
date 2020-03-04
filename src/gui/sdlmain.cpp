@@ -6157,16 +6157,13 @@ void MIXER_Init();
 #if C_DEBUG
 void DEBUG_Init();
 #endif
-void INNOVA_Init();
 void PCSPEAKER_Init();
 void BIOS_Init();
 void INT10_Init();
 void JOYSTICK_Init();
-void SERIAL_Init();
 #if C_PRINTER
 void PRINTER_Init();
 #endif
-void DONGLE_Init();
 void DOS_Init();
 void XMS_Init();
 void EMS_Init();
@@ -6176,7 +6173,6 @@ void MSCDEX_Init();
 void DRIVES_Init();
 void IPX_Init();
 void IDE_Init();
-void NE2K_Init();
 void FDC_Primary_Init();
 void AUTOEXEC_Init();
 
@@ -7384,16 +7380,10 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
         KEYBOARD_Init();
         JOYSTICK_Init();
         IDE_Init();
-        INNOVA_Init();
         BIOS_Init();
         INT10_Init();
-        SERIAL_Init();
-        DONGLE_Init();
 #if C_PRINTER
         PRINTER_Init();
-#endif
-#if C_NE2000
-        NE2K_Init();
 #endif
 
 #if defined(WIN32) && !defined(C_SDL2)

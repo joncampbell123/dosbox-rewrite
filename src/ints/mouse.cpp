@@ -107,9 +107,6 @@ static bool useps2callback,ps2callbackinit;
 static RealPt ps2_callback,uir_callback;
 static Bit16s oldmouseX, oldmouseY;
 
-// serial mouse emulation
-void on_mouse_event_for_serial(int delta_x,int delta_y,Bit8u buttonstate);
-
 struct button_event {
     Bit8u type;
     Bit8u buttons;
@@ -603,10 +600,6 @@ void Mouse_CursorMoved(float xrel,float yrel,float x,float y,bool emulate) {
     if (user_cursor_locked) {
         /* either device reports relative motion ONLY, and therefore requires that the user
          * has captured the mouse */
-
-        /* serial mouse */
-        on_mouse_event_for_serial((int)(dx),(int)(dy*2),mouse.buttons);
-
         mouse.mickey_x += (dx * mouse.mickeysPerPixel_x);
         mouse.mickey_y += (dy * mouse.mickeysPerPixel_y);
         if (mouse.mickey_x >= 32768.0) mouse.mickey_x -= 65536.0;
@@ -745,9 +738,6 @@ void Mouse_ButtonPressed(Bit8u button) {
     mouse.times_pressed[button]++;
     mouse.last_pressed_x[button]=(Bit16u)POS_X;
     mouse.last_pressed_y[button]=(Bit16u)POS_Y;
-
-    /* serial mouse, if connected, also wants to know about it */
-    on_mouse_event_for_serial(0,0,mouse.buttons);
 }
 
 void Mouse_ButtonReleased(Bit8u button) {
@@ -808,9 +798,6 @@ void Mouse_ButtonReleased(Bit8u button) {
     mouse.times_released[button]++; 
     mouse.last_released_x[button]=(Bit16u)POS_X;
     mouse.last_released_y[button]=(Bit16u)POS_Y;
-
-    /* serial mouse, if connected, also wants to know about it */
-    on_mouse_event_for_serial(0,0,mouse.buttons);
 }
 
 static void Mouse_SetMickeyPixelRate(Bit16s px, Bit16s py){
