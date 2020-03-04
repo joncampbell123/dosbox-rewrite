@@ -142,15 +142,15 @@ void					DOSBOX_SetLoop(LoopHandler * handler);
 void					DOSBOX_SetNormalLoop();
 
 /* machine tests for use with if() statements */
-#define IS_TANDY_ARCH			(machine==MCH_PCJR)
-#define IS_EGAVGA_ARCH			((machine==MCH_EGA) || (machine==MCH_VGA))
-#define IS_EGA_ARCH             (machine==MCH_EGA)
-#define IS_VGA_ARCH             (machine==MCH_VGA)
+#define IS_TANDY_ARCH			(0)
 #define IS_PC98_ARCH            (0)
+#define IS_EGAVGA_ARCH			(1)
+#define IS_EGA_ARCH             (0)
+#define IS_VGA_ARCH             (1)
 
 /* machine tests for use with switch() statements */
-#define TANDY_ARCH_CASE			MCH_TANDY: case MCH_PCJR
-#define EGAVGA_ARCH_CASE		MCH_EGA: case MCH_VGA
+#define TANDY_ARCH_CASE			MCH_PCJR
+#define EGAVGA_ARCH_CASE		MCH_VGA
 #define VGA_ARCH_CASE			MCH_VGA
 
 #ifndef DOSBOX_LOGGING_H
