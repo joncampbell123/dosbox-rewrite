@@ -149,7 +149,6 @@ void					DOSBOX_SetNormalLoop();
 #define IS_VGA_ARCH             (1)
 
 /* machine tests for use with switch() statements */
-#define TANDY_ARCH_CASE			MCH_PCJR
 #define EGAVGA_ARCH_CASE		MCH_VGA
 #define VGA_ARCH_CASE			MCH_VGA
 
