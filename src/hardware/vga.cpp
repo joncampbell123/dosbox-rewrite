@@ -1039,14 +1039,6 @@ void VGA_Reset(Section*) {
 
     if (machine == MCH_CGA) PROGRAMS_MakeFile("CGASNOW.COM",CGASNOW_ProgramStart);
     PROGRAMS_MakeFile("VFRCRATE.COM",VFRCRATE_ProgramStart);
-
-    if (IS_PC98_ARCH) {
-        void VGA_OnEnterPC98(Section *sec);
-        void VGA_OnEnterPC98_phase2(Section *sec);
-
-        VGA_OnEnterPC98(NULL);
-        VGA_OnEnterPC98_phase2(NULL);
-    }
 }
 
 extern void VGA_TweakUserVsyncOffset(float val);
@@ -1062,299 +1054,27 @@ void VGA_UnsetupSEQ(void);
 #define crtc(blah) vga.crtc.blah
 
 void VGA_OnEnterPC98(Section *sec) {
-    (void)sec;//UNUSED
-    VGA_UnsetupMisc();
-    VGA_UnsetupAttr();
-    VGA_UnsetupDAC();
-    VGA_UnsetupGFX();
-    VGA_UnsetupSEQ();
-
-    LOG_MSG("PC-98: GDC is running at %.1fMHz.",gdc_5mhz_mode ? 5.0 : 2.5);
-
-    pc98_egc_srcmask[0] = 0xFF;
-    pc98_egc_srcmask[1] = 0xFF;
-    pc98_egc_maskef[0] = 0xFF;
-    pc98_egc_maskef[1] = 0xFF;
-    pc98_egc_mask[0] = 0xFF;
-    pc98_egc_mask[1] = 0xFF;
-
-    for (unsigned int i=0;i < 8;i++)
-        pc98_pal_digital[i] = i;
-
-    for (unsigned int i=0;i < 8;i++) {
-        pc98_pal_analog[(i*3) + 0] = (i & 4) ? 0x0F : 0x00;
-        pc98_pal_analog[(i*3) + 1] = (i & 2) ? 0x0F : 0x00;
-        pc98_pal_analog[(i*3) + 2] = (i & 1) ? 0x0F : 0x00;
-
-        if (i != 0) {
-            pc98_pal_analog[((i+8)*3) + 0] = (i & 4) ? 0x0A : 0x00;
-            pc98_pal_analog[((i+8)*3) + 1] = (i & 2) ? 0x0A : 0x00;
-            pc98_pal_analog[((i+8)*3) + 2] = (i & 1) ? 0x0A : 0x00;
-        }
-        else {
-            pc98_pal_analog[((i+8)*3) + 0] = 0x07;
-            pc98_pal_analog[((i+8)*3) + 1] = 0x07;
-            pc98_pal_analog[((i+8)*3) + 2] = 0x07;
-        }
-    }
-
-    for (unsigned int i=0;i < 256;i++) {
-        pc98_pal_vga[(i*3)+0] = i;
-        pc98_pal_vga[(i*3)+1] = i;
-        pc98_pal_vga[(i*3)+2] = i;
-    }
-
-    pc98_update_palette();
-
-    {
-        for (unsigned int i=0;i < 8;i++) {
-            unsigned char r = (i & 2) ? 255 : 0;
-            unsigned char g = (i & 4) ? 255 : 0;
-            unsigned char b = (i & 1) ? 255 : 0;
-
-            if (GFX_bpp >= 24) /* FIXME: Assumes 8:8:8. What happens when desktops start using the 10:10:10 format? */
-                pc98_text_palette[i] = ((Bitu)(((Bitu)b << GFX_Bshift) + ((Bitu)g << GFX_Gshift) + ((Bitu)r << GFX_Rshift) + (Bitu)GFX_Amask));
-            else {
-                /* FIXME: PC-98 mode renders as 32bpp regardless (at this time), so we have to fake 32bpp order */
-                /*        Since PC-98 itself has 4-bit RGB precision, it might be best to offer a 16bpp rendering mode,
-                 *        or even just have PC-98 mode stay in 16bpp entirely. */
-                if (GFX_Bshift == 0)
-                    pc98_text_palette[i] = (Bitu)(((Bitu)b <<  0U) + ((Bitu)g <<  8U) + ((Bitu)r << 16U));
-                else
-                    pc98_text_palette[i] = (Bitu)(((Bitu)b << 16U) + ((Bitu)g <<  8U) + ((Bitu)r <<  0U));
-            }
-        }
-    }
-
-    pc98_gdc_tile_counter=0;
-    pc98_gdc_modereg=0;
-    for (unsigned int i=0;i < 4;i++) pc98_gdc_tiles[i].w = 0;
-
-    vga.dac.pel_mask = 0xFF;
-    vga.crtc.maximum_scan_line = 15;
-
-    /* 200-line tradition on PC-98 seems to be to render only every other scanline */
-    pc98_graphics_hide_odd_raster_200line = true;
-    pc98_256kb_boundary = false;         /* port 6Ah command 68h/69h */
-
-    // as a transition to PC-98 GDC emulation, move VGA alphanumeric buffer
-    // down to A0000-AFFFFh.
-    gdc_analog = false;
-    gfx(miscellaneous) &= ~0x0C; /* bits[3:2] = 0 to map A0000-BFFFF */
-    VGA_DetermineMode();
-    VGA_SetupHandlers();
-    VGA_DAC_UpdateColorPalette();
-    INT10_PC98_CurMode_Relocate(); /* make sure INT 10h knows */
-
-    if(!pc98_31khz_mode) { /* Set up 24KHz hsync 56.42Hz rate */
-        vga.crtc.horizontal_total = 106 - 5;
-        vga.crtc.vertical_total = (440 - 2) & 0xFF;
-        vga.crtc.end_vertical_blanking = (440 - 2 - 8) & 0xFF; // FIXME
-        vga.crtc.vertical_retrace_start = (440 - 2 - 30) & 0xFF; // FIXME
-        vga.crtc.vertical_retrace_end = (440 - 2 - 28) & 0xFF; // FIXME
-        vga.crtc.start_vertical_blanking = (400 + 8) & 0xFF; // FIXME
-        vga.crtc.overflow |=  0x01;
-        vga.crtc.overflow &= ~0x20;
-    } else { //Set up 31-KHz mode. Values guessed according to other 640x400 modes in int10_modes.cpp.
-        //TODO: Find the right values by inspecting a real PC-9821 system.
-        vga.crtc.horizontal_total = 100 - 5;
-        vga.crtc.vertical_total = (449 - 2) & 0xFF;
-        vga.crtc.end_vertical_blanking = (449 - 2 - 8) & 0xFF; // FIXME
-        vga.crtc.vertical_retrace_start = (449 - 2 - 30) & 0xFF; // FIXME
-        vga.crtc.vertical_retrace_end = (449 - 2 - 28) & 0xFF; // FIXME
-        vga.crtc.start_vertical_blanking = (400 + 8) & 0xFF; // FIXME
-        vga.crtc.overflow |=  0x01;
-        vga.crtc.overflow &= ~0x20;
-    }
-
-    /* 8-char wide mode. change to 25MHz clock to match. */
-    vga.config.addr_shift = 0;
-    seq(clocking_mode) |= 1; /* 8-bit wide char */
-    vga.misc_output &= ~0x0C; /* bits[3:2] = 0 25MHz clock */
-
-    /* PC-98 seems to favor a block cursor */
-    vga.draw.cursor.enabled = true;
-    crtc(cursor_start) = 0;
-    vga.draw.cursor.sline = 0;
-    crtc(cursor_end) = 15;
-    vga.draw.cursor.eline = 15;
-
-    /* now, switch to PC-98 video emulation */
-    for (unsigned int i=0;i < 16;i++) VGA_ATTR_SetPalette(i,i);
-    for (unsigned int i=0;i < 16;i++) vga.dac.combine[i] = i;
-
-    vga.mode=M_PC98;
-    assert(vga.mem.memsize >= 0x80000);
-    memset(vga.mem.linear,0,0x80000);
-
-    VGA_StartResize();
 }
 
 void MEM_ResetPageHandler_Unmapped(Bitu phys_page, Bitu pages);
 
 void updateGDCpartitions4(bool enable) {
-    pc98_allow_4_display_partitions = enable;
-    pc98_gdc[GDC_SLAVE].display_partition_mask = pc98_allow_4_display_partitions ? 3 : 1;
 }
 
-/* source: Neko Project II  GDC SYNC parameters for each mode */
-
-#if 0 // NOT YET USED
-static const UINT8 gdc_defsyncm15[8] = {0x10,0x4e,0x07,0x25,0x0d,0x0f,0xc8,0x94};
-static const UINT8 gdc_defsyncs15[8] = {0x06,0x26,0x03,0x11,0x86,0x0f,0xc8,0x94};
-#endif
-
-static const UINT8 gdc_defsyncm24[8] = {0x10,0x4e,0x07,0x25,0x07,0x07,0x90,0x65};
-static const UINT8 gdc_defsyncs24[8] = {0x06,0x26,0x03,0x11,0x83,0x07,0x90,0x65};
-
-static const UINT8 gdc_defsyncm31[8] = {0x10,0x4e,0x47,0x0c,0x07,0x0d,0x90,0x89};
-static const UINT8 gdc_defsyncs31[8] = {0x06,0x26,0x41,0x0c,0x83,0x0d,0x90,0x89};
-
-static const UINT8 gdc_defsyncm31_480[8] = {0x10,0x4e,0x4b,0x0c,0x03,0x06,0xe0,0x95};
-static const UINT8 gdc_defsyncs31_480[8] = {0x06,0x4e,0x4b,0x0c,0x83,0x06,0xe0,0x95};
-
 void PC98_Set24KHz(void) {
-    pc98_gdc[GDC_MASTER].write_fifo_command(0x0F/*sync DE=1*/);
-    for (unsigned int i=0;i < 8;i++)
-        pc98_gdc[GDC_MASTER].write_fifo_param(gdc_defsyncm24[i]);
-    pc98_gdc[GDC_MASTER].force_fifo_complete();
-
-    pc98_gdc[GDC_SLAVE].write_fifo_command(0x0F/*sync DE=1*/);
-    for (unsigned int i=0;i < 8;i++)
-        pc98_gdc[GDC_SLAVE].write_fifo_param(gdc_defsyncs24[i]);
-    pc98_gdc[GDC_SLAVE].force_fifo_complete();
 }
 
 void PC98_Set31KHz(void) {
-    pc98_gdc[GDC_MASTER].write_fifo_command(0x0F/*sync DE=1*/);
-    for (unsigned int i=0;i < 8;i++)
-        pc98_gdc[GDC_MASTER].write_fifo_param(gdc_defsyncm31[i]);
-    pc98_gdc[GDC_MASTER].force_fifo_complete();
-
-    pc98_gdc[GDC_SLAVE].write_fifo_command(0x0F/*sync DE=1*/);
-    for (unsigned int i=0;i < 8;i++)
-        pc98_gdc[GDC_SLAVE].write_fifo_param(gdc_defsyncs31[i]);
-    pc98_gdc[GDC_SLAVE].force_fifo_complete();
 }
 
 void PC98_Set31KHz_480line(void) {
-    pc98_gdc[GDC_MASTER].write_fifo_command(0x0F/*sync DE=1*/);
-    for (unsigned int i=0;i < 8;i++)
-        pc98_gdc[GDC_MASTER].write_fifo_param(gdc_defsyncm31_480[i]);
-    pc98_gdc[GDC_MASTER].force_fifo_complete();
-
-    pc98_gdc[GDC_SLAVE].write_fifo_command(0x0F/*sync DE=1*/);
-    for (unsigned int i=0;i < 8;i++)
-        pc98_gdc[GDC_SLAVE].write_fifo_param(gdc_defsyncs31_480[i]);
-    pc98_gdc[GDC_SLAVE].force_fifo_complete();
 }
 
 void VGA_OnEnterPC98_phase2(Section *sec) {
-    (void)sec;//UNUSED
-    VGA_SetupHandlers();
-
-    /* GDC 2.5/5.0MHz setting is also reflected in BIOS data area and DIP switch registers */
-    gdc_5mhz_mode_update_vars();
-
-    /* delay I/O port at 0x5F (0.6us) */
-    IO_RegisterWriteHandler(0x5F,pc98_wait_write,IO_MB);
-
-    /* master GDC at 0x60-0x6F (even)
-     * slave GDC at 0xA0-0xAF (even) */
-    for (unsigned int i=0x60;i <= 0xA0;i += 0x40) {
-        for (unsigned int j=0;j < 0x10;j += 2) {
-            IO_RegisterWriteHandler(i+j,pc98_gdc_write,IO_MB);
-            IO_RegisterReadHandler(i+j,pc98_gdc_read,IO_MB);
-        }
-    }
-
-    /* initial implementation of I/O ports 9A0h-9AEh even */
-    IO_RegisterReadHandler(0x9A0,pc98_read_9a0,IO_MB);
-    IO_RegisterWriteHandler(0x9A0,pc98_write_9a0,IO_MB);
-
-    /* 9A8h which controls 24khz/31khz mode */
-    IO_RegisterReadHandler(0x9A8,pc98_read_9a8,IO_MB);
-    IO_RegisterWriteHandler(0x9A8,pc98_write_9a8,IO_MB);
-
-    /* There are some font character RAM controls at 0xA1-0xA5 (odd)
-     * combined with A4000-A4FFF. Found by unknown I/O tracing in DOSBox-X
-     * and by tracing INT 18h AH=1Ah on an actual system using DEBUG.COM.
-     *
-     * If I find documentation on what exactly these ports are, I will
-     * list them as such.
-     *
-     * Some games (Touhou Project) load font RAM directly through these
-     * ports instead of using the BIOS. */
-    for (unsigned int i=0xA1;i <= 0xA9;i += 2) {
-        IO_RegisterWriteHandler(i,pc98_a1_write,IO_MB);
-    }
-    /* Touhou Project appears to read font RAM as well */
-    IO_RegisterReadHandler(0xA9,pc98_a1_read,IO_MB);
-
-    /* CRTC at 0x70-0x7F (even) */
-    for (unsigned int j=0x70;j < 0x80;j += 2) {
-        IO_RegisterWriteHandler(j,pc98_crtc_write,IO_MB);
-        IO_RegisterReadHandler(j,pc98_crtc_read,IO_MB);
-    }
-
-    /* EGC at 0x4A0-0x4AF (even).
-     * All I/O ports are 16-bit.
-     * NTS: On real hardware, doing 8-bit I/O on these ports will often hang the system. */
-    for (unsigned int i=0;i < 0x10;i += 2) {
-        IO_RegisterWriteHandler(i+0x4A0,pc98_egc4a0_write_warning,IO_MB);
-        IO_RegisterWriteHandler(i+0x4A0,pc98_egc4a0_write,        IO_MW);
-        IO_RegisterWriteHandler(i+0x4A1,pc98_egc4a0_write_warning,IO_MB);
-        IO_RegisterWriteHandler(i+0x4A1,pc98_egc4a0_write_warning,IO_MW);
-
-        IO_RegisterReadHandler(i+0x4A0,pc98_egc4a0_read_warning,IO_MB);
-        IO_RegisterReadHandler(i+0x4A0,pc98_egc4a0_read,        IO_MW);
-        IO_RegisterReadHandler(i+0x4A1,pc98_egc4a0_read_warning,IO_MB);
-        IO_RegisterReadHandler(i+0x4A1,pc98_egc4a0_read_warning,IO_MW);
-    }
-
-    pc98_gdc[GDC_MASTER].master_sync = true;
-    pc98_gdc[GDC_MASTER].display_enable = true;
-    pc98_gdc[GDC_MASTER].row_height = 16;
-    pc98_gdc[GDC_MASTER].display_pitch = 80;
-    pc98_gdc[GDC_MASTER].active_display_words_per_line = 80;
-    pc98_gdc[GDC_MASTER].display_partition_mask = 3;
-
-    pc98_gdc[GDC_SLAVE].master_sync = false;
-    pc98_gdc[GDC_SLAVE].display_enable = false;//FIXME
-    pc98_gdc[GDC_SLAVE].row_height = 1;
-    pc98_gdc[GDC_SLAVE].display_pitch = gdc_5mhz_mode ? 80u : 40u;
-    pc98_gdc[GDC_SLAVE].display_partition_mask = pc98_allow_4_display_partitions ? 3 : 1;
-
-    const unsigned char *gdcsync_m;
-    const unsigned char *gdcsync_s;
-
-    if (!pc98_31khz_mode) {
-        gdcsync_m = gdc_defsyncm24;
-        gdcsync_s = gdc_defsyncs24;
-    }
-    else {
-        gdcsync_m = gdc_defsyncm31;
-        gdcsync_s = gdc_defsyncs31;
-    }
-
-    pc98_gdc[GDC_MASTER].write_fifo_command(0x0F/*sync DE=1*/);
-    for (unsigned int i=0;i < 8;i++)
-        pc98_gdc[GDC_MASTER].write_fifo_param(gdcsync_m[i]);
-    pc98_gdc[GDC_MASTER].force_fifo_complete();
-
-    pc98_gdc[GDC_SLAVE].write_fifo_command(0x0F/*sync DE=1*/);
-    for (unsigned int i=0;i < 8;i++)
-        pc98_gdc[GDC_SLAVE].write_fifo_param(gdcsync_s[i]);
-    pc98_gdc[GDC_SLAVE].force_fifo_complete();
-
-    VGA_StartResize();
 }
 
 void VGA_Destroy(Section*) {
 }
-
-extern uint8_t                     pc98_pal_analog[256*3]; /* G R B    0x0..0xF */
-extern uint8_t                     pc98_pal_digital[8];    /* G R B    0x0..0x7 */
 
 void pc98_update_palette(void);
 void UpdateCGAFromSaveState(void);
@@ -1362,26 +1082,7 @@ void UpdateCGAFromSaveState(void);
 void VGA_LoadState(Section *sec) {
     (void)sec;//UNUSED
 
-    if (IS_PC98_ARCH) {
-        {
-            ZIPFileEntry *ent = savestate_zip.get_entry("vga.pc98.analog.palette.bin");
-            if (ent != NULL) {
-                ent->rewind();
-                ent->read(pc98_pal_analog, 256*3);
-            }
-        }
-
-        {
-            ZIPFileEntry *ent = savestate_zip.get_entry("vga.pc98.digital.palette.bin");
-            if (ent != NULL) {
-                ent->rewind();
-                ent->read(pc98_pal_digital, 8);
-            }
-        }
-
-        pc98_update_palette();
-    }
-    else {
+    {
         {
             ZIPFileEntry *ent = savestate_zip.get_entry("vga.ac.palette.bin");
             if (ent != NULL) {
@@ -1426,22 +1127,7 @@ void VGA_LoadState(Section *sec) {
 void VGA_SaveState(Section *sec) {
     (void)sec;//UNUSED
 
-    if (IS_PC98_ARCH) {
-        {
-            ZIPFileEntry *ent = savestate_zip.new_entry("vga.pc98.analog.palette.bin");
-            if (ent != NULL) {
-                ent->write(pc98_pal_analog, 256*3);
-            }
-        }
-
-        {
-            ZIPFileEntry *ent = savestate_zip.new_entry("vga.pc98.digital.palette.bin");
-            if (ent != NULL) {
-                ent->write(pc98_pal_digital, 8);
-            }
-        }
-    }
-    else {
+    {
         {
             ZIPFileEntry *ent = savestate_zip.new_entry("vga.ac.palette.bin");
             if (ent != NULL) {

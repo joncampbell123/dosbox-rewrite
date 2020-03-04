@@ -164,8 +164,6 @@ extern ClockDomain			clockdom_ISA_BCLK;
 signed long long time_to_clockdom(ClockDomain &src,double t);
 unsigned long long update_clockdom_from_now(ClockDomain &dst);
 
-extern bool enable_pc98_jump;
-
 enum {
 	UTF8ERR_INVALID=-1,
 	UTF8ERR_NO_ROOM=-2

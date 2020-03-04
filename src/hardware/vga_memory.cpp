@@ -1175,10 +1175,6 @@ void VGA_SetupMemory() {
         vga.tandy.draw_base = vga.mem.linear;
         vga.tandy.mem_base = vga.mem.linear;
 
-        /* PC-98 pointers */
-        pc98_pgraph_current_cpu_page = vga.mem.linear + PC98_VRAM_GRAPHICS_OFFSET;
-        pc98_pgraph_current_display_page = vga.mem.linear + PC98_VRAM_GRAPHICS_OFFSET;
-
         /* parallel system */
         if (vga_alt_new_mode) {
             for (size_t si=0;si < VGA_Draw_2_elem;si++)
