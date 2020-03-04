@@ -896,11 +896,6 @@ void VGA_SetupHandlers(void) {
 		else
 			MEM_SetPageHandler( VGA_PAGE_B8, 8, &vgaph.slow );
 		goto range_done;
-	case MCH_MCGA://Based on real hardware, A0000-BFFFF is the 64KB of RAM mapped twice
-		MEM_SetPageHandler( VGA_PAGE_A0, 16, &vgaph.mcgatext );     // A0000-AFFFF is the 64KB of video RAM
-        MEM_ResetPageHandler_Unmapped( VGA_PAGE_B0, 8 );            // B0000-B7FFF is unmapped
-		MEM_SetPageHandler( VGA_PAGE_B8, 8, &vgaph.mcgatext );      // B8000-BFFFF is the last 32KB half of video RAM, alias
-		goto range_done;
 	case MCH_PCJR:
 		MEM_SetPageHandler( VGA_PAGE_A0, 16, &vgaph.empty );
 		MEM_SetPageHandler( VGA_PAGE_B0, 8, &vgaph.empty );
@@ -931,26 +926,6 @@ void VGA_SetupHandlers(void) {
 				MEM_SetPageHandler(VGA_PAGE_B0,8,&vgaph.herc);
 			MEM_SetPageHandler(VGA_PAGE_B8,8,&vgaph.empty);
 		}
-		goto range_done;
-	case MCH_TANDY:
-		/* Always map 0xa000 - 0xbfff, might overwrite 0xb800 */
-		vgapages.base=VGA_PAGE_A0;
-		vgapages.mask=0x1ffff;
-		MEM_SetPageHandler(VGA_PAGE_A0, 32, &vgaph.map );
-		if ( vga.tandy.extended_ram & 1 ) {
-			//You seem to be able to also map different 64kb banks, but have to figure that out
-			//This seems to work so far though
-			vga.tandy.draw_base = vga.mem.linear;
-			vga.tandy.mem_base = vga.mem.linear;
-		} else {
-			vga.tandy.draw_base = TANDY_VIDBASE( vga.tandy.draw_bank * 16 * 1024);
-			vga.tandy.mem_base = TANDY_VIDBASE( vga.tandy.mem_bank * 16 * 1024);
-			MEM_SetPageHandler( VGA_PAGE_B8, 8, &vgaph.tandy );
-		}
-		goto range_done;
-//		MEM_SetPageHandler(vga.tandy.mem_bank<<2,vga.tandy.is_32k_mode ? 0x08 : 0x04,range_handler);
-	case MCH_AMSTRAD: // Memory handler.
-		MEM_SetPageHandler( 0xb8, 8, &vgaph.ams );
 		goto range_done;
 	case EGAVGA_ARCH_CASE:
         break;

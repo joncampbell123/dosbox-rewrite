@@ -250,7 +250,7 @@ void VGA_Draw2_Recompute_CRTC_MaskAdd(void) {
         /* CGA/MCGA/PCJr/Tandy is emulated as 16 bits per character clock */
         /* PCJr uses system memory < 128KB for video memory.
          * Tandy has an alternate location as well. */
-        if (machine == MCH_TANDY || machine == MCH_PCJR)
+        if (machine == MCH_PCJR)
             vga.draw_2[0].draw_base = vga.tandy.mem_base;
         else
             vga.draw_2[0].draw_base = vga.mem.linear;
@@ -1905,22 +1905,12 @@ again:
                     // Displays the border color when screen is disabled
                     bg_color_index = vga.tandy.border_color;
                     break;
-                case MCH_TANDY:
-                    // Either the PCJr way or the CGA way
-                    if (vga.tandy.gfx_control& 0x4) { 
-                        bg_color_index = vga.tandy.border_color;
-                    } else if (vga.mode==M_TANDY4) 
-                        bg_color_index = vga.attr.palette[0];
-                    else bg_color_index = 0;
-                    break;
                 case MCH_CGA:
-                case MCH_MCGA:
                     // the background color
                     bg_color_index = vga.attr.overscan_color;
                     break;
                 case MCH_EGA:
                 case MCH_VGA:
-                case MCH_PC98:
                     // DoWhackaDo, Alien Carnage, TV sports Football
                     // when disabled by attribute index bit 5:
                     //  ET3000, ET4000, Paradise display the border color
@@ -2138,11 +2128,6 @@ static void VGA_DisplayStartLatch(Bitu /*val*/) {
     vga_display_start_hretrace = vga.crtc.start_horizontal_retrace;
     vga.config.real_start=vga.config.display_start & vga.mem.memmask;
     vga.draw.bytes_skip = vga.config.bytes_skip;
-
-    /* TODO: When does 640x480 2-color mode latch foreground/background colors from the DAC? */
-    if (machine == MCH_MCGA && (vga.other.mcga_mode_control & 2)) {//640x480 2-color mode MCGA
-        VGA_DAC_UpdateColorPalette();
-    }
 }
  
 static void VGA_PanningLatch(Bitu /*val*/) {
@@ -2416,16 +2401,13 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
     
     switch(machine) {
     case MCH_PCJR:
-    case MCH_TANDY:
         // PCJr: Vsync is directly connected to the IRQ controller
         // Some earlier Tandy models are said to have a vsync interrupt too
         PIC_AddEvent(VGA_Other_VertInterrupt, (float)vga.draw.delay.vrstart, 1);
         PIC_AddEvent(VGA_Other_VertInterrupt, (float)vga.draw.delay.vrend, 0);
         // fall-through
-    case MCH_AMSTRAD:
     case MCH_CGA:
     case MCH_MDA:
-    case MCH_MCGA:
     case MCH_HERC:
         // MC6845-powered graphics: Loading the display start latch happens somewhere
         // after vsync off and before first visible scanline, so probably here
@@ -2438,10 +2420,6 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
         // VGA: checked with scope; however disabled by default by jumper on VGA boards
         // add a little amount of time to make sure the last drawpart has already fired
         PIC_AddEvent(VGA_VertInterrupt,(float)(vga.draw.delay.vdend + 0.005));
-        break;
-    case MCH_PC98:
-        PIC_AddEvent(VGA_PanningLatch, (float)vga.draw.delay.vrend);
-        PIC_AddEvent(VGA_VertInterrupt,(float)(vga.draw.delay.vrstart + 0.0001));
         break;
     case MCH_EGA:
         PIC_AddEvent(VGA_DisplayStartLatch, (float)vga.draw.delay.vrend);
@@ -2554,11 +2532,6 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
             if (vga.config.addr_shift == 1) /* NTS: Remember the ET4K steps by 4 pixels, one per byteplane, treats BYTE and DWORD modes the same */
                 vga.draw.address *= 2u;
         }
-        else if (machine == MCH_MCGA) {
-            vga.draw.linear_mask = 0xffffu;
-            vga.draw.address *= 2u;
-            break;// don't fall through
-        }
         else {
             vga.draw.address *= (Bitu)1u << (Bitu)vga.config.addr_shift; /* NTS: Remember the bizarre 4 x 4 mode most SVGA chipsets do */
         }
@@ -2591,7 +2564,7 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
     case M_TANDY_TEXT:
     case M_HERC_TEXT:
         if (machine==MCH_HERC || machine==MCH_MDA) vga.draw.linear_mask = 0xfff; // 1 page
-        else if (IS_EGAVGA_ARCH || machine == MCH_MCGA) {
+        else if (IS_EGAVGA_ARCH) {
             if (vga.config.compatible_chain4 || svgaCard == SVGA_None)
                 vga.draw.linear_mask = vga.mem.memmask & 0x3ffff;
             else
@@ -2710,9 +2683,6 @@ void VGA_CheckScanLength(void) {
                  *    TODO: Validate that this is correct. */
                 vga.draw.address_add=vga.config.scan_len*((vga.config.addr_shift == 1)?16:8);
             }
-            else if (machine == MCH_MCGA) {
-                vga.draw.address_add=vga.draw.blocks*4;
-            }
             else {
                 /* Most (almost ALL) VGA clones render chained modes as 4 8-bit planes one DWORD apart.
                  * They all act as if writes to chained VGA memory are translated as:
@@ -2759,10 +2729,7 @@ void VGA_CheckScanLength(void) {
             vga.draw.address_add=vga.draw.blocks;
         break;
     case M_TANDY2:
-        if (machine == MCH_MCGA)
-            vga.draw.address_add=vga.draw.blocks;
-        else
-            vga.draw.address_add=vga.draw.blocks/4u;
+        vga.draw.address_add=vga.draw.blocks/4u;
         break;
     case M_TANDY4:
         vga.draw.address_add=vga.draw.blocks;
@@ -2843,9 +2810,7 @@ void VGA_SetupDrawing(Bitu /*val*/) {
     // set the drawing mode
     switch (machine) {
     case MCH_CGA:
-    case MCH_MCGA:
     case MCH_PCJR:
-    case MCH_TANDY:
         vga.draw.mode = DRAWLINE;
         break;
     case MCH_EGA:
@@ -2853,7 +2818,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
         vga.draw.mode = EGALINE;
         break;
     case MCH_VGA:
-    case MCH_PC98:
         if (svgaCard==SVGA_None) {
             vga.draw.mode = DRAWLINE;
             break;
@@ -2986,46 +2950,12 @@ void VGA_SetupDrawing(Bitu /*val*/) {
         htotal = vga.other.htotal + 1u;
         hdend = vga.other.hdend;
 
-        if (machine == MCH_MCGA) {
-            // it seems MCGA follows the EGA/VGA model of encoding active display
-            // as N - 1 rather than CGA/MDA model of N.
-            //
-            // TODO: Verify this on real hardware. Some code in DOSLIB hw/vga2/test5.c
-            //       attempts to set active display width which can confirm this.
-            //
-            //       This is so far based on CRTC register dumps from real MCGA hardware
-            //       for each mode.
-            hdend++;
-        }
-
         hbstart = hdend;
         hbend = htotal;
         hrstart = vga.other.hsyncp;
         hrend = hrstart + (vga.other.hsyncw) ;
 
         vga.draw.address_line_total = vga.other.max_scanline + 1u;
-
-        if (machine == MCH_MCGA) {
-            // mode 0x11 and 0x13 on real hardware have max_scanline == 0,
-            // will need doubling again to work properly.
-            if (vga.other.mcga_mode_control & 3)
-                vga.draw.address_line_total *= 2;
-
-            // 80x25 has horizontal timings like 40x25, but the hardware
-            // knows if 80x25 text is intended by bit 0 of port 3D8h and
-            // adjusts appropriately.
-            //
-            // The BIOS will only set bit 0 for modes 2 and 3 (80x25) and
-            // will not set it for any other mode.
-            if (vga.tandy.mode_control & 1) {
-                htotal *= 2;
-                hdend *= 2;
-                hbstart *= 2;
-                hbend *= 2;
-                hrstart *= 2;
-                hrend *= 2;
-            }
-        }
 
         vtotal = vga.draw.address_line_total * (vga.other.vtotal+1u)+vga.other.vadjust;
         vdend = vga.draw.address_line_total * vga.other.vdend;
@@ -3035,22 +2965,13 @@ void VGA_SetupDrawing(Bitu /*val*/) {
         vbend = vtotal;
 
         switch (machine) {
-        case MCH_AMSTRAD:
-            clock=(16000000/2)/8;
-            break;
         case MCH_CGA:
-        case TANDY_ARCH_CASE:
             clock = (PIT_TICK_RATE*12)/8;
             // FIXME: This is wrong for Tandy/PCjr 16-color modes and 640-wide 4-color mode
             if (vga.mode != M_TANDY2) {
                 if (!(vga.tandy.mode_control & 1)) clock /= 2;
             }
             oscclock = clock * 8;
-            break;
-        case MCH_MCGA:
-            clock = 25175000 / 2 / 8;//FIXME: Guess. Verify
-            if (!(vga.tandy.mode_control & 1)) clock /= 2;
-            oscclock = clock * 2 * 8;
             break;
         case MCH_MDA:
         case MCH_HERC:
@@ -3310,12 +3231,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
                 VGA_DrawLine = VGA_Draw_Xlat32_Linear_Line;
             }
         }
-        else if (machine == MCH_MCGA) {
-            pix_per_char = 8;
-            VGA_DrawLine = VGA_Draw_Xlat32_Linear_Line;
-            vga.tandy.draw_base = vga.mem.linear;
-            vga.draw.address_line_total = 1;
-        }
         else {
             /* other SVGA chipsets appear to handle chained mode by writing 4 pixels to 4 planes, and showing
              * only every 4th byte, which is why when you switch the CRTC to byte or word mode on these chipsets,
@@ -3418,14 +3333,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
 
             bpp = 32;
         }
-        else if (machine == MCH_MCGA) {
-            vga.draw.blocks=width*2;
-            VGA_DrawLine=VGA_Draw_2BPP_Line_as_MCGA;
-            bpp = 32;
-
-            /* MCGA CGA-compatible modes will always refer to the last half of the 64KB of RAM */
-            vga.tandy.draw_base = vga.mem.linear + 0x8000;
-        }
         else {
             if (vga_alt_new_mode) {
                 VGA_DrawLine=Alt_CGA_4color_Draw_Line;
@@ -3460,21 +3367,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
                 VGA_DrawLine=VGA_Draw_1BPP_Line_as_VGA;
 
             bpp = 32;
-        }
-        else if (machine == MCH_MCGA) {
-            vga.draw.blocks=width;
-            VGA_DrawLine=VGA_Draw_1BPP_Line_as_MCGA;
-            pix_per_char = 16;
-            bpp = 32;
-
-            /* MCGA CGA-compatible modes will always refer to the last half of the 64KB of RAM */
-            if (vga.other.mcga_mode_control & 3) // 320x200 256-color or 640x480 2-color
-                vga.tandy.draw_base = vga.mem.linear;
-            else
-                vga.tandy.draw_base = vga.mem.linear + 0x8000;
-
-            if (vga.other.mcga_mode_control & 2) // 640x480 2-color
-                vga.draw.address_line_total = 1;
         }
         else {
             if (vga_alt_new_mode) {
@@ -3551,32 +3443,11 @@ void VGA_SetupDrawing(Bitu /*val*/) {
             VGA_DrawLine=VGA_Draw_1BPP_Line;
         }
 
-        /* MCGA CGA-compatible modes will always refer to the last half of the 64KB of RAM */
-        if (machine == MCH_MCGA) {
-            VGA_DrawLine=VGA_Draw_1BPP_Line_as_MCGA;
-            vga.draw.blocks=width * 2;
-            pix_per_char = 16;
-            bpp = 32;
-
-            /* MCGA CGA-compatible modes will always refer to the last half of the 64KB of RAM */
-            if (vga.other.mcga_mode_control & 3) // 320x200 256-color or 640x480 2-color
-                vga.tandy.draw_base = vga.mem.linear;
-            else
-                vga.tandy.draw_base = vga.mem.linear + 0x8000;
-
-            if (vga.other.mcga_mode_control & 2) // 640x480 2-color
-                vga.draw.address_line_total = 1;
-        }
-
         break;
     case M_TANDY4:
         vga.draw.blocks=width * 2;
         pix_per_char = 8;
-        if ((machine==MCH_TANDY && (vga.tandy.gfx_control & 0x8)) ||
-            (machine==MCH_PCJR && (vga.tandy.mode_control==0x0b))) {
-            VGA_DrawLine=VGA_Draw_2BPPHiRes_Line;
-        }
-        else {
+        {
             if (vga_alt_new_mode) {
                 VGA_DrawLine=Alt_CGA_4color_Draw_Line;
                 vga.draw.blocks=width;
@@ -3586,21 +3457,10 @@ void VGA_SetupDrawing(Bitu /*val*/) {
             }
         }
 
-        /* MCGA CGA-compatible modes will always refer to the last half of the 64KB of RAM */
-        if (machine == MCH_MCGA) {
-            vga.tandy.draw_base = vga.mem.linear + 0x8000;
-            vga.draw.blocks=width * 2;
-            VGA_DrawLine=VGA_Draw_2BPP_Line_as_MCGA;
-            bpp = 32;
-        }
-
         break;
     case M_TANDY16:
         if (vga.tandy.mode_control & 0x1) {
-            if (( machine==MCH_TANDY ) && ( vga.tandy.mode_control & 0x10 )) {
-                vga.draw.blocks=width*4;
-                pix_per_char = 8;
-            } else {
+            {
                 vga.draw.blocks=width*2;
                 pix_per_char = 4;
             }
@@ -3624,13 +3484,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
                 VGA_DrawLine=VGA_CGASNOW_TEXT_Draw_Line; /* Alternate version that emulates CGA snow */
             else
                 VGA_DrawLine=VGA_TEXT_Draw_Line;
-        }
-
-        /* MCGA CGA-compatible modes will always refer to the last half of the 64KB of RAM */
-        if (machine == MCH_MCGA) {
-            vga.tandy.draw_base = vga.mem.linear + 0x8000;
-            VGA_DrawLine = MCGA_TEXT_Draw_Line;
-            bpp = 32;
         }
 
         break;
@@ -3663,11 +3516,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
         height *= 2;
         mcga_double_scan = true;
     }
-    else if (machine == MCH_MCGA && vga.mode == M_TANDY_TEXT) { // MCGA text mode
-        height *= 2;
-        mcga_double_scan = true;
-        vga.draw.address_line_total *= 2;
-    }
     else {
         mcga_double_scan = false;
     }
@@ -3685,9 +3533,7 @@ void VGA_SetupDrawing(Bitu /*val*/) {
     double scanfield_ratio = 4.0/3.0;
     switch(machine) {
         case MCH_CGA:
-        case MCH_MCGA:
         case MCH_PCJR:
-        case MCH_TANDY:
             scanfield_ratio = 1.382;
             break;
         case MCH_MDA:

@@ -98,16 +98,16 @@ class Section;
 enum MachineType {
 	MCH_HERC,
 	MCH_CGA,
-	MCH_TANDY,
+	MCH_DEL_TANDY,
 	MCH_PCJR,
 	MCH_EGA,
 	MCH_VGA,
-	MCH_AMSTRAD,
-	MCH_PC98,
+	MCH_DEL_AMSTRAD,
+	MCH_DEL_PC98,
 
-    MCH_FM_TOWNS,                    // STUB!!
+    MCH_DEL_FM_TOWNS,                    // STUB!!
 
-    MCH_MCGA,                        // IBM PS/2 model 30 Multi-Color Graphics Adapter
+    MCH_DEL_MCGA,                        // IBM PS/2 model 30 Multi-Color Graphics Adapter
     MCH_MDA
 };
 
@@ -142,7 +142,7 @@ void					DOSBOX_SetLoop(LoopHandler * handler);
 void					DOSBOX_SetNormalLoop();
 
 /* machine tests for use with if() statements */
-#define IS_TANDY_ARCH			((machine==MCH_TANDY) || (machine==MCH_PCJR))
+#define IS_TANDY_ARCH			(machine==MCH_PCJR)
 #define IS_EGAVGA_ARCH			((machine==MCH_EGA) || (machine==MCH_VGA))
 #define IS_EGA_ARCH             (machine==MCH_EGA)
 #define IS_VGA_ARCH             (machine==MCH_VGA)

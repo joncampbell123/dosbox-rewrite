@@ -409,7 +409,7 @@ void DOS_BuildUMBChain(bool umb_active,bool /*ems_active*/) {
 	unsigned int seg_limit = (unsigned int)(MEM_TotalPages()*256);
 
 	/* UMBs are only possible if the machine has 1MB+64KB of RAM */
-	if (umb_active && (machine!=MCH_TANDY) && seg_limit >= (0x10000+0x1000-1) && first_umb_seg < GetEMSPageFrameSegment()) {
+	if (umb_active && seg_limit >= (0x10000+0x1000-1) && first_umb_seg < GetEMSPageFrameSegment()) {
         /* XMS emulation sets UMB size now.
          * PCjr mode disables UMB emulation */
 #if 0
@@ -556,15 +556,7 @@ void DOS_SetupMemory(void) {
 	DOS_MCB mcb((Bit16u)DOS_MEM_START+mcb_sizes);
 	mcb.SetPSPSeg(MCB_FREE);						//Free
 	mcb.SetType(0x5a);								//Last Block
-	if (machine==MCH_TANDY) {
-		if (seg_limit < ((384*1024)/16))
-			E_Exit("Tandy requires at least 384K");
-		/* memory up to 608k available, the rest (to 640k) is used by
-			the tandy graphics system's variable mapping of 0xb800 */
-/*
-		mcb.SetSize(0x9BFF - DOS_MEM_START - mcb_sizes);
-*/		mcb.SetSize(/*0x9BFF*/(seg_limit-0x801) - DOS_MEM_START - mcb_sizes);
-	} else if (machine==MCH_PCJR) {
+	if (machine==MCH_PCJR) {
 		DOS_MCB mcb_devicedummy((Bit16u)0x2000);
 
         /* FIXME: The PCjr can have built-in either 64KB or 128KB of RAM.

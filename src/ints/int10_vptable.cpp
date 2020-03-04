@@ -587,10 +587,6 @@ void INT10_SetupBasicVideoParameterTable(void) {
 	Bitu ofs;
 
 	switch (machine) {
-		case MCH_TANDY:
-			copy = vparams_tandy;
-			copy_sz = sizeof(vparams_tandy);
-			break;
 		case MCH_PCJR:
 			copy = vparams_pcjr;
 			copy_sz = sizeof(vparams_pcjr);

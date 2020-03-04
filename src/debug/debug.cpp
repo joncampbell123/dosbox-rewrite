@@ -119,7 +119,6 @@ static void LogEMUMachine(void) {
         switch (machine) {
             case MCH_HERC:      m="Hercules";   break;
             case MCH_CGA:       m="CGA";        break;
-            case MCH_TANDY:     m="Tandy";      break;
             case MCH_PCJR:      m="PCjr";       break;
             case MCH_EGA:       m="EGA";        break;
             case MCH_VGA:       m="VGA";        break;

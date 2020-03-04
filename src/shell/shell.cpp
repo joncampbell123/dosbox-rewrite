@@ -376,8 +376,7 @@ void DOS_Shell::Run(void) {
 #if C_DEBUG
         WriteOut(MSG_Get("SHELL_STARTUP_DEBUG"));
 #endif
-        if (machine == MCH_CGA || machine == MCH_AMSTRAD) WriteOut(MSG_Get("SHELL_STARTUP_CGA"));
-        if (machine == MCH_PC98) WriteOut(MSG_Get("SHELL_STARTUP_PC98"));
+        if (machine == MCH_CGA) WriteOut(MSG_Get("SHELL_STARTUP_CGA"));
         if (machine == MCH_HERC || machine == MCH_MDA) WriteOut(MSG_Get("SHELL_STARTUP_HERC"));
         WriteOut(MSG_Get("SHELL_STARTUP_END"));
     }
@@ -747,14 +746,7 @@ void SHELL_Init() {
      *      so there is no problem here of causing use-after-free crashes when we exit. */
     std::string host_key_help; // SHELL_STARTUP_BEGIN2
 
-    if (machine == MCH_PC98) {
-// "\x86\x46 To activate the keymapper \033[31mhost+m\033[37m. Host key is F12.                 \x86\x46\n"
-        host_key_help =
-            std::string("\x86\x46 To activate the keymapper \033[31mhost+m\033[37m. Host key is ") +
-            (mapper_keybind + "                                     ").substr(0,20) +
-            std::string(" \x86\x46\n");
-    }
-    else {
+    {
 // "\xBA To activate the keymapper \033[31mhost+m\033[37m. Host key is F12.                 \xBA\n"
         host_key_help =
             std::string("\xBA To activate the keymapper \033[31mhost+m\033[37m. Host key is ") +
@@ -762,49 +754,7 @@ void SHELL_Init() {
             std::string(" \xBA\n");
     }
 
-    if (machine == MCH_PC98) {
-        MSG_Add("SHELL_STARTUP_BEGIN",
-                "\x86\x52\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44"
-                "\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44"
-                "\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44"
-                "\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44"
-                "\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44"
-                "\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x56\n"
-                "\x86\x46 \033[32mWelcome to DOSBox-X %-8s (%-4s) %-25s\033[37m      \x86\x46\n"
-                "\x86\x46                                                                    \x86\x46\n"
-                "\x86\x46 For a short introduction for new users type: \033[33mINTRO\033[37m                 \x86\x46\n"
-                "\x86\x46 For supported shell commands type: \033[33mHELP\033[37m                            \x86\x46\n"
-                "\x86\x46                                                                    \x86\x46\n"
-                "\x86\x46 To adjust the emulated CPU speed, use \033[31mhost -\033[37m and \033[31mhost +\033[37m.           \x86\x46\n");
-        MSG_Replace("SHELL_STARTUP_BEGIN2",
-                host_key_help.c_str());
-        MSG_Add("SHELL_STARTUP_BEGIN3",
-                "\x86\x46 For more information read the \033[36mREADME\033[37m file in the DOSBox directory. \x86\x46\n"
-                "\x86\x46                                                                    \x86\x46\n"
-               );
-        MSG_Add("SHELL_STARTUP_PC98","\x86\x46 DOSBox-X is now running in NEC PC-98 emulation mode.               \x86\x46\n"
-                "\x86\x46 \033[31mPC-98 emulation is INCOMPLETE and CURRENTLY IN DEVELOPMENT.\033[37m        \x86\x46\n");
-        MSG_Add("SHELL_STARTUP_DEBUG",
-#if defined(MACOSX)
-                "\x86\x46 Debugger is available, use \033[31malt-F12\033[37m to enter.                       \x86\x46\n"
-#else
-                "\x86\x46 Debugger is available, use \033[31malt-Pause\033[37m to enter.                     \x86\x46\n"
-#endif
-                "\x86\x46                                                                    \x86\x46\n"
-               );
-        MSG_Add("SHELL_STARTUP_END",
-                "\x86\x46 \033[32mDOSBox-X project \033[33mhttp://dosbox-x.software\033[32m      PentiumPro support \033[37m \x86\x46\n"
-                "\x86\x46 \033[32mDerived from DOSBox \033[33mhttp://www.dosbox.com\033[37m                          \x86\x46\n"
-                "\x86\x5A\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44"
-                "\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44"
-                "\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44"
-                "\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44"
-                "\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44"
-                "\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x44\x86\x5E\033[0m\n"
-                "\033[1m\033[32mREWRITE VERSION - HAVE FUN!\033[0m\n"
-               );
-    }
-    else {
+    {
         MSG_Add("SHELL_STARTUP_BEGIN",
                 "\033[44;1m\xC9\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD"
                 "\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD"

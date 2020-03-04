@@ -664,12 +664,6 @@ bool INT10_SetCurMode(void) {
 		case MCH_CGA:
 			if (bios_mode<7) mode_changed=SetCurMode(ModeList_OTHER,bios_mode);
 			break;
-		case MCH_MCGA:
-			mode_changed=SetCurMode(ModeList_MCGA,bios_mode);
-			break;
-		case TANDY_ARCH_CASE:
-			if (bios_mode!=7 && bios_mode<=0xa) mode_changed=SetCurMode(ModeList_OTHER,bios_mode);
-			break;
 		case MCH_MDA:
 		case MCH_HERC:
 			break;
@@ -725,12 +719,7 @@ static void FinishSetMode(bool clearmem) {
             }
             // fall-through
 		case M_CGA2:
-            if (machine == MCH_MCGA && CurMode->mode == 0x11) {
-                for (Bit16u ct=0;ct<32*1024;ct++) {
-                    real_writew( 0xa000,ct*2,0x0000);
-                }
-            }
-            else {
+            {
                 for (Bit16u ct=0;ct<16*1024;ct++) {
                     real_writew( 0xb800,ct*2,0x0000);
                 }
@@ -801,22 +790,7 @@ static void FinishSetMode(bool clearmem) {
 bool INT10_SetVideoMode_OTHER(Bit16u mode,bool clearmem) {
 	switch (machine) {
 	case MCH_CGA:
-	case MCH_AMSTRAD:
 		if (mode>6) return false;
-	case TANDY_ARCH_CASE:
-		if (mode>0xa) return false;
-		if (mode==7) mode=0; // PCJR defaults to 0 on illegal mode 7
-		if (!SetCurMode(ModeList_OTHER,mode)) {
-			LOG(LOG_INT10,LOG_ERROR)("Trying to set illegal mode %X",mode);
-			return false;
-		}
-		break;
-	case MCH_MCGA:
-        if (!SetCurMode(ModeList_MCGA,mode)) {
-            LOG(LOG_INT10,LOG_ERROR)("Trying to set illegal mode %X",mode);
-            return false;
-        }
-        break;
     case MCH_MDA:
     case MCH_HERC:
 		// Allow standard color modes if equipment word is not set to mono (Victory Road)
@@ -836,24 +810,9 @@ bool INT10_SetVideoMode_OTHER(Bit16u mode,bool clearmem) {
 	/* Setup the CRTC */
 	Bit16u crtc_base=(machine==MCH_HERC || machine==MCH_MDA) ? 0x3b4 : 0x3d4;
 
-    if (machine == MCH_MCGA) {
-        // unlock CRTC regs 0-7
-        unsigned char x;
-
-        IO_WriteB(crtc_base,0x10);
-        x = IO_ReadB(crtc_base+1);
-        IO_WriteB(crtc_base+1,x & 0x7F);
-    }
-
 	//Horizontal total
 	IO_WriteW(crtc_base,(Bit16u)(0x00 | (CurMode->htotal) << 8));
-    if (machine == MCH_MCGA) {
-        //Horizontal displayed
-        IO_WriteW(crtc_base,(Bit16u)(0x01 | (CurMode->hdispend-1) << 8));
-        //Horizontal sync position
-        IO_WriteW(crtc_base,(Bit16u)(0x02 | (CurMode->hdispend) << 8));
-    }
-    else {
+    {
         //Horizontal displayed
         IO_WriteW(crtc_base,(Bit16u)(0x01 | (CurMode->hdispend) << 8));
         //Horizontal sync position
@@ -886,16 +845,10 @@ bool INT10_SetVideoMode_OTHER(Bit16u mode,bool clearmem) {
 		else scanline=8;
 		break;
     case M_CGA2: // graphics mode: even/odd banks interleaved
-        if (machine == MCH_MCGA && CurMode->mode >= 0x11)
-            scanline = 1; // as seen on real hardware, modes 0x11 and 0x13 have max scanline register == 0x00
-        else
-            scanline = 2;
+        scanline = 2;
         break;
     case M_VGA: // MCGA
-        if (machine == MCH_MCGA)
-            scanline = 1; // as seen on real hardware, modes 0x11 and 0x13 have max scanline register == 0x00
-        else
-            scanline = 2;
+        scanline = 2;
         break;
 	case M_CGA4:
 		if (CurMode->mode!=0xa) scanline=2;
@@ -908,16 +861,6 @@ bool INT10_SetVideoMode_OTHER(Bit16u mode,bool clearmem) {
 	default:
 		break;
 	}
-
-    if (machine == MCH_MCGA) {
-        IO_Write(0x3c8,0);
-        for (unsigned int i=0;i<248;i++) {
-            IO_Write(0x3c9,vga_palette[i][0]);
-            IO_Write(0x3c9,vga_palette[i][1]);
-            IO_Write(0x3c9,vga_palette[i][2]);
-        }
-		IO_Write(0x3c6,0xff); //Reset Pelmask
-    }
 
 	IO_WriteW(crtc_base,0x09 | (scanline-1u) << 8u);
 	//Setup the CGA palette using VGA DAC palette
@@ -946,15 +889,8 @@ bool INT10_SetVideoMode_OTHER(Bit16u mode,bool clearmem) {
 
 		real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_MSR,0x29); // attribute controls blinking
 		break;
-	case MCH_AMSTRAD:
-		IO_WriteB( 0x3d9, 0x0f );
 	case MCH_CGA:
-	case MCH_MCGA:
-        if (CurMode->mode == 0x13 && machine == MCH_MCGA)
-            mode_control=0x0a;
-        else if (CurMode->mode == 0x11 && machine == MCH_MCGA)
-            mode_control=0x1e;
-        else if (CurMode->mode < sizeof(mode_control_list))
+        if (CurMode->mode < sizeof(mode_control_list))
             mode_control=mode_control_list[CurMode->mode];
         else
             mode_control=0x00;
@@ -967,71 +903,6 @@ bool INT10_SetVideoMode_OTHER(Bit16u mode,bool clearmem) {
 		real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_MSR,mode_control);
 		real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_PAL,color_select);
 		if (mono_cga) Mono_CGA_Palette();
-
-        if (machine == MCH_MCGA) {
-            unsigned char mcga_mode = 0x10;
-
-            if (CurMode->type == M_VGA)
-                mcga_mode |= 0x01;//320x200 256-color
-            else if (CurMode->type == M_CGA2 && CurMode->sheight > 240)
-                mcga_mode |= 0x02;//640x480 2-color
-
-            /* real hardware: BIOS sets the "hardware computes horizontal timings" bits for mode 0-3 */
-            if (CurMode->mode <= 0x03)
-                mcga_mode |= 0x08;//hardware computes horizontal timing
-
-            /* real hardware: unknown bit 2 is set for all modes except 640x480 2-color */
-            if (CurMode->mode != 0x11)
-                mcga_mode |= 0x04;//unknown bit?
-
-            /* real hardware: unknown bit 5 if set for all 640-wide modes */
-            if (CurMode->swidth >= 500)
-                mcga_mode |= 0x20;//unknown bit?
-
-            /* write protect registers 0-7 if INT 10h mode 2 or 3 to mirror real hardware
-             * behavior observed through CRTC register dumps on MCGA hardware */
-            if (CurMode->mode == 2 || CurMode->mode == 3)
-                mcga_mode |= 0x80;
-
-            IO_WriteW(crtc_base,0x10 | (mcga_mode) << 8);
-        }
-		break;
-	case MCH_TANDY:
-		/* Init some registers */
-		IO_WriteB(0x3da,0x1);IO_WriteB(0x3de,0xf);		//Palette mask always 0xf
-		IO_WriteB(0x3da,0x2);IO_WriteB(0x3de,0x0);		//black border
-		IO_WriteB(0x3da,0x3);							//Tandy color overrides?
-		switch (CurMode->mode) {
-		case 0x8:	
-			IO_WriteB(0x3de,0x14);break;
-		case 0x9:
-			IO_WriteB(0x3de,0x14);break;
-		case 0xa:
-			IO_WriteB(0x3de,0x0c);break;
-		default:
-			IO_WriteB(0x3de,0x0);break;
-		}
-		// write palette
-		for(Bit8u i = 0; i < 16; i++) {
-			IO_WriteB(0x3da,i+0x10);
-			IO_WriteB(0x3de,i);
-		}
-		//Clear extended mapping
-		IO_WriteB(0x3da,0x5);
-		IO_WriteB(0x3de,0x0);
-		//Clear monitor mode
-		IO_WriteB(0x3da,0x8);
-		IO_WriteB(0x3de,0x0);
-		crtpage=(CurMode->mode>=0x9) ? 0xf6 : 0x3f;
-		IO_WriteB(0x3df,crtpage);
-		real_writeb(BIOSMEM_SEG,BIOSMEM_CRTCPU_PAGE,crtpage);
-		mode_control=mode_control_list[CurMode->mode];
-		if (CurMode->mode == 0x6 || CurMode->mode==0xa) color_select=0x3f;
-		else color_select=0x30;
-		IO_WriteB(0x3d8,mode_control);
-		IO_WriteB(0x3d9,color_select);
-		real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_MSR,mode_control);
-		real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_PAL,color_select);
 		break;
 	case MCH_PCJR:
 		/* Init some registers */
@@ -1275,14 +1146,6 @@ bool INT10_SetVideoMode(Bit16u mode) {
 	 *      other VGA/SVGA emulation cases, just not S3 Trio emulation. */
 	if (svgaCard != SVGA_S3Trio)
 		vga.config.compatible_chain4 = true; // this may be changed by SVGA chipset emulation
-
-	if( machine==MCH_AMSTRAD )
-	{
-		vga.amstrad.mask_plane = 0x07070707;
-		vga.amstrad.write_plane = 0x0F;
-		vga.amstrad.read_plane = 0x00;
-		vga.amstrad.border_color = 0x00;
-	}
 
 	/* Program CRTC */
 	/* First disable write protection */

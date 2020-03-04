@@ -29,8 +29,7 @@ static INLINE void ResetACTL(void) {
 
 static INLINE void WriteTandyACTL(Bit8u creg,Bit8u val) {
 	IO_Write(VGAREG_TDY_ADDRESS,creg);
-	if (machine==MCH_TANDY) IO_Write(VGAREG_TDY_DATA,val);
-	else IO_Write(VGAREG_PCJR_DATA,val);
+	IO_Write(VGAREG_PCJR_DATA,val);
 }
 
 void INT10_SetSinglePaletteRegister(Bit8u reg,Bit8u val) {
@@ -39,39 +38,6 @@ void INT10_SetSinglePaletteRegister(Bit8u reg,Bit8u val) {
 		reg&=0xf;
 		IO_Read(VGAREG_TDY_RESET);
 		WriteTandyACTL(reg+0x10,val);
-		IO_Write(0x3da,0x0); // palette back on
-		break;
-	case MCH_TANDY:
-		// TODO waits for vertical retrace
-		switch(vga.mode) {
-		case M_TANDY2:
-			if (reg >= 0x10) break;
-			else if (reg==1) reg = 0x1f;
-			else reg |= 0x10;
-			WriteTandyACTL(reg+0x10,val);
-			break;
-		case M_TANDY4: {
-			if (CurMode->mode!=0x0a) {
-				// Palette values are kept constand by the BIOS.
-				// The four colors are mapped to special palette values by hardware.
-				// 3D8/3D9 registers influence this mapping. We need to figure out
-				// which entry is used for the requested color.
-				if (reg > 3) break;
-				if (reg != 0) { // 0 is assumed to be at 0
-					Bit8u color_select=real_readb(BIOSMEM_SEG,BIOSMEM_CURRENT_PAL);
-					reg = reg*2+8; // Green Red Brown
-					if (color_select& 0x20) reg++; // Cyan Magenta White
-				}
-				WriteTandyACTL(reg+0x10,val);
-			} 
-			// 4-color high resolution mode 0x0a isn't handled specially
-			else WriteTandyACTL(reg+0x10,val);
-			break;
-		}
-		default:
-			WriteTandyACTL(reg+0x10,val);
-			break;
-		}
 		IO_Write(0x3da,0x0); // palette back on
 		break;
 	case EGAVGA_ARCH_CASE:
@@ -91,11 +57,6 @@ void INT10_SetSinglePaletteRegister(Bit8u reg,Bit8u val) {
 
 void INT10_SetOverscanBorderColor(Bit8u val) {
 	switch (machine) {
-	case TANDY_ARCH_CASE:
-		IO_Read(VGAREG_TDY_RESET);
-		WriteTandyACTL(0x02,val);
-		IO_Write(VGAREG_TDY_ADDRESS, 0); // enable the screen
-		break;
 	case EGAVGA_ARCH_CASE:
 		ResetACTL();
 		IO_Write(VGAREG_ACTL_ADDRESS,0x11);
@@ -109,16 +70,6 @@ void INT10_SetOverscanBorderColor(Bit8u val) {
 
 void INT10_SetAllPaletteRegisters(PhysPt data) {
 	switch (machine) {
-	case TANDY_ARCH_CASE:
-		IO_Read(VGAREG_TDY_RESET);
-		// First the colors
-		for(Bit8u i=0;i<0x10;i++) {
-			WriteTandyACTL(i+0x10,mem_readb(data));
-			data++;
-		}
-		// Then the border
-		WriteTandyACTL(0x02,mem_readb(data));
-		break;
 	case EGAVGA_ARCH_CASE:
 		ResetACTL();
 		// First the colors
@@ -330,31 +281,6 @@ void INT10_SetBackgroundBorder(Bit8u val) {
 		// only write the color select register
 		IO_Write(0x3d9,color_select);
 		break;
-	case MCH_TANDY:
-		// TODO handle val == 0x1x, wait for retrace
-		switch(CurMode->mode) {
-		default: // modes 0-5: write to color select and border
-			INT10_SetOverscanBorderColor(val);
-			IO_Write(0x3d9, color_select);
-			break;
-		case 0x06: // 2-color: only write the color select register
-			IO_Write(0x3d9, color_select);
-			break;
-		case 0x07: // Tandy monochrome not implemented
-			break; 
-		case 0x08:
-		case 0x09: // 16-color: write to color select, border and pal. index 0
-			INT10_SetOverscanBorderColor(val);
-			INT10_SetSinglePaletteRegister(0, val);
-			IO_Write(0x3d9, color_select);
-			break;
-		case 0x0a: // 4-color highres:
-			// write zero to color select, write palette to indexes 1-3
-			// TODO palette
-			IO_Write(0x3d9, 0);
-			break;
-		}
-		break;
 	case MCH_PCJR:
 		IO_Read(VGAREG_TDY_RESET); // reset the flipflop
 		if (vga.mode!=M_TANDY_TEXT) {
@@ -388,7 +314,7 @@ void INT10_SetColorSelect(Bit8u val) {
 	Bit8u temp=real_readb(BIOSMEM_SEG,BIOSMEM_CURRENT_PAL);
 	temp=(temp & 0xdf) | ((val & 1) ? 0x20 : 0x0);
 	real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_PAL,temp);
-	if (machine == MCH_CGA || machine == MCH_AMSTRAD || machine==MCH_TANDY)
+	if (machine == MCH_CGA)
 		IO_Write(0x3d9,temp);
 	else if (machine == MCH_PCJR) {
 		IO_Read(VGAREG_TDY_RESET); // reset the flipflop

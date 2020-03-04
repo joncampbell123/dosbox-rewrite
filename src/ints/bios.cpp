@@ -3547,7 +3547,6 @@ private:
                     break;
                 case EGAVGA_ARCH_CASE:
                 case MCH_CGA:
-                case TANDY_ARCH_CASE:
                     //Startup 80x25 color
                     config|=0x20;
                     break;
@@ -3581,19 +3580,7 @@ private:
             if (biosConfigSeg != 0) {
                 PhysPt data = PhysMake(biosConfigSeg,0);
                 phys_writew(data,8);                        // 8 Bytes following
-                if (IS_TANDY_ARCH) {
-                    if (machine==MCH_TANDY) {
-                        // Model ID (Tandy)
-                        phys_writeb(data+2,0xFF);
-                    } else {
-                        // Model ID (PCJR)
-                        phys_writeb(data+2,0xFD);
-                    }
-                    phys_writeb(data+3,0x0A);                   // Submodel ID
-                    phys_writeb(data+4,0x10);                   // Bios Revision
-                    /* Tandy doesn't have a 2nd PIC, left as is for now */
-                    phys_writeb(data+5,(1<<6)|(1<<5)|(1<<4));   // Feature Byte 1
-                } else {
+                {
                     if (PS1AudioCard) { /* FIXME: Won't work because BIOS_Init() comes before PS1SOUND_Init() */
                         phys_writeb(data+2,0xFC);                   // Model ID (PC)
                         phys_writeb(data+3,0x0B);                   // Submodel ID (PS/1).
@@ -3958,7 +3945,7 @@ private:
 
             DrawDOSBoxLogoVGA((unsigned int)logo_x*8u,(unsigned int)logo_y*(unsigned int)rowheight);
         }
-        else if (machine == MCH_CGA || machine == MCH_PCJR || machine == MCH_TANDY) {
+        else if (machine == MCH_CGA || machine == MCH_PCJR) {
             rowheight = 8;
             reg_eax = 6;        // 640x200 2-color
             CALLBACK_RunRealInt(0x10);
@@ -4014,9 +4001,6 @@ private:
                     break;
                 case MCH_PCJR:
                     card = "PCjr graohics adapter";
-                    break;
-                case MCH_TANDY:
-                    card = "Tandy graohics adapter";
                     break;
                 case MCH_VGA:
                     switch (svgaCard) {
@@ -4133,11 +4117,7 @@ private:
                 }
 
                 if (!GETFLAG(ZF)) {
-                    if (machine == MCH_PC98) {
-                        reg_eax = 0x0000;   // read key
-                        CALLBACK_RunRealInt(0x18);
-                    }
-                    else {
+                    {
                         reg_eax = 0x0000;
                         CALLBACK_RunRealInt(0x16);
                     }
@@ -4151,11 +4131,7 @@ private:
             }
 
             while (wait_for_user) {
-                if (machine == MCH_PC98) {
-                    reg_eax = 0x0000;   // read key
-                    CALLBACK_RunRealInt(0x18);
-                }
-                else {
+                {
                     reg_eax = 0x0000;
                     CALLBACK_RunRealInt(0x16);
                 }
@@ -4166,25 +4142,7 @@ private:
         }
 #endif
 
-        if (machine == MCH_PC98) {
-            reg_eax = 0x4100;   // hide the graphics layer (PC-98)
-            CALLBACK_RunRealInt(0x18);
-
-            // clear the graphics layer
-            for (unsigned int i=0;i < (80*400);i++) {
-                mem_writeb(0xA8000+i,0);        // B
-                mem_writeb(0xB0000+i,0);        // G
-                mem_writeb(0xB8000+i,0);        // R
-                mem_writeb(0xE0000+i,0);        // E
-            }
-
-            IO_Write(0x6A,0x00);    // switch back to 8-color mode
-
-            reg_eax = 0x4200;   // setup 640x200 graphics
-            reg_ecx = 0x8000;   // lower
-            CALLBACK_RunRealInt(0x18);
-        }
-        else {
+        {
             // restore 80x25 text mode
             reg_eax = 3;
             CALLBACK_RunRealInt(0x10);
@@ -4245,8 +4203,7 @@ public:
         for(Bitu i = 0; i < strlen(bios_date_string); i++) phys_writeb(0xffff5+i,(Bit8u)bios_date_string[i]);
 
         /* model byte */
-        if (machine==MCH_TANDY) phys_writeb(0xffffe,0xff);  /* Tandy model */
-        else if (machine==MCH_PCJR) phys_writeb(0xffffe,0xfd);  /* PCJr model */
+        if (machine==MCH_PCJR) phys_writeb(0xffffe,0xfd);  /* PCJr model */
         else phys_writeb(0xffffe,0xfc); /* PC (FIXME: This is listed as model byte PS/2 model 60) */
 
         // signature
@@ -4339,12 +4296,6 @@ public:
         }
         else {
             if (t_conv > 640) t_conv = 640;
-        }
-
-        if (IS_TANDY_ARCH) {
-            /* reduce reported memory size for the Tandy (32k graphics memory
-               at the end of the conventional 640k) */
-            if (machine==MCH_TANDY && t_conv > 624) t_conv = 624;
         }
 
         /* allow user to further limit the available memory below 1MB */

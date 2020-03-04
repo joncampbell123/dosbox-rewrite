@@ -33,7 +33,7 @@ static Bitu read_cga(Bitu /*port*/,Bitu /*iolen*/);
 static void write_cga(Bitu port,Bitu val,Bitu /*iolen*/);
 
 void UpdateCGAFromSaveState(void) {
-	if (machine==MCH_CGA || machine==MCH_MCGA || machine==MCH_AMSTRAD) {
+	if (machine==MCH_CGA) {
         write_cga(0x3D8,vga.tandy.mode_control,1); // restore CGA
         write_cga(0x3D9,vga.tandy.color_select,1); // restore CGA
     }
@@ -43,12 +43,6 @@ static unsigned char mcga_crtc_dat_org = 0x00;
 
 static void write_crtc_index_other(Bitu /*port*/,Bitu val,Bitu /*iolen*/) {
 	vga.other.index=(Bit8u)(val & 0x1f);
-
-    if (machine == MCH_MCGA) {
-        /* odd real hardware behavior.
-         * registers 0x20-0x3F are a mirror of 0x00-0x1F ORed by 0x40 */
-        mcga_crtc_dat_org = (val & 0x20) ? 0x40 : 0x00;
-    }
 }
 
 static Bitu read_crtc_index_other(Bitu /*port*/,Bitu /*iolen*/) {
@@ -69,8 +63,7 @@ static void write_crtc_data_other(Bitu /*port*/,Bitu val,Bitu /*iolen*/) {
 		vga.other.hsyncp=(Bit8u)val;
 		break;
 	case 0x03:		//Horizontal sync width
-		if (machine==MCH_TANDY) vga.other.vsyncw=(Bit8u)(val >> 4);
-		else vga.other.vsyncw = 16; // The MC6845 has a fixed v-sync width of 16 lines
+		vga.other.vsyncw = 16; // The MC6845 has a fixed v-sync width of 16 lines
 		vga.other.hsyncw=(Bit8u)(val & 0xf);
 		break;
 	case 0x04:		//Vertical total
@@ -105,11 +98,8 @@ static void write_crtc_data_other(Bitu /*port*/,Bitu val,Bitu /*iolen*/) {
 	case 0x0C:	/* Start Address High Register */
 		// Bit 12 (depending on video mode) and 13 are actually masked too,
 		// but so far no need to implement it.
-        if (machine == MCH_MCGA)
-            vga.config.display_start=(vga.config.display_start & 0x00FF) | ((val&0xFF) << 8);
-        else
-            vga.config.display_start=(vga.config.display_start & 0x00FF) | ((val&0x3F) << 8);
-		break;
+        vga.config.display_start=(vga.config.display_start & 0x00FF) | ((val&0x3F) << 8);
+        break;
 	case 0x0D:	/* Start Address Low Register */
 		vga.config.display_start=(vga.config.display_start & 0xFF00) | val;
 		break;
@@ -143,9 +133,7 @@ static Bitu read_crtc_data_other(Bitu /*port*/,Bitu /*iolen*/) {
 	case 0x02:		//Horizontal sync position
 		return vga.other.hsyncp;
 	case 0x03:		//Horizontal and vertical sync width
-		if (machine==MCH_TANDY)
-			return (unsigned int)vga.other.hsyncw | (unsigned int)(vga.other.vsyncw << 4u);
-		else return vga.other.hsyncw;
+		return vga.other.hsyncw;
 	case 0x04:		//Vertical total
 		return vga.other.vtotal;
 	case 0x05:		//Vertical display adjust
@@ -539,15 +527,6 @@ static void write_cga_color_select(Bitu val) {
 }
 
 static Bitu read_cga(Bitu port,Bitu /*iolen*/) {
-    if (machine == MCH_MCGA) { // On MCGA, ports 3D8h and 3D9h are also readable
-        switch (port) {
-            case 0x3d8:
-                return vga.tandy.mode_control;
-            case 0x3d9: // color select
-                return vga.tandy.color_select;
-        }
-    }
-
     return ~0UL;
 }
 
@@ -565,15 +544,13 @@ static void write_cga(Bitu port,Bitu val,Bitu /*iolen*/) {
         }
         else if (vga.tandy.mode_control & 0x2) {		// graphics mode
 			if (vga.tandy.mode_control & 0x10) {// highres mode
-				if (machine == MCH_AMSTRAD) {
-					VGA_SetMode(M_AMSTRAD);			//Amstrad 640x200x16 video mode.
-				} else if (machine != MCH_MCGA && (cga_comp==1 || (cga_comp==0 && !(val&0x4))) && !mono_cga) {	// composite display
+				if ((cga_comp==1 || (cga_comp==0 && !(val&0x4))) && !mono_cga) {	// composite display
 					VGA_SetMode(M_CGA16);		// composite ntsc 640x200 16 color mode
 				} else {
 					VGA_SetMode(M_TANDY2);
 				}
 			} else {							// lowres mode
-				if (machine != MCH_MCGA && cga_comp==1) {				// composite display
+				if (cga_comp==1) {				// composite display
 					VGA_SetMode(M_CGA16);		// composite ntsc 640x200 16 color mode
 				} else {
 					VGA_SetMode(M_TANDY4);
@@ -594,9 +571,6 @@ static void write_cga(Bitu port,Bitu val,Bitu /*iolen*/) {
 		break;
 	case 0x3d9: // color select
 		write_cga_color_select(val);
-		if( machine==MCH_AMSTRAD ) {
-			vga.amstrad.mask_plane = ( val | ( val << 8 ) | ( val << 16 ) | ( val << 24 ) ) & 0x0F0F0F0F;
-		}
 		break;
 	case 0x3dd:
 		vga.amstrad.write_plane = val & 0x0F;
@@ -628,38 +602,7 @@ static void Composite(bool pressed) {
 
 static void tandy_update_palette() {
 	// TODO mask off bits if needed
-	if (machine == MCH_TANDY) {
-		switch (vga.mode) {
-		case M_TANDY2:
-			VGA_SetCGA2Table(vga.attr.palette[0],
-				vga.attr.palette[vga.tandy.color_select&0xf]);
-			break;
-		case M_TANDY4:
-			if (vga.tandy.gfx_control & 0x8) {
-				// 4-color high resolution - might be an idea to introduce M_TANDY4H
-				VGA_SetCGA4Table( // function sets both medium and highres 4color tables
-					vga.attr.palette[0], vga.attr.palette[1],
-					vga.attr.palette[2], vga.attr.palette[3]);
-			} else {
-				Bit8u color_set = 0;
-				Bit8u r_mask = 0xf;
-				if (vga.tandy.color_select & 0x10) color_set |= 8; // intensity
-				if (vga.tandy.color_select & 0x20) color_set |= 1; // Cyan Mag. White
-				if (vga.tandy.mode_control & 0x04) {			// Cyan Red White
-					color_set |= 1; 
-					r_mask &= ~1;
-				}
-				VGA_SetCGA4Table(
-					vga.attr.palette[vga.tandy.color_select&0xf],
-					vga.attr.palette[(2|color_set)& vga.tandy.palette_mask],
-					vga.attr.palette[(4|(color_set& r_mask))& vga.tandy.palette_mask],
-					vga.attr.palette[(6|color_set)& vga.tandy.palette_mask]);
-			}
-			break;
-		default:
-			break;
-		}
-	} else {
+	{
 		// PCJr
 		switch (vga.mode) {
 		case M_TANDY2:
@@ -758,8 +701,7 @@ static void write_tandy_reg(Bit8u val) {
 		break;
 	case 0x3:	/* More control */
 		vga.tandy.gfx_control=val;
-		if (machine==MCH_TANDY) TANDY_FindMode();
-		else PCJr_FindMode();
+		PCJr_FindMode();
 		break;
 	case 0x5:	/* Extended ram page register */
 		// Bit 0 enables extended ram
@@ -1045,17 +987,12 @@ void VGA_SetupOther(void) {
 	vga.tandy.line_mask = 3;
 	vga.tandy.line_shift = 13;
 
-	if (machine==MCH_CGA || machine==MCH_AMSTRAD || IS_TANDY_ARCH) {
+	if (machine==MCH_CGA) {
 		extern Bit8u int10_font_08[256 * 8];
 		for (Bitu i=0;i<256;i++)	memcpy(&vga.draw.font[i*32],&int10_font_08[i*8],8);
 		vga.draw.font_tables[0]=vga.draw.font_tables[1]=vga.draw.font;
 	}
-    if (machine==MCH_MCGA) { // MCGA uses a 8x16 font, through double-scanning as if 8x8 CGA text mode
-        extern Bit8u int10_font_16[256 * 16];
-        for (Bitu i=0;i<256;i++)	memcpy(&vga.draw.font[i*32],&int10_font_16[i*16],16);
-        vga.draw.font_tables[0]=vga.draw.font_tables[1]=vga.draw.font;
-    }
-	if (machine==MCH_CGA || IS_TANDY_ARCH || machine==MCH_HERC || machine==MCH_MDA) {
+	if (machine==MCH_CGA || machine==MCH_HERC || machine==MCH_MDA) {
 		IO_RegisterWriteHandler(0x3db,write_lightpen,IO_MB);
 		IO_RegisterWriteHandler(0x3dc,write_lightpen,IO_MB);
 	}
@@ -1066,7 +1003,7 @@ void VGA_SetupOther(void) {
 		MAPPER_AddHandler(HercBlend,MK_nothing,0,"hercblend","Herc Blend");
 		MAPPER_AddHandler(CycleHercPal,MK_nothing,0,"hercpal","Herc Pal");
 	}
-	if (machine==MCH_CGA || machine==MCH_MCGA || machine==MCH_AMSTRAD) {
+	if (machine==MCH_CGA) {
 		vga.amstrad.mask_plane = 0x07070707;
 		vga.amstrad.write_plane = 0x0F;
 		vga.amstrad.read_plane = 0x00;
@@ -1074,17 +1011,6 @@ void VGA_SetupOther(void) {
 
 		IO_RegisterWriteHandler(0x3d8,write_cga,IO_MB);
 		IO_RegisterWriteHandler(0x3d9,write_cga,IO_MB);
-
-        if (machine == MCH_MCGA) { /* ports 3D8h-3D9h are readable on MCGA */
-            IO_RegisterReadHandler(0x3d8,read_cga,IO_MB);
-            IO_RegisterReadHandler(0x3d9,read_cga,IO_MB);
-        }
-
-		if (machine == MCH_AMSTRAD) {
-			IO_RegisterWriteHandler(0x3dd,write_cga,IO_MB);
-			IO_RegisterWriteHandler(0x3de,write_cga,IO_MB);
-			IO_RegisterWriteHandler(0x3df,write_cga,IO_MB);
-		}
 
 		if(!mono_cga) {
             MAPPER_AddHandler(IncreaseHue,MK_nothing,0,"inchue","Inc Hue");
@@ -1095,14 +1021,6 @@ void VGA_SetupOther(void) {
             MAPPER_AddHandler(CycleMonoCGAPal,MK_nothing,0,"monocgapal","Mono CGA Pal"); 
             MAPPER_AddHandler(CycleMonoCGABright,MK_nothing,0,"monocgabright","Mono CGA Bright"); 
         }
-	}
-	if (machine==MCH_TANDY) {
-		write_tandy( 0x3df, 0x0, 0 );
-		IO_RegisterWriteHandler(0x3d8,write_tandy,IO_MB);
-		IO_RegisterWriteHandler(0x3d9,write_tandy,IO_MB);
-		IO_RegisterWriteHandler(0x3da,write_tandy,IO_MB);
-		IO_RegisterWriteHandler(0x3de,write_tandy,IO_MB);
-		IO_RegisterWriteHandler(0x3df,write_tandy,IO_MB);
 	}
 	if (machine==MCH_PCJR) {
 		//write_pcjr will setup base address
@@ -1138,31 +1056,13 @@ void VGA_SetupOther(void) {
 	if (machine==MCH_MDA) {
         VGA_SetMode(M_HERC_TEXT); // HACK
     }
-	if (machine==MCH_CGA || machine==MCH_PCJR || machine==MCH_TANDY) {
+	if (machine==MCH_CGA) {
 		Bitu base=0x3d0;
 		for (Bitu port_ct=0; port_ct<4; port_ct++) {
 			IO_RegisterWriteHandler(base+port_ct*2,write_crtc_index_other,IO_MB);
 			IO_RegisterWriteHandler(base+port_ct*2+1,write_crtc_data_other,IO_MB);
 			IO_RegisterReadHandler(base+port_ct*2,read_crtc_index_other,IO_MB);
 			IO_RegisterReadHandler(base+port_ct*2+1,read_crtc_data_other,IO_MB);
-		}
-	}
-	if (machine==MCH_AMSTRAD) {
-		Bitu base=0x3d4;
-		IO_RegisterWriteHandler(base,write_crtc_index_other,IO_MB);
-		IO_RegisterWriteHandler(base+1,write_crtc_data_other,IO_MB);
-		IO_RegisterReadHandler(base,read_crtc_index_other,IO_MB);
-		IO_RegisterReadHandler(base+1,read_crtc_data_other,IO_MB);
-
-        // TODO: Does MCH_AMSTRAD need to emulate CGA mirroring of I/O ports?
-    }
-    if (machine==MCH_MCGA) {
-		Bitu base=0x3d0;
-		for (Bitu port_ct=0; port_ct<4; port_ct++) {
-			IO_RegisterWriteHandler(base+port_ct*2,write_crtc_index_other,IO_MB);
-			IO_RegisterWriteHandler(base+port_ct*2+1,write_crtc_data_mcga,IO_MB);
-			IO_RegisterReadHandler(base+port_ct*2,read_crtc_index_other,IO_MB);
-			IO_RegisterReadHandler(base+port_ct*2+1,read_crtc_data_mcga,IO_MB);
 		}
 	}
 }

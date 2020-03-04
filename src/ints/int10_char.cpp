@@ -273,10 +273,7 @@ void INT10_ScrollWindow(Bit8u rul,Bit8u cul,Bit8u rlr,Bit8u clr,Bit8s nlines,Bit
         case M_TEXT:
             TEXT_CopyRow(cul,clr,start,start+nlines,base);break;
         case M_CGA2:
-            if (machine == MCH_MCGA && CurMode->mode == 0x11)
-                MCGA2_CopyRow(cul,clr,start,start+nlines,base);
-            else
-                CGA2_CopyRow(cul,clr,start,start+nlines,base);
+            CGA2_CopyRow(cul,clr,start,start+nlines,base);
             break;
         case M_CGA4:
             CGA4_CopyRow(cul,clr,start,start+nlines,base);break;
@@ -310,10 +307,7 @@ filling:
         case M_TEXT:
             TEXT_FillRow(cul,clr,start,base,attr);break;
         case M_CGA2:
-            if (machine == MCH_MCGA && CurMode->mode == 0x11)
-                MCGA2_FillRow(cul,clr,start,base,attr);
-            else
-                CGA2_FillRow(cul,clr,start,base,attr);
+            CGA2_FillRow(cul,clr,start,base,attr);
             break;
         case M_CGA4:
             CGA4_FillRow(cul,clr,start,base,attr);break;
@@ -368,8 +362,7 @@ void INT10_SetActivePage(Bit8u page) {
 
 void INT10_SetCursorShape(Bit8u first,Bit8u last) {
     real_writew(BIOSMEM_SEG,BIOSMEM_CURSOR_TYPE,last|(first<<8u));
-    if (machine==MCH_CGA || machine==MCH_MCGA || machine==MCH_AMSTRAD) goto dowrite;
-    if (IS_TANDY_ARCH) goto dowrite;
+    if (machine==MCH_CGA) goto dowrite;
     /* Skip CGA cursor emulation if EGA/VGA system is active */
     if (!(real_readb(BIOSMEM_SEG,BIOSMEM_VIDEO_CTL) & 0x8)) {
         /* Check for CGA type 01, invisible */
@@ -483,9 +476,6 @@ void ReadCharAttr(Bit16u col,Bit16u row,Bit8u page,Bit16u * result) {
         case MCH_HERC:
             fontdata=PhysMake(0xf000,0xfa6e);
             break;
-        case TANDY_ARCH_CASE:
-            fontdata=Real2Phys(RealGetVec(0x44));
-            break;
         default:
             fontdata=Real2Phys(RealGetVec(0x43));
             break;
@@ -573,9 +563,6 @@ void WriteChar(Bit16u col,Bit16u row,Bit8u page,Bit16u chr,Bit8u attr,bool useat
         case MCH_CGA:
         case MCH_HERC:
             fontdata=PhysMake(0xf000,0xfa6e);
-            break;
-        case TANDY_ARCH_CASE:
-            fontdata=Real2Phys(RealGetVec(0x44));
             break;
         default:
             fontdata=Real2Phys(RealGetVec(0x43));
@@ -665,7 +652,6 @@ void INT10_WriteChar(Bit16u chr,Bit8u attr,Bit8u page,Bit16u count,bool showattr
                 }
                 break;
             case MCH_CGA:
-            case MCH_MCGA:
             case MCH_PCJR:
                 page=0;
                 pospage=0;

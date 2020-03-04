@@ -385,11 +385,6 @@ void VGA_SetCGA2Table(Bit8u val0,Bit8u val1) {
             ((Bitu)total[(i >> 1u) & 1u] << 16u ) | ((Bitu)total[(i >> 0u) & 1u] << 24u );
 #endif
     }
-
-    if (machine == MCH_MCGA) {
-        VGA_DAC_CombineColor(0x0,val0);
-        VGA_DAC_CombineColor(0x1,val1);
-    }
 }
 
 void VGA_SetCGA4Table(Bit8u val0,Bit8u val1,Bit8u val2,Bit8u val3) {
@@ -411,13 +406,6 @@ void VGA_SetCGA4Table(Bit8u val0,Bit8u val1,Bit8u val2,Bit8u val3) {
             ((Bitu)total[((i >> 3u) & 1u) | ((i >> 6u) & 2u)] << 0u  ) | (Bitu)(total[((i >> 2u) & 1u) | ((i >> 5u) & 2u)] << 8u  ) |
             ((Bitu)total[((i >> 1u) & 1u) | ((i >> 4u) & 2u)] << 16u ) | (Bitu)(total[((i >> 0u) & 1u) | ((i >> 3u) & 2u)] << 24u );
 #endif
-    }
-
-    if (machine == MCH_MCGA) {
-        VGA_DAC_CombineColor(0x0,val0);
-        VGA_DAC_CombineColor(0x1,val1);
-        VGA_DAC_CombineColor(0x2,val2);
-        VGA_DAC_CombineColor(0x3,val3);
     }
 }
 
@@ -778,7 +766,6 @@ void VGA_Reset(Section*) {
         case MCH_CGA:
             if (vga.mem.memsize < _KB_bytes(16)) vga.mem.memsize = _KB_bytes(16);
             break;
-        case MCH_TANDY:
         case MCH_PCJR:
             if (vga.mem.memsize < _KB_bytes(128)) vga.mem.memsize = _KB_bytes(128); /* FIXME: Right? */
             break;
@@ -797,15 +784,6 @@ void VGA_Reset(Section*) {
             if (vga.mem.memsize != 0 || svgaCard == SVGA_None) {
                 if (vga.mem.memsize < _KB_bytes(256)) vga.mem.memsize = _KB_bytes(256);
             }
-            break;
-        case MCH_AMSTRAD:
-            if (vga.mem.memsize < _KB_bytes(64)) vga.mem.memsize = _KB_bytes(64); /* FIXME: Right? */
-            break;
-        case MCH_PC98:
-            if (vga.mem.memsize < _KB_bytes(544)) vga.mem.memsize = _KB_bytes(544); /* 544 = 512KB graphics + 32KB text */
-            break;
-        case MCH_MCGA:
-            if (vga.mem.memsize < _KB_bytes(64)) vga.mem.memsize = _KB_bytes(64);
             break;
         default:
             E_Exit("Unexpected machine");

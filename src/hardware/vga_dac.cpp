@@ -122,14 +122,6 @@ void VGA_DAC_UpdateColor( Bitu index ) {
 
         VGA_DAC_SendColor( index, maskIndex );
     }
-    else if (machine == MCH_MCGA) {
-        if (vga.mode == M_VGA || vga.mode == M_LIN8)
-            maskIndex = index & vga.dac.pel_mask;
-        else
-            maskIndex = vga.dac.combine[index&0xF] & vga.dac.pel_mask;
-
-        VGA_DAC_SendColor( index, maskIndex );
-    }
     else {
         VGA_DAC_SendColor( index, index );
     }
@@ -263,11 +255,7 @@ void write_p3c9(Bitu port,Bitu val,Bitu iolen) {
         // the DAC.
         //
         // Perhaps IBM couldn't get the DAC to run fast enough for 640x480 2-color mode.
-        if (machine == MCH_MCGA && (vga.other.mcga_mode_control & 2)) {
-            /* do not update the palette right now.
-             * MCGA double-buffers foreground and background colors */
-        }
-        else {
+        {
             VGA_DAC_UpdateColorPalette(); // FIXME: Yes, this is very inefficient. Will improve later.
         }
 
@@ -330,9 +318,6 @@ void VGA_DAC_CombineColor(Bit8u attr,Bit8u pal) {
                 VGA_DAC_UpdateColor( i );
         }
     }
-    else if (machine == MCH_MCGA) {
-        VGA_DAC_UpdateColor( attr );
-    }
     else {
         VGA_DAC_SendColor( attr, pal );
     }
@@ -358,7 +343,7 @@ void VGA_SetupDAC(void) {
     vga.dac.write_index=0;
     vga.dac.hidac_counter=0;
     vga.dac.reg02=0;
-    if (IS_VGA_ARCH || machine == MCH_MCGA) {
+    if (IS_VGA_ARCH) {
         /* Setup the DAC IO port Handlers */
         if (svga.setup_dac) {
             svga.setup_dac();
