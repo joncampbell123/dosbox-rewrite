@@ -123,18 +123,6 @@ static void TEXT_CopyRow(Bit8u cleft,Bit8u cright,Bit8u rold,Bit8u rnew,PhysPt b
     MEM_BlockCopy(dest,src,(Bitu)(cright-cleft)*2u);
 }
 
-static void PC98_CopyRow(Bit8u cleft,Bit8u cright,Bit8u rold,Bit8u rnew,PhysPt base) {
-    PhysPt src,dest;
-
-    /* character data */
-    src=base+(rold*CurMode->twidth+cleft)*2;
-    dest=base+(rnew*CurMode->twidth+cleft)*2;
-    MEM_BlockCopy(dest,src,(Bitu)(cright-cleft)*2u);
-
-    /* attribute data */
-    MEM_BlockCopy(dest+0x2000,src+0x2000,(Bitu)(cright-cleft)*2u);
-}
-
 static void MCGA2_FillRow(Bit8u cleft,Bit8u cright,Bit8u row,PhysPt base,Bit8u attr) {
     Bit8u cheight = real_readb(BIOSMEM_SEG,BIOSMEM_CHAR_HEIGHT);
     PhysPt dest=base+((CurMode->twidth*row)*cheight+cleft);
@@ -223,19 +211,6 @@ static void VGA_FillRow(Bit8u cleft,Bit8u cright,Bit8u row,PhysPt base,Bit8u att
     }
 }
 
-static void PC98_FillRow(Bit8u cleft,Bit8u cright,Bit8u row,PhysPt base,Bit8u attr) {
-    /* Do some filing */
-    PhysPt dest;
-    dest=base+(row*CurMode->twidth+cleft)*2;
-    Bit16u fill=' ';
-    Bit16u fattr=attr ? attr : DefaultANSIAttr();
-    for (Bit8u x=0;x<(Bitu)(cright-cleft);x++) {
-        mem_writew(dest,fill);
-        mem_writew(dest+0x2000,fattr);
-        dest+=2;
-    }
-}
-
 static void TEXT_FillRow(Bit8u cleft,Bit8u cright,Bit8u row,PhysPt base,Bit8u attr) {
     /* Do some filing */
     PhysPt dest;
@@ -295,8 +270,6 @@ void INT10_ScrollWindow(Bit8u rul,Bit8u cul,Bit8u rlr,Bit8u clr,Bit8s nlines,Bit
     while (start!=end) {
         start+=next;
         switch (CurMode->type) {
-        case M_PC98:
-            PC98_CopyRow(cul,clr,start,start+nlines,base);break;
         case M_TEXT:
             TEXT_CopyRow(cul,clr,start,start+nlines,base);break;
         case M_CGA2:
@@ -334,8 +307,6 @@ filling:
     }
     for (;nlines>0;nlines--) {
         switch (CurMode->type) {
-        case M_PC98:
-            PC98_FillRow(cul,clr,start,base,attr);break;
         case M_TEXT:
             TEXT_FillRow(cul,clr,start,base,attr);break;
         case M_CGA2:
@@ -447,23 +418,14 @@ dowrite:
     IO_Write(base,0xb);IO_Write(base+1u,last);
 }
 
-void vga_pc98_direct_cursor_pos(Bit16u address);
-
 void INT10_GetScreenColumns(Bit16u *cols)
 {
-    if (IS_PC98_ARCH)
-        *cols = 80; //TODO
-    else
-        *cols = real_readw(BIOSMEM_SEG, BIOSMEM_NB_COLS);
+    *cols = real_readw(BIOSMEM_SEG, BIOSMEM_NB_COLS);
 }
 
 void INT10_GetCursorPos(Bit8u *row, Bit8u*col, const Bit8u page)
 {
-    if (IS_PC98_ARCH) {
-        *col = real_readb(0x60, 0x11C);
-        *row = real_readb(0x60, 0x110);
-    }
-    else {
+    {
         *col = real_readb(BIOSMEM_SEG, BIOSMEM_CURSOR_POS + page * 2u);
         *row = real_readb(BIOSMEM_SEG, BIOSMEM_CURSOR_POS + page * 2u + 1u);
     }
@@ -472,27 +434,19 @@ void INT10_GetCursorPos(Bit8u *row, Bit8u*col, const Bit8u page)
 void INT10_SetCursorPos(Bit8u row,Bit8u col,Bit8u page) {
     if (page>7) LOG(LOG_INT10,LOG_ERROR)("INT10_SetCursorPos page %d",page);
     // Bios cursor pos
-    if (IS_PC98_ARCH) {
-        real_writeb(0x60,0x11C,col);
-        real_writeb(0x60,0x110,row);
-        page = 0;
-    }
-    else {
+    {
         real_writeb(BIOSMEM_SEG,BIOSMEM_CURSOR_POS+page*2u,col);
         real_writeb(BIOSMEM_SEG,BIOSMEM_CURSOR_POS+page*2u+1u,row);
     }
     // Set the hardware cursor
-    Bit8u current=IS_PC98_ARCH ? 0 : real_readb(BIOSMEM_SEG,BIOSMEM_CURRENT_PAGE);
+    Bit8u current=real_readb(BIOSMEM_SEG,BIOSMEM_CURRENT_PAGE);
     if(page==current) {
         // Get the dimensions
         BIOS_NCOLS;
         // Calculate the address knowing nbcols nbrows and page num
         // NOTE: BIOSMEM_CURRENT_START counts in colour/flag pairs
-        Bit16u address=(ncols*row)+col+(IS_PC98_ARCH ? 0 : (real_readw(BIOSMEM_SEG,BIOSMEM_CURRENT_START)/2));
-        if (IS_PC98_ARCH) {
-            vga_pc98_direct_cursor_pos(address);
-        }
-        else {
+        Bit16u address=(ncols*row)+col+(real_readw(BIOSMEM_SEG,BIOSMEM_CURRENT_START)/2);
+        {
             // CRTC regs 0x0e and 0x0f
             Bit16u base=real_readw(BIOSMEM_SEG,BIOSMEM_CRTC_ADDRESS);
             IO_Write(base,0x0eu);
@@ -587,18 +541,13 @@ void INT10_ReadCharAttr(Bit16u * result,Bit8u page) {
     ReadCharAttr(cur_col,cur_row,page,result);
 }
 
-void INT10_PC98_CurMode_Relocate(void) {
-    /* deprecated */
-}
-
 void WriteChar(Bit16u col,Bit16u row,Bit8u page,Bit16u chr,Bit8u attr,bool useattr) {
     /* Externally used by the mouse routine */
     PhysPt fontdata;
     Bit16u cols = real_readw(BIOSMEM_SEG,BIOSMEM_NB_COLS);
-    Bit8u back, cheight = IS_PC98_ARCH ? 16 : real_readb(BIOSMEM_SEG,BIOSMEM_CHAR_HEIGHT);
+    Bit8u back, cheight = real_readb(BIOSMEM_SEG,BIOSMEM_CHAR_HEIGHT);
 
-    if (CurMode->type != M_PC98)
-        chr &= 0xFF;
+    chr &= 0xFF;
 
     switch (CurMode->type) {
     case M_TEXT:
@@ -610,30 +559,6 @@ void WriteChar(Bit16u col,Bit16u row,Bit8u page,Bit16u chr,Bit8u attr,bool useat
             PhysPt where = CurMode->pstart+address;
             mem_writeb(where,chr);
             if (useattr) mem_writeb(where+1,attr);
-        }
-        return;
-    case M_PC98:
-        {
-            // Compute the address  
-            Bit16u address=((row*80)+col)*2;
-            // Write the char 
-            PhysPt where = CurMode->pstart+address;
-            mem_writew(where,chr);
-            if (useattr) {
-                mem_writeb(where+0x2000,attr);
-            }
-
-            // some chars are double-wide and need to fill both cells.
-            // however xx08h-xx0Bh are single-wide encodings such as the
-            // single-wide box characters used by DOSBox-X's introductory
-            // message.
-            if ((chr & 0xFF00u) != 0u && (chr & 0xFCu) != 0x08u) {
-                where += 2u;
-                mem_writew(where,chr);
-                if (useattr) {
-                    mem_writeb(where+0x2000,attr);
-                }
-            }
         }
         return;
     case M_CGA4:
@@ -812,11 +737,7 @@ static void INT10_TeletypeOutputAttr(Bit8u chr,Bit8u attr,bool useattr,Bit8u pag
     if(cur_row==nrows) {
         //Fill with black on non-text modes
         Bit8u fill = 0;
-        if (IS_PC98_ARCH && CurMode->type == M_TEXT) {
-            //Fill with the default ANSI attribute on textmode
-            fill = DefaultANSIAttr();
-        }
-        else if (CurMode->type==M_TEXT) {
+        if (CurMode->type==M_TEXT) {
             //Fill with attribute at cursor on textmode
             Bit16u chat;
             INT10_ReadCharAttr(&chat,page);
@@ -862,15 +783,9 @@ void INT10_WriteString(Bit8u row,Bit8u col,Bit8u flag,Bit8u attr,PhysPt string,B
     }
 }
 
-bool pc98_doskey_insertmode = false;
-
 bool INT10_GetInsertState()
 {
-    if (IS_PC98_ARCH) {
-        /* state is internal to DOSKEY */
-        return pc98_doskey_insertmode;
-    }
-    else {
+    {
         const auto flags = mem_readb(BIOS_KEYBOARD_FLAGS1);
         const auto state =static_cast<bool>(flags & BIOS_KEYBOARD_FLAGS1_INSERT_ACTIVE);
         return state;
