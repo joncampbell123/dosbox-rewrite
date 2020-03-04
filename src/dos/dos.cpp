@@ -38,7 +38,6 @@
 #include "dos_network.h"
 
 Bitu INT29_HANDLER(void);
-Bit32u BIOS_get_PC98_INT_STUB(void);
 
 int ascii_toupper(int c) {
     if (c >= 'a' && c <= 'z')
@@ -792,50 +791,23 @@ static Bitu DOS_21Handler(void) {
             break;
         case 0x2a:      /* Get System Date */
             {
-                if(date_host_forced || IS_PC98_ARCH) {
-                    // use BIOS to get system date
-                    if (IS_PC98_ARCH) {
-                        CPU_Push16(reg_ax);
-                        CPU_Push16(reg_bx);
-                        CPU_Push16(SegValue(es));
-                        reg_sp -= 6;
+                if(date_host_forced) {
+                    CPU_Push16(reg_ax);
+                    reg_ah = 4;     // get RTC date
+                    CALLBACK_RunRealInt(0x1a);
+                    reg_ax = CPU_Pop16();
 
-                        reg_ah = 0;     // get time
-                        reg_bx = reg_sp;
-                        SegSet16(es,SegValue(ss));
-                        CALLBACK_RunRealInt(0x1c);
+                    reg_ch = BCD2BIN(reg_ch);       // century
+                    reg_cl = BCD2BIN(reg_cl);       // year
+                    reg_cx = reg_ch * 100u + reg_cl; // compose century + year
+                    reg_dh = BCD2BIN(reg_dh);       // month
+                    reg_dl = BCD2BIN(reg_dl);       // day
 
-                        Bit32u memaddr = ((Bit32u)SegValue(es) << 4u) + reg_bx;
-
-                        reg_sp += 6;
-                        SegSet16(es,CPU_Pop16());
-                        reg_bx = CPU_Pop16();
-                        reg_ax = CPU_Pop16();
-
-                        reg_cx = 1900u + BCD2BIN(mem_readb(memaddr+0u));                  // year
-                        if (reg_cx < 1980u) reg_cx += 100u;
-                        reg_dh = BCD2BIN((unsigned int)mem_readb(memaddr+1) >> 4u);
-                        reg_dl = BCD2BIN(mem_readb(memaddr+2));
-                        reg_al = BCD2BIN(mem_readb(memaddr+1) & 0xFu);
-                    }
-                    else {
-                        CPU_Push16(reg_ax);
-                        reg_ah = 4;     // get RTC date
-                        CALLBACK_RunRealInt(0x1a);
-                        reg_ax = CPU_Pop16();
-
-                        reg_ch = BCD2BIN(reg_ch);       // century
-                        reg_cl = BCD2BIN(reg_cl);       // year
-                        reg_cx = reg_ch * 100u + reg_cl; // compose century + year
-                        reg_dh = BCD2BIN(reg_dh);       // month
-                        reg_dl = BCD2BIN(reg_dl);       // day
-
-                        // calculate day of week (we could of course read it from CMOS, but never mind)
-                        unsigned int a = (14u - reg_dh) / 12u;
-                        unsigned int y = reg_cl - a;
-                        unsigned int m = reg_dh + 12u * a - 2u;
-                        reg_al = (reg_dl + y + (y / 4u) - (y / 100u) + (y / 400u) + (31u * m) / 12u) % 7u;
-                    }
+                    // calculate day of week (we could of course read it from CMOS, but never mind)
+                    unsigned int a = (14u - reg_dh) / 12u;
+                    unsigned int y = reg_cl - a;
+                    unsigned int m = reg_dh + 12u * a - 2u;
+                    reg_al = (reg_dl + y + (y / 4u) - (y / 100u) + (y / 400u) + (31u * m) / 12u) % 7u;
                 } else {
                     reg_ax=0; // get time
                     CALLBACK_RunRealInt(0x1a);
@@ -901,48 +873,21 @@ static Bitu DOS_21Handler(void) {
             reg_al=0;
             break;
         case 0x2c: {    /* Get System Time */
-            if(date_host_forced || IS_PC98_ARCH) {
-                // use BIOS to get RTC time
-                if (IS_PC98_ARCH) {
-                    CPU_Push16(reg_ax);
-                    CPU_Push16(reg_bx);
-                    CPU_Push16(SegValue(es));
-                    reg_sp -= 6;
+            if(date_host_forced) {
+                CPU_Push16(reg_ax);
 
-                    reg_ah = 0;     // get time
-                    reg_bx = reg_sp;
-                    SegSet16(es,SegValue(ss));
-                    CALLBACK_RunRealInt(0x1c);
+                reg_ah = 2;     // get RTC time
+                CALLBACK_RunRealInt(0x1a);
 
-                    Bit32u memaddr = ((PhysPt)SegValue(es) << 4u) + reg_bx;
+                reg_ax = CPU_Pop16();
 
-                    reg_sp += 6;
-                    SegSet16(es,CPU_Pop16());
-                    reg_bx = CPU_Pop16();
-                    reg_ax = CPU_Pop16();
+                reg_ch = BCD2BIN(reg_ch);       // hours
+                reg_cl = BCD2BIN(reg_cl);       // minutes
+                reg_dh = BCD2BIN(reg_dh);       // seconds
 
-                    reg_ch = BCD2BIN(mem_readb(memaddr+3));     // hours
-                    reg_cl = BCD2BIN(mem_readb(memaddr+4));     // minutes
-                    reg_dh = BCD2BIN(mem_readb(memaddr+5));     // seconds
-
-                    reg_dl = 0;
-                }
-                else {
-                    CPU_Push16(reg_ax);
-
-                    reg_ah = 2;     // get RTC time
-                    CALLBACK_RunRealInt(0x1a);
-
-                    reg_ax = CPU_Pop16();
-
-                    reg_ch = BCD2BIN(reg_ch);       // hours
-                    reg_cl = BCD2BIN(reg_cl);       // minutes
-                    reg_dh = BCD2BIN(reg_dh);       // seconds
-
-                    // calculate milliseconds (% 20 to prevent overflow, .55ms has period of 20)
-                    // direcly read BIOS_TIMER, don't want to destroy regs by calling int 1a
-                    reg_dl = (Bit8u)((mem_readd(BIOS_TIMER) % 20) * 55 % 100);
-                }
+                // calculate milliseconds (% 20 to prevent overflow, .55ms has period of 20)
+                // direcly read BIOS_TIMER, don't want to destroy regs by calling int 1a
+                reg_dl = (Bit8u)((mem_readd(BIOS_TIMER) % 20) * 55 % 100);
                 break;
             }
             reg_ax=0; // get time
@@ -1763,10 +1708,7 @@ static Bitu DOS_21Handler(void) {
                         {
                             unsigned int c;
 
-                            if (IS_PC98_ARCH)
-                                c = reg_dx; // DBCS
-                            else
-                                c = reg_dl; // SBCS
+                            c = reg_dl; // SBCS
 
                             if (tolower(c) == 'y')
                                 reg_ax = 1;/*yes*/
@@ -2310,7 +2252,7 @@ public:
         if (private_always_from_umb) {
             DOS_GetMemory_Choose(); /* the pool starts in UMB */
             if (minimum_mcb_segment == 0)
-                DOS_MEM_START = IS_PC98_ARCH ? 0x80 : 0x70; /* funny behavior in some games suggests the MS-DOS kernel loads a bit higher on PC-98 */
+                DOS_MEM_START = 0x70; /* funny behavior in some games suggests the MS-DOS kernel loads a bit higher on PC-98 */
             else
                 DOS_MEM_START = minimum_mcb_segment;
 
@@ -2320,21 +2262,17 @@ public:
                 LOG_MSG("WARNING: DOS_MEM_START has been assigned to the BIOS data area! Proceed at your own risk!");
             else if (DOS_MEM_START < 0x51)
                 LOG_MSG("WARNING: DOS_MEM_START has been assigned to segment 0x50, which some programs may use as the Print Screen flag");
-            else if (DOS_MEM_START < 0x80 && IS_PC98_ARCH)
-                LOG_MSG("CAUTION: DOS_MEM_START is less than 0x80 which may cause problems with some DOS games or applications relying on PC-98 BIOS state");
             else if (DOS_MEM_START < 0x70)
                 LOG_MSG("CAUTION: DOS_MEM_START is less than 0x70 which may cause problems with some DOS games or applications");
         }
         else {
             if (minimum_dos_initial_private_segment == 0)
-                DOS_PRIVATE_SEGMENT = IS_PC98_ARCH ? 0x80 : 0x70; /* funny behavior in some games suggests the MS-DOS kernel loads a bit higher on PC-98 */
+                DOS_PRIVATE_SEGMENT = 0x70; /* funny behavior in some games suggests the MS-DOS kernel loads a bit higher on PC-98 */
             else
                 DOS_PRIVATE_SEGMENT = minimum_dos_initial_private_segment;
 
             if (DOS_PRIVATE_SEGMENT < 0x50)
                 LOG_MSG("DANGER, DANGER! DOS_PRIVATE_SEGMENT has been set too low!");
-            if (DOS_PRIVATE_SEGMENT < 0x80 && IS_PC98_ARCH)
-                LOG_MSG("DANGER, DANGER! DOS_PRIVATE_SEGMENT has been set too low for PC-98 emulation!");
 
             if (MEM_TotalPages() > 0x9C)
                 DOS_PRIVATE_SEGMENT_END = 0x9C00;
@@ -2390,15 +2328,7 @@ public:
 		callback[5].Install(NULL,CB_IRET/*CB_INT28*/,"DOS idle");
 		callback[5].Set_RealVec(0x28);
 
-        if (IS_PC98_ARCH) {
-            // PC-98 also has INT 29h but the behavior of some games suggest that it is handled
-            // the same as CON device output. Apparently the reason Touhou Project has been unable
-            // to clear the screen is that it uses INT 29h to directly send ANSI codes rather than
-            // standard I/O calls to write to the CON device.
-            callback[6].Install(INT29_HANDLER,CB_IRET,"CON Output Int 29");
-            callback[6].Set_RealVec(0x29);
-        }
-        else {
+        {
             // FIXME: Really? Considering the main CON device emulation has ANSI.SYS emulation
             //        you'd think that this would route it through the same.
             callback[6].Install(NULL,CB_INT29,"CON Output Int 29");
@@ -2411,11 +2341,9 @@ public:
             //	iret
         }
 
-        if (!IS_PC98_ARCH) {
-            /* DOS installs a handler for INT 1Bh */
-            callback[7].Install(BIOS_1BHandler,CB_IRET,"BIOS 1Bh");
-            callback[7].Set_RealVec(0x1B);
-        }
+        /* DOS installs a handler for INT 1Bh */
+        callback[7].Install(BIOS_1BHandler,CB_IRET,"BIOS 1Bh");
+        callback[7].Set_RealVec(0x1B);
 
 		callback[8].Install(DOS_CPMHandler,CB_CPM,"DOS/CPM Int 30-31");
 		int30=RealGetVec(0x30);
@@ -2425,29 +2353,6 @@ public:
 		// pseudocode for CB_CPM:
 		//	pushf
 		//	... the rest is like int 21
-
-        if (IS_PC98_ARCH) {
-            /* Any interrupt vector pointing to the INT stub in the BIOS must be rewritten to point to a JMP to the stub
-             * residing in the DOS segment (60h) because some PC-98 resident drivers use segment 60h as a check for
-             * installed vs uninstalled (MUSIC.COM, Peret em Heru) */
-            Bit16u sg = DOS_GetMemory(1/*paragraph*/,"INT stub trampoline");
-            PhysPt sgp = (PhysPt)sg << (PhysPt)4u;
-
-            /* Re-base the pointer so the segment is 0x60 */
-            Bit32u veco = sgp - 0x600;
-            if (veco >= 0xFFF0u) E_Exit("INT stub trampoline out of bounds");
-            Bit32u vecp = RealMake(0x60,(Bit16u)veco);
-
-            mem_writeb(sgp+0,0xEA);
-            mem_writed(sgp+1,BIOS_get_PC98_INT_STUB());
-
-            for (unsigned int i=0;i < 0x100;i++) {
-                Bit32u vec = RealGetVec(i);
-
-                if (vec == BIOS_get_PC98_INT_STUB())
-                    mem_writed(i*4,vecp);
-            }
-        }
 
         /* NTS: HMA support requires XMS. EMS support may switch on A20 if VCPI emulation requires the odd megabyte */
         if ((!dos_in_hma || !section->Get_bool("xms")) && (MEM_A20_Enabled() || strcmp(section->Get_string("ems"),"false") != 0) &&
@@ -2528,7 +2433,7 @@ public:
          *      start segment before or after 0x800 helps to resolve these issues.
          *      It also puts DOSBox-X at parity with main DOSBox SVN behavior. */
         if (minimum_mcb_free == 0)
-            minimum_mcb_free = IS_PC98_ARCH ? 0x800 : 0x100;
+            minimum_mcb_free = 0x100;
         else if (minimum_mcb_free < minimum_mcb_segment)
             minimum_mcb_free = minimum_mcb_segment;
 
@@ -2599,13 +2504,6 @@ public:
 						dos.version.major, dos.version.minor);
 			}
 		}
-
-        if (IS_PC98_ARCH) {
-            void PC98_InitDefFuncRow(void);
-            PC98_InitDefFuncRow();
-
-            real_writeb(0x60,0x113,0x01); /* 25-line mode */
-        }
 	}
 	~DOS(){
 		/* NTS: We do NOT free the drives! The OS may use them later! */
@@ -2650,7 +2548,6 @@ void DOS_ShutdownDrives() {
 	}
 }
 
-void update_pc98_function_row(unsigned char setting,bool force_redraw=false);
 void DOS_Casemap_Free();
 
 extern Bit8u ZDRIVE_NUM;
@@ -2663,8 +2560,6 @@ void DOS_DoShutDown() {
 		delete test;
 		test = NULL;
 	}
-
-    if (IS_PC98_ARCH) update_pc98_function_row(0);
 
     DOS_Casemap_Free();
 
