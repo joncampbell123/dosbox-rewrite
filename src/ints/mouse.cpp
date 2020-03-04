@@ -56,7 +56,6 @@ bool en_bios_ps2mouse=false;
 bool cell_granularity_disable=false;
 bool en_int33_hide_if_polling=false;
 bool en_int33_hide_if_intsub=false;
-bool en_int33_pc98_show_graphics=true; // NEC MOUSE.COM behavior
 
 double int33_last_poll = 0;
 
@@ -302,19 +301,12 @@ Bitu PS2_Handler(void) {
 void MOUSE_Limit_Events(Bitu /*val*/) {
     mouse.timer_in_progress = false;
 
-    if (IS_PC98_ARCH) {
-        if (mouse.events>0) {
-            mouse.events--;
-        }
-    }
-
     if (mouse.events) {
         mouse.timer_in_progress = true;
         PIC_AddEvent(MOUSE_Limit_Events,MOUSE_DELAY);
 
         if (MOUSE_IRQ != 0) {
-            if (!IS_PC98_ARCH)
-                PIC_ActivateIRQ(MOUSE_IRQ);
+            PIC_ActivateIRQ(MOUSE_IRQ);
         }
     }
 }
@@ -339,8 +331,7 @@ INLINE void Mouse_AddEvent(Bit8u type) {
         PIC_AddEvent(MOUSE_Limit_Events,MOUSE_DELAY);
 
         if (MOUSE_IRQ != 0) {
-            if (!IS_PC98_ARCH)
-                PIC_ActivateIRQ(MOUSE_IRQ);
+            PIC_ActivateIRQ(MOUSE_IRQ);
         }
     }
 }
@@ -581,8 +572,6 @@ void DrawCursor() {
     RestoreVgaRegisters();
 }
 
-void pc98_mouse_movement_apply(int x,int y);
-
 #if !defined(C_SDL2)
 bool GFX_IsFullscreen(void);
 #else
@@ -601,7 +590,7 @@ void Mouse_CursorMoved(float xrel,float yrel,float x,float y,bool emulate) {
     float dx = xrel * mouse.pixelPerMickey_x;
     float dy = (Mouse_Vertical?-yrel:yrel) * mouse.pixelPerMickey_y;
 
-    if (!IS_PC98_ARCH && KEYBOARD_AUX_Active()) {
+    if (KEYBOARD_AUX_Active()) {
         KEYBOARD_AUX_Event(xrel,yrel,mouse.buttons,mouse.scrollwheel);
         mouse.scrollwheel = 0;
         return;
@@ -617,9 +606,6 @@ void Mouse_CursorMoved(float xrel,float yrel,float x,float y,bool emulate) {
 
         /* serial mouse */
         on_mouse_event_for_serial((int)(dx),(int)(dy*2),mouse.buttons);
-
-        /* PC-98 mouse */
-        if (IS_PC98_ARCH) pc98_mouse_movement_apply(xrel,yrel);
 
         mouse.mickey_x += (dx * mouse.mickeysPerPixel_x);
         mouse.mickey_y += (dy * mouse.mickeysPerPixel_y);
@@ -708,7 +694,7 @@ uint8_t Mouse_GetButtonState(void) {
 }
 
 void Mouse_ButtonPressed(Bit8u button) {
-    if (!IS_PC98_ARCH && KEYBOARD_AUX_Active()) {
+    if (KEYBOARD_AUX_Active()) {
         switch (button) {
             case 0:
                 mouse.buttons|=1;
@@ -765,7 +751,7 @@ void Mouse_ButtonPressed(Bit8u button) {
 }
 
 void Mouse_ButtonReleased(Bit8u button) {
-    if (!IS_PC98_ARCH && KEYBOARD_AUX_Active()) {
+    if (KEYBOARD_AUX_Active()) {
         switch (button) {
             case 0:
                 mouse.buttons&=~1;
@@ -856,17 +842,6 @@ static void Mouse_SetSensitivity(Bit16u px, Bit16u py, Bit16u dspeed){
 static void Mouse_ResetHardware(void){
     if (MOUSE_IRQ != 0)
         PIC_SetIRQMask(MOUSE_IRQ,false);
-
-    if (IS_PC98_ARCH) {
-        IO_WriteB(0x7FDD,IO_ReadB(0x7FDD) & (~0x10)); // remove interrupt inhibit
-
-        // NEC MOUSE.COM behavior: Driver startup and INT 33h AX=0 automatically show the graphics layer.
-        // Some games by "Orange House" depend on this behavior, without which the graphics are invisible.
-        if (en_int33_pc98_show_graphics) {
-            reg_eax = 0x40u << 8u; // AH=40h show graphics layer
-            CALLBACK_RunRealInt(0x18);
-        }
-    }
 }
 
 void Mouse_BeforeNewVideoMode(bool setmode) {
@@ -918,10 +893,7 @@ void Mouse_AfterNewVideoMode(bool setmode) {
     case 0x07: {
         mouse.gran_x = (mode<2)?0xfff0:0xfff8;
         mouse.gran_y = (Bit16s)0xfff8;
-        if (IS_PC98_ARCH) {
-            mouse.max_y = 400 - 1;
-        }
-        else {
+        {
             Bitu rows = real_readb(BIOSMEM_SEG,BIOSMEM_NB_ROWS);
             if ((rows == 0) || (rows > 250)) rows = 25 - 1;
             mouse.max_y = 8*(rows+1) - 1;
@@ -1542,9 +1514,7 @@ bool MouseTypeNone();
 
 void MOUSE_OnReset(Section *sec) {
     (void)sec;//UNUSED
-    if (IS_PC98_ARCH)
-        MOUSE_IRQ = 13; // PC-98 standard
-    else if (!enable_slave_pic)
+    if (!enable_slave_pic)
         MOUSE_IRQ = 0;
     else
         MOUSE_IRQ = 12; // IBM PC/AT standard
@@ -1644,8 +1614,6 @@ void MOUSE_Startup(Section *sec) {
     en_int33_hide_if_intsub=section->Get_bool("int33 hide host cursor if interrupt subroutine");
 
     en_int33_hide_if_polling=section->Get_bool("int33 hide host cursor when polling");
-
-    en_int33_pc98_show_graphics=section->Get_bool("pc-98 show graphics layer on initialize");
 
     en_int33=section->Get_bool("int33");
     if (!en_int33) {
