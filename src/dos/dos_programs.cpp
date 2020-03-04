@@ -654,7 +654,6 @@ public:
 
 PC98ITFPageHandler          mem_itf_rom;
 
-bool FDC_AssignINT13Disk(unsigned char drv);
 void MEM_RegisterHandler(Bitu phys_page,PageHandler * handler,Bitu page_range);
 void MEM_ResetPageHandler_Unmapped(Bitu phys_page, Bitu pages);
 bool MEM_map_ROM_physmem(Bitu start,Bitu end);
@@ -1300,7 +1299,6 @@ public:
             RunningProgram = "Guest OS";
 
             if (drive == 'A' || drive == 'B') {
-                FDC_AssignINT13Disk(drive - 'A');
                 if (!IS_PC98_ARCH) incrementFDD();
             }
 
@@ -2493,9 +2491,6 @@ public:
     Bit64u current_fpos; */
 };
 
-bool FDC_AssignINT13Disk(unsigned char drv);
-bool FDC_UnassignINT13Disk(unsigned char drv);
-
 class IMGMOUNT : public Program {
 public:
     std::vector<std::string> options;
@@ -2589,10 +2584,6 @@ public:
         cmd->FindString("-ide",ideattach,true);
 
         if (ideattach == "auto") {
-            if (type != "floppy") {
-                IDE_Auto(ide_index,ide_slave);
-            }
-                
             LOG_MSG("IDE: index %d slave=%d",ide_index,ide_slave?1:0);
         }
         else if (ideattach != "none" && isdigit(ideattach[0]) && ideattach[0] > '0') { /* takes the form [controller]<m/s> such as: 1m for primary master */
@@ -2911,10 +2902,6 @@ private:
         if (isalpha(letter)) { /* if it's a drive letter, then traditional usage applies */
             int i_drive = letter - 'A';
             if (i_drive < DOS_DRIVES && i_drive >= 0 && Drives[i_drive]) {
-                //if drive A: or B:
-                if (i_drive <= 1)
-                    FDC_UnassignINT13Disk(i_drive);
-
                 //get reference to image and cdrom before they are possibly destroyed
                 fatDrive * drive = dynamic_cast<fatDrive*>(Drives[i_drive]);
                 imageDisk* image = drive ? drive->loadedDisk : NULL;
@@ -2925,9 +2912,6 @@ private:
                 {
                     //detatch hard drive or floppy drive from bios and ide controller
                     if (image) DetachFromBios(image);
-
-                    /* If the drive letter is also a CD-ROM drive attached to IDE, then let the IDE code know */
-                    if (cdrom) IDE_CDROM_Detach(i_drive);
 
                     Drives[i_drive] = NULL;
                     DOS_EnableDriveMenu(i_drive+'A');
@@ -2956,7 +2940,6 @@ private:
 
             //detatch hard drive or floppy drive from bios and ide controller
             if (index < MAX_DISK_IMAGES && imageDiskList[index]) {
-                if (index > 1) IDE_Hard_Disk_Detach(index);
                 imageDiskList[index]->Release();
                 imageDiskList[index] = NULL;
                 imageDiskChange[index] = true;
@@ -3394,7 +3377,6 @@ private:
         if (bios_drive_index >= MAX_DISK_IMAGES) return false;
         if (imageDiskList[bios_drive_index] != NULL) {
             /* Notify IDE ATA emulation if a drive is already there */
-            if (bios_drive_index >= 2) IDE_Hard_Disk_Detach(bios_drive_index);
             imageDiskList[bios_drive_index]->Release();
         }
         imageDiskList[bios_drive_index] = image;
@@ -3403,7 +3385,6 @@ private:
 
         // let FDC know if we mounted a floppy
         if (bios_drive_index <= 1) {
-            FDC_AssignINT13Disk(bios_drive_index);
             incrementFDD();
         }
         
@@ -3414,7 +3395,6 @@ private:
         if (!AttachToBiosByIndex(image, bios_drive_index)) return false;
         //if hard drive image, and if ide controller is specified
         if (bios_drive_index >= 2 && bios_drive_index < MAX_DISK_IMAGES) {
-            IDE_Hard_Disk_Attach((signed char)ide_index, ide_slave, bios_drive_index);
             updateDPT();
         }
         return true;
@@ -3471,7 +3451,6 @@ private:
         if (image) {
             for (int index = 0; index < MAX_DISK_IMAGES; index++) {
                 if (imageDiskList[index] == image) {
-                    if (index > 1) IDE_Hard_Disk_Detach(index);
                     imageDiskList[index]->Release();
                     imageDiskChange[index] = true;
                     imageDiskList[index] = NULL;
@@ -3670,9 +3649,6 @@ private:
 
         // Set the correct media byte in the table 
         mem_writeb(Real2Phys(dos.tables.mediaid) + ((unsigned int)drive - 'A') * dos.tables.dpb_size, mediaid);
-
-        // If instructed, attach to IDE controller as ATAPI CD-ROM device
-        if (ide_index >= 0) IDE_CDROM_Attach(ide_index, ide_slave, drive - 'A');
 
         // Print status message (success)
         WriteOut(MSG_Get("MSCDEX_SUCCESS"));

@@ -4304,12 +4304,6 @@ private:
                         LOG_MSG("ISAPNP register failed\n");
                 }
             }
-
-            void BIOS_Post_register_IDE();
-            BIOS_Post_register_IDE();
-
-            void BIOS_Post_register_FDC();
-            BIOS_Post_register_FDC();
         }
 
         {

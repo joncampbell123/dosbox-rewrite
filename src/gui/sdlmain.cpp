@@ -6150,7 +6150,6 @@ void ISAPNP_Cfg_Init();
 void FPU_Init();
 #endif
 void KEYBOARD_Init();
-void VOODOO_Init();
 void MIXER_Init();
 
 /* Init all the sections */
@@ -6172,8 +6171,6 @@ void DOS_KeyboardLayout_Init();
 void MSCDEX_Init();
 void DRIVES_Init();
 void IPX_Init();
-void IDE_Init();
-void FDC_Primary_Init();
 void AUTOEXEC_Init();
 
 #if defined(WIN32)
@@ -7366,7 +7363,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
         DEBUG_Init(); /* <- NTS: Relies on callback system */
 #endif
         Init_VGABIOS();
-        VOODOO_Init();
         PROGRAMS_Init(); /* <- NTS: Does not init programs, it inits the callback used later when creating the .COM programs on drive Z: */
         PCSPEAKER_Init();
         MIXER_Init();
@@ -7376,10 +7372,8 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
 #endif
         VGA_Init();
         ISAPNP_Cfg_Init();
-        FDC_Primary_Init();
         KEYBOARD_Init();
         JOYSTICK_Init();
-        IDE_Init();
         BIOS_Init();
         INT10_Init();
 #if C_PRINTER
