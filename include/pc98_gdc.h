@@ -105,12 +105,3 @@ struct PC98_GDC_state {
 
 typedef union pc98_tile             egc_quad[4];
 
-extern bool                         gdc_analog;
-
-extern uint32_t                     pc98_text_palette[8];
-
-extern struct PC98_GDC_state        pc98_gdc[2];
-extern egc_quad                     pc98_gdc_tiles;
-extern uint8_t                      pc98_gdc_vramop;
-extern uint8_t                      pc98_gdc_modereg;
-

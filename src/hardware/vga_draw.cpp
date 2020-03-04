@@ -1738,68 +1738,18 @@ unsigned char       pc98_text_row_scroll_num_lines = 0x00;      /* port 7Ah */
 // Track row, row count, scanline row within the cell,
 // for accurate emulation
 struct Text_Draw_State {
-    unsigned int        scroll_vmem;
-    unsigned char       scroll_scanline_cg;
-    unsigned char       row_scanline_cg;            /* scanline within row, CG bitmap */
-    unsigned char       row_char;                   /* character row. scroll region 0 <= num_lines */
-    unsigned char       row_scroll_countdown;
-
     void begin_frame(void) {
-        row_scroll_countdown = 0xFF;
-        row_scanline_cg = pc98_text_first_row_scanline_start;
-        row_char = pc98_text_row_scroll_count_start & 0x1Fu;
-        check_scroll_region();
-
-        if (row_scroll_countdown != 0xFF)
-            update_scroll_line();
     }
     void next_line(void) {
-        if (row_scanline_cg == pc98_text_first_row_scanline_end) {
-            row_scanline_cg = pc98_text_first_row_scanline_start;
-            next_character_row();
-        }
-        else {
-            row_scanline_cg = (row_scanline_cg + 1u) & 0x1Fu;
-        }
-
-        if (row_scroll_countdown != 0xFF)
-            update_scroll_line();
     }
     void update_scroll_line(void) {
-        scroll_vmem = 0;
-        scroll_scanline_cg = row_scanline_cg;
-        for (unsigned int i=0;i < pc98_text_row_scroll_lines;i++) {
-            if (scroll_scanline_cg == pc98_text_first_row_scanline_end) {
-                scroll_scanline_cg = pc98_text_first_row_scanline_start;
-                scroll_vmem += pc98_gdc[GDC_MASTER].display_pitch;
-            }
-            else {
-                scroll_scanline_cg = (scroll_scanline_cg + 1u) & 0x1Fu;
-            }
-        }
     }
     void next_character_row(void) {
-        row_char = (row_char + 1u) & 0x1Fu;
-        check_scroll_region();
     }
     void check_scroll_region(void) {
-        if (row_char == 0) {
-            /* begin scroll region */
-            /* NTS: Confirmed on real hardware: The scroll count ADDs to the vertical offset already applied to the text.
-             *      For example in 20-line text mode (20 pixels high) setting the scroll region offset to 2 pixels cancels
-             *      out the 2 pixel centering of the text. */
-            row_scroll_countdown = pc98_text_row_scroll_num_lines & 0x1Fu;
-        }
-        else if (row_scroll_countdown == 0) {
-            /* end scroll region */
-            row_scroll_countdown = 0xFF;
-        }
-        else if (row_scroll_countdown != 0xFF) {
-            row_scroll_countdown--;
-        }
     }
     bool in_scroll_region(void) const {
-        return row_scroll_countdown != 0xFFu;
+        return false;
     }
 };
 
@@ -2192,13 +2142,6 @@ again:
         RENDER_EndUpdate(false);
     }
 
-    if (IS_PC98_ARCH) {
-        for (unsigned int i=0;i < 2;i++)
-            pc98_gdc[i].next_line();
-
-        pc98_text_draw.next_line();
-    }
-
     /* some VGA cards (ATI chipsets especially) do not double-buffer the
      * horizontal panning register. some DOS demos take advantage of that
      * to make the picture "waver".
@@ -2336,13 +2279,6 @@ static void VGA_DisplayStartLatch(Bitu /*val*/) {
  
 static void VGA_PanningLatch(Bitu /*val*/) {
     vga.draw.panning = vga.config.pel_panning;
-
-    if (IS_PC98_ARCH) {
-        for (unsigned int i=0;i < 2;i++)
-            pc98_gdc[i].begin_frame();
-
-        pc98_text_draw.begin_frame();
-    }
 }
 
 extern SDL_Rect                            vga_capture_current_rect;
@@ -2657,11 +2593,6 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
     }
     // for same blinking frequency with higher frameskip
     vga.draw.cursor.count++;
-
-    if (IS_PC98_ARCH) {
-        for (unsigned int i=0;i < 2;i++)
-            pc98_gdc[i].cursor_advance();
-    }
 
     //Check if we can actually render, else skip the rest
     if (vga.draw.vga_override || !RENDER_StartUpdate()) return;
@@ -3088,55 +3019,7 @@ void VGA_SetupDrawing(Bitu /*val*/) {
     Bitu hbend_mask, vbend_mask;
     Bitu vblank_skip;
 
-    /* NTS: PC-98 emulation re-uses VGA state FOR NOW.
-     *      This will slowly change to accomodate PC-98 display controller over time
-     *      and IS_PC98_ARCH will become it's own case statement. */
-
-    if (IS_PC98_ARCH) {
-        hdend = pc98_gdc[GDC_MASTER].active_display_words_per_line;
-        hbstart = hdend;
-        hrstart = hdend + pc98_gdc[GDC_MASTER].horizontal_front_porch_width;
-        hrend = hrstart + pc98_gdc[GDC_MASTER].horizontal_sync_width;
-        htotal = hrend + pc98_gdc[GDC_MASTER].horizontal_back_porch_width;
-        hbend = htotal;
-
-        vdend = pc98_gdc[GDC_MASTER].active_display_lines;
-        vbstart = vdend;
-        vrstart = vdend + pc98_gdc[GDC_MASTER].vertical_front_porch_width;
-        vrend = vrstart + pc98_gdc[GDC_MASTER].vertical_sync_width;
-        vtotal = vrend + pc98_gdc[GDC_MASTER].vertical_back_porch_width;
-        vbend = vtotal;
-
-        // perhaps if the game makes a custom mode, it might choose different active display regions
-        // for text and graphics. allow that here.
-        // NTS: Remember that the graphics (slave) GDC is programmed in "words" which in graphics mode
-        //      means 16-pixel wide units.
-        if (hdend < (pc98_gdc[GDC_SLAVE].active_display_words_per_line * 2U))
-            hdend = (pc98_gdc[GDC_SLAVE].active_display_words_per_line * 2U);
-        if (vdend < (pc98_gdc[GDC_SLAVE].active_display_lines))
-            vdend = (pc98_gdc[GDC_SLAVE].active_display_lines);
-
-        // TODO: The GDC rendering should allow different active display regions to render
-        //       properly over one another.
-
-        // TODO: Found a monitor document that lists two different scan rates for PC-98:
-        //
-        //       640x400  25.175MHz dot clock  70.15Hz refresh  31.5KHz horizontal refresh (basically, VGA)
-        //       640x400  21.05MHz dot clock   56.42Hz refresh  24.83Hz horizontal refresh (original spec?)
-
-        if (false/*future 15KHz hsync*/) {
-            oscclock = 14318180;
-        }
-        else if (!pc98_31khz_mode/*24KHz hsync*/) {
-            oscclock = 21052600;
-        }
-        else {/*31KHz VGA-like hsync*/
-            oscclock = 25175000;
-        }
-
-        clock = oscclock / 8;
-    }
-    else if (IS_EGAVGA_ARCH) {
+    if (IS_EGAVGA_ARCH) {
         htotal = vga.crtc.horizontal_total;
         hdend = vga.crtc.horizontal_display_end;
         hbend = vga.crtc.end_horizontal_blanking&0x1F;

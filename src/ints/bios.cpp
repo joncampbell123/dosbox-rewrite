@@ -2712,62 +2712,9 @@ extern unsigned char                pc98_text_row_scroll_count_start;    /* port
 extern unsigned char                pc98_text_row_scroll_num_lines;      /* port 7Ah */
 
 void pc98_update_text_layer_lineheight_from_bda(void) {
-//    unsigned char c = mem_readb(0x53C);
-    unsigned char lineheight = mem_readb(0x53B) + 1;
-
-    pc98_gdc[GDC_MASTER].force_fifo_complete();
-    pc98_gdc[GDC_MASTER].row_height = lineheight;
-
-    if (lineheight > 20) { // usually 24
-        pc98_text_first_row_scanline_start = 0x1C;
-        pc98_text_first_row_scanline_end = lineheight - 5;
-        pc98_text_row_scanline_blank_at = 16;
-    }
-    else if (lineheight > 16) { // usually 20
-        pc98_text_first_row_scanline_start = 0x1E;
-        pc98_text_first_row_scanline_end = lineheight - 3;
-        pc98_text_row_scanline_blank_at = 16;
-    }
-    else {
-        pc98_text_first_row_scanline_start = 0;
-        pc98_text_first_row_scanline_end = lineheight - 1;
-        pc98_text_row_scanline_blank_at = lineheight;
-    }
-
-    pc98_text_row_scroll_lines = 0;
-    pc98_text_row_scroll_count_start = 0;
-    pc98_text_row_scroll_num_lines = 0;
-
-    vga.crtc.cursor_start = 0;
-    vga.draw.cursor.sline = 0;
-
-    vga.crtc.cursor_end   = lineheight - 1;
-    vga.draw.cursor.eline = lineheight - 1;
 }
 
 void pc98_update_text_lineheight_from_bda(void) {
-    unsigned char b597 = mem_readb(0x597);
-    unsigned char c = mem_readb(0x53C);
-    unsigned char lineheight;
-
-    if ((b597 & 0x3) == 0x3) {//WARNING: This could be wrong
-        if (c & 0x10)/*30-line mode (30x16 = 640x480)*/
-            lineheight = 16;
-        else if (c & 0x01)/*20-line mode (20x24 = 640x480)*/
-            lineheight = 24;
-        else/*25-line mode (25x19 = 640x480)*/
-            lineheight = 19;
-    }
-    else {
-        if (c & 0x10)/*30-line mode (30x13 = 640x400)*/
-            lineheight = 13;//??
-        else if (c & 0x01)/*20-line mode (20x20 = 640x400)*/
-            lineheight = 20;
-        else/*25-line mode (25x16 = 640x400)*/
-            lineheight = 16;
-    }
-
-    mem_writeb(0x53B,lineheight - 1);
 }
 
 /* TODO: The text and graphics code that talks to the GDC will need to be converted
