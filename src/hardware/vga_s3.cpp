@@ -588,7 +588,5 @@ void SVGA_Setup_S3Trio(void) {
 
     // S3 ROM signature
     phys_writes(PhysMake(0xc000,0)+0x003f, "S3 86C764", 10);
-
-    PCI_AddSVGAS3_Device();
 }
 

@@ -101,13 +101,12 @@ libhardware_a_AR = $(AR) $(ARFLAGS)
 libhardware_a_LIBADD =
 am_libhardware_a_OBJECTS = dma.$(OBJEXT) hardware.$(OBJEXT) \
 	iohandler.$(OBJEXT) joystick.$(OBJEXT) keyboard.$(OBJEXT) \
-	memory.$(OBJEXT) mixer.$(OBJEXT) pci_bus.$(OBJEXT) \
-	pic.$(OBJEXT) timer.$(OBJEXT) vga.$(OBJEXT) vga_attr.$(OBJEXT) \
-	vga_crtc.$(OBJEXT) vga_dac.$(OBJEXT) vga_draw.$(OBJEXT) \
-	vga_gfx.$(OBJEXT) vga_other.$(OBJEXT) vga_memory.$(OBJEXT) \
-	vga_misc.$(OBJEXT) vga_seq.$(OBJEXT) vga_xga.$(OBJEXT) \
-	vga_s3.$(OBJEXT) vga_tseng.$(OBJEXT) vga_paradise.$(OBJEXT) \
-	cmos.$(OBJEXT)
+	memory.$(OBJEXT) mixer.$(OBJEXT) pic.$(OBJEXT) timer.$(OBJEXT) \
+	vga.$(OBJEXT) vga_attr.$(OBJEXT) vga_crtc.$(OBJEXT) \
+	vga_dac.$(OBJEXT) vga_draw.$(OBJEXT) vga_gfx.$(OBJEXT) \
+	vga_other.$(OBJEXT) vga_memory.$(OBJEXT) vga_misc.$(OBJEXT) \
+	vga_seq.$(OBJEXT) vga_xga.$(OBJEXT) vga_s3.$(OBJEXT) \
+	vga_tseng.$(OBJEXT) vga_paradise.$(OBJEXT) cmos.$(OBJEXT)
 libhardware_a_OBJECTS = $(am_libhardware_a_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -324,10 +323,10 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CPPFLAGS = -I$(top_srcdir)/include -I$(top_srcdir)/src/aviwriter -I$(top_srcdir)/src
 SUBDIRS = 
-EXTRA_DIST = pci_devices.h
+EXTRA_DIST = 
 noinst_LIBRARIES = libhardware.a
 libhardware_a_SOURCES = dma.cpp hardware.cpp iohandler.cpp joystick.cpp keyboard.cpp \
-                        memory.cpp mixer.cpp pci_bus.cpp pic.cpp timer.cpp \
+                        memory.cpp mixer.cpp pic.cpp timer.cpp \
 			vga.cpp vga_attr.cpp vga_crtc.cpp vga_dac.cpp vga_draw.cpp vga_gfx.cpp vga_other.cpp \
 			vga_memory.cpp vga_misc.cpp vga_seq.cpp vga_xga.cpp vga_s3.cpp vga_tseng.cpp vga_paradise.cpp \
 			cmos.cpp
@@ -389,7 +388,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/keyboard.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/memory.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mixer.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pci_bus.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pic.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/timer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vga.Po@am__quote@

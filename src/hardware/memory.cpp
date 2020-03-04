@@ -207,8 +207,6 @@ PageHandler &Get_ROM_page_handler(void) {
     return rom_page_handler;
 }
 
-extern bool pcibus_enable;
-
 template <enum MEM_Type_t iotype> static unsigned int MEM_Gen_Callout(Bitu &ret,PageHandler* &f,Bitu page) {
     MEM_callout_vector &vec = MEM_callouts[iotype - MEM_TYPE_MIN];
     unsigned int match = 0;
@@ -273,16 +271,7 @@ static PageHandler *MEM_SlowPath(Bitu page) {
     match = MEM_Motherboard_Callout(/*&*/ret,/*&*/f,page);
 
     if (match == 0) {
-        /* first PCI bus device, then ISA. */
-        if (pcibus_enable) {
-            /* PCI and PCI/ISA bridge emulation */
-            match = MEM_PCI_Callout(/*&*/ret,/*&*/f,page);
-            if (match == 0) {
-                /* PCI didn't take it, ask ISA bus */
-                match = MEM_ISA_Callout(/*&*/ret,/*&*/f,page);
-            }
-        }
-        else {
+        {
             /* Pure ISA emulation */
             match = MEM_ISA_Callout(/*&*/ret,/*&*/f,page);
         }
@@ -544,11 +533,11 @@ PageHandler* lfb_memio_cb(MEM_CalloutObject &co,Bitu phys_page) {
 
 void lfb_mem_cb_init() {
     if (lfb_mem_cb == MEM_Callout_t_none) {
-        lfb_mem_cb = MEM_AllocateCallout(pcibus_enable ? MEM_TYPE_PCI : MEM_TYPE_ISA);
+        lfb_mem_cb = MEM_AllocateCallout(MEM_TYPE_ISA);
         if (lfb_mem_cb == MEM_Callout_t_none) E_Exit("Unable to allocate mem cb for LFB");
     }
     if (lfb_mmio_cb == MEM_Callout_t_none) {
-        lfb_mmio_cb = MEM_AllocateCallout(pcibus_enable ? MEM_TYPE_PCI : MEM_TYPE_ISA);
+        lfb_mmio_cb = MEM_AllocateCallout(MEM_TYPE_ISA);
         if (lfb_mmio_cb == MEM_Callout_t_none) E_Exit("Unable to allocate mmio cb for LFB");
     }
 

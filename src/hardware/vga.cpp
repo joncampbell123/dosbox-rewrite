@@ -164,8 +164,6 @@ extern int                          vga_memio_delay_ns;
 
 uint32_t S3_LFB_BASE =              S3_LFB_BASE_DEFAULT;
 
-bool                                enable_pci_vga = true;
-
 SDL_Rect                            vga_capture_rect = {0,0,0,0};
 SDL_Rect                            vga_capture_current_rect = {0,0,0,0};
 uint32_t                            vga_capture_current_address = 0;
@@ -522,7 +520,6 @@ static inline unsigned int int_log2(unsigned int val) {
     return log;
 }
 
-extern bool pcibus_enable;
 extern int hack_lfb_yadjust;
 
 void VGA_VsyncUpdateMode(VGA_Vsync vsyncmode);
@@ -538,7 +535,6 @@ VGA_Vsync VGA_Vsync_Decode(const char *vsyncmodestr) {
     return VS_Off;
 }
 
-bool has_pcibus_enable(void);
 Bit32u MEM_get_address_bits();
 
 void VGA_Reset(Section*) {
@@ -552,14 +548,12 @@ void VGA_Reset(Section*) {
 
     LOG(LOG_MISC,LOG_DEBUG)("VGA_Reset() reinitializing VGA emulation");
 
-    enable_pci_vga = section->Get_bool("pci vga");
-
     S3_LFB_BASE = (uint32_t)section->Get_hex("svga lfb base");
     if (S3_LFB_BASE == 0) {
         if (cpu_addr_bits >= 32)
             S3_LFB_BASE = S3_LFB_BASE_DEFAULT;
         else if (cpu_addr_bits >= 26)
-            S3_LFB_BASE = (enable_pci_vga && has_pcibus_enable()) ? 0x02000000 : 0x03400000;
+            S3_LFB_BASE = 0x03400000;
         else if (cpu_addr_bits >= 24)
             S3_LFB_BASE = 0x00C00000;
         else
@@ -572,27 +566,7 @@ void VGA_Reset(Section*) {
     if (S3_LFB_BASE > 0xFE000000UL)
         S3_LFB_BASE = 0xFE000000UL;
 
-    /* if the user WANTS the base address to be PCI misaligned, then turn off PCI VGA emulation */
-    if (enable_pci_vga && has_pcibus_enable() && (S3_LFB_BASE & 0x1FFFFFFul)) {
-        if (!lfb_default)
-            LOG(LOG_VGA,LOG_DEBUG)("S3 linear framebuffer was set by user to an address not aligned to 32MB, switching off PCI VGA emulation");
-
-        enable_pci_vga = false;
-    }
-    /* if memalias is below 26 bits, PCI VGA emulation is impossible */
-    if (cpu_addr_bits < 26) {
-        if (IS_VGA_ARCH && enable_pci_vga && has_pcibus_enable())
-            LOG(LOG_VGA,LOG_DEBUG)("CPU memalias setting is below 26 bits, switching off PCI VGA emulation");
-
-        enable_pci_vga = false;
-    }
-
-    if (enable_pci_vga && has_pcibus_enable()) {
-        /* must be 32MB aligned (PCI) */
-        S3_LFB_BASE +=  0x0FFFFFFUL;
-        S3_LFB_BASE &= ~0x1FFFFFFUL;
-    }
-    else {
+    {
         /* must be 64KB aligned (ISA) */
         S3_LFB_BASE +=  0x7FFFUL;
         S3_LFB_BASE &= ~0xFFFFUL;
@@ -602,20 +576,11 @@ void VGA_Reset(Section*) {
     if (S3_LFB_BASE < (MEM_TotalPages()*4096))
         S3_LFB_BASE = (MEM_TotalPages()*4096);
 
-    /* if the constraints we imposed make it impossible to maintain the alignment required for PCI,
-     * then just switch off PCI VGA emulation. */
-    if (IS_VGA_ARCH && enable_pci_vga && has_pcibus_enable()) {
-        if (S3_LFB_BASE & 0x1FFFFFFUL) { /* not 32MB aligned */
-            LOG(LOG_VGA,LOG_DEBUG)("S3 linear framebuffer is not 32MB aligned, switching off PCI VGA emulation");
-            enable_pci_vga = false;
-        }
-    }
-
     /* announce LFB framebuffer address only if actually emulating the S3 */
     if (IS_VGA_ARCH && svgaCard == SVGA_S3Trio)
         LOG(LOG_VGA,LOG_DEBUG)("S3 linear framebuffer at 0x%lx%s as %s",
             (unsigned long)S3_LFB_BASE,lfb_default?" by default":"",
-            (enable_pci_vga && has_pcibus_enable()) ? "PCI" : "(E)ISA");
+            "(E)ISA");
 
     /* other applicable warnings: */
     /* Microsoft Windows 3.1 S3 driver:
@@ -735,12 +700,7 @@ void VGA_Reset(Section*) {
     vga_memio_delay_ns = section->Get_int("vmemdelay");
     if (vga_memio_delay_ns < 0) {
         if (IS_EGAVGA_ARCH) {
-            if (pcibus_enable) {
-                /* some delay based on PCI bus protocol with frame start, turnaround, and burst transfer */
-                double t = (1000000000.0 * clockdom_PCI_BCLK.freq_div * (1/*turnaround*/+1/*frame start*/+1/*burst*/-0.25/*fudge*/)) / clockdom_PCI_BCLK.freq;
-                vga_memio_delay_ns = (int)floor(t);
-            }
-            else {
+            {
                 /* very optimistic setting, ISA bus cycles are longer than 2, but also the 386/486/Pentium pipeline
                  * instruction decoding. so it's not a matter of sucking up enough CPU cycle counts to match the
                  * duration of a memory I/O cycle, because real hardware probably has another instruction decode
