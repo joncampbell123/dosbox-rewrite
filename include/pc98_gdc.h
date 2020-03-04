@@ -7,24 +7,6 @@ enum {
     GDC_SLAVE=1
 };
 
-// VOPBIT_* source: Neko Project II
-
-// operate:		bit0	access page
-//				bit1	egc enable
-//				bit2	grcg bit6
-//				bit3	grcg bit7
-//				bit4	analog enable (16/256-color mode). 8-color mode if not.
-//				bit5	pc9821 vga
-
-enum {
-	VOPBIT_ACCESS	= 0,
-	VOPBIT_EGC		= 1,
-	VOPBIT_GRCG		= 2,
-	VOPBIT_ANALOG	= 4,
-	VOPBIT_VGA		= 5,
-    VOPBIT_PEGC_PLANAR = 6
-};
-
 union pc98_tile {
     uint8_t                 b[2];
     uint16_t                w;

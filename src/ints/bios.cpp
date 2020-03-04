@@ -4548,50 +4548,13 @@ void write_FFFF_PC98_signature() {
 }
 
 void gdc_egc_enable_update_vars(void) {
-    unsigned char b;
-
-    b = mem_readb(0x54D);
-    b &= ~0x40;
-    if (enable_pc98_egc) b |= 0x40;
-    mem_writeb(0x54D,b);
-
-    b = mem_readb(0x597);
-    b &= ~0x04;
-    if (enable_pc98_egc) b |= 0x04;
-    mem_writeb(0x597,b);
-
-    if (!enable_pc98_egc)
-        pc98_gdc_vramop &= ~(1 << VOPBIT_EGC);
 }
 
 void gdc_grcg_enable_update_vars(void) {
-    unsigned char b;
-
-    b = mem_readb(0x54C);
-    b &= ~0x02;
-    if (enable_pc98_grcg) b |= 0x02;
-    mem_writeb(0x54C,b);
-    
-    //TODO: How to reset GRCG?
 }
 
 
 void gdc_16color_enable_update_vars(void) {
-    unsigned char b;
-
-    b = mem_readb(0x54C);
-    b &= ~0x04;
-    if (enable_pc98_16color) b |= 0x04;
-    mem_writeb(0x54C,b);
-
-    if(!enable_pc98_256color) {//force switch to 16-colors mode
-        void pc98_port6A_command_write(unsigned char b);
-        pc98_port6A_command_write(0x20);
-    }
-    if(!enable_pc98_16color) {//force switch to 8-colors mode
-        void pc98_port6A_command_write(unsigned char b);
-        pc98_port6A_command_write(0x00);
-    }
 }
 
 Bit32u BIOS_get_PC98_INT_STUB(void) {

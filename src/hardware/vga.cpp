@@ -1140,7 +1140,6 @@ void VGA_OnEnterPC98(Section *sec) {
     // as a transition to PC-98 GDC emulation, move VGA alphanumeric buffer
     // down to A0000-AFFFFh.
     gdc_analog = false;
-    pc98_gdc_vramop &= ~(1 << VOPBIT_ANALOG);
     gfx(miscellaneous) &= ~0x0C; /* bits[3:2] = 0 to map A0000-BFFFF */
     VGA_DetermineMode();
     VGA_SetupHandlers();
