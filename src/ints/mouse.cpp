@@ -43,15 +43,6 @@
 # pragma warning(disable:4244) /* const fmath::local::uint64_t to double possible loss of data */
 #endif
 
-void DisableINT33() {
-}
-
-void MOUSE_Unsetup_DOS(void) {
-}
-
-void MOUSE_Unsetup_BIOS(void) {
-}
-
 #if !defined(C_SDL2)
 bool GFX_IsFullscreen(void);
 #else

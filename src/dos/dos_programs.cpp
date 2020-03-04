@@ -615,7 +615,6 @@ extern bool dos_kernel_disabled;
 extern bool boot_debug_break;
 extern Bitu BIOS_bootfail_code_offset;
 
-void DisableINT33();
 void EMS_DoShutDown();
 void XMS_DoShutDown();
 void DOS_DoShutDown();

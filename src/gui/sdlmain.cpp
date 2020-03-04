@@ -387,7 +387,6 @@ bool guest_machine_power_on = false;
 std::string custom_savedir;
 
 void SHELL_Run();
-void DisableINT33();
 void EMS_DoShutDown();
 void XMS_DoShutDown();
 void DOS_DoShutDown();
@@ -6208,7 +6207,6 @@ bool VM_Boot_DOSBox_Kernel() {
     if (!dos_kernel_disabled) {
         RemoveEMSPageFrame();
         RemoveUMBBlock();
-        DisableINT33();
         DOS_GetMemory_unmap();
         VFILE_Shutdown();
         PROGRAMS_Shutdown();
@@ -7635,9 +7633,6 @@ fresh_boot:
 
             /* remove UMB block */
             if (!keep_umb_on_boot) RemoveUMBBlock();
-
-            /* disable INT 33h mouse services. it can interfere with guest OS paging and control of the mouse */
-            DisableINT33();
 
             /* unmap the DOSBox kernel private segment. if the user told us not to,
              * but the segment exists below 640KB, then we must, because the guest OS

@@ -4735,9 +4735,6 @@ void swapInNextCD(bool pressed);
 void INT10_OnResetComplete();
 void CALLBACK_DeAllocate(Bitu in);
 
-void MOUSE_Unsetup_DOS(void);
-void MOUSE_Unsetup_BIOS(void);
-
 void BIOS_OnResetComplete(Section *x) {
     (void)x;//UNUSED
     INT10_OnResetComplete();
@@ -4763,9 +4760,6 @@ void BIOS_OnResetComplete(Section *x) {
         CALLBACK_DeAllocate(call_pnp_p);
         call_pnp_p = ~0UL;
     }
-
-    MOUSE_Unsetup_DOS();
-    MOUSE_Unsetup_BIOS();
 
     ISA_PNP_FreeAllSysNodeDevs();
 }
