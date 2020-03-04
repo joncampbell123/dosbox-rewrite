@@ -6270,13 +6270,8 @@ bool VM_Boot_DOSBox_Kernel() {
         Reflect_Menu();
 #endif
 
-        void update_pc98_function_row(unsigned char setting,bool force_redraw=false);
-
         void DRIVES_Startup(Section *s);
         DRIVES_Startup(NULL);
-
-        /* NEC's function key row seems to be deeply embedded in the CON driver. Am I wrong? */
-        if (IS_PC98_ARCH) update_pc98_function_row(1);
 
         DispatchVMEvent(VM_EVENT_DOS_INIT_KERNEL_READY); // <- kernel is ready
 
@@ -6338,49 +6333,6 @@ void update_capture_fmt_menu(void);
 
 bool capture_fmt_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem);
 
-void update_pc98_clock_pit_menu(void) {
-    Section_prop * dosbox_section = static_cast<Section_prop *>(control->GetSection("dosbox"));
-
-    int pc98rate = dosbox_section->Get_int("pc-98 timer master frequency");
-    if (pc98rate > 6) pc98rate /= 2;
-    if (pc98rate == 0) pc98rate = 5; /* Pick the most likely to work with DOS games (FIXME: This is a GUESS!! Is this correct?) */
-    else if (pc98rate < 5) pc98rate = 4;
-    else pc98rate = 5;
-
-    mainMenu.get_item("dos_pc98_pit_4mhz").check(pc98rate == 4).refresh_item(mainMenu);
-    mainMenu.get_item("dos_pc98_pit_5mhz").check(pc98rate == 5).refresh_item(mainMenu);
-}
-
-bool dos_pc98_clock_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem) {
-    (void)menu;//UNUSED
-    (void)menuitem;//UNUSED
-    void TIMER_OnPowerOn(Section*);
-    void TIMER_OnEnterPC98_Phase2_UpdateBDA(void);
-
-    const char *ts = menuitem->get_name().c_str();
-    if (!strncmp(ts,"dos_pc98_pit_",13))
-        ts += 13;
-    else
-        return true;
-
-    std::string tmp = "pc-98 timer master frequency=";
-
-    {
-        char tmp1[64];
-        sprintf(tmp1,"%d",atoi(ts));
-        tmp += tmp1;
-    }
-
-    Section_prop * dosbox_section = static_cast<Section_prop *>(control->GetSection("dosbox"));
-    dosbox_section->HandleInputline(tmp.c_str());
-
-    TIMER_OnPowerOn(NULL);
-    TIMER_OnEnterPC98_Phase2_UpdateBDA();
-
-    update_pc98_clock_pit_menu();
-    return true;
-}
-
 void SetScaleForced(bool forced);
 void OutputSettingMenuUpdate(void);
 
@@ -6406,223 +6358,6 @@ bool dos_mouse_y_axis_reverse_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::
     extern bool Mouse_Vertical;
     Mouse_Vertical = !Mouse_Vertical;
     mainMenu.get_item("dos_mouse_y_axis_reverse").check(Mouse_Vertical).refresh_item(mainMenu);
-    return true;
-}
-
-extern bool                         gdc_5mhz_mode_initial;
-
-bool vid_pc98_5mhz_gdc_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem) {
-    (void)menu;//UNUSED
-    (void)menuitem;//UNUSED
-    if (IS_PC98_ARCH) {
-        void gdc_5mhz_mode_update_vars(void);
-        extern bool gdc_5mhz_mode;
-        extern bool gdc_clock_1;
-        extern bool gdc_clock_2;
-
-        gdc_5mhz_mode = !gdc_5mhz_mode;
-        gdc_5mhz_mode_update_vars();
-
-        // this is the user's command to change GDC setting, so it should appear
-        // as if the initial setting in the dip switches
-        gdc_5mhz_mode_initial = gdc_5mhz_mode;
-
-        gdc_clock_1 = gdc_5mhz_mode;
-        gdc_clock_2 = gdc_5mhz_mode;
-
-        Section_prop * dosbox_section = static_cast<Section_prop *>(control->GetSection("dosbox"));
-        if (gdc_5mhz_mode)
-            dosbox_section->HandleInputline("pc-98 start gdc at 5mhz=1");
-        else
-            dosbox_section->HandleInputline("pc-98 start gdc at 5mhz=0");
-
-        mainMenu.get_item("pc98_5mhz_gdc").check(gdc_5mhz_mode).refresh_item(mainMenu);
-    }
-
-    return true;
-}
-
-bool vid_pc98_200scanline_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem) {
-    (void)menu;//UNUSED
-    (void)menuitem;//UNUSED
-    if (IS_PC98_ARCH) {
-        extern bool pc98_allow_scanline_effect;
-
-        pc98_allow_scanline_effect = !pc98_allow_scanline_effect;
-
-        Section_prop * dosbox_section = static_cast<Section_prop *>(control->GetSection("dosbox"));
-        if (pc98_allow_scanline_effect)
-            dosbox_section->HandleInputline("pc-98 allow scanline effect=1");
-        else
-            dosbox_section->HandleInputline("pc-98 allow scanline effect=0");
-
-        mainMenu.get_item("pc98_allow_200scanline").check(pc98_allow_scanline_effect).refresh_item(mainMenu);
-    }
-
-    return true;
-}
-
-bool vid_pc98_4parts_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem) {
-    (void)menu;//UNUSED
-    (void)menuitem;//UNUSED
-    if (IS_PC98_ARCH) {
-        extern bool pc98_allow_4_display_partitions;
-        void updateGDCpartitions4(bool enable);
-
-        updateGDCpartitions4(!pc98_allow_4_display_partitions);
-
-        Section_prop * dosbox_section = static_cast<Section_prop *>(control->GetSection("dosbox"));
-        if (pc98_allow_4_display_partitions)
-            dosbox_section->HandleInputline("pc-98 allow 4 display partition graphics=1");
-        else
-            dosbox_section->HandleInputline("pc-98 allow 4 display partition graphics=0");
-
-        mainMenu.get_item("pc98_allow_4partitions").check(pc98_allow_4_display_partitions).refresh_item(mainMenu);
-    }
-
-    return true;
-}
-
-bool vid_pc98_enable_188user_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem) {
-    (void)menu;//UNUSED
-    (void)menuitem;//UNUSED
-    void gdc_egc_enable_update_vars(void);
-//    extern bool enable_pc98_egc;
-//    extern bool enable_pc98_grcg;
-//    extern bool enable_pc98_16color;
-    extern bool enable_pc98_188usermod;
-
-    if(IS_PC98_ARCH) {
-        enable_pc98_188usermod = !enable_pc98_188usermod;
-        gdc_egc_enable_update_vars();
-
-        Section_prop * dosbox_section = static_cast<Section_prop *>(control->GetSection("dosbox"));
-        if (enable_pc98_188usermod)
-            dosbox_section->HandleInputline("pc-98 enable 188 user cg=1");
-        else
-            dosbox_section->HandleInputline("pc-98 enable 188 user cg=0");
-
-        mainMenu.get_item("pc98_enable_188user").check(enable_pc98_188usermod).refresh_item(mainMenu);
-    }
-    
-    return true;
-}
-
-bool vid_pc98_enable_egc_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem) {
-    (void)menu;//UNUSED
-    (void)menuitem;//UNUSED
-    void gdc_egc_enable_update_vars(void);
-    extern bool enable_pc98_egc;
-    extern bool enable_pc98_grcg;
-    extern bool enable_pc98_16color;
-//    extern bool enable_pc98_188usermod;
-
-    if(IS_PC98_ARCH) {
-        enable_pc98_egc = !enable_pc98_egc;
-        gdc_egc_enable_update_vars();
-
-        Section_prop * dosbox_section = static_cast<Section_prop *>(control->GetSection("dosbox"));
-        if (enable_pc98_egc) {
-            dosbox_section->HandleInputline("pc-98 enable egc=1");
-
-            if(!enable_pc98_grcg) { //Also enable GRCG if GRCG is disabled when enabling EGC
-                enable_pc98_grcg = !enable_pc98_grcg;
-                mem_writeb(0x54C,(enable_pc98_grcg ? 0x02 : 0x00) | (enable_pc98_16color ? 0x04 : 0x00));   
-                dosbox_section->HandleInputline("pc-98 enable grcg=1");
-            }
-        }
-        else
-            dosbox_section->HandleInputline("pc-98 enable egc=0");
-
-        mainMenu.get_item("pc98_enable_egc").check(enable_pc98_egc).refresh_item(mainMenu);
-        mainMenu.get_item("pc98_enable_grcg").check(enable_pc98_grcg).refresh_item(mainMenu);
-    }
-    
-    return true;
-}
-
-bool vid_pc98_enable_grcg_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem) {
-    (void)menu;//UNUSED
-    (void)menuitem;//UNUSED
-    extern bool enable_pc98_grcg;
-    extern bool enable_pc98_egc;
-    void gdc_grcg_enable_update_vars(void);
-
-    if(IS_PC98_ARCH) {
-        enable_pc98_grcg = !enable_pc98_grcg;
-        gdc_grcg_enable_update_vars();
-
-        Section_prop * dosbox_section = static_cast<Section_prop *>(control->GetSection("dosbox"));
-        if (enable_pc98_grcg)
-            dosbox_section->HandleInputline("pc-98 enable grcg=1");
-        else
-            dosbox_section->HandleInputline("pc-98 enable grcg=0");
-
-        if ((!enable_pc98_grcg) && enable_pc98_egc) { // Also disable EGC if switching off GRCG
-            void gdc_egc_enable_update_vars(void);
-            enable_pc98_egc = !enable_pc98_egc;
-            gdc_egc_enable_update_vars();   
-            dosbox_section->HandleInputline("pc-98 enable egc=0");
-        }
-
-        mainMenu.get_item("pc98_enable_egc").check(enable_pc98_egc).refresh_item(mainMenu);
-        mainMenu.get_item("pc98_enable_grcg").check(enable_pc98_grcg).refresh_item(mainMenu);
-    }
-
-    return true;
-}
-
-bool vid_pc98_enable_analog_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem) {
-    (void)menu;//UNUSED
-    (void)menuitem;//UNUSED
-    //NOTE: I thought that even later PC-9801s and some PC-9821s could use EGC features in digital 8-colors mode? 
-    extern bool enable_pc98_16color;
-    void gdc_16color_enable_update_vars(void);
-
-    if(IS_PC98_ARCH) {
-        enable_pc98_16color = !enable_pc98_16color;
-        gdc_16color_enable_update_vars();
-
-        Section_prop * dosbox_section = static_cast<Section_prop *>(control->GetSection("dosbox"));
-        if (enable_pc98_16color)
-            dosbox_section->HandleInputline("pc-98 enable 16-color=1");
-        else
-            dosbox_section->HandleInputline("pc-98 enable 16-color=0");
-
-        mainMenu.get_item("pc98_enable_analog").check(enable_pc98_16color).refresh_item(mainMenu);
-    }
-
-    return true;
-}
-
-bool vid_pc98_enable_analog256_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem) {
-    (void)menu;//UNUSED
-    (void)menuitem;//UNUSED
-    //NOTE: I thought that even later PC-9801s and some PC-9821s could use EGC features in digital 8-colors mode? 
-    extern bool enable_pc98_256color;
-    void gdc_16color_enable_update_vars(void);
-
-    if(IS_PC98_ARCH) {
-        enable_pc98_256color = !enable_pc98_256color;
-        gdc_16color_enable_update_vars();
-
-        Section_prop * dosbox_section = static_cast<Section_prop *>(control->GetSection("dosbox"));
-        if (enable_pc98_256color)
-            dosbox_section->HandleInputline("pc-98 enable 256-color=1");
-        else
-            dosbox_section->HandleInputline("pc-98 enable 256-color=0");
-
-        mainMenu.get_item("pc98_enable_analog256").check(enable_pc98_256color).refresh_item(mainMenu);
-    }
-
-    return true;
-}
-
-bool vid_pc98_cleartext_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem) {
-    (void)menu;//UNUSED
-    (void)menuitem;//UNUSED
-    void pc98_clear_text(void);
-    if (IS_PC98_ARCH) pc98_clear_text();
     return true;
 }
 
@@ -6714,14 +6449,6 @@ bool vid_select_pixel_shader_menu_callback(DOSBoxMenu* const menu, DOSBoxMenu::i
     return true;
 }
 #endif
-
-bool vid_pc98_graphics_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem) {
-    (void)menu;//UNUSED
-    (void)menuitem;//UNUSED
-    void pc98_clear_graphics(void);
-    if (IS_PC98_ARCH) pc98_clear_graphics();
-    return true;
-}
 
 bool vsync_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem) {
     (void)menu;//UNUSED
@@ -7527,31 +7254,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
                 mainMenu.alloc_item(DOSBoxMenu::item_type_id,"vsync_set_syncrate").set_text("Set syncrate").
                     set_callback_function(vsync_set_syncrate_menu_callback);
             }
-            {
-                DOSBoxMenu::item &item = mainMenu.alloc_item(DOSBoxMenu::submenu_type_id,"VideoPC98Menu");
-                item.set_text("PC-98");
-
-                mainMenu.alloc_item(DOSBoxMenu::item_type_id,"pc98_5mhz_gdc").set_text("5MHz GDC clock").
-                    set_callback_function(vid_pc98_5mhz_gdc_menu_callback);
-                mainMenu.alloc_item(DOSBoxMenu::item_type_id,"pc98_allow_200scanline").set_text("Allow 200-line scanline effect").
-                    set_callback_function(vid_pc98_200scanline_menu_callback);
-                mainMenu.alloc_item(DOSBoxMenu::item_type_id,"pc98_allow_4partitions").set_text("Allow 4 display partitions in graphics layer").
-                    set_callback_function(vid_pc98_4parts_menu_callback);
-                mainMenu.alloc_item(DOSBoxMenu::item_type_id,"pc98_enable_egc").set_text("Enable EGC").
-                    set_callback_function(vid_pc98_enable_egc_menu_callback);
-                mainMenu.alloc_item(DOSBoxMenu::item_type_id,"pc98_enable_grcg").set_text("Enable GRCG").
-                    set_callback_function(vid_pc98_enable_grcg_menu_callback);
-                mainMenu.alloc_item(DOSBoxMenu::item_type_id,"pc98_enable_analog").set_text("Enable analog display").
-                    set_callback_function(vid_pc98_enable_analog_menu_callback);
-                mainMenu.alloc_item(DOSBoxMenu::item_type_id,"pc98_enable_analog256").set_text("Enable analog 256-color display").
-                    set_callback_function(vid_pc98_enable_analog256_menu_callback);
-                mainMenu.alloc_item(DOSBoxMenu::item_type_id,"pc98_enable_188user").set_text("Enable 188+ user CG cells").
-                    set_callback_function(vid_pc98_enable_188user_menu_callback);
-                mainMenu.alloc_item(DOSBoxMenu::item_type_id,"pc98_clear_text").set_text("Clear text layer").
-                    set_callback_function(vid_pc98_cleartext_menu_callback);
-                mainMenu.alloc_item(DOSBoxMenu::item_type_id,"pc98_clear_graphics").set_text("Clear graphics layer").
-                    set_callback_function(vid_pc98_graphics_menu_callback);
-            }
 #ifdef C_D3DSHADERS
             {
                 mainMenu.alloc_item(DOSBoxMenu::item_type_id, "load_d3d_shader").set_text("Select pixel shader...").
@@ -7572,18 +7274,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
                         set_callback_function(dos_mouse_enable_int33_menu_callback);
                     mainMenu.alloc_item(DOSBoxMenu::item_type_id,"dos_mouse_y_axis_reverse").set_text("Y-axis Reverse").
                         set_callback_function(dos_mouse_y_axis_reverse_menu_callback);
-                }
-            }
-
-            {
-                DOSBoxMenu::item &item = mainMenu.alloc_item(DOSBoxMenu::submenu_type_id,"DOSPC98Menu");
-                item.set_text("PC-98 PIT master clock");
-
-                {
-                    mainMenu.alloc_item(DOSBoxMenu::item_type_id,"dos_pc98_pit_4mhz").set_text("4MHz/8MHz").
-                        set_callback_function(dos_pc98_clock_menu_callback);
-                    mainMenu.alloc_item(DOSBoxMenu::item_type_id,"dos_pc98_pit_5mhz").set_text("5MHz/10MHz").
-                        set_callback_function(dos_pc98_clock_menu_callback);
                 }
             }
         }
@@ -7780,19 +7470,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
 
         mainMenu.get_item("scaler_forced").check(render.scale.forced);
 
-        mainMenu.get_item("pc98_5mhz_gdc").enable(IS_PC98_ARCH);
-        mainMenu.get_item("pc98_allow_200scanline").enable(IS_PC98_ARCH);
-        mainMenu.get_item("pc98_allow_4partitions").enable(IS_PC98_ARCH);
-        mainMenu.get_item("pc98_enable_egc").enable(IS_PC98_ARCH);
-        mainMenu.get_item("pc98_enable_grcg").enable(IS_PC98_ARCH);
-        mainMenu.get_item("pc98_enable_analog").enable(IS_PC98_ARCH);
-        mainMenu.get_item("pc98_enable_analog256").enable(IS_PC98_ARCH);
-        mainMenu.get_item("pc98_enable_188user").enable(IS_PC98_ARCH);
-        mainMenu.get_item("pc98_clear_text").enable(IS_PC98_ARCH);
-        mainMenu.get_item("pc98_clear_graphics").enable(IS_PC98_ARCH);
-        mainMenu.get_item("dos_pc98_pit_4mhz").enable(IS_PC98_ARCH);
-        mainMenu.get_item("dos_pc98_pit_5mhz").enable(IS_PC98_ARCH);
-
         extern bool Mouse_Vertical;
         extern bool Mouse_Drv;
 
@@ -7803,7 +7480,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
 #endif
 
         OutputSettingMenuUpdate();
-        update_pc98_clock_pit_menu();
 #if !defined(C_EMSCRIPTEN)
         update_capture_fmt_menu();
 #endif

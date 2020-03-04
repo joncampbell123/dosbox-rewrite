@@ -217,24 +217,6 @@ static const char *def_menu_video_vsync[] =
     NULL
 };
 
-/* video output menu ("VideoPC98Menu") */
-static const char *def_menu_video_pc98[] =
-{
-    "pc98_5mhz_gdc",
-    "pc98_allow_200scanline",
-    "pc98_allow_4partitions",
-    "--",
-    "pc98_enable_egc",
-    "pc98_enable_grcg",
-    "pc98_enable_analog",
-    "pc98_enable_analog256",
-    "pc98_enable_188user",
-    "--",
-    "pc98_clear_text",
-    "pc98_clear_graphics",
-    NULL
-};
-
 /* video menu ("VideoMenu") */
 static const char *def_menu_video[] =
 {
@@ -270,7 +252,6 @@ static const char *def_menu_video[] =
 #if !defined(C_SDL2)
     "VideoVsyncMenu",
 #endif
-    "VideoPC98Menu",
 #ifdef C_D3DSHADERS
     "--",
     "load_d3d_shader",
@@ -282,8 +263,6 @@ static const char *def_menu_video[] =
 static const char *def_menu_dos[] =
 {
     "DOSMouseMenu",
-    "--",
-    "DOSPC98Menu",
     "--",
     "mapper_swapimg",
     "mapper_swapcd",
@@ -297,14 +276,6 @@ static const char *def_menu_dos_mouse[] =
 {
     "dos_mouse_enable_int33",
     "dos_mouse_y_axis_reverse",
-    NULL
-};
-
-/* DOS pc-98 menu ("DOSPC98Menu") */
-static const char *def_menu_dos_pc98[] =
-{
-    "dos_pc98_pit_4mhz",
-    "dos_pc98_pit_5mhz",
     NULL
 };
 
@@ -1017,17 +988,11 @@ void ConstructMenu(void) {
     /* video vsync menu */
     ConstructSubMenu(mainMenu.get_item("VideoVsyncMenu").get_master_id(), def_menu_video_vsync);
 
-    /* video PC-98 menu */
-    ConstructSubMenu(mainMenu.get_item("VideoPC98Menu").get_master_id(), def_menu_video_pc98);
-
     /* DOS menu */
     ConstructSubMenu(mainMenu.get_item("DOSMenu").get_master_id(), def_menu_dos);
 
     /* DOS mouse menu */
     ConstructSubMenu(mainMenu.get_item("DOSMouseMenu").get_master_id(), def_menu_dos_mouse);
-
-    /* DOS PC-98 menu */
-    ConstructSubMenu(mainMenu.get_item("DOSPC98Menu").get_master_id(), def_menu_dos_pc98);
 
 #if !defined(C_EMSCRIPTEN)
     /* capture menu */
