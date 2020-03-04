@@ -2359,8 +2359,6 @@ static inline uint8_t expand16to32(const uint8_t t) {
     return (t << 1) | (t >> 3);
 }
 
-static unsigned char pc98_mixctl_reg = 0x14;
-
 static void CTMIXER_Write(Bit8u val) {
     switch (sb.mixer.index) {
     case 0x00:      /* Reset */
@@ -2517,16 +2515,7 @@ static void CTMIXER_Write(Bit8u val) {
     case 0x80:      /* IRQ Select */
         if (sb.type==SBT_16 && !sb.vibra) { /* ViBRA PnP cards do not allow reconfiguration by this byte */
             sb.hw.irq=0xff;
-            if (IS_PC98_ARCH) {
-                if (val & 0x1) sb.hw.irq=3;
-                else if (val & 0x2) sb.hw.irq=10;
-                else if (val & 0x4) sb.hw.irq=12;
-                else if (val & 0x8) sb.hw.irq=5;
-
-                // NTS: Real hardware stores only the low 4 bits. The upper 4 bits will always read back 1111.
-                //      The value read back will always be Fxh where x contains the 4 bits checked here.
-            }
-            else {
+            {
                 if (val & 0x1) sb.hw.irq=2;
                 else if (val & 0x2) sb.hw.irq=5;
                 else if (val & 0x4) sb.hw.irq=7;
@@ -2538,51 +2527,7 @@ static void CTMIXER_Write(Bit8u val) {
         if (sb.type==SBT_16 && !sb.vibra) { /* ViBRA PnP cards do not allow reconfiguration by this byte */
             sb.hw.dma8=0xff;
             sb.hw.dma16=0xff;
-            if (IS_PC98_ARCH) {
-                pc98_mixctl_reg = (unsigned char)val ^ 0x14;
-
-                if (val & 0x1) sb.hw.dma8=0;
-                else if (val & 0x2) sb.hw.dma8=3;
-
-                // NTS: On real hardware, only bits 0 and 1 are writeable. bits 2 and 4 seem to act oddly in response to
-                //      bytes written:
-                //
-                //      write 0x00          read 0x14
-                //      write 0x01          read 0x15
-                //      write 0x02          read 0x16
-                //      write 0x03          read 0x17
-                //      write 0x04          read 0x10
-                //      write 0x05          read 0x11
-                //      write 0x06          read 0x12
-                //      write 0x07          read 0x13
-                //      write 0x08          read 0x1C
-                //      write 0x09          read 0x1D
-                //      write 0x0A          read 0x1E
-                //      write 0x0B          read 0x1F
-                //      write 0x0C          read 0x18
-                //      write 0x0D          read 0x19
-                //      write 0x0E          read 0x1A
-                //      write 0x0F          read 0x1B
-                //      write 0x10          read 0x04
-                //      write 0x11          read 0x05
-                //      write 0x12          read 0x06
-                //      write 0x13          read 0x07
-                //      write 0x14          read 0x00
-                //      write 0x15          read 0x01
-                //      write 0x16          read 0x02
-                //      write 0x17          read 0x03
-                //      write 0x18          read 0x0C
-                //      write 0x19          read 0x0D
-                //      write 0x1A          read 0x0E
-                //      write 0x1B          read 0x0F
-                //      write 0x1C          read 0x08
-                //      write 0x1D          read 0x09
-                //      write 0x1E          read 0x0A
-                //      write 0x1F          read 0x0B
-                //
-                //      This pattern repeats for any 5 bit value in bits [4:0] i.e. 0x20 will read back 0x34.
-            }
-            else {
+            {
                 if (val & 0x1) sb.hw.dma8=0;
                 else if (val & 0x2) sb.hw.dma8=1;
                 else if (val & 0x8) sb.hw.dma8=3;
@@ -2688,15 +2633,7 @@ static Bit8u CTMIXER_Read(void) {
         break;
     case 0x80:      /* IRQ Select */
         ret=0;
-        if (IS_PC98_ARCH) {
-            switch (sb.hw.irq) {
-                case 3:  return 0xF1; // upper 4 bits always 1111
-                case 10: return 0xF2;
-                case 12: return 0xF4;
-                case 5:  return 0xF8;
-            }
-        }
-        else {
+        {
             switch (sb.hw.irq) {
                 case 2:  return 0x1;
                 case 5:  return 0x2;
@@ -2707,16 +2644,7 @@ static Bit8u CTMIXER_Read(void) {
         break;
     case 0x81:      /* DMA Select */
         ret=0;
-        if (IS_PC98_ARCH) {
-            switch (sb.hw.dma8) {
-                case 0:ret|=0x1;break;
-                case 3:ret|=0x2;break;
-            }
-
-            // there's some strange behavior on the PC-98 version of the card
-            ret |= (pc98_mixctl_reg & (~3u));
-        }
-        else {
+        {
             switch (sb.hw.dma8) {
                 case 0:ret|=0x1;break;
                 case 1:ret|=0x2;break;
@@ -2747,19 +2675,17 @@ static Bit8u CTMIXER_Read(void) {
 
 
 static Bitu read_sb(Bitu port,Bitu /*iolen*/) {
-    if (!IS_PC98_ARCH) {
-        /* All Creative hardware prior to Sound Blaster 16 appear to alias most of the I/O ports.
-         * This has been confirmed on a Sound Blaster 2.0 and a Sound Blaster Pro (v3.1).
-         * DSP aliasing is also faithfully emulated by the ESS AudioDrive. */
-        if (sb.hw.sb_io_alias) {
-            if ((port-sb.hw.base) == DSP_ACK_16BIT && sb.ess_type != ESS_NONE)
-                { } /* ESS AudioDrive does not alias DSP STATUS (0x22E) as seen on real hardware */
-            else if ((port-sb.hw.base) < MIXER_INDEX || (port-sb.hw.base) > MIXER_DATA)
-                port &= ~1u;
-        }
+    /* All Creative hardware prior to Sound Blaster 16 appear to alias most of the I/O ports.
+     * This has been confirmed on a Sound Blaster 2.0 and a Sound Blaster Pro (v3.1).
+     * DSP aliasing is also faithfully emulated by the ESS AudioDrive. */
+    if (sb.hw.sb_io_alias) {
+        if ((port-sb.hw.base) == DSP_ACK_16BIT && sb.ess_type != ESS_NONE)
+        { } /* ESS AudioDrive does not alias DSP STATUS (0x22E) as seen on real hardware */
+        else if ((port-sb.hw.base) < MIXER_INDEX || (port-sb.hw.base) > MIXER_DATA)
+            port &= ~1u;
     }
 
-    switch (((port-sb.hw.base) >> (IS_PC98_ARCH ? 8u : 0u)) & 0xFu) {
+    switch (((port-sb.hw.base) >> (0u)) & 0xFu) {
     case MIXER_INDEX:
         return sb.mixer.index;
     case MIXER_DATA:
@@ -2834,17 +2760,15 @@ static void write_sb(Bitu port,Bitu val,Bitu /*iolen*/) {
     /* All Creative hardware prior to Sound Blaster 16 appear to alias most of the I/O ports.
      * This has been confirmed on a Sound Blaster 2.0 and a Sound Blaster Pro (v3.1).
      * DSP aliasing is also faithfully emulated by the ESS AudioDrive. */
-    if (!IS_PC98_ARCH) {
-        if (sb.hw.sb_io_alias) {
-            if ((port-sb.hw.base) == DSP_ACK_16BIT && sb.ess_type != ESS_NONE)
-                { } /* ESS AudioDrive does not alias DSP STATUS (0x22E) as seen on real hardware */
-            else if ((port-sb.hw.base) < MIXER_INDEX || (port-sb.hw.base) > MIXER_DATA)
-                port &= ~1u;
-        }
+    if (sb.hw.sb_io_alias) {
+        if ((port-sb.hw.base) == DSP_ACK_16BIT && sb.ess_type != ESS_NONE)
+        { } /* ESS AudioDrive does not alias DSP STATUS (0x22E) as seen on real hardware */
+        else if ((port-sb.hw.base) < MIXER_INDEX || (port-sb.hw.base) > MIXER_DATA)
+            port &= ~1u;
     }
 
     Bit8u val8=(Bit8u)(val&0xff);
-    switch (((port-sb.hw.base) >> (IS_PC98_ARCH ? 8u : 0u)) & 0xFu) {
+    switch (((port-sb.hw.base) >> (0u)) & 0xFu) {
     case DSP_RESET:
         DSP_DoReset(val8);
         break;
@@ -3230,11 +3154,9 @@ private:
         }
 
         /* SB16 Vibra cards are Plug & Play */
-        if (!IS_PC98_ARCH) {
-            if (!strcasecmp(sbtype,"sb16vibra")) {
-                ISA_PNP_devreg(new ViBRA_PnP());
-                sb.vibra = true;
-            }
+        if (!strcasecmp(sbtype,"sb16vibra")) {
+            ISA_PNP_devreg(new ViBRA_PnP());
+            sb.vibra = true;
         }
 
         /* OPL/CMS Init */
@@ -3269,22 +3191,6 @@ private:
                 break;
             }
         }
-
-        if (IS_PC98_ARCH) {
-            if (opl_mode != OPL_none) {
-                if (opl_mode != OPL_opl3) {
-                    LOG(LOG_SB,LOG_WARN)("Only OPL3 is allowed in PC-98 mode");
-                    opl_mode = OPL_opl3;
-                }
-            }
-
-            /* card type MUST be SB16.
-             * Creative did not release any other Sound Blaster for PC-98 as far as I know. */
-            if (sb.type != SBT_16) {
-                LOG(LOG_SB,LOG_ERROR)("Only Sound Blaster 16 is allowed in PC-98 mode");
-                sb.type = SBT_NONE;
-            }
-        }
     }
 public:
     SBLASTER(Section* configuration):Module_base(configuration) {
@@ -3297,11 +3203,7 @@ public:
 
         sb.hw.base=(unsigned int)section->Get_hex("sbbase");
 
-        if (IS_PC98_ARCH) {
-            if (sb.hw.base >= 0x220 && sb.hw.base <= 0x2E0) /* translate IBM PC to PC-98 (220h -> D2h) */
-                sb.hw.base = 0xD0 + ((sb.hw.base >> 4u) & 0xFu);
-        }
-        else {
+        {
             if (sb.hw.base >= 0xD2 && sb.hw.base <= 0xDE) /* translate PC-98 to IBM PC (D2h -> 220h) */
                 sb.hw.base = 0x200 + ((sb.hw.base & 0xFu) << 4u);
         }
@@ -3375,30 +3277,11 @@ public:
         si=section->Get_int("irq");
         sb.hw.irq=(si >= 0) ? (unsigned int)si : 0xFF;
 
-        if (IS_PC98_ARCH) {
-            if (sb.hw.irq == 7) /* IRQ 7 is not valid on PC-98 (that's cascade interrupt) */
-                sb.hw.irq = 5;
-        }
-
         si=section->Get_int("dma");
         sb.hw.dma8=(si >= 0) ? (unsigned int)si : 0xFF;
 
         si=section->Get_int("hdma");
         sb.hw.dma16=(si >= 0) ? (unsigned int)si : 0xFF;
-
-        if (IS_PC98_ARCH) {
-            if (sb.hw.dma8 > 3)
-                sb.hw.dma8 = 3;
-            if (sb.hw.dma8 == 1) /* DMA 1 is not usable for SB on PC-98? */
-                sb.hw.dma8 = 3;
-            if (sb.hw.dma16 > 3)
-                sb.hw.dma16 = sb.hw.dma8;
-
-            LOG_MSG("PC-98: Final SB16 resources are DMA8=%u DMA16=%u\n",sb.hw.dma8,sb.hw.dma16);
-
-            sb.dma.chan=GetDMAChannel(sb.hw.dma8);
-            if (sb.dma.chan == NULL) LOG_MSG("PC-98: SB16 is unable to obtain DMA channel");
-        }
 
         /* some DOS games/demos support Sound Blaster, and expect the IRQ to fire, but
          * make no attempt to unmask the IRQ (perhaps the programmer forgot). This option
@@ -3428,29 +3311,23 @@ public:
     
         switch (oplmode) {
         case OPL_none:
-            if (!IS_PC98_ARCH)
-                WriteHandler[0].Install(0x388,adlib_gusforward,IO_MB);
+            WriteHandler[0].Install(0x388,adlib_gusforward,IO_MB);
             break;
         case OPL_cms:
-            assert(!IS_PC98_ARCH);
             WriteHandler[0].Install(0x388,adlib_gusforward,IO_MB);
             CMS_Init(section);
             break;
         case OPL_opl2:
-            assert(!IS_PC98_ARCH);
             CMS_Init(section);
             // fall-through
         case OPL_dualopl2:
-            assert(!IS_PC98_ARCH);
         case OPL_opl3:
         case OPL_opl3gold:
             OPL_Init(section,oplmode);
             break;
         case OPL_hardwareCMS:
-            assert(!IS_PC98_ARCH);
             isCMSpassthrough = true;
         case OPL_hardware:
-            assert(!IS_PC98_ARCH);
             Bitu base = (unsigned int)section->Get_hex("hardwarebase");
             HARDOPL_Init(base, sb.hw.base, isCMSpassthrough);
             break;
@@ -3690,10 +3567,7 @@ ASP>
         if (sb.emit_blaster_var) {
             // Create set blaster line
             ostringstream temp;
-            if (IS_PC98_ARCH)
-                temp << "@SET BLASTER=A" << setw(2) << hex << sb.hw.base;
-            else
-                temp << "@SET BLASTER=A" << setw(3) << hex << sb.hw.base;
+            temp << "@SET BLASTER=A" << setw(3) << hex << sb.hw.base;
 
             if (sb.hw.irq != 0xFF) temp << " I" << dec << (Bitu)sb.hw.irq;
             if (sb.hw.dma8 != 0xFF) temp << " D" << (Bitu)sb.hw.dma8;
