@@ -73,56 +73,6 @@ void DOS_EnableDriveMenu(char drv);
 Bitu DEBUG_EnableDebugger(void);
 #endif
 
-class MOUSE : public Program {
-public:
-    void Run(void);
-};
-
-void MOUSE::Run(void) {
-    if (cmd->FindExist("/?",false) || cmd->FindExist("/h",false)) {
-        WriteOut(MSG_Get("PROGRAM_MOUSE_HELP"));
-        return;
-    }
-	if (!Mouse_Drv) {
-        if (cmd->FindExist("/u",false))
-            WriteOut(MSG_Get("PROGRAM_MOUSE_NOINSTALLED"));
-        else {
-            Mouse_Drv = true;
-            mainMenu.get_item("dos_mouse_enable_int33").check(Mouse_Drv).refresh_item(mainMenu);
-            WriteOut(MSG_Get("PROGRAM_MOUSE_INSTALL"));
-            if (cmd->FindExist("/v",false)) {
-                Mouse_Vertical = true;
-                WriteOut(MSG_Get("PROGRAM_MOUSE_VERTICAL"));
-            } else {
-                Mouse_Vertical = false;
-            }
-            mainMenu.get_item("dos_mouse_y_axis_reverse").check(Mouse_Vertical).refresh_item(mainMenu);
-        }
-    }
-	else {
-        if (cmd->FindExist("/u",false)) {
-            Mouse_Drv = false;
-            mainMenu.get_item("dos_mouse_enable_int33").check(Mouse_Drv).refresh_item(mainMenu);
-            WriteOut(MSG_Get("PROGRAM_MOUSE_UNINSTALL"));
-        } else
-            if (cmd->FindExist("/v",false)) {
-                if(!Mouse_Vertical) {
-                    Mouse_Vertical = true;
-                    WriteOut(MSG_Get("PROGRAM_MOUSE_VERTICAL"));
-                } else {
-                    Mouse_Vertical = false;
-                    WriteOut(MSG_Get("PROGRAM_MOUSE_VERTICAL_BACK"));
-                }
-                mainMenu.get_item("dos_mouse_y_axis_reverse").check(Mouse_Vertical).refresh_item(mainMenu);
-            } else
-                WriteOut(MSG_Get("PROGRAM_MOUSE_ERROR"));
-	}
-}
-
-static void MOUSE_ProgramStart(Program * * make) {
-    *make=new MOUSE;
-}
-
 void MSCDEX_SetCDInterface(int intNr, int forceCD);
 Bit8u ZDRIVE_NUM = 25;
 
@@ -4039,11 +3989,6 @@ public:
     }
 };
 
-void CAPMOUSE_ProgramStart(Program** make)
-{
-	*make = new CAPMOUSE;
-}
-
 class LABEL : public Program
 {
 public:
@@ -4146,13 +4091,6 @@ void LABEL_ProgramStart(Program** make)
 void DOS_SetupPrograms(void) {
     /*Add Messages */
 
-    MSG_Add("PROGRAM_MOUSE_INSTALL","Installed at PS/2 port.\n");
-    MSG_Add("PROGRAM_MOUSE_VERTICAL","Reverse Y-axis enabled.\n");
-    MSG_Add("PROGRAM_MOUSE_VERTICAL_BACK","Reverse Y-axis disabled.\n");
-    MSG_Add("PROGRAM_MOUSE_UNINSTALL","Driver successfully unloaded...\n");
-    MSG_Add("PROGRAM_MOUSE_ERROR","Already installed at PS/2 port.\n");
-    MSG_Add("PROGRAM_MOUSE_NOINSTALLED","Driver is not installed.\n");
-    MSG_Add("PROGRAM_MOUSE_HELP","Turns on/off mouse.\n\nMOUSE [/?] [/U] [/V]\n  /U: Uninstall\n  /V: Reverse Y-axis\n");
     MSG_Add("PROGRAM_MOUNT_CDROMS_FOUND","CDROMs found: %d\n");
     MSG_Add("PROGRAM_MOUNT_STATUS_FORMAT","%-5s  %-58s %-12s\n");
     MSG_Add("PROGRAM_MOUNT_STATUS_ELTORITO", "Drive %c is mounted as el torito floppy\n");
@@ -4573,9 +4511,6 @@ void DOS_SetupPrograms(void) {
     if (!IS_PC98_ARCH)
         PROGRAMS_MakeFile("KEYB.COM", KEYB_ProgramStart);
 
-    if (!IS_PC98_ARCH)
-        PROGRAMS_MakeFile("MOUSE.COM", MOUSE_ProgramStart);
-
     PROGRAMS_MakeFile("A20GATE.COM",A20GATE_ProgramStart);
     PROGRAMS_MakeFile("SHOWGUI.COM",SHOWGUI_ProgramStart);
     PROGRAMS_MakeFile("NMITEST.COM",NMITEST_ProgramStart);
@@ -4587,6 +4522,5 @@ void DOS_SetupPrograms(void) {
     if (IS_PC98_ARCH)
         PROGRAMS_MakeFile("PC98UTIL.COM",PC98UTIL_ProgramStart);
 
-    PROGRAMS_MakeFile("CAPMOUSE.COM", CAPMOUSE_ProgramStart);
     PROGRAMS_MakeFile("LABEL.COM", LABEL_ProgramStart);
 }

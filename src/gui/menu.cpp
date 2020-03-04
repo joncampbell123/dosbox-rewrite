@@ -262,20 +262,10 @@ static const char *def_menu_video[] =
 /* DOS menu ("DOSMenu") */
 static const char *def_menu_dos[] =
 {
-    "DOSMouseMenu",
-    "--",
     "mapper_swapimg",
     "mapper_swapcd",
     "--",
     "mapper_rescanall",
-    NULL
-};
-
-/* DOS mouse menu ("DOSMouseMenu") */
-static const char *def_menu_dos_mouse[] =
-{
-    "dos_mouse_enable_int33",
-    "dos_mouse_y_axis_reverse",
     NULL
 };
 
@@ -990,9 +980,6 @@ void ConstructMenu(void) {
 
     /* DOS menu */
     ConstructSubMenu(mainMenu.get_item("DOSMenu").get_master_id(), def_menu_dos);
-
-    /* DOS mouse menu */
-    ConstructSubMenu(mainMenu.get_item("DOSMouseMenu").get_master_id(), def_menu_dos_mouse);
 
 #if !defined(C_EMSCRIPTEN)
     /* capture menu */
