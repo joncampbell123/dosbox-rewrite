@@ -38,9 +38,6 @@
 #define RESETDELAY 400
 #define KEYDELAY 0.300f         //Considering 20-30 khz serial clock and 11 bits/char
 
-#define AUX 0x100
-
-void AUX_Reset();
 void KEYBOARD_Reset();
 static void KEYBOARD_SetPort60(Bit16u val);
 void KEYBOARD_AddBuffer(Bit16u data);
@@ -62,9 +59,7 @@ enum KeyCommands {
     CMD_SETOUTPORT,
     CMD_SETCOMMAND,
     CMD_WRITEOUTPUT,
-    CMD_WRITEAUXOUT,
-    CMD_SETSCANSET,
-    CMD_WRITEAUX
+    CMD_SETSCANSET
 };
 
 enum MouseMode {
@@ -166,68 +161,7 @@ bool MouseTypeNone() {
     return (keyb.ps2mouse.type == MOUSE_NONE);
 }
 
-/* NTS: INT33H emulation is coded to call this ONLY if it hasn't taken over the role of mouse input */
-void KEYBOARD_AUX_Event(float x,float y,Bitu buttons,int scrollwheel) {
-    keyb.ps2mouse.acx += x;
-    keyb.ps2mouse.acy += y;
-    keyb.ps2mouse.l = (buttons & 1)>0;
-    keyb.ps2mouse.r = (buttons & 2)>0;
-    keyb.ps2mouse.m = (buttons & 4)>0;
-
-    /* "Valid ranges are -8 to 7"
-     * http://www.computer-engineering.org/ps2mouse/ */
-    if (scrollwheel < -8)
-        scrollwheel = -8;
-    else if (scrollwheel > 7)
-        scrollwheel = 7;
-
-    if (keyb.ps2mouse.reporting && keyb.ps2mouse.mode == MM_STREAM) {
-        if ((keyb.used+4) < KEYBUFSIZE) {
-            int x2,y2;
-
-            x2 = (int)(keyb.ps2mouse.acx * (1 << keyb.ps2mouse.resolution));
-            x2 /= 16; /* FIXME: Or else the cursor is WAY too sensitive in Windows 3.1 */
-            if (x2 < -256) x2 = -256;
-            else if (x2 > 255) x2 = 255;
-
-            y2 = -((int)(keyb.ps2mouse.acy * (1 << keyb.ps2mouse.resolution)));
-            y2 /= 16; /* FIXME: Or else the cursor is WAY too sensitive in Windows 3.1 */
-            if (y2 < -256) y2 = -256;
-            else if (y2 > 255) y2 = 255;
-
-            KEYBOARD_AddBuffer(AUX|
-                ((y2 == -256 || y2 == 255) ? 0x80 : 0x00) |   /* Y overflow */
-                ((x2 == -256 || x2 == 255) ? 0x40 : 0x00) |   /* X overflow */
-                ((y2 & 0x100) ? 0x20 : 0x00) |         /* Y sign bit */
-                ((x2 & 0x100) ? 0x10 : 0x00) |         /* X sign bit */
-                0x08 |                      /* always 1? */
-                (keyb.ps2mouse.m ? 4 : 0) |         /* M */
-                (keyb.ps2mouse.r ? 2 : 0) |         /* R */
-                (keyb.ps2mouse.l ? 1 : 0));         /* L */
-            KEYBOARD_AddBuffer(AUX|(x2&0xFF));
-            KEYBOARD_AddBuffer(AUX|(y2&0xFF));
-            if (keyb.ps2mouse.intellimouse_btn45) {
-                KEYBOARD_AddBuffer(AUX|(scrollwheel&0xFF)); /* TODO: 4th & 5th buttons */
-            }
-            else if (keyb.ps2mouse.intellimouse_mode) {
-                KEYBOARD_AddBuffer(AUX|(scrollwheel&0xFF));
-            }
-        }
-
-        keyb.ps2mouse.acx = 0;
-        keyb.ps2mouse.acy = 0;
-    }
-}
-
-int KEYBOARD_AUX_Active() {
-    /* NTS: We want to allow software to read by polling, which doesn't
-     *      require interrupts to be enabled. Whether or not IRQ12 is
-     *      unmasked is irrelevent */
-    return keyb.auxactive && !keyb.ps2mouse.int33_taken;
-}
-
 static void KEYBOARD_SetPort60(Bit16u val) {
-    keyb.auxchanged=(val&AUX)>0;
     keyb.p60changed=true;
     keyb.p60data=(Bit8u)val;
     if (keyb.auxchanged) {
@@ -344,162 +278,6 @@ static Bitu read_p60(Bitu port,Bitu iolen) {
     return keyb.p60data;
 }
 
-unsigned char KEYBOARD_AUX_GetType() {
-    /* and then the ID */
-    if (keyb.ps2mouse.intellimouse_btn45)
-        return 0x04;
-    else if (keyb.ps2mouse.intellimouse_mode)
-        return 0x03;
-    else
-        return 0x00;
-}
-
-unsigned char KEYBOARD_AUX_DevStatus() {
-    return  (keyb.ps2mouse.mode == MM_REMOTE ? 0x40 : 0x00)|
-        (keyb.ps2mouse.reporting << 5)|
-        (keyb.ps2mouse.scale21 << 4)|
-        (keyb.ps2mouse.m << 2)|
-        (keyb.ps2mouse.r << 1)|
-        (keyb.ps2mouse.l << 0);
-}
-
-unsigned char KEYBOARD_AUX_Resolution() {
-    return keyb.ps2mouse.resolution;
-}
-
-unsigned char KEYBOARD_AUX_SampleRate() {
-    return keyb.ps2mouse.samplerate;
-}
-
-void KEYBOARD_AUX_Write(Bitu val) {
-    if (keyb.ps2mouse.type == MOUSE_NONE)
-        return;
-
-    if (keyb.ps2mouse.mode == MM_WRAP) {
-        if (val != 0xFF && val != 0xEC) {
-            KEYBOARD_AddBuffer(AUX|val);
-            return;
-        }
-    }
-
-    switch (keyb.aux_command) {
-        case ACMD_NONE:
-            switch (val) {
-                case 0xff:  /* reset */
-                    LOG(LOG_KEYBOARD,LOG_NORMAL)("AUX reset");
-                    KEYBOARD_AddBuffer(AUX|0xfa);   /* ack */
-                    KEYBOARD_AddBuffer(AUX|0xaa);   /* reset */
-                    KEYBOARD_AddBuffer(AUX|0x00);   /* i am mouse */
-                    Mouse_AutoLock(false);
-                    AUX_Reset();
-                    break;
-                case 0xf6:  /* set defaults */
-                    KEYBOARD_AddBuffer(AUX|0xfa);   /* ack */
-                    AUX_Reset();
-                    break;
-                case 0xf5:  /* disable data reporting */
-                    KEYBOARD_AddBuffer(AUX|0xfa);   /* ack */
-                    keyb.ps2mouse.reporting = false;
-                    break;
-                case 0xf4:  /* enable data reporting */
-                    KEYBOARD_AddBuffer(AUX|0xfa);   /* ack */
-                    keyb.ps2mouse.reporting = true;
-                    Mouse_AutoLock(true);
-                    break;
-                case 0xf3:  /* set sample rate */
-                    KEYBOARD_AddBuffer(AUX|0xfa);   /* ack */
-                    keyb.aux_command = ACMD_SET_RATE;
-                    break;
-                case 0xf2:  /* get device ID */
-                    KEYBOARD_AddBuffer(AUX|0xfa);   /* ack */
-
-                    /* and then the ID */
-                    if (keyb.ps2mouse.intellimouse_btn45)
-                        KEYBOARD_AddBuffer(AUX|0x04);
-                    else if (keyb.ps2mouse.intellimouse_mode)
-                        KEYBOARD_AddBuffer(AUX|0x03);
-                    else
-                        KEYBOARD_AddBuffer(AUX|0x00);
-                    break;
-                case 0xf0:  /* set remote mode */
-                    KEYBOARD_AddBuffer(AUX|0xfa);   /* ack */
-                    keyb.ps2mouse.mode = MM_REMOTE;
-                    break;
-                case 0xee:  /* set wrap mode */
-                    KEYBOARD_AddBuffer(AUX|0xfa);   /* ack */
-                    keyb.ps2mouse.mode = MM_WRAP;
-                    break;
-                case 0xec:  /* reset wrap mode */
-                    KEYBOARD_AddBuffer(AUX|0xfa);   /* ack */
-                    keyb.ps2mouse.mode = MM_REMOTE;
-                    break;
-                case 0xeb:  /* read data */
-                    KEYBOARD_AddBuffer(AUX|0xfa);   /* ack */
-                    KEYBOARD_AUX_Event(0,0,
-                        ((unsigned int)keyb.ps2mouse.m << 2u) |
-                        ((unsigned int)keyb.ps2mouse.r << 1u) |
-                        ((unsigned int)keyb.ps2mouse.l << 0u),
-                        0);
-                    break;
-                case 0xea:  /* set stream mode */
-                    KEYBOARD_AddBuffer(AUX|0xfa);   /* ack */
-                    keyb.ps2mouse.mode = MM_STREAM;
-                    break;
-                case 0xe9:  /* status request */
-                    KEYBOARD_AddBuffer(AUX|0xfa);   /* ack */
-                    KEYBOARD_AddBuffer(AUX|KEYBOARD_AUX_DevStatus());
-                    KEYBOARD_AddBuffer(AUX|keyb.ps2mouse.resolution);
-                    KEYBOARD_AddBuffer(AUX|keyb.ps2mouse.samplerate);
-                    break;
-                case 0xe8:  /* set resolution */
-                    KEYBOARD_AddBuffer(AUX|0xfa);   /* ack */
-                    keyb.aux_command = ACMD_SET_RESOLUTION;
-                    break;
-                case 0xe7:  /* set scaling 2:1 */
-                    KEYBOARD_AddBuffer(AUX|0xfa);   /* ack */
-                    keyb.ps2mouse.scale21 = true;
-                    LOG(LOG_KEYBOARD,LOG_NORMAL)("PS/2 mouse scaling 2:1");
-                    break;
-                case 0xe6:  /* set scaling 1:1 */
-                    KEYBOARD_AddBuffer(AUX|0xfa);   /* ack */
-                    keyb.ps2mouse.scale21 = false;
-                    LOG(LOG_KEYBOARD,LOG_NORMAL)("PS/2 mouse scaling 1:1");
-                    break;
-            }
-            break;
-        case ACMD_SET_RATE:
-            KEYBOARD_AddBuffer(AUX|0xfa);   /* ack */
-            memmove(keyb.ps2mouse.last_srate,keyb.ps2mouse.last_srate+1,2);
-            keyb.ps2mouse.last_srate[2] = val;
-            keyb.ps2mouse.samplerate = val;
-            keyb.aux_command = ACMD_NONE;
-            LOG(LOG_KEYBOARD,LOG_NORMAL)("PS/2 mouse sample rate set to %u",(int)val);
-            if (keyb.ps2mouse.type >= MOUSE_INTELLIMOUSE) {
-                if (keyb.ps2mouse.last_srate[0] == 200 && keyb.ps2mouse.last_srate[2] == 80) {
-                    if (keyb.ps2mouse.last_srate[1] == 100) {
-                        if (!keyb.ps2mouse.intellimouse_mode) {
-                            LOG(LOG_KEYBOARD,LOG_NORMAL)("Intellimouse mode enabled");
-                            keyb.ps2mouse.intellimouse_mode=true;
-                        }
-                    }
-                    else if (keyb.ps2mouse.last_srate[1] == 200 && keyb.ps2mouse.type >= MOUSE_INTELLIMOUSE45) {
-                        if (!keyb.ps2mouse.intellimouse_btn45) {
-                            LOG(LOG_KEYBOARD,LOG_NORMAL)("Intellimouse 4/5-button mode enabled");
-                            keyb.ps2mouse.intellimouse_btn45=true;
-                        }
-                    }
-                }
-            }
-            break;
-        case ACMD_SET_RESOLUTION:
-            keyb.aux_command = ACMD_NONE;
-            KEYBOARD_AddBuffer(AUX|0xfa);   /* ack */
-            keyb.ps2mouse.resolution = val & 3;
-            LOG(LOG_KEYBOARD,LOG_NORMAL)("PS/2 mouse resolution set to %u",(int)(1 << (val&3)));
-            break;
-    }
-}
-
 #include "control.h"
 
 bool allow_keyb_reset = true;
@@ -586,17 +364,10 @@ static void write_p60(Bitu port,Bitu val,Bitu iolen) {
             keyb.scanset = val;
         }
         break;
-    case CMD_WRITEAUX:
-        keyb.command=CMD_NONE;
-        KEYBOARD_AUX_Write(val);
-        break;
     case CMD_WRITEOUTPUT:
         keyb.command=CMD_NONE;
         KEYBOARD_ClrBuffer();
         KEYBOARD_AddBuffer(val);    /* and now you return the byte as if it were typed in */
-        break;
-    case CMD_WRITEAUXOUT:
-        KEYBOARD_AddBuffer(AUX|val); /* stuff into AUX output */
         break;
     case CMD_SETOUTPORT:
         if (!(val & 1)) {
@@ -754,18 +525,6 @@ static void write_p64(Bitu port,Bitu val,Bitu iolen) {
         break;
     case 0xd2:      /* write output register */
         keyb.command=CMD_WRITEOUTPUT;
-        break;
-    case 0xd3:      /* write AUX output */
-        if (keyb.enable_aux)
-            keyb.command=CMD_WRITEAUXOUT;
-        else if (aux_warning++ == 0)
-            LOG(LOG_KEYBOARD,LOG_ERROR)("Program is writing 8042 AUX. If you intend to use PS/2 mouse emulation you may consider adding aux=1 to your dosbox.conf");
-        break;
-    case 0xd4:      /* send byte to AUX */
-        if (keyb.enable_aux)
-            keyb.command=CMD_WRITEAUX;
-        else if (aux_warning++ == 0)
-            LOG(LOG_KEYBOARD,LOG_ERROR)("Program is writing 8042 AUX. If you intend to use PS/2 mouse emulation you may consider adding aux=1 to your dosbox.conf");
         break;
     case 0xe0:      /* read test port */
         KEYBOARD_Add8042Response(0x00);
@@ -1488,15 +1247,6 @@ void KEYBOARD_OnReset(Section *sec) {
 
     LOG(LOG_MISC,LOG_DEBUG)("Keyboard reinitializing");
 
-    if ((keyb.enable_aux=section->Get_bool("aux")) != false) {
-        if (machine == MCH_PCJR) {
-            keyb.enable_aux = false;
-        }
-        else {
-            LOG(LOG_KEYBOARD,LOG_NORMAL)("Keyboard AUX emulation enabled");
-        }
-    }
-
     TIMER_DelTickHandler(&KEYBOARD_TickHandler);
 
     allow_keyb_reset = section->Get_bool("allow output port reset");
@@ -1536,7 +1286,6 @@ void KEYBOARD_OnReset(Section *sec) {
     TIMER_AddTickHandler(&KEYBOARD_TickHandler);
     write_p61(0,0,0);
     KEYBOARD_Reset();
-    AUX_Reset();
     keyb.p60data = 0xAA;
 }
 
@@ -1546,29 +1295,6 @@ void KEYBOARD_Init() {
     AddExitFunction(AddExitFunctionFuncPair(KEYBOARD_ShutDown));
 
     AddVMEventFunction(VM_EVENT_RESET,AddVMEventFunctionFuncPair(KEYBOARD_OnReset));
-}
-
-void AUX_Reset() {
-    keyb.ps2mouse.mode = keyb.ps2mouse.reset_mode;
-    keyb.ps2mouse.acx = 0;
-    keyb.ps2mouse.acy = 0;
-    keyb.ps2mouse.samplerate = 80;
-    keyb.ps2mouse.last_srate[0] = keyb.ps2mouse.last_srate[1] = keyb.ps2mouse.last_srate[2] = 0;
-    keyb.ps2mouse.intellimouse_btn45 = false;
-    keyb.ps2mouse.intellimouse_mode = false;
-    keyb.ps2mouse.reporting = false;
-    keyb.ps2mouse.scale21 = false;
-    keyb.ps2mouse.resolution = 1;
-    if (keyb.ps2mouse.type != MOUSE_NONE && keyb.ps2mouse.int33_taken)
-        LOG(LOG_KEYBOARD,LOG_NORMAL)("PS/2 mouse emulation: taking over from INT 33h");
-    keyb.ps2mouse.int33_taken = 0;
-    keyb.ps2mouse.l = keyb.ps2mouse.m = keyb.ps2mouse.r = false;
-}
-
-void AUX_INT33_Takeover() {
-    if (keyb.ps2mouse.type != MOUSE_NONE && keyb.ps2mouse.int33_taken)
-        LOG(LOG_KEYBOARD,LOG_NORMAL)("PS/2 mouse emulation: Program is using INT 33h, disabling direct AUX emulation");
-    keyb.ps2mouse.int33_taken = 1;
 }
 
 void KEYBOARD_Reset() {
