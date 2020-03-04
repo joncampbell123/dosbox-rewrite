@@ -29,8 +29,6 @@
 #include "inout.h"
 #include "setup.h"
 #include "cpu.h"
-#include "pc98_cg.h"
-#include "pc98_gdc.h"
 #include "zipfile.h"
 
 extern ZIPFile savestate_zip;

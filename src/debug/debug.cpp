@@ -39,7 +39,6 @@ using namespace std;
 #include "vga.h"
 #include "mapper.h"
 #include "cpu.h"
-#include "pc98_gdc.h"
 #include "callback.h"
 #include "inout.h"
 #include "mixer.h"

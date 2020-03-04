@@ -30,10 +30,6 @@
 #include "menu.h"
 #include "util_units.h"
 #include "control.h"
-#include "pc98_cg.h"
-#include "pc98_dac.h"
-#include "pc98_gdc.h"
-#include "pc98_gdc_const.h"
 #include "mixer.h"
 
 void pc98_update_page_ptrs(void);

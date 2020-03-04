@@ -37,8 +37,6 @@
 #include "mapper.h"
 #include "vga.h"
 #include "shiftjis.h"
-#include "pc98_gdc.h"
-#include "pc98_gdc_const.h"
 #include "regionalloctracking.h"
 #include "build_timestamp.h"
 extern bool PS1AudioCard;

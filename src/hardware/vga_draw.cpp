@@ -36,9 +36,6 @@
 #include "timer.h"
 #include "config.h"
 #include "control.h"
-#include "pc98_cg.h"
-#include "pc98_gdc.h"
-#include "pc98_gdc_const.h"
 
 bool mcga_double_scan = false;
 
