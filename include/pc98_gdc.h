@@ -1,15 +1,7 @@
 
-#define PC98_GDC_FIFO_SIZE      32      /* taken from Neko Project II, but what is it really? */
-#define GDC_COMMAND_BYTE        0x100
-
 enum {
     GDC_MASTER=0,
     GDC_SLAVE=1
-};
-
-union pc98_tile {
-    uint8_t                 b[2];
-    uint16_t                w;
 };
 
 struct PC98_GDC_state {
@@ -49,12 +41,6 @@ struct PC98_GDC_state {
      * in one and commands in another....? */
 
     uint8_t                 cmd_parm_tmp[8];            /* temp storage before accepting params */
-
-    uint8_t                 rfifo[PC98_GDC_FIFO_SIZE];
-    uint8_t                 rfifo_read,rfifo_write;
-
-    uint16_t                fifo[PC98_GDC_FIFO_SIZE];   /* NTS: Neko Project II uses one big FIFO for command and data, which makes sense to me */
-    uint8_t                 fifo_read,fifo_write;
 
     uint8_t                 param_ram[16];
     uint8_t                 param_ram_wptr;
@@ -102,6 +88,4 @@ struct PC98_GDC_state {
 
     bool                    doublescan;                 /* 200-line as 400-line */
 };
-
-typedef union pc98_tile             egc_quad[4];
 

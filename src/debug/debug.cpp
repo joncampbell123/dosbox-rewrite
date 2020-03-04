@@ -90,15 +90,11 @@ extern bool                         pc98_attr4_graphic;
 extern bool                         egc_enable_enable;
 extern uint8_t                      pc98_gdc_tile_counter;
 extern uint8_t                      pc98_gdc_modereg;
-extern egc_quad                     pc98_gdc_tiles;
 
 extern uint16_t                     pc98_egc_raw_values[8];
 
 extern uint16_t                     a1_font_load_addr;
 extern uint8_t                      a1_font_char_offset;
-
-extern egc_quad             pc98_egc_bgcm;
-extern egc_quad             pc98_egc_fgcm;
 
 extern uint8_t                     pc98_egc_access;
 extern uint8_t                     pc98_egc_srcmask[2]; /* host given (Neko: egc.srcmask) */

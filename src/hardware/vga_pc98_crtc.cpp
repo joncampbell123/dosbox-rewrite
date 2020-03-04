@@ -66,7 +66,6 @@ uint8_t                     GDC_display_plane = false;
 uint8_t                     pc98_gdc_tile_counter=0;
 uint8_t                     pc98_gdc_modereg=0;
 uint8_t                     pc98_gdc_vramop=0;
-egc_quad                    pc98_gdc_tiles;
 
 extern unsigned char        pc98_text_first_row_scanline_start;  /* port 70h */
 extern unsigned char        pc98_text_first_row_scanline_end;    /* port 72h */

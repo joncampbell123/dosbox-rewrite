@@ -46,9 +46,6 @@
 
 void pc98_egc_shift_reinit();
 
-extern egc_quad             pc98_egc_bgcm;
-extern egc_quad             pc98_egc_fgcm;
-
 uint16_t                    pc98_egc_raw_values[8] = {0};
 
 uint8_t                     pc98_egc_access=0;
