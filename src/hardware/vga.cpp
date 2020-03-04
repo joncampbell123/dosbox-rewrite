@@ -703,12 +703,6 @@ void VGA_Reset(Section*) {
                 vga_memio_delay_ns = (int)floor(t);
             }
         }
-        else if (machine == MCH_CGA) {
-            /* default IBM PC/XT 4.77MHz timing. this is carefully tuned so that Trixter's CGA test program
-             * times our CGA emulation as having about 305KB/sec reading speed. */
-            double t = (1000000000.0 * clockdom_ISA_OSC.freq_div * 143) / (clockdom_ISA_OSC.freq * 3);
-            vga_memio_delay_ns = (int)floor(t);
-        }
         else {
             /* dunno. pick something */
             double t = (1000000000.0 * clockdom_ISA_BCLK.freq_div * 6) / clockdom_ISA_BCLK.freq;
@@ -757,9 +751,6 @@ void VGA_Reset(Section*) {
      * FIXME: Again it was foolish for DOSBox to standardize on machine=
      * for selecting machine type AND video card. */
     switch (machine) {
-        case MCH_CGA:
-            if (vga.mem.memsize < _KB_bytes(16)) vga.mem.memsize = _KB_bytes(16);
-            break;
         case MCH_PCJR:
             if (vga.mem.memsize < _KB_bytes(128)) vga.mem.memsize = _KB_bytes(128); /* FIXME: Right? */
             break;
@@ -850,7 +841,6 @@ void VGA_Reset(Section*) {
 
     // TODO: Code to remove programs added by PROGRAMS_MakeFile
 
-    if (machine == MCH_CGA) PROGRAMS_MakeFile("CGASNOW.COM",CGASNOW_ProgramStart);
     PROGRAMS_MakeFile("VFRCRATE.COM",VFRCRATE_ProgramStart);
 }
 

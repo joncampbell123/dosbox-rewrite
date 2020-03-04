@@ -376,7 +376,6 @@ void DOS_Shell::Run(void) {
 #if C_DEBUG
         WriteOut(MSG_Get("SHELL_STARTUP_DEBUG"));
 #endif
-        if (machine == MCH_CGA) WriteOut(MSG_Get("SHELL_STARTUP_CGA"));
         WriteOut(MSG_Get("SHELL_STARTUP_END"));
     }
     else {

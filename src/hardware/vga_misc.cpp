@@ -176,8 +176,6 @@ void VGA_SetupMisc(void) {
 		} else {
 			IO_RegisterReadHandler(0x3c8,read_p3c8,IO_MB);
 		}
-	} else if (machine==MCH_CGA) {
-		IO_RegisterReadHandler(0x3da,vga_read_p3da,IO_MB);
 	}
 }
 

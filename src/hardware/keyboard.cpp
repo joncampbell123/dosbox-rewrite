@@ -1278,7 +1278,7 @@ void KEYBOARD_OnReset(Section *sec) {
         IO_RegisterReadHandler(0x60,read_p60,IO_MB);
         IO_RegisterWriteHandler(0x61,write_p61,IO_MB);
         IO_RegisterReadHandler(0x61,read_p61,IO_MB);
-        if (machine==MCH_CGA) IO_RegisterReadHandler(0x62,read_p62,IO_MB);
+        IO_RegisterReadHandler(0x62,read_p62,IO_MB);
         IO_RegisterWriteHandler(0x64,write_p64,IO_MB);
         IO_RegisterReadHandler(0x64,read_p64,IO_MB);
     }

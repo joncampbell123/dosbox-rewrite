@@ -661,9 +661,6 @@ bool INT10_SetCurMode(void) {
 	Bit16u bios_mode=(Bit16u)real_readb(BIOSMEM_SEG,BIOSMEM_CURRENT_MODE);
 	if (CurMode == NULL || CurMode->mode != bios_mode) {
 		switch (machine) {
-		case MCH_CGA:
-			if (bios_mode<7) mode_changed=SetCurMode(ModeList_OTHER,bios_mode);
-			break;
 		case MCH_EGA:
 			mode_changed=SetCurMode(ModeList_EGA,bios_mode);
 			break;
@@ -785,12 +782,6 @@ static void FinishSetMode(bool clearmem) {
 }
 
 bool INT10_SetVideoMode_OTHER(Bit16u mode,bool clearmem) {
-	switch (machine) {
-	case MCH_CGA:
-		if (mode>6) return false;
-	default:
-		break;
-	}
 	LOG(LOG_INT10,LOG_NORMAL)("Set Video Mode %X",mode);
 
 	/* Setup the CRTC */
@@ -864,21 +855,6 @@ bool INT10_SetVideoMode_OTHER(Bit16u mode,bool clearmem) {
 	};
 	Bit8u mode_control,color_select;
 	switch (machine) {
-	case MCH_CGA:
-        if (CurMode->mode < sizeof(mode_control_list))
-            mode_control=mode_control_list[CurMode->mode];
-        else
-            mode_control=0x00;
-
-		if (CurMode->mode == 0x6) color_select=0x3f;
-        else if (CurMode->mode == 0x11) color_select=0x3f;
-		else color_select=0x30;
-		IO_WriteB(0x3d8,mode_control);
-		IO_WriteB(0x3d9,color_select);
-		real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_MSR,mode_control);
-		real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_PAL,color_select);
-		if (mono_cga) Mono_CGA_Palette();
-		break;
 	case MCH_PCJR:
 		/* Init some registers */
 		IO_ReadB(0x3da);

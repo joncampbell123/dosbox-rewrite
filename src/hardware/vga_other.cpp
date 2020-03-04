@@ -33,10 +33,6 @@ static Bitu read_cga(Bitu /*port*/,Bitu /*iolen*/);
 static void write_cga(Bitu port,Bitu val,Bitu /*iolen*/);
 
 void UpdateCGAFromSaveState(void) {
-	if (machine==MCH_CGA) {
-        write_cga(0x3D8,vga.tandy.mode_control,1); // restore CGA
-        write_cga(0x3D9,vga.tandy.color_select,1); // restore CGA
-    }
 }
 
 static unsigned char mcga_crtc_dat_org = 0x00;
@@ -971,48 +967,11 @@ void VGA_SetupOther(void) {
 	vga.tandy.line_mask = 3;
 	vga.tandy.line_shift = 13;
 
-	if (machine==MCH_CGA) {
-		extern Bit8u int10_font_08[256 * 8];
-		for (Bitu i=0;i<256;i++)	memcpy(&vga.draw.font[i*32],&int10_font_08[i*8],8);
-		vga.draw.font_tables[0]=vga.draw.font_tables[1]=vga.draw.font;
-	}
-	if (machine==MCH_CGA) {
-		IO_RegisterWriteHandler(0x3db,write_lightpen,IO_MB);
-		IO_RegisterWriteHandler(0x3dc,write_lightpen,IO_MB);
-	}
-	if (machine==MCH_CGA) {
-		vga.amstrad.mask_plane = 0x07070707;
-		vga.amstrad.write_plane = 0x0F;
-		vga.amstrad.read_plane = 0x00;
-		vga.amstrad.border_color = 0x00;
-
-		IO_RegisterWriteHandler(0x3d8,write_cga,IO_MB);
-		IO_RegisterWriteHandler(0x3d9,write_cga,IO_MB);
-
-		if(!mono_cga) {
-            MAPPER_AddHandler(IncreaseHue,MK_nothing,0,"inchue","Inc Hue");
-            MAPPER_AddHandler(DecreaseHue,MK_nothing,0,"dechue","Dec Hue");
-            MAPPER_AddHandler(CGAModel,MK_nothing,0,"cgamodel","CGA Model");
-            MAPPER_AddHandler(Composite,MK_nothing,0,"cgacomp","CGA Comp");
-        } else {
-            MAPPER_AddHandler(CycleMonoCGAPal,MK_nothing,0,"monocgapal","Mono CGA Pal"); 
-            MAPPER_AddHandler(CycleMonoCGABright,MK_nothing,0,"monocgabright","Mono CGA Bright"); 
-        }
-	}
 	if (machine==MCH_PCJR) {
 		//write_pcjr will setup base address
 		write_pcjr( 0x3df, 0x7 | (0x7 << 3), 0 );
 		IO_RegisterWriteHandler(0x3da,write_pcjr,IO_MB);
 		IO_RegisterWriteHandler(0x3df,write_pcjr,IO_MB);
-	}
-	if (machine==MCH_CGA) {
-		Bitu base=0x3d0;
-		for (Bitu port_ct=0; port_ct<4; port_ct++) {
-			IO_RegisterWriteHandler(base+port_ct*2,write_crtc_index_other,IO_MB);
-			IO_RegisterWriteHandler(base+port_ct*2+1,write_crtc_data_other,IO_MB);
-			IO_RegisterReadHandler(base+port_ct*2,read_crtc_index_other,IO_MB);
-			IO_RegisterReadHandler(base+port_ct*2+1,read_crtc_data_other,IO_MB);
-		}
 	}
 }
 

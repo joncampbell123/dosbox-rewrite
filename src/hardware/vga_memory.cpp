@@ -890,12 +890,6 @@ void VGA_SetupHandlers(void) {
 
 	PageHandler *newHandler;
 	switch (machine) {
-	case MCH_CGA:
-		if (enableCGASnow && (vga.mode == M_TEXT || vga.mode == M_TANDY_TEXT))
-			MEM_SetPageHandler( VGA_PAGE_B8, 8, &vgaph.cgatext );
-		else
-			MEM_SetPageHandler( VGA_PAGE_B8, 8, &vgaph.slow );
-		goto range_done;
 	case MCH_PCJR:
 		MEM_SetPageHandler( VGA_PAGE_A0, 16, &vgaph.empty );
 		MEM_SetPageHandler( VGA_PAGE_B0, 8, &vgaph.empty );

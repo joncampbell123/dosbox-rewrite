@@ -2883,7 +2883,7 @@ static Bitu INT15_Handler(void) {
             reg_ah=0x86;
             CALLBACK_SCF(true);
             LOG_MSG("APM BIOS call attempted. set apmbios=1 if you want power management\n");
-            if ((IS_EGAVGA_ARCH) || (machine==MCH_CGA)) {
+            if ((IS_EGAVGA_ARCH)) {
                 /* relict from comparisons, as int15 exits with a retf2 instead of an iret */
                 CALLBACK_SZF(false);
             }
@@ -2951,7 +2951,7 @@ static Bitu INT15_Handler(void) {
                 LOG(LOG_BIOS,LOG_ERROR)("INT15:Unknown call ah=E8, al=%2X",reg_al);
                 reg_ah=0x86;
                 CALLBACK_SCF(true);
-                if ((IS_EGAVGA_ARCH) || (machine==MCH_CGA)) {
+                if ((IS_EGAVGA_ARCH)) {
                     /* relict from comparisons, as int15 exits with a retf2 instead of an iret */
                     CALLBACK_SZF(false);
                 }
@@ -2961,7 +2961,7 @@ static Bitu INT15_Handler(void) {
         LOG(LOG_BIOS,LOG_ERROR)("INT15:Unknown call ax=%4X",reg_ax);
         reg_ah=0x86;
         CALLBACK_SCF(true);
-        if ((IS_EGAVGA_ARCH) || (machine==MCH_CGA)) {
+        if ((IS_EGAVGA_ARCH)) {
             /* relict from comparisons, as int15 exits with a retf2 instead of an iret */
             CALLBACK_SZF(false);
         }
@@ -3444,7 +3444,7 @@ private:
         // setup a few interrupt handlers that point to bios IRETs by default
         real_writed(0,0x66*4,CALLBACK_RealPointer(call_default));   //war2d
         real_writed(0,0x67*4,CALLBACK_RealPointer(call_default));
-        if (machine==MCH_CGA || null_68h) real_writed(0,0x68*4,0);  //Popcorn
+        if (null_68h) real_writed(0,0x68*4,0);  //Popcorn
         real_writed(0,0x5c*4,CALLBACK_RealPointer(call_default));   //Network stuff
         //real_writed(0,0xf*4,0); some games don't like it
 
@@ -3541,7 +3541,6 @@ private:
 #endif
             switch (machine) {
                 case EGAVGA_ARCH_CASE:
-                case MCH_CGA:
                     //Startup 80x25 color
                     config|=0x20;
                     break;
@@ -3940,7 +3939,7 @@ private:
 
             DrawDOSBoxLogoVGA((unsigned int)logo_x*8u,(unsigned int)logo_y*(unsigned int)rowheight);
         }
-        else if (machine == MCH_CGA || machine == MCH_PCJR) {
+        else if (machine == MCH_PCJR) {
             rowheight = 8;
             reg_eax = 6;        // 640x200 2-color
             CALLBACK_RunRealInt(0x10);
@@ -3982,9 +3981,6 @@ private:
             const char *card = "?";
 
             switch (machine) {
-                case MCH_CGA:
-                    card = "IBM Color Graphics Adapter";
-                    break;
                 case MCH_EGA:
                     card = "IBM Enhanced Graphics Adapter";
                     break;
@@ -4271,9 +4267,6 @@ public:
         ulimit = 640;
         t_conv = MEM_TotalPages() << 2; /* convert 4096/byte pages -> 1024/byte KB units */
         if (allow_more_than_640kb) {
-            if (machine == MCH_CGA)
-                ulimit = 736;       /* 640KB + 64KB + 32KB  0x00000-0xB7FFF */
-
             if (t_conv > ulimit) t_conv = ulimit;
             if (t_conv > 640) { /* because the memory emulation has already set things up */
                 bool MEM_map_RAM_physmem(Bitu start,Bitu end);

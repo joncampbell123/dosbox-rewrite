@@ -277,10 +277,6 @@ void INT10_SetBackgroundBorder(Bit8u val) {
 	real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_PAL,color_select);
 	
 	switch (machine) {
-	case MCH_CGA:
-		// only write the color select register
-		IO_Write(0x3d9,color_select);
-		break;
 	case MCH_PCJR:
 		IO_Read(VGAREG_TDY_RESET); // reset the flipflop
 		if (vga.mode!=M_TANDY_TEXT) {
@@ -314,9 +310,7 @@ void INT10_SetColorSelect(Bit8u val) {
 	Bit8u temp=real_readb(BIOSMEM_SEG,BIOSMEM_CURRENT_PAL);
 	temp=(temp & 0xdf) | ((val & 1) ? 0x20 : 0x0);
 	real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_PAL,temp);
-	if (machine == MCH_CGA)
-		IO_Write(0x3d9,temp);
-	else if (machine == MCH_PCJR) {
+	if (machine == MCH_PCJR) {
 		IO_Read(VGAREG_TDY_RESET); // reset the flipflop
 		switch(vga.mode) {
 		case M_TANDY2:

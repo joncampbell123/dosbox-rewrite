@@ -362,7 +362,6 @@ void INT10_SetActivePage(Bit8u page) {
 
 void INT10_SetCursorShape(Bit8u first,Bit8u last) {
     real_writew(BIOSMEM_SEG,BIOSMEM_CURSOR_TYPE,last|(first<<8u));
-    if (machine==MCH_CGA) goto dowrite;
     /* Skip CGA cursor emulation if EGA/VGA system is active */
     if (!(real_readb(BIOSMEM_SEG,BIOSMEM_VIDEO_CTL) & 0x8)) {
         /* Check for CGA type 01, invisible */
@@ -471,14 +470,7 @@ void ReadCharAttr(Bit16u col,Bit16u row,Bit8u page,Bit16u * result) {
     case M_CGA2:
     case M_TANDY16:
         split_chr = true;
-        switch (machine) {
-        case MCH_CGA:
-            fontdata=PhysMake(0xf000,0xfa6e);
-            break;
-        default:
-            fontdata=Real2Phys(RealGetVec(0x43));
-            break;
-        }
+        fontdata=Real2Phys(RealGetVec(0x43));
         break;
     default:
         fontdata=Real2Phys(RealGetVec(0x43));
@@ -558,14 +550,7 @@ void WriteChar(Bit16u col,Bit16u row,Bit8u page,Bit16u chr,Bit8u attr,bool useat
             fontdata=Real2Phys(RealGetVec(0x1f));
             break;
         }
-        switch (machine) {
-        case MCH_CGA:
-            fontdata=PhysMake(0xf000,0xfa6e);
-            break;
-        default:
-            fontdata=Real2Phys(RealGetVec(0x43));
-            break;
-        }
+        fontdata=Real2Phys(RealGetVec(0x43));
         break;
     default:
         fontdata=Real2Phys(RealGetVec(0x43));
@@ -649,7 +634,6 @@ void INT10_WriteChar(Bit16u chr,Bit8u attr,Bit8u page,Bit16u count,bool showattr
                     break;
                 }
                 break;
-            case MCH_CGA:
             case MCH_PCJR:
                 page=0;
                 pospage=0;

@@ -1887,10 +1887,6 @@ again:
                     // Displays the border color when screen is disabled
                     bg_color_index = vga.tandy.border_color;
                     break;
-                case MCH_CGA:
-                    // the background color
-                    bg_color_index = vga.attr.overscan_color;
-                    break;
                 case MCH_EGA:
                 case MCH_VGA:
                     // DoWhackaDo, Alien Carnage, TV sports Football
@@ -2388,11 +2384,6 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
         PIC_AddEvent(VGA_Other_VertInterrupt, (float)vga.draw.delay.vrstart, 1);
         PIC_AddEvent(VGA_Other_VertInterrupt, (float)vga.draw.delay.vrend, 0);
         // fall-through
-    case MCH_CGA:
-        // MC6845-powered graphics: Loading the display start latch happens somewhere
-        // after vsync off and before first visible scanline, so probably here
-        VGA_DisplayStartLatch(0);
-        break;
     case MCH_VGA:
         PIC_AddEvent(VGA_DisplayStartLatch, (float)vga.draw.delay.vrstart);
         PIC_AddEvent(VGA_PanningLatch, (float)vga.draw.delay.vrend);
@@ -2788,7 +2779,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
 
     // set the drawing mode
     switch (machine) {
-    case MCH_CGA:
     case MCH_PCJR:
         vga.draw.mode = DRAWLINE;
         break;
@@ -2944,14 +2934,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
         vbend = vtotal;
 
         switch (machine) {
-        case MCH_CGA:
-            clock = (PIT_TICK_RATE*12)/8;
-            // FIXME: This is wrong for Tandy/PCjr 16-color modes and 640-wide 4-color mode
-            if (vga.mode != M_TANDY2) {
-                if (!(vga.tandy.mode_control & 1)) clock /= 2;
-            }
-            oscclock = clock * 8;
-            break;
         default:
             clock = (PIT_TICK_RATE*12)/8;
             oscclock = clock * 8;
@@ -3443,16 +3425,10 @@ void VGA_SetupDrawing(Bitu /*val*/) {
     case M_TANDY_TEXT: /* Also CGA */
         vga.draw.blocks=width;
         if (vga_alt_new_mode) {
-            if (machine==MCH_CGA /*&& !doublewidth*/ && enableCGASnow && (vga.tandy.mode_control & 1)/*80-column mode*/)
-                VGA_DrawLine=Alt_CGA_CGASNOW_TEXT_Draw_Line; /* Alternate version that emulates CGA snow */
-            else
-                VGA_DrawLine=Alt_CGA_TEXT_Draw_Line;
+            VGA_DrawLine=Alt_CGA_TEXT_Draw_Line;
         }
         else {
-            if (machine==MCH_CGA /*&& !doublewidth*/ && enableCGASnow && (vga.tandy.mode_control & 1)/*80-column mode*/)
-                VGA_DrawLine=VGA_CGASNOW_TEXT_Draw_Line; /* Alternate version that emulates CGA snow */
-            else
-                VGA_DrawLine=VGA_TEXT_Draw_Line;
+            VGA_DrawLine=VGA_TEXT_Draw_Line;
         }
 
         break;
@@ -3501,7 +3477,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
                         ((double)vdend/(double)(vtotal-(vrend-vrstart)));
     double scanfield_ratio = 4.0/3.0;
     switch(machine) {
-        case MCH_CGA:
         case MCH_PCJR:
             scanfield_ratio = 1.382;
             break;

@@ -97,7 +97,7 @@ class Section;
 
 enum MachineType {
 	MCH_DEL_HERC,
-	MCH_CGA,
+	MCH_DEL_CGA,
 	MCH_DEL_TANDY,
 	MCH_PCJR,
 	MCH_EGA,
