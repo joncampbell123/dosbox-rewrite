@@ -96,7 +96,6 @@ static const char *def_menu__toplevel[] =
     "MainMenu",
     "CpuMenu",
     "VideoMenu",
-    "DOSMenu",
 #if !defined(C_EMSCRIPTEN)
     "CaptureMenu",
 #endif
@@ -256,13 +255,6 @@ static const char *def_menu_video[] =
     "--",
     "load_d3d_shader",
 #endif
-    NULL
-};
-
-/* DOS menu ("DOSMenu") */
-static const char *def_menu_dos[] =
-{
-    "mapper_rescanall",
     NULL
 };
 
@@ -974,9 +966,6 @@ void ConstructMenu(void) {
 
     /* video vsync menu */
     ConstructSubMenu(mainMenu.get_item("VideoVsyncMenu").get_master_id(), def_menu_video_vsync);
-
-    /* DOS menu */
-    ConstructSubMenu(mainMenu.get_item("DOSMenu").get_master_id(), def_menu_dos);
 
 #if !defined(C_EMSCRIPTEN)
     /* capture menu */

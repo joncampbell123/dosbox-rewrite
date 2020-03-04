@@ -2368,9 +2368,6 @@ void DOS_DoShutDown() {
 	}
 
     DOS_Casemap_Free();
-
-    mainMenu.get_item("mapper_rescanall").enable(false).refresh_item(mainMenu);
-    for (char drv='A';drv <= 'Z';drv++) DOS_EnableDriveMenu(drv);
 }
 
 void DOS_ShutDown(Section* /*sec*/) {
@@ -2393,19 +2390,6 @@ void DOS_Startup(Section* sec) {
         LOG(LOG_MISC,LOG_DEBUG)("Allocating DOS kernel");
 		test = new DOS(control->GetSection("dos"));
 	}
-
-    mainMenu.get_item("mapper_rescanall").enable(true).refresh_item(mainMenu);
-    for (char drv='A';drv <= 'Z';drv++) DOS_EnableDriveMenu(drv);
-}
-
-void DOS_RescanAll(bool pressed) {
-    if (!pressed) return;
-    if (dos_kernel_disabled) return;
-
-    LOG(LOG_DOSMISC,LOG_DEBUG)("Triggering rescan on all drives");
-    for(Bitu i =0; i<DOS_DRIVES;i++) {
-        if (Drives[i]) Drives[i]->EmptyCache();
-    }
 }
 
 void DOS_Init() {
@@ -2424,12 +2408,5 @@ void DOS_Init() {
 	AddVMEventFunction(VM_EVENT_DOS_EXIT_KERNEL,AddVMEventFunctionFuncPair(DOS_ShutDown));
 	AddVMEventFunction(VM_EVENT_DOS_EXIT_REBOOT_KERNEL,AddVMEventFunctionFuncPair(DOS_ShutDown));
 	AddVMEventFunction(VM_EVENT_DOS_SURPRISE_REBOOT,AddVMEventFunctionFuncPair(DOS_OnReset));
-
-    DOSBoxMenu::item *item;
-
-    MAPPER_AddHandler(DOS_RescanAll,MK_nothing,0,"rescanall","RescanAll",&item);
-    item->enable(false).refresh_item(mainMenu);
-    item->set_text("Rescan all drives");
-    for (char drv='A';drv <= 'Z';drv++) DOS_EnableDriveMenu(drv);
 }
 

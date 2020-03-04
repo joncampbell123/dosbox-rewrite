@@ -7192,10 +7192,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
             }
 #endif
         }
-        {
-            DOSBoxMenu::item &item = mainMenu.alloc_item(DOSBoxMenu::submenu_type_id,"DOSMenu");
-            item.set_text("DOS");
-        }
 #if !defined(C_EMSCRIPTEN)
         {
             DOSBoxMenu::item &item = mainMenu.alloc_item(DOSBoxMenu::submenu_type_id,"CaptureMenu");
