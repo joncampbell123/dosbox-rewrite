@@ -412,17 +412,6 @@ void DOS_BuildUMBChain(bool umb_active,bool /*ems_active*/) {
 	if (umb_active && seg_limit >= (0x10000+0x1000-1) && first_umb_seg < GetEMSPageFrameSegment()) {
         /* XMS emulation sets UMB size now.
          * PCjr mode disables UMB emulation */
-#if 0
-		if (ems_active) {
-			/* we can use UMBs up to the EMS page frame */
-			/* FIXME: when we make the EMS page frame configurable this will need to be updated */
-			first_umb_size = GetEMSPageFrameSegment() - first_umb_seg;
-		}
-		else if (machine == MCH_PCJR) {
-			/* we can use UMBs up to where PCjr wants cartridge ROM */
-			first_umb_size = 0xE000 - first_umb_seg;
-		}
-#endif
 
 		dos_infoblock.SetStartOfUMBChain((Bit16u)UMB_START_SEG);
 		dos_infoblock.SetUMBChainState(0);		// UMBs not linked yet
@@ -531,7 +520,7 @@ void DOS_SetupMemory(void) {
 
 	real_writeb(ihseg,ihofs,(Bit8u)0xCF);		//An IRET Instruction
 	RealSetVec(0x01,RealMake(ihseg,ihofs));		//BioMenace (offset!=4)
-	if (machine != MCH_PCJR) RealSetVec(0x02,RealMake(ihseg,ihofs)); //BioMenace (segment<0x8000). Else, taken by BIOS NMI interrupt
+	RealSetVec(0x02,RealMake(ihseg,ihofs)); //BioMenace (segment<0x8000). Else, taken by BIOS NMI interrupt
 	RealSetVec(0x03,RealMake(ihseg,ihofs));		//Alien Incident (offset!=0)
 	RealSetVec(0x04,RealMake(ihseg,ihofs));		//Shadow President (lower byte of segment!=0)
 	RealSetVec(0x0f,RealMake(ihseg,ihofs));		//Always a tricky one (soundblaster irq)
@@ -556,32 +545,7 @@ void DOS_SetupMemory(void) {
 	DOS_MCB mcb((Bit16u)DOS_MEM_START+mcb_sizes);
 	mcb.SetPSPSeg(MCB_FREE);						//Free
 	mcb.SetType(0x5a);								//Last Block
-	if (machine==MCH_PCJR) {
-		DOS_MCB mcb_devicedummy((Bit16u)0x2000);
-
-        /* FIXME: The PCjr can have built-in either 64KB or 128KB of RAM.
-         *        RAM beyond 128KB is made possible with expansion sidecars.
-         *        DOSBox-X needs to support memsizekb=64 or memsizekb=128,
-         *        and adjust video ram location appropriately. */
-
-		if (seg_limit < ((256*1024)/16))
-			E_Exit("PCjr requires at least 256K");
-		/* memory from 128k to 640k is available */
-		mcb_devicedummy.SetPt((Bit16u)0x2000);
-		mcb_devicedummy.SetPSPSeg(MCB_FREE);
-		mcb_devicedummy.SetSize(/*0x9FFF*/(seg_limit-1) - 0x2000);
-		mcb_devicedummy.SetType(0x5a);
-
-		/* exclude PCJr graphics region */
-		mcb_devicedummy.SetPt((Bit16u)0x17ff);
-		mcb_devicedummy.SetPSPSeg(MCB_DOS);
-		mcb_devicedummy.SetSize(0x800);
-		mcb_devicedummy.SetType(0x4d);
-
-		/* memory below 96k */
-		mcb.SetSize(0x1800 - DOS_MEM_START - (2+mcb_sizes));
-		mcb.SetType(0x4d);
-	} else {
+	{
 #ifndef DEBUG_ALLOC
 		/* NTS: Testing suggests we can push as low as 4KB. However, Wikipedia and
 		 *      other sites suggest that the IBM PC only went as low as 16KB when

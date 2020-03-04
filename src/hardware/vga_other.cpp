@@ -678,16 +678,8 @@ static void TandyCheckLineMask(void ) {
 static void write_tandy_reg(Bit8u val) {
 	switch (vga.tandy.reg_index) {
 	case 0x0:
-		if (machine==MCH_PCJR) {
-			vga.tandy.mode_control=val;
-			VGA_SetBlinking(val & 0x20);
-			PCJr_FindMode();
-			if (val&0x8) vga.attr.disabled &= ~1;
-			else vga.attr.disabled |= 1;
-		} else {
-			LOG(LOG_VGAMISC,LOG_NORMAL)("Unhandled Write %2X to tandy reg %X",val,vga.tandy.reg_index);
-		}
-		break;
+        LOG(LOG_VGAMISC,LOG_NORMAL)("Unhandled Write %2X to tandy reg %X",val,vga.tandy.reg_index);
+        break;
 	case 0x1:	/* Palette mask */
 		vga.tandy.palette_mask = val;
 		tandy_update_palette();
@@ -966,12 +958,5 @@ void VGA_SetupOther(void) {
 	vga.tandy.addr_mask = 8*1024 - 1;
 	vga.tandy.line_mask = 3;
 	vga.tandy.line_shift = 13;
-
-	if (machine==MCH_PCJR) {
-		//write_pcjr will setup base address
-		write_pcjr( 0x3df, 0x7 | (0x7 << 3), 0 );
-		IO_RegisterWriteHandler(0x3da,write_pcjr,IO_MB);
-		IO_RegisterWriteHandler(0x3df,write_pcjr,IO_MB);
-	}
 }
 

@@ -896,11 +896,6 @@ void PIC_Reset(Section *sec) {
         LOG(LOG_MISC,LOG_DEBUG)("PIC: Ignore cascade in service=%u",ignore_cascade_in_service);
     }
 
-    if (enable_slave_pic && machine == MCH_PCJR && enable_pc_xt_nmi_mask) {
-        LOG(LOG_MISC,LOG_DEBUG)("PIC_Reset(): PCjr emulation with NMI mask register requires disabling slave PIC (IRQ 8-15)");
-        enable_slave_pic = false;
-    }
-
     if (!enable_slave_pic && IS_PC98_ARCH)
         LOG(LOG_MISC,LOG_DEBUG)("PIC_Reset(): PC-98 emulation without slave PIC (IRQ 8-15) is unusual");
 

@@ -7308,10 +7308,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
         Reflect_Menu();
 #endif
 
-        /* If PCjr emulation, map cartridge ROM */
-        if (machine == MCH_PCJR)
-            Init_PCJR_CartridgeROM();
-
         /* let's assume motherboards are sane on boot because A20 gate is ENABLED on first boot */
         MEM_A20_Enable(true);
 

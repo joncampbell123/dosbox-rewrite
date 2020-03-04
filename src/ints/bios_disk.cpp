@@ -670,7 +670,7 @@ static Bitu INT13_DiskHandler(void) {
                 /* driveInactive sets carry flag if the specified drive is not available */
                 return CBRET_NONE;
             }
-            if (machine!=MCH_PCJR && reg_dl<0x80) reg_ip++;
+            if (reg_dl<0x80) reg_ip++;
             last_status = 0x00;
             CALLBACK_SCF(false);
         }

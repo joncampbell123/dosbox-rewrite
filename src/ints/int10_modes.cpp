@@ -703,15 +703,6 @@ static void FinishSetMode(bool clearmem) {
         switch (CurMode->type) {
         case M_TANDY16:
         case M_CGA4:
-            if ((machine==MCH_PCJR) && (CurMode->mode >= 9)) {
-                // PCJR cannot access the full 32k at 0xb800
-                for (Bit16u ct=0;ct<16*1024;ct++) {
-                    // 0x1800 is the last 32k block in 128k, as set in the CRTCPU_PAGE register 
-                    real_writew(0x1800,ct*2,0x0000);
-                }
-                break;
-            }
-            // fall-through
 		case M_CGA2:
             {
                 for (Bit16u ct=0;ct<16*1024;ct++) {
@@ -854,37 +845,6 @@ bool INT10_SetVideoMode_OTHER(Bit16u mode,bool clearmem) {
 		0x1a,0x1b,0x0b			//8-a
 	};
 	Bit8u mode_control,color_select;
-	switch (machine) {
-	case MCH_PCJR:
-		/* Init some registers */
-		IO_ReadB(0x3da);
-		IO_WriteB(0x3da,0x1);IO_WriteB(0x3da,0xf);		//Palette mask always 0xf
-		IO_WriteB(0x3da,0x2);IO_WriteB(0x3da,0x0);		//black border
-		IO_WriteB(0x3da,0x3);
-		if (CurMode->mode<=0x04) IO_WriteB(0x3da,0x02);
-		else if (CurMode->mode==0x06) IO_WriteB(0x3da,0x08);
-		else IO_WriteB(0x3da,0x00);
-
-		/* set CRT/Processor page register */
-		if (CurMode->mode<0x04) crtpage=0x3f;
-		else if (CurMode->mode>=0x09) crtpage=0xf6;
-		else crtpage=0x7f;
-		IO_WriteB(0x3df,crtpage);
-		real_writeb(BIOSMEM_SEG,BIOSMEM_CRTCPU_PAGE,crtpage);
-
-		mode_control=mode_control_list_pcjr[CurMode->mode];
-		IO_WriteB(0x3da,0x0);IO_WriteB(0x3da,mode_control);
-		real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_MSR,mode_control);
-
-		if (CurMode->mode == 0x6 || CurMode->mode==0xa) color_select=0x3f;
-		else color_select=0x30;
-		real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_PAL,color_select);
-		INT10_SetColorSelect(1);
-		INT10_SetBackgroundBorder(0);
-		break;
-	default:
-		break;
-	}
 
 	// Check if the program wants us to use a custom mode table
 	RealPt vparams = RealGetVec(0x1d);

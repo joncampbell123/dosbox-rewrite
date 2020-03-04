@@ -171,8 +171,7 @@ static void KEYBOARD_SetPort60(Bit16u val) {
     }
     else {
         if (keyb.cb_irq1) {
-            if (machine == MCH_PCJR) CPU_Raise_NMI(); /* NTS: PCjr apparently hooked the keyboard to NMI */
-            else PIC_ActivateIRQ(1);
+            PIC_ActivateIRQ(1);
         }
     }
 }
@@ -1256,7 +1255,7 @@ void KEYBOARD_OnReset(Section *sec) {
 
     const char * sbtype=section->Get_string("auxdevice");
     keyb.ps2mouse.type = MOUSE_NONE;
-    if (sbtype != NULL && machine != MCH_PCJR && enable_slave_pic) {
+    if (sbtype != NULL && enable_slave_pic) {
         if (!strcasecmp(sbtype,"2button"))
             keyb.ps2mouse.type=MOUSE_2BUTTON;
         else if (!strcasecmp(sbtype,"3button"))

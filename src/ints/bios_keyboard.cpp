@@ -146,11 +146,7 @@ bool BIOS_AddKeyToBuffer(Bit16u code) {
     if (mem_readb(BIOS_KEYBOARD_FLAGS2)&8) return true;
 
     Bit16u start,end,head,tail,ttail;
-    if (machine==MCH_PCJR) {
-        /* should be done for cga and others as well, to be tested */
-        start=0x1e;
-        end=0x3e;
-    } else {
+    {
         start=mem_readw(BIOS_KEYBOARD_BUFFER_START);
         end  =mem_readw(BIOS_KEYBOARD_BUFFER_END);
     }
@@ -182,11 +178,7 @@ static void add_key(Bit16u code) {
 
 static bool get_key(Bit16u &code) {
     Bit16u start,end,head,tail,thead;
-    if (machine==MCH_PCJR) {
-        /* should be done for cga and others as well, to be tested */
-        start=0x1e;
-        end=0x3e;
-    } else {
+    {
         start=mem_readw(BIOS_KEYBOARD_BUFFER_START);
         end  =mem_readw(BIOS_KEYBOARD_BUFFER_END);
     }
@@ -784,26 +776,6 @@ void BIOS_SetupKeyboard(void) {
     }
 
     call_irq1=CALLBACK_Allocate();
-    if (machine == MCH_PCJR) { /* PCjr keyboard interrupt connected to NMI */
-        call_irq_pcjr_nmi=CALLBACK_Allocate();
-
-        CALLBACK_Setup(call_irq_pcjr_nmi,&PCjr_NMI_Keyboard_Handler,CB_IRET,"PCjr NMI Keyboard");
-
-        Bit32u a = CALLBACK_RealPointer(call_irq_pcjr_nmi);
-
-        RealSetVec(0x02/*NMI*/,a);
-
-        /* TODO: PCjr calls INT 48h to convert PCjr scan codes to IBM PC/XT compatible */
-
-        a = ((a >> 16) << 4) + (a & 0xFFFF);
-        /* a+0 = callback instruction (4 bytes)
-         * a+4 = iret (1 bytes) */
-        phys_writeb(a+5,0x50);          /* push ax */
-        phys_writew(a+6,0x60E4);        /* in al,60h */
-        phys_writew(a+8,0x09CD);        /* int 9h */
-        phys_writeb(a+10,0x58);         /* pop ax */
-        phys_writew(a+11,0x00EB + ((256-13)<<8));    /* jmp a+0 */
-    }
 
     {
         CALLBACK_Setup(call_irq1,&IRQ1_Handler,CB_IRQ1,Real2Phys(BIOS_DEFAULT_IRQ1_LOCATION),"IRQ 1 Keyboard");
@@ -842,27 +814,5 @@ void BIOS_SetupKeyboard(void) {
     //  out 0x20, al
     //  pop ax
     //  iret
-
-    if (machine==MCH_PCJR) {
-        call_irq6=CALLBACK_Allocate();
-        CALLBACK_Setup(call_irq6,NULL,CB_IRQ6_PCJR,"PCJr kb irq");
-        RealSetVec(0x0e,CALLBACK_RealPointer(call_irq6));
-        // pseudocode for CB_IRQ6_PCJR:
-        //  push ax
-        //  in al, 0x60
-        //  cmp al, 0xe0
-        //  je skip
-        //  push ds
-        //  push 0x40
-        //  pop ds
-        //  int 0x09
-        //  pop ds
-        //  label skip:
-        //  cli
-        //  mov al, 0x20
-        //  out 0x20, al
-        //  pop ax
-        //  iret
-    }
 }
 

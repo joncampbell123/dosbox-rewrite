@@ -1544,13 +1544,6 @@ public:
 			return;
 		}
 
-		if (machine == MCH_PCJR) {
-			setup_EMS_none();
-			ems_type = EMS_NONE;
-			LOG_MSG("EMS disabled for PCJr machine");
-			return;
-		}
-
         LOG_MSG("EMS page frame at 0x%04x-0x%04x",EMM_PAGEFRAME,EMM_PAGEFRAME+0xFFF);
 
 		ENABLE_VCPI = section->Get_bool("vcpi");

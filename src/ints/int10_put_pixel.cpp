@@ -52,12 +52,7 @@ void INT10_PutPixel(Bit16u x,Bit16u y,Bit8u page,Bit8u color) {
 		} else {
 			// a 32k mode: PCJr special case (see M_TANDY16)
 			Bit16u seg;
-			if (machine==MCH_PCJR) {
-				Bit8u cpupage =
-					(real_readb(BIOSMEM_SEG, BIOSMEM_CRTCPU_PAGE) >> 3) & 0x7;
-				seg = cpupage << 10; // A14-16 to addr bits 14-16
-			} else
-				seg = 0xb800;
+			seg = 0xb800;
 
 			Bit16u off=(y>>2)*160+((x>>2)&(~1));
 			off+=(8*1024) * (y & 3);
@@ -97,13 +92,8 @@ void INT10_PutPixel(Bit16u x,Bit16u y,Bit8u page,Bit8u color) {
 
 		Bit16u segment, offset;
 		if (is_32k) {
-			if (machine==MCH_PCJR) {
-				Bit8u cpupage =
-					(real_readb(BIOSMEM_SEG, BIOSMEM_CRTCPU_PAGE) >> 3) & 0x7;
-				segment = cpupage << 10; // A14-16 to addr bits 14-16
-			} else
-				segment = 0xb800;
-			// bits 1 and 0 of y select the bank
+            segment = 0xb800;
+            // bits 1 and 0 of y select the bank
 			// two pixels per byte (thus x>>1)
 			offset = ((unsigned int)y >> 2u) * ((unsigned int)CurMode->swidth >> 1u) + ((unsigned int)x>>1u);
 			// select the scanline bank
@@ -215,10 +205,7 @@ void INT10_GetPixel(Bit16u x,Bit16u y,Bit8u page,Bit8u * color) {
 			bool is_32k = (real_readb(BIOSMEM_SEG, BIOSMEM_CURRENT_MODE) >= 9)?true:false;
 			Bit16u segment, offset;
 			if (is_32k) {
-				if (machine==MCH_PCJR) {
-					Bit8u cpupage = (real_readb(BIOSMEM_SEG, BIOSMEM_CRTCPU_PAGE) >> 3) & 0x7;
-					segment = cpupage << 10;
-				} else segment = 0xb800;
+				segment = 0xb800;
 				offset = ((unsigned int)y >> 2u) * ((unsigned int)CurMode->swidth >> 1u) + ((unsigned int)x>>1u);
 				offset += (8u*1024u) * (y & 3u);
 			} else {

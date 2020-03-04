@@ -586,16 +586,8 @@ void INT10_SetupBasicVideoParameterTable(void) {
 	size_t copy_sz = 0;
 	Bitu ofs;
 
-	switch (machine) {
-		case MCH_PCJR:
-			copy = vparams_pcjr;
-			copy_sz = sizeof(vparams_pcjr);
-			break;
-		default:
-			copy = vparams;
-			copy_sz = sizeof(vparams);
-			break;
-	}
+    copy = vparams;
+    copy_sz = sizeof(vparams);
 
 	if (BIOS_VIDEO_TABLE_LOCATION == ~(0U) || BIOS_VIDEO_TABLE_SIZE != (Bitu)copy_sz) {
 		if (rom_bios_vptable_enable) {

@@ -751,9 +751,6 @@ void VGA_Reset(Section*) {
      * FIXME: Again it was foolish for DOSBox to standardize on machine=
      * for selecting machine type AND video card. */
     switch (machine) {
-        case MCH_PCJR:
-            if (vga.mem.memsize < _KB_bytes(128)) vga.mem.memsize = _KB_bytes(128); /* FIXME: Right? */
-            break;
         case MCH_EGA:
                  // EGA cards supported either 64KB, 128KB or 256KB.
                  if (vga.mem.memsize == 0)              vga.mem.memsize = _KB_bytes(256);//default

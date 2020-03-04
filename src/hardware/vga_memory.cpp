@@ -890,11 +890,6 @@ void VGA_SetupHandlers(void) {
 
 	PageHandler *newHandler;
 	switch (machine) {
-	case MCH_PCJR:
-		MEM_SetPageHandler( VGA_PAGE_A0, 16, &vgaph.empty );
-		MEM_SetPageHandler( VGA_PAGE_B0, 8, &vgaph.empty );
-		MEM_SetPageHandler( VGA_PAGE_B8, 8, &vgaph.pcjr );
-		goto range_done;
 	case EGAVGA_ARCH_CASE:
         break;
 	default:
@@ -1118,12 +1113,6 @@ void VGA_SetupMemory() {
 
 		AddExitFunction(AddExitFunctionFuncPair(VGA_Memory_ShutDown));
 		VGA_Memory_ShutDown_init = true;
-	}
-
-	if (machine==MCH_PCJR) {
-		/* PCJr does not have dedicated graphics memory but uses
-		   conventional memory below 128k */
-		//TODO map?	
 	}
 }
 

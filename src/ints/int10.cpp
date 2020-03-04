@@ -80,11 +80,6 @@ Bitu INT10_Handler(void) {
 				crtcpu=(crtcpu & 0xc0) | (reg_bh & 7) | ((reg_bl & 7) << 3);
 				break;
 			}
-			if (machine==MCH_PCJR) {
-				/* always return graphics mapping, even for invalid values of AL */
-				reg_bh=crtcpu & 7;
-				reg_bl=(crtcpu >> 3) & 0x7;
-			}
 			IO_WriteB(0x3df,crtcpu);
 			real_writeb(BIOSMEM_SEG, BIOSMEM_CRTCPU_PAGE,crtcpu);
 		}
@@ -133,11 +128,7 @@ Bitu INT10_Handler(void) {
 		reg_ah=(Bit8u)real_readw(BIOSMEM_SEG,BIOSMEM_NB_COLS);
 		break;					
 	case 0x10:								/* Palette functions */
-        if (machine==MCH_PCJR) {
-            if (reg_al>0x02) /* "Looking at the PCjr tech ref page A-61, ... the BIOS listing stops at subfunction 2." */
-                break;
-        }
-        else {
+        {
             if (!IS_EGAVGA_ARCH && (reg_al>0x02)) break;
             else if (!IS_VGA_ARCH && (reg_al>0x03)) break;
         }

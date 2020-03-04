@@ -3550,9 +3550,6 @@ private:
                     break;
             }
 
-            // DMA *not* supported - Ancient Art of War CGA uses this to identify PCjr
-            if (machine==MCH_PCJR) config |= 0x100;
-
             // Gameport
             config |= 0x1000;
             mem_writew(BIOS_CONFIGURATION,config);
@@ -3939,13 +3936,6 @@ private:
 
             DrawDOSBoxLogoVGA((unsigned int)logo_x*8u,(unsigned int)logo_y*(unsigned int)rowheight);
         }
-        else if (machine == MCH_PCJR) {
-            rowheight = 8;
-            reg_eax = 6;        // 640x200 2-color
-            CALLBACK_RunRealInt(0x10);
-
-            DrawDOSBoxLogoCGA6((unsigned int)logo_x*8u,(unsigned int)logo_y*(unsigned int)rowheight);
-        }
         else {
             reg_eax = 3;        // 80x25 text
             CALLBACK_RunRealInt(0x10);
@@ -3983,9 +3973,6 @@ private:
             switch (machine) {
                 case MCH_EGA:
                     card = "IBM Enhanced Graphics Adapter";
-                    break;
-                case MCH_PCJR:
-                    card = "PCjr graohics adapter";
                     break;
                 case MCH_VGA:
                     switch (svgaCard) {
@@ -4188,8 +4175,7 @@ public:
         for(Bitu i = 0; i < strlen(bios_date_string); i++) phys_writeb(0xffff5+i,(Bit8u)bios_date_string[i]);
 
         /* model byte */
-        if (machine==MCH_PCJR) phys_writeb(0xffffe,0xfd);  /* PCJr model */
-        else phys_writeb(0xffffe,0xfc); /* PC (FIXME: This is listed as model byte PS/2 model 60) */
+        phys_writeb(0xffffe,0xfc); /* PC (FIXME: This is listed as model byte PS/2 model 60) */
 
         // signature
         phys_writeb(0xfffff,0x55);

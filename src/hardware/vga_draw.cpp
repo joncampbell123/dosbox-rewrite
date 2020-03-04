@@ -232,10 +232,7 @@ void VGA_Draw2_Recompute_CRTC_MaskAdd(void) {
         /* CGA/MCGA/PCJr/Tandy is emulated as 16 bits per character clock */
         /* PCJr uses system memory < 128KB for video memory.
          * Tandy has an alternate location as well. */
-        if (machine == MCH_PCJR)
-            vga.draw_2[0].draw_base = vga.tandy.mem_base;
-        else
-            vga.draw_2[0].draw_base = vga.mem.linear;
+        vga.draw_2[0].draw_base = vga.mem.linear;
 
         if (vga.tandy.mode_control & 0x2) { /*graphics*/
             vga.draw_2[0].crtc_mask = 0xFFFu;  // 4KB character clocks (8KB bytes)
@@ -1883,10 +1880,6 @@ again:
     if (!skiprender) {
         if (GCC_UNLIKELY(vga.attr.disabled)) {
             switch(machine) {
-                case MCH_PCJR:
-                    // Displays the border color when screen is disabled
-                    bg_color_index = vga.tandy.border_color;
-                    break;
                 case MCH_EGA:
                 case MCH_VGA:
                     // DoWhackaDo, Alien Carnage, TV sports Football
@@ -2378,12 +2371,6 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
     }
     
     switch(machine) {
-    case MCH_PCJR:
-        // PCJr: Vsync is directly connected to the IRQ controller
-        // Some earlier Tandy models are said to have a vsync interrupt too
-        PIC_AddEvent(VGA_Other_VertInterrupt, (float)vga.draw.delay.vrstart, 1);
-        PIC_AddEvent(VGA_Other_VertInterrupt, (float)vga.draw.delay.vrend, 0);
-        // fall-through
     case MCH_VGA:
         PIC_AddEvent(VGA_DisplayStartLatch, (float)vga.draw.delay.vrstart);
         PIC_AddEvent(VGA_PanningLatch, (float)vga.draw.delay.vrend);
@@ -2779,9 +2766,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
 
     // set the drawing mode
     switch (machine) {
-    case MCH_PCJR:
-        vga.draw.mode = DRAWLINE;
-        break;
     case MCH_EGA:
         // Note: The Paradise SVGA uses the same panning mechanism as EGA
         vga.draw.mode = EGALINE;
@@ -3377,11 +3361,7 @@ void VGA_SetupDrawing(Bitu /*val*/) {
         pix_per_char = 16;
         break;
     case M_TANDY2:
-        if (((machine==MCH_PCJR)&&(vga.tandy.gfx_control & 0x8)) ||
-            (vga.tandy.mode_control & 0x10)) {
-            vga.draw.blocks=width * 8;
-            pix_per_char = 16;
-        } else {
+        {
             vga.draw.blocks=width * 4;
             pix_per_char = 8;
         }
@@ -3477,9 +3457,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
                         ((double)vdend/(double)(vtotal-(vrend-vrstart)));
     double scanfield_ratio = 4.0/3.0;
     switch(machine) {
-        case MCH_PCJR:
-            scanfield_ratio = 1.382;
-            break;
         case MCH_EGA:
             switch (vga.misc_output >> 6) {
             case 0: // 200 lines:

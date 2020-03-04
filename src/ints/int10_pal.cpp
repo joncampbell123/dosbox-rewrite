@@ -34,12 +34,6 @@ static INLINE void WriteTandyACTL(Bit8u creg,Bit8u val) {
 
 void INT10_SetSinglePaletteRegister(Bit8u reg,Bit8u val) {
 	switch (machine) {
-	case MCH_PCJR:
-		reg&=0xf;
-		IO_Read(VGAREG_TDY_RESET);
-		WriteTandyACTL(reg+0x10,val);
-		IO_Write(0x3da,0x0); // palette back on
-		break;
 	case EGAVGA_ARCH_CASE:
 		if (!IS_VGA_ARCH) reg&=0x1f;
 		if(reg<=ACTL_MAX_REG) {
@@ -277,15 +271,6 @@ void INT10_SetBackgroundBorder(Bit8u val) {
 	real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_PAL,color_select);
 	
 	switch (machine) {
-	case MCH_PCJR:
-		IO_Read(VGAREG_TDY_RESET); // reset the flipflop
-		if (vga.mode!=M_TANDY_TEXT) {
-			IO_Write(VGAREG_TDY_ADDRESS, 0x10);
-			IO_Write(VGAREG_PCJR_DATA, color_select&0xf);
-		}
-		IO_Write(VGAREG_TDY_ADDRESS, 0x2); // border color
-		IO_Write(VGAREG_PCJR_DATA, color_select&0xf);
-		break;
 	case EGAVGA_ARCH_CASE:
 		val = ((val << 1) & 0x10) | (val & 0x7);
 		/* Always set the overscan color */
@@ -310,31 +295,7 @@ void INT10_SetColorSelect(Bit8u val) {
 	Bit8u temp=real_readb(BIOSMEM_SEG,BIOSMEM_CURRENT_PAL);
 	temp=(temp & 0xdf) | ((val & 1) ? 0x20 : 0x0);
 	real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_PAL,temp);
-	if (machine == MCH_PCJR) {
-		IO_Read(VGAREG_TDY_RESET); // reset the flipflop
-		switch(vga.mode) {
-		case M_TANDY2:
-			IO_Write(VGAREG_TDY_ADDRESS, 0x11);
-			IO_Write(VGAREG_PCJR_DATA, (val&1)? 0xf:0);
-			break;
-		case M_TANDY4:
-			for(Bit8u i = 0x11; i < 0x14; i++) {
-				const Bit8u t4_table[] = {0,2,4,6, 0,3,5,0xf};
-				IO_Write(VGAREG_TDY_ADDRESS, i);
-				IO_Write(VGAREG_PCJR_DATA, t4_table[(i-0x10)+((val&1)? 4:0)]);
-			}
-			break;
-		default:
-			// 16-color modes: always write the same palette
-			for(Bit8u i = 0x11; i < 0x20; i++) {
-				IO_Write(VGAREG_TDY_ADDRESS, i);
-				IO_Write(VGAREG_PCJR_DATA, i-0x10);
-			}
-			break;
-		}
-		IO_Write(VGAREG_TDY_ADDRESS, 0); // enable palette
-	}
-	else if (IS_EGAVGA_ARCH) {
+	if (IS_EGAVGA_ARCH) {
 		if (CurMode->mode <= 3) //Maybe even skip the total function!
 			return;
 		val = (temp & 0x10) | 2 | val;
