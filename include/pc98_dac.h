@@ -13,13 +13,7 @@ extern uint8_t                  pc98_pal_vga[256*3];    /* G R B    0x0..0xFF */
 extern uint8_t                  pc98_pal_analog[256*3]; /* G R B    0x0..0xF */
 extern uint8_t                  pc98_pal_digital[8];    /* G R B    0x0..0x7 */
 
-/* 4-bit to 6-bit expansion */
 static inline unsigned char dac_4to6(unsigned char c4) {
-    /* a b c d . .
-     *
-     * becomes
-     *
-     * a b c d a b */
-    return (c4 << 2) | (c4 >> 2);
+    return 0;
 }
 
