@@ -73,16 +73,6 @@ public:
 		return false;
 	}
 	bool Write(const Bit8u * data,Bit16u * size) {
-		for(int i = 0; i < 3; i++) {
-			// look up a parallel port
-			if(parallelPortObjects[i] != NULL) {
-				// send the data
-				for (Bit16u j=0; j<*size; j++) {
-					if(!parallelPortObjects[i]->Putchar(data[j])) return false;
-				}
-				return true;
-			}
-		}
 		return false;
 	}
 	bool Seek(Bit32u * pos,Bit32u type) {

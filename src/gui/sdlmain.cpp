@@ -391,8 +391,6 @@ void DisableINT33();
 void EMS_DoShutDown();
 void XMS_DoShutDown();
 void DOS_DoShutDown();
-void GUS_DOS_Shutdown();
-void SBLASTER_DOS_Shutdown();
 void DOS_ShutdownDevices(void);
 void RemoveEMSPageFrame(void);
 void RemoveUMBBlock();
@@ -6154,20 +6152,13 @@ void FPU_Init();
 void KEYBOARD_Init();
 void VOODOO_Init();
 void MIXER_Init();
-void MIDI_Init();
 
 /* Init all the sections */
-void MPU401_Init();
 #if C_DEBUG
 void DEBUG_Init();
 #endif
-void SBLASTER_Init();
-void GUS_Init();
 void INNOVA_Init();
 void PCSPEAKER_Init();
-void TANDYSOUND_Init();
-void DISNEY_Init();
-void PS1SOUND_Init();
 void BIOS_Init();
 void INT10_Init();
 void JOYSTICK_Init();
@@ -6238,8 +6229,6 @@ bool VM_Boot_DOSBox_Kernel() {
         VFILE_Shutdown();
         PROGRAMS_Shutdown();
         DOS_UninstallMisc();
-        SBLASTER_DOS_Shutdown();
-        GUS_DOS_Shutdown();
         EMS_DoShutDown();
         XMS_DoShutDown();
         DOS_DoShutDown();
@@ -7385,10 +7374,7 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
         VOODOO_Init();
         PROGRAMS_Init(); /* <- NTS: Does not init programs, it inits the callback used later when creating the .COM programs on drive Z: */
         PCSPEAKER_Init();
-        TANDYSOUND_Init();
-        MPU401_Init();
         MIXER_Init();
-        MIDI_Init();
         CPU_Init();
 #if C_FPU
         FPU_Init();
@@ -7397,11 +7383,7 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
         ISAPNP_Cfg_Init();
         FDC_Primary_Init();
         KEYBOARD_Init();
-        SBLASTER_Init();
         JOYSTICK_Init();
-        PS1SOUND_Init();
-        DISNEY_Init();
-        GUS_Init();
         IDE_Init();
         INNOVA_Init();
         BIOS_Init();
@@ -7709,8 +7691,6 @@ fresh_boot:
 
             /* remove environment variables for some components */
             DOS_UninstallMisc();
-            SBLASTER_DOS_Shutdown();
-            GUS_DOS_Shutdown();
             /* disable Expanded Memory. EMM is a DOS API, not a BIOS API */
             EMS_DoShutDown();
             /* and XMS, also a DOS API */

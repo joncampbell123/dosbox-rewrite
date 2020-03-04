@@ -513,13 +513,6 @@ static Bitu DOS_21Handler(void) {
             break;
         case 0x05:      /* Write Character to PRINTER */
             {
-                for(unsigned int i = 0; i < 3; i++) {
-                    // look up a parallel port
-                    if(parallelPortObjects[i] != NULL) {
-                        parallelPortObjects[i]->Putchar(reg_dl);
-                        break;
-                    }
-                }
                 break;
             }
         case 0x06:      /* Direct Console Output / Input */

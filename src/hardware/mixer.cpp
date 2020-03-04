@@ -57,7 +57,6 @@
 #include "mapper.h"
 #include "hardware.h"
 #include "programs.h"
-#include "midi.h"
 
 #define MIXER_SSIZE 4
 #define MIXER_VOLSHIFT 13
@@ -1003,7 +1002,6 @@ private:
     }
 
     void ListMidi(){
-        if(midi.handler) midi.handler->ListAll(this);
     };
 };
 

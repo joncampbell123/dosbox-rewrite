@@ -99,23 +99,20 @@ am__v_AR_0 = @echo "  AR      " $@;
 am__v_AR_1 = 
 libhardware_a_AR = $(AR) $(ARFLAGS)
 libhardware_a_LIBADD =
-am_libhardware_a_OBJECTS = adlib.$(OBJEXT) dma.$(OBJEXT) \
-	gameblaster.$(OBJEXT) hardware.$(OBJEXT) iohandler.$(OBJEXT) \
-	joystick.$(OBJEXT) keyboard.$(OBJEXT) memory.$(OBJEXT) \
-	mixer.$(OBJEXT) pcspeaker.$(OBJEXT) pci_bus.$(OBJEXT) \
-	pic.$(OBJEXT) sblaster.$(OBJEXT) tandy_sound.$(OBJEXT) \
+am_libhardware_a_OBJECTS = dma.$(OBJEXT) gameblaster.$(OBJEXT) \
+	hardware.$(OBJEXT) iohandler.$(OBJEXT) joystick.$(OBJEXT) \
+	keyboard.$(OBJEXT) memory.$(OBJEXT) mixer.$(OBJEXT) \
+	pcspeaker.$(OBJEXT) pci_bus.$(OBJEXT) pic.$(OBJEXT) \
 	timer.$(OBJEXT) vga.$(OBJEXT) vga_attr.$(OBJEXT) \
 	vga_crtc.$(OBJEXT) vga_dac.$(OBJEXT) vga_draw.$(OBJEXT) \
 	vga_gfx.$(OBJEXT) vga_other.$(OBJEXT) vga_memory.$(OBJEXT) \
 	vga_misc.$(OBJEXT) vga_seq.$(OBJEXT) vga_xga.$(OBJEXT) \
 	vga_s3.$(OBJEXT) vga_tseng.$(OBJEXT) vga_paradise.$(OBJEXT) \
-	cmos.$(OBJEXT) disney.$(OBJEXT) gus.$(OBJEXT) mpu401.$(OBJEXT) \
-	ipx.$(OBJEXT) ipxserver.$(OBJEXT) ne2000.$(OBJEXT) \
-	hardopl.$(OBJEXT) dbopl.$(OBJEXT) innova.$(OBJEXT) \
-	dongle.$(OBJEXT) voodoo.$(OBJEXT) voodoo_interface.$(OBJEXT) \
-	voodoo_emu.$(OBJEXT) ps1_sound.$(OBJEXT) ide.$(OBJEXT) \
-	floppy.$(OBJEXT) voodoo_vogl.$(OBJEXT) voodoo_opengl.$(OBJEXT) \
-	nukedopl.$(OBJEXT)
+	cmos.$(OBJEXT) ipx.$(OBJEXT) ipxserver.$(OBJEXT) \
+	ne2000.$(OBJEXT) innova.$(OBJEXT) dongle.$(OBJEXT) \
+	voodoo.$(OBJEXT) voodoo_interface.$(OBJEXT) \
+	voodoo_emu.$(OBJEXT) ide.$(OBJEXT) floppy.$(OBJEXT) \
+	voodoo_vogl.$(OBJEXT) voodoo_opengl.$(OBJEXT)
 libhardware_a_OBJECTS = $(am_libhardware_a_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -146,18 +143,6 @@ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-AM_V_CC = $(am__v_CC_@AM_V@)
-am__v_CC_ = $(am__v_CC_@AM_DEFAULT_V@)
-am__v_CC_0 = @echo "  CC      " $@;
-am__v_CC_1 = 
-CCLD = $(CC)
-LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-AM_V_CCLD = $(am__v_CCLD_@AM_V@)
-am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
-am__v_CCLD_0 = @echo "  CCLD    " $@;
-am__v_CCLD_1 = 
 SOURCES = $(libhardware_a_SOURCES)
 DIST_SOURCES = $(libhardware_a_SOURCES)
 RECURSIVE_TARGETS = all-recursive check-recursive cscopelist-recursive \
@@ -344,16 +329,16 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CPPFLAGS = -I$(top_srcdir)/include -I$(top_srcdir)/src/aviwriter -I$(top_srcdir)/src
 SUBDIRS = serialport parport reSID mame
-EXTRA_DIST = opl.cpp opl.h adlib.h dbopl.h pci_devices.h voodoo_types.h voodoo_def.h voodoo_data.h \
+EXTRA_DIST = opl.cpp opl.h dbopl.h pci_devices.h voodoo_types.h voodoo_def.h voodoo_data.h \
              voodoo_interface.h voodoo_emu.h voodoo_vogl.h voodoo_opengl.h
 
 noinst_LIBRARIES = libhardware.a
-libhardware_a_SOURCES = adlib.cpp dma.cpp gameblaster.cpp hardware.cpp iohandler.cpp joystick.cpp keyboard.cpp \
-                        memory.cpp mixer.cpp pcspeaker.cpp pci_bus.cpp pic.cpp sblaster.cpp tandy_sound.cpp timer.cpp \
+libhardware_a_SOURCES = dma.cpp gameblaster.cpp hardware.cpp iohandler.cpp joystick.cpp keyboard.cpp \
+                        memory.cpp mixer.cpp pcspeaker.cpp pci_bus.cpp pic.cpp timer.cpp \
 			vga.cpp vga_attr.cpp vga_crtc.cpp vga_dac.cpp vga_draw.cpp vga_gfx.cpp vga_other.cpp \
 			vga_memory.cpp vga_misc.cpp vga_seq.cpp vga_xga.cpp vga_s3.cpp vga_tseng.cpp vga_paradise.cpp \
-			cmos.cpp disney.cpp gus.cpp mpu401.cpp ipx.cpp ipxserver.cpp ne2000.cpp hardopl.cpp dbopl.cpp innova.cpp dongle.cpp \
-			voodoo.cpp voodoo_interface.cpp voodoo_emu.cpp ps1_sound.cpp sn76496.h ide.cpp floppy.cpp voodoo_vogl.cpp voodoo_opengl.cpp nukedopl.cpp
+			cmos.cpp ipx.cpp ipxserver.cpp ne2000.cpp innova.cpp dongle.cpp \
+			voodoo.cpp voodoo_interface.cpp voodoo_emu.cpp ide.cpp floppy.cpp voodoo_vogl.cpp voodoo_opengl.cpp
 
 all: all-recursive
 
@@ -404,16 +389,11 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/adlib.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmos.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dbopl.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/disney.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dma.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dongle.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/floppy.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gameblaster.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gus.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hardopl.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hardware.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ide.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/innova.Po@am__quote@
@@ -424,15 +404,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/keyboard.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/memory.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mixer.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mpu401.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ne2000.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nukedopl.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pci_bus.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pcspeaker.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pic.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ps1_sound.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sblaster.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tandy_sound.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/timer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vga.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vga_attr.Po@am__quote@
