@@ -63,20 +63,7 @@ extern bool PS1AudioCard;
 # define S_ISREG(x) ((x & S_IFREG) == S_IFREG)
 #endif
 
-/* NTS: The "Epson check" code in Windows 2.1 only compares up to the end of "NEC Corporation" */
-const std::string pc98_copyright_str = "Copyright (C) 1983 by NEC Corporation / Microsoft Corp.\x0D\x0A";
-
-/* more strange data involved in the "Epson check" */
-const unsigned char pc98_epson_check_2[0x27] = {
-    0x26,0x8A,0x05,0xA8,0x10,0x75,0x11,0xC6,0x06,0xD6,0x09,0x1B,0xC6,0x06,0xD7,0x09,
-    0x4B,0xC6,0x06,0xD8,0x09,0x48,0xEB,0x0F,0xC6,0x06,0xD6,0x09,0x1A,0xC6,0x06,0xD7 ,
-    0x09,0x70,0xC6,0x06,0xD8,0x09,0x71
-};
-
-bool enable_pc98_copyright_string = false;
-
 /* mouse.cpp */
-extern bool pc98_40col_text;
 extern bool en_bios_ps2mouse;
 extern bool rom_bios_8x8_cga_font;
 extern bool pcibus_enable;
@@ -86,11 +73,8 @@ bool VM_Boot_DOSBox_Kernel();
 Bit32u MEM_get_address_bits();
 Bitu bios_post_parport_count();
 Bitu bios_post_comport_count();
-void pc98_update_cpu_page_ptr(void);
 bool KEYBOARD_Report_BIOS_PS2Mouse();
-void pc98_update_display_page_ptr(void);
 bool MEM_map_ROM_alias_physmem(Bitu start,Bitu end);
-void pc98_update_palette(void);
 
 bool bochs_port_e9 = false;
 bool isa_memory_hole_512kb = false;
@@ -653,23 +637,16 @@ void dosbox_integration_trigger_write() {
         case 0x804200: /* keyboard input injection */
             void Mouse_ButtonPressed(Bit8u button);
             void Mouse_ButtonReleased(Bit8u button);
-            void pc98_keyboard_send(const unsigned char b);
             void Mouse_CursorMoved(float xrel,float yrel,float x,float y,bool emulate);
             void KEYBOARD_AUX_Event(float x,float y,Bitu buttons,int scrollwheel);
             void KEYBOARD_AddBuffer(Bit16u data);
 
             switch ((dosbox_int_register>>8)&0xFF) {
                 case 0x00: // keyboard
-                    if (IS_PC98_ARCH)
-                        pc98_keyboard_send(dosbox_int_register&0xFF);
-                    else
-                        KEYBOARD_AddBuffer(dosbox_int_register&0xFF);
+                    KEYBOARD_AddBuffer(dosbox_int_register&0xFF);
                     break;
                 case 0x01: // AUX
-                    if (!IS_PC98_ARCH)
-                        KEYBOARD_AddBuffer((dosbox_int_register&0xFF)|0x100/*AUX*/);
-                    else   // no such interface in PC-98 mode
-                        dosbox_int_error = true;
+                    KEYBOARD_AddBuffer((dosbox_int_register&0xFF)|0x100/*AUX*/);
                     break;
                 case 0x08: // mouse button injection
                     if (dosbox_int_register&0x80) Mouse_ButtonPressed(dosbox_int_register&0x7F);
@@ -1465,12 +1442,6 @@ void ISAPNP_Cfg_Reset(Section *sec) {
 
     std::string apmbiosver = section->Get_string("apmbios version");
 
-    /* PC-98 does not have the IBM PC/AT APM BIOS interface */
-    if (IS_PC98_ARCH) {
-        APMBIOS = false;
-        APMBIOS_pnp = false;
-    }
-
     if (apmbiosver == "1.0")
         APM_BIOS_minor_version = 0;
     else if (apmbiosver == "1.1")
@@ -1479,12 +1450,6 @@ void ISAPNP_Cfg_Reset(Section *sec) {
         APM_BIOS_minor_version = 2;
     else//auto
         APM_BIOS_minor_version = 2;
-
-    /* PC-98 does not have APM.
-     * I *think* it has Plug & Play, but probably different from ISA PnP and specific to the C-Bus interface,
-     * which I have no information on at this time --J.C. */
-    if (IS_PC98_ARCH)
-        return;
 
     LOG(LOG_MISC,LOG_DEBUG)("APM BIOS allow: real=%u pm16=%u pm32=%u version=1.%u",
         APMBIOS_allow_realmode,
@@ -3835,57 +3800,6 @@ void BIOS_ZeroExtendedSize(bool in) {
     if(in) other_memsystems++; 
     else other_memsystems--;
     if(other_memsystems < 0) other_memsystems=0;
-
-    if (IS_PC98_ARCH) {
-        Bitu mempages = MEM_TotalPages(); /* in 4KB pages */
-
-        /* What applies to IBM PC/AT (zeroing out the extended memory size)
-         * also applies to PC-98, when HIMEM.SYS is loaded */
-        if (in) mempages = 0;
-
-        /* extended memory size (286 systems, below 16MB) */
-        if (mempages > (1024UL/4UL)) {
-            unsigned int ext = ((mempages - (1024UL/4UL)) * 4096UL) / (128UL * 1024UL); /* convert to 128KB units */
-
-            /* extended memory, up to 16MB capacity (for 286 systems?)
-             *
-             * MS-DOS drivers will "allocate" for themselves by taking from the top of
-             * extended memory then subtracting from this value.
-             *
-             * capacity does not include conventional memory below 1MB, nor any memory
-             * above 16MB.
-             *
-             * PC-98 systems may reserve the top 1MB, limiting the top to 15MB instead.
-             *
-             * 0x70 = 128KB * 0x70 = 14MB
-             * 0x78 = 128KB * 0x70 = 15MB */
-            if (ext > 0x78) ext = 0x78;
-
-            mem_writeb(0x401,ext);
-        }
-        else {
-            mem_writeb(0x401,0x00);
-        }
-
-        /* extended memory size (386 systems, at or above 16MB) */
-        if (mempages > ((1024UL*16UL)/4UL)) {
-            unsigned int ext = ((mempages - ((1024UL*16UL)/4UL)) * 4096UL) / (1024UL * 1024UL); /* convert to MB */
-
-            /* extended memory, at or above 16MB capacity (for 386+ systems?)
-             *
-             * MS-DOS drivers will "allocate" for themselves by taking from the top of
-             * extended memory then subtracting from this value.
-             *
-             * capacity does not include conventional memory below 1MB, nor any memory
-             * below 16MB. */
-            if (ext > 0xFFFE) ext = 0xFFFE;
-
-            mem_writew(0x594,ext);
-        }
-        else {
-            mem_writew(0x594,0x00);
-        }
-    }
 }
 
 unsigned char do_isapnp_chksum(unsigned char *d,int i) {
@@ -3968,64 +3882,6 @@ void DrawDOSBoxLogoCGA6(unsigned int x,unsigned int y) {
     }
 }
 
-/* HACK: Re-use the VGA logo */
-void DrawDOSBoxLogoPC98(unsigned int x,unsigned int y) {
-    unsigned char *s = dosbox_vga16_bmp;
-    unsigned char *sf = s + sizeof(dosbox_vga16_bmp);
-    unsigned int bit,dx,dy;
-    uint32_t width,height;
-    unsigned char p[4];
-    unsigned char c;
-    uint32_t off;
-    uint32_t sz;
-
-    if (memcmp(s,"BM",2)) return;
-    sz = host_readd(s+2); // size of total bitmap
-    off = host_readd(s+10); // offset of bitmap
-    if ((s+sz) > sf) return;
-    if ((s+14+40) > sf) return;
-
-    sz = host_readd(s+34); // biSize
-    if ((s+off+sz) > sf) return;
-    if (host_readw(s+26) != 1) return; // biBitPlanes
-    if (host_readw(s+28) != 4)  return; // biBitCount
-
-    width = host_readd(s+18);
-    height = host_readd(s+22);
-    if (width > (640-x) || height > (350-y)) return;
-
-    // EGA/VGA Write Mode 2
-    LOG(LOG_MISC,LOG_DEBUG)("Drawing VGA logo as PC-98 (%u x %u)",(int)width,(int)height);
-    for (dy=0;dy < height;dy++) {
-        uint32_t vram = ((y+dy) * 80) + (x / 8);
-        s = dosbox_vga16_bmp + off + ((height-(dy+1))*((width+1)/2));
-        for (dx=0;dx < width;dx += 8) {
-            p[0] = p[1] = p[2] = p[3] = 0;
-            for (bit=0;bit < 8;) {
-                c = (*s >> 4);
-                p[0] |= ((c >> 0) & 1) << (7 - bit);
-                p[1] |= ((c >> 1) & 1) << (7 - bit);
-                p[2] |= ((c >> 2) & 1) << (7 - bit);
-                p[3] |= ((c >> 3) & 1) << (7 - bit);
-                bit++;
-
-                c = (*s++) & 0xF;
-                p[0] |= ((c >> 0) & 1) << (7 - bit);
-                p[1] |= ((c >> 1) & 1) << (7 - bit);
-                p[2] |= ((c >> 2) & 1) << (7 - bit);
-                p[3] |= ((c >> 3) & 1) << (7 - bit);
-                bit++;
-            }
-
-            mem_writeb(0xA8000+vram,p[0]);
-            mem_writeb(0xB0000+vram,p[1]);
-            mem_writeb(0xB8000+vram,p[2]);
-            mem_writeb(0xE0000+vram,p[3]);
-            vram++;
-        }
-    }
-}
-
 void DrawDOSBoxLogoVGA(unsigned int x,unsigned int y) {
     unsigned char *s = dosbox_vga16_bmp;
     unsigned char *sf = s + sizeof(dosbox_vga16_bmp);
@@ -4080,12 +3936,9 @@ void DrawDOSBoxLogoVGA(unsigned int x,unsigned int y) {
     IO_Write(0x3CF,0xFF);
 }
 
-static int bios_pc98_posx = 0;
-
 static void BIOS_Int10RightJustifiedPrint(const int x,int &y,const char *msg) {
     const char *s = msg;
 
-    if (machine != MCH_PC98) {
         while (*s != 0) {
             if (*s == '\n') {
                 y++;
@@ -4102,36 +3955,6 @@ static void BIOS_Int10RightJustifiedPrint(const int x,int &y,const char *msg) {
                 CALLBACK_RunRealInt(0x10);
             }
         }
-    }
-    else {
-        unsigned int bo;
-
-        while (*s != 0) {
-            if (*s == '\n') {
-                y++;
-                s++;
-                bios_pc98_posx = x;
-
-                bo = (((unsigned int)y * 80u) + (unsigned int)bios_pc98_posx) * 2u;
-            }
-            else if (*s == '\r') {
-                s++; /* ignore */
-                continue;
-            }
-            else {
-                bo = (((unsigned int)y * 80u) + (unsigned int)(bios_pc98_posx++)) * 2u; /* NTS: note the post increment */
-
-                mem_writew(0xA0000+bo,(unsigned char)(*s++));
-                mem_writeb(0xA2000+bo,0xE1);
-
-                bo += 2; /* and keep the cursor following the text */
-            }
-
-            reg_eax = 0x1300;   // set cursor pos (PC-98)
-            reg_edx = bo;       // byte position
-            CALLBACK_RunRealInt(0x18);
-        }
-    }
 }
 
 static Bitu ulimit = 0;
@@ -4144,7 +3967,6 @@ static Bitu adapter_scan_start;
 static CALLBACK_HandlerObject int4b_callback;
 static CALLBACK_HandlerObject callback[20]; /* <- fixme: this is stupid. just declare one per interrupt. */
 static CALLBACK_HandlerObject cb_bios_post;
-static CALLBACK_HandlerObject callback_pc98_lio;
 
 Bitu call_pnp_r = ~0UL;
 Bitu call_pnp_rp = 0;
@@ -4379,10 +4201,8 @@ private:
         RealSetVec(0x0c, CALLBACK_RealPointer(call_irq_default)); // IRQ 4
         RealSetVec(0x0d, CALLBACK_RealPointer(call_irq_default)); // IRQ 5
         RealSetVec(0x0f, CALLBACK_RealPointer(call_irq_default)); // IRQ 7
-        if (!IS_PC98_ARCH) {
-            RealSetVec(0x72, CALLBACK_RealPointer(call_irq_default)); // IRQ 10
-            RealSetVec(0x73, CALLBACK_RealPointer(call_irq_default)); // IRQ 11
-        }
+        RealSetVec(0x72, CALLBACK_RealPointer(call_irq_default)); // IRQ 10
+        RealSetVec(0x73, CALLBACK_RealPointer(call_irq_default)); // IRQ 11
 
         // setup a few interrupt handlers that point to bios IRETs by default
         real_writed(0,0x66*4,CALLBACK_RealPointer(call_default));   //war2d
@@ -4400,10 +4220,8 @@ private:
         void INT10_Startup(Section *sec);
         INT10_Startup(NULL);
 
-        if (!IS_PC98_ARCH) {
-            extern Bit8u BIOS_tandy_D4_flag;
-            real_writeb(0x40,0xd4,BIOS_tandy_D4_flag);
-        }
+        extern Bit8u BIOS_tandy_D4_flag;
+        real_writeb(0x40,0xd4,BIOS_tandy_D4_flag);
 
         /* INT 13 Bios Disk Support */
         BIOS_SetupDisks();
@@ -4411,7 +4229,7 @@ private:
         /* INT 16 Keyboard handled in another file */
         BIOS_SetupKeyboard();
 
-        if (!IS_PC98_ARCH) {
+        {
             int4b_callback.Set_RealVec(0x4B,/*reinstall*/true);
             callback[1].Set_RealVec(0x11,/*reinstall*/true);
             callback[2].Set_RealVec(0x12,/*reinstall*/true);
@@ -4445,7 +4263,7 @@ private:
         //  pop dx,ax,ds
         //  iret
 
-        if (!IS_PC98_ARCH) {
+        {
             mem_writed(BIOS_TIMER,0);           //Calculate the correct time
 
             // INT 05h: Print Screen
@@ -4458,7 +4276,7 @@ private:
 
         phys_writeb(Real2Phys(BIOS_DEFAULT_HANDLER_LOCATION),0xcf); /* bios default interrupt vector location -> IRET */
 
-        if (!IS_PC98_ARCH) {
+        {
             // tandy DAC setup
             bool use_tandyDAC=(real_readb(0x40,0xd4)==0xff);
 
@@ -4506,7 +4324,7 @@ private:
             }
         }
 
-        if (!IS_PC98_ARCH) {
+        {
             /* Setup some stuff in 0x40 bios segment */
 
             // Disney workaround
@@ -4527,7 +4345,7 @@ private:
             BIOS_Post_register_comports();
         }
 
-        if (!IS_PC98_ARCH) {
+        {
             /* Setup equipment list */
             // look http://www.bioscentral.com/misc/bda.htm
 
@@ -4578,7 +4396,7 @@ private:
             CMOS_SetRegister(0x14,(Bit8u)(config&0xff)); //Should be updated on changes
         }
 
-        if (!IS_PC98_ARCH) {
+        {
             /* Setup extended memory size */
             IO_Write(0x70,0x30);
             size_extended=IO_Read(0x71);
@@ -4586,20 +4404,14 @@ private:
             size_extended|=(IO_Read(0x71) << 8);
             BIOS_HostTimeSync();
         }
-        else {
-            /* Provide a valid memory size anyway */
-            size_extended=MEM_TotalPages()*4;
-            if (size_extended >= 1024) size_extended -= 1024;
-            else size_extended = 0;
-        }
 
-        if (!IS_PC98_ARCH) {
+        {
             /* PS/2 mouse */
             void BIOS_PS2Mouse_Startup(Section *sec);
             BIOS_PS2Mouse_Startup(NULL);
         }
 
-        if (!IS_PC98_ARCH) {
+        {
             /* this belongs HERE not on-demand from INT 15h! */
             biosConfigSeg = ROMBIOS_GetMemory(16/*one paragraph*/,"BIOS configuration (INT 15h AH=0xC0)",/*paragraph align*/16)>>4;
             if (biosConfigSeg != 0) {
@@ -4640,7 +4452,7 @@ private:
         }
 
         // ISA Plug & Play I/O ports
-        if (!IS_PC98_ARCH) {
+        {
             ISAPNP_PNP_ADDRESS_PORT = new IO_WriteHandleObject;
             ISAPNP_PNP_ADDRESS_PORT->Install(0x279,isapnp_write_port,IO_MB);
             ISAPNP_PNP_DATA_PORT = new IO_WriteHandleObject;
@@ -4901,9 +4713,6 @@ private:
     static Bitu cb_bios_scan_video_bios__func(void) {
         unsigned long size;
 
-        /* NTS: As far as I can tell, video is integrated into the PC-98 BIOS and there is no separate BIOS */
-        if (IS_PC98_ARCH) return CBRET_NONE;
-
         if (cpu.pmode) E_Exit("BIOS error: VIDEO BIOS SCAN function called while in protected/vm86 mode");
 
         if (!bios_has_exec_vga_bios) {
@@ -4936,9 +4745,6 @@ private:
     static Bitu cb_bios_adapter_rom_scan__func(void) {
         unsigned long size;
         Bit32u c1;
-
-        /* FIXME: I have no documentation on how PC-98 scans for adapter ROM or even if it supports it */
-        if (IS_PC98_ARCH) return CBRET_NONE;
 
         if (cpu.pmode) E_Exit("BIOS error: ADAPTER ROM function called while in protected/vm86 mode");
 
@@ -5016,62 +4822,6 @@ private:
 
             DrawDOSBoxLogoCGA6((unsigned int)logo_x*8u,(unsigned int)logo_y*(unsigned int)rowheight);
         }
-        else if (machine == MCH_PC98) {
-            // clear the graphics layer
-            for (unsigned int i=0;i < (80*400);i++) {
-                mem_writeb(0xA8000+i,0);        // B
-                mem_writeb(0xB0000+i,0);        // G
-                mem_writeb(0xB8000+i,0);        // R
-                mem_writeb(0xE0000+i,0);        // E
-            }
-
-            reg_eax = 0x0C00;   // enable text layer (PC-98)
-            CALLBACK_RunRealInt(0x18);
-
-            reg_eax = 0x1100;   // show cursor (PC-98)
-            CALLBACK_RunRealInt(0x18);
-
-            reg_eax = 0x1300;   // set cursor pos (PC-98)
-            reg_edx = 0x0000;   // byte position
-            CALLBACK_RunRealInt(0x18);
-
-            bios_pc98_posx = x;
-
-            reg_eax = 0x4200;   // setup 640x400 graphics
-            reg_ecx = 0xC000;
-            CALLBACK_RunRealInt(0x18);
-
-            // enable the 4th bitplane, for 16-color analog graphics mode.
-            // TODO: When we allow the user to emulate only the 8-color BGR digital mode,
-            //       logo drawing should use an alternate drawing method.
-            IO_Write(0x6A,0x01);    // enable 16-color analog mode (this makes the 4th bitplane appear)
-            IO_Write(0x6A,0x04);    // but we don't need the EGC graphics
-            // If we caught a game mid-page flip, set the display and VRAM pages back to zero
-            IO_Write(0xA4,0x00);    // display page 0
-            IO_Write(0xA6,0x00);    // write to page 0
-
-            // program a VGA-like color palette so we can re-use the VGA logo
-            for (unsigned int i=0;i < 16;i++) {
-                unsigned int bias = (i & 8) ? 0x5 : 0x0;
-
-                IO_Write(0xA8,i);   // DAC index
-                if (i != 6) {
-                    IO_Write(0xAA,((i & 2) ? 0xA : 0x0) + bias);    // green
-                    IO_Write(0xAC,((i & 4) ? 0xA : 0x0) + bias);    // red
-                    IO_Write(0xAE,((i & 1) ? 0xA : 0x0) + bias);    // blue
-                }
-                else { // brown #6 instead of puke yellow
-                    IO_Write(0xAA, 0x5 + bias);    // green
-                    IO_Write(0xAC, 0xA + bias);    // red
-                    IO_Write(0xAE, 0x0 + bias);    // blue
-                }
-            }
-
-            DrawDOSBoxLogoPC98((unsigned int)logo_x*8u,(unsigned int)logo_y*(unsigned int)rowheight);
-
-            reg_eax = 0x4000;   // show the graphics layer (PC-98) so we can render the DOSBox logo
-            CALLBACK_RunRealInt(0x18);
-        }
         else {
             reg_eax = 3;        // 80x25 text
             CALLBACK_RunRealInt(0x10);
@@ -5080,7 +4830,7 @@ private:
             //       And for MDA/Hercules, we could render a monochromatic ASCII art version.
         }
 
-        if (machine != MCH_PC98) {
+        {
             reg_eax = 0x0200;   // set cursor pos
             reg_ebx = 0;        // page zero
             reg_dh = y;     // row 4
@@ -5148,9 +4898,6 @@ private:
                     }
 
                     break;
-                case MCH_PC98:
-                    card = "PC98 graphics";
-                    break;
                 case MCH_AMSTRAD:
                     card = "Amstrad graphics";
                     break;
@@ -5216,17 +4963,12 @@ private:
 #if !defined(C_EMSCRIPTEN)
         BIOS_Int10RightJustifiedPrint(x,y,"\nHit SPACEBAR to pause at this screen\n");
         y--; /* next message should overprint */
-        if (machine != MCH_PC98) {
+        {
             reg_eax = 0x0200;   // set cursor pos
             reg_ebx = 0;        // page zero
             reg_dh = y;     // row 4
             reg_dl = x;     // column 20
             CALLBACK_RunRealInt(0x10);
-        }
-        else {
-            reg_eax = 0x1300u;   // set cursor pos (PC-98)
-            reg_edx = (((unsigned int)y * 80u) + (unsigned int)x) * 2u; // byte position
-            CALLBACK_RunRealInt(0x18);
         }
 #endif
 
@@ -5248,12 +4990,7 @@ private:
             bool wait_for_user = false;
             Bit32u lasttick=GetTicks();
             while ((GetTicks()-lasttick)<1000) {
-                if (machine == MCH_PC98) {
-                    reg_eax = 0x0100;   // sense key
-                    CALLBACK_RunRealInt(0x18);
-                    SETFLAGBIT(ZF,reg_bh == 0);
-                }
-                else {
+                {
                     reg_eax = 0x0100;
                     CALLBACK_RunRealInt(0x16);
                 }
@@ -5320,18 +5057,6 @@ private:
     }
     CALLBACK_HandlerObject cb_bios_boot;
     CALLBACK_HandlerObject cb_bios_bootfail;
-    CALLBACK_HandlerObject cb_pc98_rombasic;
-    static Bitu cb_pc98_entry__func(void) {
-        /* the purpose of this function is to say "N88 ROM BASIC NOT FOUND" */
-        int x,y;
-
-        x = y = 0;
-
-        /* PC-98 MS-DOS boot sector may RETF back to the BIOS, and this is where execution ends up */
-        BIOS_Int10RightJustifiedPrint(x,y,"N88 ROM BASIC NOT IMPLEMENTED");
-
-        return CBRET_NONE;
-    }
     static Bitu cb_bios_bootfail__func(void) {
         int x,y;
 
@@ -5396,8 +5121,6 @@ public:
 
         { // TODO: Eventually, move this to BIOS POST or init phase
             Section_prop * section=static_cast<Section_prop *>(control->GetSection("dosbox"));
-
-            enable_pc98_copyright_string = section->Get_bool("pc-98 BIOS copyright string");
 
             // NTS: This setting is also valid in PC-98 mode. According to Undocumented PC-98 by Webtech,
             //      there's nothing at I/O port E9h. I will move the I/O port in PC-98 mode if there is in
@@ -5572,9 +5295,6 @@ public:
         cb_bios_boot.Install(&cb_bios_boot__func,CB_RETF,"BIOS BOOT");
         cb_bios_bootfail.Install(&cb_bios_bootfail__func,CB_RETF,"BIOS BOOT FAIL");
 
-        if (IS_PC98_ARCH)
-            cb_pc98_rombasic.Install(&cb_pc98_entry__func,CB_RETF,"N88 ROM BASIC");
-
         // Compatible POST routine location: jump to the callback
         {
             Bitu wo_fence;
@@ -5634,30 +5354,6 @@ public:
             phys_writeb(wo++,0xFE);
 
             if (wo > wo_fence) E_Exit("BIOS boot callback overrun");
-
-            if (IS_PC98_ARCH) {
-                /* Boot disks that run N88 basic, stopgap */
-                PhysPt bo = 0xE8002; // E800:0002
-
-                phys_writeb(bo+0x00,(Bit8u)0xFE);                       //GRP 4
-                phys_writeb(bo+0x01,(Bit8u)0x38);                       //Extra Callback instruction
-                phys_writew(bo+0x02,(Bit16u)cb_pc98_rombasic.Get_callback());           //The immediate word
-
-                phys_writeb(bo+0x04,0xEB);                             // JMP $-2
-                phys_writeb(bo+0x05,0xFE);
-            }
-
-            if (IS_PC98_ARCH && enable_pc98_copyright_string) {
-                size_t i=0;
-
-                for (;i < pc98_copyright_str.length();i++)
-                    phys_writeb(0xE8000 + 0x0DD8 + (PhysPt)i,(Bit8u)pc98_copyright_str[i]);
-
-                phys_writeb(0xE8000 + 0x0DD8 + (PhysPt)i,0);
-
-                for (i=0;i < sizeof(pc98_epson_check_2);i++)
-                    phys_writeb(0xF5200 + 0x018E + (PhysPt)i,(Bit8u)pc98_epson_check_2[i]);
-            }
         }
     }
     ~BIOS(){
@@ -6015,13 +5711,6 @@ void ROMBIOS_Init() {
     rombios_alloc.initSetRange(rombios_minimum_location,0xFFFF0 - 1);
 
     write_ID_version_string();
-
-    if (IS_PC98_ARCH && enable_pc98_copyright_string) { // PC-98 BIOSes have a copyright string at E800:0DD8
-        if (ROMBIOS_GetMemory(pc98_copyright_str.length()+1,"PC-98 copyright string",1,0xE8000 + 0x0DD8) == 0)
-            LOG_MSG("WARNING: Was not able to mark off E800:0DD8 off-limits for PC-98 copyright string");
-        if (ROMBIOS_GetMemory(sizeof(pc98_epson_check_2),"PC-98 unknown data / Epson check",1,0xF5200 + 0x018E) == 0)
-            LOG_MSG("WARNING: Was not able to mark off E800:0DD8 off-limits for PC-98 copyright string");
-    }
  
     /* some structures when enabled are fixed no matter what */
     if (rom_bios_8x8_cga_font && !IS_PC98_ARCH) {
@@ -6029,23 +5718,6 @@ void ROMBIOS_Init() {
          * allocate this NOW before other things get in the way */
         if (ROMBIOS_GetMemory(128*8,"BIOS 8x8 font (first 128 chars)",1,0xFFA6E) == 0) {
             LOG_MSG("WARNING: Was not able to mark off 0xFFA6E off-limits for 8x8 font");
-        }
-    }
-
-    /* PC-98 BIOS vectors appear to reside at segment 0xFD80. This is so common some games
-     * use it (through INT 1Dh) to detect whether they are running on PC-98 or not (issue #927).
-     *
-     * Note that INT 1Dh is one of the few BIOS interrupts not intercepted by PC-98 MS-DOS */
-    if (IS_PC98_ARCH) {
-        if (ROMBIOS_GetMemory(128,"PC-98 INT vector stub segment 0xFD80",1,0xFD800) == 0) {
-            LOG_MSG("WARNING: Was not able to mark off 0xFD800 off-limits for PC-98 int vector stubs");
-        }
-    }
-
-    /* PC-98 BIOSes have a LIO interface at segment F990 with graphic subroutines for Microsoft BASIC */
-    if (IS_PC98_ARCH) {
-        if (ROMBIOS_GetMemory(256,"PC-98 LIO graphic ROM BIOS library",1,0xF9900) == 0) {
-            LOG_MSG("WARNING: Was not able to mark off 0xF9900 off-limits for PC-98 LIO graphics library");
         }
     }
 
