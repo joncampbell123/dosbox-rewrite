@@ -703,7 +703,7 @@ void VGA_Reset(Section*) {
                 vga_memio_delay_ns = (int)floor(t);
             }
         }
-        else if (machine == MCH_CGA || machine == MCH_HERC || machine == MCH_MDA) {
+        else if (machine == MCH_CGA || machine == MCH_HERC) {
             /* default IBM PC/XT 4.77MHz timing. this is carefully tuned so that Trixter's CGA test program
              * times our CGA emulation as having about 305KB/sec reading speed. */
             double t = (1000000000.0 * clockdom_ISA_OSC.freq_div * 143) / (clockdom_ISA_OSC.freq * 3);
@@ -759,9 +759,6 @@ void VGA_Reset(Section*) {
     switch (machine) {
         case MCH_HERC:
             if (vga.mem.memsize < _KB_bytes(64)) vga.mem.memsize = _KB_bytes(64);
-            break;
-        case MCH_MDA:
-            if (vga.mem.memsize < _KB_bytes(4)) vga.mem.memsize = _KB_bytes(4);
             break;
         case MCH_CGA:
             if (vga.mem.memsize < _KB_bytes(16)) vga.mem.memsize = _KB_bytes(16);

@@ -238,12 +238,6 @@ void VGA_Draw2_Recompute_CRTC_MaskAdd(void) {
             vga.draw_2[0].crtc_add = 0;
         }
     }
-    else if (machine == MCH_MDA) {
-        /* MDA/Hercules is emulated as 16 bits per character clock */
-        vga.draw_2[0].draw_base = vga.mem.linear;
-        vga.draw_2[0].crtc_mask = 0x7FFu;  // 2KB character clocks (4KB bytes)
-        vga.draw_2[0].crtc_add = 0;
-    }
     else {
         /* TODO: PCjr/Tandy 16-color extended modes */
 
@@ -2407,7 +2401,6 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
         PIC_AddEvent(VGA_Other_VertInterrupt, (float)vga.draw.delay.vrend, 0);
         // fall-through
     case MCH_CGA:
-    case MCH_MDA:
     case MCH_HERC:
         // MC6845-powered graphics: Loading the display start latch happens somewhere
         // after vsync off and before first visible scanline, so probably here
@@ -2563,7 +2556,7 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
         // fall-through
     case M_TANDY_TEXT:
     case M_HERC_TEXT:
-        if (machine==MCH_HERC || machine==MCH_MDA) vga.draw.linear_mask = 0xfff; // 1 page
+        if (machine==MCH_HERC) vga.draw.linear_mask = 0xfff; // 1 page
         else if (IS_EGAVGA_ARCH) {
             if (vga.config.compatible_chain4 || svgaCard == SVGA_None)
                 vga.draw.linear_mask = vga.mem.memmask & 0x3ffff;
@@ -2973,7 +2966,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
             }
             oscclock = clock * 8;
             break;
-        case MCH_MDA:
         case MCH_HERC:
             oscclock=16257000;
             if (vga.mode == M_HERC_GFX)
@@ -3536,7 +3528,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
         case MCH_PCJR:
             scanfield_ratio = 1.382;
             break;
-        case MCH_MDA:
         case MCH_HERC:
             scanfield_ratio = 1.535;
             break;
@@ -3643,7 +3634,7 @@ void VGA_SetupDrawing(Bitu /*val*/) {
     }
     vga.draw.delay.singleline_delay = (float)vga.draw.delay.htotal;
 
-    if (machine == MCH_HERC || machine == MCH_MDA) {
+    if (machine == MCH_HERC) {
         Herc_Palette();
     }
     else {

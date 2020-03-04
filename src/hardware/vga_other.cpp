@@ -992,11 +992,11 @@ void VGA_SetupOther(void) {
 		for (Bitu i=0;i<256;i++)	memcpy(&vga.draw.font[i*32],&int10_font_08[i*8],8);
 		vga.draw.font_tables[0]=vga.draw.font_tables[1]=vga.draw.font;
 	}
-	if (machine==MCH_CGA || machine==MCH_HERC || machine==MCH_MDA) {
+	if (machine==MCH_CGA || machine==MCH_HERC) {
 		IO_RegisterWriteHandler(0x3db,write_lightpen,IO_MB);
 		IO_RegisterWriteHandler(0x3dc,write_lightpen,IO_MB);
 	}
-	if (machine==MCH_HERC || machine==MCH_MDA) {
+	if (machine==MCH_HERC) {
 		extern Bit8u int10_font_14[256 * 14];
 		for (Bitu i=0;i<256;i++)	memcpy(&vga.draw.font[i*32],&int10_font_14[i*14],14);
 		vga.draw.font_tables[0]=vga.draw.font_tables[1]=vga.draw.font;
@@ -1028,7 +1028,7 @@ void VGA_SetupOther(void) {
 		IO_RegisterWriteHandler(0x3da,write_pcjr,IO_MB);
 		IO_RegisterWriteHandler(0x3df,write_pcjr,IO_MB);
 	}
-	if (machine==MCH_HERC || machine==MCH_MDA) {
+	if (machine==MCH_HERC) {
 		Bitu base=0x3b0;
 		for (Bitu i = 0; i < 4; i++) {
 			// The registers are repeated as the address is not decoded properly;
@@ -1053,9 +1053,6 @@ void VGA_SetupOther(void) {
 	if (machine==MCH_HERC) {
 		IO_RegisterWriteHandler(0x3bf,write_hercules,IO_MB);
 	}
-	if (machine==MCH_MDA) {
-        VGA_SetMode(M_HERC_TEXT); // HACK
-    }
 	if (machine==MCH_CGA) {
 		Bitu base=0x3d0;
 		for (Bitu port_ct=0; port_ct<4; port_ct++) {

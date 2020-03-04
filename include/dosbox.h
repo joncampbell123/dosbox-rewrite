@@ -108,7 +108,7 @@ enum MachineType {
     MCH_DEL_FM_TOWNS,                    // STUB!!
 
     MCH_DEL_MCGA,                        // IBM PS/2 model 30 Multi-Color Graphics Adapter
-    MCH_MDA
+    MCH_DEL_MDA
 };
 
 enum SVGACards {

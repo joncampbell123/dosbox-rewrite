@@ -664,7 +664,6 @@ bool INT10_SetCurMode(void) {
 		case MCH_CGA:
 			if (bios_mode<7) mode_changed=SetCurMode(ModeList_OTHER,bios_mode);
 			break;
-		case MCH_MDA:
 		case MCH_HERC:
 			break;
 		case MCH_EGA:
@@ -791,7 +790,6 @@ bool INT10_SetVideoMode_OTHER(Bit16u mode,bool clearmem) {
 	switch (machine) {
 	case MCH_CGA:
 		if (mode>6) return false;
-    case MCH_MDA:
     case MCH_HERC:
 		// Allow standard color modes if equipment word is not set to mono (Victory Road)
 		if ((real_readw(BIOSMEM_SEG,BIOSMEM_INITIAL_MODE)&0x30)!=0x30 && mode<7) {
@@ -808,7 +806,7 @@ bool INT10_SetVideoMode_OTHER(Bit16u mode,bool clearmem) {
 	LOG(LOG_INT10,LOG_NORMAL)("Set Video Mode %X",mode);
 
 	/* Setup the CRTC */
-	Bit16u crtc_base=(machine==MCH_HERC || machine==MCH_MDA) ? 0x3b4 : 0x3d4;
+	Bit16u crtc_base=(machine==MCH_HERC) ? 0x3b4 : 0x3d4;
 
 	//Horizontal total
 	IO_WriteW(crtc_base,(Bit16u)(0x00 | (CurMode->htotal) << 8));
@@ -823,7 +821,7 @@ bool INT10_SetVideoMode_OTHER(Bit16u mode,bool clearmem) {
 	// newer "compatible" CGA BIOS does the same
 	// The IBM CGA card seems to limit retrace pulse widths
 	Bitu syncwidth;
-	if(machine==MCH_HERC || machine==MCH_MDA) syncwidth = 0xf;
+	if(machine==MCH_HERC) syncwidth = 0xf;
 	else if(CurMode->hdispend==80) syncwidth = 0xc;
 	else syncwidth = 0x6;
 	
@@ -841,7 +839,7 @@ bool INT10_SetVideoMode_OTHER(Bit16u mode,bool clearmem) {
 	scanline=8;
 	switch(CurMode->type) {
 	case M_TEXT: // text mode character height
-		if (machine==MCH_HERC || machine==MCH_MDA) scanline=14;
+		if (machine==MCH_HERC) scanline=14;
 		else scanline=8;
 		break;
     case M_CGA2: // graphics mode: even/odd banks interleaved
@@ -880,7 +878,6 @@ bool INT10_SetVideoMode_OTHER(Bit16u mode,bool clearmem) {
 	};
 	Bit8u mode_control,color_select;
 	switch (machine) {
-	case MCH_MDA:
 	case MCH_HERC:
 		IO_WriteB(0x3b8,0x28);	// TEXT mode and blinking characters
 

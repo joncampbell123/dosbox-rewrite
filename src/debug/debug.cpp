@@ -122,7 +122,6 @@ static void LogEMUMachine(void) {
             case MCH_PCJR:      m="PCjr";       break;
             case MCH_EGA:       m="EGA";        break;
             case MCH_VGA:       m="VGA";        break;
-            case MCH_MDA:       m="MDA";        break;
             default:            break;
         }
 

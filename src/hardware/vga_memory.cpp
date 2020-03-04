@@ -901,7 +901,6 @@ void VGA_SetupHandlers(void) {
 		MEM_SetPageHandler( VGA_PAGE_B0, 8, &vgaph.empty );
 		MEM_SetPageHandler( VGA_PAGE_B8, 8, &vgaph.pcjr );
 		goto range_done;
-	case MCH_MDA:
 	case MCH_HERC:
 		MEM_SetPageHandler( VGA_PAGE_A0, 16, &vgaph.empty );
 		vgapages.base=VGA_PAGE_B0;
