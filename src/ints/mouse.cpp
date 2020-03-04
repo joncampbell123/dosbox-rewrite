@@ -52,56 +52,6 @@ void MOUSE_Unsetup_DOS(void) {
 void MOUSE_Unsetup_BIOS(void) {
 }
 
-struct button_event {
-    Bit8u type;
-    Bit8u buttons;
-};
-
-bool Mouse_SetPS2State(bool use) {
-    return true;
-}
-
-void Mouse_ChangePS2Callback(Bit16u pseg, Bit16u pofs) {
-}
-
-void DoPS2Callback(Bit16u data, Bit16s mouseX, Bit16s mouseY) {
-}
-
-Bitu PS2_Handler(void) {
-    return CBRET_NONE;
-}
-
-void MOUSE_Limit_Events(Bitu /*val*/) {
-}
-
-void Mouse_AddEvent(Bit8u type) {
-}
-
-void MOUSE_DummyEvent(void) {
-}
-
-void RestoreCursorBackgroundText() {
-}
-
-void DrawCursorText() { 
-}
-
-void SaveVgaRegisters() {
-}
-
-void RestoreVgaRegisters() {
-}
-
-void ClipCursorArea(Bit16s& x1, Bit16s& x2, Bit16s& y1, Bit16s& y2,
-                    Bit16u& addx1, Bit16u& addx2, Bit16u& addy) {
-}
-
-void RestoreCursorBackground() {
-}
-
-void DrawCursor() {
-}
-
 #if !defined(C_SDL2)
 bool GFX_IsFullscreen(void);
 #else
