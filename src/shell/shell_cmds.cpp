@@ -1429,7 +1429,6 @@ void DOS_Shell::CMD_CALL(char * args){
 	this->call=false;
 }
 
-extern bool date_host_forced;
 void DOS_Shell::CMD_DATE(char * args) {
 	HELP("DATE");	
 	if(ScanCMDBool(args,"H")) {
@@ -1487,28 +1486,6 @@ void DOS_Shell::CMD_DATE(char * args) {
 			if(formatstring[i]=='Y') bufferptr += (Bitu)sprintf(buffer+bufferptr,"%04u",(Bit16u) reg_cx);
 		}
 	}
-	if(date_host_forced) {
-		time_t curtime;
-
-		struct tm *loctime;
-		curtime = time (NULL);
-
-		loctime = localtime (&curtime);
-		int hosty=loctime->tm_year+1900;
-		int hostm=loctime->tm_mon+1;
-		int hostd=loctime->tm_mday;
-		if (hostm == 1 || hostm == 2) hosty--;
-		hostm = (hostm + 9) % 12 + 1;
-		int y = hosty % 100;
-		int century = hosty / 100;
-		int week = ((13 * hostm - 1) / 5 + hostd + y + y/4 + century/4 - 2*century) % 7;
-		if (week < 0) week = (week + 7) % 7;
-
-		const char* my_week[7]={"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-		WriteOut("%s %s\n",my_week[week],buffer);
-	} else
-	WriteOut("%s %s\n",day, buffer);
-	if(!dateonly) WriteOut(MSG_Get("SHELL_CMD_DATE_SETHLP"));
 }
 
 void DOS_Shell::CMD_TIME(char * args) {

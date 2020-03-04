@@ -904,7 +904,6 @@ static RealPt INT15_apm_pmentry=0;
 static unsigned char ISA_PNP_KEYMATCH=0;
 static Bits other_memsystems=0;
 static bool apm_realmode_connected = false;
-void CMOS_SetRegister(Bitu regNr, Bit8u val); //For setting equipment word
 bool enable_integration_device_pnp=false;
 bool enable_integration_device=false;
 bool ISAPNPBIOS=false;
@@ -2050,7 +2049,6 @@ static Bitu INT70_Handler(void) {
     return 0;
 }
 
-extern bool date_host_forced;
 static Bit8u ReadCmosByte (Bitu index) {
     IO_Write(0x70, index);
     return IO_Read(0x71);
@@ -2093,68 +2091,12 @@ static Bitu INT1A_Handler(void) {
         mem_writed(BIOS_TIMER,((unsigned int)reg_cx<<16u)|reg_dx);
         break;
     case 0x02:  /* GET REAL-TIME CLOCK TIME (AT,XT286,PS) */
-        if(date_host_forced) {
-            InitRtc();                          // make sure BCD and no am/pm
-            if (RtcUpdateDone()) {              // make sure it's safe to read
-                reg_ch = ReadCmosByte(0x04);    // hours
-                reg_cl = ReadCmosByte(0x02);    // minutes
-                reg_dh = ReadCmosByte(0x00);    // seconds
-                reg_dl = ReadCmosByte(0x0b) & 0x01; // daylight saving time
-            }
-            CALLBACK_SCF(false);
-            break;
-        }
-        IO_Write(0x70,0x04);        //Hours
-        reg_ch=IO_Read(0x71);
-        IO_Write(0x70,0x02);        //Minutes
-        reg_cl=IO_Read(0x71);
-        IO_Write(0x70,0x00);        //Seconds
-        reg_dh=IO_Read(0x71);
-        reg_dl=0;           //Daylight saving disabled
-        CALLBACK_SCF(false);
         break;
     case 0x03:  // set RTC time
-        if(date_host_forced) {
-            InitRtc();                          // make sure BCD and no am/pm
-            WriteCmosByte(0x0b, ReadCmosByte(0x0b) | 0x80u);     // prohibit updates
-            WriteCmosByte(0x04, reg_ch);        // hours
-            WriteCmosByte(0x02, reg_cl);        // minutes
-            WriteCmosByte(0x00, reg_dh);        // seconds
-            WriteCmosByte(0x0b, (ReadCmosByte(0x0b) & 0x7eu) | (reg_dh & 0x01u)); // dst + implicitly allow updates
-        }
         break;
     case 0x04:  /* GET REAL-TIME ClOCK DATE  (AT,XT286,PS) */
-        if(date_host_forced) {
-            InitRtc();                          // make sure BCD and no am/pm
-            if (RtcUpdateDone()) {              // make sure it's safe to read
-                reg_ch = ReadCmosByte(0x32);    // century
-                reg_cl = ReadCmosByte(0x09);    // year
-                reg_dh = ReadCmosByte(0x08);    // month
-                reg_dl = ReadCmosByte(0x07);    // day
-            }
-            CALLBACK_SCF(false);
-            break;
-        }
-        IO_Write(0x70,0x32);        //Centuries
-        reg_ch=IO_Read(0x71);
-        IO_Write(0x70,0x09);        //Years
-        reg_cl=IO_Read(0x71);
-        IO_Write(0x70,0x08);        //Months
-        reg_dh=IO_Read(0x71);
-        IO_Write(0x70,0x07);        //Days
-        reg_dl=IO_Read(0x71);
-        CALLBACK_SCF(false);
         break;
     case 0x05:  // set RTC date
-        if(date_host_forced) {
-            InitRtc();                          // make sure BCD and no am/pm
-            WriteCmosByte(0x0b, ReadCmosByte(0x0b) | 0x80);     // prohibit updates
-            WriteCmosByte(0x32, reg_ch);    // century
-            WriteCmosByte(0x09, reg_cl);    // year
-            WriteCmosByte(0x08, reg_dh);    // month
-            WriteCmosByte(0x07, reg_dl);    // day
-            WriteCmosByte(0x0b, (ReadCmosByte(0x0b) & 0x7f));   // allow updates
-        }
         break;
     case 0x80:  /* Pcjr Setup Sound Multiplexer */
         LOG(LOG_BIOS,LOG_ERROR)("INT1A:80:Setup tandy sound multiplexer to %d",reg_al);
@@ -3858,7 +3800,6 @@ private:
             config |= 0x1000;
             mem_writew(BIOS_CONFIGURATION,config);
             if (IS_EGAVGA_ARCH) config &= ~0x30; //EGA/VGA startup display mode differs in CMOS
-            CMOS_SetRegister(0x14,(Bit8u)(config&0xff)); //Should be updated on changes
         }
 
         {

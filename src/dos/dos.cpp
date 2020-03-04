@@ -274,7 +274,6 @@ static inline void overhead() {
 
 #define BCD2BIN(x)	((((unsigned int)(x) >> 4u) * 10u) + ((x) & 0x0fu))
 #define BIN2BCD(x)	((((x) / 10u) << 4u) + (x) % 10u)
-extern bool date_host_forced;
 
 static Bitu DOS_21Handler(void);
 Bitu DEBUG_EnableDebugger(void);
@@ -768,178 +767,12 @@ static Bitu DOS_21Handler(void) {
             LOG(LOG_FCB,LOG_NORMAL)("DOS:29:FCB Parse Filename, result:al=%d",reg_al);
             break;
         case 0x2a:      /* Get System Date */
-            {
-                if(date_host_forced) {
-                    CPU_Push16(reg_ax);
-                    reg_ah = 4;     // get RTC date
-                    CALLBACK_RunRealInt(0x1a);
-                    reg_ax = CPU_Pop16();
-
-                    reg_ch = BCD2BIN(reg_ch);       // century
-                    reg_cl = BCD2BIN(reg_cl);       // year
-                    reg_cx = reg_ch * 100u + reg_cl; // compose century + year
-                    reg_dh = BCD2BIN(reg_dh);       // month
-                    reg_dl = BCD2BIN(reg_dl);       // day
-
-                    // calculate day of week (we could of course read it from CMOS, but never mind)
-                    unsigned int a = (14u - reg_dh) / 12u;
-                    unsigned int y = reg_cl - a;
-                    unsigned int m = reg_dh + 12u * a - 2u;
-                    reg_al = (reg_dl + y + (y / 4u) - (y / 100u) + (y / 400u) + (31u * m) / 12u) % 7u;
-                } else {
-                    reg_ax=0; // get time
-                    CALLBACK_RunRealInt(0x1a);
-                    if(reg_al) DOS_AddDays(reg_al);
-                    int a = (14 - dos.date.month)/12;
-                    int y = dos.date.year - a;
-                    int m = dos.date.month + 12*a - 2;
-                    reg_al=(dos.date.day+y+(y/4)-(y/100)+(y/400)+(31*m)/12) % 7;
-                    reg_cx=dos.date.year;
-                    reg_dh=dos.date.month;
-                    reg_dl=dos.date.day;
-                }
-            }
             break;
         case 0x2b:      /* Set System Date */
-            if(date_host_forced) {
-                // unfortunately, BIOS does not return whether succeeded
-                // or not, so do a sanity check first
-
-                int maxday[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-
-                if (reg_cx % 4 == 0 && (reg_cx % 100 != 0 || reg_cx % 400 == 0))
-                    maxday[1]++;
-
-                if (reg_cx < 1980 || reg_cx > 9999 || reg_dh < 1 || reg_dh > 12 ||
-                        reg_dl < 1 || reg_dl > maxday[reg_dh])
-                {
-                    reg_al = 0xff;              // error!
-                    break;                      // done
-                }
-
-                Bit16u cx = reg_cx;
-
-                CPU_Push16(reg_ax);
-                CPU_Push16(reg_cx);
-                CPU_Push16(reg_dx);
-
-                reg_al = 5;
-                reg_ch = BIN2BCD(cx / 100);     // century
-                reg_cl = BIN2BCD(cx % 100);     // year
-                reg_dh = BIN2BCD(reg_dh);       // month
-                reg_dl = BIN2BCD(reg_dl);       // day
-
-                CALLBACK_RunRealInt(0x1a);
-
-                reg_dx = CPU_Pop16();
-                reg_cx = CPU_Pop16();
-                reg_ax = CPU_Pop16();
-
-                reg_al = 0;                     // OK
-                break;
-            }
-            if (reg_cx<1980) { reg_al=0xff;break;}
-            if ((reg_dh>12) || (reg_dh==0)) { reg_al=0xff;break;}
-            if (reg_dl==0) { reg_al=0xff;break;}
-            if (reg_dl>DOS_DATE_months[reg_dh]) {
-                if(!((reg_dh==2)&&(reg_cx%4 == 0)&&(reg_dl==29))) // february pass
-                { reg_al=0xff;break; }
-            }
-            dos.date.year=reg_cx;
-            dos.date.month=reg_dh;
-            dos.date.day=reg_dl;
-            reg_al=0;
             break;
-        case 0x2c: {    /* Get System Time */
-            if(date_host_forced) {
-                CPU_Push16(reg_ax);
-
-                reg_ah = 2;     // get RTC time
-                CALLBACK_RunRealInt(0x1a);
-
-                reg_ax = CPU_Pop16();
-
-                reg_ch = BCD2BIN(reg_ch);       // hours
-                reg_cl = BCD2BIN(reg_cl);       // minutes
-                reg_dh = BCD2BIN(reg_dh);       // seconds
-
-                // calculate milliseconds (% 20 to prevent overflow, .55ms has period of 20)
-                // direcly read BIOS_TIMER, don't want to destroy regs by calling int 1a
-                reg_dl = (Bit8u)((mem_readd(BIOS_TIMER) % 20) * 55 % 100);
-                break;
-            }
-            reg_ax=0; // get time
-            CALLBACK_RunRealInt(0x1a);
-            if(reg_al) DOS_AddDays(reg_al);
-            reg_ah=0x2c;
-
-            Bitu ticks=((Bitu)reg_cx<<16)|reg_dx;
-            if(time_start<=ticks) ticks-=time_start;
-            Bitu time=(Bitu)((100.0/((double)PIT_TICK_RATE/65536.0)) * (double)ticks);
-
-            reg_dl=(Bit8u)((Bitu)time % 100); // 1/100 seconds
-            time/=100;
-            reg_dh=(Bit8u)((Bitu)time % 60); // seconds
-            time/=60;
-            reg_cl=(Bit8u)((Bitu)time % 60); // minutes
-            time/=60;
-            reg_ch=(Bit8u)((Bitu)time % 24); // hours
-
-            //Simulate DOS overhead for timing-sensitive games
-            //Robomaze 2
-            overhead();
+        case 0x2c:      /* Get System Time */
             break;
-        }
         case 0x2d:      /* Set System Time */
-            if(date_host_forced) {
-                // unfortunately, BIOS does not return whether succeeded
-                // or not, so do a sanity check first
-                if (reg_ch > 23 || reg_cl > 59 || reg_dh > 59 || reg_dl > 99)
-                {
-                    reg_al = 0xff;      // error!
-                    break;              // done
-                }
-
-                // timer ticks every 55ms
-                Bit32u ticks = ((((reg_ch * 60u + reg_cl) * 60u + reg_dh) * 100u) + reg_dl) * 10u / 55u;
-
-                CPU_Push16(reg_ax);
-                CPU_Push16(reg_cx);
-                CPU_Push16(reg_dx);
-
-                // use BIOS to set RTC time
-                reg_ah = 3;     // set RTC time
-                reg_ch = BIN2BCD(reg_ch);       // hours
-                reg_cl = BIN2BCD(reg_cl);       // minutes
-                reg_dh = BIN2BCD(reg_dh);       // seconds
-                reg_dl = 0;                     // no DST
-
-                CALLBACK_RunRealInt(0x1a);
-
-                // use BIOS to update clock ticks to sync time
-                // could set directly, but setting is safer to do via dedicated call (at least in theory)
-                reg_ah = 1;     // set system time
-                reg_cx = (Bit16u)(ticks >> 16);
-                reg_dx = (Bit16u)(ticks & 0xffff);
-
-                CALLBACK_RunRealInt(0x1a);
-
-                reg_dx = CPU_Pop16();
-                reg_cx = CPU_Pop16();
-                reg_ax = CPU_Pop16();
-
-                reg_al = 0;                     // OK
-                break;
-            }
-            LOG(LOG_DOSMISC,LOG_ERROR)("DOS:Set System Time not supported");
-            //Check input parameters nonetheless
-            if( reg_ch > 23 || reg_cl > 59 || reg_dh > 59 || reg_dl > 99 )
-                reg_al = 0xff; 
-            else { //Allow time to be set to zero. Restore the orginal time for all other parameters. (QuickBasic)
-                if (reg_cx == 0 && reg_dx == 0) {time_start = mem_readd(BIOS_TIMER);LOG_MSG("Warning: game messes with DOS time!");}
-                else time_start = 0;
-                reg_al = 0;
-            }
             break;
         case 0x2e:      /* Set Verify flag */
             dos.verify=(reg_al==1);

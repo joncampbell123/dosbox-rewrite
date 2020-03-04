@@ -61,8 +61,6 @@ DOS_DTA *imgDTA;
 bool killRead;
 static bool swapping_requested;
 
-void CMOS_SetRegister(Bitu regNr, Bit8u val); //For setting equipment word
-
 /* 2 floppys and 2 harddrives, max */
 bool imageDiskChange[MAX_DISK_IMAGES]={false};
 imageDisk *imageDiskList[MAX_DISK_IMAGES]={NULL};
@@ -131,7 +129,6 @@ void incrementFDD(void) {
         equipment|=(numofdisks<<6);
     } else equipment|=1;
     mem_writew(BIOS_CONFIGURATION,equipment);
-    CMOS_SetRegister(0x14, (Bit8u)(equipment&0xff));
 }
 
 int swapInDisksSpecificDrive = -1;

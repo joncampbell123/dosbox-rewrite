@@ -1183,7 +1183,6 @@ void phys_writes(PhysPt addr, const char* string, Bitu length) {
 
 #include "control.h"
 
-unsigned char CMOS_GetShutdownByte();
 void CPU_Snap_Back_To_Real_Mode();
 void DEBUG_Enable(bool pressed);
 void CPU_Snap_Back_Forget();
@@ -1289,39 +1288,6 @@ void CPU_Exception_Level_Reset();
 extern bool custom_bios;
 
 void On_Software_CPU_Reset() {
-    unsigned char c;
-
-    CPU_Exception_Level_Reset();
-
-    if (custom_bios) {
-        /* DO NOTHING */
-        LOG_MSG("CPU RESET: Doing nothing, custom BIOS loaded");
-        LOG_MSG("CPU RESET: CMOS BYTE 0x%02x",CMOS_GetShutdownByte());
-    }
-    else {
-        /* IBM reset vector or system reset by CMOS shutdown byte */
-
-        /* software-initiated CPU reset. but the intent may not be to reset the system but merely
-         * the CPU. check the CMOS shutdown byte */
-        switch (c=CMOS_GetShutdownByte()) {
-            case 0x05:  /* JMP double word pointer with EOI */
-            case 0x0A:  /* JMP double word pointer without EOI */
-                On_Software_286_reset_vector(c);
-                return;
-            case 0x09:  /* INT 15h block move return to real mode (to appease Windows 3.1 KRNL286.EXE and cputype=286, yuck) */
-                On_Software_286_int15_block_move_return(c);
-                return;
-        }
-    }
-
-#if C_DYNAMIC_X86
-    /* this technique is NOT reliable when running the dynamic core! */
-    if (cpudecoder == &CPU_Core_Dyn_X86_Run) {
-        E_Exit("C++ exception method is not compatible with dynamic core when emulating reset, aborting");
-        return;
-    }
-#endif
-
     throw int(3);
     /* does not return */
 }

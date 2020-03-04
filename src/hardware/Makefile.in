@@ -106,7 +106,7 @@ am_libhardware_a_OBJECTS = dma.$(OBJEXT) hardware.$(OBJEXT) \
 	vga_draw.$(OBJEXT) vga_gfx.$(OBJEXT) vga_other.$(OBJEXT) \
 	vga_memory.$(OBJEXT) vga_misc.$(OBJEXT) vga_seq.$(OBJEXT) \
 	vga_xga.$(OBJEXT) vga_s3.$(OBJEXT) vga_tseng.$(OBJEXT) \
-	vga_paradise.$(OBJEXT) cmos.$(OBJEXT)
+	vga_paradise.$(OBJEXT)
 libhardware_a_OBJECTS = $(am_libhardware_a_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -328,8 +328,7 @@ noinst_LIBRARIES = libhardware.a
 libhardware_a_SOURCES = dma.cpp hardware.cpp iohandler.cpp keyboard.cpp \
                         memory.cpp mixer.cpp pic.cpp timer.cpp \
 			vga.cpp vga_attr.cpp vga_crtc.cpp vga_dac.cpp vga_draw.cpp vga_gfx.cpp vga_other.cpp \
-			vga_memory.cpp vga_misc.cpp vga_seq.cpp vga_xga.cpp vga_s3.cpp vga_tseng.cpp vga_paradise.cpp \
-			cmos.cpp
+			vga_memory.cpp vga_misc.cpp vga_seq.cpp vga_xga.cpp vga_s3.cpp vga_tseng.cpp vga_paradise.cpp
 
 all: all-recursive
 
@@ -380,7 +379,6 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmos.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dma.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hardware.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/iohandler.Po@am__quote@

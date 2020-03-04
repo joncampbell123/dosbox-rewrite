@@ -6137,7 +6137,6 @@ void Init_PIC();
 void PROGRAMS_Init();
 void RENDER_Init();
 void TIMER_Init();
-void CMOS_Init();
 void VGA_Init();
 void CPU_Init();
 void ISAPNP_Cfg_Init();
@@ -7348,7 +7347,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
         Init_PIC();
         TIMER_Init();
         PAGING_Init(); /* <- NTS: At this time, must come before memory init because paging is so well integrated into emulation code */
-        CMOS_Init();
         ROMBIOS_Init();
         CALLBACK_Init(); /* <- NTS: This relies on ROM BIOS allocation and it must happen AFTER ROMBIOS init */
 #if C_DEBUG
