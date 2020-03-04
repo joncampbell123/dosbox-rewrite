@@ -269,24 +269,6 @@ void CAPTURE_StopWave(void) {
 #endif
 }
 
-#if !defined(C_EMSCRIPTEN)
-void CAPTURE_MTWaveEvent(bool pressed);
-#endif
-
-void CAPTURE_StartMTWave(void) {
-#if !defined(C_EMSCRIPTEN)
-	if (!(CaptureState & CAPTURE_MULTITRACK_WAVE))
-        CAPTURE_MTWaveEvent(true);
-#endif
-}
-
-void CAPTURE_StopMTWave(void) {
-#if !defined(C_EMSCRIPTEN)
-	if (CaptureState & CAPTURE_MULTITRACK_WAVE)
-        CAPTURE_MTWaveEvent(true);
-#endif
-}
-
 #if (C_SSHOT)
 extern uint32_t GFX_palette32bpp[256];
 #endif
@@ -929,30 +911,6 @@ void CAPTURE_AddWave(Bit32u freq, Bit32u len, Bit16s * data) {
 #endif
 }
 
-void CAPTURE_MTWaveEvent(bool pressed) {
-	if (!pressed)
-		return;
-
-#if !defined(C_EMSCRIPTEN)
-    if (CaptureState & CAPTURE_MULTITRACK_WAVE) {
-        if (capture.multitrack_wave.writer != NULL) {
-            LOG_MSG("Stopped capturing multitrack wave output.");
-            capture.multitrack_wave.name_to_stream_index.clear();
-            avi_writer_end_data(capture.multitrack_wave.writer);
-            avi_writer_finish(capture.multitrack_wave.writer);
-            avi_writer_close_file(capture.multitrack_wave.writer);
-            capture.multitrack_wave.writer = avi_writer_destroy(capture.multitrack_wave.writer);
-            CaptureState &= ~((unsigned int)CAPTURE_MULTITRACK_WAVE);
-        }
-    }
-    else {
-        CaptureState |= CAPTURE_MULTITRACK_WAVE;
-    }
-
-	mainMenu.get_item("mapper_recmtwave").check(!!(CaptureState & CAPTURE_MULTITRACK_WAVE)).refresh_item(mainMenu);
-#endif
-}
-
 void CAPTURE_WaveEvent(bool pressed) {
 	if (!pressed)
 		return;
@@ -1028,55 +986,13 @@ void CAPTURE_AddMidi(bool sysex, Bitu len, Bit8u * data) {
 		RawMidiAdd(data[i]);
 }
 
-void CAPTURE_MidiEvent(bool pressed) {
-	if (!pressed)
-		return;
-	/* Check for previously opened wave file */
-	if (capture.midi.handle) {
-		LOG_MSG("Stopping raw midi saving and finalizing file.");
-		//Delta time
-		RawMidiAdd(0x00);
-		//End of track event
-		RawMidiAdd(0xff);
-		RawMidiAdd(0x2F);
-		RawMidiAdd(0x00);
-		/* clear out the final data in the buffer if any */
-		fwrite(capture.midi.buffer,1,capture.midi.used,capture.midi.handle);
-		capture.midi.done+=capture.midi.used;
-		fseek(capture.midi.handle,18, SEEK_SET);
-		Bit8u size[4];
-		size[0]=(Bit8u)(capture.midi.done >> 24);
-		size[1]=(Bit8u)(capture.midi.done >> 16);
-		size[2]=(Bit8u)(capture.midi.done >> 8);
-		size[3]=(Bit8u)(capture.midi.done >> 0);
-		fwrite(&size,1,4,capture.midi.handle);
-		fclose(capture.midi.handle);
-		capture.midi.handle=0;
-		CaptureState &= ~((unsigned int)CAPTURE_MIDI);
-		return;
-	} 
-	CaptureState ^= CAPTURE_MIDI;
-	if (CaptureState & CAPTURE_MIDI) {
-		LOG_MSG("Preparing for raw midi capture, will start with first data.");
-		capture.midi.used=0;
-		capture.midi.done=0;
-		capture.midi.handle=0;
-	} else {
-		LOG_MSG("Stopped capturing raw midi before any data arrived.");
-	}
-
-	mainMenu.get_item("mapper_caprawmidi").check(!!(CaptureState & CAPTURE_MIDI)).refresh_item(mainMenu);
-}
-
 void CAPTURE_Destroy(Section *sec) {
     (void)sec;//UNUSED
 	// if capture is active, fake mapper event to "toggle" it off for each capture case.
 #if (C_SSHOT)
 	if (capture.video.writer != NULL) CAPTURE_VideoEvent(true);
 #endif
-    if (capture.multitrack_wave.writer) CAPTURE_MTWaveEvent(true);
 	if (capture.wave.writer) CAPTURE_WaveEvent(true);
-	if (capture.midi.handle) CAPTURE_MidiEvent(true);
 }
 
 void CAPTURE_Init() {
@@ -1119,12 +1035,6 @@ void CAPTURE_Init() {
 	// mapper shortcuts for capture
 	MAPPER_AddHandler(CAPTURE_WaveEvent,MK_w,MMOD3|MMODHOST,"recwave","Rec Wave", &item);
 	item->set_text("Record audio to WAV");
-
-	MAPPER_AddHandler(CAPTURE_MTWaveEvent,MK_nothing,0,"recmtwave","Rec MTWav", &item);
-	item->set_text("Record audio to multi-track AVI");
-
-	MAPPER_AddHandler(CAPTURE_MidiEvent,MK_nothing,0,"caprawmidi","Cap MIDI", &item);
-	item->set_text("Record MIDI output");
 
 #if (C_SSHOT)
 	MAPPER_AddHandler(CAPTURE_ScreenShotEvent,MK_s,MMOD3|MMODHOST,"scrshot","Screenshot", &item);

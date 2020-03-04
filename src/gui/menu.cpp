@@ -273,8 +273,6 @@ static const char *def_menu_capture[] =
     "mapper_video",
     "mapper_recwave",
     "mapper_recmtwave",
-    "mapper_caprawopl",
-    "mapper_caprawmidi",
 #endif
     NULL
 };

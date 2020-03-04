@@ -1976,9 +1976,6 @@ void CAPTURE_StopCapture(void);
 void CAPTURE_StartWave(void);
 void CAPTURE_StopWave(void);
 
-void CAPTURE_StartMTWave(void);
-void CAPTURE_StopMTWave(void);
-
 // Explanation: Start capture, run program, stop capture when program exits.
 //              Great for gameplay footage or demoscene capture.
 //
@@ -1987,7 +1984,6 @@ void CAPTURE_StopMTWave(void);
 void DOS_Shell::CMD_DXCAPTURE(char * args) {
     bool cap_video = false;
     bool cap_audio = false;
-    bool cap_mtaudio = false;
     unsigned long post_exit_delay_ms = 3000; /* 3 sec */
 
     while (*args == ' ') args++;
@@ -2002,20 +1998,13 @@ void DOS_Shell::CMD_DXCAPTURE(char * args) {
     if (ScanCMDBool(args,"-A"))
         cap_audio = false;
 
-    if (ScanCMDBool(args,"M"))
-        cap_mtaudio = true;
-    if (ScanCMDBool(args,"-M"))
-        cap_mtaudio = false;
-
-    if (!cap_video && !cap_audio && !cap_mtaudio)
+    if (!cap_video && !cap_audio)
         cap_video = true;
 
     if (cap_video)
         CAPTURE_StartCapture();
     if (cap_audio)
         CAPTURE_StartWave();
-    if (cap_mtaudio)
-        CAPTURE_StartMTWave();
 
     DoCommand(args);
 
@@ -2056,8 +2045,6 @@ void DOS_Shell::CMD_DXCAPTURE(char * args) {
         CAPTURE_StopCapture();
     if (cap_audio)
         CAPTURE_StopWave();
-    if (cap_mtaudio)
-        CAPTURE_StopMTWave();
 }
 
 void DOS_Shell::CMD_CTTY(char * args) {
