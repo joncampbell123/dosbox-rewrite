@@ -550,135 +550,6 @@ public:
 void pc98_msw3_set_ramsize(const unsigned char b) {
 }
 
-/* The NEC display is documented to have:
- *
- * A0000-A3FFF      T-RAM (text) (8KB WORDs)
- *   A0000-A1FFF      Characters (4KB WORDs)
- *   A2000-A3FFF      Attributes (4KB WORDs). For each 16-bit WORD only the lower 8 bits are read/writeable.
- *   A4000-A5FFF      Unknown ?? (4KB WORDs)
- *   A6000-A7FFF      Not present (4KB WORDs)
- * A8000-BFFFF      G-RAM (graphics) (96KB)
- *
- * T-RAM character display RAM is 16-bits per character.
- * ASCII text has upper 8 bits zero.
- * SHIFT-JIS doublewide characters use the upper byte for non-ASCII. */
-
-/* A0000-A3FFF text character + attribute RAM */
-/* 
- * 0xA3FE2      MSW1
- * 0xA3FE6      MSW2
- * 0xA3FEA      MSW3
- * 0xA3FEE      MSW4
- * 0xA3FF2      MSW5
- * 0xA3FF6      MSW6
- * 0xA3FFA      MSW7
- * 0xA3FFE      MSW8
- *
- * TODO: Study real hardware to determine what the bytes between the NVRAM bytes are.
- *       Are they repeats of the MSW bytes, some other value, or just 0xFF?
- */
-class VGA_PC98_TEXT_PageHandler : public PageHandler {
-public:
-	VGA_PC98_TEXT_PageHandler() : PageHandler(PFLAG_NOCODE) {}
-	Bit8u readb(PhysPt addr) {
-        return 0;
-    }
-	void writeb(PhysPt addr,Bit8u val) {
-    }
-};
-
-/* according to real hardware, memory address does not affect char offset (port 0xA5) */
-class VGA_PC98_CG_PageHandler : public PageHandler {
-public:
-	VGA_PC98_CG_PageHandler() : PageHandler(PFLAG_NOCODE) {}
-	Bit8u readb(PhysPt addr) {
-        return 0;
-    }
-	void writeb(PhysPt addr,Bit8u val) {
-    }
-};
-
-/* 256-color control registers, memory mapped I/O */
-class VGA_PC98_256MMIO_PageHandler : public PageHandler {
-public:
-	VGA_PC98_256MMIO_PageHandler() : PageHandler(PFLAG_NOCODE) {}
-	Bit8u readb(PhysPt addr) {
-        return 0;
-    }
-    void writeb(PhysPt addr,Bit8u val) {
-    }
-};
-
-// A8000h-B7FFFh is 256-color planar (????)
-// I don't THINK the bank switching registers have any effect. Not sure.
-// However it makes sense to make it a 64KB region because 8 planes x 64KB = 512KB of RAM. Right?
-// By the way real PEGC hardware seems to prefer WORD (16-bit) sized read/write aligned on WORD boundaries.
-// In fact Windows 3.1's 256-color driver never uses byte-sized read/write in this planar mode.
-class VGA_PC98_256Planar_PageHandler : public PageHandler {
-public:
-	VGA_PC98_256Planar_PageHandler() : PageHandler(PFLAG_NOCODE) {}
-	Bit8u readb(PhysPt addr) {
-        return (Bit8u)(~0);
-    }
-	void writeb(PhysPt addr,Bit8u val) {
-    }
-};
-
-// A8000h is bank 0
-// B0000h is bank 1
-template <const unsigned int bank> class VGA_PC98_256BANK_PageHandler : public PageHandler {
-public:
-	VGA_PC98_256BANK_PageHandler() : PageHandler(PFLAG_NOCODE) {}
-	Bit8u readb(PhysPt addr) {
-        return 0;
-    }
-	void writeb(PhysPt addr,Bit8u val) {
-    }
-};
-
-namespace pc98pgmio {
-
-    template <class AWT> static inline void check_align(const PhysPt addr) {
-#if 0
-        /* DEBUG: address must be aligned to datatype.
-         *        Code that calls us must enforce that or subdivide
-         *        to a small datatype that can follow this rule. */
-        PhysPt chk = (1UL << (sizeof(AWT) - 1)) - 1;
-        /* uint8_t:  chk = 0
-         * uint16_t: chk = 1
-         * TODO: Do you suppose later generation PC-9821's supported DWORD size bitplane transfers?
-         *       Or did NEC just give up on anything past 16-bit and focus on the SVGA side of things? */
-        assert((addr&chk) == 0);
-#else
-        (void)addr;
-#endif
-    }
-
-}
-
-class VGA_PC98_PageHandler : public PageHandler {
-public:
-	VGA_PC98_PageHandler() : PageHandler(PFLAG_NOCODE) {}
-
-    /* byte-wise */
-	Bit8u readb(PhysPt addr) {
-        return 0;
-    }
-	void writeb(PhysPt addr,Bit8u val) {
-    }
-};
-
-class VGA_PC98_LFB_Handler : public PageHandler {
-public:
-	VGA_PC98_LFB_Handler() : PageHandler(PFLAG_READABLE|PFLAG_WRITEABLE|PFLAG_NOCODE) {}
-	HostPt GetHostReadPt(Bitu phys_page) {
-		return &vga.mem.linear[(phys_page&0x7F)*4096 + PC98_VRAM_GRAPHICS_OFFSET]; /* 512KB mapping */
-	}
-	HostPt GetHostWritePt(Bitu phys_page) {
-		return &vga.mem.linear[(phys_page&0x7F)*4096 + PC98_VRAM_GRAPHICS_OFFSET]; /* 512KB mapping */
-	}
-};
-
 class VGA_Map_Handler : public PageHandler {
 public:
 	VGA_Map_Handler() : PageHandler(PFLAG_READABLE|PFLAG_WRITEABLE|PFLAG_NOCODE) {}
@@ -1007,7 +878,6 @@ public:
 };
 
 static struct vg {
-	VGA_PC98_LFB_Handler		map_lfb_pc98;
 	VGA_Map_Handler				map;
 	VGA_Slow_CGA_Handler		slow;
 //	VGA_TEXT_PageHandler		text;
@@ -1027,13 +897,6 @@ static struct vg {
 	VGA_LFB_Handler				lfb;
 	VGA_MMIO_Handler			mmio;
 	VGA_AMS_Handler				ams;
-    VGA_PC98_PageHandler        pc98;
-    VGA_PC98_TEXT_PageHandler   pc98_text;
-    VGA_PC98_CG_PageHandler     pc98_cg;
-    VGA_PC98_256MMIO_PageHandler pc98_256mmio;
-    VGA_PC98_256BANK_PageHandler<0> pc98_256bank0;
-    VGA_PC98_256BANK_PageHandler<1> pc98_256bank1;
-    VGA_PC98_256Planar_PageHandler pc98_256planar;
 	VGA_Empty_Handler			empty;
 } vgaph;
 
