@@ -68,7 +68,6 @@ const char *egc_fgc_modes[4] = {
     "(invalid)",
 };
 
-bool pc98_pegc_linear_framebuffer_enabled(void);
 void GFX_SetTitle(Bit32s cycles,Bits frameskip,Bits timing,bool paused);
 
 extern bool                 is_paused;
@@ -1404,8 +1403,6 @@ void DBGUI_NextWindowIfActiveHidden(void);
 
 void DEBUG_BeginPagedContent(void);
 void DEBUG_EndPagedContent(void);
-
-std::string pc98_egc_shift_debug_status(void);
 
 static void LogFPUInfo(void);
 

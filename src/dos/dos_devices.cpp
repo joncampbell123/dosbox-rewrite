@@ -239,9 +239,6 @@ void DOS_ShutdownDevices(void) {
 			Devices[i] = NULL;
 		}
 	}
-
-    /* NTS: CON counts as a device */
-    if (IS_PC98_ARCH) update_pc98_function_row(0);
 }
 
 // INT 29h emulation needs to keep track of CON
@@ -257,50 +254,6 @@ void DOS_SetupDevices(void) {
 	DOS_Device * newdev3;
 	newdev3=new device_PRN();
 	DOS_AddDevice(newdev3);
-}
-
-/* PC-98 INT DC CL=0x10 AH=0x00 DL=cjar */
-void PC98_INTDC_WriteChar(unsigned char b) {
-    if (DOS_CON != NULL) {
-        Bit16u sz = 1;
-
-        DOS_CON->Write(&b,&sz);
-    }
-}
-
-void INTDC_CL10h_AH03h(Bit16u raw) {
-    if (DOS_CON != NULL)
-        DOS_CON->INTDC_CL10h_AH03h(raw);
-}
-
-void INTDC_CL10h_AH04h(void) {
-    if (DOS_CON != NULL)
-        DOS_CON->INTDC_CL10h_AH04h();
-}
-
-void INTDC_CL10h_AH05h(void) {
-    if (DOS_CON != NULL)
-        DOS_CON->INTDC_CL10h_AH05h();
-}
-
-void INTDC_CL10h_AH06h(Bit16u count) {
-    if (DOS_CON != NULL)
-        DOS_CON->INTDC_CL10h_AH06h(count);
-}
-
-void INTDC_CL10h_AH07h(Bit16u count) {
-    if (DOS_CON != NULL)
-        DOS_CON->INTDC_CL10h_AH07h(count);
-}
-
-void INTDC_CL10h_AH08h(Bit16u count) {
-    if (DOS_CON != NULL)
-        DOS_CON->INTDC_CL10h_AH08h(count);
-}
-
-void INTDC_CL10h_AH09h(Bit16u count) {
-    if (DOS_CON != NULL)
-        DOS_CON->INTDC_CL10h_AH09h(count);
 }
 
 Bitu INT29_HANDLER(void) {
