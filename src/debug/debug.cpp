@@ -72,55 +72,6 @@ bool pc98_pegc_linear_framebuffer_enabled(void);
 void GFX_SetTitle(Bit32s cycles,Bits frameskip,Bits timing,bool paused);
 
 extern bool                 is_paused;
-extern bool                 pc98_crt_mode;
-extern uint8_t              GDC_display_plane;
-extern uint8_t              GDC_display_plane_pending;
-extern bool                 pc98_256kb_boundary;
-extern bool                         gdc_5mhz_mode;
-extern bool                         enable_pc98_egc;
-extern bool                         enable_pc98_grcg;
-extern bool                         enable_pc98_16color;
-extern bool                         enable_pc98_256color;
-extern bool                         enable_pc98_256color_planar;
-extern bool                         enable_pc98_188usermod;
-extern bool                         GDC_vsync_interrupt;
-extern bool                         pc98_graphics_hide_odd_raster_200line;
-extern bool                         pc98_attr4_graphic;
-extern bool                         egc_enable_enable;
-extern uint8_t                      pc98_gdc_tile_counter;
-extern uint8_t                      pc98_gdc_modereg;
-
-extern uint16_t                     pc98_egc_raw_values[8];
-
-extern uint16_t                     a1_font_load_addr;
-extern uint8_t                      a1_font_char_offset;
-
-extern uint8_t                     pc98_egc_access;
-extern uint8_t                     pc98_egc_srcmask[2]; /* host given (Neko: egc.srcmask) */
-extern uint8_t                     pc98_egc_maskef[2]; /* effective (Neko: egc.mask2) */
-extern uint8_t                     pc98_egc_mask[2]; /* host given (Neko: egc.mask) */
-
-extern uint8_t                     pc98_egc_fgc;
-extern uint8_t                     pc98_egc_lead_plane;
-extern uint8_t                     pc98_egc_compare_lead;
-extern uint8_t                     pc98_egc_lightsource;
-extern uint8_t                     pc98_egc_shiftinput;
-extern uint8_t                     pc98_egc_regload;
-extern uint8_t                     pc98_egc_rop;
-extern uint8_t                     pc98_egc_foreground_color;
-extern uint8_t                     pc98_egc_background_color;
-
-extern bool                        pc98_egc_shift_descend;
-extern uint8_t                     pc98_egc_shift_destbit;
-extern uint8_t                     pc98_egc_shift_srcbit;
-extern uint16_t                    pc98_egc_shift_length;
-
-extern unsigned char        pc98_text_first_row_scanline_start;  /* port 70h */
-extern unsigned char        pc98_text_first_row_scanline_end;    /* port 72h */
-extern unsigned char        pc98_text_row_scanline_blank_at;     /* port 74h */
-extern unsigned char        pc98_text_row_scroll_lines;          /* port 76h */
-extern unsigned char        pc98_text_row_scroll_count_start;    /* port 78h */
-extern unsigned char        pc98_text_row_scroll_num_lines;      /* port 7Ah */
 
 extern bool logBuffSuppressConsole;
 extern bool logBuffSuppressConsoleNeedUpdate;
@@ -137,7 +88,6 @@ static void LogLDT(void);
 static void LogIDT(void);
 static void LogXMS(void);
 static void LogEMS(void);
-static void LogFNKEY(void);
 static void LogPages(char* selname);
 static void LogCPUInfo(void);
 static void OutputVecTable(char* filename);
@@ -1974,7 +1924,6 @@ bool ParseCommand(char* str) {
         else if (command == "KERN") LogDOSKernMem();
         else if (command == "XMS") LogXMS();
         else if (command == "EMS") LogEMS();
-        else if (command == "FNKEY") LogFNKEY();
         else return false;
 
 		return true;
@@ -3278,15 +3227,6 @@ bool EMS_GetHandle(Bitu &size,PhysPt &addr,std::string &name,Bitu handle);
 const char *EMS_Type_String(void);
 Bitu EMS_Max_Handles(void);
 bool EMS_Active(void);
-
-static void LogFNKEY(void) {
-    DEBUG_BeginPagedContent();
-
-    void DEBUG_INTDC_FnKeyMapInfo(void);
-    DEBUG_INTDC_FnKeyMapInfo();
-
-    DEBUG_EndPagedContent();
-}
 
 static void LogEMS(void) {
     Bitu h_size;
