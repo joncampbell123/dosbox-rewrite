@@ -74,8 +74,6 @@ const char* const mode_texts[M_MAX] = {
 //#define C_DEBUG 1
 //#define LOG(X,Y) LOG_MSG
 
-bool et4k_highcolor_half_pixel_rate();
-
 double vga_fps = 70;
 double vga_mode_time_base = -1;
 int vga_mode_frames_since_time_base = 0;
@@ -2635,14 +2633,6 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
     else
         vga.draw.planar_mask = vga.draw.linear_mask >> 1;
 
-    /* ET4000 High Sierra DAC programs can change SVGA mode */
-    if ((vga.mode == M_LIN15 || vga.mode == M_LIN16) && (svgaCard == SVGA_TsengET3K || svgaCard == SVGA_TsengET4K)) {
-        if (et4k_highcolor_half_pixel_rate())
-            VGA_DrawLine=VGA_Draw_LIN16_Line_2x;
-        else
-            VGA_DrawLine=VGA_Draw_LIN16_Line_HWMouse;
-    }
-
     // check if some lines at the top off the screen are blanked
     float draw_skip = 0.0;
     if (GCC_UNLIKELY(vga.draw.vblank_skip > 0)) {
@@ -2807,10 +2797,7 @@ void VGA_ActivateHardwareCursor(void) {
             break;
         case M_LIN15:
         case M_LIN16:
-            if ((svgaCard == SVGA_TsengET3K || svgaCard == SVGA_TsengET4K) && et4k_highcolor_half_pixel_rate())
-                VGA_DrawLine=VGA_Draw_LIN16_Line_2x;
-            else
-                VGA_DrawLine=VGA_Draw_LIN16_Line_HWMouse;
+            VGA_DrawLine=VGA_Draw_LIN16_Line_HWMouse;
             break;
         case M_LIN8:
             VGA_DrawLine=VGA_Draw_VGA_Line_Xlat32_HWMouse;
@@ -2992,11 +2979,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
                 //clock /= 2;
         }
         }
-
-        /* FIXME: This is based on correcting the hicolor mode for MFX/Transgression 2.
-         *        I am not able to test against the Windows drivers at this time. */
-        if ((svgaCard == SVGA_TsengET3K || svgaCard == SVGA_TsengET4K) && et4k_highcolor_half_pixel_rate())
-            clock /= 2;
     } else {
         // not EGAVGA_ARCH
         vga.draw.split_line = 0x10000;  // don't care

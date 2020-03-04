@@ -1105,15 +1105,6 @@ void SVGA_Setup_Driver(void) {
     case SVGA_S3Trio:
         SVGA_Setup_S3Trio();
         break;
-    case SVGA_TsengET4K:
-        SVGA_Setup_TsengET4K();
-        break;
-    case SVGA_TsengET3K:
-        SVGA_Setup_TsengET3K();
-        break;
-    case SVGA_ParadisePVGA1A:
-        SVGA_Setup_ParadisePVGA1A();
-        break;
     default:
         break;
     }
