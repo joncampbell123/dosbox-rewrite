@@ -37,7 +37,6 @@
 #include "dos_inc.h"
 #include "bios.h"
 #include "inout.h"
-#include "dma.h"
 #include "bios_disk.h"
 #include "qcow2_disk.h"
 #include "setup.h"
@@ -1211,17 +1210,6 @@ public:
 
             if (drive == 'A' || drive == 'B') {
                 if (!IS_PC98_ARCH) incrementFDD();
-            }
-
-            /* NTS: IBM PC and PC-98 both use DMA channel 2 for the floppy, though according to
-             *      Neko Project II source code, DMA 3 is used for the double density drives (but we don't emulate that yet) */
-            /* create appearance of floppy drive DMA usage (Demon's Forge) */
-            if (IS_PC98_ARCH) {
-                GetDMAChannel(2)->tcount=true;
-                GetDMAChannel(3)->tcount=true;
-            }
-            else {
-                if (!IS_TANDY_ARCH && floppysize!=0) GetDMAChannel(2)->tcount=true;
             }
 
             /* standard method */

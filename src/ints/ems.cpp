@@ -31,7 +31,6 @@
 #include "setup.h"
 #include "support.h"
 #include "cpu.h"
-#include "dma.h"
 #include "control.h"
 
 /* TODO: Make EMS page frame address (and size) user configurable.
@@ -1657,10 +1656,6 @@ public:
 		if (EMM_AllocateSystemHandle(oshandle_memsize_16kb) != EMM_NO_ERROR) { // allocate OS-dedicated handle (ems handle zero, 384kb)
 			LOG_MSG("EMS:Unable to allocate EMS system handle. disabling VCPI");
 			ENABLE_VCPI = false;
-		}
-
-		if (ems_type == EMS_EMM386) {
-			DMA_SetWrapping(0xffffffff);	// emm386-bug that disables dma wrapping
 		}
 
 		/* the VCPI emulation requires a large enough OS handle memory region. */

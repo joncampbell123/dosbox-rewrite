@@ -99,13 +99,13 @@ am__v_AR_0 = @echo "  AR      " $@;
 am__v_AR_1 = 
 libhardware_a_AR = $(AR) $(ARFLAGS)
 libhardware_a_LIBADD =
-am_libhardware_a_OBJECTS = dma.$(OBJEXT) hardware.$(OBJEXT) \
-	iohandler.$(OBJEXT) keyboard.$(OBJEXT) memory.$(OBJEXT) \
-	mixer.$(OBJEXT) pic.$(OBJEXT) timer.$(OBJEXT) vga.$(OBJEXT) \
-	vga_attr.$(OBJEXT) vga_crtc.$(OBJEXT) vga_dac.$(OBJEXT) \
-	vga_draw.$(OBJEXT) vga_gfx.$(OBJEXT) vga_other.$(OBJEXT) \
-	vga_memory.$(OBJEXT) vga_misc.$(OBJEXT) vga_seq.$(OBJEXT) \
-	vga_xga.$(OBJEXT) vga_s3.$(OBJEXT)
+am_libhardware_a_OBJECTS = hardware.$(OBJEXT) iohandler.$(OBJEXT) \
+	keyboard.$(OBJEXT) memory.$(OBJEXT) mixer.$(OBJEXT) \
+	pic.$(OBJEXT) timer.$(OBJEXT) vga.$(OBJEXT) vga_attr.$(OBJEXT) \
+	vga_crtc.$(OBJEXT) vga_dac.$(OBJEXT) vga_draw.$(OBJEXT) \
+	vga_gfx.$(OBJEXT) vga_other.$(OBJEXT) vga_memory.$(OBJEXT) \
+	vga_misc.$(OBJEXT) vga_seq.$(OBJEXT) vga_xga.$(OBJEXT) \
+	vga_s3.$(OBJEXT)
 libhardware_a_OBJECTS = $(am_libhardware_a_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -324,7 +324,7 @@ AM_CPPFLAGS = -I$(top_srcdir)/include -I$(top_srcdir)/src/aviwriter -I$(top_srcd
 SUBDIRS = 
 EXTRA_DIST = 
 noinst_LIBRARIES = libhardware.a
-libhardware_a_SOURCES = dma.cpp hardware.cpp iohandler.cpp keyboard.cpp \
+libhardware_a_SOURCES = hardware.cpp iohandler.cpp keyboard.cpp \
                         memory.cpp mixer.cpp pic.cpp timer.cpp \
 			vga.cpp vga_attr.cpp vga_crtc.cpp vga_dac.cpp vga_draw.cpp vga_gfx.cpp vga_other.cpp \
 			vga_memory.cpp vga_misc.cpp vga_seq.cpp vga_xga.cpp vga_s3.cpp
@@ -378,7 +378,6 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dma.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hardware.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/iohandler.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/keyboard.Po@am__quote@

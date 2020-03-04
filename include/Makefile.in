@@ -254,7 +254,6 @@ cpu.h \
 cross.h \
 control.h \
 debug.h \
-dma.h \
 dos_inc.h \
 dos_system.h \
 dosbox.h \

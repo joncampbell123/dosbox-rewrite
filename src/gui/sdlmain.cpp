@@ -6115,7 +6115,6 @@ void HARDWARE_Init();
 void CAPTURE_Init();
 void ROMBIOS_Init();
 void CALLBACK_Init();
-void Init_DMA();
 void Init_PIC();
 void PROGRAMS_Init();
 void RENDER_Init();
@@ -7281,7 +7280,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
         Init_A20_Gate(); // FIXME: Should be handled by motherboard!
         Init_PS2_Port_92h(); // FIXME: Should be handled by motherboard!
         Init_RAM();
-        Init_DMA();
         Init_PIC();
         TIMER_Init();
         PAGING_Init(); /* <- NTS: At this time, must come before memory init because paging is so well integrated into emulation code */
