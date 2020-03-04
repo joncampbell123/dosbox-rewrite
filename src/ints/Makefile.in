@@ -99,8 +99,8 @@ am__v_AR_0 = @echo "  AR      " $@;
 am__v_AR_1 = 
 libints_a_AR = $(AR) $(ARFLAGS)
 libints_a_LIBADD =
-am_libints_a_OBJECTS = mouse.$(OBJEXT) xms.$(OBJEXT) ems.$(OBJEXT) \
-	int10.$(OBJEXT) int10_char.$(OBJEXT) int10_memory.$(OBJEXT) \
+am_libints_a_OBJECTS = xms.$(OBJEXT) ems.$(OBJEXT) int10.$(OBJEXT) \
+	int10_char.$(OBJEXT) int10_memory.$(OBJEXT) \
 	int10_misc.$(OBJEXT) int10_modes.$(OBJEXT) \
 	int10_vesa.$(OBJEXT) int10_pal.$(OBJEXT) \
 	int10_put_pixel.$(OBJEXT) int10_video_state.$(OBJEXT) \
@@ -293,7 +293,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CPPFLAGS = -I$(top_srcdir)/include
 noinst_LIBRARIES = libints.a
-libints_a_SOURCES = mouse.cpp xms.cpp xms.h ems.cpp \
+libints_a_SOURCES = xms.cpp xms.h ems.cpp \
                     int10.cpp int10.h int10_char.cpp int10_memory.cpp int10_misc.cpp int10_modes.cpp \
                     int10_vesa.cpp int10_pal.cpp int10_put_pixel.cpp int10_video_state.cpp int10_vptable.cpp \
                     bios.cpp bios_disk.cpp bios_vhd.cpp bios_keyboard.cpp qcow2_disk.cpp bios_memdisk.cpp
@@ -363,7 +363,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/int10_vesa.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/int10_video_state.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/int10_vptable.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mouse.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/qcow2_disk.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xms.Po@am__quote@
 
