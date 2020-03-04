@@ -71,7 +71,6 @@ bool VM_Boot_DOSBox_Kernel();
 Bit32u MEM_get_address_bits();
 Bitu bios_post_parport_count();
 Bitu bios_post_comport_count();
-bool KEYBOARD_Report_BIOS_PS2Mouse();
 bool MEM_map_ROM_alias_physmem(Bitu start,Bitu end);
 
 bool bochs_port_e9 = false;
@@ -3623,10 +3622,6 @@ private:
                     break;
             }
 
-            // PS2 mouse
-            if (KEYBOARD_Report_BIOS_PS2Mouse())
-                config |= 0x04;
-
             // DMA *not* supported - Ancient Art of War CGA uses this to identify PCjr
             if (machine==MCH_PCJR) config |= 0x100;
 
@@ -3643,12 +3638,6 @@ private:
             IO_Write(0x70,0x31);
             size_extended|=(IO_Read(0x71) << 8);
             BIOS_HostTimeSync();
-        }
-
-        {
-            /* PS/2 mouse */
-            void BIOS_PS2Mouse_Startup(Section *sec);
-            BIOS_PS2Mouse_Startup(NULL);
         }
 
         {

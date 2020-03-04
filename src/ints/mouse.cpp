@@ -64,27 +64,6 @@ void Mouse_ButtonPressed(Bit8u button) {
 void Mouse_ButtonReleased(Bit8u button) {
 }
 
-void Mouse_BeforeNewVideoMode(bool setmode) {
-}
-
-void Mouse_AfterNewVideoMode(bool setmode) {
-}
-
-void MOUSE_OnReset(Section *sec) {
-}
-
-void MOUSE_ShutDown(Section *sec) {
-}
-
-void BIOS_PS2MOUSE_ShutDown(Section *sec) {
-}
-
-void BIOS_PS2Mouse_Startup(Section *sec) {
-}
-
-void MOUSE_Startup(Section *sec) {
-}
-
 void MOUSE_Init() {
 }
 
