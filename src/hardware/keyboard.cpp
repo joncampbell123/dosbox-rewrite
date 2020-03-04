@@ -141,10 +141,8 @@ void PCjr_stuff_scancode(const unsigned char c) {
     keyb.p60data = c;
 }
 
-uint8_t Mouse_GetButtonState(void);
-
 uint32_t Keyb_ig_status() {
-    uint8_t mousebtn = Mouse_GetButtonState() & 7;
+    uint8_t mousebtn = 0;
 
     return  ((uint32_t)keyb.led_state     << (uint32_t)0 ) |
         ((uint32_t)keyb.scanset       << (uint32_t)8 ) |

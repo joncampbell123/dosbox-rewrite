@@ -3710,8 +3710,6 @@ void GFX_SDLMenuTrackHilight(DOSBoxMenu &menu,DOSBoxMenu::item_handle_t item_id)
 }
 #endif
 
-uint8_t Mouse_GetButtonState(void);
-
 bool GFX_CursorInOrNearScreen(int wx,int wy) {
     int minx = sdl.clip.x - (sdl.clip.w / 10);
     int miny = sdl.clip.y - (sdl.clip.h / 10);
@@ -3727,7 +3725,7 @@ static void HandleMouseMotion(SDL_MouseMotionEvent * motion) {
     /* limit mouse input to whenever the cursor is on the screen, or near the edge of the screen. */
     if (is_paused)
         inputToScreen = false;
-    else if (sdl.mouse.locked || Mouse_GetButtonState() != 0)
+    else if (sdl.mouse.locked)
         inputToScreen = true;
     else
         inputToScreen = GFX_CursorInOrNearScreen(motion->x,motion->y);
@@ -3736,7 +3734,7 @@ static void HandleMouseMotion(SDL_MouseMotionEvent * motion) {
     if (GFX_GetPreventFullscreen()) {
         /* do NOT draw SDL menu in OpenGL mode when 3Dfx emulation is using OpenGL */
     }
-    else if (!sdl.mouse.locked && !sdl.desktop.fullscreen && mainMenu.isVisible() && motion->y < mainMenu.menuBox.h && Mouse_GetButtonState() == 0) {
+    else if (!sdl.mouse.locked && !sdl.desktop.fullscreen && mainMenu.isVisible() && motion->y < mainMenu.menuBox.h) {
         GFX_SDLMenuTrackHover(mainMenu,mainMenu.display_list.itemFromPoint(mainMenu,motion->x,motion->y));
         SDL_ShowCursor(SDL_ENABLE);
 
@@ -3809,7 +3807,7 @@ static void HandleMouseMotion(SDL_MouseMotionEvent * motion) {
             xrel = yrel = x = y = 0.0f;
 
         emu               = sdl.mouse.locked;
-        const auto isdown = Mouse_GetButtonState() != 0;
+        const auto isdown = false;
 
 #if defined(C_SDL2)
         if (!sdl.mouse.locked)
@@ -3821,9 +3819,6 @@ static void HandleMouseMotion(SDL_MouseMotionEvent * motion) {
     }
     else if (!user_cursor_locked)
     {
-        extern bool MOUSE_HasInterruptSub();
-        extern bool MOUSE_IsBeingPolled();
-        extern bool MOUSE_IsHidden();
         /* Show only when DOS app is not using mouse */
 
 #if defined(C_SDL2)
@@ -3832,9 +3827,8 @@ static void HandleMouseMotion(SDL_MouseMotionEvent * motion) {
         /* SDL1 has some sort of weird mouse warping bug in fullscreen mode no matter whether the mouse is captured or not (Windows, Linux/X11) */
         if (!sdl.mouse.locked && !sdl.desktop.fullscreen)
 #endif
-            SDL_ShowCursor(((!inside) || ((MOUSE_IsHidden()) && !(MOUSE_IsBeingPolled() || MOUSE_HasInterruptSub()))) ? SDL_ENABLE : SDL_DISABLE);
+            SDL_ShowCursor(SDL_ENABLE);
     }
-    Mouse_CursorMoved(xrel, yrel, x, y, emu);
 }
 
 #if DOSBOXMENU_TYPE == DOSBOXMENU_SDLDRAW /* SDL drawn menus */
@@ -4408,20 +4402,15 @@ static void HandleMouseButton(SDL_MouseButtonEvent * button) {
         }
         switch (button->button) {
         case SDL_BUTTON_LEFT:
-            Mouse_ButtonPressed(0);
             break;
         case SDL_BUTTON_RIGHT:
-            Mouse_ButtonPressed(1);
             break;
         case SDL_BUTTON_MIDDLE:
-            Mouse_ButtonPressed(2);
             break;
 #if !defined(C_SDL2)
         case SDL_BUTTON_WHEELUP: /* Ick, really SDL? */
-            Mouse_ButtonPressed(100-1);
             break;
         case SDL_BUTTON_WHEELDOWN: /* Ick, really SDL? */
-            Mouse_ButtonPressed(100+1);
             break;
 #endif
         }
@@ -4429,20 +4418,15 @@ static void HandleMouseButton(SDL_MouseButtonEvent * button) {
     case SDL_RELEASED:
         switch (button->button) {
         case SDL_BUTTON_LEFT:
-            Mouse_ButtonReleased(0);
             break;
         case SDL_BUTTON_RIGHT:
-            Mouse_ButtonReleased(1);
             break;
         case SDL_BUTTON_MIDDLE:
-            Mouse_ButtonReleased(2);
             break;
 #if !defined(C_SDL2)
         case SDL_BUTTON_WHEELUP: /* Ick, really SDL? */
-            Mouse_ButtonReleased(100-1);
             break;
         case SDL_BUTTON_WHEELDOWN: /* Ick, really SDL? */
-            Mouse_ButtonReleased(100+1);
             break;
 #endif
         }
@@ -6157,7 +6141,6 @@ void PRINTER_Init();
 void DOS_Init();
 void XMS_Init();
 void EMS_Init();
-void MOUSE_Init();
 void DOS_KeyboardLayout_Init();
 void MSCDEX_Init();
 void DRIVES_Init();
@@ -7376,7 +7359,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
         DOS_Init();
         DRIVES_Init();
         DOS_KeyboardLayout_Init();
-        MOUSE_Init(); // FIXME: inits INT 15h and INT 33h at the same time. Also uses DOS_GetMemory() which is why DOS_Init must come first
         XMS_Init();
         EMS_Init();
         AUTOEXEC_Init();

@@ -51,22 +51,6 @@ static inline bool GFX_IsFullscreen(void) {
 }
 #endif
 
-void Mouse_CursorMoved(float xrel,float yrel,float x,float y,bool emulate) {
-}
-
-uint8_t Mouse_GetButtonState(void) {
-    return 0;
-}
-
-void Mouse_ButtonPressed(Bit8u button) {
-}
-
-void Mouse_ButtonReleased(Bit8u button) {
-}
-
-void MOUSE_Init() {
-}
-
 bool MOUSE_IsHidden()
 {
     return true;
