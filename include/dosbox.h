@@ -127,7 +127,6 @@ void					DOSBOX_SetLoop(LoopHandler * handler);
 void					DOSBOX_SetNormalLoop();
 
 /* machine tests for use with if() statements */
-#define IS_TANDY_ARCH			(0)
 #define IS_PC98_ARCH            (0)
 #define IS_EGAVGA_ARCH			(1)
 #define IS_EGA_ARCH             (0)
