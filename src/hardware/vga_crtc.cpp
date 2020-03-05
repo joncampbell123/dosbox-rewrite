@@ -173,9 +173,7 @@ void vga_write_p3d5(Bitu port,Bitu val,Bitu iolen) {
 		if (IS_VGA_ARCH) {
 			vga.config.line_compare &= 0x5ff;
 			vga.config.line_compare |= (val&0x40)<<3;
-		} else if(machine==MCH_EGA) {
-			val &= 0x7f; // EGA ignores the doublescan bit
-			}
+		}
 		Bit8u old = crtc(maximum_scan_line);
 		crtc(maximum_scan_line) = (Bit8u)val;
 
@@ -257,7 +255,6 @@ void vga_write_p3d5(Bitu port,Bitu val,Bitu iolen) {
 		
 		if (IS_EGAVGA_ARCH && !(val & 0x10)) {
 			vga.draw.vret_triggered=false;
-			if (GCC_UNLIKELY(machine==MCH_EGA)) PIC_DeActivateIRQ(9);
 		}
 		if (IS_VGA_ARCH) crtc(read_only)=(val & 128)>0;
 		else crtc(read_only)=false;

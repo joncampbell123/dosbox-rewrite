@@ -753,8 +753,6 @@ extern Bit32u Expand16Table[4][16];
 template <const unsigned int card,typename templine_type_t> static inline templine_type_t EGA_Planar_Common_Block_xlat(const Bit8u t) {
     if (card == MCH_VGA)
         return vga.dac.xlat32[t];
-    else if (card == MCH_EGA)
-        return vga.attr.palette[t&vga.attr.color_plane_enable];
 
     return 0;
 }
@@ -825,7 +823,7 @@ template <const unsigned int card,typename templine_type_t> static Bit8u * EGA_P
 }
 
 static Bit8u * EGA_Draw_VGA_Planar_Xlat8_Line(Bitu vidstart, Bitu line) {
-    return EGA_Planar_Common_Line<MCH_EGA,Bit8u>(vidstart,line);
+    return EGA_Planar_Common_Line<MCH_VGA,Bit8u>(vidstart,line);
 }
 
 static Bit8u * VGA_Draw_VGA_Planar_Xlat32_Line(Bitu vidstart, Bitu line) {
@@ -847,7 +845,7 @@ template <const unsigned int card,typename templine_type_t> static Bit8u * Alt_E
 }
 
 static Bit8u * Alt_EGA_Planar_Draw_Line(Bitu /*vidstart*/, Bitu /*line*/) {
-    return Alt_EGA_Planar_Common_Line<MCH_EGA,Bit8u>();
+    return Alt_EGA_Planar_Common_Line<MCH_VGA,Bit8u>();
 }
 
 static Bit8u * Alt_VGA_Planar_Draw_Line(Bitu /*vidstart*/, Bitu /*line*/) {
@@ -1192,7 +1190,7 @@ template <const unsigned int card,typename templine_type_t> static inline Bit8u 
 }
 
 static Bit8u *Alt_EGA_2BPP_Draw_Line(Bitu /*vidstart*/, Bitu /*line*/) {
-    return Alt_EGAVGA_Common_2BPP_Draw_Line<MCH_EGA,Bit8u>();
+    return Alt_EGAVGA_Common_2BPP_Draw_Line<MCH_VGA,Bit8u>();
 }
 
 static Bit8u *Alt_VGA_2BPP_Draw_Line(Bitu /*vidstart*/, Bitu /*line*/) {
@@ -1540,8 +1538,6 @@ template <const unsigned int card,typename templine_type_t> static inline Bit8u*
             for (Bitu n = 0; n < 9; n++) {
                 if (card == MCH_VGA)
                     *draw++ = vga.dac.xlat32[(font&0x100)? foreground:background];
-                else /*MCH_EGA*/
-                    *draw++ = vga.attr.palette[(font&0x100)? foreground:background];
 
                 font <<= 1;
             }
@@ -1549,8 +1545,6 @@ template <const unsigned int card,typename templine_type_t> static inline Bit8u*
             for (Bitu n = 0; n < 8; n++) {
                 if (card == MCH_VGA)
                     *draw++ = vga.dac.xlat32[(font&0x80)? foreground:background];
-                else /*MCH_EGA*/
-                    *draw++ = vga.attr.palette[(font&0x80)? foreground:background];
 
                 font <<= 1;
             }
@@ -1569,8 +1563,6 @@ template <const unsigned int card,typename templine_type_t> static inline Bit8u*
             for (Bitu i = 0; i < 8; i++) {
                 if (card == MCH_VGA)
                     *draw++ = vga.dac.xlat32[foreground];
-                else /*MCH_EGA*/
-                    *draw++ = vga.attr.palette[foreground];
             }
         }
     }
@@ -1580,7 +1572,7 @@ template <const unsigned int card,typename templine_type_t> static inline Bit8u*
 
 // combined 8/9-dot wide text mode 16bpp line drawing function
 static Bit8u* EGA_TEXT_Xlat8_Draw_Line(Bitu vidstart, Bitu line) {
-    return EGAVGA_TEXT_Combined_Draw_Line<MCH_EGA,Bit8u>(vidstart,line);
+    return EGAVGA_TEXT_Combined_Draw_Line<MCH_VGA,Bit8u>(vidstart,line);
 }
 
 // combined 8/9-dot wide text mode 16bpp line drawing function
@@ -1594,8 +1586,6 @@ template <const unsigned int card,typename templine_type_t,const unsigned int pi
     for (unsigned int n = 0; n < pixels; n++) {
         if (card == MCH_VGA)
             *draw++ = vga.dac.xlat32[(font&fontmask)? foreground:background];
-        else /*MCH_EGA*/
-            *draw++ = vga.attr.palette[(font&fontmask)? foreground:background];
 
         font <<= 1;
     }
@@ -1679,7 +1669,7 @@ template <const unsigned int card,typename templine_type_t> static inline Bit8u*
 
 // combined 8/9-dot wide text mode 16bpp line drawing function
 static Bit8u* Alt_EGA_TEXT_Xlat8_Draw_Line(Bitu /*vidstart*/, Bitu /*line*/) {
-    return Alt_EGAVGA_TEXT_Combined_Draw_Line<MCH_EGA,Bit8u>();
+    return Alt_EGAVGA_TEXT_Combined_Draw_Line<MCH_VGA,Bit8u>();
 }
 
 // combined 8/9-dot wide text mode 16bpp line drawing function
@@ -1703,7 +1693,7 @@ static void VGA_ProcessSplit() {
         // In text mode only the characters are shifted by panning, not the address;
         // this is done in the text line draw function. EGA/VGA planar is handled the same way.
         vga.draw.address = vga.draw.byte_panning_shift*vga.draw.bytes_skip;
-        if (machine != MCH_EGA) {
+        {
             switch (vga.mode) {
                 case M_PC98:
                 case M_TEXT:
@@ -1880,7 +1870,6 @@ again:
     if (!skiprender) {
         if (GCC_UNLIKELY(vga.attr.disabled)) {
             switch(machine) {
-                case MCH_EGA:
                 case MCH_VGA:
                     // DoWhackaDo, Alien Carnage, TV sports Football
                     // when disabled by attribute index bit 5:
@@ -2015,7 +2004,7 @@ static void VGA_DrawEGASingleLine(Bitu /*blah*/) {
             RENDER_DrawLine(TempLine);
         } else {
             Bitu address = vga.draw.address;
-            if (machine != MCH_EGA) {
+            {
                 switch (vga.mode) {
                     case M_PC98:
                     case M_TEXT:
@@ -2083,7 +2072,6 @@ void VGA_SetBlinking(Bitu enabled) {
 static void VGA_VertInterrupt(Bitu /*val*/) {
     if ((!vga.draw.vret_triggered) && ((vga.crtc.vertical_retrace_end&0x30)==0x10)) {
         vga.draw.vret_triggered=true;
-        if (GCC_UNLIKELY(machine==MCH_EGA)) PIC_ActivateIRQ(9);
     }
 }
 
@@ -2379,10 +2367,6 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
         // add a little amount of time to make sure the last drawpart has already fired
         PIC_AddEvent(VGA_VertInterrupt,(float)(vga.draw.delay.vdend + 0.005));
         break;
-    case MCH_EGA:
-        PIC_AddEvent(VGA_DisplayStartLatch, (float)vga.draw.delay.vrend);
-        PIC_AddEvent(VGA_VertInterrupt,(float)(vga.draw.delay.vdend + 0.005));
-        break;
     default:
         //E_Exit("This new machine needs implementation in VGA_VerticalTimer too.");
         PIC_AddEvent(VGA_DisplayStartLatch, (float)vga.draw.delay.vrstart);
@@ -2610,10 +2594,7 @@ void VGA_CheckScanLength(void) {
     switch (vga.mode) {
     case M_EGA:
     case M_LIN4:
-        if ((machine==MCH_EGA)&&(vga.crtc.mode_control&0x8))
-            vga.draw.address_add=vga.config.scan_len*16; // TODO
-        else
-            vga.draw.address_add=vga.config.scan_len*(8u<<(unsigned int)vga.config.addr_shift);
+        vga.draw.address_add=vga.config.scan_len*(8u<<(unsigned int)vga.config.addr_shift);
 
         if (IS_EGA_ARCH && (vga.seq.clocking_mode&4))
             vga.draw.address_add*=2;
@@ -2766,10 +2747,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
 
     // set the drawing mode
     switch (machine) {
-    case MCH_EGA:
-        // Note: The Paradise SVGA uses the same panning mechanism as EGA
-        vga.draw.mode = EGALINE;
-        break;
     case MCH_VGA:
         if (svgaCard==SVGA_None) {
             vga.draw.mode = DRAWLINE;
@@ -2866,11 +2843,11 @@ void VGA_SetupDrawing(Bitu /*val*/) {
         } else {
             switch ((vga.misc_output >> 2) & 3) {
             case 0: 
-                oscclock = (machine==MCH_EGA) ? (PIT_TICK_RATE*12) : 25175000;
+                oscclock = 25175000;
                 break;
             case 1:
             default:
-                oscclock = (machine==MCH_EGA) ? 16257000 : 28322000;
+                oscclock = 28322000;
                 break;
             }
         }
@@ -3007,29 +2984,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
 
     // Display end
     vga.draw.delay.vdend = vdend * vga.draw.delay.htotal;
-
-    // EGA frequency dependent monitor palette
-    if (machine == MCH_EGA) {
-        if (vga.misc_output & 1) {
-            // EGA card is in color mode
-            if ((1.0f/vga.draw.delay.htotal) > 19.0f) {
-                // 64 color EGA mode
-                VGA_ATTR_SetEGAMonitorPalette(EGA);
-            } else {
-                // 16 color CGA mode compatibility
-                VGA_ATTR_SetEGAMonitorPalette(CGA);
-            }
-        } else {
-            // EGA card in monochrome mode
-            // It is not meant to be autodetected that way, you either
-            // have a monochrome or color monitor connected and
-            // the EGA switches configured appropriately.
-            // But this would only be a problem if a program sets 
-            // the adapter to monochrome mode and still expects color output.
-            // Such a program should be shot to the moon...
-            VGA_ATTR_SetEGAMonitorPalette(MONO);
-        }
-    }
 
     /*
       6  Horizontal Sync Polarity. Negative if set
@@ -3456,41 +3410,22 @@ void VGA_SetupDrawing(Bitu /*val*/) {
     double scanratio =  ((double)hdend/(double)(htotal-(hrend-hrstart)))/
                         ((double)vdend/(double)(vtotal-(vrend-vrstart)));
     double scanfield_ratio = 4.0/3.0;
-    switch(machine) {
-        case MCH_EGA:
-            switch (vga.misc_output >> 6) {
-            case 0: // 200 lines:
-                scanfield_ratio = 1.085; // DOSBugs
-                //scanfield_ratio = 1.375; // IBM EGA BIOS
-                break;
-            case 2: // 350 lines
-                // TODO monitors seem to display this with a bit of black borders on top and bottom
-                scanfield_ratio = 1.45;
-                break;
-            default:
-                // other cases are undefined for EGA - scale them to 4:3
-                scanfield_ratio = (4.0/3.0) / scanratio;
-                break;
-            }
+    
+    switch (vga.misc_output >> 6) {
+        case 0: // VESA: "OTHER" scanline amount
+            scanfield_ratio = (4.0/3.0) / scanratio;
             break;
-
-        default: // VGA
-            switch (vga.misc_output >> 6) {
-            case 0: // VESA: "OTHER" scanline amount
-                scanfield_ratio = (4.0/3.0) / scanratio;
-                break;
-            case 1: // 400 lines
-                scanfield_ratio = 1.312;
-                break;
-            case 2: // 350 lines
-                scanfield_ratio = 1.249;
-                break;
-            case 3: // 480 lines
-                scanfield_ratio = 1.345;
-                break;
-            }
+        case 1: // 400 lines
+            scanfield_ratio = 1.312;
+            break;
+        case 2: // 350 lines
+            scanfield_ratio = 1.249;
+            break;
+        case 3: // 480 lines
+            scanfield_ratio = 1.345;
             break;
     }
+
     // calculate screen ratio
     double screenratio = scanratio * scanfield_ratio;
 

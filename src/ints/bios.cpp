@@ -3922,20 +3922,6 @@ private:
             CALLBACK_RunRealInt(0x10);
             DrawDOSBoxLogoVGA((unsigned int)logo_x*8u,(unsigned int)logo_y*(unsigned int)rowheight);
         }
-        else if (machine == MCH_EGA) {
-            rowheight = 14;
-            reg_eax = 16;       // 640x350 16-color
-            CALLBACK_RunRealInt(0x10);
-
-            // color correction: change Dark Puke Yellow to brown
-            IO_Read(0x3DA); IO_Read(0x3BA);
-            IO_Write(0x3C0,0x06);
-            IO_Write(0x3C0,0x14); // red=1 green=1 blue=0
-            IO_Read(0x3DA); IO_Read(0x3BA);
-            IO_Write(0x3C0,0x20);
-
-            DrawDOSBoxLogoVGA((unsigned int)logo_x*8u,(unsigned int)logo_y*(unsigned int)rowheight);
-        }
         else {
             reg_eax = 3;        // 80x25 text
             CALLBACK_RunRealInt(0x10);
@@ -3971,9 +3957,6 @@ private:
             const char *card = "?";
 
             switch (machine) {
-                case MCH_EGA:
-                    card = "IBM Enhanced Graphics Adapter";
-                    break;
                 case MCH_VGA:
                     switch (svgaCard) {
                         case SVGA_TsengET4K:

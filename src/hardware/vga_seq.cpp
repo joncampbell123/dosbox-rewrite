@@ -72,9 +72,6 @@ void write_p3c4(Bitu /*port*/,Bitu val,Bitu /*iolen*/) {
 
         /* Paradise/Western Digital sequencer registers appear to repeat every 0x40 aka decoding bits [5:0] */
 	}
-	else if (machine == MCH_EGA) {
-		val &= 0x0F; // FIXME: reasonable guess
-	}
 
 	seq(index)=(Bit8u)val;
 }

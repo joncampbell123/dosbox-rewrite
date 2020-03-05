@@ -751,13 +751,6 @@ void VGA_Reset(Section*) {
      * FIXME: Again it was foolish for DOSBox to standardize on machine=
      * for selecting machine type AND video card. */
     switch (machine) {
-        case MCH_EGA:
-                 // EGA cards supported either 64KB, 128KB or 256KB.
-                 if (vga.mem.memsize == 0)              vga.mem.memsize = _KB_bytes(256);//default
-            else if (vga.mem.memsize <= _KB_bytes(64))  vga.mem.memsize = _KB_bytes(64);
-            else if (vga.mem.memsize <= _KB_bytes(128)) vga.mem.memsize = _KB_bytes(128);
-            else                                        vga.mem.memsize = _KB_bytes(256);
-            break;
         case MCH_VGA:
             // TODO: There are reports of VGA cards that have less than 256KB in the early days of VGA.
             //       How does that work exactly, especially when 640x480 requires about 37KB per plane?

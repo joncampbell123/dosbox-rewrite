@@ -661,9 +661,6 @@ bool INT10_SetCurMode(void) {
 	Bit16u bios_mode=(Bit16u)real_readb(BIOSMEM_SEG,BIOSMEM_CURRENT_MODE);
 	if (CurMode == NULL || CurMode->mode != bios_mode) {
 		switch (machine) {
-		case MCH_EGA:
-			mode_changed=SetCurMode(ModeList_EGA,bios_mode);
-			break;
 		case VGA_ARCH_CASE:
 			switch (svgaCard) {
 			case SVGA_TsengET4K:
@@ -947,10 +944,7 @@ bool INT10_SetVideoMode(Bit16u mode) {
 	/* Setup MISC Output Register */
 	Bit8u misc_output=0x2 | (mono_mode ? 0x0 : 0x1);
 
-	if (machine==MCH_EGA) {
-		// 16MHz clock for 350-line EGA modes except mode F
-		if ((CurMode->vdispend==350) && (mode!=0xf)) misc_output|=0x4;
-	} else {
+	{
 		// 28MHz clock for 9-pixel wide chars
 		if ((CurMode->type==M_TEXT) && (CurMode->cwidth==9)) misc_output|=0x4;
 	}
@@ -989,7 +983,6 @@ bool INT10_SetVideoMode(Bit16u mode) {
 	seq_data[4] = 0x04;	// odd/even disable
 	
 	if (CurMode->special & _EGA_HALF_CLOCK) seq_data[1]|=0x08; //Check for half clock
-	if ((machine==MCH_EGA) && (CurMode->special & _EGA_HALF_CLOCK)) seq_data[1]|=0x02;
 
 	if (IS_VGA_ARCH || (IS_EGA_ARCH && vga.mem.memsize >= 0x20000))
         seq_data[4]|=0x02;	//More than 64kb

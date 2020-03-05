@@ -502,7 +502,7 @@ CX	640x480	800x600	  1024x768/1280x1024
 #endif
 		default:
 			LOG(LOG_INT10,LOG_ERROR)("Function 12:Call %2X not handled",reg_bl);
-			if (machine!=MCH_EGA) reg_al=0;
+			reg_al=0;
 			break;
 		}
 		break;

@@ -76,12 +76,10 @@ Bitu vga_read_p3da(Bitu port,Bitu iolen) {
 static void write_p3c2(Bitu port,Bitu val,Bitu iolen) {
     (void)port;//UNUSED
     (void)iolen;//UNUSED
-	if((machine==MCH_EGA) && ((vga.misc_output^val)&0xc)) VGA_StartResize();
 	vga.misc_output=(Bit8u)val;
 	Bitu base=(val & 0x1) ? 0x3d0 : 0x3b0;
 	Bitu free=(val & 0x1) ? 0x3b0 : 0x3d0;
 	Bitu first=2, last=2;
-	if (machine==MCH_EGA) {first=0; last=3;}
 
 	for (Bitu i=first; i<=last; i++) {
 		IO_RegisterWriteHandler(base+i*2,vga_write_p3d4,IO_MB);
@@ -135,8 +133,7 @@ static Bitu read_p3c2(Bitu port,Bitu iolen) {
     (void)iolen;//UNUSED
 	Bit8u retval=0;
 
-	if (machine==MCH_EGA) retval = 0x0F;
-	else if (IS_VGA_ARCH) retval = 0x60;
+	if (IS_VGA_ARCH) retval = 0x60;
 
 	if(IS_EGAVGA_ARCH) {
 		switch((vga.misc_output>>2)&3) {
