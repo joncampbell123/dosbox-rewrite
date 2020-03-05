@@ -626,8 +626,6 @@ void VGA_Reset(Section*) {
             E_Exit("Unexpected machine");
     }
 
-    SVGA_Setup_Driver();        // svga video memory size is set here, possibly over-riding the user's selection
-
     // NTS: This is WHY the memory size must be a power of 2
     vga.mem.memmask = vga.mem.memsize - 1u;
 
@@ -892,18 +890,6 @@ void VGA_Init() {
 
     AddVMEventFunction(VM_EVENT_LOAD_STATE,AddVMEventFunctionFuncPair(VGA_LoadState));
     AddVMEventFunction(VM_EVENT_SAVE_STATE,AddVMEventFunctionFuncPair(VGA_SaveState));
-}
-
-void SVGA_Setup_Driver(void) {
-    memset(&svga, 0, sizeof(SVGA_Driver));
-
-    switch(svgaCard) {
-    case SVGA_S3Trio:
-        SVGA_Setup_S3Trio();
-        break;
-    default:
-        break;
-    }
 }
 
 void VGA_CaptureStartNextFrame(void) {
