@@ -63,9 +63,6 @@ VideoModeBlock ModeList_VGA[]={
 { 0x001  ,M_TEXT   ,360 ,400 ,40 ,25 ,9 ,16 ,8 ,0xB8000 ,0x0800 ,50  ,449 ,40 ,400 ,_EGA_HALF_CLOCK	},
 { 0x002  ,M_TEXT   ,720 ,400 ,80 ,25 ,9 ,16 ,8 ,0xB8000 ,0x1000 ,100 ,449 ,80 ,400 ,0	},
 { 0x003  ,M_TEXT   ,720 ,400 ,80 ,25 ,9 ,16 ,8 ,0xB8000 ,0x1000 ,100 ,449 ,80 ,400 ,0	},
-{ 0x004  ,M_CGA4   ,320 ,200 ,40 ,25 ,8 ,8  ,1 ,0xB8000 ,0x4000 ,50  ,449 ,40 ,400 ,_EGA_HALF_CLOCK	| _DOUBLESCAN | _REPEAT1},
-{ 0x005  ,M_CGA4   ,320 ,200 ,40 ,25 ,8 ,8  ,1 ,0xB8000 ,0x4000 ,50  ,449 ,40 ,400 ,_EGA_HALF_CLOCK	| _DOUBLESCAN | _REPEAT1},
-{ 0x006  ,M_CGA2   ,640 ,200 ,80 ,25 ,8 ,8  ,1 ,0xB8000 ,0x4000 ,100 ,449 ,80 ,400 ,_DOUBLESCAN | _REPEAT1},
 { 0x007  ,M_TEXT   ,720 ,400 ,80 ,25 ,9 ,16 ,8 ,0xB0000 ,0x1000 ,100 ,449 ,80 ,400 ,0	},
 
 { 0x00D  ,M_EGA    ,320 ,200 ,40 ,25 ,8 ,8  ,8 ,0xA0000 ,0x2000 ,50  ,449 ,40 ,400 ,_EGA_HALF_CLOCK	| _DOUBLESCAN	},
@@ -330,86 +327,6 @@ VideoModeBlock ModeList_VGA_Text_350lines[]={
 { 0x007  ,M_TEXT   ,720 ,350 ,80 ,25 ,9 ,14 ,8 ,0xB0000 ,0x1000 ,100 ,449 ,80 ,350 ,0   }
 };
 
-VideoModeBlock ModeList_VGA_Tseng[]={
-/* mode  ,type     ,sw  ,sh  ,tw ,th ,cw,ch ,pt,pstart  ,plength,htot,vtot,hde,vde special flags */
-{ 0x000  ,M_TEXT   ,360 ,400 ,40 ,25 ,9 ,16 ,8 ,0xB8000 ,0x0800 ,50  ,449 ,40 ,400 ,_EGA_HALF_CLOCK	},
-{ 0x001  ,M_TEXT   ,360 ,400 ,40 ,25 ,9 ,16 ,8 ,0xB8000 ,0x0800 ,50  ,449 ,40 ,400 ,_EGA_HALF_CLOCK	},
-{ 0x002  ,M_TEXT   ,720 ,400 ,80 ,25 ,9 ,16 ,8 ,0xB8000 ,0x1000 ,100 ,449 ,80 ,400 ,0	},
-{ 0x003  ,M_TEXT   ,720 ,400 ,80 ,25 ,9 ,16 ,8 ,0xB8000 ,0x1000 ,100 ,449 ,80 ,400 ,0	},
-{ 0x004  ,M_CGA4   ,320 ,200 ,40 ,25 ,8 ,8  ,1 ,0xB8000 ,0x4000 ,50  ,449 ,40 ,400 ,_EGA_HALF_CLOCK	| _DOUBLESCAN | _REPEAT1},
-{ 0x005  ,M_CGA4   ,320 ,200 ,40 ,25 ,8 ,8  ,1 ,0xB8000 ,0x4000 ,50  ,449 ,40 ,400 ,_EGA_HALF_CLOCK	| _DOUBLESCAN | _REPEAT1},
-{ 0x006  ,M_CGA2   ,640 ,200 ,80 ,25 ,8 ,8  ,1 ,0xB8000 ,0x4000 ,100 ,449 ,80 ,400 ,_DOUBLESCAN | _REPEAT1},
-{ 0x007  ,M_TEXT   ,720 ,400 ,80 ,25 ,9 ,16 ,8 ,0xB0000 ,0x1000 ,100 ,449 ,80 ,400 ,0	},
-
-{ 0x00D  ,M_EGA    ,320 ,200 ,40 ,25 ,8 ,8  ,8 ,0xA0000 ,0x2000 ,50  ,449 ,40 ,400 ,_EGA_HALF_CLOCK	| _DOUBLESCAN	},
-{ 0x00E  ,M_EGA    ,640 ,200 ,80 ,25 ,8 ,8  ,4 ,0xA0000 ,0x4000 ,100 ,449 ,80 ,400 ,_DOUBLESCAN },
-{ 0x00F  ,M_EGA    ,640 ,350 ,80 ,25 ,8 ,14 ,2 ,0xA0000 ,0x8000 ,100 ,449 ,80 ,350 ,0	},
-{ 0x010  ,M_EGA    ,640 ,350 ,80 ,25 ,8 ,14 ,2 ,0xA0000 ,0x8000 ,100 ,449 ,80 ,350 ,0	},
-{ 0x011  ,M_EGA    ,640 ,480 ,80 ,30 ,8 ,16 ,1 ,0xA0000 ,0xA000 ,100 ,525 ,80 ,480 ,0	},
-{ 0x012  ,M_EGA    ,640 ,480 ,80 ,30 ,8 ,16 ,1 ,0xA0000 ,0xA000 ,100 ,525 ,80 ,480 ,0	},
-{ 0x013  ,M_VGA    ,320 ,200 ,40 ,25 ,8 ,8  ,1 ,0xA0000 ,0x2000 ,100 ,449 ,80 ,400 ,_REPEAT1   },
-
-{ 0x018  ,M_TEXT   ,1056 ,688, 132,44, 8, 8, 1 ,0xB0000 ,0x4000, 192, 800, 132, 704, 0 },
-{ 0x019  ,M_TEXT   ,1056 ,400, 132,25, 8, 16,1 ,0xB0000 ,0x2000, 192, 449, 132, 400, 0 },
-{ 0x01A  ,M_TEXT   ,1056 ,400, 132,28, 8, 16,1 ,0xB0000 ,0x2000, 192, 449, 132, 448, 0 },
-{ 0x022  ,M_TEXT   ,1056 ,688, 132,44, 8, 8, 1 ,0xB8000 ,0x4000, 192, 800, 132, 704, 0 },
-{ 0x023  ,M_TEXT   ,1056 ,400, 132,25, 8, 16,1 ,0xB8000 ,0x2000, 192, 449, 132, 400, 0 },
-{ 0x024  ,M_TEXT   ,1056 ,400, 132,28, 8, 16,1 ,0xB8000 ,0x2000, 192, 449, 132, 448, 0 },
-{ 0x025  ,M_LIN4   ,640 ,480 ,80 ,30 ,8 ,16 ,1 ,0xA0000 ,0xA000 ,100 ,525 ,80 ,480 , 0 },
-{ 0x029  ,M_LIN4   ,800 ,600 ,100,37 ,8 ,16 ,1 ,0xA0000 ,0xA000, 128 ,663 ,100,600 , 0 },
-{ 0x02D  ,M_LIN8   ,640 ,350 ,80 ,21 ,8 ,16 ,1 ,0xA0000 ,0x10000,100 ,449 ,80 ,350 , 0 },
-{ 0x02E  ,M_LIN8   ,640 ,480 ,80 ,30 ,8 ,16 ,1 ,0xA0000 ,0x10000,100 ,525 ,80 ,480 , 0 },
-{ 0x02F  ,M_LIN8   ,640 ,400 ,80 ,25 ,8 ,16 ,1 ,0xA0000 ,0x10000,100 ,449 ,80 ,400 , 0 },/* ET4000 only */
-{ 0x030  ,M_LIN8   ,800 ,600 ,100,37 ,8 ,16 ,1 ,0xA0000 ,0x10000,128 ,663 ,100,600 , 0 },
-{ 0x036  ,M_LIN4   ,960 , 720,120,45 ,8 ,16 ,1 ,0xA0000 ,0xA000, 120 ,800 ,120,720 , 0 },/* STB only */
-{ 0x037  ,M_LIN4   ,1024, 768,128,48 ,8 ,16 ,1 ,0xA0000 ,0xA000, 128 ,800 ,128,768 , 0 },
-{ 0x038  ,M_LIN8   ,1024 ,768,128,48 ,8 ,16 ,1 ,0xA0000 ,0x10000,168 ,800 ,128,768 , 0 },/* ET4000 only */
-{ 0x03D  ,M_LIN4   ,1280,1024,160,64 ,8 ,16 ,1 ,0xA0000 ,0xA000, 160 ,1152,160,1024, 0 },/* newer ET4000 */
-{ 0x03E  ,M_LIN4   ,1280, 960,160,60 ,8 ,16 ,1 ,0xA0000 ,0xA000, 160 ,1024,160,960 , 0 },/* Definicon only */ 
-{ 0x06A  ,M_LIN4   ,800 ,600 ,100,37 ,8 ,16 ,1 ,0xA0000 ,0xA000, 128 ,663 ,100,600 , 0 },/* newer ET4000 */
-
-// Sierra SC1148x Hi-Color DAC modes
-{ 0x213  ,M_LIN15  ,320 ,200 ,40 ,25 ,8 ,8  ,1 ,0xA0000 ,0x10000,100 ,449 ,80 ,400 , _VGA_PIXEL_DOUBLE | _REPEAT1 },
-{ 0x22D  ,M_LIN15  ,640 ,350 ,80 ,25 ,8 ,14 ,1 ,0xA0000 ,0x10000,200 ,449 ,160,350 , 0 },
-{ 0x22E  ,M_LIN15  ,640 ,480 ,80 ,30 ,8 ,16 ,1 ,0xA0000 ,0x10000,200 ,525 ,160,480 , 0 },
-{ 0x22F  ,M_LIN15  ,640 ,400 ,80 ,25 ,8 ,16 ,1 ,0xA0000 ,0x10000,200 ,449 ,160,400 , 0 },
-{ 0x230  ,M_LIN15  ,800 ,600 ,100,37 ,8 ,16 ,1 ,0xA0000 ,0x10000,264 ,628 ,200,600 , 0 },
-
-{0xFFFF  ,M_ERROR  ,0   ,0   ,0  ,0  ,0 ,0  ,0 ,0x00000 ,0x0000 ,0   ,0   ,0  ,0   ,0 	},
-};
-
-VideoModeBlock ModeList_VGA_Paradise[]={
-/* mode  ,type     ,sw  ,sh  ,tw ,th ,cw,ch ,pt,pstart  ,plength,htot,vtot,hde,vde special flags */
-{ 0x000  ,M_TEXT   ,360 ,400 ,40 ,25 ,9 ,16 ,8 ,0xB8000 ,0x0800 ,50  ,449 ,40 ,400 ,_EGA_HALF_CLOCK	},
-{ 0x001  ,M_TEXT   ,360 ,400 ,40 ,25 ,9 ,16 ,8 ,0xB8000 ,0x0800 ,50  ,449 ,40 ,400 ,_EGA_HALF_CLOCK	},
-{ 0x002  ,M_TEXT   ,720 ,400 ,80 ,25 ,9 ,16 ,8 ,0xB8000 ,0x1000 ,100 ,449 ,80 ,400 ,0	},
-{ 0x003  ,M_TEXT   ,720 ,400 ,80 ,25 ,9 ,16 ,8 ,0xB8000 ,0x1000 ,100 ,449 ,80 ,400 ,0	},
-{ 0x004  ,M_CGA4   ,320 ,200 ,40 ,25 ,8 ,8  ,1 ,0xB8000 ,0x4000 ,50  ,449 ,40 ,400 ,_EGA_HALF_CLOCK	| _DOUBLESCAN | _REPEAT1},
-{ 0x005  ,M_CGA4   ,320 ,200 ,40 ,25 ,8 ,8  ,1 ,0xB8000 ,0x4000 ,50  ,449 ,40 ,400 ,_EGA_HALF_CLOCK	| _DOUBLESCAN | _REPEAT1},
-{ 0x006  ,M_CGA2   ,640 ,200 ,80 ,25 ,8 ,8  ,1 ,0xB8000 ,0x4000 ,100 ,449 ,80 ,400 ,_DOUBLESCAN | _REPEAT1},
-{ 0x007  ,M_TEXT   ,720 ,400 ,80 ,25 ,9 ,16 ,8 ,0xB0000 ,0x1000 ,100 ,449 ,80 ,400 ,0	},
-
-{ 0x00D  ,M_EGA    ,320 ,200 ,40 ,25 ,8 ,8  ,8 ,0xA0000 ,0x2000 ,50  ,449 ,40 ,400 ,_EGA_HALF_CLOCK	| _DOUBLESCAN	},
-{ 0x00E  ,M_EGA    ,640 ,200 ,80 ,25 ,8 ,8  ,4 ,0xA0000 ,0x4000 ,100 ,449 ,80 ,400 ,_DOUBLESCAN },
-{ 0x00F  ,M_EGA    ,640 ,350 ,80 ,25 ,8 ,14 ,2 ,0xA0000 ,0x8000 ,100 ,449 ,80 ,350 ,0	},
-{ 0x010  ,M_EGA    ,640 ,350 ,80 ,25 ,8 ,14 ,2 ,0xA0000 ,0x8000 ,100 ,449 ,80 ,350 ,0	},
-{ 0x011  ,M_EGA    ,640 ,480 ,80 ,30 ,8 ,16 ,1 ,0xA0000 ,0xA000 ,100 ,525 ,80 ,480 ,0	},
-{ 0x012  ,M_EGA    ,640 ,480 ,80 ,30 ,8 ,16 ,1 ,0xA0000 ,0xA000 ,100 ,525 ,80 ,480 ,0	},
-{ 0x013  ,M_VGA    ,320 ,200 ,40 ,25 ,8 ,8  ,1 ,0xA0000 ,0x2000 ,100 ,449 ,80 ,400 ,_REPEAT1 },
-
-{ 0x054  ,M_TEXT   ,1056 ,688, 132,43, 8, 9, 1, 0xB0000, 0x4000, 192, 720, 132,688, 0 },
-{ 0x055  ,M_TEXT   ,1056 ,400, 132,25, 8, 16,1, 0xB0000, 0x2000, 192, 449, 132,400, 0 },
-{ 0x056  ,M_TEXT   ,1056 ,688, 132,43, 8, 9, 1, 0xB0000, 0x4000, 192, 720, 132,688, 0 },
-{ 0x057  ,M_TEXT   ,1056 ,400, 132,25, 8, 16,1, 0xB0000, 0x2000, 192, 449, 132,400, 0 },
-{ 0x058  ,M_LIN4   ,800 , 600, 100,37, 8, 16,1, 0xA0000, 0xA000, 128 ,663 ,100,600, 0 },
-{ 0x05C  ,M_LIN8   ,800 , 600 ,100,37 ,8 ,16,1 ,0xA0000 ,0x10000,128 ,663 ,100,600, 0 },
-{ 0x05D  ,M_LIN4   ,1024, 768, 128,48 ,8, 16,1, 0xA0000, 0x10000,128 ,800 ,128,768 ,0 }, // documented only on C00 upwards
-{ 0x05E  ,M_LIN8   ,640 , 400, 80 ,25, 8, 16,1, 0xA0000, 0x10000,100 ,449 ,80 ,400, 0 },
-{ 0x05F  ,M_LIN8   ,640 , 480, 80 ,30, 8, 16,1, 0xA0000, 0x10000,100 ,525 ,80 ,480, 0 },
-
-{0xFFFF  ,M_ERROR  ,0   ,0   ,0  ,0  ,0 ,0  ,0 ,0x00000 ,0x0000 ,0   ,0   ,0  ,0   ,0 	},
-};
-
 /* NTS: I will *NOT* set the double scanline flag for 200 line modes.
  *      The modes listed here are intended to reflect the actual raster sent to the EGA monitor,
  *      not what you think looks better. EGA as far as I know, is either sent a 200-line mode,
@@ -420,9 +337,6 @@ VideoModeBlock ModeList_EGA[]={
 { 0x001  ,M_TEXT   ,320 ,350 ,40 ,25 ,8 ,14 ,8 ,0xB8000 ,0x0800 ,50  ,366 ,40 ,350 ,_EGA_HALF_CLOCK	},
 { 0x002  ,M_TEXT   ,640 ,350 ,80 ,25 ,8 ,14 ,8 ,0xB8000 ,0x1000 ,96  ,366 ,80 ,350 ,0	},
 { 0x003  ,M_TEXT   ,640 ,350 ,80 ,25 ,8 ,14 ,8 ,0xB8000 ,0x1000 ,96  ,366 ,80 ,350 ,0	},
-{ 0x004  ,M_CGA4   ,320 ,200 ,40 ,25 ,8 ,8  ,1 ,0xB8000 ,0x4000 ,60  ,262 ,40 ,200 ,_EGA_HALF_CLOCK	| _REPEAT1},
-{ 0x005  ,M_CGA4   ,320 ,200 ,40 ,25 ,8 ,8  ,1 ,0xB8000 ,0x4000 ,60  ,262 ,40 ,200 ,_EGA_HALF_CLOCK	| _REPEAT1},
-{ 0x006  ,M_CGA2   ,640 ,200 ,80 ,25 ,8 ,8  ,1 ,0xB8000 ,0x4000 ,117 ,262 ,80 ,200 ,_REPEAT1},
 { 0x007  ,M_TEXT   ,720 ,350 ,80 ,25 ,9 ,14 ,8 ,0xB0000 ,0x1000 ,101 ,370 ,80 ,350 ,0	},
 
 { 0x00D  ,M_EGA    ,320 ,200 ,40 ,25 ,8 ,8  ,8 ,0xA0000 ,0x2000 ,60  ,262 ,40 ,200 ,_EGA_HALF_CLOCK	},
@@ -432,64 +346,6 @@ VideoModeBlock ModeList_EGA[]={
 
 {0xFFFF  ,M_ERROR  ,0   ,0   ,0  ,0  ,0 ,0  ,0 ,0x00000 ,0x0000 ,0   ,0   ,0  ,0   ,0 	},
 };
-
-VideoModeBlock ModeList_OTHER[]={
-/* mode  ,type     ,sw  ,sh  ,tw ,th ,cw,ch ,pt,pstart  ,plength,htot,vtot,hde,vde ,special flags */
-{ 0x000  ,M_TEXT   ,320 ,400 ,40 ,25 ,8 ,8  ,8 ,0xB8000 ,0x0800 ,56  ,31  ,40 ,25  ,0   },
-{ 0x001  ,M_TEXT   ,320 ,400 ,40 ,25 ,8 ,8  ,8 ,0xB8000 ,0x0800 ,56  ,31  ,40 ,25  ,0	},
-{ 0x002  ,M_TEXT   ,640 ,400 ,80 ,25 ,8 ,8  ,4 ,0xB8000 ,0x1000 ,113 ,31  ,80 ,25  ,0	},
-{ 0x003  ,M_TEXT   ,640 ,400 ,80 ,25 ,8 ,8  ,4 ,0xB8000 ,0x1000 ,113 ,31  ,80 ,25  ,0	},
-{ 0x004  ,M_CGA4   ,320 ,200 ,40 ,25 ,8 ,8  ,1 ,0xB8000 ,0x4000 ,56  ,127 ,40 ,100 ,0   },
-{ 0x005  ,M_CGA4   ,320 ,200 ,40 ,25 ,8 ,8  ,1 ,0xB8000 ,0x4000 ,56  ,127 ,40 ,100 ,0   },
-{ 0x006  ,M_CGA2   ,640 ,200 ,80 ,25 ,8 ,8  ,1 ,0xB8000 ,0x4000 ,56  ,127 ,40 ,100 ,0   },
-{ 0x008  ,M_TANDY16,160 ,200 ,20 ,25 ,8 ,8  ,8 ,0xB8000 ,0x2000 ,56  ,127 ,40 ,100 ,0   },
-{ 0x009  ,M_TANDY16,320 ,200 ,40 ,25 ,8 ,8  ,8 ,0xB8000 ,0x2000 ,113 ,63  ,80 ,50  ,0   },
-{ 0x00A  ,M_CGA4   ,640 ,200 ,80 ,25 ,8 ,8  ,8 ,0xB8000 ,0x2000 ,113 ,63  ,80 ,50  ,0   },
-//{ 0x00E  ,M_TANDY16,640 ,200 ,80 ,25 ,8 ,8  ,8 ,0xA0000 ,0x10000 ,113 ,256 ,80 ,200 ,0   },
-{0xFFFF  ,M_ERROR  ,0   ,0   ,0  ,0  ,0 ,0  ,0 ,0x00000 ,0x0000 ,0   ,0   ,0  ,0   ,0 	},
-};
-
-/* MCGA mode list.
- * These are based off of a register capture of actual MCGA hardware for each mode.
- * According to register captures, all modes seem to be consistently programmed as if
- * for 40x25 CGA modes, including 80x25 modes.
- *
- * These modes should generally make a 70Hz VGA compatible output, except 640x480 2-color MCGA
- * mode, which should make a 60Hz VGA compatible mode.
- *
- * Register values are CGA-like, meaning that the modes are defined in character clocks
- * horizontally and character cells vertically and the actual scan line numbers are determined
- * by the vertical param times max scanline.
- *
- * According to the register dump I made, vertical total values don't fully make sense and
- * may be nonsensical and handled differently for emulation purposes. They're weird.
- *
- * When I can figure out which ones are directly handled, doubled, or just ignored, I can
- * update this table and the emulation to match it.
- *
- * Until then, this is close enough. */
-VideoModeBlock ModeList_MCGA[]={
-/* mode  ,type     ,sw  ,sh  ,tw ,th ,cw,ch ,pt,pstart  ,plength,htot,vtot,hde,vde ,special flags */
-{ 0x000  ,M_TEXT   ,320 ,400 ,40 ,25 ,8 ,16 ,8 ,0xB8000 ,0x0800 ,49  ,26  ,40 ,25  ,0   },
-{ 0x001  ,M_TEXT   ,320 ,400 ,40 ,25 ,8 ,16 ,8 ,0xB8000 ,0x0800 ,49  ,26  ,40 ,25  ,0   },
-{ 0x002  ,M_TEXT   ,640 ,400 ,80 ,25 ,8 ,16 ,8 ,0xB8000 ,0x1000 ,49  ,26  ,40 ,25  ,0   },
-{ 0x003  ,M_TEXT   ,640 ,400 ,80 ,25 ,8 ,16 ,8 ,0xB8000 ,0x1000 ,49  ,26  ,40 ,25  ,0   },
-{ 0x004  ,M_CGA4   ,320 ,200 ,40 ,25 ,8 ,8  ,1 ,0xB8000 ,0x4000 ,49  ,108 ,40 ,100 ,0   },
-{ 0x005  ,M_CGA4   ,320 ,200 ,40 ,25 ,8 ,8  ,1 ,0xB8000 ,0x4000 ,49  ,108 ,40 ,100 ,0   },
-{ 0x006  ,M_CGA2   ,640 ,200 ,80 ,25 ,8 ,8  ,1 ,0xB8000 ,0x4000 ,49  ,108 ,40 ,100 ,0   },
-{ 0x011  ,M_CGA2   ,640 ,480 ,80 ,30 ,8 ,16 ,1 ,0xA0000 ,0xA000 ,49  ,127 ,40 ,120 ,0   }, // note 1
-{ 0x013  ,M_VGA    ,320 ,200 ,40 ,25 ,8 ,8  ,1 ,0xA0000 ,0x2000 ,49  ,108 ,40 ,100 ,0   }, // note 1
-{0xFFFF  ,M_ERROR  ,0   ,0   ,0  ,0  ,0 ,0  ,0 ,0x00000 ,0x0000 ,0   ,0   ,0  ,0   ,0   },
-};
-// note 1: CGA-like 200-line vertical timing is programmed into the registers, and then the
-//         hardware doubles them again. The max scanline row is zero in these modes, so
-//         doubling twice is the only way it could work.
-
-VideoModeBlock Hercules_Mode=
-{ 0x007  ,M_TEXT   ,640 ,350 ,80 ,25 ,8 ,14 ,1 ,0xB0000 ,0x1000 ,97 ,25  ,80 ,25  ,0	};
-
-VideoModeBlock PC98_Mode=
-{ 0x000  ,M_PC98   ,640 ,400 ,80 ,25 ,8 ,14 ,1 ,0xA0000 ,0x1000 ,97 ,25  ,80 ,25  ,0	};
 
 static Bit8u text_palette[64][3]=
 {
@@ -537,24 +393,6 @@ static Bit8u ega_palette[64][3]=
   {0x00,0x00,0x00}, {0x00,0x00,0x2a}, {0x00,0x2a,0x00}, {0x00,0x2a,0x2a}, {0x2a,0x00,0x00}, {0x2a,0x00,0x2a}, {0x2a,0x15,0x00}, {0x2a,0x2a,0x2a},
   {0x15,0x15,0x15}, {0x15,0x15,0x3f}, {0x15,0x3f,0x15}, {0x15,0x3f,0x3f}, {0x3f,0x15,0x15}, {0x3f,0x15,0x3f}, {0x3f,0x3f,0x15}, {0x3f,0x3f,0x3f},
   {0x15,0x15,0x15}, {0x15,0x15,0x3f}, {0x15,0x3f,0x15}, {0x15,0x3f,0x3f}, {0x3f,0x15,0x15}, {0x3f,0x15,0x3f}, {0x3f,0x3f,0x15}, {0x3f,0x3f,0x3f}
-};
-
-static Bit8u cga_palette[16][3]=
-{
-	{0x00,0x00,0x00}, {0x00,0x00,0x2a}, {0x00,0x2a,0x00}, {0x00,0x2a,0x2a}, {0x2a,0x00,0x00}, {0x2a,0x00,0x2a}, {0x2a,0x15,0x00}, {0x2a,0x2a,0x2a},
-	{0x15,0x15,0x15}, {0x15,0x15,0x3f}, {0x15,0x3f,0x15}, {0x15,0x3f,0x3f}, {0x3f,0x15,0x15}, {0x3f,0x15,0x3f}, {0x3f,0x3f,0x15}, {0x3f,0x3f,0x3f},
-};
-
-static Bit8u cga_palette_2[64][3]=
-{
-	{0x00,0x00,0x00}, {0x00,0x00,0x2a}, {0x00,0x2a,0x00}, {0x00,0x2a,0x2a}, {0x2a,0x00,0x00}, {0x2a,0x00,0x2a}, {0x2a,0x15,0x00}, {0x2a,0x2a,0x2a},
-	{0x00,0x00,0x00}, {0x00,0x00,0x2a}, {0x00,0x2a,0x00}, {0x00,0x2a,0x2a}, {0x2a,0x00,0x00}, {0x2a,0x00,0x2a}, {0x2a,0x15,0x00}, {0x2a,0x2a,0x2a},
-	{0x15,0x15,0x15}, {0x15,0x15,0x3f}, {0x15,0x3f,0x15}, {0x15,0x3f,0x3f}, {0x3f,0x15,0x15}, {0x3f,0x15,0x3f}, {0x3f,0x3f,0x15}, {0x3f,0x3f,0x3f},
-	{0x15,0x15,0x15}, {0x15,0x15,0x3f}, {0x15,0x3f,0x15}, {0x15,0x3f,0x3f}, {0x3f,0x15,0x15}, {0x3f,0x15,0x3f}, {0x3f,0x3f,0x15}, {0x3f,0x3f,0x3f},
-	{0x00,0x00,0x00}, {0x00,0x00,0x2a}, {0x00,0x2a,0x00}, {0x00,0x2a,0x2a}, {0x2a,0x00,0x00}, {0x2a,0x00,0x2a}, {0x2a,0x15,0x00}, {0x2a,0x2a,0x2a},
-	{0x00,0x00,0x00}, {0x00,0x00,0x2a}, {0x00,0x2a,0x00}, {0x00,0x2a,0x2a}, {0x2a,0x00,0x00}, {0x2a,0x00,0x2a}, {0x2a,0x15,0x00}, {0x2a,0x2a,0x2a},
-	{0x15,0x15,0x15}, {0x15,0x15,0x3f}, {0x15,0x3f,0x15}, {0x15,0x3f,0x3f}, {0x3f,0x15,0x15}, {0x3f,0x15,0x3f}, {0x3f,0x3f,0x15}, {0x3f,0x3f,0x3f},
-	{0x15,0x15,0x15}, {0x15,0x15,0x3f}, {0x15,0x3f,0x15}, {0x15,0x3f,0x3f}, {0x3f,0x15,0x15}, {0x3f,0x15,0x3f}, {0x3f,0x3f,0x15}, {0x3f,0x3f,0x3f},
 };
 
 static Bit8u vga_palette[248][3]=
@@ -691,15 +529,6 @@ static void FinishSetMode(bool clearmem) {
 	/* Clear video memory if needs be */
 	if (clearmem) {
         switch (CurMode->type) {
-        case M_TANDY16:
-        case M_CGA4:
-		case M_CGA2:
-            {
-                for (Bit16u ct=0;ct<16*1024;ct++) {
-                    real_writew( 0xb800,ct*2,0x0000);
-                }
-            }
-			break;
 		case M_TEXT: {
 			Bit16u max = (Bit16u)(CurMode->ptotal*CurMode->plength)>>1;
 			if (CurMode->mode == 7) {
@@ -762,90 +591,6 @@ static void FinishSetMode(bool clearmem) {
 	VGA_DAC_UpdateColorPalette();
 }
 
-bool INT10_SetVideoMode_OTHER(Bit16u mode,bool clearmem) {
-	LOG(LOG_INT10,LOG_NORMAL)("Set Video Mode %X",mode);
-
-	/* Setup the CRTC */
-	Bit16u crtc_base=0x3d4;
-
-	//Horizontal total
-	IO_WriteW(crtc_base,(Bit16u)(0x00 | (CurMode->htotal) << 8));
-    {
-        //Horizontal displayed
-        IO_WriteW(crtc_base,(Bit16u)(0x01 | (CurMode->hdispend) << 8));
-        //Horizontal sync position
-        IO_WriteW(crtc_base,(Bit16u)(0x02 | (CurMode->hdispend+1) << 8));
-    }
-    //Horizontal sync width, seems to be fixed to 0xa, for cga at least, hercules has 0xf
-	// PCjr doubles sync width in high resolution modes, good for aspect correction
-	// newer "compatible" CGA BIOS does the same
-	// The IBM CGA card seems to limit retrace pulse widths
-	Bitu syncwidth;
-	if(CurMode->hdispend==80) syncwidth = 0xc;
-	else syncwidth = 0x6;
-	
-	IO_WriteW(crtc_base,(Bit16u)(0x03 | (syncwidth) << 8));
-	////Vertical total
-	IO_WriteW(crtc_base,(Bit16u)(0x04 | (CurMode->vtotal) << 8));
-	//Vertical total adjust, 6 for cga,hercules,tandy
-	IO_WriteW(crtc_base,(Bit16u)(0x05 | (6) << 8));
-	//Vertical displayed
-	IO_WriteW(crtc_base,(Bit16u)(0x06 | (CurMode->vdispend) << 8));
-	//Vertical sync position
-	IO_WriteW(crtc_base,(Bit16u)(0x07 | (CurMode->vdispend + ((CurMode->vtotal - CurMode->vdispend)/2)-1) << 8));
-	//Maximum scanline
-	Bit8u scanline;
-	scanline=8;
-	switch(CurMode->type) {
-	case M_TEXT: // text mode character height
-		scanline=8;
-		break;
-    case M_CGA2: // graphics mode: even/odd banks interleaved
-        scanline = 2;
-        break;
-    case M_VGA: // MCGA
-        scanline = 2;
-        break;
-	case M_CGA4:
-		if (CurMode->mode!=0xa) scanline=2;
-		else scanline=4;
-		break;
-	case M_TANDY16:
-		if (CurMode->mode!=0x9) scanline=2;
-		else scanline=4;
-		break;
-	default:
-		break;
-	}
-
-	IO_WriteW(crtc_base,0x09 | (scanline-1u) << 8u);
-	//Setup the CGA palette using VGA DAC palette
-	for (Bit8u ct=0;ct<16;ct++) VGA_DAC_SetEntry(ct,cga_palette[ct][0],cga_palette[ct][1],cga_palette[ct][2]);
-	//Setup the tandy palette
-	for (Bit8u ct=0;ct<16;ct++) VGA_DAC_CombineColor(ct,ct);
-
-	// Check if the program wants us to use a custom mode table
-	RealPt vparams = RealGetVec(0x1d);
-	if (vparams != 0 && (vparams != BIOS_VIDEO_TABLE_LOCATION) && (mode < 8)) {
-		// load crtc parameters from video params table
-		Bit16u crtc_block_index = 0;
-		if (mode < 2) crtc_block_index = 0;
-		else if (mode < 4) crtc_block_index = 1;
-		else if (mode < 7) crtc_block_index = 2;
-		else if (mode == 7) crtc_block_index = 3; // MDA mono mode; invalid for others
-		else if (mode < 9) crtc_block_index = 2;
-		else crtc_block_index = 3; // Tandy/PCjr modes
-
-		// init CRTC registers
-		for (Bit16u i = 0; i < 16; i++)
-			IO_WriteW(crtc_base, (uint16_t)(i | (real_readb(RealSeg(vparams), 
-				RealOff(vparams) + i + crtc_block_index*16) << 8)));
-	}
-	FinishSetMode(clearmem);
-
-	return true;
-}
-
 bool unmask_irq0_on_int10_setmode = true;
 
 bool INT10_SetVideoMode(Bit16u mode) {
@@ -868,7 +613,6 @@ bool INT10_SetVideoMode(Bit16u mode) {
 
 	int10.vesa_setmode=0xffff;
 	LOG(LOG_INT10,LOG_NORMAL)("Set Video Mode %X",mode);
-	if (!IS_EGAVGA_ARCH) return INT10_SetVideoMode_OTHER(mode,clearmem);
 
 	/* First read mode setup settings from bios area */
 //	Bit8u video_ctl=real_readb(BIOSMEM_SEG,BIOSMEM_VIDEO_CTL);
@@ -962,17 +706,6 @@ bool INT10_SetVideoMode(Bit16u mode) {
 		seq_data[4]|=0x01;				//Alpanumeric
 		seq_data[4]&=~0x04;				//odd/even enable
 		break;
-	case M_CGA2:
-		if (IS_EGAVGA_ARCH) {
-			seq_data[2]|=0x1;			//Enable plane 0. Most VGA cards treat it as a 640x200 variant of the MCGA 2-color mode, with bit 13 remapped for interlace
-		}
-		break;
-	case M_CGA4:
-		if (IS_EGAVGA_ARCH) {
-			seq_data[2]|=0x3;			//Enable plane 0 and 1
-			seq_data[4]&=~0x04;			//odd/even enable
-		}
-		break;
 	case M_LIN4:
 	case M_EGA:
 		seq_data[2]|=0xf;				//Enable all planes for writing
@@ -1040,7 +773,7 @@ bool INT10_SetVideoMode(Bit16u mode) {
 
 	/* Start Horizontal Retrace */
 	Bitu ret_start;
-	if ((CurMode->special & _EGA_HALF_CLOCK) && (CurMode->type!=M_CGA2)) ret_start = (CurMode->hdispend+3);
+	if ((CurMode->special & _EGA_HALF_CLOCK)) ret_start = (CurMode->hdispend+3);
 	else if (CurMode->type==M_TEXT) ret_start = (CurMode->hdispend+5);
 	else ret_start = (CurMode->hdispend+4);
 	IO_Write(crtc_base,0x04);IO_Write(crtc_base+1u,(Bit8u)ret_start);
@@ -1049,8 +782,7 @@ bool INT10_SetVideoMode(Bit16u mode) {
 	/* End Horizontal Retrace */
 	Bitu ret_end;
 	if (CurMode->special & _EGA_HALF_CLOCK) {
-		if (CurMode->type==M_CGA2) ret_end=0;	// mode 6
-		else if (CurMode->special & _DOUBLESCAN) ret_end = (CurMode->htotal-18) & 0x1f;
+		if (CurMode->special & _DOUBLESCAN) ret_end = (CurMode->htotal-18) & 0x1f;
 		else ret_end = ((CurMode->htotal-18) & 0x1f) | 0x20; // mode 0&1 have 1 char sync delay
 	} else if (CurMode->type==M_TEXT) ret_end = (CurMode->htotal-3) & 0x1f;
 	else ret_end = (CurMode->htotal-4) & 0x1f;
@@ -1226,12 +958,6 @@ bool INT10_SetVideoMode(Bit16u mode) {
 	Bit8u mode_control=0;
 
 	switch (CurMode->type) {
-	case M_CGA2:
-		mode_control=0xc2; // 0x06 sets address wrap.
-		break;
-	case M_CGA4:
-		mode_control=0xa2;
-		break;
 	case M_LIN4:
 	case M_EGA:
         if (CurMode->mode==0x11) // 0x11 also sets address wrap.  thought maybe all 2 color modes did but 0x0f doesn't.
@@ -1326,14 +1052,6 @@ bool INT10_SetVideoMode(Bit16u mode) {
 	case M_EGA:
 		gfx_data[0x6]|=0x05;		//graphics mode at 0xa000-affff
 		break;
-	case M_CGA4:
-		gfx_data[0x5]|=0x20;		//CGA mode
-		gfx_data[0x6]|=0x0f;		//graphics mode at at 0xb800=0xbfff
-		if (IS_EGAVGA_ARCH) gfx_data[0x5]|=0x10;
-		break;
-	case M_CGA2:
-		gfx_data[0x6]|=0x0d;		//graphics mode at at 0xb800=0xbfff, chain odd/even disabled
-		break;
 	default:
 		break;
 	}
@@ -1376,10 +1094,6 @@ bool INT10_SetVideoMode(Bit16u mode) {
 			break;
 		}
 		break;
-	case M_TANDY16:
-		att_data[0x10]=0x01;		//Color Graphics
-		for (Bit8u ct=0;ct<16;ct++) att_data[ct]=ct;
-		break;
 	case M_TEXT:
 		if (CurMode->cwidth==9) {
 			att_data[0x13]=0x08;	//Pel panning on 8, although we don't have 9 dot text mode
@@ -1404,28 +1118,6 @@ att_text16:
 			}
 			att_data[0x06]=0x14;		//Odd Color 6 yellow/brown.
 		}
-		break;
-	case M_CGA2:
-		att_data[0x10]=0x01;		//Color Graphics
-		att_data[0]=0x0;
-		for (i=1;i<0x10;i++) att_data[i]=0x17;
-		att_data[0x12]=0x1;			//Only enable 1 plane
-		real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_PAL,0x3f);
-		break;
-	case M_CGA4:
-		att_data[0x12]=0x3;			//Only enable 2 planes
-		att_data[0x10]=0x01;		//Color Graphics
-		att_data[0]=0x0;
-		att_data[1]=0x13;
-		att_data[2]=0x15;
-		att_data[3]=0x17;
-		att_data[4]=0x02;
-		att_data[5]=0x04;
-		att_data[6]=0x06;
-		att_data[7]=0x07;
-		for (Bit8u ct=0x8;ct<0x10;ct++) 
-			att_data[ct] = ct + 0x8;
-		real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_PAL,0x30);
 		break;
 	case M_VGA:
 	case M_LIN8:
@@ -1467,15 +1159,6 @@ att_text16:
 					IO_Write(0x3c9,ega_palette[i][1]);
 					IO_Write(0x3c9,ega_palette[i][2]);
 				}
-			}
-			break;
-		case M_CGA2:
-		case M_CGA4:
-		case M_TANDY16:
-			for (i=0;i<64;i++) {
-				IO_Write(0x3c9,cga_palette_2[i][0]);
-				IO_Write(0x3c9,cga_palette_2[i][1]);
-				IO_Write(0x3c9,cga_palette_2[i][2]);
 			}
 			break;
 		case M_TEXT:
@@ -1549,19 +1232,6 @@ dac_text16:
 	/* Setup some special stuff for different modes */
 	Bit8u feature=real_readb(BIOSMEM_SEG,BIOSMEM_INITIAL_MODE);
 	switch (CurMode->type) {
-	case M_CGA2:
-		feature=(feature&~0x30)|0x20;
-		real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_MSR,0x1e);
-		break;
-	case M_CGA4:
-		feature=(feature&~0x30)|0x20;
-		if (CurMode->mode==4) real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_MSR,0x2a);
-		else if (CurMode->mode==5) real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_MSR,0x2e);
-		else real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_MSR,0x2);
-		break;
-	case M_TANDY16:
-		feature=(feature&~0x30)|0x20;
-		break;
 	case M_TEXT:
 		feature=(feature&~0x30)|0x20;
 		switch (CurMode->mode) {

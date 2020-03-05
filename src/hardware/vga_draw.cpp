@@ -1027,7 +1027,6 @@ static void VGA_ProcessSplit() {
         vga.draw.address = vga.draw.byte_panning_shift*vga.draw.bytes_skip;
         {
             switch (vga.mode) {
-                case M_PC98:
                 case M_TEXT:
                 case M_EGA:
                 case M_LIN4:
@@ -1338,7 +1337,6 @@ static void VGA_DrawEGASingleLine(Bitu /*blah*/) {
             Bitu address = vga.draw.address;
             {
                 switch (vga.mode) {
-                    case M_PC98:
                     case M_TEXT:
                     case M_EGA:
                     case M_LIN4:
@@ -1819,12 +1817,6 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
         vga.draw.address += vga.draw.bytes_skip;
         vga.draw.address *= vga.draw.byte_panning_shift;
         break;
-    case M_PC98:
-        vga.draw.linear_mask = 0xfff; // 1 page
-        vga.draw.byte_panning_shift = 2;
-        vga.draw.address += vga.draw.bytes_skip;
-        vga.draw.cursor.address = vga.config.cursor_start;
-        break;
     case M_TEXT:
         vga.draw.byte_panning_shift = 2;
         vga.draw.address += vga.draw.bytes_skip;
@@ -1963,9 +1955,6 @@ void VGA_CheckScanLength(void) {
                 vga.draw.address_add=vga.config.scan_len*(unsigned int)(2u<<vga.config.addr_shift);
             }
         }
-        break;
-    case M_PC98:
-        vga.draw.address_add=vga.draw.blocks;
         break;
     case M_TEXT:
     case M_CGA2:
@@ -2333,7 +2322,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
         case M_CGA16:
         case M_CGA2:
         case M_CGA4:
-        case M_PC98:
         case M_TEXT:
             if (!vga_alt_new_mode) {
                 // these use line_total internal
