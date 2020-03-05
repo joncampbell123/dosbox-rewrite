@@ -173,17 +173,6 @@ typedef struct {
 } VGA_Draw;
 
 typedef struct {
-	Bit8u curmode;
-	Bit16u originx, originy;
-	Bit8u fstackpos, bstackpos;
-	Bit8u forestack[4];
-	Bit8u backstack[4];
-	Bit16u startaddr;
-	Bit8u posx, posy;
-	Bit8u mc[64][64];
-} VGA_HWCURSOR;
-
-typedef struct {
 	Bit8u reg_lock1;
 	Bit8u reg_lock2;
 	Bit8u reg_31;
@@ -217,56 +206,7 @@ typedef struct {
 		Bit8u lock;
 		Bit8u cmd;
 	} pll;
-	VGA_HWCURSOR hgc;
 } VGA_S3;
-
-typedef struct {
-	Bit8u mode_control;
-	Bit8u enable_bits;
-	bool blend;
-} VGA_HERC;
-
-typedef struct {
-	Bit32u mask_plane;
-	Bit8u write_plane;
-	Bit8u read_plane;
-	Bit8u border_color;
-} VGA_AMSTRAD;
-
-typedef struct {
-	Bit8u index;
-	Bit8u htotal;
-	Bit8u hdend;
-	Bit8u hsyncp;
-	Bit8u hsyncw;
-	Bit8u vtotal;
-	Bit8u vdend;
-	Bit8u vadjust;
-	Bit8u vsyncp;
-	Bit8u vsyncw;
-	Bit8u max_scanline;
-	Bit16u lightpen;
-	bool lightpen_triggered;
-	Bit8u cursor_start;
-	Bit8u cursor_end;
-    Bit8u mcga_mode_control;
-} VGA_OTHER;
-
-typedef struct {
-	Bit8u pcjr_flipflop;
-	Bit8u mode_control;
-	Bit8u color_select;
-	Bit8u disp_bank;
-	Bit8u reg_index;
-	Bit8u gfx_control;
-	Bit8u palette_mask;
-	Bit8u extended_ram;
-	Bit8u border_color;
-	Bit8u line_mask, line_shift;
-	Bit8u draw_bank, mem_bank;
-	Bit8u *draw_base, *mem_base;
-	Bitu addr_mask;
-} VGA_TANDY;
 
 typedef struct {
 	Bit8u index;
@@ -359,24 +299,6 @@ typedef struct {
 	Bit8u reg02;
 } VGA_Dac;
 
-typedef struct {
-	Bitu	readStart, writeStart;
-	Bitu	bankMask;
-	Bitu	bank_read_full;
-	Bitu	bank_write_full;
-	Bit8u	bank_read;
-	Bit8u	bank_write;
-	Bitu	bank_size;
-} VGA_SVGA;
-
-typedef union CGA_Latch {
-	Bit16u d;
-    Bit8u b[2] = {};
-
-    CGA_Latch() { }
-    CGA_Latch(const Bit16u raw) : d(raw) { }
-} CGA_Latch;
-
 typedef union VGA_Latch {
 	Bit32u d;
     Bit8u b[4] = {};
@@ -395,13 +317,6 @@ typedef struct {
 } VGA_Memory;
 
 typedef struct {
-	Bit32u page;
-	Bit32u addr;
-	Bit32u mask;
-	PageHandler *handler;
-} VGA_LFB;
-
-typedef struct {
     VGAModes mode = {};                              /* The mode the vga system is in */
     VGAModes lastmode = {};
     Bit8u misc_output = 0;
@@ -416,13 +331,7 @@ typedef struct {
     VGA_Dac dac = {};
     VGA_Latch latch;
     VGA_S3 s3 = {};
-    VGA_SVGA svga = {};
-    VGA_HERC herc = {};
-    VGA_TANDY tandy = {};
-    VGA_AMSTRAD amstrad = {};
-    VGA_OTHER other = {};
     VGA_Memory mem;
-    VGA_LFB lfb = {};
 } VGA_Type;
 
 

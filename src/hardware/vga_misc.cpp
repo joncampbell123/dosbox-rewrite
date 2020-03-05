@@ -48,7 +48,6 @@ Bitu vga_read_p3da(Bitu port,Bitu iolen) {
 	double timeInFrame = PIC_FullIndex()-vga.draw.delay.framestart;
 
 	vga.internal.attrindex=false;
-	vga.tandy.pcjr_flipflop=false;
 
 	// 3DAh (R):  Status Register
 	// bit   0  Horizontal or Vertical blanking

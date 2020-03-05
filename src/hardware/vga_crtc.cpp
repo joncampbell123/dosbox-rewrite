@@ -333,15 +333,6 @@ void vga_write_p3d5(Bitu port,Bitu val,Bitu iolen) {
 		break;
 	case 0x17:	/* Mode Control Register */
 		crtc(mode_control)=(Bit8u)val;
-		vga.tandy.line_mask = (~val) & 3u;
-
-		if ( vga.tandy.line_mask ) {
-			vga.tandy.line_shift = 13u;
-			vga.tandy.addr_mask = (1u << 13u) - 1u;
-		} else {
-			vga.tandy.addr_mask = ~0u;
-			vga.tandy.line_shift = 0;
-		}
 
         VGA_CheckAddrShift();
 		VGA_CheckScanLength();

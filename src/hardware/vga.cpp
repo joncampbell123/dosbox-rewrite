@@ -740,15 +740,6 @@ void VGA_LoadState(Section *sec) {
             }
         }
 
-        {
-            ZIPFileEntry *ent = savestate_zip.get_entry("cgareg.txt");
-            if (ent != NULL) {
-                zip_nv_pair_map nv(*ent);
-                vga.tandy.mode_control =        (unsigned char)nv.get_ulong("cga.mode_control");
-                vga.tandy.color_select =        (unsigned char)nv.get_ulong("cga.color_select");
-            }
-        }
-
         UpdateCGAFromSaveState();
 
         for (unsigned int i=0;i < 0x10;i++)
@@ -782,18 +773,6 @@ void VGA_SaveState(Section *sec) {
                 ent->write(tmp, 256 * 3);
             }
         }
-
-        {
-            char tmp[512],*w=tmp;
-
-            ZIPFileEntry *ent = savestate_zip.new_entry("cgareg.txt");
-            if (ent != NULL) {
-                w += sprintf(w,"cga.mode_control=0x%x\n",(unsigned int)vga.tandy.mode_control);
-                w += sprintf(w,"cga.color_select=0x%x\n",(unsigned int)vga.tandy.color_select);
-                assert(w < (tmp + sizeof(tmp)));
-                ent->write(tmp, (size_t)(w - tmp));
-            }
-        }
     }
 }
 
@@ -820,15 +799,11 @@ bool debugpollvga_rtp_menu_callback(DOSBoxMenu * const xmenu, DOSBoxMenu::item *
 void VGA_Init() {
     Bitu i,j;
 
-    vga.other.mcga_mode_control = 0;
-
 	vga.config.chained = false;
 
     vga.draw.render_step = 0;
     vga.draw.render_max = 1;
 
-    vga.tandy.draw_base = NULL;
-    vga.tandy.mem_base = NULL;
     LOG(LOG_MISC,LOG_DEBUG)("Initializing VGA");
     LOG(LOG_MISC,LOG_DEBUG)("Render scaler maximum resolution is %u x %u",SCALER_MAXWIDTH,SCALER_MAXHEIGHT);
 

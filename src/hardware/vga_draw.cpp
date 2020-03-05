@@ -223,8 +223,8 @@ template <const unsigned int card,typename templine_type_t> static inline Bit8u*
         if (attr_addr >= 0 && attr_addr < (Bits)vga.draw.blocks) {
             Bitu index = (Bitu)attr_addr * (vga.draw.char9dot ? 9u : 8u);
             draw = (((templine_type_t*)TempLine) + index) + 16 - vga.draw.panning;
-            
-            Bitu foreground = vga.tandy.draw_base[(vga.draw.cursor.address<<2ul)+1] & 0xf;
+
+            Bitu foreground = vga.draw.linear_base[(vga.draw.cursor.address<<2ul)+1] & 0xf;
             for (Bitu i = 0; i < 8; i++) {
                 if (card == MCH_VGA)
                     *draw++ = vga.dac.xlat32[foreground];
@@ -510,11 +510,9 @@ void VGA_SetBlinking(Bitu enabled) {
     if (enabled) {
         b=0;vga.draw.blinking=1; //used to -1 but blinking is unsigned
         vga.attr.mode_control|=0x08;
-        vga.tandy.mode_control|=0x20;
     } else {
         b=8;vga.draw.blinking=0;
         vga.attr.mode_control&=~0x08;
-        vga.tandy.mode_control&=~0x20;
     }
     for (Bitu i=0;i<8;i++) TXT_BG_Table[i+8]=(b+i) | ((b+i) << 8)| ((b+i) <<16) | ((b+i) << 24);
 }
@@ -957,7 +955,7 @@ void VGA_SetupDrawing(Bitu /*val*/) {
     Bitu hbend_mask, vbend_mask;
     Bitu vblank_skip;
 
-    if (IS_EGAVGA_ARCH) {
+    {
         htotal = vga.crtc.horizontal_total;
         hdend = vga.crtc.horizontal_display_end;
         hbend = vga.crtc.end_horizontal_blanking&0x1F;
@@ -1064,34 +1062,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
                 //clock /= 2;
         }
         }
-    } else {
-        // not EGAVGA_ARCH
-        vga.draw.split_line = 0x10000;  // don't care
-
-        htotal = vga.other.htotal + 1u;
-        hdend = vga.other.hdend;
-
-        hbstart = hdend;
-        hbend = htotal;
-        hrstart = vga.other.hsyncp;
-        hrend = hrstart + (vga.other.hsyncw) ;
-
-        vga.draw.address_line_total = vga.other.max_scanline + 1u;
-
-        vtotal = vga.draw.address_line_total * (vga.other.vtotal+1u)+vga.other.vadjust;
-        vdend = vga.draw.address_line_total * vga.other.vdend;
-        vrstart = vga.draw.address_line_total * vga.other.vsyncp;
-        vrend = vrstart + 16; // vsync width is fixed to 16 lines on the MC6845 TODO Tandy
-        vbstart = vdend;
-        vbend = vtotal;
-
-        switch (machine) {
-        default:
-            clock = (PIT_TICK_RATE*12)/8;
-            oscclock = clock * 8;
-            break;
-        }
-        vga.draw.delay.hdend = hdend*1000.0/clock; //in milliseconds
     }
 #if C_DEBUG
     LOG(LOG_VGA,LOG_NORMAL)("h total %3d end %3d blank (%3d/%3d) retrace (%3d/%3d)",
@@ -1276,12 +1246,7 @@ void VGA_SetupDrawing(Bitu /*val*/) {
     width *= pix_per_char;
     VGA_CheckScanLength();
 
-    /* for MCGA, need to "double scan" the screen in some cases */
-    if (vga.other.mcga_mode_control & 2) { // 640x480 2-color
-        height *= 2;
-        mcga_double_scan = true;
-    }
-    else {
+    {
         mcga_double_scan = false;
     }
     

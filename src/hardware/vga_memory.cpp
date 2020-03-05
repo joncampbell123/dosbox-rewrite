@@ -293,15 +293,11 @@ public:
 	Bit8u readb(PhysPt addr ) {
 		VGAMEM_USEC_read_delay();
 		addr = PAGING_GetPhysicalAddress(addr) & vgapages.mask;
-		addr += (PhysPt)vga.svga.bank_read_full;
-//		addr = CHECKED(addr);
 		return (Bit8u)readHandler8( addr );
 	}
 	Bit16u readw(PhysPt addr ) {
 		VGAMEM_USEC_read_delay();
 		addr = PAGING_GetPhysicalAddress(addr) & vgapages.mask;
-		addr += (PhysPt)vga.svga.bank_read_full;
-//		addr = CHECKED(addr);
 		Bit16u ret = (Bit16u)(readHandler8( addr+0 ) << 0 );
 		ret     |= (readHandler8( addr+1 ) << 8 );
 		return ret;
@@ -309,8 +305,6 @@ public:
 	Bit32u readd(PhysPt addr ) {
 		VGAMEM_USEC_read_delay();
 		addr = PAGING_GetPhysicalAddress(addr) & vgapages.mask;
-		addr += (PhysPt)vga.svga.bank_read_full;
-//		addr = CHECKED(addr);
 		Bit32u ret = (Bit32u)(readHandler8( addr+0 ) << 0 );
 		ret     |= (readHandler8( addr+1 ) << 8 );
 		ret     |= (readHandler8( addr+2 ) << 16 );
@@ -320,23 +314,17 @@ public:
 	void writeb(PhysPt addr, Bit8u val ) {
 		VGAMEM_USEC_write_delay();
 		addr = PAGING_GetPhysicalAddress(addr) & vgapages.mask;
-		addr += (PhysPt)vga.svga.bank_write_full;
-//		addr = CHECKED(addr);
 		writeHandler8( addr, val );
 	}
 	void writew(PhysPt addr,Bit16u val) {
 		VGAMEM_USEC_write_delay();
 		addr = PAGING_GetPhysicalAddress(addr) & vgapages.mask;
-		addr += (PhysPt)vga.svga.bank_write_full;
-//		addr = CHECKED(addr);
 		writeHandler8( addr+0, (Bit8u)(val >> 0u) );
 		writeHandler8( addr+1, (Bit8u)(val >> 8u) );
 	}
 	void writed(PhysPt addr,Bit32u val) {
 		VGAMEM_USEC_write_delay();
 		addr = PAGING_GetPhysicalAddress(addr) & vgapages.mask;
-		addr += (PhysPt)vga.svga.bank_write_full;
-//		addr = CHECKED(addr);
 		writeHandler8( addr+0, (Bit8u)(val >> 0u) );
 		writeHandler8( addr+1, (Bit8u)(val >> 8u) );
 		writeHandler8( addr+2, (Bit8u)(val >> 16u) );
@@ -353,15 +341,11 @@ public:
 	Bit8u readb(PhysPt addr) {
 		VGAMEM_USEC_read_delay();
 		addr = PAGING_GetPhysicalAddress(addr) & vgapages.mask;
-		addr += (PhysPt)vga.svga.bank_read_full;
-//		addr = CHECKED2(addr);
 		return (Bit8u)readHandler(addr);
 	}
 	Bit16u readw(PhysPt addr) {
 		VGAMEM_USEC_read_delay();
 		addr = PAGING_GetPhysicalAddress(addr) & vgapages.mask;
-		addr += (PhysPt)vga.svga.bank_read_full;
-//		addr = CHECKED2(addr);
 		Bit16u ret = (Bit16u)(readHandler(addr+0) << 0);
 		ret     |= (readHandler(addr+1) << 8);
 		return  ret;
@@ -369,8 +353,6 @@ public:
 	Bit32u readd(PhysPt addr) {
 		VGAMEM_USEC_read_delay();
 		addr = PAGING_GetPhysicalAddress(addr) & vgapages.mask;
-		addr += (PhysPt)vga.svga.bank_read_full;
-//		addr = CHECKED2(addr);
 		Bit32u ret = (Bit32u)(readHandler(addr+0) << 0);
 		ret     |= (readHandler(addr+1) << 8);
 		ret     |= (readHandler(addr+2) << 16);
@@ -386,23 +368,17 @@ public:
 	void writeb(PhysPt addr,Bit8u val) {
 		VGAMEM_USEC_write_delay();
 		addr = PAGING_GetPhysicalAddress(addr) & vgapages.mask;
-		addr += (PhysPt)vga.svga.bank_write_full;
-//		addr = CHECKED2(addr);
 		writeHandler(addr+0,(Bit8u)(val >> 0));
 	}
 	void writew(PhysPt addr,Bit16u val) {
 		VGAMEM_USEC_write_delay();
 		addr = PAGING_GetPhysicalAddress(addr) & vgapages.mask;
-		addr += (PhysPt)vga.svga.bank_write_full;
-//		addr = CHECKED2(addr);
 		writeHandler(addr+0,(Bit8u)(val >> 0));
 		writeHandler(addr+1,(Bit8u)(val >> 8));
 	}
 	void writed(PhysPt addr,Bit32u val) {
 		VGAMEM_USEC_write_delay();
 		addr = PAGING_GetPhysicalAddress(addr) & vgapages.mask;
-		addr += (PhysPt)vga.svga.bank_write_full;
-//		addr = CHECKED2(addr);
 		writeHandler(addr+0,(Bit8u)(val >> 0));
 		writeHandler(addr+1,(Bit8u)(val >> 8));
 		writeHandler(addr+2,(Bit8u)(val >> 16));
@@ -455,9 +431,6 @@ void MEM_ResetPageHandler_Unmapped(Bitu phys_page, Bitu pages);
 void MEM_ResetPageHandler_RAM(Bitu phys_page, Bitu pages);
 
 void VGA_SetupHandlers(void) {
-	vga.svga.bank_read_full = vga.svga.bank_read*vga.svga.bank_size;
-	vga.svga.bank_write_full = vga.svga.bank_write*vga.svga.bank_size;
-
 	PageHandler *newHandler;
 	switch (machine) {
 	case EGAVGA_ARCH_CASE:
@@ -553,9 +526,6 @@ void VGAMEM_SaveState(Section *sec) {
 }
 
 void VGA_SetupMemory() {
-	vga.svga.bank_read = vga.svga.bank_write = 0;
-	vga.svga.bank_read_full = vga.svga.bank_write_full = 0;
-
     if (vga.mem.linear == NULL) {
         VGA_Memory_ShutDown(NULL);
 
@@ -565,16 +535,10 @@ void VGA_SetupMemory() {
 
         /* HACK. try to avoid stale pointers */
 	    vga.draw.linear_base = vga.mem.linear;
-        vga.tandy.draw_base = vga.mem.linear;
-        vga.tandy.mem_base = vga.mem.linear;
 
         /* may be related */
         VGA_SetupHandlers();
     }
-
-	vga.svga.bank_read = vga.svga.bank_write = 0;
-	vga.svga.bank_read_full = vga.svga.bank_write_full = 0;
-	vga.svga.bank_size = 0x10000; /* most common bank size is 64K */
 
 	if (!VGA_Memory_ShutDown_init) {
         AddVMEventFunction(VM_EVENT_LOAD_STATE,AddVMEventFunctionFuncPair(VGAMEM_LoadState));
