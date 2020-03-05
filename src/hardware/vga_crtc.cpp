@@ -63,7 +63,7 @@ Bitu vga_read_p3d4(Bitu port,Bitu iolen) {
 	return crtc(index);
 }
 
-void vga_write_p3d5(Bitu port,Bitu val,Bitu iolen) {
+void vga_write_p3d5(Bitu port,Bitu val,Bitu /*iolen*/) {
     (void)port;//UNUSED
 //	if((crtc(index)!=0xe)&&(crtc(index)!=0xf)) 
 //		LOG_MSG("CRTC w #%2x val %2x",crtc(index),val);
@@ -366,12 +366,8 @@ void vga_write_p3d5(Bitu port,Bitu val,Bitu iolen) {
 		*/
 		break;
 	default:
-		if (svga.write_p3d5) {
-			svga.write_p3d5(crtc(index), val, iolen);
-		} else {
-			LOG(LOG_VGAMISC,LOG_NORMAL)("VGA:CRTC:Write to unknown index %X",crtc(index));
-		}
-		break;
+        LOG(LOG_VGAMISC,LOG_NORMAL)("VGA:CRTC:Write to unknown index %X",crtc(index));
+        break;
 	}
 }
 
@@ -438,12 +434,8 @@ Bitu vga_read_p3d5x(Bitu port,Bitu iolen) {
 	case 0x18:	/* Line Compare Register */
 		return crtc(line_compare);
 	default:
-		if (svga.read_p3d5) {
-			return svga.read_p3d5(crtc(index), iolen);
-		} else {
-			LOG(LOG_VGAMISC,LOG_NORMAL)("VGA:CRTC:Read from unknown index %X",crtc(index));
-			return 0x0;
-		}
-	}
+        LOG(LOG_VGAMISC,LOG_NORMAL)("VGA:CRTC:Read from unknown index %X",crtc(index));
+        return 0x0;
+    }
 }
 

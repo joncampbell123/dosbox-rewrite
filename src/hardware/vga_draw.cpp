@@ -1028,9 +1028,7 @@ void VGA_SetupDrawing(Bitu /*val*/) {
         //       640x400  25.175MHz dot clock  70.15Hz refresh  31.5KHz horizontal refresh (basically, VGA)
         //       640x400  21.05MHz dot clock   56.42Hz refresh  24.83Hz horizontal refresh (original spec?)
 
-        if (svga.get_clock) {
-            oscclock = svga.get_clock();
-        } else {
+        {
             switch ((vga.misc_output >> 2) & 3) {
             case 0: 
                 oscclock = 25175000;

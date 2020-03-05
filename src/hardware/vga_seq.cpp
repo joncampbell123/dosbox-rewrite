@@ -75,7 +75,7 @@ void write_p3c4(Bitu /*port*/,Bitu val,Bitu /*iolen*/) {
 void VGA_SequReset(bool reset);
 void VGA_Screenstate(bool enabled);
 
-void write_p3c5(Bitu /*port*/,Bitu val,Bitu iolen) {
+void write_p3c5(Bitu /*port*/,Bitu val,Bitu /*iolen*/) {
 //	LOG_MSG("SEQ WRITE reg %X val %X",seq(index),val);
 	switch(seq(index)) {
 	case 0:		/* Reset */
@@ -156,9 +156,7 @@ void write_p3c5(Bitu /*port*/,Bitu val,Bitu iolen) {
 		}
 		break;
 	default:
-		if (svga.write_p3c5) {
-			svga.write_p3c5(seq(index), val, iolen);
-		} else {
+		{
 			LOG(LOG_VGAMISC,LOG_NORMAL)("VGA:SEQ:Write to illegal index %2X",seq(index));
 		}
 		break;
@@ -166,7 +164,7 @@ void write_p3c5(Bitu /*port*/,Bitu val,Bitu iolen) {
 }
 
 
-Bitu read_p3c5(Bitu /*port*/,Bitu iolen) {
+Bitu read_p3c5(Bitu /*port*/,Bitu /*iolen*/) {
 //	LOG_MSG("VGA:SEQ:Read from index %2X",seq(index));
 	switch(seq(index)) {
 	case 0:			/* Reset */
@@ -185,8 +183,6 @@ Bitu read_p3c5(Bitu /*port*/,Bitu iolen) {
 		return seq(memory_mode);
 		break;
 	default:
-		if (svga.read_p3c5)
-			return svga.read_p3c5(seq(index), iolen);
 		break;
 	}
 	return 0;

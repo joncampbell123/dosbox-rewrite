@@ -292,10 +292,6 @@ bool INT10_SetVideoMode(Bit16u mode) {
 	Bit8u modeset_ctl=real_readb(BIOSMEM_SEG,BIOSMEM_MODESET_CTL);
 
 	if (IS_VGA_ARCH) {
-		if (svga.accepts_mode) {
-			if (!svga.accepts_mode(mode)) return false;
-		}
-
 		switch(svgaCard) {
 		default:
 			if (!SetCurMode(ModeList_VGA,mode)){
@@ -774,15 +770,6 @@ bool INT10_SetVideoMode(Bit16u mode) {
 
 		IO_Write(crtc_base,0x38);IO_Write(crtc_base+1u,0x48);	//Register lock 1
 		IO_Write(crtc_base,0x39);IO_Write(crtc_base+1u,0xa5);	//Register lock 2
-	} else if (svga.set_video_mode) {
-		VGA_ModeExtraData modeData;
-		modeData.ver_overflow = ver_overflow;
-		modeData.hor_overflow = hor_overflow;
-		modeData.offset = offset;
-		modeData.modeNo = CurMode->mode;
-		modeData.htotal = CurMode->htotal;
-		modeData.vtotal = CurMode->vtotal;
-		svga.set_video_mode(crtc_base, &modeData);
 	}
 
 	FinishSetMode(clearmem);

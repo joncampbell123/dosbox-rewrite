@@ -178,7 +178,6 @@ SDL_Rect &VGA_CaptureRectFromGuest(void) {
 }
 
 VGA_Type vga;
-SVGA_Driver svga;
 int enableCGASnow;
 int vesa_modelist_cap = 0;
 int vesa_mode_width_cap = 0;
@@ -259,11 +258,6 @@ void VGA_SetMode(VGAModes mode) {
 }
 
 void VGA_DetermineMode(void) {
-    if (svga.determine_mode) {
-        svga.determine_mode();
-        return;
-    }
-
     VGA_SetMode(M_TEXT);
 }
 
@@ -571,22 +565,7 @@ void VGA_Reset(Section*) {
         }
     }
 
-    /* sanity check according to adapter type.
-     * FIXME: Again it was foolish for DOSBox to standardize on machine=
-     * for selecting machine type AND video card. */
-    switch (machine) {
-        case MCH_VGA:
-            // TODO: There are reports of VGA cards that have less than 256KB in the early days of VGA.
-            //       How does that work exactly, especially when 640x480 requires about 37KB per plane?
-            //       Did these cards have some means to chain two bitplanes odd/even in the same way
-            //       tha EGA did it?
-            if (vga.mem.memsize != 0 || svgaCard == SVGA_None) {
-                if (vga.mem.memsize < _KB_bytes(256)) vga.mem.memsize = _KB_bytes(256);
-            }
-            break;
-        default:
-            E_Exit("Unexpected machine");
-    }
+    vga.mem.memsize = _KB_bytes(256);
 
     // NTS: This is WHY the memory size must be a power of 2
     vga.mem.memmask = vga.mem.memsize - 1u;

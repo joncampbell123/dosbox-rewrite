@@ -300,9 +300,7 @@ void VGA_SetupDAC(void) {
     vga.dac.reg02=0;
     if (IS_VGA_ARCH) {
         /* Setup the DAC IO port Handlers */
-        if (svga.setup_dac) {
-            svga.setup_dac();
-        } else {
+        {
             IO_RegisterWriteHandler(0x3c6,write_p3c6,IO_MB);
             IO_RegisterReadHandler(0x3c6,read_p3c6,IO_MB);
             IO_RegisterWriteHandler(0x3c7,write_p3c7,IO_MB);

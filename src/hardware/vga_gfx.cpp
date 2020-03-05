@@ -181,10 +181,6 @@ static void write_p3cf(Bitu port,Bitu val,Bitu iolen) {
 		*/
 		break;
 	default:
-		if (svga.write_p3cf) {
-			svga.write_p3cf(gfx(index), val, iolen);
-			break;
-		}
 		if (gfx(index) == 9 && !index9warned) {
 			LOG(LOG_VGAMISC,LOG_NORMAL)("VGA:3CF:Write %2X to illegal index 9",(int)val);
 			index9warned=true;
@@ -218,8 +214,6 @@ static Bitu read_p3cf(Bitu port,Bitu iolen) {
 	case 8: /* Bit Mask Register */
 		return gfx(bit_mask);
 	default:
-		if (svga.read_p3cf)
-			return svga.read_p3cf(gfx(index), iolen);
 		LOG(LOG_VGAMISC,LOG_NORMAL)("Reading from illegal index %2X in port %4X",(int)static_cast<Bit32u>(gfx(index)),(int)port);
 		break;
 	}

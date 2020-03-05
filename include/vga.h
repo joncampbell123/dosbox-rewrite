@@ -412,27 +412,6 @@ typedef bool (*tAcceptsMode)(Bitu modeNo);
 typedef void (*tSetupDAC)();
 typedef void (*tINT10Extensions)();
 
-struct SVGA_Driver {
-	tWritePort write_p3d5;
-	tReadPort read_p3d5;
-	tWritePort write_p3c5;
-	tReadPort read_p3c5;
-	tWritePort write_p3c0;
-	tReadPort read_p3c1;
-	tWritePort write_p3cf;
-	tReadPort read_p3cf;
-
-	tFinishSetMode set_video_mode;
-	tDetermineMode determine_mode;
-	tSetClock set_clock;
-	tGetClock get_clock;
-	tHWCursorActive hardware_cursor_active;
-	tAcceptsMode accepts_mode;
-	tSetupDAC setup_dac;
-	tINT10Extensions int10_extensions;
-};
-
-extern SVGA_Driver svga;
 extern int enableCGASnow;
 
 void SVGA_Setup_S3Trio(void);

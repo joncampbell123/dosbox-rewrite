@@ -127,7 +127,7 @@ Bitu read_p3c0(Bitu /*port*/,Bitu /*iolen*/) {
 	return retval;
 }
  
-void write_p3c0(Bitu /*port*/,Bitu val,Bitu iolen) {
+void write_p3c0(Bitu /*port*/,Bitu val,Bitu /*iolen*/) {
 	if (!vga.internal.attrindex) {
 		attr(index)=val & 0x1F;
 		vga.internal.attrindex=true;
@@ -299,17 +299,13 @@ void write_p3c0(Bitu /*port*/,Bitu val,Bitu iolen) {
 			*/
 			break;
 		default:
-			if (svga.write_p3c0) {
-				svga.write_p3c0(attr(index), val, iolen);
-				break;
-			}
 			LOG(LOG_VGAMISC,LOG_NORMAL)("VGA:ATTR:Write to unkown Index %2X",attr(index));
 			break;
 		}
 	}
 }
 
-Bitu read_p3c1(Bitu /*port*/,Bitu iolen) {
+Bitu read_p3c1(Bitu /*port*/,Bitu /*iolen*/) {
 //	vga.internal.attrindex=false;
 	switch (attr(index)) {
 			/* Palette */
@@ -329,8 +325,6 @@ Bitu read_p3c1(Bitu /*port*/,Bitu iolen) {
 	case 0x14:	/* Color Select Register */
 		return attr(color_select);
 	default:
-		if (svga.read_p3c1)
-			return svga.read_p3c1(attr(index), iolen);
 		LOG(LOG_VGAMISC,LOG_NORMAL)("VGA:ATTR:Read from unkown Index %2X",attr(index));
 	}
 	return 0;
