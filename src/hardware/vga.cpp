@@ -586,7 +586,6 @@ void VGA_Reset(Section*) {
         VGA_SetupGFX();
         VGA_SetupSEQ();
         VGA_SetupAttr();
-        VGA_SetupOther();
         /* Generate tables */
         VGA_SetCGA2Table(0,1);
         VGA_SetCGA4Table(0,1,2,3);
@@ -650,8 +649,6 @@ void PC98_Set31KHz_480line(void) {
 void VGA_Destroy(Section*) {
 }
 
-void UpdateCGAFromSaveState(void);
-
 void VGA_LoadState(Section *sec) {
     (void)sec;//UNUSED
 
@@ -678,8 +675,6 @@ void VGA_LoadState(Section *sec) {
                 }
             }
         }
-
-        UpdateCGAFromSaveState();
 
         for (unsigned int i=0;i < 0x10;i++)
             VGA_ATTR_SetPalette(i,vga.attr.palette[i]);
