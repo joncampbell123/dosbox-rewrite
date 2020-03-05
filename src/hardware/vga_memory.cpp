@@ -899,39 +899,11 @@ void VGA_SetupHandlers(void) {
 
 	/* This should be vga only */
 	switch (vga.mode) {
-	case M_ERROR:
 	default:
 		return;
-	case M_LIN15:
-	case M_LIN16:
-	case M_LIN24:
-	case M_LIN32:
-    case M_PACKED4:
-		newHandler = &vgaph.map;
-		break;
 	case M_TEXT:
-	case M_CGA2:
-	case M_CGA4:
-        /* EGA/VGA emulate CGA modes as chained */
-        /* fall through */
-	case M_LIN8:
-	case M_LIN4:
-	case M_VGA:
-	case M_EGA:
-        if (vga.config.chained) {
-            if (vga.config.compatible_chain4) {
-                newHandler = &vgaph.cvga_slow;
-            }
-            else {
-                newHandler = &vgaph.map;
-            }
-        } else {
-            newHandler = &vgaph.uvga;
-        }
+        newHandler = &vgaph.uvga;
         break;
-	case M_AMSTRAD:
-		newHandler = &vgaph.map;
-		break;
 	}
 	switch ((vga.gfx.miscellaneous >> 2) & 3) {
 	case 0:
@@ -968,7 +940,7 @@ void VGA_SetupHandlers(void) {
 	if(svgaCard == SVGA_S3Trio && (vga.s3.ext_mem_ctrl & 0x10))
 		MEM_SetPageHandler(VGA_PAGE_A0, 16, &vgaph.mmio);
 
-    non_cga_ignore_oddeven_engage = (non_cga_ignore_oddeven && !(vga.mode == M_TEXT || vga.mode == M_CGA2 || vga.mode == M_CGA4));
+    non_cga_ignore_oddeven_engage = false;
 
 	PAGING_ClearTLB();
 }

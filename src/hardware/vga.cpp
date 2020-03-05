@@ -266,33 +266,8 @@ void VGA_DetermineMode(void) {
         svga.determine_mode();
         return;
     }
-    /* Test for VGA output active or direct color modes */
-    switch (vga.s3.misc_control_2 >> 4) {
-    case 0:
-        if (vga.attr.mode_control & 1) { // graphics mode
-            if (IS_VGA_ARCH && ((vga.gfx.mode & 0x40)||(vga.s3.reg_3a&0x10))) {
-                // access above 256k?
-                if (vga.s3.reg_31 & 0x8) VGA_SetMode(M_LIN8);
-                else VGA_SetMode(M_VGA);
-            }
-            else if (vga.gfx.mode & 0x20) VGA_SetMode(M_CGA4);
-            else if ((vga.gfx.miscellaneous & 0x0c)==0x0c) VGA_SetMode(M_CGA2);
-            else {
-                // access above 256k?
-                if (vga.s3.reg_31 & 0x8) VGA_SetMode(M_LIN4);
-                else VGA_SetMode(M_EGA);
-            }
-        } else {
-            VGA_SetMode(M_TEXT);
-        }
-        break;
-    case 1:VGA_SetMode(M_LIN8);break;
-    case 3:VGA_SetMode(M_LIN15);break;
-    case 5:VGA_SetMode(M_LIN16);break;
-    case 7:VGA_SetMode(M_LIN24);break;
-    case 13:VGA_SetMode(M_LIN32);break;
-    case 15:VGA_SetMode(M_PACKED4);break;// hacked
-    }
+
+    VGA_SetMode(M_TEXT);
 }
 
 void VGA_StartResize(Bitu delay /*=50*/) {

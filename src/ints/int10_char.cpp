@@ -33,156 +33,11 @@ Bit8u DefaultANSIAttr();
 # pragma warning(disable:4244) /* const fmath::local::uint64_t to double possible loss of data */
 #endif
 
-static void CGA2_CopyRow(Bit8u cleft,Bit8u cright,Bit8u rold,Bit8u rnew,PhysPt base) {
-    Bit8u cheight = real_readb(BIOSMEM_SEG,BIOSMEM_CHAR_HEIGHT);
-    PhysPt dest=base+((CurMode->twidth*rnew)*(cheight/2)+cleft);
-    PhysPt src=base+((CurMode->twidth*rold)*(cheight/2)+cleft);
-    Bitu copy=(Bitu)(cright-cleft);
-    Bitu nextline=CurMode->twidth;
-    for (Bitu i=0;i<cheight/2U;i++) {
-        MEM_BlockCopy(dest,src,copy);
-        MEM_BlockCopy(dest+8*1024,src+8*1024,copy);
-        dest+=nextline;src+=nextline;
-    }
-}
-
-static void CGA4_CopyRow(Bit8u cleft,Bit8u cright,Bit8u rold,Bit8u rnew,PhysPt base) {
-    Bit8u cheight = real_readb(BIOSMEM_SEG,BIOSMEM_CHAR_HEIGHT);
-    PhysPt dest=base+((CurMode->twidth*rnew)*(cheight/2)+cleft)*2;
-    PhysPt src=base+((CurMode->twidth*rold)*(cheight/2)+cleft)*2;   
-    Bitu copy=(Bitu)(cright-cleft)*2u;Bitu nextline=(Bitu)CurMode->twidth*2u;
-    for (Bitu i=0;i<cheight/2U;i++) {
-        MEM_BlockCopy(dest,src,copy);
-        MEM_BlockCopy(dest+8*1024,src+8*1024,copy);
-        dest+=nextline;src+=nextline;
-    }
-}
-
-static void TANDY16_CopyRow(Bit8u cleft,Bit8u cright,Bit8u rold,Bit8u rnew,PhysPt base) {
-    Bit8u cheight = real_readb(BIOSMEM_SEG,BIOSMEM_CHAR_HEIGHT);
-    Bit8u banks=CurMode->twidth/10;
-    PhysPt dest=base+((CurMode->twidth*rnew)*(cheight/banks)+cleft)*4;
-    PhysPt src=base+((CurMode->twidth*rold)*(cheight/banks)+cleft)*4;
-    Bitu copy=(Bitu)(cright-cleft)*4u;Bitu nextline=(Bitu)CurMode->twidth*4u;
-    for (Bitu i=0;i<static_cast<Bitu>(cheight/banks);i++) {
-		for (Bitu b=0;b<banks;b++) MEM_BlockCopy(dest+b*8*1024,src+b*8*1024,copy);
-        dest+=nextline;src+=nextline;
-    }
-}
-
-static void EGA16_CopyRow(Bit8u cleft,Bit8u cright,Bit8u rold,Bit8u rnew,PhysPt base) {
-    PhysPt src,dest;Bitu copy;
-    Bit8u cheight = real_readb(BIOSMEM_SEG,BIOSMEM_CHAR_HEIGHT);
-    dest=base+(CurMode->twidth*rnew)*cheight+cleft;
-    src=base+(CurMode->twidth*rold)*cheight+cleft;
-    Bitu nextline=(Bitu)CurMode->twidth;
-    /* Setup registers correctly */
-    IO_Write(0x3ce,5);IO_Write(0x3cf,1);        /* Memory transfer mode */
-    IO_Write(0x3c4,2);IO_Write(0x3c5,0xf);      /* Enable all Write planes */
-    /* Do some copying */
-    Bitu rowsize=(Bitu)(cright-cleft);
-    copy=cheight;
-    for (;copy>0;copy--) {
-        for (Bitu x=0;x<rowsize;x++) mem_writeb(dest+x,mem_readb(src+x));
-        dest+=nextline;src+=nextline;
-    }
-    /* Restore registers */
-    IO_Write(0x3ce,5);IO_Write(0x3cf,0);        /* Normal transfer mode */
-}
-
-static void VGA_CopyRow(Bit8u cleft,Bit8u cright,Bit8u rold,Bit8u rnew,PhysPt base) {
-    PhysPt src,dest;Bitu copy;
-    Bit8u cheight = real_readb(BIOSMEM_SEG,BIOSMEM_CHAR_HEIGHT);
-    dest=base+8u*((CurMode->twidth*rnew)*cheight+cleft);
-    src=base+8u*((CurMode->twidth*rold)*cheight+cleft);
-    Bitu nextline=8u*(Bitu)CurMode->twidth;
-    Bitu rowsize=8u*(Bitu)(cright-cleft);
-    copy=cheight;
-    for (;copy>0;copy--) {
-        for (Bitu x=0;x<rowsize;x++) mem_writeb(dest+x,mem_readb(src+x));
-        dest+=nextline;src+=nextline;
-    }
-}
-
 static void TEXT_CopyRow(Bit8u cleft,Bit8u cright,Bit8u rold,Bit8u rnew,PhysPt base) {
     PhysPt src,dest;
     src=base+(rold*CurMode->twidth+cleft)*2u;
     dest=base+(rnew*CurMode->twidth+cleft)*2u;
     MEM_BlockCopy(dest,src,(Bitu)(cright-cleft)*2u);
-}
-
-static void CGA2_FillRow(Bit8u cleft,Bit8u cright,Bit8u row,PhysPt base,Bit8u attr) {
-    Bit8u cheight = real_readb(BIOSMEM_SEG,BIOSMEM_CHAR_HEIGHT);
-    PhysPt dest=base+((CurMode->twidth*row)*(cheight/2)+cleft);
-    Bitu copy=(Bitu)(cright-cleft);
-    Bitu nextline=CurMode->twidth;
-    attr=(attr & 0x3) | ((attr & 0x3) << 2) | ((attr & 0x3) << 4) | ((attr & 0x3) << 6);
-    for (Bitu i=0;i<cheight/2U;i++) {
-        for (Bitu x=0;x<copy;x++) {
-            mem_writeb(dest+x,attr);
-            mem_writeb(dest+8*1024+x,attr);
-        }
-        dest+=nextline;
-    }
-}
-
-static void CGA4_FillRow(Bit8u cleft,Bit8u cright,Bit8u row,PhysPt base,Bit8u attr) {
-    Bit8u cheight = real_readb(BIOSMEM_SEG,BIOSMEM_CHAR_HEIGHT);
-    PhysPt dest=base+((CurMode->twidth*row)*(cheight/2)+cleft)*2;
-    Bitu copy=(Bitu)(cright-cleft)*2u;Bitu nextline=CurMode->twidth*2;
-    attr=(attr & 0x3) | ((attr & 0x3) << 2) | ((attr & 0x3) << 4) | ((attr & 0x3) << 6);
-    for (Bitu i=0;i<cheight/2U;i++) {
-        for (Bitu x=0;x<copy;x++) {
-            mem_writeb(dest+x,attr);
-            mem_writeb(dest+8*1024+x,attr);
-        }
-        dest+=nextline;
-    }
-}
-
-static void TANDY16_FillRow(Bit8u cleft,Bit8u cright,Bit8u row,PhysPt base,Bit8u attr) {
-    Bit8u cheight = real_readb(BIOSMEM_SEG,BIOSMEM_CHAR_HEIGHT);
-    Bit8u banks=CurMode->twidth/10;
-    PhysPt dest=base+((CurMode->twidth*row)*(cheight/banks)+cleft)*4;
-    Bitu copy=(Bitu)(cright-cleft)*4u;Bitu nextline=CurMode->twidth*4;
-    attr=(attr & 0xf) | (attr & 0xf) << 4;
-    for (Bitu i=0;i<static_cast<Bitu>(cheight/banks);i++) {	
-        for (Bitu x=0;x<copy;x++) {
-            for (Bitu b=0;b<banks;b++) mem_writeb(dest+b*8*1024+x,attr);
-        }
-        dest+=nextline;
-    }
-}
-
-static void EGA16_FillRow(Bit8u cleft,Bit8u cright,Bit8u row,PhysPt base,Bit8u attr) {
-    /* Set Bitmask / Color / Full Set Reset */
-    IO_Write(0x3ce,0x8);IO_Write(0x3cf,0xff);
-    IO_Write(0x3ce,0x0);IO_Write(0x3cf,attr);
-    IO_Write(0x3ce,0x1);IO_Write(0x3cf,0xf);
-    /* Enable all Write planes */
-    IO_Write(0x3c4,2);IO_Write(0x3c5,0xf);
-    /* Write some bytes */
-    Bit8u cheight = real_readb(BIOSMEM_SEG,BIOSMEM_CHAR_HEIGHT);
-    PhysPt dest=base+(CurMode->twidth*row)*cheight+cleft;   
-    Bitu nextline=CurMode->twidth;
-    Bitu copy = cheight;Bitu rowsize=(Bitu)(cright-cleft);
-    for (;copy>0;copy--) {
-        for (Bitu x=0;x<rowsize;x++) mem_writeb(dest+x,0xff);
-        dest+=nextline;
-    }
-    IO_Write(0x3cf,0);
-}
-
-static void VGA_FillRow(Bit8u cleft,Bit8u cright,Bit8u row,PhysPt base,Bit8u attr) {
-    /* Write some bytes */
-    Bit8u cheight = real_readb(BIOSMEM_SEG,BIOSMEM_CHAR_HEIGHT);
-    PhysPt dest=base+8*((CurMode->twidth*row)*cheight+cleft);
-    Bitu nextline=8*CurMode->twidth;
-    Bitu copy = cheight;Bitu rowsize=8u*(Bitu)(cright-cleft);
-    for (;copy>0;copy--) {
-        for (Bitu x=0;x<rowsize;x++) mem_writeb(dest+x,attr);
-        dest+=nextline;
-    }
 }
 
 static void TEXT_FillRow(Bit8u cleft,Bit8u cright,Bit8u row,PhysPt base,Bit8u attr) {
@@ -195,7 +50,6 @@ static void TEXT_FillRow(Bit8u cleft,Bit8u cright,Bit8u row,PhysPt base,Bit8u at
         dest+=2;
     }
 }
-
 
 void INT10_ScrollWindow(Bit8u rul,Bit8u cul,Bit8u rlr,Bit8u clr,Bit8s nlines,Bit8u attr,Bit8u page) {
 /* Do some range checking */
@@ -233,17 +87,6 @@ void INT10_ScrollWindow(Bit8u rul,Bit8u cul,Bit8u rlr,Bit8u clr,Bit8s nlines,Bit
         switch (CurMode->type) {
         case M_TEXT:
             TEXT_CopyRow(cul,clr,start,start+nlines,base);break;
-        case M_CGA2:
-            CGA2_CopyRow(cul,clr,start,start+nlines,base);
-            break;
-        case M_CGA4:
-            CGA4_CopyRow(cul,clr,start,start+nlines,base);break;
-        case M_TANDY16:
-            TANDY16_CopyRow(cul,clr,start,start+nlines,base);break;
-        case M_EGA:     
-            EGA16_CopyRow(cul,clr,start,start+nlines,base);break;
-        case M_VGA:     
-            VGA_CopyRow(cul,clr,start,start+nlines,base);break;
         default:
             LOG(LOG_INT10,LOG_ERROR)("Unhandled mode %d for scroll",CurMode->type);
         }   
@@ -260,17 +103,6 @@ filling:
         switch (CurMode->type) {
         case M_TEXT:
             TEXT_FillRow(cul,clr,start,base,attr);break;
-        case M_CGA2:
-            CGA2_FillRow(cul,clr,start,base,attr);
-            break;
-        case M_CGA4:
-            CGA4_FillRow(cul,clr,start,base,attr);break;
-        case M_TANDY16:     
-            TANDY16_FillRow(cul,clr,start,base,attr);break;
-        case M_EGA:     
-            EGA16_FillRow(cul,clr,start,base,attr);break;
-        case M_VGA:     
-            VGA_FillRow(cul,clr,start,base,attr);break;
         default:
             LOG(LOG_INT10,LOG_ERROR)("Unhandled mode %d for scroll",CurMode->type);
         }   
@@ -414,12 +246,6 @@ void ReadCharAttr(Bit16u col,Bit16u row,Bit8u page,Bit16u * result) {
             *result=mem_readw(where);
         }
         return;
-    case M_CGA4:
-    case M_CGA2:
-    case M_TANDY16:
-        split_chr = true;
-        fontdata=Real2Phys(RealGetVec(0x43));
-        break;
     default:
         fontdata=Real2Phys(RealGetVec(0x43));
         break;
@@ -490,16 +316,6 @@ void WriteChar(Bit16u col,Bit16u row,Bit8u page,Bit16u chr,Bit8u attr,bool useat
             if (useattr) mem_writeb(where+1,attr);
         }
         return;
-    case M_CGA4:
-    case M_CGA2:
-    case M_TANDY16:
-        if (chr>=128) {
-            chr-=128;
-            fontdata=Real2Phys(RealGetVec(0x1f));
-            break;
-        }
-        fontdata=Real2Phys(RealGetVec(0x43));
-        break;
     default:
         fontdata=Real2Phys(RealGetVec(0x43));
         break;
@@ -512,42 +328,14 @@ void WriteChar(Bit16u col,Bit16u row,Bit8u page,Bit16u chr,Bit8u attr,bool useat
             LOG(LOG_INT10,LOG_ERROR)("writechar used without attribute in non-textmode %c %X",chr,chr);
             warned_use = true;
         }
-        switch(CurMode->type) {
-        case M_CGA4:
-            attr = 0x3;
-            break;
-        case M_CGA2:
-            attr = 0x1;
-            break;
-        case M_TANDY16:
-        case M_EGA:
-        default:
-            attr = 0x7;
-            break;
-        }
+        attr = 0x7;
     }
 
     //Attribute behavior of mode 6; mode 11 does something similar but
     //it is in INT 10h handler because it only applies to function 09h
     if (CurMode->mode==0x06) attr=(attr&0x80)|1;
 
-    switch (CurMode->type) {
-    case M_VGA:
-    case M_LIN8:
-        // 256-color modes have background color instead of page
-        back=page;
-        page=0;
-        break;
-    case M_EGA:
-        /* enable all planes for EGA modes (Ultima 1 colour bug) */
-        /* might be put into INT10_PutPixel but different vga bios
-           implementations have different opinions about this */
-        IO_Write(0x3c4,0x2);IO_Write(0x3c5,0xf);
-        /* fall through */
-    default:
-        back=attr&0x80;
-        break;
-    }
+    back=attr&0x80;
 
     Bitu x=col*8u,y=(unsigned int)(row*(unsigned int)cheight*(cols/CurMode->twidth));
 
@@ -598,11 +386,6 @@ void INT10_WriteChar(Bit16u chr,Bit8u attr,Bit8u page,Bit16u count,bool showattr
             cur_col=0;
             cur_row++;
         }
-    }
-
-    if (CurMode->type==M_EGA) {
-        // Reset write ops for EGA graphics modes
-        IO_Write(0x3ce,0x3);IO_Write(0x3cf,0x0);
     }
 }
 
