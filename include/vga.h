@@ -32,28 +32,7 @@
 class PageHandler;
 
 enum VGAModes {
-    XM_CGA2,         // 0
-    XM_CGA4,
-    XM_EGA,
-    XM_VGA,
-    XM_LIN4,
-    XM_LIN8,         // 5
-    XM_LIN15,
-    XM_LIN16,
-    XM_LIN24,
-    XM_LIN32,
-    M_TEXT,         // 10
-    XM_HERC_GFX,
-    XM_HERC_TEXT,
-    XM_CGA16,
-    XM_TANDY2,
-    XM_TANDY4,       // 15
-    XM_TANDY16,
-    XM_TANDY_TEXT,
-    XM_AMSTRAD,
-    XM_PC98,
-    XM_FM_TOWNS,     // 20 STUB
-    XM_PACKED4,
+    M_TEXT,         // 0
     M_ERROR,
 
     M_MAX

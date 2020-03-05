@@ -40,28 +40,7 @@
 bool mcga_double_scan = false;
 
 const char* const mode_texts[M_MAX] = {
-    "M_CGA2",           // 0
-    "M_CGA4",
-    "M_EGA",
-    "M_VGA",
-    "M_LIN4",
-    "M_LIN8",           // 5
-    "M_LIN15",
-    "M_LIN16",
-    "M_LIN24",
-    "M_LIN32",
-    "M_TEXT",           // 10
-    "M_HERC_GFX",
-    "M_HERC_TEXT",
-    "M_CGA16",
-    "M_TANDY2",
-    "M_TANDY4",         // 15
-    "M_TANDY16",
-    "M_TANDY_TEXT",
-    "M_AMSTRAD",
-    "M_PC98",
-    "M_FM_TOWNS",       // 20 STUB
-    "M_PACKED4",
+    "M_TEXT",           // 0
     "M_ERROR"
 };
 
