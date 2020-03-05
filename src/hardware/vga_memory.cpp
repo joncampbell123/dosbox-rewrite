@@ -425,45 +425,6 @@ public:
 	}
 };
 
-extern void XGA_Write(Bitu port, Bitu val, Bitu len);
-extern Bitu XGA_Read(Bitu port, Bitu len);
-
-class VGA_MMIO_Handler : public PageHandler {
-public:
-	VGA_MMIO_Handler() : PageHandler(PFLAG_NOCODE) {}
-	void writeb(PhysPt addr,Bit8u val) {
-		VGAMEM_USEC_write_delay();
-		Bitu port = PAGING_GetPhysicalAddress(addr) & 0xffff;
-		XGA_Write(port, val, 1);
-	}
-	void writew(PhysPt addr,Bit16u val) {
-		VGAMEM_USEC_write_delay();
-		Bitu port = PAGING_GetPhysicalAddress(addr) & 0xffff;
-		XGA_Write(port, val, 2);
-	}
-	void writed(PhysPt addr,Bit32u val) {
-		VGAMEM_USEC_write_delay();
-		Bitu port = PAGING_GetPhysicalAddress(addr) & 0xffff;
-		XGA_Write(port, val, 4);
-	}
-
-	Bit8u readb(PhysPt addr) {
-		VGAMEM_USEC_read_delay();
-		Bitu port = PAGING_GetPhysicalAddress(addr) & 0xffff;
-		return (Bit8u)XGA_Read(port, 1);
-	}
-	Bit16u readw(PhysPt addr) {
-		VGAMEM_USEC_read_delay();
-		Bitu port = PAGING_GetPhysicalAddress(addr) & 0xffff;
-		return (Bit16u)XGA_Read(port, 2);
-	}
-	Bit32u readd(PhysPt addr) {
-		VGAMEM_USEC_read_delay();
-		Bitu port = PAGING_GetPhysicalAddress(addr) & 0xffff;
-		return (Bit32u)XGA_Read(port, 4);
-	}
-};
-
 class VGA_Empty_Handler : public PageHandler {
 public:
 	VGA_Empty_Handler() : PageHandler(PFLAG_NOCODE) {}
@@ -494,7 +455,7 @@ static struct vg {
 //	VGA_HERC_Handler			herc;
 //	VGA_LIN4_Handler			lin4;
 	VGA_LFB_Handler				lfb;
-	VGA_MMIO_Handler			mmio;
+//	VGA_MMIO_Handler			mmio;
 //	VGA_AMS_Handler				ams;
 	VGA_Empty_Handler			empty;
 } vgaph;
@@ -559,8 +520,6 @@ void VGA_SetupHandlers(void) {
 		MEM_SetPageHandler( VGA_PAGE_B0, 8, &vgaph.empty );
         break;
 	}
-	if(svgaCard == SVGA_S3Trio && (vga.s3.ext_mem_ctrl & 0x10))
-		MEM_SetPageHandler(VGA_PAGE_A0, 16, &vgaph.mmio);
 
     non_cga_ignore_oddeven_engage = false;
 
@@ -568,49 +527,10 @@ void VGA_SetupHandlers(void) {
 }
 
 void VGA_StartUpdateLFB(void) {
-	/* please obey the Linear Address Window Size register!
-	 * Windows 3.1 S3 driver will reprogram the linear framebuffer down to 0xA0000 when entering a DOSBox
-	 * and assuming the full VRAM size will cause a LOT of problems! */
-	Bitu winsz = 0x10000;
-
-	switch (vga.s3.reg_58&3) {
-		case 1:
-			winsz = 1 << 20;	//1MB
-			break;
-		case 2:
-			winsz = 2 << 20;	//2MB
-			break;
-		case 3:
-			winsz = 4 << 20;	//4MB
-			break;
-		// FIXME: What about the 8MB window?
-	}
-
-    /* The LFB register has an enable bit */
-    if (!(vga.s3.reg_58 & 0x10)) {
-        vga.lfb.page = (unsigned int)vga.s3.la_window << 4u;
-        vga.lfb.addr = (unsigned int)vga.s3.la_window << 16u;
-        vga.lfb.handler = NULL;
-        MEM_SetLFB(0,0,NULL,NULL);
-    }
-    /* if the DOS application or Windows 3.1 driver attempts to put the linear framebuffer
-	 * below the top of memory, then we're probably entering a DOS VM and it's probably
-	 * a 64KB window. If it's not a 64KB window then print a warning. */
-    else if ((unsigned long)(vga.s3.la_window << 4UL) < (unsigned long)MEM_TotalPages()) {
-		if (winsz != 0x10000) // 64KB window normal for entering a DOS VM in Windows 3.1 or legacy bank switching in DOS
-			LOG(LOG_MISC,LOG_WARN)("S3 warning: Window size != 64KB and address conflict with system RAM!");
-
-		vga.lfb.page = (unsigned int)vga.s3.la_window << 4u;
-		vga.lfb.addr = (unsigned int)vga.s3.la_window << 16u;
-		vga.lfb.handler = NULL;
-		MEM_SetLFB(0,0,NULL,NULL);
-	}
-	else {
-		vga.lfb.page = (unsigned int)vga.s3.la_window << 4u;
-		vga.lfb.addr = (unsigned int)vga.s3.la_window << 16u;
-		vga.lfb.handler = &vgaph.lfb;
-		MEM_SetLFB((unsigned int)vga.s3.la_window << 4u,(unsigned int)vga.mem.memsize/4096u, vga.lfb.handler, &vgaph.mmio);
-	}
+    vga.lfb.page = (unsigned int)vga.s3.la_window << 4u;
+    vga.lfb.addr = (unsigned int)vga.s3.la_window << 16u;
+    vga.lfb.handler = NULL;
+    MEM_SetLFB(0,0,NULL,NULL);
 }
 
 static bool VGA_Memory_ShutDown_init = false;

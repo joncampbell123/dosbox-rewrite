@@ -773,22 +773,6 @@ bool INT10_SetVideoMode(Bit16u mode) {
 		IO_Write(crtc_base,0x45);
 		IO_Write(crtc_base+1u,0x00);
 
-		// Accellerator setup 
-		Bitu reg_50=S3_XGA_8BPP;
-		switch (CurMode->type) {
-			default: break;
-		}
-		switch(CurMode->swidth) {
-			case 640:  reg_50|=S3_XGA_640; break;
-			case 800:  reg_50|=S3_XGA_800; break;
-			case 1024: reg_50|=S3_XGA_1024; break;
-			case 1152: reg_50|=S3_XGA_1152; break;
-			case 1280: reg_50|=S3_XGA_1280; break;
-			case 1600: reg_50|=S3_XGA_1600; break;
-			default: break;
-		}
-		IO_WriteB(crtc_base,0x50); IO_WriteB(crtc_base+1u,(Bit8u)reg_50);
-
 		Bit8u reg_31, reg_3a;
         reg_3a=5;
 
