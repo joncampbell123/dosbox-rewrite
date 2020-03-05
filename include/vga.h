@@ -169,42 +169,6 @@ typedef struct {
 } VGA_Draw;
 
 typedef struct {
-	Bit8u reg_lock1;
-	Bit8u reg_lock2;
-	Bit8u reg_31;
-	Bit8u reg_35;
-	Bit8u reg_36; // RAM size
-	Bit8u reg_3a; // 4/8/doublepixel bit in there
-	Bit8u reg_40; // 8415/A functionality register
-	Bit8u reg_41; // BIOS flags 
-	Bit8u reg_42; // CR42 Mode Control
-	Bit8u reg_43;
-	Bit8u reg_45; // Hardware graphics cursor
-	Bit8u reg_50;
-	Bit8u reg_51;
-	Bit8u reg_52;
-	Bit8u reg_55;
-	Bit8u reg_58;
-	Bit8u reg_6b; // LFB BIOS scratchpad
-	Bit8u ex_hor_overflow;
-	Bit8u ex_ver_overflow;
-	Bit16u la_window;
-	Bit8u misc_control_2;
-	Bit8u ext_mem_ctrl;
-	Bitu xga_screen_width;
-	VGAModes xga_color_mode;
-	struct {
-		Bit8u r;
-		Bit8u n;
-		Bit8u m;
-	} clk[4],mclk;
-	struct {
-		Bit8u lock;
-		Bit8u cmd;
-	} pll;
-} VGA_S3;
-
-typedef struct {
 	Bit8u index;
 	Bit8u reset;
 	Bit8u clocking_mode;
@@ -326,7 +290,6 @@ typedef struct {
     VGA_Gfx gfx = {};
     VGA_Dac dac = {};
     VGA_Latch latch;
-    VGA_S3 s3 = {};
     VGA_Memory mem;
 } VGA_Type;
 

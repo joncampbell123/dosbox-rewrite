@@ -282,37 +282,6 @@ static Bit8u VGA_GetBlankedIndex() {
  * a few demos rely on line compare schenanigans to play with the raster, as does my own VGA test program --J.C. */
 void VGA_Update_SplitLineCompare() {
     vga.draw.split_line = (vga.config.line_compare + 1) / vga.draw.render_max;
-
-    if (svgaCard==SVGA_S3Trio) {
-        /* FIXME: Is this really necessary? Is this what S3 chipsets do?
-         *        What is supposed to happen is that line_compare == 0 on normal VGA will cause the first
-         *        scanline to repeat twice. Do S3 chipsets NOT reproduce that quirk?
-         *
-         *        The other theory I have about whoever wrote this code is that they wanted to multiply
-         *        the scan line by two but had to compensate for the line_compare+1 assignment above.
-         *        Rather than end up with a splitscreen too far down, they did that.
-         *
-         *        I think the proper code to put here would be:
-         *
-         *        if (vga.s3.reg_42 & 0x20) {
-         *            vga.draw.split_line--;
-         *            vga.draw.split_line *= 2;
-         *            vga.draw.split_line++;
-         *        }
-         *
-         *        Is that right?
-         *
-         *        This behavior is the reason for Issue #40 "Flash productions "monstra" extra white line at top of screen"
-         *        because it causes line compare to miss and the first scanline of the white bar appears on scanline 2,
-         *        when the demo coder obviously intended for line_compare == 0 to repeat the first scanline twice so that
-         *        on line 3, it can begin updating line compare to continue repeating the first scanline.
-         *
-         * TODO: Pull out some S3 graphics cards and check split line behavior when line_compare == 0 */
-        if (vga.config.line_compare==0) vga.draw.split_line=0;
-        if (vga.s3.reg_42 & 0x20) { // interlaced mode
-            vga.draw.split_line *= 2;
-        }
-    }
     vga.draw.split_line -= vga.draw.vblank_skip;
 }
 
@@ -937,17 +906,17 @@ void VGA_SetupDrawing(Bitu /*val*/) {
 
     // set the drawing mode
     switch (machine) {
-    case MCH_VGA:
-        if (svgaCard==SVGA_None) {
+        case MCH_VGA:
+            if (svgaCard==SVGA_None) {
+                vga.draw.mode = DRAWLINE;
+                break;
+            }
+            // fall-through
+        default:
             vga.draw.mode = DRAWLINE;
             break;
-        }
-        // fall-through
-    default:
-        vga.draw.mode = DRAWLINE;
-        break;
     }
-    
+
     /* Calculate the FPS for this screen */
     Bitu oscclock = 0, clock;
     Bitu htotal, hdend, hbstart, hbend, hrstart, hrend;
@@ -966,25 +935,17 @@ void VGA_SetupDrawing(Bitu /*val*/) {
         vdend = vga.crtc.vertical_display_end | ((vga.crtc.overflow & 2u) << 7u);
         vbstart = vga.crtc.start_vertical_blanking | ((vga.crtc.overflow & 0x08u) << 5u);
         vrstart = vga.crtc.vertical_retrace_start + ((vga.crtc.overflow & 0x04u) << 6u);
-        
+
         if (IS_VGA_ARCH) {
             // additional bits only present on vga cards
-            htotal |= (vga.s3.ex_hor_overflow & 0x1u) << 8u;
             htotal += 3u;
-            hdend |= (vga.s3.ex_hor_overflow & 0x2u) << 7u;
             hbend |= (vga.crtc.end_horizontal_retrace&0x80u) >> 2u;
-            hbstart |= (vga.s3.ex_hor_overflow & 0x4u) << 6u;
-            hrstart |= (vga.s3.ex_hor_overflow & 0x10u) << 4u;
             hbend_mask = 0x3fu;
-            
+
             vtotal |= (vga.crtc.overflow & 0x20u) << 4u;
-            vtotal |= (vga.s3.ex_ver_overflow & 0x1u) << 10u;
             vdend |= (vga.crtc.overflow & 0x40u) << 3u; 
-            vdend |= (vga.s3.ex_ver_overflow & 0x2u) << 9u;
             vbstart |= (vga.crtc.maximum_scan_line & 0x20u) << 4u;
-            vbstart |= (vga.s3.ex_ver_overflow & 0x4u) << 8u;
             vrstart |= ((vga.crtc.overflow & 0x80u) << 2u);
-            vrstart |= (vga.s3.ex_ver_overflow & 0x10u) << 6u;
             vbend_mask = 0xffu;
         } else { // EGA
             hbend_mask = 0x1fu;
@@ -998,13 +959,13 @@ void VGA_SetupDrawing(Bitu /*val*/) {
         // horitzontal blanking
         if (hbend <= (hbstart & hbend_mask)) hbend += hbend_mask + 1;
         hbend += hbstart - (hbstart & hbend_mask);
-        
+
         // horizontal retrace
         hrend = vga.crtc.end_horizontal_retrace & 0x1f;
         if (hrend <= (hrstart&0x1f)) hrend += 32;
         hrend += hrstart - (hrstart&0x1f);
         if (hrend > hbend) hrend = hbend; // S3 BIOS (???)
-        
+
         // vertical retrace
         vrend = vga.crtc.vertical_retrace_end & 0xf;
         if (vrend <= (vrstart&0xf)) vrend += 16;
@@ -1013,10 +974,10 @@ void VGA_SetupDrawing(Bitu /*val*/) {
         // vertical blanking
         vbend = vga.crtc.end_vertical_blanking & vbend_mask;
         if (vbstart != 0) {
-        // Special case vbstart==0:
-        // Most graphics cards agree that lines zero to vbend are
-        // blanked. ET4000 doesn't blank at all if vbstart==vbend.
-        // ET3000 blanks lines 1 to vbend (255/6 lines).
+            // Special case vbstart==0:
+            // Most graphics cards agree that lines zero to vbend are
+            // blanked. ET4000 doesn't blank at all if vbstart==vbend.
+            // ET3000 blanks lines 1 to vbend (255/6 lines).
             vbstart += 1;
             if (vbend <= (vbstart & vbend_mask)) vbend += vbend_mask + 1;
             vbend += vbstart - (vbstart & vbend_mask);
@@ -1030,13 +991,13 @@ void VGA_SetupDrawing(Bitu /*val*/) {
 
         {
             switch ((vga.misc_output >> 2) & 3) {
-            case 0: 
-                oscclock = 25175000;
-                break;
-            case 1:
-            default:
-                oscclock = 28322000;
-                break;
+                case 0: 
+                    oscclock = 25175000;
+                    break;
+                case 1:
+                default:
+                    oscclock = 28322000;
+                    break;
             }
         }
 
@@ -1049,16 +1010,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
         if (vga.seq.clocking_mode & 0x8) {
             clock /=2;
             oscclock /= 2;
-        }
-
-        if (svgaCard==SVGA_S3Trio) {
-            // support for interlacing used by the S3 BIOS and possibly other drivers
-            if (vga.s3.reg_42 & 0x20) {
-                vtotal *= 2;    vdend *= 2;
-                vbstart *= 2;   vbend *= 2;
-                vrstart *= 2;   vrend *= 2;
-                //clock /= 2;
-        }
         }
     }
 #if C_DEBUG
