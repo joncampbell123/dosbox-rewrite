@@ -161,8 +161,6 @@ bool                                enable_vga_8bit_dac = true;
 
 extern int                          vga_memio_delay_ns;
 
-uint32_t S3_LFB_BASE =              S3_LFB_BASE_DEFAULT;
-
 SDL_Rect                            vga_capture_rect = {0,0,0,0};
 SDL_Rect                            vga_capture_current_rect = {0,0,0,0};
 uint32_t                            vga_capture_current_address = 0;
@@ -460,72 +458,9 @@ Bit32u MEM_get_address_bits();
 
 void VGA_Reset(Section*) {
     Section_prop * section=static_cast<Section_prop *>(control->GetSection("dosbox"));
-    bool lfb_default = false;
     string str;
 
-    Bit32u cpu_addr_bits = MEM_get_address_bits();
-//    Bit64u cpu_max_addr = (Bit64u)1 << (Bit64u)cpu_addr_bits;
-
     LOG(LOG_MISC,LOG_DEBUG)("VGA_Reset() reinitializing VGA emulation");
-
-    S3_LFB_BASE = (uint32_t)section->Get_hex("svga lfb base");
-    if (S3_LFB_BASE == 0) {
-        if (cpu_addr_bits >= 32)
-            S3_LFB_BASE = S3_LFB_BASE_DEFAULT;
-        else if (cpu_addr_bits >= 26)
-            S3_LFB_BASE = 0x03400000;
-        else if (cpu_addr_bits >= 24)
-            S3_LFB_BASE = 0x00C00000;
-        else
-            S3_LFB_BASE = S3_LFB_BASE_DEFAULT;
-
-        lfb_default = true;
-    }
-
-    /* no farther than 32MB below the top */
-    if (S3_LFB_BASE > 0xFE000000UL)
-        S3_LFB_BASE = 0xFE000000UL;
-
-    {
-        /* must be 64KB aligned (ISA) */
-        S3_LFB_BASE +=  0x7FFFUL;
-        S3_LFB_BASE &= ~0xFFFFUL;
-    }
-
-    /* must not overlap system RAM */
-    if (S3_LFB_BASE < (MEM_TotalPages()*4096))
-        S3_LFB_BASE = (MEM_TotalPages()*4096);
-
-    /* announce LFB framebuffer address only if actually emulating the S3 */
-    if (IS_VGA_ARCH && svgaCard == SVGA_S3Trio)
-        LOG(LOG_VGA,LOG_DEBUG)("S3 linear framebuffer at 0x%lx%s as %s",
-            (unsigned long)S3_LFB_BASE,lfb_default?" by default":"",
-            "(E)ISA");
-
-    /* other applicable warnings: */
-    /* Microsoft Windows 3.1 S3 driver:
-     *   If the LFB is set to an address below 16MB, the driver will program the base to something
-     *   odd like 0x73000000 and access MMIO through 0x74000000.
-     *
-     *   Because of this, if memalias < 31 and LFB is below 16MB mark, Windows won't use the
-     *   accelerated features of the S3 emulation properly.
-     *
-     *   If memalias=24, the driver hangs and nothing appears on screen.
-     *
-     *   As far as I can tell, it's mapping for the LFB, not the MMIO. It uses the MMIO in the
-     *   A0000-AFFFF range anyway. The failure to blit and draw seems to be caused by mapping the
-     *   LFB out of range like that and then trying to draw on the LFB.
-     *
-     *   As far as I can tell from http://www.vgamuseum.info and the list of S3 cards, the S3 chipsets
-     *   emulated by DOSBox-X and DOSBox SVN here are all EISA and PCI cards, so it's likely the driver
-     *   is written around the assumption that memory addresses are the full 32 bits to the card, not
-     *   just the low 24 seen on the ISA slot. So it is unlikely the driver could ever support the
-     *   card on a 386SX nor could such a card work on a 386SX. It shouldn't even work on a 486SX
-     *   (26-bit limit), but it could. */
-    if (IS_VGA_ARCH && svgaCard == SVGA_S3Trio && cpu_addr_bits <= 24)
-        LOG(LOG_VGA,LOG_WARN)("S3 linear framebuffer warning: memalias setting is known to cause the Windows 3.1 S3 driver to crash");
-    if (IS_VGA_ARCH && svgaCard == SVGA_S3Trio && cpu_addr_bits < 31 && S3_LFB_BASE < 0x1000000ul) /* below 16MB and memalias == 31 bits */
-        LOG(LOG_VGA,LOG_WARN)("S3 linear framebuffer warning: A linear framebuffer below the 16MB mark in physical memory when memalias < 31 is known to have problems with the Windows 3.1 S3 driver");
 
     str = section->Get_string("vga attribute controller mapping");
     if (str == "4x4")

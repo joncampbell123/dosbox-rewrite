@@ -40,9 +40,6 @@
 
 extern ZIPFile savestate_zip;
 
-static MEM_Callout_t lfb_mem_cb = MEM_Callout_t_none;
-static MEM_Callout_t lfb_mmio_cb = MEM_Callout_t_none;
-
 #define MEM_callouts_max (MEM_TYPE_MAX - MEM_TYPE_MIN)
 #define MEM_callouts_index(t) (t - MEM_TYPE_MIN)
 
@@ -504,17 +501,6 @@ void MEM_PutCallout(MEM_CalloutObject *obj) {
     obj->getcounter--;
 }
 
-void lfb_mem_cb_free(void) {
-    if (lfb_mem_cb != MEM_Callout_t_none) {
-        MEM_FreeCallout(lfb_mem_cb);
-        lfb_mem_cb = MEM_Callout_t_none;
-    }
-    if (lfb_mmio_cb != MEM_Callout_t_none) {
-        MEM_FreeCallout(lfb_mmio_cb);
-        lfb_mmio_cb = MEM_Callout_t_none;
-    }
-}
-
 PageHandler* lfb_memio_cb(MEM_CalloutObject &co,Bitu phys_page) {
     (void)co;//UNUSED
     if (memory.lfb.start_page == 0 || memory.lfb.pages == 0)
@@ -525,104 +511,6 @@ PageHandler* lfb_memio_cb(MEM_CalloutObject &co,Bitu phys_page) {
         return memory.lfb_mmio.handler;
 
     return NULL;
-}
-
-void lfb_mem_cb_init() {
-    if (lfb_mem_cb == MEM_Callout_t_none) {
-        lfb_mem_cb = MEM_AllocateCallout(MEM_TYPE_ISA);
-        if (lfb_mem_cb == MEM_Callout_t_none) E_Exit("Unable to allocate mem cb for LFB");
-    }
-    if (lfb_mmio_cb == MEM_Callout_t_none) {
-        lfb_mmio_cb = MEM_AllocateCallout(MEM_TYPE_ISA);
-        if (lfb_mmio_cb == MEM_Callout_t_none) E_Exit("Unable to allocate mmio cb for LFB");
-    }
-
-    {
-        MEM_CalloutObject *cb = MEM_GetCallout(lfb_mem_cb);
-
-        assert(cb != NULL);
-
-        cb->Uninstall();
-
-        if (memory.lfb.pages != 0) {
-            Bitu p2sz = 1;
-            /* make p2sz the largest power of 2 that covers the LFB */
-            while (p2sz < memory.lfb.pages) p2sz <<= (Bitu)1;
-            cb->Install(memory.lfb.start_page,MEMMASK_Combine(MEMMASK_FULL,MEMMASK_Range(p2sz)),lfb_memio_cb);
-        }
-
-        MEM_PutCallout(cb);
-    }
-
-    {
-        MEM_CalloutObject *cb = MEM_GetCallout(lfb_mmio_cb);
-
-        assert(cb != NULL);
-
-        cb->Uninstall();
-        if (memory.lfb_mmio.pages != 0) {
-            Bitu p2sz = 1;
-            /* make p2sz the largest power of 2 that covers the LFB */
-            while (p2sz < memory.lfb_mmio.pages) p2sz <<= (Bitu)1;
-            cb->Install(memory.lfb_mmio.start_page,MEMMASK_Combine(MEMMASK_FULL,MEMMASK_Range(p2sz)),lfb_memio_cb);
-        }
-
-        MEM_PutCallout(cb);
-    }
-}
-
-/* TODO: At some point, this common code needs to be removed and the S3 emulation (or whatever else)
- *       needs to provide LFB and/or MMIO mapping. */
-void MEM_SetLFB(Bitu page, Bitu pages, PageHandler *handler, PageHandler *mmiohandler) {
-    if (page == memory.lfb.start_page && memory.lfb.end_page == (page+pages) &&
-        memory.lfb.pages == pages && memory.lfb.handler == handler &&
-        memory.lfb_mmio.handler == mmiohandler)
-        return;
-
-    memory.lfb.handler=handler;
-    if (handler != NULL) {
-        memory.lfb.start_page=page;
-        memory.lfb.end_page=page+pages;
-        memory.lfb.pages=pages;
-    }
-    else {
-        memory.lfb.start_page=0;
-        memory.lfb.end_page=0;
-        memory.lfb.pages=0;
-    }
-
-    memory.lfb_mmio.handler=mmiohandler;
-    if (mmiohandler != NULL) {
-        /* FIXME: Why is this hard-coded? There's more than just S3 emulation in this code's future! */
-        memory.lfb_mmio.start_page=page+(0x01000000/4096);
-        memory.lfb_mmio.end_page=page+(0x01000000/4096)+16;
-        memory.lfb_mmio.pages=16;
-    }
-    else {
-        memory.lfb_mmio.start_page=0;
-        memory.lfb_mmio.end_page=0;
-        memory.lfb_mmio.pages=0;
-    }
-
-    if (pages == 0 || page == 0) {
-        lfb_mem_cb_free();
-        LOG(LOG_MISC,LOG_DEBUG)("MEM: Linear framebuffer disabled");
-    }
-    else {
-        lfb_mem_cb_init();
-
-        LOG(LOG_MISC,LOG_DEBUG)("MEM: Linear framebuffer is now set to 0x%lx-0x%lx (%uKB)",
-            (unsigned long)(page*4096),
-            (unsigned long)(((page+pages)*4096)-1),
-            (unsigned int)(pages*4));
-        // FIXME: Because this code emulates S3 by hardcoding the MMIO address!
-        LOG(LOG_MISC,LOG_DEBUG)("MEM: Linear framebuffer MMIO is now set to 0x%lx-0x%lx (%uKB)",
-            (unsigned long)(page*4096)+0x01000000,
-            (unsigned long)(((page+16)*4096)+0x01000000-1),
-            (unsigned int)(16*4));
-    }
-
-    PAGING_ClearTLB();
 }
 
 PageHandler * MEM_GetPageHandler(Bitu phys_page) {

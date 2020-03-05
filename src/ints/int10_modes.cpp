@@ -753,13 +753,6 @@ bool INT10_SetVideoMode(Bit16u mode) {
 		/* Setup the CPU Window */
 		IO_Write(crtc_base,0x6a);
 		IO_Write(crtc_base+1u,0);
-		/* Setup the linear frame buffer */
-		IO_Write(crtc_base,0x59);
-		IO_Write(crtc_base+1u,(Bit8u)((S3_LFB_BASE >> 24)&0xff));
-		IO_Write(crtc_base,0x5a);
-		IO_Write(crtc_base+1u,(Bit8u)((S3_LFB_BASE >> 16)&0xff));
-		IO_Write(crtc_base,0x6b); // BIOS scratchpad
-		IO_Write(crtc_base+1u,(Bit8u)((S3_LFB_BASE >> 24)&0xff));
 		
 		/* Setup some remaining S3 registers */
 		IO_Write(crtc_base,0x41); // BIOS scratchpad
@@ -777,13 +770,12 @@ bool INT10_SetVideoMode(Bit16u mode) {
         reg_3a=5;
 
         unsigned char s3_mode = 0x00;
-		
+
         reg_31 = 5;
 
         /* SVGA text modes need the 256k+ access bit */
         if (CurMode->mode >= 0x100 && !int10.vesa_nolfb) {
             reg_31 |= 8; /* enable 256k+ access */
-            s3_mode |= 0x10; /* enable LFB */
         }
 
 		IO_Write(crtc_base,0x3a);IO_Write(crtc_base+1u,reg_3a);

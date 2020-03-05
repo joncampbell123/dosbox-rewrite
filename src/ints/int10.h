@@ -19,8 +19,6 @@
 
 #include "vga.h"
 
-extern uint32_t S3_LFB_BASE;
-
 #define BIOSMEM_SEG		0x40u
 
 #define BIOSMEM_INITIAL_MODE  0x10u

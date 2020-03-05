@@ -27,8 +27,6 @@
 
 #define VGA_LFB_MAPPED
 
-#define S3_LFB_BASE_DEFAULT	  0xE0000000u
-
 class PageHandler;
 
 enum VGAModes {
@@ -467,7 +465,6 @@ void VGA_SetupOther(void);
 
 /* Some Support Functions */
 void VGA_SetClock(Bitu which,Bitu target);
-void VGA_StartUpdateLFB(void);
 void VGA_SetBlinking(Bitu enabled);
 void VGA_SetCGA2Table(Bit8u val0,Bit8u val1);
 void VGA_SetCGA4Table(Bit8u val0,Bit8u val1,Bit8u val2,Bit8u val3);

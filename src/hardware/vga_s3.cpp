@@ -232,7 +232,6 @@ void SVGA_S3_WriteCRTC(Bitu reg,Bitu val,Bitu iolen) {
         */
     case 0x58:  /* Linear Address Window Control */
         vga.s3.reg_58=(Bit8u)val;
-        VGA_StartUpdateLFB();
         break;
         /*
             0-1 Linear Address Window Size. Must be less than or equal to video
@@ -254,13 +253,11 @@ void SVGA_S3_WriteCRTC(Bitu reg,Bitu val,Bitu iolen) {
     case 0x59:  /* Linear Address Window Position High */
         if ((vga.s3.la_window&0xff00) ^ ((Bit8u)val << 8)) {
             vga.s3.la_window=(vga.s3.la_window&0x00ff) | ((Bit8u)val << 8);
-            VGA_StartUpdateLFB();
         }
         break;
     case 0x5a:  /* Linear Address Window Position Low */
         if ((vga.s3.la_window&0x00ff) ^ (Bit8u)val) {
             vga.s3.la_window=(vga.s3.la_window&0xff00) | (Bit8u)val;
-            VGA_StartUpdateLFB();
         }
         break;
     case 0x5D:  /* Extended Horizontal Overflow */

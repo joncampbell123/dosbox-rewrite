@@ -412,19 +412,6 @@ public:
 
 #include <stdio.h>
 
-class VGA_LFB_Handler : public PageHandler {
-public:
-	VGA_LFB_Handler() : PageHandler(PFLAG_READABLE|PFLAG_WRITEABLE|PFLAG_NOCODE) {}
-	HostPt GetHostReadPt( Bitu phys_page ) {
-		phys_page -= vga.lfb.page;
-		phys_page &= (vga.mem.memsize >> 12) - 1;
-		return &vga.mem.linear[CHECKED3(phys_page * 4096)];
-	}
-	HostPt GetHostWritePt( Bitu phys_page ) {
-		return GetHostReadPt( phys_page );
-	}
-};
-
 class VGA_Empty_Handler : public PageHandler {
 public:
 	VGA_Empty_Handler() : PageHandler(PFLAG_NOCODE) {}
@@ -454,7 +441,7 @@ static struct vg {
 //	VGA_PCJR_Handler			pcjr;
 //	VGA_HERC_Handler			herc;
 //	VGA_LIN4_Handler			lin4;
-	VGA_LFB_Handler				lfb;
+//	VGA_LFB_Handler				lfb;
 //	VGA_MMIO_Handler			mmio;
 //	VGA_AMS_Handler				ams;
 	VGA_Empty_Handler			empty;
@@ -524,13 +511,6 @@ void VGA_SetupHandlers(void) {
     non_cga_ignore_oddeven_engage = false;
 
 	PAGING_ClearTLB();
-}
-
-void VGA_StartUpdateLFB(void) {
-    vga.lfb.page = (unsigned int)vga.s3.la_window << 4u;
-    vga.lfb.addr = (unsigned int)vga.s3.la_window << 16u;
-    vga.lfb.handler = NULL;
-    MEM_SetLFB(0,0,NULL,NULL);
 }
 
 static bool VGA_Memory_ShutDown_init = false;
