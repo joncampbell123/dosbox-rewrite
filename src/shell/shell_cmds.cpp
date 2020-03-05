@@ -1461,16 +1461,6 @@ void DOS_Shell::CMD_DATE(char * args) {
 	reg_ah=0x2a; // get system date
 	CALLBACK_RunRealInt(0x21);
 
-	const char* datestring = MSG_Get("SHELL_CMD_DATE_DAYS");
-	Bit32u length;
-	char day[6] = {0};
-	if(sscanf(datestring,"%u",&length) && (length<5) && (strlen(datestring)==((size_t)length*7+1))) {
-		// date string appears valid
-		for(Bit32u i = 0; i < length; i++) day[i] = datestring[reg_al*length+1+i];
-	}
-	bool dateonly = ScanCMDBool(args,"T");
-	if(!dateonly) WriteOut(MSG_Get("SHELL_CMD_DATE_NOW"));
-
 	const char* formatstring = MSG_Get("SHELL_CMD_DATE_FORMAT");
 	if(strlen(formatstring)!=5) return;
 	char buffer[15] = {0};

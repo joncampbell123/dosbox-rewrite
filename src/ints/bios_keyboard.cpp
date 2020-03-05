@@ -538,17 +538,6 @@ irq1_end:
 
 unsigned char AT_read_60(void);
 
-static Bitu PCjr_NMI_Keyboard_Handler(void) {
-#if 0
-    Bitu DEBUG_EnableDebugger(void);
-    DEBUG_EnableDebugger();
-#endif
-    if (IO_ReadB(0x64) & 1) /* while data is available */
-        reg_eip++; /* skip over EIP to IRQ1 call through */
-
-    return CBRET_NONE;
-}
-
 static Bitu IRQ1_CtrlBreakAfterInt1B(void) {
     BIOS_AddKeyToBuffer(0x0000);
     return CBRET_NONE;

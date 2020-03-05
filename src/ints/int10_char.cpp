@@ -33,18 +33,6 @@ Bit8u DefaultANSIAttr();
 # pragma warning(disable:4244) /* const fmath::local::uint64_t to double possible loss of data */
 #endif
 
-static void MCGA2_CopyRow(Bit8u cleft,Bit8u cright,Bit8u rold,Bit8u rnew,PhysPt base) {
-    Bit8u cheight = real_readb(BIOSMEM_SEG,BIOSMEM_CHAR_HEIGHT);
-    PhysPt dest=base+((CurMode->twidth*rnew)*cheight+cleft);
-    PhysPt src=base+((CurMode->twidth*rold)*cheight+cleft);
-    Bitu copy=(Bitu)(cright-cleft);
-    Bitu nextline=CurMode->twidth;
-    for (Bitu i=0;i<cheight;i++) {
-        MEM_BlockCopy(dest,src,copy);
-        dest+=nextline;src+=nextline;
-    }
-}
-
 static void CGA2_CopyRow(Bit8u cleft,Bit8u cright,Bit8u rold,Bit8u rnew,PhysPt base) {
     Bit8u cheight = real_readb(BIOSMEM_SEG,BIOSMEM_CHAR_HEIGHT);
     PhysPt dest=base+((CurMode->twidth*rnew)*(cheight/2)+cleft);
@@ -121,20 +109,6 @@ static void TEXT_CopyRow(Bit8u cleft,Bit8u cright,Bit8u rold,Bit8u rnew,PhysPt b
     src=base+(rold*CurMode->twidth+cleft)*2u;
     dest=base+(rnew*CurMode->twidth+cleft)*2u;
     MEM_BlockCopy(dest,src,(Bitu)(cright-cleft)*2u);
-}
-
-static void MCGA2_FillRow(Bit8u cleft,Bit8u cright,Bit8u row,PhysPt base,Bit8u attr) {
-    Bit8u cheight = real_readb(BIOSMEM_SEG,BIOSMEM_CHAR_HEIGHT);
-    PhysPt dest=base+((CurMode->twidth*row)*cheight+cleft);
-    Bitu copy=(Bitu)(cright-cleft);
-    Bitu nextline=CurMode->twidth;
-    attr=(attr & 0x3) | ((attr & 0x3) << 2) | ((attr & 0x3) << 4) | ((attr & 0x3) << 6);
-    for (Bitu i=0;i<cheight;i++) {
-        for (Bitu x=0;x<copy;x++) {
-            mem_writeb(dest+x,attr);
-        }
-        dest+=nextline;
-    }
 }
 
 static void CGA2_FillRow(Bit8u cleft,Bit8u cright,Bit8u row,PhysPt base,Bit8u attr) {

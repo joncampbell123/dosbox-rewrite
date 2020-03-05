@@ -1982,32 +1982,6 @@ static Bitu INT70_Handler(void) {
     return 0;
 }
 
-static Bit8u ReadCmosByte (Bitu index) {
-    IO_Write(0x70, index);
-    return IO_Read(0x71);
-}
-
-static void WriteCmosByte (Bitu index, Bitu val) {
-    IO_Write(0x70, index);
-    IO_Write(0x71, val);
-}
-
-static bool RtcUpdateDone () {
-    while ((ReadCmosByte(0x0a) & 0x80) != 0) CALLBACK_Idle();
-    return true;            // cannot fail in DOSbox
-}
-
-static void InitRtc () {
-    WriteCmosByte(0x0a, 0x26);      // default value (32768Hz, 1024Hz)
-
-    // leave bits 6 (pirq), 5 (airq), 0 (dst) untouched
-    // reset bits 7 (freeze), 4 (uirq), 3 (sqw), 2 (bcd)
-    // set bit 1 (24h)
-    WriteCmosByte(0x0b, (ReadCmosByte(0x0b) & 0x61u) | 0x02u);
-
-    ReadCmosByte(0x0c);             // clear any bits set
-}
-
 static Bitu INT1A_Handler(void) {
     CALLBACK_SIF(true);
     switch (reg_ah) {
@@ -4566,8 +4540,6 @@ void BIOS_OnResetComplete(Section *x) {
 }
 
 void BIOS_Init() {
-    DOSBoxMenu::item *item;
-
     LOG(LOG_MISC,LOG_DEBUG)("Initializing BIOS");
 
     /* make sure the array is zeroed */

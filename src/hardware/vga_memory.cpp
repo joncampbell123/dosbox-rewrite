@@ -970,7 +970,6 @@ void VGA_SetupHandlers(void) {
 
     non_cga_ignore_oddeven_engage = (non_cga_ignore_oddeven && !(vga.mode == M_TEXT || vga.mode == M_CGA2 || vga.mode == M_CGA4));
 
-range_done:
 	PAGING_ClearTLB();
 }
 

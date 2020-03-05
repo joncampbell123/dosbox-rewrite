@@ -794,7 +794,7 @@ bool INT10_SetVideoMode_OTHER(Bit16u mode,bool clearmem) {
 	//Vertical sync position
 	IO_WriteW(crtc_base,(Bit16u)(0x07 | (CurMode->vdispend + ((CurMode->vtotal - CurMode->vdispend)/2)-1) << 8));
 	//Maximum scanline
-	Bit8u scanline,crtpage;
+	Bit8u scanline;
 	scanline=8;
 	switch(CurMode->type) {
 	case M_TEXT: // text mode character height
@@ -823,18 +823,6 @@ bool INT10_SetVideoMode_OTHER(Bit16u mode,bool clearmem) {
 	for (Bit8u ct=0;ct<16;ct++) VGA_DAC_SetEntry(ct,cga_palette[ct][0],cga_palette[ct][1],cga_palette[ct][2]);
 	//Setup the tandy palette
 	for (Bit8u ct=0;ct<16;ct++) VGA_DAC_CombineColor(ct,ct);
-	//Setup the special registers for each machine type
-	Bit8u mode_control_list[0xa+1]={
-		0x2c,0x28,0x2d,0x29,	//0-3
-		0x2a,0x2e,0x1e,0x29,	//4-7
-		0x2a,0x2b,0x3b			//8-a
-	};
-	Bit8u mode_control_list_pcjr[0xa+1]={
-		0x0c,0x08,0x0d,0x09,	//0-3
-		0x0a,0x0e,0x0e,0x09,	//4-7		
-		0x1a,0x1b,0x0b			//8-a
-	};
-	Bit8u mode_control,color_select;
 
 	// Check if the program wants us to use a custom mode table
 	RealPt vparams = RealGetVec(0x1d);
