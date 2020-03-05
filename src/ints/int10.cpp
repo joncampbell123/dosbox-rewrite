@@ -94,10 +94,8 @@ Bitu INT10_Handler(void) {
 		}
 		break;
 	case 0x0C:								/* Write Graphics Pixel */
-		INT10_PutPixel(reg_cx,reg_dx,reg_bh,reg_al);
 		break;
 	case 0x0D:								/* Read Graphics Pixel */
-		INT10_GetPixel(reg_cx,reg_dx,reg_bh,&reg_al);
 		break;
 	case 0x0E:								/* Teletype OutPut */
 		INT10_TeletypeOutput(reg_al,reg_bl);

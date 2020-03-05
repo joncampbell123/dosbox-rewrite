@@ -231,10 +231,7 @@ void INT10_SetCursorPos(Bit8u row,Bit8u col,Bit8u page) {
 
 void ReadCharAttr(Bit16u col,Bit16u row,Bit8u page,Bit16u * result) {
     /* Externally used by the mouse routine */
-    PhysPt fontdata;
     Bit16u cols = real_readw(BIOSMEM_SEG,BIOSMEM_NB_COLS);
-    Bit8u cheight = real_readb(BIOSMEM_SEG,BIOSMEM_CHAR_HEIGHT);
-    bool split_chr = false;
     switch (CurMode->type) {
     case M_TEXT:
         {   
@@ -247,46 +244,8 @@ void ReadCharAttr(Bit16u col,Bit16u row,Bit8u page,Bit16u * result) {
         }
         return;
     default:
-        fontdata=Real2Phys(RealGetVec(0x43));
         break;
     }
-
-    Bitu x=col*8u,y=(unsigned int)row*cheight*(cols/CurMode->twidth);
-
-    for (Bit16u chr=0;chr<256;chr++) {
-
-        if (chr==128 && split_chr) fontdata=Real2Phys(RealGetVec(0x1f));
-
-        bool error=false;
-        Bit16u ty=(Bit16u)y;
-        for (Bit8u h=0;h<cheight;h++) {
-            Bit8u bitsel=128;
-            Bit8u bitline=mem_readb(fontdata++);
-            Bit8u res=0;
-            Bit8u vidline=0;
-            Bit16u tx=(Bit16u)x;
-            while (bitsel) {
-                //Construct bitline in memory
-                INT10_GetPixel(tx,ty,page,&res);
-                if(res) vidline|=bitsel;
-                tx++;
-                bitsel>>=1;
-            }
-            ty++;
-            if(bitline != vidline){
-                /* It's not character 'chr', move on to the next */
-                fontdata+=(unsigned int)(cheight-(unsigned int)h-1u);
-                error = true;
-                break;
-            }
-        }
-        if(!error){
-            /* We found it */
-            *result = chr;
-            return;
-        }
-    }
-    LOG(LOG_INT10,LOG_ERROR)("ReadChar didn't find character");
     *result = 0;
 }
 void INT10_ReadCharAttr(Bit16u * result,Bit8u page) {
@@ -298,9 +257,7 @@ void INT10_ReadCharAttr(Bit16u * result,Bit8u page) {
 
 void WriteChar(Bit16u col,Bit16u row,Bit8u page,Bit16u chr,Bit8u attr,bool useattr) {
     /* Externally used by the mouse routine */
-    PhysPt fontdata;
     Bit16u cols = real_readw(BIOSMEM_SEG,BIOSMEM_NB_COLS);
-    Bit8u back, cheight = real_readb(BIOSMEM_SEG,BIOSMEM_CHAR_HEIGHT);
 
     chr &= 0xFF;
 
@@ -317,39 +274,7 @@ void WriteChar(Bit16u col,Bit16u row,Bit8u page,Bit16u chr,Bit8u attr,bool useat
         }
         return;
     default:
-        fontdata=Real2Phys(RealGetVec(0x43));
         break;
-    }
-    fontdata+=(unsigned int)chr*(unsigned int)cheight;
-
-    if(GCC_UNLIKELY(!useattr)) { //Set attribute(color) to a sensible value
-        static bool warned_use = false;
-        if(GCC_UNLIKELY(!warned_use)){ 
-            LOG(LOG_INT10,LOG_ERROR)("writechar used without attribute in non-textmode %c %X",chr,chr);
-            warned_use = true;
-        }
-        attr = 0x7;
-    }
-
-    //Attribute behavior of mode 6; mode 11 does something similar but
-    //it is in INT 10h handler because it only applies to function 09h
-    if (CurMode->mode==0x06) attr=(attr&0x80)|1;
-
-    back=attr&0x80;
-
-    Bitu x=col*8u,y=(unsigned int)(row*(unsigned int)cheight*(cols/CurMode->twidth));
-
-    Bit16u ty=(Bit16u)y;
-    for (Bit8u h=0;h<cheight;h++) {
-        Bit8u bitsel=128;
-        Bit8u bitline=mem_readb(fontdata++);
-        Bit16u tx=(Bit16u)x;
-        while (bitsel) {
-            INT10_PutPixel(tx,ty,page,(bitline&bitsel)?attr:back);
-            tx++;
-            bitsel>>=1;
-        }
-        ty++;
     }
 }
 
