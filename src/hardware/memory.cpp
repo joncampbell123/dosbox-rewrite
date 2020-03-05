@@ -26,7 +26,6 @@
 #include "setup.h"
 #include "paging.h"
 #include "programs.h"
-#include "zipfile.h"
 #include "regs.h"
 #ifndef WIN32
 # include <stdlib.h>
@@ -37,8 +36,6 @@
 #include "voodoo.h"
 
 #include <string.h>
-
-extern ZIPFile savestate_zip;
 
 #define MEM_callouts_max (MEM_TYPE_MAX - MEM_TYPE_MIN)
 #define MEM_callouts_index(t) (t - MEM_TYPE_MIN)

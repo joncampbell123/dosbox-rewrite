@@ -32,14 +32,11 @@
 #include "lazyflags.h"
 #include "support.h"
 #include "control.h"
-#include "zipfile.h"
 
 #if defined(_MSC_VER)
 /* we don't care about switch statements with no case labels */
 #pragma warning(disable:4065)
 #endif
-
-extern ZIPFile savestate_zip;
 
 /* caution: do not uncomment unless you want a lot of spew */
 //#define CPU_DEBUG_SPEW

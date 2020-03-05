@@ -82,7 +82,6 @@ void GFX_OpenGLRedrawScreen(void);
 #include "ptrop.h"
 #include "mapper.h"
 #include "sdlmain.h"
-#include "zipfile.h"
 #include "shell.h"
 
 #if defined(LINUX) && defined(HAVE_ALSA)
@@ -2962,8 +2961,6 @@ void ResetSystem(bool pressed) {
 
     throw int(3);
 }
-
-ZIPFile savestate_zip;
 
 bool has_GUI_StartUp = false;
 

@@ -143,10 +143,6 @@
 # pragma warning(disable:4244) /* const fmath::local::uint64_t to double possible loss of data */
 #endif
 
-#include "zipfile.h"
-
-extern ZIPFile savestate_zip;
-
 using namespace std;
 
 bool VGA_IsCaptureEnabled(void);

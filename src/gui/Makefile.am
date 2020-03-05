@@ -8,7 +8,7 @@ libgui_a_SOURCES = \
 	render_templates.h render_loops.h render_simple.h \
 	render_templates_sai.h render_templates_hq.h \
 	render_templates_hq2x.h render_templates_hq3x.h \
-	dosbox_splash.h menu.cpp bitop.cpp ptrop.cpp zipcrc.c zipfile.cpp
+	dosbox_splash.h menu.cpp bitop.cpp ptrop.cpp
 
 if MACOSX
 libgui_a_SOURCES += \

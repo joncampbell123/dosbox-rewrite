@@ -29,9 +29,6 @@
 #include "inout.h"
 #include "setup.h"
 #include "cpu.h"
-#include "zipfile.h"
-
-extern ZIPFile savestate_zip;
 
 extern bool non_cga_ignore_oddeven;
 extern bool non_cga_ignore_oddeven_engage;
