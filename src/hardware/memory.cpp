@@ -245,10 +245,6 @@ static unsigned int MEM_Motherboard_Callout(Bitu &ret,PageHandler* &f,Bitu page)
     return MEM_Gen_Callout<MEM_TYPE_MB>(ret,f,page);
 }
 
-static unsigned int MEM_PCI_Callout(Bitu &ret,PageHandler* &f,Bitu page) {
-    return MEM_Gen_Callout<MEM_TYPE_PCI>(ret,f,page);
-}
-
 static unsigned int MEM_ISA_Callout(Bitu &ret,PageHandler* &f,Bitu page) {
     return MEM_Gen_Callout<MEM_TYPE_ISA>(ret,f,page);
 }

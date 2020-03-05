@@ -153,20 +153,12 @@ static unsigned int IO_Motherboard_Callout_Read(Bitu &ret,IO_ReadHandler* &f,Bit
     return IO_Gen_Callout_Read<IO_TYPE_MB>(ret,f,port,iolen);
 }
 
-static unsigned int IO_PCI_Callout_Read(Bitu &ret,IO_ReadHandler* &f,Bitu port,Bitu iolen) {
-    return IO_Gen_Callout_Read<IO_TYPE_PCI>(ret,f,port,iolen);
-}
-
 static unsigned int IO_ISA_Callout_Read(Bitu &ret,IO_ReadHandler* &f,Bitu port,Bitu iolen) {
     return IO_Gen_Callout_Read<IO_TYPE_ISA>(ret,f,port,iolen);
 }
 
 static unsigned int IO_Motherboard_Callout_Write(IO_WriteHandler* &f,Bitu port,Bitu val,Bitu iolen) {
     return IO_Gen_Callout_Write<IO_TYPE_MB>(f,port,val,iolen);
-}
-
-static unsigned int IO_PCI_Callout_Write(IO_WriteHandler* &f,Bitu port,Bitu val,Bitu iolen) {
-    return IO_Gen_Callout_Write<IO_TYPE_PCI>(f,port,val,iolen);
 }
 
 static unsigned int IO_ISA_Callout_Write(IO_WriteHandler* &f,Bitu port,Bitu val,Bitu iolen) {

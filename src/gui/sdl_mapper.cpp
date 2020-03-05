@@ -243,15 +243,6 @@ static KeyBlock combo_1[14] =
     {"=+","equals",KBD_equals}, {"\x1B","bspace",KBD_backspace},
 };
 
-static KeyBlock combo_1_pc98[14] =
-{
-    {"`~","grave",KBD_grave},   {"1!","1",KBD_1},   {"2\"","2",KBD_2},
-    {"3#","3",KBD_3},           {"4$","4",KBD_4},   {"5%","5",KBD_5},
-    {"6&","6",KBD_6},           {"7'","7",KBD_7},   {"8(","8",KBD_8},
-    {"9)","9",KBD_9},           {"0","0",KBD_0},    {"-=","minus",KBD_minus},
-    {"=+","equals",KBD_equals}, {"\x1B","bspace",KBD_backspace},
-};
-
 static KeyBlock combo_2[12] =
 {
     {"Q","q",KBD_q},            {"W","w",KBD_w},    {"E","e",KBD_e},
@@ -267,15 +258,6 @@ static KeyBlock combo_3[12] =
     {"F","f",KBD_f},            {"G","g",KBD_g},    {"H","h",KBD_h},
     {"J","j",KBD_j},            {"K","k",KBD_k},    {"L","l",KBD_l},
     {";:","semicolon",KBD_semicolon},               {"'\"","quote",KBD_quote},
-    {"\\|","backslash",KBD_backslash},
-};
-
-static KeyBlock combo_3_pc98[12] =
-{
-    {"A","a",KBD_a},            {"S","s",KBD_s},    {"D","d",KBD_d},
-    {"F","f",KBD_f},            {"G","g",KBD_g},    {"H","h",KBD_h},
-    {"J","j",KBD_j},            {"K","k",KBD_k},    {"L","l",KBD_l},
-    {";:+","semicolon",KBD_semicolon},              {"'\"","quote",KBD_quote},
     {"\\|","backslash",KBD_backslash},
 };
 
@@ -1240,44 +1222,11 @@ public:
     }
 
     virtual bool CheckEvent(SDL_Event * event) {
-        SDL_JoyAxisEvent * jaxis = NULL;
-        SDL_JoyButtonEvent * jbutton = NULL;
-
-        switch(event->type) {
-            case SDL_JOYAXISMOTION:
-                jaxis = &event->jaxis;
-                if((unsigned int)jaxis->which == (unsigned int)stick) {
-                }
-                break;
-            case SDL_JOYBUTTONDOWN:
-            case SDL_JOYBUTTONUP:
-                if (emulated_buttons != 0) {
-                    jbutton = &event->jbutton;
-                    bool state;
-                    state=jbutton->type==SDL_JOYBUTTONDOWN;
-                    Bitu but = jbutton->button % emulated_buttons;
-                    if ((unsigned int)jbutton->which == (unsigned int)stick) {
-                    }
-                }
-                break;
-        }
+        (void)event;
         return false;
     }
 
     virtual void UpdateJoystick() {
-        if (is_dummy) return;
-        /* query SDL joystick and activate bindings */
-        ActivateJoystickBoundEvents();
-
-        bool button_pressed[MAXBUTTON];
-        Bitu i;
-        for (i=0; i<MAXBUTTON; i++) button_pressed[i]=false;
-        for (i=0; i<MAX_VJOY_BUTTONS; i++) {
-            if (virtual_joysticks[emustick].button_pressed[i])
-                button_pressed[i % button_wrap]=true;
-        }
-        for (i=0; i<emulated_buttons; i++) {
-        }
     }
 
     void ActivateJoystickBoundEvents() {
@@ -1490,46 +1439,11 @@ public:
     virtual ~C4AxisBindGroup() {}
 
     bool CheckEvent(SDL_Event * event) {
-        SDL_JoyAxisEvent * jaxis = NULL;
-        SDL_JoyButtonEvent * jbutton = NULL;
-        Bitu but = 0;
-
-        switch(event->type) {
-            case SDL_JOYAXISMOTION:
-                jaxis = &event->jaxis;
-                if((unsigned int)jaxis->which == (unsigned int)stick && jaxis->axis < 4) {
-                }
-                break;
-            case SDL_JOYBUTTONDOWN:
-            case SDL_JOYBUTTONUP:
-                jbutton = &event->jbutton;
-                bool state;
-                state=jbutton->type==SDL_JOYBUTTONDOWN;
-                but = jbutton->button % emulated_buttons;
-                if ((unsigned int)jbutton->which == (unsigned int)stick) {
-                }
-                break;
-        }
+        (void)event;
         return false;
     }
 
     virtual void UpdateJoystick() {
-        /* query SDL joystick and activate bindings */
-        ActivateJoystickBoundEvents();
-
-        bool button_pressed[MAXBUTTON];
-        Bitu i;
-        for (i=0; i<MAXBUTTON; i++) button_pressed[i]=false;
-        for (i=0; i<MAX_VJOY_BUTTONS; i++) {
-            if (virtual_joysticks[0].button_pressed[i])
-                button_pressed[i % button_wrap]=true;
-            
-        }
-        for (i=0; i<emulated_buttons; i++) {
-        }
-
-        auto v1 = GetJoystickVector(0, 0, 0, 1);
-        auto v2 = GetJoystickVector(0, 1, 2, 3);
     }
 };
 
@@ -1549,62 +1463,11 @@ public:
     virtual ~CFCSBindGroup() {}
 
     bool CheckEvent(SDL_Event * event) {
-        SDL_JoyAxisEvent * jaxis = NULL;
-        SDL_JoyButtonEvent * jbutton = NULL;
-        SDL_JoyHatEvent * jhat = NULL;
-        Bitu but = 0;
-
-        switch(event->type) {
-            case SDL_JOYAXISMOTION:
-                jaxis = &event->jaxis;
-                if((unsigned int)jaxis->which == (unsigned int)stick) {
-                }
-                break;
-            case SDL_JOYHATMOTION:
-                jhat = &event->jhat;
-                if((unsigned int)jhat->which == (unsigned int)stick) DecodeHatPosition(jhat->value);
-                break;
-            case SDL_JOYBUTTONDOWN:
-            case SDL_JOYBUTTONUP:
-                jbutton = &event->jbutton;
-                bool state;
-                state=jbutton->type==SDL_JOYBUTTONDOWN;
-                but = jbutton->button % emulated_buttons;
-                if ((unsigned int)jbutton->which == (unsigned int)stick) {
-                }
-                break;
-        }
+        (void)event;
         return false;
     }
 
     virtual void UpdateJoystick() {
-        /* query SDL joystick and activate bindings */
-        ActivateJoystickBoundEvents();
-
-        bool button_pressed[MAXBUTTON];
-        Bitu i;
-        for (i=0; i<MAXBUTTON; i++) button_pressed[i]=false;
-        for (i=0; i<MAX_VJOY_BUTTONS; i++) {
-            if (virtual_joysticks[0].button_pressed[i])
-                button_pressed[i % button_wrap]=true;
-            
-        }
-        for (i=0; i<emulated_buttons; i++) {
-        }
-
-        auto v1 = GetJoystickVector(0, 0, 0, 1);
-        auto v2 = GetJoystickVector(0, 1, 2, 3);
-
-        Uint8 hat_pos=0;
-        if (virtual_joysticks[0].hat_pressed[0]) hat_pos|=SDL_HAT_UP;
-        else if (virtual_joysticks[0].hat_pressed[2]) hat_pos|=SDL_HAT_DOWN;
-        if (virtual_joysticks[0].hat_pressed[3]) hat_pos|=SDL_HAT_LEFT;
-        else if (virtual_joysticks[0].hat_pressed[1]) hat_pos|=SDL_HAT_RIGHT;
-
-        if (hat_pos!=old_hat_position) {
-            DecodeHatPosition(hat_pos);
-            old_hat_position=hat_pos;
-        }
     }
 
 private:
@@ -1701,48 +1564,6 @@ public:
     }
 
     void UpdateJoystick() {
-        static unsigned const button_priority[6]={7,11,13,14,5,6};
-        static unsigned const hat_priority[2][4]={{0,1,2,3},{8,9,10,12}};
-
-        /* query SDL joystick and activate bindings */
-        ActivateJoystickBoundEvents();
-
-        auto v1 = GetJoystickVector(0, 0, 0, 1);
-        auto v2 = GetJoystickVector(0, 1, 2, 3);
-
-        Bitu bt_state=15;
-
-        Bitu i;
-        for (i=0; i<(hats<2?hats:2); i++) {
-            Uint8 hat_pos=0;
-            if (virtual_joysticks[0].hat_pressed[(i<<2)+0]) hat_pos|=SDL_HAT_UP;
-            else if (virtual_joysticks[0].hat_pressed[(i<<2)+2]) hat_pos|=SDL_HAT_DOWN;
-            if (virtual_joysticks[0].hat_pressed[(i<<2)+3]) hat_pos|=SDL_HAT_LEFT;
-            else if (virtual_joysticks[0].hat_pressed[(i<<2)+1]) hat_pos|=SDL_HAT_RIGHT;
-
-            if (hat_pos & SDL_HAT_UP)
-                if (bt_state>hat_priority[i][0]) bt_state=hat_priority[i][0];
-            if (hat_pos & SDL_HAT_DOWN)
-                if (bt_state>hat_priority[i][1]) bt_state=hat_priority[i][1];
-            if (hat_pos & SDL_HAT_RIGHT)
-                if (bt_state>hat_priority[i][2]) bt_state=hat_priority[i][2];
-            if (hat_pos & SDL_HAT_LEFT)
-                if (bt_state>hat_priority[i][3]) bt_state=hat_priority[i][3];
-        }
-
-        bool button_pressed[MAXBUTTON];
-        for (i=0; i<MAXBUTTON; i++) button_pressed[i]=false;
-        for (i=0; i<MAX_VJOY_BUTTONS; i++) {
-            if (virtual_joysticks[0].button_pressed[i])
-                button_pressed[i % button_wrap]=true;
-            
-        }
-        for (i=0; i<6; i++) {
-            if ((button_pressed[i]) && (bt_state>button_priority[i]))
-                bt_state=button_priority[i];
-        }
-
-        if (bt_state>15) bt_state=15;
     }
 
 protected:
@@ -2721,11 +2542,6 @@ static CJAxisEvent * AddJAxisButton(Bitu x,Bitu y,Bitu dx,Bitu dy,char const * c
     event->notifybutton(button);
     return event;
 }
-static CJAxisEvent * AddJAxisButton_hidden(Bitu stick,Bitu axis,bool positive,CJAxisEvent * opposite_axis) {
-    char buf[64];
-    sprintf(buf,"jaxis_%d_%d%s",(int)stick,(int)axis,positive ? "+" : "-");
-    return new CJAxisEvent(buf,stick,axis,positive,opposite_axis);
-}
 
 static void AddJButtonButton(Bitu x,Bitu y,Bitu dx,Bitu dy,char const * const title,Bitu stick,Bitu button) {
     char buf[64];
@@ -2733,11 +2549,6 @@ static void AddJButtonButton(Bitu x,Bitu y,Bitu dx,Bitu dy,char const * const ti
     CJButtonEvent * event=new CJButtonEvent(buf,stick,button);
     CEventButton *evbutton=new CEventButton(x,y,dx,dy,title,event);
     event->notifybutton(evbutton);
-}
-static void AddJButtonButton_hidden(Bitu stick,Bitu button) {
-    char buf[64];
-    sprintf(buf,"jbutton_%d_%d",(int)stick,(int)button);
-    new CJButtonEvent(buf,stick,button);
 }
 
 static void AddJHatButton(Bitu x,Bitu y,Bitu dx,Bitu dy,char const * const title,Bitu _stick,Bitu _hat,Bitu _dir) {

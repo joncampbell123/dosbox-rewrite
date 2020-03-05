@@ -463,44 +463,6 @@ static void VFRCRATE_ProgramStart(Program * * make) {
     *make=new VFRCRATE;
 }
 
-/*! \brief          CGASNOW.COM utility to control CGA snow emulation
- *
- *  \description    Utility to enable, disable, or query CGA snow emulation.
- *                  This command is only available when machine=cga and
- *                  the video mode is 80x25 text mode.
- */
-class CGASNOW : public Program {
-public:
-    /*! \brief      Program entry point, when the command is run
-     */
-    void Run(void) {
-        if(cmd->FindExist("ON")) {
-            WriteOut("CGA snow enabled\n");
-            enableCGASnow = 1;
-            if (vga.mode == M_TEXT || vga.mode == M_TANDY_TEXT) {
-                VGA_SetupHandlers();
-                VGA_StartResize();
-            }
-        }
-        else if(cmd->FindExist("OFF")) {
-            WriteOut("CGA snow disabled\n");
-            enableCGASnow = 0;
-            if (vga.mode == M_TEXT || vga.mode == M_TANDY_TEXT) {
-                VGA_SetupHandlers();
-                VGA_StartResize();
-            }
-        }
-        else {
-            WriteOut("CGA snow currently %s\n",
-                enableCGASnow ? "enabled" : "disabled");
-        }
-    }
-};
-
-static void CGASNOW_ProgramStart(Program * * make) {
-    *make=new CGASNOW;
-}
-
 /* TODO: move to general header */
 static inline unsigned int int_log2(unsigned int val) {
     unsigned int log = 0;
@@ -527,7 +489,6 @@ void VGA_Reset(Section*) {
     Section_prop * section=static_cast<Section_prop *>(control->GetSection("dosbox"));
     bool lfb_default = false;
     string str;
-    int i;
 
     Bit32u cpu_addr_bits = MEM_get_address_bits();
 //    Bit64u cpu_max_addr = (Bit64u)1 << (Bit64u)cpu_addr_bits;
@@ -831,13 +792,7 @@ void VGA_UnsetupSEQ(void);
 #define seq(blah) vga.seq.blah
 #define crtc(blah) vga.crtc.blah
 
-void VGA_OnEnterPC98(Section *sec) {
-}
-
 void MEM_ResetPageHandler_Unmapped(Bitu phys_page, Bitu pages);
-
-void updateGDCpartitions4(bool enable) {
-}
 
 void PC98_Set24KHz(void) {
 }
@@ -846,9 +801,6 @@ void PC98_Set31KHz(void) {
 }
 
 void PC98_Set31KHz_480line(void) {
-}
-
-void VGA_OnEnterPC98_phase2(Section *sec) {
 }
 
 void VGA_Destroy(Section*) {

@@ -3786,34 +3786,6 @@ static void HandleMouseMotion(SDL_MouseMotionEvent * motion) {
     user_cursor_sw     = sdl.clip.w;
     user_cursor_sh     = sdl.clip.h;
 
-    auto xrel = static_cast<float>(motion->xrel) * sdl.mouse.xsensitivity / 100.0f;
-    auto yrel = static_cast<float>(motion->yrel) * sdl.mouse.ysensitivity / 100.0f;
-    auto x    = static_cast<float>(motion->x - sdl.clip.x) / (sdl.clip.w - 1) * sdl.mouse.xsensitivity / 100.0f;
-    auto y    = static_cast<float>(motion->y - sdl.clip.y) / (sdl.clip.h - 1) * sdl.mouse.ysensitivity / 100.0f;
-    auto emu  = sdl.mouse.locked;
-
-    const auto inside =
-        motion->x >= sdl.clip.x && motion->x < sdl.clip.x + sdl.clip.w &&
-        motion->y >= sdl.clip.y && motion->y < sdl.clip.y + sdl.clip.h;
-
-    if (mouse_notify_mode != 0)
-    {
-        /* for mouse integration driver */
-        if (!sdl.mouse.locked)
-            xrel = yrel = x = y = 0.0f;
-
-        emu               = sdl.mouse.locked;
-        const auto isdown = false;
-
-#if defined(C_SDL2)
-        if (!sdl.mouse.locked)
-#else
-        /* SDL1 has some sort of weird mouse warping bug in fullscreen mode no matter whether the mouse is captured or not (Windows, Linux/X11) */
-        if (!sdl.mouse.locked && !sdl.desktop.fullscreen)
-#endif
-            SDL_ShowCursor((isdown || inside) ? SDL_DISABLE : SDL_ENABLE);
-    }
-    else if (!user_cursor_locked)
     {
         /* Show only when DOS app is not using mouse */
 
