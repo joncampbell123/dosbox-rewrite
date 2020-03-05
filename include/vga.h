@@ -67,19 +67,6 @@ extern float uservsyncjolt;
 #define S3_CLOCK(_M,_N,_R)	((S3_CLOCK_REF * (((Bitu)_M) + 2ul)) / ((((Bitu)_N) + 2ul) * ((Bitu)1ul << ((Bitu)_R))))
 #define S3_MAX_CLOCK	150000u	/* KHz */
 
-#define S3_XGA_1024		0x00u
-#define S3_XGA_1152		0x01u
-#define S3_XGA_640		0x40u
-#define S3_XGA_800		0x80u
-#define S3_XGA_1280		0xc0u
-#define S3_XGA_1600		0x81u
-#define S3_XGA_WMASK	(S3_XGA_640|S3_XGA_800|S3_XGA_1024|S3_XGA_1152|S3_XGA_1280)
-
-#define S3_XGA_8BPP  0x00u
-#define S3_XGA_16BPP 0x10u
-#define S3_XGA_32BPP 0x30u
-#define S3_XGA_CMASK (S3_XGA_8BPP|S3_XGA_16BPP|S3_XGA_32BPP)
-
 typedef struct {
 	bool attrindex;
 } VGA_Internal;
@@ -477,7 +464,6 @@ void VGA_SetupMisc(void);
 void VGA_SetupGFX(void);
 void VGA_SetupSEQ(void);
 void VGA_SetupOther(void);
-void VGA_SetupXGA(void);
 
 /* Some Support Functions */
 void VGA_SetClock(Bitu which,Bitu target);
