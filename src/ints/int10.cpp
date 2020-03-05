@@ -821,9 +821,6 @@ void INT10_OnResetComplete() {
         BIOS_VIDEO_TABLE_LOCATION = ~0u;		// RealMake(0xf000,0xf0a4)
     }
 
-    void VESA_OnReset_Clear_Callbacks(void);
-    VESA_OnReset_Clear_Callbacks();
-
     if (call_10 != 0) {
         CALLBACK_DeAllocate(call_10);
         call_10 = 0;

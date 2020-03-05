@@ -31,9 +31,6 @@
 
 #define VESA_FAIL             0x01
 
-void VESA_OnReset_Clear_Callbacks(void) {
-}
-
 Bit8u VESA_GetSVGAInformation(Bit16u seg,Bit16u off) {
 	return VESA_FAIL;
 }
