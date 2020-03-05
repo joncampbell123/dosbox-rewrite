@@ -188,8 +188,7 @@ void write_p3c8(Bitu port,Bitu val,Bitu iolen) {
     vga.dac.pel_index=0;
     vga.dac.state=DAC_WRITE;
     vga.dac.write_index=(Bit8u)val;        /* NTS: Paradise SVGA behavior, this affects write index, but not read index */
-    if (svgaCard != SVGA_ParadisePVGA1A)
-        vga.dac.read_index = (Bit8u)(val - 1);
+    vga.dac.read_index = (Bit8u)(val - 1);
 }
 
 Bitu read_p3c8(Bitu port, Bitu iolen){

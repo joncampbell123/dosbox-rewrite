@@ -124,9 +124,6 @@ static void LogEMUMachine(void) {
         switch (svgaCard) {
             case SVGA_None:             cardName ="";                break;
             case SVGA_S3Trio:           cardName ="S3 Trio";         break;
-            case SVGA_TsengET4K:        cardName ="Tseng ET4000";    break;
-            case SVGA_TsengET3K:        cardName ="Tseng ET3000";    break;
-            case SVGA_ParadisePVGA1A:   cardName ="Paradise PVGA1A"; break;
         }
 
         DEBUG_ShowMsg("Machine: %s %s",m, cardName);

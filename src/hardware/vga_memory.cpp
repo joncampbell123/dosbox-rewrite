@@ -920,19 +920,9 @@ void VGA_SetupHandlers(void) {
 	case M_EGA:
         if (vga.config.chained) {
             if (vga.config.compatible_chain4) {
-                /* NTS: ET4000AX cards appear to have a different chain4 implementation from everyone else:
-                 *      the planar memory byte address is address >> 2 and bits A0-A1 select the plane,
-                 *      where all other clones I've tested seem to write planar memory byte (address & ~3)
-                 *      (one byte per 4 bytes) and bits A0-A1 select the plane. */
-                /* FIXME: Different chain4 implementation on ET4000 noted---is it true also for ET3000? */
-                if (svgaCard == SVGA_TsengET3K || svgaCard == SVGA_TsengET4K)
-                    newHandler = &vgaph.cvga_et4000_slow;
-                else
-                    newHandler = &vgaph.cvga_slow;
+                newHandler = &vgaph.cvga_slow;
             }
             else {
-                /* this is needed for SVGA modes (Paradise, Tseng, S3) because SVGA
-                 * modes do NOT use the chain4 configuration */
                 newHandler = &vgaph.map;
             }
         } else {
@@ -947,11 +937,6 @@ void VGA_SetupHandlers(void) {
 	case 0:
         vgapages.base = VGA_PAGE_A0;
         switch (svgaCard) {
-            case SVGA_TsengET3K:
-            case SVGA_TsengET4K:
-                vgapages.mask = 0x1ffff & vga.mem.memmask;
-                break;
-                /* NTS: Looking at the official ET4000 programming guide, it does in fact support the full 128KB */
             case SVGA_S3Trio:
             default:
                 vgapages.mask = 0xffff & vga.mem.memmask;

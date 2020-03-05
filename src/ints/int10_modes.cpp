@@ -663,13 +663,6 @@ bool INT10_SetCurMode(void) {
 		switch (machine) {
 		case VGA_ARCH_CASE:
 			switch (svgaCard) {
-			case SVGA_TsengET4K:
-			case SVGA_TsengET3K:
-				mode_changed=SetCurMode(ModeList_VGA_Tseng,bios_mode);
-				break;
-			case SVGA_ParadisePVGA1A:
-				mode_changed=SetCurMode(ModeList_VGA_Paradise,bios_mode);
-				break;
 			case SVGA_S3Trio:
 				if (bios_mode>=0x68 && CurMode->mode==(bios_mode+0x98)) break;
 			default:
@@ -900,19 +893,6 @@ bool INT10_SetVideoMode(Bit16u mode) {
 		}
 
 		switch(svgaCard) {
-		case SVGA_TsengET4K:
-		case SVGA_TsengET3K:
-			if (!SetCurMode(ModeList_VGA_Tseng,mode)){
-				LOG(LOG_INT10,LOG_ERROR)("VGA:Trying to set illegal mode %X",mode);
-				return false;
-			}
-			break;
-		case SVGA_ParadisePVGA1A:
-			if (!SetCurMode(ModeList_VGA_Paradise,mode)){
-				LOG(LOG_INT10,LOG_ERROR)("VGA:Trying to set illegal mode %X",mode);
-				return false;
-			}
-			break;
 		default:
 			if (!SetCurMode(ModeList_VGA,mode)){
 				LOG(LOG_INT10,LOG_ERROR)("VGA:Trying to set illegal mode %X",mode);
@@ -1767,18 +1747,7 @@ Bitu VideoModeMemSize(Bitu mode) {
 
 	VideoModeBlock* modelist = NULL;
 
-	switch (svgaCard) {
-	case SVGA_TsengET4K:
-	case SVGA_TsengET3K:
-		modelist = ModeList_VGA_Tseng;
-		break;
-	case SVGA_ParadisePVGA1A:
-		modelist = ModeList_VGA_Paradise;
-		break;
-	default:
-		modelist = ModeList_VGA;
-		break;
-	}
+    modelist = ModeList_VGA;
 
 	VideoModeBlock* vmodeBlock = NULL;
 	Bitu i=0;

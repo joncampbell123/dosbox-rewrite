@@ -183,11 +183,6 @@ Bitu INT10_Handler(void) {
 		case 0x1B:							/* PERFORM GRAY-SCALE SUMMING */
 			INT10_PerformGrayScaleSumming(reg_bx,reg_cx);
 			break;
-		case 0xF0: case 0xF1: case 0xF2: /* ET4000 Sierra HiColor DAC support */
-			if (svgaCard == SVGA_TsengET4K && svga.int10_extensions) {
-				svga.int10_extensions();
-				break;
-			}
 		default:
 			LOG(LOG_INT10,LOG_ERROR)("Function 10:Unhandled EGA/VGA Palette Function %2X",reg_al);
 			break;
@@ -298,7 +293,7 @@ graphics_chars:
 				LOG(LOG_INT10,LOG_ERROR)("Function 11:30 Request for font %2X",reg_bh);	
 				break;
 			}
-			if ((reg_bh<=7) || (svgaCard==SVGA_TsengET4K)) {
+			if ((reg_bh<=7)) {
 				reg_cx=real_readw(BIOSMEM_SEG,BIOSMEM_CHAR_HEIGHT);
 				reg_dl=real_readb(BIOSMEM_SEG,BIOSMEM_NB_ROWS);
 			}
@@ -402,7 +397,6 @@ graphics_chars:
 		case 0x31:							/* Palette loading on modeset */
 			{   
 				if (!IS_VGA_ARCH) break;
-				if (svgaCard==SVGA_TsengET4K) reg_al&=1;
 				if (reg_al>1) {
 					reg_al=0;		//invalid subfunction
 					break;
@@ -416,14 +410,12 @@ graphics_chars:
 		case 0x32:							/* Video addressing */
 			if (!IS_VGA_ARCH) break;
 			LOG(LOG_INT10,LOG_ERROR)("Function 12:Call %2X not handled",reg_bl);
-			if (svgaCard==SVGA_TsengET4K) reg_al&=1;
 			if (reg_al>1) reg_al=0;		//invalid subfunction
 			else reg_al=0x12;			//fake a success call
 			break;
 		case 0x33: /* SWITCH GRAY-SCALE SUMMING */
 			{   
 				if (!IS_VGA_ARCH) break;
-				if (svgaCard==SVGA_TsengET4K) reg_al&=1;
 				if (reg_al>1) {
 					reg_al=0;
 					break;
@@ -438,7 +430,6 @@ graphics_chars:
 			{   
 				// bit 0: 0=enable, 1=disable
 				if (!IS_VGA_ARCH) break;
-				if (svgaCard==SVGA_TsengET4K) reg_al&=1;
 				if (reg_al>1) {
 					reg_al=0;
 					break;
@@ -549,8 +540,7 @@ CX	640x480	800x600	  1024x768/1280x1024
 				else reg_al=0;
 				break;
 			default:
-				if (svgaCard==SVGA_TsengET4K) reg_ax=0;
-				else reg_al=0;
+				reg_al=0;
 				break;
 		}
 		break;

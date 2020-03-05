@@ -3959,15 +3959,6 @@ private:
             switch (machine) {
                 case MCH_VGA:
                     switch (svgaCard) {
-                        case SVGA_TsengET4K:
-                            card = "Tseng ET4000 SVGA";
-                            break;
-                        case SVGA_TsengET3K:
-                            card = "Tseng ET3000 SVGA";
-                            break;
-                        case SVGA_ParadisePVGA1A:
-                            card = "Paradise SVGA";
-                            break;
                         case SVGA_S3Trio:
                             card = "S3 Trio SVGA";
                             break;

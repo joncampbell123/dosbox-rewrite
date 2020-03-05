@@ -122,13 +122,6 @@ void INT10_PutPixel(Bit16u x,Bit16u y,Bit8u page,Bit8u color) {
 		real_writeb(segment,offset, old);
 	}
 	break;
-	case M_LIN4:
-		if ((machine!=MCH_VGA) || (svgaCard!=SVGA_TsengET4K) ||
-				(CurMode->swidth>800)) {
-			// the ET4000 BIOS supports text output in 800x600 SVGA (Gateway 2)
-			// putpixel warining?
-			break;
-		}
 	case M_EGA:
 		{
 			/* Set the correct bitmask for the pixel position */

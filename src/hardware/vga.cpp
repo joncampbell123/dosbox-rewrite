@@ -606,10 +606,6 @@ void VGA_Reset(Section*) {
          * 4x4 by default.
          * except for ET4000 which is 4low */
         VGA_AC_remap = AC_4x4;
-        if (IS_VGA_ARCH) {
-            if (svgaCard == SVGA_TsengET3K || svgaCard == SVGA_TsengET4K)
-                VGA_AC_remap = AC_low4;
-        }
     }
 
     vga_force_refresh_rate = -1;

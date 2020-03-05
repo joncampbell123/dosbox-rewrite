@@ -209,7 +209,7 @@ void VGA_Draw2_Recompute_CRTC_MaskAdd(void) {
 
         /* CGA/Hercules compatible interlacing, unless SVGA graphics mode.
          * Note that ET4000 and ET3000 emulation will NOT set compatible_chain4 */
-        if (vga.config.compatible_chain4 || svgaCard == SVGA_None || svgaCard == SVGA_TsengET3K || svgaCard == SVGA_TsengET4K) {
+        if (vga.config.compatible_chain4 || svgaCard == SVGA_None) {
             /* MAP13: If zero, bit 13 is taken from bit 0 of row scan counter (CGA compatible) */
             /* MAP14: If zero, bit 14 is taken from bit 1 of row scan counter (Hercules compatible) */
             if ((vga.crtc.mode_control & 3u) != 3u) {
@@ -2470,13 +2470,7 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
     case M_VGA:
         /* TODO: Various SVGA chipsets have a bit to enable/disable 256KB wrapping */
         vga.draw.linear_mask = 0x3ffffu;
-        if (svgaCard == SVGA_TsengET3K || svgaCard == SVGA_TsengET4K) {
-            if (vga.config.addr_shift == 1) /* NTS: Remember the ET4K steps by 4 pixels, one per byteplane, treats BYTE and DWORD modes the same */
-                vga.draw.address *= 2u;
-        }
-        else {
-            vga.draw.address *= (Bitu)1u << (Bitu)vga.config.addr_shift; /* NTS: Remember the bizarre 4 x 4 mode most SVGA chipsets do */
-        }
+        vga.draw.address *= (Bitu)1u << (Bitu)vga.config.addr_shift; /* NTS: Remember the bizarre 4 x 4 mode most SVGA chipsets do */
         /* fall through */
     case M_LIN8:
     case M_LIN15:
@@ -2609,19 +2603,7 @@ void VGA_CheckScanLength(void) {
     case M_LIN24:
     case M_LIN32:
         if (vga.mode == M_VGA) {
-            if (svgaCard == SVGA_TsengET3K || svgaCard == SVGA_TsengET4K) {
-                /* Observed ET4000AX behavior:
-                 *    byte mode OR dword mode scans 256-color 4-pixel groups byte by byte from
-                 *    planar RAM. word mode scans every other byte (skips by two).
-                 *    We can just scan the buffer normally as linear because of the address
-                 *    translation carried out by the ET4000 in chained mode:
-                 *
-                 *    plane = (addr & 3)   addr = (addr >> 2)
-                 *
-                 *    TODO: Validate that this is correct. */
-                vga.draw.address_add=vga.config.scan_len*((vga.config.addr_shift == 1)?16:8);
-            }
-            else {
+            {
                 /* Most (almost ALL) VGA clones render chained modes as 4 8-bit planes one DWORD apart.
                  * They all act as if writes to chained VGA memory are translated as:
                  * addr = ((addr & ~3) << 2) + (addr & 3) */
@@ -2630,7 +2612,7 @@ void VGA_CheckScanLength(void) {
         }
         else {
             /* the rest (SVGA modes) can be rendered with sanity */
-            if (svgaCard == SVGA_TsengET3K || svgaCard == SVGA_TsengET4K || svgaCard == SVGA_S3Trio) {
+            if (svgaCard == SVGA_S3Trio) {
                 // Real hardware testing (Tseng ET4000) shows that in SVGA modes the
                 // standard VGA byte/word/dword mode bits have no effect.
                 //
@@ -3109,18 +3091,7 @@ void VGA_SetupDrawing(Bitu /*val*/) {
         }
         bpp = 32;
         pix_per_char = 4;
-        if (vga.mode == M_VGA && (svgaCard == SVGA_TsengET3K || svgaCard == SVGA_TsengET4K)) {
-            /* ET4000 chipsets handle the chained mode (in my opinion) with sanity and we can scan linearly for it.
-             * Chained VGA mode maps planar byte addr = (addr >> 2) and plane = (addr & 3) */
-            if (vga_alt_new_mode) {
-                vga.draw.blocks = width;
-                VGA_DrawLine = Alt_VGA_256color_Draw_Line_Tseng_ET4000;
-            }
-            else {
-                VGA_DrawLine = VGA_Draw_Xlat32_Linear_Line;
-            }
-        }
-        else {
+        {
             /* other SVGA chipsets appear to handle chained mode by writing 4 pixels to 4 planes, and showing
              * only every 4th byte, which is why when you switch the CRTC to byte or word mode on these chipsets,
              * you see 16-pixel groups with 4 pixels from the chained display you expect followed by 12 pixels

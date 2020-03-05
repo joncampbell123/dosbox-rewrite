@@ -63,10 +63,6 @@ void write_p3c4(Bitu /*port*/,Bitu val,Bitu /*iolen*/) {
 	if (machine == MCH_VGA) {
 		if (svgaCard == SVGA_S3Trio)
 			val &= 0x3F;	// observed behavior: only the low 6 bits
-		else if (svgaCard == SVGA_TsengET4K)
-			val &= 0x07;	// observed behavior: only the low 3 bits
-		else if (svgaCard == SVGA_TsengET3K)
-			val &= 0x07;	// FIXME: reasonable guess, since the ET4000 does it too
 		else
 			val &= 0x0F;	// FIXME: reasonable guess
 
