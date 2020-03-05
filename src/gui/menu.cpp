@@ -138,8 +138,6 @@ static const char *def_menu_main[] =
 /* cpu -> core menu ("CpuCoreMenu") */
 static const char *def_menu_cpu_core[] =
 {
-    "mapper_cycauto",
-    "--",
     "mapper_normal",
     NULL
 };

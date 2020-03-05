@@ -259,19 +259,6 @@ void menu_update_core(void) {
         refresh_item(mainMenu);
 }
 
-void menu_update_autocycle(void) {
-    DOSBoxMenu::item &item = mainMenu.get_item("mapper_cycauto");
-    if (CPU_CycleAutoAdjust)
-        item.set_text("Auto cycles [max]");
-    else if (CPU_AutoDetermineMode&CPU_AUTODETERMINE_CYCLES)
-        item.set_text("Auto cycles [auto]");
-    else
-        item.set_text("Auto cycles [off]");
-
-    item.check(CPU_CycleAutoAdjust || (CPU_AutoDetermineMode&CPU_AUTODETERMINE_CYCLES));
-    item.refresh_item(mainMenu);
-}
-
 /* called to signal an NMI. */
 
 /* NTS: From the Intel 80386 programmer's reference manual:
@@ -2239,7 +2226,6 @@ void CPU_SET_CRX(Bitu cr,Bitu value) {
 						printed_cycles_auto_info = true;
 						LOG_MSG("DOSBox has switched to max cycles, because of the setting: cycles=auto.\nIf the game runs too fast, try a fixed cycles amount in DOSBox's options.");
 					}
-                    menu_update_autocycle();
 				} else {
 					GFX_SetTitle(-1,-1,-1,false);
 				}
@@ -2881,39 +2867,6 @@ void CPU_CycleDecrease(bool pressed) {
 	}
 }
 
-static void CPU_ToggleAutoCycles(bool pressed) {
-    if (!pressed)
-        return;
-
-    Section* sec=control->GetSection("cpu");
-    if (sec) {
-        std::string tmp("cycles=");
-        if (CPU_CycleAutoAdjust) {
-            std::ostringstream str;
-            str << "fixed " << CPU_CyclesSet;
-            tmp.append(str.str());
-        } else if (CPU_AutoDetermineMode&CPU_AUTODETERMINE_CYCLES) {
-            tmp.append("max");
-        } else {
-            tmp.append("auto");
-        }
-
-        sec->HandleInputline(tmp);
-    }
-}
-
-#if !defined(C_EMSCRIPTEN)
-static void CPU_ToggleFullCore(bool pressed) {
-    if (!pressed)
-	return;
-    Section* sec=control->GetSection("cpu");
-    if(sec) {
-	std::string tmp="core=full";
-	sec->HandleInputline(tmp);
-    }
-}
-#endif
-
 static void CPU_ToggleNormalCore(bool pressed) {
     if (!pressed)
 	return;
@@ -2923,30 +2876,6 @@ static void CPU_ToggleNormalCore(bool pressed) {
 	sec->HandleInputline(tmp);
     }
 }
-
-#if (C_DYNAMIC_X86) || (C_DYNREC)
-static void CPU_ToggleDynamicCore(bool pressed) {
-    if (!pressed)
-	return;
-    Section* sec=control->GetSection("cpu");
-    if(sec) {
-	std::string tmp="core=dynamic";
-	sec->HandleInputline(tmp);
-    }
-}
-#endif
-
-#if !defined(C_EMSCRIPTEN)
-static void CPU_ToggleSimpleCore(bool pressed) {
-    if (!pressed)
-	return;
-    Section* sec=control->GetSection("cpu");
-    std::string tmp="core=simple";
-    if(sec) {
-	sec->HandleInputline(tmp);
-    }
-}
-#endif
 
 void CPU_Enable_SkipAutoAdjust(void) {
 	if (CPU_CycleAutoAdjust) {
@@ -3110,10 +3039,6 @@ public:
 		MAPPER_AddHandler(CPU_CycleIncrease,MK_equals,MMODHOST,"cycleup"  ,"Inc Cycles",&item);
 		item->set_text("Increment cycles");
 
-		MAPPER_AddHandler(CPU_ToggleAutoCycles,MK_nothing,0,"cycauto","AutoCycles",&item);
-		item->set_text("Auto cycles");
-		item->set_description("Enable automatic cycle count");
-
 		MAPPER_AddHandler(CPU_ToggleNormalCore,MK_nothing,0,"normal"  ,"NormalCore", &item);
 		item->set_text("Normal core");
 
@@ -3257,8 +3182,6 @@ public:
 			}
 			CPU_CycleAutoAdjust=false;
 		}
-
-        menu_update_autocycle();
 
 		enable_fpu=section->Get_bool("fpu");
 		cpu_rep_max=section->Get_int("interruptible rep string op");

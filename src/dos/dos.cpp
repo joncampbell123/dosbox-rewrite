@@ -212,30 +212,6 @@ const Bit8u DOS_DATE_months[] = {
 	0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };
 
-static void DOS_AddDays(Bit8u days) {
-	dos.date.day += days;
-	Bit8u monthlimit = DOS_DATE_months[dos.date.month];
-
-	if(dos.date.day > monthlimit) {
-		if((dos.date.year %4 == 0) && (dos.date.month==2)) {
-			// leap year
-			if(dos.date.day > 29) {
-				dos.date.month++;
-				dos.date.day -= 29;
-			}
-		} else {
-			//not leap year
-			dos.date.month++;
-			dos.date.day -= monthlimit;
-		}
-		if(dos.date.month > 12) {
-			// year over
-			dos.date.month = 1;
-			dos.date.year++;
-		}
-	}
-}
-
 #define DATA_TRANSFERS_TAKE_CYCLES 1
 #define DOS_OVERHEAD 1
 
@@ -430,7 +406,6 @@ static Bitu DOS_21Handler(void) {
     char name1[DOSNAMEBUF+2+DOS_NAMELENGTH_ASCII];
     char name2[DOSNAMEBUF+2+DOS_NAMELENGTH_ASCII];
     
-    static Bitu time_start = 0; //For emulating temporary time changes.
     switch (reg_ah) {
         case 0x00:      /* Terminate Program */
             /* HACK for demoscene prod parties/1995/wired95/surprisecode/w95spcod.zip/WINNERS/SURP-KLF
@@ -2357,9 +2332,6 @@ void DOS_ShutdownDrives() {
 void DOS_Casemap_Free();
 
 extern Bit8u ZDRIVE_NUM;
-
-void DOS_EnableDriveMenu(char drv) {
-}
 
 void DOS_DoShutDown() {
 	if (test != NULL) {

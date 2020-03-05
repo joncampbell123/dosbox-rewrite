@@ -61,33 +61,6 @@ public:
 	virtual bool WriteToControlChannel(PhysPt bufptr,Bit16u size,Bit16u * retcode) { (void)bufptr; (void)size; (void)retcode; return false; }
 };
 
-class device_PRN : public DOS_Device {
-public:
-	device_PRN() {
-		SetName("PRN");
-	}
-	bool Read(Bit8u * data,Bit16u * size) {
-        (void)data; // UNUSED
-        (void)size; // UNUSED
-		DOS_SetError(DOSERR_ACCESS_DENIED);
-		return false;
-	}
-	bool Write(const Bit8u * data,Bit16u * size) {
-		return false;
-	}
-	bool Seek(Bit32u * pos,Bit32u type) {
-        (void)type; // UNUSED
-		*pos = 0;
-		return true;
-	}
-	Bit16u GetInformation(void) {
-		return 0x80A0;
-	}
-	bool Close() {
-		return false;
-	}
-};
-
 bool DOS_Device::Read(Bit8u * data,Bit16u * size) {
 	return Devices[devnum]->Read(data,size);
 }
@@ -241,9 +214,6 @@ void DOS_SetupDevices(void) {
 	DOS_Device * newdev2;
 	newdev2=new device_NUL();
 	DOS_AddDevice(newdev2);
-	DOS_Device * newdev3;
-	newdev3=new device_PRN();
-	DOS_AddDevice(newdev3);
 }
 
 Bitu INT29_HANDLER(void) {
