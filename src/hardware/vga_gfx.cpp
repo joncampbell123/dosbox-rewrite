@@ -174,10 +174,6 @@ static void write_p3cf(Bitu port,Bitu val,Bitu iolen) {
 		gfx(bit_mask)=(Bit8u)val;
 		vga.config.full_bit_mask=ExpandTable[val];
 
-		/* check for unusual use of the bit mask register in chained 320x200x256 mode and switch to the slow & accurate emulation */
-		if (vga.mode == M_VGA && vga.config.chained)
-			VGA_SetupHandlers();
-
 //		LOG_DEBUG("Bit mask %2X",val);
 		/*
 			0-7	Each bit if set enables writing to the corresponding bit of a byte in

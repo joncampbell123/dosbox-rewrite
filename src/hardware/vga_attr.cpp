@@ -102,7 +102,7 @@ void VGA_ATTR_SetPalette(Bit8u index, Bit8u val) {
         //
         // - always replace bits 7-6 with bits 3-2 of color select.
         else {
-            if (!(vga.mode == M_VGA || vga.mode == M_LIN8)) {
+            {
                 // replace bits 5-4 if P54S is enabled
                 if (vga.attr.mode_control & 0x80)
                     val = (val&0xf) | ((vga.attr.color_select & 0x3) << 4);
@@ -195,7 +195,7 @@ void write_p3c0(Bitu /*port*/,Bitu val,Bitu iolen) {
 			
 			if (difference & 0x41)
 				VGA_DetermineMode();
-            if ((difference & 0x40) && (vga.mode == M_VGA)) // 8BIT changes in 256-color mode must be handled
+            if (difference & 0x40) // 8BIT changes in 256-color mode must be handled
                 VGA_StartResize(50);
 
 			if (difference & 0x04) {
@@ -263,11 +263,6 @@ void write_p3c0(Bitu /*port*/,Bitu val,Bitu iolen) {
 				else // 8-dot characters
 					vga.config.pel_panning=(Bit8u)val;
 				break;
-			case M_VGA:
-			case M_LIN8:
-				vga.config.pel_panning=(val & 0x7)/2;
-				break;
-			case M_LIN16:
 			default:
 				vga.config.pel_panning=(val & 0x7);
 			}

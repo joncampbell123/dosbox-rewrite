@@ -359,16 +359,8 @@ void INT10_WriteChar(Bit16u chr,Bit8u attr,Bit8u page,Bit16u count,bool showattr
         showattr=true; //Use attr in graphics mode always
         switch (machine) {
             case EGAVGA_ARCH_CASE:
-                switch (CurMode->type) {
-                case M_VGA:
-                case M_LIN8:
-                    pospage=0;
-                    break;
-                default:
-                    page%=CurMode->ptotal;
-                    pospage=page;
-                    break;
-                }
+                page%=CurMode->ptotal;
+                pospage=page;
                 break;
             default:
                 break;
