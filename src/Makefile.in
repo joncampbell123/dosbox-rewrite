@@ -102,10 +102,9 @@ am_dosbox_x_OBJECTS = dosbox.$(OBJEXT) $(am__objects_1)
 dosbox_x_OBJECTS = $(am_dosbox_x_OBJECTS)
 dosbox_x_DEPENDENCIES = debug/libdebug.a dos/libdos.a shell/libshell.a \
 	builtin/libbuiltin.a ints/libints.a misc/libmisc.a \
-	libs/porttalk/libporttalk.a gui/libgui.a \
-	hardware/libhardware.a cpu/libcpu.a fpu/libfpu.a gui/libgui.a \
-	output/liboutput.a libs/zmbv/libzmbv.a $(am__append_1) \
-	$(am__append_2)
+	gui/libgui.a hardware/libhardware.a cpu/libcpu.a fpu/libfpu.a \
+	gui/libgui.a output/liboutput.a libs/zmbv/libzmbv.a \
+	$(am__append_1) $(am__append_2)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -359,10 +358,9 @@ res_DATA = \
 dosbox_x_SOURCES = dosbox.cpp $(ico_stuff)
 dosbox_x_LDADD = debug/libdebug.a dos/libdos.a shell/libshell.a \
 	builtin/libbuiltin.a ints/libints.a misc/libmisc.a \
-	libs/porttalk/libporttalk.a gui/libgui.a \
-	hardware/libhardware.a cpu/libcpu.a fpu/libfpu.a gui/libgui.a \
-	output/liboutput.a libs/zmbv/libzmbv.a $(am__append_1) \
-	$(am__append_2)
+	gui/libgui.a hardware/libhardware.a cpu/libcpu.a fpu/libfpu.a \
+	gui/libgui.a output/liboutput.a libs/zmbv/libzmbv.a \
+	$(am__append_1) $(am__append_2)
 EXTRA_DIST = winres.rc dosbox.ico
 all: all-recursive
 

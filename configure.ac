@@ -865,7 +865,6 @@ src/aviwriter/Makefile
 src/ints/Makefile
 src/libs/Makefile
 src/libs/zmbv/Makefile
-src/libs/porttalk/Makefile
 src/output/Makefile
 src/output/direct3d/Makefile
 src/builtin/Makefile
