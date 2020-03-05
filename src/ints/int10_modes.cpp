@@ -600,23 +600,6 @@ bool INT10_SetVideoMode(Bit16u mode) {
 	IO_Write(crtc_base,0x11);
 	IO_Write(crtc_base+1u,IO_Read(crtc_base+1u)|0x80);
 
-	if (svgaCard == SVGA_S3Trio) {
-		/* Setup the correct clock */
-		if (CurMode->mode>=0x100) {
-			misc_output|=0xef;		//Select clock 3 
-			Bitu clock=CurMode->vtotal*8*CurMode->htotal*70;
-			VGA_SetClock(3,clock/1000);
-		}
-		Bit8u misc_control_2;
-		/* Setup Pixel format */
-		switch (CurMode->type) {
-		default:
-			misc_control_2=0x00;
-			break;
-		}
-		IO_WriteB(crtc_base,0x67);IO_WriteB(crtc_base+1u,misc_control_2);
-	}
-
 	/* Write Misc Output */
 	IO_Write(0x3c2,misc_output);
 	/* Program Graphics controller */

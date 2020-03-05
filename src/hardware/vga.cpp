@@ -306,44 +306,6 @@ void VGA_Screenstate(bool enabled) {
     }*/
 }
 
-void VGA_SetClock(Bitu which,Bitu target) {
-    if (svga.set_clock) {
-        svga.set_clock(which, target);
-        return;
-    }
-    struct{
-        Bitu n,m;
-        Bits err;
-    } best;
-    best.err=(Bits)target;
-    best.m=1u;
-    best.n=1u;
-    Bitu r;
-
-    for (r = 0; r <= 3; r++) {
-        Bitu f_vco = target * ((Bitu)1u << (Bitu)r);
-        if (MIN_VCO <= f_vco && f_vco < MAX_VCO) break;
-    }
-    for (Bitu n=1;n<=31;n++) {
-        Bits m=(Bits)((target * (n + 2u) * ((Bitu)1u << (Bitu)r) + (S3_CLOCK_REF / 2u)) / S3_CLOCK_REF) - 2;
-        if (0 <= m && m <= 127) {
-            Bitu temp_target = (Bitu)S3_CLOCK(m,n,r);
-            Bits err = (Bits)(target - temp_target);
-            if (err < 0) err = -err;
-            if (err < best.err) {
-                best.err = err;
-                best.m = (Bitu)m;
-                best.n = (Bitu)n;
-            }
-        }
-    }
-    /* Program the s3 clock chip */
-    vga.s3.clk[which].m=best.m;
-    vga.s3.clk[which].r=r;
-    vga.s3.clk[which].n=best.n;
-    VGA_StartResize();
-}
-
 void VGA_SetCGA2Table(Bit8u val0,Bit8u val1) {
     const Bit8u total[2] = {val0,val1};
     for (Bitu i=0;i<16u;i++) {
@@ -646,8 +608,6 @@ void VGA_Reset(Section*) {
         VGA_SetupSEQ();
         VGA_SetupAttr();
         VGA_SetupOther();
-        VGA_SetClock(0,CLK_25);
-        VGA_SetClock(1,CLK_28);
         /* Generate tables */
         VGA_SetCGA2Table(0,1);
         VGA_SetCGA4Table(0,1,2,3);

@@ -61,10 +61,6 @@ extern float uservsyncjolt;
 #define MIN_VCO	180000u
 #define MAX_VCO 360000u
 
-#define S3_CLOCK_REF	14318u	/* KHz */
-#define S3_CLOCK(_M,_N,_R)	((S3_CLOCK_REF * (((Bitu)_M) + 2ul)) / ((((Bitu)_N) + 2ul) * ((Bitu)1ul << ((Bitu)_R))))
-#define S3_MAX_CLOCK	150000u	/* KHz */
-
 typedef struct {
 	bool attrindex;
 } VGA_Internal;
