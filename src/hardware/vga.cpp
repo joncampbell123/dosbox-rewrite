@@ -649,67 +649,6 @@ void PC98_Set31KHz_480line(void) {
 void VGA_Destroy(Section*) {
 }
 
-void VGA_LoadState(Section *sec) {
-    (void)sec;//UNUSED
-
-    {
-        {
-            ZIPFileEntry *ent = savestate_zip.get_entry("vga.ac.palette.bin");
-            if (ent != NULL) {
-                ent->rewind();
-                ent->read(vga.attr.palette, 0x10);
-            }
-        }
-
-        {
-            unsigned char tmp[256 * 3];
-
-            ZIPFileEntry *ent = savestate_zip.get_entry("vga.dac.palette.bin");
-            if (ent != NULL) {
-                ent->rewind();
-                ent->read(tmp, 256 * 3);
-                for (unsigned int c=0;c < 256;c++) {
-                    vga.dac.rgb[c].red =   tmp[c*3 + 0];
-                    vga.dac.rgb[c].green = tmp[c*3 + 1];
-                    vga.dac.rgb[c].blue =  tmp[c*3 + 2];
-                }
-            }
-        }
-
-        for (unsigned int i=0;i < 0x10;i++)
-            VGA_ATTR_SetPalette(i,vga.attr.palette[i]);
-
-        VGA_DAC_UpdateColorPalette();
-    }
-}
-
-void VGA_SaveState(Section *sec) {
-    (void)sec;//UNUSED
-
-    {
-        {
-            ZIPFileEntry *ent = savestate_zip.new_entry("vga.ac.palette.bin");
-            if (ent != NULL) {
-                ent->write(vga.attr.palette, 0x10);
-            }
-        }
-
-        {
-
-            ZIPFileEntry *ent = savestate_zip.new_entry("vga.dac.palette.bin");
-            if (ent != NULL) {
-                unsigned char tmp[256 * 3];
-                for (unsigned int c=0;c < 256;c++) {
-                    tmp[c*3 + 0] = vga.dac.rgb[c].red;
-                    tmp[c*3 + 1] = vga.dac.rgb[c].green;
-                    tmp[c*3 + 2] = vga.dac.rgb[c].blue;
-                }
-                ent->write(tmp, 256 * 3);
-            }
-        }
-    }
-}
-
 bool debugpollvga_pf_menu_callback(DOSBoxMenu * const xmenu, DOSBoxMenu::item * const menuitem) {
     (void)xmenu;//UNUSED
     (void)menuitem;//UNUSED
@@ -796,9 +735,6 @@ void VGA_Init() {
 
     AddExitFunction(AddExitFunctionFuncPair(VGA_Destroy));
     AddVMEventFunction(VM_EVENT_RESET,AddVMEventFunctionFuncPair(VGA_Reset));
-
-    AddVMEventFunction(VM_EVENT_LOAD_STATE,AddVMEventFunctionFuncPair(VGA_LoadState));
-    AddVMEventFunction(VM_EVENT_SAVE_STATE,AddVMEventFunctionFuncPair(VGA_SaveState));
 }
 
 void VGA_CaptureStartNextFrame(void) {
