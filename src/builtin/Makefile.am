@@ -19,7 +19,6 @@ libbuiltin_a_SOURCES = \
 	fcbs_com.cpp \
 	xcopy_exe.cpp \
 	append_exe.cpp \
-	edit_com.cpp \
 	device_com.cpp \
 	buffers_com.cpp \
 	copy_exe.cpp \

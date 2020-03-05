@@ -106,7 +106,7 @@ am_libbuiltin_a_OBJECTS = dsxmenu_exe_pc98.$(OBJEXT) \
 	debug_exe.$(OBJEXT) tree_exe.$(OBJEXT) move_exe.$(OBJEXT) \
 	mem_com.$(OBJEXT) find_exe.$(OBJEXT) dosidle_exe.$(OBJEXT) \
 	lastdriv_com.$(OBJEXT) fcbs_com.$(OBJEXT) xcopy_exe.$(OBJEXT) \
-	append_exe.$(OBJEXT) edit_com.$(OBJEXT) device_com.$(OBJEXT) \
+	append_exe.$(OBJEXT) device_com.$(OBJEXT) \
 	buffers_com.$(OBJEXT) copy_exe.$(OBJEXT) 28_com.$(OBJEXT) \
 	50_com.$(OBJEXT) 25_com.$(OBJEXT)
 libbuiltin_a_OBJECTS = $(am_libbuiltin_a_OBJECTS)
@@ -301,7 +301,6 @@ libbuiltin_a_SOURCES = \
 	fcbs_com.cpp \
 	xcopy_exe.cpp \
 	append_exe.cpp \
-	edit_com.cpp \
 	device_com.cpp \
 	buffers_com.cpp \
 	copy_exe.cpp \
@@ -372,7 +371,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dosidle_exe.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dsxmenu_exe_pc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dsxmenu_exe_pc98.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/edit_com.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fcbs_com.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/find_exe.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hexmem16_exe.Po@am__quote@
