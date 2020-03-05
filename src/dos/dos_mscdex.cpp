@@ -822,6 +822,8 @@ Bit32u CMscdex::GetDeviceStatus(Bit8u subUnit) {
 }
 
 bool CMscdex::GetMediaStatus(Bit8u subUnit, Bit8u& status) {
+    (void)subUnit;
+    (void)status;
 	return false;
 }
 
