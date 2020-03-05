@@ -275,7 +275,6 @@ void VGA_StartResize(Bitu delay /*=50*/) {
         if (!enable_vga_resize_delay && delay > 1) delay = 1;
 
         vga.draw.resizing=true;
-        if (vga.mode==M_ERROR) delay = 5;
         /* Start a resize after delay (default 50 ms) */
         if (delay==0) VGA_SetupDrawing(0);
         else PIC_AddEvent(VGA_SetupDrawing,(float)delay);
@@ -608,7 +607,7 @@ void VGA_Reset(Section*) {
         LOG(LOG_VGA,LOG_NORMAL)("VGA forced refresh rate active = %.3f",vga_force_refresh_rate);
 
     vga.draw.resizing=false;
-    vga.mode=M_ERROR;           //For first init
+    vga.mode=M_TEXT;
 
     vga_8bit_dac = false;
     enable_vga_8bit_dac = section->Get_bool("enable 8-bit dac");

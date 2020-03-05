@@ -158,20 +158,6 @@ void SVGA_S3_WriteCRTC(Bitu reg,Bitu val,Bitu iolen) {
         break;
     case 0x50:  // Extended System Control 1
         vga.s3.reg_50 = (Bit8u)val;
-        switch (val & S3_XGA_CMASK) {
-            case S3_XGA_32BPP: vga.s3.xga_color_mode = M_LIN32; break;
-            case S3_XGA_16BPP: vga.s3.xga_color_mode = M_LIN16; break;
-            case S3_XGA_8BPP: vga.s3.xga_color_mode = M_LIN8; break;
-        }
-        switch (val & S3_XGA_WMASK) {
-            case S3_XGA_1024: vga.s3.xga_screen_width = 1024; break;
-            case S3_XGA_1152: vga.s3.xga_screen_width = 1152; break;
-            case S3_XGA_640:  vga.s3.xga_screen_width = 640; break;
-            case S3_XGA_800:  vga.s3.xga_screen_width = 800; break;
-            case S3_XGA_1280: vga.s3.xga_screen_width = 1280; break;
-            case S3_XGA_1600: vga.s3.xga_screen_width = 1600; break;
-            default:  vga.s3.xga_screen_width = 1024; break;
-        }
         break;
     case 0x51:  /* Extended System Control 2 */
         vga.s3.reg_51= (Bit8u)val & 0xc0;       //Only store bits 6,7
