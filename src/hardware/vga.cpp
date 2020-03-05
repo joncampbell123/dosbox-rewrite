@@ -508,8 +508,6 @@ static inline unsigned int int_log2(unsigned int val) {
     return log;
 }
 
-extern int hack_lfb_yadjust;
-
 void VGA_VsyncUpdateMode(VGA_Vsync vsyncmode);
 
 VGA_Vsync VGA_Vsync_Decode(const char *vsyncmodestr) {
@@ -644,7 +642,6 @@ void VGA_Reset(Section*) {
     non_cga_ignore_oddeven = section->Get_bool("ignore odd-even mode in non-cga modes");
     enable_vretrace_poll_debugging_marker = section->Get_bool("vertical retrace poll debug line");
     vga_double_buffered_line_compare = section->Get_bool("double-buffered line compare");
-    hack_lfb_yadjust = section->Get_int("vesa lfb base scanline adjust");
     allow_vesa_lowres_modes = section->Get_bool("allow low resolution vesa modes");
     vesa12_modes_32bpp = section->Get_bool("vesa vbe 1.2 modes are 32bpp");
     allow_vesa_4bpp_packed = section->Get_bool("allow 4bpp packed vesa modes");
