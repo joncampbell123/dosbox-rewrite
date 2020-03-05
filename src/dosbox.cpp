@@ -701,14 +701,6 @@ void Init_VGABIOS() {
     Section_prop *section = static_cast<Section_prop *>(control->GetSection("dosbox"));
     assert(section != NULL);
 
-    if (IS_PC98_ARCH) {
-        // There IS no VGA BIOS, this is PC-98 mode!
-        VGA_BIOS_SEG = 0xC000;
-        VGA_BIOS_SEG_END = 0xC000; // Important: DOS kernel uses this to determine where to place the private area!
-        VGA_BIOS_Size = 0;
-        return;
-    }
-
     // log
     LOG(LOG_MISC,LOG_DEBUG)("Init_VGABIOS: Initializing VGA BIOS and parsing it's settings");
 
@@ -827,21 +819,14 @@ void DOSBOX_RealInit() {
     // FIXME: This re-uses the existing ISA bus delay code for C-BUS in PC-98 mode
     std::string isabclk;
 
-    if (IS_PC98_ARCH)
-        isabclk = section->Get_string("cbus bus clock");
-    else
-        isabclk = section->Get_string("isa bus clock");
+    isabclk = section->Get_string("isa bus clock");
 
     if (isabclk == "std10")
         clockdom_ISA_BCLK.set_frequency(PIT_TICK_RATE_PC98_10MHZ * 4ul,1);          /* 10Mhz (PC-98) */
     else if (isabclk == "std8.3")
         clockdom_ISA_BCLK.set_frequency(25000000,3);    /* 25MHz / 3 = 8.333MHz, early 386 systems did this, became an industry standard "norm" afterwards */
-    else if (isabclk == "std8") {
-        if (IS_PC98_ARCH)
-            clockdom_ISA_BCLK.set_frequency(PIT_TICK_RATE_PC98_8MHZ * 4ul,1);       /* 8Mhz (PC-98) */
-        else
-            clockdom_ISA_BCLK.set_frequency(8000000,1);                             /* 8Mhz (IBM PC) */
-    }
+    else if (isabclk == "std8")
+        clockdom_ISA_BCLK.set_frequency(8000000,1);                             /* 8Mhz (IBM PC) */
     else if (isabclk == "std6")
         clockdom_ISA_BCLK.set_frequency(6000000,1);     /* 6MHz */
     else if (isabclk == "std5")
@@ -870,7 +855,7 @@ void DOSBOX_RealInit() {
         parse_busclk_setting_str(&clockdom_PCI_BCLK,pcibclk.c_str());
 
     LOG_MSG("%s BCLK: %.3fHz (%llu/%llu)",
-        IS_PC98_ARCH ? "C-BUS" : "ISA",
+        "ISA",
         (double)clockdom_ISA_BCLK.freq / clockdom_ISA_BCLK.freq_div,
         (unsigned long long)clockdom_ISA_BCLK.freq,
         (unsigned long long)clockdom_ISA_BCLK.freq_div);

@@ -496,10 +496,7 @@ void DOS_Drive_Cache::CreateShortName(CFileInfo* curDir, CFileInfo* info) {
 
     // Remove Spaces
     strcpy(tmpName,info->orgname);
-    if (IS_PC98_ARCH)
-        shiftjis_upcase(tmpName);
-    else
-        upcase(tmpName);
+    upcase(tmpName);
 
     createShort = RemoveSpaces(tmpName);
 

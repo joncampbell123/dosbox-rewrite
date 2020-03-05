@@ -3247,10 +3247,10 @@ static Bitu Default_IRQ_Handler_Cooperative_Slave_Pic(void) {
      *  mov al,20h      ;Send EOI to MASTER
      *  out 0000h,al
      */
-    IO_WriteB(IS_PC98_ARCH ? 0x08 : 0xA0,0x20); // send EOI to slave
-    IO_WriteB(IS_PC98_ARCH ? 0x08 : 0xA0,0x0B); // ISR read mode set
-    if (IO_ReadB(IS_PC98_ARCH ? 0x08 : 0xA0) == 0) // if slave pic in service..
-        IO_WriteB(IS_PC98_ARCH ? 0x00 : 0x20,0x20); // then EOI the master
+    IO_WriteB(0xA0,0x20); // send EOI to slave
+    IO_WriteB(0xA0,0x0B); // ISR read mode set
+    if (IO_ReadB(0xA0) == 0) // if slave pic in service..
+        IO_WriteB(0x20,0x20); // then EOI the master
 
     return CBRET_NONE;
 }
@@ -3277,7 +3277,7 @@ private:
             int val = section->Get_int("reboot delay");
 
             if (val < 0)
-                val = IS_PC98_ARCH ? 1000 : 500;
+                val = 500;
 
             reset_post_delay = (unsigned int)val;
         }
@@ -3293,10 +3293,7 @@ private:
 
         if (bios_post_counter != 0) {
             /* turn off the PC speaker if the guest left it on at reset */
-            if (IS_PC98_ARCH) {
-                IO_Write(0x37,0x07);
-            }
-            else {
+            {
                 IO_Write(0x61,IO_Read(0x61) & (~3u));
             }
         }
@@ -3613,13 +3610,13 @@ private:
 
                 /* NTS: Ports 28h-2Bh conflict with extended DMA control registers in PC-98 mode.
                  *      TODO: Move again, if DB28h-DB2Bh are taken by something standard on PC-98. */
-                obj->Install(IS_PC98_ARCH ? 0xDB28 : 0x28,
+                obj->Install(0x28,
                     IOMASK_Combine(IOMASK_FULL,IOMASK_Range(4)),dosbox_integration_cb_port_r,dosbox_integration_cb_port_w);
                 IO_PutCallout(obj);
             }
 
             /* DOSBox integration device */
-            if (!IS_PC98_ARCH && isapnpigdevice == NULL && enable_integration_device_pnp) {
+            if (isapnpigdevice == NULL && enable_integration_device_pnp) {
                 isapnpigdevice = new ISAPnPIntegrationDevice;
                 ISA_PNP_devreg(isapnpigdevice);
             }
@@ -3627,7 +3624,7 @@ private:
 
         // ISA Plug & Play BIOS entrypoint
         // NTS: Apparently, Windows 95, 98, and ME will re-enumerate and re-install PnP devices if our entry point changes it's address.
-        if (!IS_PC98_ARCH && ISAPNPBIOS) {
+        if (ISAPNPBIOS) {
             Bitu base;
             unsigned int i;
             unsigned char c,tmp[256];
@@ -4179,9 +4176,6 @@ public:
                     unhandled_irq_method = UNHANDLED_IRQ_SIMPLE;
                 else if (s == "cooperative_2nd")
                     unhandled_irq_method = UNHANDLED_IRQ_COOPERATIVE_2ND;
-                // pick default
-                else if (IS_PC98_ARCH)
-                    unhandled_irq_method = UNHANDLED_IRQ_COOPERATIVE_2ND;
                 else
                     unhandled_irq_method = UNHANDLED_IRQ_SIMPLE;
             }
@@ -4551,11 +4545,6 @@ void BIOS_OnResetComplete(Section *x) {
     (void)x;//UNUSED
     INT10_OnResetComplete();
 
-    if (IS_PC98_ARCH) {
-        void PC98_BIOS_Bank_Switch_Reset(void);
-        PC98_BIOS_Bank_Switch_Reset();
-    }
-
     if (biosConfigSeg != 0u) {
         ROMBIOS_FreeMemory((Bitu)(biosConfigSeg << 4u)); /* remember it was alloc'd paragraph aligned, then saved >> 4 */
         biosConfigSeg = 0u;
@@ -4609,7 +4598,7 @@ void write_ID_version_string() {
     str_ver_at = 0xFE061;
     str_id_len = strlen(bios_type_string)+1;
     str_ver_len = strlen(bios_version_string)+1;
-    if (!IS_PC98_ARCH) {
+    {
         /* need to mark these strings off-limits so dynamic allocation does not overwrite them */
         ROMBIOS_GetMemory((Bitu)str_id_len+1,"BIOS ID string",1,str_id_at);
         ROMBIOS_GetMemory((Bitu)str_ver_len+1,"BIOS version string",1,str_ver_at);
@@ -4636,10 +4625,7 @@ void ROMBIOS_Init() {
     oi = (oi + 3u) & ~3u; /* round to 4KB page */
     if (oi > 128u) oi = 128u;
     if (oi == 0u) {
-        if (IS_PC98_ARCH)
-            oi = 96u; // BIOS standard range is E8000-FFFFF
-        else
-            oi = 64u;
+        oi = 64u;
     }
     if (oi < 8) oi = 8; /* because of some of DOSBox's fixed ROM structures we can only go down to 8KB */
     rombios_minimum_size = (oi << 10); /* convert to minimum, using size coming downward from 1MB */
@@ -4648,10 +4634,7 @@ void ROMBIOS_Init() {
     oi = (oi + 3u) & ~3u; /* round to 4KB page */
     if (oi > 128u) oi = 128u;
     if (oi == 0u) {
-        if (IS_PC98_ARCH)
-            oi = 96u;
-        else
-            oi = 64u;
+        oi = 64u;
     }
     if (oi < 8u) oi = 8u; /* because of some of DOSBox's fixed ROM structures we can only go down to 8KB */
     oi <<= 10u;
@@ -4660,9 +4643,6 @@ void ROMBIOS_Init() {
 
     LOG(LOG_BIOS,LOG_DEBUG)("ROM BIOS range: 0x%05X-0xFFFFF",(int)rombios_minimum_location);
     LOG(LOG_BIOS,LOG_DEBUG)("ROM BIOS range according to minimum size: 0x%05X-0xFFFFF",(int)(0x100000 - rombios_minimum_size));
-
-    if (IS_PC98_ARCH && rombios_minimum_location > 0xE8000)
-        LOG(LOG_BIOS,LOG_DEBUG)("Caution: Minimum ROM base higher than E8000 will prevent use of actual PC-98 BIOS image or N88 BASIC");
 
     if (!MEM_map_ROM_physmem(rombios_minimum_location,0xFFFFF)) E_Exit("Unable to map ROM region as ROM");
 
@@ -4700,7 +4680,7 @@ void ROMBIOS_Init() {
     write_ID_version_string();
  
     /* some structures when enabled are fixed no matter what */
-    if (rom_bios_8x8_cga_font && !IS_PC98_ARCH) {
+    if (rom_bios_8x8_cga_font) {
         /* line 139, int10_memory.cpp: the 8x8 font at 0xF000:FA6E, first 128 chars.
          * allocate this NOW before other things get in the way */
         if (ROMBIOS_GetMemory(128*8,"BIOS 8x8 font (first 128 chars)",1,0xFFA6E) == 0) {

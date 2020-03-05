@@ -685,7 +685,6 @@ bool fatDrive::getDirClustNum(const char *dir, Bit32u *clustNum, bool parDir) {
 
 Bit8u fatDrive::readSector(Bit32u sectnum, void * data) {
 	if (absolute) return Read_AbsoluteSector(sectnum, data);
-    assert(!IS_PC98_ARCH);
 	Bit32u cylindersize = (unsigned int)bootbuffer.headcount * (unsigned int)bootbuffer.sectorspertrack;
 	Bit32u cylinder = sectnum / cylindersize;
 	sectnum %= cylindersize;
@@ -696,7 +695,6 @@ Bit8u fatDrive::readSector(Bit32u sectnum, void * data) {
 
 Bit8u fatDrive::writeSector(Bit32u sectnum, void * data) {
 	if (absolute) return Write_AbsoluteSector(sectnum, data);
-    assert(!IS_PC98_ARCH);
 	Bit32u cylindersize = (unsigned int)bootbuffer.headcount * (unsigned int)bootbuffer.sectorspertrack;
 	Bit32u cylinder = sectnum / cylindersize;
 	sectnum %= cylindersize;
@@ -1214,15 +1212,12 @@ void fatDrive::fatDriveInit(const char *sysFilename, Bit32u bytesector, Bit32u c
         bootbuffer.headcount,
         bootbuffer.bytespersector);
 
-    /* NTS: Some HDI images of PC-98 games do in fact have headcount == 0. Some like "Amaranth 5" have sectorspertrack == 0 too! */
-    if (!IS_PC98_ARCH) {
-        /* a clue that we're not really looking at FAT is invalid or weird values in the boot sector */
-        if (bootbuffer.sectorspertrack == 0 || (bootbuffer.sectorspertrack > ((filesize <= 3000) ? 40 : 255)) ||
+    /* a clue that we're not really looking at FAT is invalid or weird values in the boot sector */
+    if (bootbuffer.sectorspertrack == 0 || (bootbuffer.sectorspertrack > ((filesize <= 3000) ? 40 : 255)) ||
             (bootbuffer.headcount > ((filesize <= 3000) ? 64 : 255))) {
-            LOG_MSG("Rejecting image, boot sector has weird values not consistent with FAT filesystem");
-            created_successfully = false;
-            return;
-        }
+        LOG_MSG("Rejecting image, boot sector has weird values not consistent with FAT filesystem");
+        created_successfully = false;
+        return;
     }
 
     /* work at this point in logical sectors */
@@ -1252,10 +1247,10 @@ void fatDrive::fatDriveInit(const char *sysFilename, Bit32u bytesector, Bit32u c
 	if ((bootbuffer.sectorspercluster == 0) ||
 		(bootbuffer.rootdirentries == 0) ||
 		(bootbuffer.fatcopies == 0) ||
-		(bootbuffer.headcount == 0 && !IS_PC98_ARCH) ||
-		(bootbuffer.headcount > headscyl && !IS_PC98_ARCH) ||
-		(bootbuffer.sectorspertrack == 0 && !IS_PC98_ARCH) ||
-		(bootbuffer.sectorspertrack > cylsector && !IS_PC98_ARCH)) {
+		(bootbuffer.headcount == 0) ||
+		(bootbuffer.headcount > headscyl) ||
+		(bootbuffer.sectorspertrack == 0) ||
+		(bootbuffer.sectorspertrack > cylsector)) {
 		LOG_MSG("Sanity checks failed");
 		created_successfully = false;
 		return;
@@ -1294,7 +1289,7 @@ void fatDrive::fatDriveInit(const char *sysFilename, Bit32u bytesector, Bit32u c
     }
 
 	/* Filesystem must be contiguous to use absolute sectors, otherwise CHS will be used */
-	absolute = IS_PC98_ARCH || ((bootbuffer.headcount == headscyl) && (bootbuffer.sectorspertrack == cylsector));
+	absolute = ((bootbuffer.headcount == headscyl) && (bootbuffer.sectorspertrack == cylsector));
 
 	/* Determine FAT format, 12, 16 or 32 */
 

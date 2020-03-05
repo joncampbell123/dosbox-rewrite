@@ -623,7 +623,7 @@ bool keyboard_layout::map_key(Bitu key, Bit16u layouted_key, bool is_command, bo
 }
 
 Bit16u keyboard_layout::extract_codepage(const char* keyboard_file_name) {
-	if (!strcmp(keyboard_file_name,"none")) return (IS_PC98_ARCH ? 932 : 437);
+	if (!strcmp(keyboard_file_name,"none")) return 437;
 
 	Bit32u read_buf_size;
 	static Bit8u read_buf[65535];
@@ -667,7 +667,7 @@ Bit16u keyboard_layout::extract_codepage(const char* keyboard_file_name) {
 		} else {
 			start_pos=0;
 			LOG(LOG_BIOS,LOG_ERROR)("Keyboard layout file %s not found",keyboard_file_name);
-			return (IS_PC98_ARCH ? 932 : 437);
+			return 437;
 		}
 		if (tempfile) {
 			fseek(tempfile, long(start_pos+2), SEEK_SET);
@@ -680,7 +680,7 @@ Bit16u keyboard_layout::extract_codepage(const char* keyboard_file_name) {
 		Bit32u dr=(Bit32u)fread(read_buf, sizeof(Bit8u), 4, tempfile);
 		if ((dr<4) || (read_buf[0]!=0x4b) || (read_buf[1]!=0x4c) || (read_buf[2]!=0x46)) {
 			LOG(LOG_BIOS,LOG_ERROR)("Invalid keyboard layout file %s",keyboard_file_name);
-			return (IS_PC98_ARCH ? 932 : 437);
+			return 437;
 		}
 
 		fseek(tempfile, 0, SEEK_SET);
@@ -704,7 +704,7 @@ Bit16u keyboard_layout::extract_codepage(const char* keyboard_file_name) {
 
 		if (submap_cp!=0) return submap_cp;
 	}
-	return (IS_PC98_ARCH ? 932 : 437);
+	return 437;
 }
 
 Bitu keyboard_layout::read_codepage_file(const char* codepage_file_name, Bit32s codepage_id) {
@@ -1134,7 +1134,7 @@ class DOS_KeyboardLayout: public Module_base {
 public:
 	DOS_KeyboardLayout(Section* configuration):Module_base(configuration){
 		Section_prop * section=static_cast<Section_prop *>(configuration);
-		dos.loaded_codepage=(IS_PC98_ARCH ? 932 : 437);	// US codepage already initialized
+		dos.loaded_codepage=437;	// US codepage already initialized
 		loaded_layout=new keyboard_layout();
 
 		const char * layoutname=section->Get_string("keyboardlayout");
@@ -1174,7 +1174,7 @@ public:
 					break;
 				case 1031:
 					layoutname = "gr";
-					wants_dos_codepage = (IS_PC98_ARCH ? 932 : 437);
+					wants_dos_codepage = 437;
 					break;
 				case 1033:
 					// US
@@ -1184,15 +1184,15 @@ public:
 					break;
 				case 1034:
 					layoutname = "sp";
-					wants_dos_codepage = (IS_PC98_ARCH ? 932 : 437);
+					wants_dos_codepage = 437;
 					break;
 				case 1035:
 					layoutname = "su";
-					wants_dos_codepage = (IS_PC98_ARCH ? 932 : 437);
+					wants_dos_codepage = 437;
 					break;
 				case 1036:
 					layoutname = "fr";
-					wants_dos_codepage = (IS_PC98_ARCH ? 932 : 437);
+					wants_dos_codepage = 437;
 					break;
 				case 1038:
 					if (cur_kb_subID==1) layoutname = "hu";
@@ -1203,11 +1203,11 @@ public:
 					break;
 				case 1040:
 					layoutname = "it";
-					wants_dos_codepage = (IS_PC98_ARCH ? 932 : 437);
+					wants_dos_codepage = 437;
 					break;
 				case 1043:
 					layoutname = "nl";
-					wants_dos_codepage = (IS_PC98_ARCH ? 932 : 437);
+					wants_dos_codepage = 437;
 					break;
 				case 1044:
 					layoutname = "no";
@@ -1217,14 +1217,14 @@ public:
 					break;
 				case 1046:
 					layoutname = "br";
-					wants_dos_codepage = (IS_PC98_ARCH ? 932 : 437);
+					wants_dos_codepage = 437;
 					break;
 /*				case 1048:
 					layoutname = "ro446";
 					break; */
 				case 1049:
 					layoutname = "ru";
-					wants_dos_codepage = (IS_PC98_ARCH ? 932 : 437);
+					wants_dos_codepage = 437;
 					break;
 				case 1050:
 					layoutname = "hr";
@@ -1237,14 +1237,14 @@ public:
 					break; */
 				case 1053:
 					layoutname = "sv";
-					wants_dos_codepage = (IS_PC98_ARCH ? 932 : 437);
+					wants_dos_codepage = 437;
 					break;
 				case 1055:
 					layoutname = "tr";
 					break;
 				case 1058:
 					layoutname = "ur";
-					wants_dos_codepage = (IS_PC98_ARCH ? 932 : 437);
+					wants_dos_codepage = 437;
 					break;
 				case 1059:
 					layoutname = "bl";
@@ -1272,14 +1272,14 @@ public:
 					break; */
 				case 2055:
 					layoutname = "sg";
-					wants_dos_codepage = (IS_PC98_ARCH ? 932 : 437);
+					wants_dos_codepage = 437;
 					break;
 				case 2070:
 					layoutname = "po";
 					break;
 				case 4108:
 					layoutname = "sf";
-					wants_dos_codepage = (IS_PC98_ARCH ? 932 : 437);
+					wants_dos_codepage = 437;
 					break;
 				case 1041:
 					layoutname = "jp";
@@ -1319,9 +1319,9 @@ public:
 	}
 
 	~DOS_KeyboardLayout(){
-		if ((dos.loaded_codepage!=(IS_PC98_ARCH ? 932 : 437)) && (CurMode->type==M_TEXT)) {
+		if ((dos.loaded_codepage!=437) && (CurMode->type==M_TEXT)) {
 			INT10_ReloadRomFonts();
-			dos.loaded_codepage=(IS_PC98_ARCH ? 932 : 437);	// US codepage
+			dos.loaded_codepage=437;	// US codepage
 		}
 		if (loaded_layout) {
 			delete loaded_layout;

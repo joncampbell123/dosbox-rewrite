@@ -1802,7 +1802,7 @@ void EMS_PickPageFrame(void) {
     /* the EMS page frame needs to move depending on IBM PC or PC-98 emulation.
      * IBM PC emulation can put the page frame at 0xE000 (as DOSBox has always done).
      * PC-98 emulation needs to move the page frame down because 0xE000 is taken by the 4th EGC bitplane. */
-    EMM_PAGEFRAME =      IS_PC98_ARCH ? 0xD000 : 0xE000;
+    EMM_PAGEFRAME =      0xE000;
     EMM_PAGEFRAME4K =    ((EMM_PAGEFRAME*16)/4096);
 }
 

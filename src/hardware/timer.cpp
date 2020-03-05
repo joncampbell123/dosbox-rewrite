@@ -388,12 +388,12 @@ void TIMER_IRQ0Poll(void) {
 }
 
 pic_tickindex_t speaker_pit_delta(void) {
-    unsigned int speaker_pit = IS_PC98_ARCH ? 1 : 2;
+    unsigned int speaker_pit = 2;
     return fmod(pit[speaker_pit].now - pit[speaker_pit].start, pit[speaker_pit].delay);
 }
 
 void speaker_pit_update(void) {
-    unsigned int speaker_pit = IS_PC98_ARCH ? 1 : 2;
+    unsigned int speaker_pit = 2;
     pit[speaker_pit].track_time(PIC_FullIndex());
 }
 
@@ -401,24 +401,11 @@ bool TIMER2_ClockGateEnabled(void) {
     /* PC speaker emulation should treat "new mode" as if the clock gate is disabled.
      * On real hardware, mode 3 does not cycle if you write a control word but then
      * do not write a counter value. */
-    return !pit[IS_PC98_ARCH ? 1 : 2].new_mode;
+    return !pit[2].new_mode;
 }
 
 static void write_latch(Bitu port,Bitu val,Bitu /*iolen*/) {
 //LOG(LOG_PIT,LOG_ERROR)("port %X write:%X state:%X",port,val,pit[port-0x40].write_state);
-
-    // HACK: Port translation for this code PC-98 mode.
-    //       0x71,0x73,0x75,0x77 => 0x40-0x43
-    if (IS_PC98_ARCH) {
-        if (port >= 0x3FD9)
-            port = ((port - 0x3FD9) >> 1) + 0x40;
-        else if (port >=0x71 && port <= 0x75)
-            port = ((port - 0x71) >> 1) + 0x40;
-        else {
-            E_Exit("PIT: PC-98 port in write_latch is out of range.");
-            return;
-        }
-    }
 
 	Bitu counter=port-0x40;
 	PIT_Block * p=&pit[counter];
@@ -464,7 +451,7 @@ static void write_latch(Bitu port,Bitu val,Bitu /*iolen*/) {
                 p->update_count=true;
                 return;
             }
-            else if ((p->mode == 3) && (counter == (IS_PC98_ARCH ? 1 : 2))) {
+            else if ((p->mode == 3) && (counter == 2)) {
                 p->update_count=true;
                 return;
             }
@@ -533,19 +520,6 @@ static void write_latch(Bitu port,Bitu val,Bitu /*iolen*/) {
 
 static Bitu read_latch(Bitu port,Bitu /*iolen*/) {
 //LOG(LOG_PIT,LOG_ERROR)("port read %X",port);
-
-    // HACK: Port translation for this code PC-98 mode.
-    //       0x71,0x73,0x75,0x77 => 0x40-0x43
-    if (IS_PC98_ARCH) {
-        if (port >= 0x3FD9)
-            port = ((port - 0x3FD9) >> 1) + 0x40;
-        else if (port >=0x71 && port <= 0x75)
-            port = ((port - 0x71) >> 1) + 0x40;
-        else {
-            E_Exit("PIT: PC-98 port in read_latch is out of range.");
-            return 0;
-        }
-    }
 
 	Bit32u counter=(Bit32u)(port-0x40);
 	Bit8u ret=0;
@@ -643,7 +617,7 @@ static void write_p43(Bitu /*port*/,Bitu val,Bitu /*iolen*/) {
 				}
 			}
 			pit[latch].new_mode = true;
-			if (latch == (IS_PC98_ARCH ? 1 : 2)) {
+			if (latch == (2)) {
 				// notify pc speaker code that the control word was written.
                 // until a counter value is written, the PC speaker should
                 // treat the timer as if the clock gate were disabled.
@@ -713,13 +687,13 @@ static void write_p43(Bitu /*port*/,Bitu val,Bitu /*iolen*/) {
 //        inverse of bit 3 of port 37h ----+
 //          (bit 3 is inhibit)
 void TIMER_SetGate2(bool in) {
-    unsigned int speaker_pit = IS_PC98_ARCH ? 1 : 2;
+    unsigned int speaker_pit = 2;
     pit[speaker_pit].track_time(PIC_FullIndex());
     pit[speaker_pit].set_gate(in || speaker_clock_lock_on);
 }
 
 bool TIMER_GetOutput2() {
-    unsigned int speaker_pit = IS_PC98_ARCH ? 1 : 2;//NTS: For completion sake, even though there is no readback bit on PC-98
+    unsigned int speaker_pit = 2;//NTS: For completion sake, even though there is no readback bit on PC-98
 
 	return counter_output(speaker_pit);
 }
@@ -786,7 +760,7 @@ void TIMER_BIOS_INIT_Configure() {
      *   the BIOS to countdown and stop, thus the UART is not cycling
      *   until put into active use. */
 
-    int pcspeaker_pit = IS_PC98_ARCH ? 1 : 2; /* IBM: PC speaker on output 2   PC-98: PC speaker on output 1 */
+    int pcspeaker_pit = 2; /* IBM: PC speaker on output 2   PC-98: PC speaker on output 1 */
 
 	{
 		Section_prop *pcsec = static_cast<Section_prop *>(control->GetSection("speaker"));
@@ -796,7 +770,7 @@ void TIMER_BIOS_INIT_Configure() {
         /* IBM PC defaults to 903Hz.
          * NEC PC-98 defaults to 2KHz */
         if (freq < 0)
-            freq = IS_PC98_ARCH ? 2000 : 903;
+            freq = 903;
 
 		if (freq < 1) {
 			div = 65535;
@@ -823,27 +797,6 @@ void TIMER_BIOS_INIT_Configure() {
 	pit[2].latch_next_counter();
 
 	PIC_AddEvent(PIT0_Event,pit[0].delay);
-
-    if (IS_PC98_ARCH) {
-    /* BIOS data area at 0x501 tells the DOS application which clock rate to use */
-        phys_writeb(0x501,
-            (phys_readb(0x501) & 0x7F) |
-            ((PIT_TICK_RATE == PIT_TICK_RATE_PC98_8MHZ) ? 0x80 : 0x00)      /* bit 7: 1=8MHz  0=5MHz/10MHz */
-            );
-
-        /* Turn off PC speaker.
-         * Note for PC9801 behavior this will help start the PIT cycling anyway. */
-        TIMER_SetGate2(false);
-
-        /* The timer is always on, there's no clock gate that I know of.
-         * There's a bit 6 port 434h that might gate it on some hardware, but that doesn't seem to be the case on anything I have.
-         *
-         * NTS: If you run 8254.EXE from DOSLIB on PC-98 hardware and notice PIT 2 isn't cycling, try writing values to 75h
-         *      and see if it begins counting again. A PC-9821Lt2 laptop seems to have a bios that writes a mode byte for
-         *      it to 77h but then never writes to 75h, which leaves the timer idle. */
-        pit[2].track_time(PIC_FullIndex());
-        pit[2].set_gate(true);
-    }
 }
 
 void TIMER_OnPowerOn(Section*) {
@@ -894,28 +847,7 @@ void TIMER_OnPowerOn(Section*) {
 	ReadHandler2[2].Uninstall();
 	ReadHandler2[3].Uninstall();
 
-    if (IS_PC98_ARCH) {
-        /* This code is written to eventually copy-paste out in general */
-        WriteHandler[0].Install(0x71,write_latch,IO_MB);
-        WriteHandler[1].Install(0x73,write_latch,IO_MB);
-        WriteHandler[2].Install(0x75,write_latch,IO_MB);
-        WriteHandler[3].Install(0x77,write_p43,IO_MB);
-        ReadHandler[0].Install(0x71,read_latch,IO_MB);
-        ReadHandler[1].Install(0x73,read_latch,IO_MB);
-        ReadHandler[2].Install(0x75,read_latch,IO_MB);
-
-        /* Apparently all but the first PC-9801 systems have an alias of these
-         * ports at 0x3FD9-0x3FDF odd. This alias is required for games that
-         * rely on this alias. */
-        WriteHandler2[0].Install(0x3FD9,write_latch,IO_MB);
-        WriteHandler2[1].Install(0x3FDB,write_latch,IO_MB);
-        WriteHandler2[2].Install(0x3FDD,write_latch,IO_MB);
-        WriteHandler2[3].Install(0x3FDF,write_p43,IO_MB);
-        ReadHandler2[0].Install(0x3FD9,read_latch,IO_MB);
-        ReadHandler2[1].Install(0x3FDB,read_latch,IO_MB);
-        ReadHandler2[2].Install(0x3FDD,read_latch,IO_MB);
-    }
-    else {
+    {
         WriteHandler[0].Install(0x40,write_latch,IO_MB);
 //	    WriteHandler[1].Install(0x41,write_latch,IO_MB);
         WriteHandler[2].Install(0x42,write_latch,IO_MB);
@@ -926,37 +858,6 @@ void TIMER_OnPowerOn(Section*) {
     }
 
 	latched_timerstatus_locked=false;
-
-    if (IS_PC98_ARCH) {
-        int pc98rate;
-
-        {
-            const char *s = section->Get_string("pc-98 timer always cycles");
-
-            if (!strcmp(s,"true") || !strcmp(s,"1"))
-                speaker_clock_lock_on = true; // PC-9801 behavior
-            else if (!strcmp(s,"false") || !strcmp(s,"0"))
-                speaker_clock_lock_on = false; // PC-9821 behavior
-            else // anything else is handled as "auto"
-                speaker_clock_lock_on = false; // PC-9821 behavior
-        }
-
-        /* PC-98 has two different rates: 5/10MHz base or 8MHz base. Let the user choose via dosbox.conf */
-        pc98rate = section->Get_int("pc-98 timer master frequency");
-        if (pc98rate > 6) pc98rate /= 2;
-        if (pc98rate == 0) pc98rate = 5; /* Pick the most likely to work with DOS games (FIXME: This is a GUESS!! Is this correct?) */
-        else if (pc98rate < 5) pc98rate = 4;
-        else pc98rate = 5;
-
-        if (pc98rate >= 5)
-            PIT_TICK_RATE = PIT_TICK_RATE_PC98_10MHZ;
-        else
-            PIT_TICK_RATE = PIT_TICK_RATE_PC98_8MHZ;
-
-        LOG_MSG("PC-98 PIT master clock rate %luHz",PIT_TICK_RATE);
-
-        latched_timerstatus_locked=false;
-    }
 }
 
 void TIMER_OnEnterPC98_Phase2_UpdateBDA(void) {

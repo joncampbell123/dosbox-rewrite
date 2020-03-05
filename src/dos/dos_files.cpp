@@ -86,10 +86,6 @@ bool DOS_MakeName(char const * const name,char * const fullname,Bit8u * drive) {
 		else if (c==' ') continue; /* should be separator */
 		else if (c=='/') c='\\';
 		upname[w++]=(char)c;
-        if (IS_PC98_ARCH && shiftjis_lead_byte(c) && r<DOS_PATHLENGTH) {
-            /* The trailing byte is NOT ASCII and SHOULD NOT be converted to uppercase like ASCII */
-            upname[w++]=name_int[r++];
-        }
 	}
 	while (r>0 && name_int[r-1]==' ') r--;
 	if (r>=DOS_PATHLENGTH) { DOS_SetError(DOSERR_PATH_NOT_FOUND);return false; }
@@ -907,19 +903,6 @@ Bit8u FCB_Parsename(Bit16u seg,Bit16u offset,Bit8u parser ,char *string, Bit8u *
 	/* Copy the name */	
 	while (true) {
 		unsigned char nc = *reinterpret_cast<unsigned char*>(&string[0]);
-		if (IS_PC98_ARCH && shiftjis_lead_byte(nc)) {
-                /* Shift-JIS is NOT ASCII and SHOULD NOT be converted to uppercase like ASCII */
-                fcb_name.part.name[index]=(char)nc;
-                string++;
-                index++;
-                if (index >= 8) break;
-
-                /* should be trailing byte of Shift-JIS */
-                if (nc < 32 || nc >= 127) continue;
-
-                fcb_name.part.name[index]=(char)nc;
-            }
-		else
 		{
 			char ncs = (char)ascii_toupper(nc); //Should use DOS_ToUpper, but then more calls need to be changed.
 			if (ncs == '*') { //Handle *
@@ -945,20 +928,7 @@ checkext:
 	hasext=true;finished=false;fill=' ';index=0;
 	while (true) {
 		unsigned char nc = *reinterpret_cast<unsigned char*>(&string[0]);
-		if (IS_PC98_ARCH && shiftjis_lead_byte(nc)) {
-                /* Shift-JIS is NOT ASCII and SHOULD NOT be converted to uppercase like ASCII */
-                fcb_name.part.ext[index]=(char)nc;
-                string++;
-                index++;
-                if (index >= 3) break;
-
-                /* should be trailing byte of Shift-JIS */
-                if (nc < 32u || nc >= 127u) continue;
-
-                fcb_name.part.ext[index]=(char)nc;
-            }
-		else
-		{
+	    {
 			char ncs = (char)ascii_toupper(nc);
 			if (ncs == '*') { //Handle *
 				fill = '?';

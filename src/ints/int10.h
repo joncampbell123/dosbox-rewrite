@@ -94,8 +94,8 @@ extern uint32_t S3_LFB_BASE;
 #define VGAMEM_MTEXT 0xB000u
 
 /* FIXME: Wait, what?? What the hell kind of preprocessor macro is this??? Kill these macros! --J.C. */
-#define BIOS_NCOLS Bit16u ncols=IS_PC98_ARCH ? 80 : real_readw(BIOSMEM_SEG,BIOSMEM_NB_COLS);
-#define BIOS_NROWS Bit16u nrows=IS_PC98_ARCH ? (Bit16u)(real_readb(0x60,0x112)+1u) : (Bit16u)real_readb(BIOSMEM_SEG,BIOSMEM_NB_ROWS)+1u;
+#define BIOS_NCOLS Bit16u ncols=real_readw(BIOSMEM_SEG,BIOSMEM_NB_COLS);
+#define BIOS_NROWS Bit16u nrows=(Bit16u)real_readb(BIOSMEM_SEG,BIOSMEM_NB_ROWS)+1u;
 
 extern Bit8u int10_font_08[256 * 8];
 extern Bit8u int10_font_14[256 * 14];
@@ -164,17 +164,11 @@ typedef struct {
 extern Int10Data int10;
 
 static inline Bit8u CURSOR_POS_COL(Bit8u page) {
-    if (IS_PC98_ARCH)
-        return real_readb(0x60,0x11C); /* MS-DOS kernel location */
-    else
-    	return real_readb(BIOSMEM_SEG,BIOSMEM_CURSOR_POS+page*2u);
+    return real_readb(BIOSMEM_SEG,BIOSMEM_CURSOR_POS+page*2u);
 }
 
 static inline Bit8u CURSOR_POS_ROW(Bit8u page) {
-    if (IS_PC98_ARCH)
-        return real_readb(0x60,0x110); /* MS-DOS kernel location */
-    else
-        return real_readb(BIOSMEM_SEG,BIOSMEM_CURSOR_POS+page*2u+1u);
+    return real_readb(BIOSMEM_SEG,BIOSMEM_CURSOR_POS+page*2u+1u);
 }
 
 //! \brief Gets the state of INS/OVR mode.

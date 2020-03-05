@@ -92,30 +92,6 @@ void DOS_GetMemory_Choose() {
         DOS_PRIVATE_SEGMENT=(Bit16u)VGA_BIOS_SEG_END;
         DOS_PRIVATE_SEGMENT_END= (Bit16u)(DOS_PRIVATE_SEGMENT + DOS_PRIVATE_SEGMENT_Size);
 
-        if (IS_PC98_ARCH) {
-            /* Do not let the private segment overlap with anything else after segment C800:0000 including the SOUND ROM at CC00:0000.
-             * Limiting to 32KB also leaves room for UMBs if enabled between C800:0000 and the EMS page frame at (usually) D000:0000 */
-            unsigned int limit = 0xD000;
-
-            if (false) {
-                // TODO: What about sound BIOSes larger than 16KB?
-                if (limit > 0xCC00)
-                    limit = 0xCC00;
-            }
-
-            if (DOS_User_Wants_UMBs()) {
-                // leave room for UMBs, things are cramped a bit in PC-98 mode
-                if (limit > 0xC600)
-                    limit = 0xC600;
-            }
-
-            if (DOS_PRIVATE_SEGMENT_END > limit)
-                DOS_PRIVATE_SEGMENT_END = limit;
-
-            if (DOS_PRIVATE_SEGMENT >= DOS_PRIVATE_SEGMENT_END)
-                E_Exit("Insufficient room in upper memory area for private area");
-        }
-
 		if (DOS_PRIVATE_SEGMENT >= 0xA000) {
 			memset(GetMemBase()+((Bitu)DOS_PRIVATE_SEGMENT<<4u),0x00,(Bitu)(DOS_PRIVATE_SEGMENT_END-DOS_PRIVATE_SEGMENT)<<4u);
 			MEM_map_RAM_physmem((Bitu)DOS_PRIVATE_SEGMENT<<4u,((Bitu)DOS_PRIVATE_SEGMENT_END<<4u)-1u);
@@ -240,16 +216,7 @@ void DOS_SetupTables(void) {
     if (enable_dbcs_tables) {
         dos.tables.dbcs=RealMake(DOS_GetMemory(12,"dos.tables.dbcs"),0);
 
-        if (IS_PC98_ARCH) {
-            // write a valid table, or else Windows 3.1 is unhappy.
-            // Values are copied from INT 21h AX=6300h as returned by an MS-DOS 6.22 boot disk
-            mem_writeb(Real2Phys(dos.tables.dbcs)+0,0x81);  // low/high DBCS pair 1
-            mem_writeb(Real2Phys(dos.tables.dbcs)+1,0x9F);
-            mem_writeb(Real2Phys(dos.tables.dbcs)+2,0xE0);  // low/high DBCS pair 2
-            mem_writeb(Real2Phys(dos.tables.dbcs)+3,0xFC);
-            mem_writed(Real2Phys(dos.tables.dbcs)+4,0);
-        }
-        else {
+        {
             mem_writed(Real2Phys(dos.tables.dbcs),0); //empty table
         }
     }
@@ -344,30 +311,9 @@ void DOS_SetupTables(void) {
 	call_casemap = CALLBACK_Allocate();
 	CALLBACK_Setup(call_casemap,DOS_CaseMapFunc,CB_RETF,"DOS CaseMap");
 	/* Add it to country structure */
-    if (IS_PC98_ARCH) {
-        host_writed(country_info_pc98 + 0x12, CALLBACK_RealPointer(call_casemap));
-        dos.tables.country=country_info_pc98;
-    }
-    else {
+    {
         host_writed(country_info + 0x12, CALLBACK_RealPointer(call_casemap));
         dos.tables.country=country_info;
-    }
-
-    /* PC-98 INT 1Bh device list (60:6Ch-7Bh).
-     * For now, just write a fake list to satisfy any PC-98 game that
-     * requires a "master disk" to run even if running from an HDI.
-     * See also: [http://hackipedia.org/browse.cgi/Computer/Platform/PC%2c%20NEC%20PC%2d98/Collections/Undocumented%209801%2c%209821%20Volume%202%20%28webtech.co.jp%29/memdos%2etxt]
-     * This is needed to run "Legend of Heroes III" */
-    if (IS_PC98_ARCH) {
-        // FIXME: This is just a fake list. At some point in the future, this
-        //        list needs to reflect the state of all MOUNT/IMGMOUNT commands
-        //        while in the DOS environment provided by this emulation.
-        //
-        //        The byte values seem to match drive letter assignment, as noted:
-        //        [https://github.com/joncampbell123/dosbox-x/issues/1226]
-        for (i=0;i < 0x10;i++) real_writeb(0x60,0x6C+i,0);
-        real_writeb(0x60,0x6C,0xA0);    /* hard drive */
-        real_writeb(0x60,0x6D,0x90);    /* floppy drive */
     }
 
     /* fake DRIVER.SYS data table list, to satisfy Windows 95 setup.

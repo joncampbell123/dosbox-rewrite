@@ -791,8 +791,8 @@ public:
          *    CS:IP = 1FE0:0000     Load = 1FE0:0000
          *    SS:SP = 0030:00D8
          */
-        Bitu stack_seg=IS_PC98_ARCH ? 0x0030 : 0x7000;
-        Bitu load_seg;//=IS_PC98_ARCH ? 0x1FE0 : 0x07C0;
+        Bitu stack_seg=0x7000;
+        Bitu load_seg;
 
         if (MEM_TotalPages() > 0x9C)
             max_seg = 0x9C00;
@@ -955,7 +955,7 @@ public:
         unsigned int bootsize = imageDiskList[drive-65]->getSectSize();
 
         /* NTS: Load address is 128KB - sector size */
-        load_seg=IS_PC98_ARCH ? (0x2000 - (bootsize/16U)) : 0x07C0;
+        load_seg=0x07C0;
 
         if (!has_read) {
             if (imageDiskList[drive - 65]->Read_Sector(0, 0, 1, (Bit8u *)&bootarea) != 0) {
@@ -1005,10 +1005,7 @@ public:
 
             WriteOut(MSG_Get("PROGRAM_BOOT_BOOT"), drive);
 
-            if (IS_PC98_ARCH) {
-                for(i=0;i<bootsize;i++) real_writeb((Bit16u)load_seg, (Bit16u)i, bootarea.rawdata[i]);
-            }
-            else {
+            {
                 for(i=0;i<bootsize;i++) real_writeb(0, (Bit16u)((load_seg<<4) + i), bootarea.rawdata[i]);
             }
 
@@ -1017,7 +1014,7 @@ public:
             RunningProgram = "Guest OS";
 
             if (drive == 'A' || drive == 'B') {
-                if (!IS_PC98_ARCH) incrementFDD();
+                incrementFDD();
             }
 
             /* standard method */
@@ -1934,16 +1931,7 @@ public:
          * with special conditions for PC-98 and IBM PC */
         if (!DOS_ReadFile(STDIN,&c,&n) || n == 0) return false;
 
-        if (IS_PC98_ARCH) {
-            /* translate PC-98 arrow keys to IBM PC escape for the caller */
-                 if (c == 0x0B)
-                *data = 0x48 | 0x80;    /* IBM extended code up arrow */
-            else if (c == 0x0A)
-                *data = 0x50 | 0x80;    /* IBM extended code down arrow */
-            else
-                *data = c;
-        }
-        else {
+        {
             if (c == 0) {
                 if (!DOS_ReadFile(STDIN,&c,&n) || n == 0) return false;
                 *data = c | 0x80; /* extended code */
@@ -3096,14 +3084,6 @@ private:
                 }
             }
         }
-        else if (IS_PC98_ARCH) {
-            //for pc-98 machines, mount floppies at first available index
-            for (int index = 0; index < 2; index++) {
-                if (imageDiskList[index] == NULL) {
-                    return AttachToBiosByIndex(image, index);
-                }
-            }
-        }
         else if ((drive - 'A') < 2) {
             //for PCs, mount floppies only if A: or B: is specified, and then if so, at specified index
             return AttachToBiosByIndex(image, drive - 'A');
@@ -3117,14 +3097,6 @@ private:
             for (int index = 2; index < MAX_DISK_IMAGES; index++) {
                 if (imageDiskList[index] == NULL) {
                     return AttachToBiosAndIdeByIndex(image, index, ide_index, ide_slave);
-                }
-            }
-        }
-        else if (IS_PC98_ARCH) {
-            //for pc-98 machines, mount floppies at first available index
-            for (int index = 0; index < 2; index++) {
-                if (imageDiskList[index] == NULL) {
-                    return AttachToBiosByIndex(image, index);
                 }
             }
         } else if ((drive - 'A') < 2) {
@@ -3468,10 +3440,7 @@ private:
             sizes[2] = 16; /* typical hard drive, unless a very old drive */
             sizes[3]/*cylinders*/ = (Bitu)((Bit64u)sectors / (Bit64u)sizes[2]/*heads*/ / (Bit64u)sizes[1]/*sectors/track*/);
 
-            if (IS_PC98_ARCH) {
-                /* TODO: PC-98 has it's own issues with a 4096-cylinder limit */
-            }
-            else {
+            {
                 /* INT 13h mapping, deal with 1024-cyl limit */
                 while (sizes[3] > 1024) {
                     if (sizes[2] >= 255) break; /* nothing more we can do */
@@ -4183,18 +4152,15 @@ void DOS_SetupPrograms(void) {
     PROGRAMS_MakeFile("INTRO.COM",INTRO_ProgramStart);
     PROGRAMS_MakeFile("BOOT.COM",BOOT_ProgramStart);
 
-    if (!IS_PC98_ARCH)
         PROGRAMS_MakeFile("LOADROM.COM", LOADROM_ProgramStart);
 
     PROGRAMS_MakeFile("IMGMAKE.COM", IMGMAKE_ProgramStart);
     PROGRAMS_MakeFile("IMGMOUNT.COM", IMGMOUNT_ProgramStart);
 
-    if (!IS_PC98_ARCH)
         PROGRAMS_MakeFile("MODE.COM", MODE_ProgramStart);
 
     //PROGRAMS_MakeFile("MORE.COM", MORE_ProgramStart);
 
-    if (!IS_PC98_ARCH)
         PROGRAMS_MakeFile("KEYB.COM", KEYB_ProgramStart);
 
     PROGRAMS_MakeFile("A20GATE.COM",A20GATE_ProgramStart);

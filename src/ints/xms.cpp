@@ -127,12 +127,7 @@ static int xms_local_enable_count = 0;
 void DOS_Write_HMA_CPM_jmp(void);
 
 Bitu XMS_EnableA20(bool enable) {
-    if (IS_PC98_ARCH) {
-        // NEC PC-98: Unmask (enable) A20 by writing to port 0xF2.
-        //            Mask (disable) A20 by writing to port 0xF6.
-        IO_Write(0xF6,enable ? 0x02 : 0x03); /* 0000 001x  x = mask A20 */
-    }
-    else {
+    {
         // IBM PC/AT: Port 0x92, bit 1, set if A20 enabled
         Bit8u val = IO_Read(0x92);
         if (enable) IO_Write(0x92,val | 2);
@@ -143,9 +138,6 @@ Bitu XMS_EnableA20(bool enable) {
 }
 
 Bitu XMS_GetEnabledA20(void) {
-    if (IS_PC98_ARCH) // NEC PC-98: Port 0xF2, bit 0, cleared if A20 enabled (set if A20 masked)
-	    return (IO_Read(0xF2)&1) == 0;
-
     // IBM PC/AT: Port 0x92, bit 1, set if A20 enabled
 	return (IO_Read(0x92)&2)>0;
 }
@@ -748,23 +740,6 @@ public:
 			umb_available = false;
 		}
 
-        if (IS_PC98_ARCH) {
-            /* Do not let the private segment overlap with anything else after segment C800:0000 including the SOUND ROM at CC00:0000.
-             * Limiting to 32KB also leaves room for UMBs if enabled between C800:0000 and the EMS page frame at (usually) D000:0000 */
-            unsigned int limit = 0xCFFF;
-
-            if (false) {
-                // TODO: What about sound BIOSes larger than 16KB?
-                if (limit > 0xCBFF)
-                    limit = 0xCBFF;
-            }
-
-            if (first_umb_seg > limit)
-                first_umb_seg = limit;
-            if (first_umb_size > limit)
-                first_umb_size = limit;
-        }
-
 		if (first_umb_size >= (rombios_minimum_location>>4)) {
 			/* we can ask the BIOS code to trim back the region, assuming it hasn't allocated anything there yet */
 			LOG(LOG_MISC,LOG_DEBUG)("UMB ending segment 0x%04x conflicts with BIOS at 0x%04x, asking BIOS to move aside",(int)first_umb_size,(int)(rombios_minimum_location>>4));
@@ -789,10 +764,6 @@ public:
         }
         /* UMB cannot interfere with EGC 4th graphics bitplane on PC-98 */
         /* TODO: Allow UMB into E000:xxxx if emulating a PC-98 that lacks 16-color mode. */
-        if (IS_PC98_ARCH && first_umb_size >= 0xE000) {
-            LOG(LOG_MISC,LOG_DEBUG)("UMB overlaps PC-98 EGC 4th graphics bitplane, truncating region");
-            first_umb_size = 0xDFFF;
-        }
 		if (first_umb_size < first_umb_seg) {
 			LOG(LOG_MISC,LOG_NORMAL)("UMB end segment below UMB start. I'll just assume you mean to disable UMBs then.");
 			first_umb_size = first_umb_seg - 1;

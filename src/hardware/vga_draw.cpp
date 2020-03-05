@@ -196,10 +196,7 @@ void VGA_VsyncUpdateMode(VGA_Vsync vsyncmode) {
 void VGA_TweakUserVsyncOffset(float val) { uservsyncjolt = val; }
 
 void VGA_Draw2_Recompute_CRTC_MaskAdd(void) {
-    if (IS_PC98_ARCH) {
-        // nothing yet
-    }
-    else if (IS_EGAVGA_ARCH) {
+    if (IS_EGAVGA_ARCH) {
         /* mem masking can be generalized for ALL VGA/SVGA modes */
         size_t new_mask = vga.mem.memmask >> (2ul + vga.config.addr_shift);
         size_t new_add = 0;
@@ -2928,7 +2925,7 @@ void VGA_SetupDrawing(Bitu /*val*/) {
 
     // Vertical blanking tricks
     vblank_skip = 0;
-    if ((IS_VGA_ARCH || IS_PC98_ARCH) && !ignore_vblank_wraparound) { // others need more investigation
+    if ((IS_VGA_ARCH) && !ignore_vblank_wraparound) { // others need more investigation
         if (vbstart < vtotal) { // There will be no blanking at all otherwise
             if (vbend > vtotal) {
                 // blanking wraps to the start of the screen
@@ -2990,12 +2987,12 @@ void VGA_SetupDrawing(Bitu /*val*/) {
 
     //Check to prevent useless black areas
     if (hbstart<hdend) hdend=hbstart;
-    if ((!(IS_VGA_ARCH || IS_PC98_ARCH)) && (vbstart<vdend)) vdend=vbstart;
+    if ((!(IS_VGA_ARCH)) && (vbstart<vdend)) vdend=vbstart;
 
     Bitu width=hdend;
     Bitu height=vdend;
 
-    if (IS_EGAVGA_ARCH || IS_PC98_ARCH) {
+    if (IS_EGAVGA_ARCH) {
         vga.draw.address_line_total=(vga.crtc.maximum_scan_line&0x1fu)+1u;
         switch(vga.mode) {
         case M_CGA16:
@@ -3161,7 +3158,7 @@ void VGA_SetupDrawing(Bitu /*val*/) {
         VGA_DrawLine=VGA_Draw_CGA16_Line;
         break;
     case M_CGA4:
-        if (IS_EGAVGA_ARCH || IS_PC98_ARCH) {
+        if (IS_EGAVGA_ARCH) {
             vga.draw.blocks=width;
             if (vga_alt_new_mode)
                 VGA_DrawLine=Alt_VGA_2BPP_Draw_Line;

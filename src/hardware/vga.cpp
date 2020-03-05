@@ -757,8 +757,7 @@ void VGA_Reset(Section*) {
             E_Exit("Unexpected machine");
     }
 
-    if (!IS_PC98_ARCH)
-        SVGA_Setup_Driver();        // svga video memory size is set here, possibly over-riding the user's selection
+    SVGA_Setup_Driver();        // svga video memory size is set here, possibly over-riding the user's selection
 
     // NTS: This is WHY the memory size must be a power of 2
     vga.mem.memmask = vga.mem.memsize - 1u;
@@ -773,7 +772,7 @@ void VGA_Reset(Section*) {
     mainMenu.get_item("debug_retracepoll").check(enable_vretrace_poll_debugging_marker).refresh_item(mainMenu);
 
     VGA_SetupMemory();      // memory is allocated here
-    if (!IS_PC98_ARCH) {
+    {
         VGA_SetupMisc();
         VGA_SetupDAC();
         VGA_SetupGFX();

@@ -987,48 +987,6 @@ public:
         }
 #endif
 
-#if !defined(C_SDL2) && defined(SDL_DOSBOX_X_SPECIAL)
-        /* HACK: As requested on the issue tracker, on US keyboards, remap the Windows menu key
-         *       to the "Ro" key.
-         *
-         *       If the user has un-bound the Ro key, then allow the menu key to go through
-         *       unmodified.
-         *
-         * TODO: I understand that later PC-9821 systems (post Windows 95, prior to the platform's
-         *       demise) actually did have Windows and Windows Menu keys.
-         *
-         *       I also understand from "Undocumented PC-98" that the actual keyboards for backwards
-         *       compat reasons will not send these key codes unless a byte is sent to the keyboard
-         *       on Windows 95 startup to tell the keyboard that it can send those keys.
-         *
-         *       This would explain why if you boot a PC-9821 system into Windows 95 "Safe mode"
-         *       the Windows key does not work.
-         *
-         *       So later on, this remap should disable itself IF that byte is sent to signal
-         *       Windows 95 is running and the Windows keys should be enabled. */
-        if (IS_PC98_ARCH && host_keyboard_layout != DKM_JPN && key == SDLK_MENU) {
-            CEvent *x = get_mapper_event_by_name("key_jp_ro");
-            bool RoMenuRemap = false;
-
-            if (x != NULL) {
-                if (!x->bindlist.empty()) {
-                    RoMenuRemap = true;
-
-                    /* but, if the Ro key has been bound to Menu, do not remap */
-                    auto &i = x->bindlist.front();
-                    if (i->type == CBind::keybind_t) {
-                        auto ik = reinterpret_cast<CKeyBind*>(i);
-                        RoMenuRemap = false;
-                        if (ik->key == SDLK_JP_RO)
-                            RoMenuRemap = true;
-                    }
-                }
-            }
-
-            if (RoMenuRemap) key = SDLK_JP_RO;
-        }
-#endif
-
         if (event->type==SDL_KEYDOWN) ActivateBindList(&lists[key],0x7fff,true);
         else DeactivateBindList(&lists[key],true);
         return 0;
@@ -2817,10 +2775,7 @@ static void CreateLayout(void) {
     AddKeyButtonEvent(PX(0),PY(0),BW,BH,"ESC","esc",KBD_esc);
     for (i=0;i<12;i++) AddKeyButtonEvent(PX(2+i),PY(0),BW,BH,combo_f[i].title,combo_f[i].entry,combo_f[i].key);
 
-    if (IS_PC98_ARCH) {
-        for (i=0;i<14;i++) AddKeyButtonEvent(PX(  i),PY(1),BW,BH,combo_1_pc98[i].title,combo_1_pc98[i].entry,combo_1_pc98[i].key);
-    }
-    else {
+    {
         for (i=0;i<14;i++) AddKeyButtonEvent(PX(  i),PY(1),BW,BH,combo_1[i].title,combo_1[i].entry,combo_1[i].key);
     }
 
@@ -2831,10 +2786,7 @@ static void CreateLayout(void) {
     
     caps_lock_event=AddKeyButtonEvent(PX(0),PY(3),BW*2,BH,"CLCK","capslock",KBD_capslock);
 
-    if (IS_PC98_ARCH) {
-        for (i=0;i<12;i++) AddKeyButtonEvent(PX(2+i),PY(3),BW,BH,combo_3_pc98[i].title,combo_3_pc98[i].entry,combo_3_pc98[i].key);
-    }
-    else {
+    {
         for (i=0;i<12;i++) AddKeyButtonEvent(PX(2+i),PY(3),BW,BH,combo_3[i].title,combo_3[i].entry,combo_3[i].key);
     }
 
@@ -2890,11 +2842,7 @@ static void CreateLayout(void) {
     AddKeyButtonEvent(PX(XO+1),PY(YO+3),BW,BH,"2","kp_2",KBD_kp2);
     AddKeyButtonEvent(PX(XO+2),PY(YO+3),BW,BH,"3","kp_3",KBD_kp3);
     AddKeyButtonEvent(PX(XO+3),PY(YO+3),BW,BH*2,"ENT","kp_enter",KBD_kpenter);
-    if (IS_PC98_ARCH) {
-        AddKeyButtonEvent(PX(XO+0),PY(YO+4),BW*1,BH,"0","kp_0",KBD_kp0);
-        AddKeyButtonEvent(PX(XO+1),PY(YO+4),BW*1,BH,",","kp_comma",KBD_kpcomma);
-    }
-    else {
+    {
         AddKeyButtonEvent(PX(XO+0),PY(YO+4),BW*2,BH,"0","kp_0",KBD_kp0);
     }
     AddKeyButtonEvent(PX(XO+2),PY(YO+4),BW,BH,".","kp_period",KBD_kpperiod);
@@ -2902,26 +2850,7 @@ static void CreateLayout(void) {
 #undef YO
 #define XO 5
 #define YO 7
-    if (IS_PC98_ARCH) {
-        /* PC-98 extra keys */
-        AddKeyButtonEvent(PX(XO+0),PY(YO+0),BW*2,BH,"STOP","stop",KBD_stop);
-        AddKeyButtonEvent(PX(XO+2),PY(YO+0),BW*2,BH,"HELP","help",KBD_help);
-
-        AddKeyButtonEvent(PX(XO+0),PY(YO+1),BW*2,BH,"COPY","copy",KBD_copy);
-        AddKeyButtonEvent(PX(XO+2),PY(YO+1),BW*2,BH,"KANA","kana",KBD_kana);
-
-        AddKeyButtonEvent(PX(XO+0),PY(YO+2),BW*2,BH,"NFER","nfer",KBD_nfer);
-        AddKeyButtonEvent(PX(XO+2),PY(YO+2),BW*2,BH,"XFER","xfer",KBD_xfer);
-
-        AddKeyButtonEvent(PX(XO+2),PY(YO+3),BW*2,BH,"Ro / _","jp_ro",KBD_jp_ro);
-
-        AddKeyButtonEvent(PX(XO+0),PY(YO+3),BW*1,BH,"VF1","vf1",KBD_vf1);
-        AddKeyButtonEvent(PX(XO+1),PY(YO+3),BW*1,BH,"VF2","vf2",KBD_vf2);
-        AddKeyButtonEvent(PX(XO+0),PY(YO+4),BW*1,BH,"VF3","vf3",KBD_vf3);
-        AddKeyButtonEvent(PX(XO+1),PY(YO+4),BW*1,BH,"VF4","vf4",KBD_vf4);
-        AddKeyButtonEvent(PX(XO+2),PY(YO+4),BW*1,BH,"VF5","vf5",KBD_vf5);
-    }
-    else {
+    {
         /* F13-F24 block */
         AddKeyButtonEvent(PX(XO+0),PY(YO+0),BW,BH,"F13","f13",KBD_f13);
         AddKeyButtonEvent(PX(XO+1),PY(YO+0),BW,BH,"F14","f14",KBD_f14);

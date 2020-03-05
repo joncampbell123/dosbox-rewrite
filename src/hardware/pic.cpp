@@ -371,13 +371,7 @@ static void pc_xt_nmi_write(Bitu port,Bitu val,Bitu iolen) {
  *        ISA interrupts are edge triggered, not level triggered. */
 void PIC_ActivateIRQ(Bitu irq) {
     /* Remember what was once IRQ 2 on PC/XT is IRQ 9 on PC/AT */
-    if (IS_PC98_ARCH) {
-        if (irq == 7) {
-            LOG(LOG_PIC,LOG_ERROR)("Attempted to raise IRQ %u, which is cascade IRQ",(int)irq);
-            return; /* don't raise cascade IRQ */
-        }
-    }
-    else if (enable_slave_pic) { /* PC/AT emulation with slave PIC cascade to master */
+    if (enable_slave_pic) { /* PC/AT emulation with slave PIC cascade to master */
         if (irq == 2) irq = 9;
     }
     else { /* PC/XT emulation with only master PIC */
@@ -396,10 +390,7 @@ void PIC_ActivateIRQ(Bitu irq) {
 
 void PIC_DeActivateIRQ(Bitu irq) {
     /* Remember what was once IRQ 2 on PC/XT is IRQ 9 on PC/AT */
-    if (IS_PC98_ARCH) {
-        if (irq == 7) return;
-    }
-    else if (enable_slave_pic) { /* PC/AT emulation with slave PIC cascade to master */
+    if (enable_slave_pic) { /* PC/AT emulation with slave PIC cascade to master */
         if (irq == 2) irq = 9;
     }
     else { /* PC/XT emulation with only master PIC */
@@ -885,19 +876,11 @@ void PIC_Reset(Section *sec) {
             ignore_cascade_in_service = true;
         else if (x == "0" || x == "false")
             ignore_cascade_in_service = false;
-        else {
-            // auto
-            if (IS_PC98_ARCH)
-                ignore_cascade_in_service = true;
-            else
-                ignore_cascade_in_service = false;
-        }
+        else
+            ignore_cascade_in_service = false;
 
         LOG(LOG_MISC,LOG_DEBUG)("PIC: Ignore cascade in service=%u",ignore_cascade_in_service);
     }
-
-    if (!enable_slave_pic && IS_PC98_ARCH)
-        LOG(LOG_MISC,LOG_DEBUG)("PIC_Reset(): PC-98 emulation without slave PIC (IRQ 8-15) is unusual");
 
     /* NTS: This is a good guess. But the 8259 is static circuitry and not driven by a clock.
      *      But the ability to respond to interrupts is limited by the CPU, too. */
@@ -908,7 +891,7 @@ void PIC_Reset(Section *sec) {
     }
 
     if (enable_slave_pic)
-        master_cascade_irq = IS_PC98_ARCH ? 7 : 2;
+        master_cascade_irq = 2;
     else
         master_cascade_irq = -1;
 
@@ -932,29 +915,10 @@ void PIC_Reset(Section *sec) {
         pics[i].active_irq = 8;
     }
 
-    /* PC-98: By default (but an option otherwise)
-     *        initialize the PIC so that reading the command port
-     *        produces the ISR status not the IRR status.
-     *
-     *        The reason the option is on by default, is that there
-     *        is PC-98 programming literature that recommends reading
-     *        ISR status before acknowledging interrupts (to avoid
-     *        conflicts with other ISR handlers perhaps). So it's
-     *        probably a common convention.
-     *
-     * Notes: "Blackbird" by Vivian needs this in order for the FM interrupt
-     *        to continue working. A bug in the FM interrupt routine programs
-     *        only the master PIC into this mode but then reads from the slave
-     *        which is not necessarily initialized into this mode and may return
-     *        the IRR register instead, causing the game to misinterpret
-     *        incoming interrupts as in-service. */
-    if (IS_PC98_ARCH && section->Get_bool("pc-98 pic init to read isr"))
-        pics[0].request_issr = pics[1].request_issr = true;
-
     /* IBM: IRQ 0-15 is INT 0x08-0x0F, 0x70-0x7F
      * PC-98: IRQ 0-15 is INT 0x08-0x17 */
     master.vector_base = 0x08;
-    slave.vector_base = IS_PC98_ARCH ? 0x10 : 0x70;
+    slave.vector_base = 0x70;
 
     for (Bitu i=0;i < 16;i++)
         PIC_SetIRQMask(i,true);
@@ -980,19 +944,19 @@ void PIC_Reset(Section *sec) {
      * 0xA1             0x0A             1
      */
 
-    ReadHandler[0].Install(IS_PC98_ARCH ? 0x00 : 0x20,read_command,IO_MB);
-    ReadHandler[1].Install(IS_PC98_ARCH ? 0x02 : 0x21,read_data,IO_MB);
-    WriteHandler[0].Install(IS_PC98_ARCH ? 0x00 : 0x20,write_command,IO_MB);
-    WriteHandler[1].Install(IS_PC98_ARCH ? 0x02 : 0x21,write_data,IO_MB);
+    ReadHandler[0].Install(0x20,read_command,IO_MB);
+    ReadHandler[1].Install(0x21,read_data,IO_MB);
+    WriteHandler[0].Install(0x20,write_command,IO_MB);
+    WriteHandler[1].Install(0x21,write_data,IO_MB);
 
     /* the secondary slave PIC takes priority over PC/XT NMI mask emulation */
     if (enable_slave_pic) {
-        ReadHandler[2].Install(IS_PC98_ARCH ? 0x08 : 0xa0,read_command,IO_MB);
-        ReadHandler[3].Install(IS_PC98_ARCH ? 0x0A : 0xa1,read_data,IO_MB);
-        WriteHandler[2].Install(IS_PC98_ARCH ? 0x08 : 0xa0,write_command,IO_MB);
-        WriteHandler[3].Install(IS_PC98_ARCH ? 0x0A : 0xa1,write_data,IO_MB);
+        ReadHandler[2].Install(0xa0,read_command,IO_MB);
+        ReadHandler[3].Install(0xa1,read_data,IO_MB);
+        WriteHandler[2].Install(0xa0,write_command,IO_MB);
+        WriteHandler[3].Install(0xa1,write_data,IO_MB);
     }
-    else if (!IS_PC98_ARCH && enable_pc_xt_nmi_mask) {
+    else if (enable_pc_xt_nmi_mask) {
         PCXT_NMI_WriteHandler.Install(0xa0,pc_xt_nmi_write,IO_MB);
     }
 }

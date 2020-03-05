@@ -1058,7 +1058,7 @@ void SHELL_Init() {
 	VFILE_RegisterBuiltinFileBlob(bfb_BUFFERS_COM);
 
     /* These are IBM PC/XT/AT ONLY. They will not work in PC-98 mode. */
-    if (!IS_PC98_ARCH) {
+    {
         VFILE_RegisterBuiltinFileBlob(bfb_HEXMEM16_EXE);
         VFILE_RegisterBuiltinFileBlob(bfb_HEXMEM32_EXE);
         VFILE_RegisterBuiltinFileBlob(bfb_DOSIDLE_EXE);
@@ -1075,14 +1075,11 @@ void SHELL_Init() {
     }
 
     /* MEM.COM is not compatible with PC-98 and/or 8086 emulation */
-    if (!IS_PC98_ARCH && CPU_ArchitectureType >= CPU_ARCHTYPE_80186)
+    if (CPU_ArchitectureType >= CPU_ARCHTYPE_80186)
         VFILE_RegisterBuiltinFileBlob(bfb_MEM_COM);
 
     /* DSXMENU.EXE */
-    if (IS_PC98_ARCH)
-        VFILE_RegisterBuiltinFileBlob(bfb_DSXMENU_EXE_PC98);
-    else
-        VFILE_RegisterBuiltinFileBlob(bfb_DSXMENU_EXE_PC);
+    VFILE_RegisterBuiltinFileBlob(bfb_DSXMENU_EXE_PC);
 
     /* don't register 28.com unless EGA/VGA */
     if (IS_VGA_ARCH)

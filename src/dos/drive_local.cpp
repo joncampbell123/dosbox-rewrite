@@ -710,10 +710,7 @@ again:
 
 	if(strlen(dir_entcopy)<DOS_NAMELENGTH_ASCII){
 		strcpy(find_name,dir_entcopy);
-        if (IS_PC98_ARCH)
-            shiftjis_upcase(find_name);
-        else
-            upcase(find_name);
+        upcase(find_name);
     } 
 
 	find_size=(Bit32u) stat_block.st_size;
@@ -1064,7 +1061,7 @@ bool localFile::Read(Bit8u * data,Bit16u * size) {
 	/* Fake harddrive motion. Inspector Gadget with soundblaster compatible */
 	/* Same for Igor */
 	/* hardrive motion => unmask irq 2. Only do it when it's masked as unmasking is realitively heavy to emulate */
-    if (!IS_PC98_ARCH) {
+    {
         Bit8u mask = IO_Read(0x21);
         if(mask & 0x4 ) IO_Write(0x21,mask&0xfb);
     }

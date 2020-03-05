@@ -1925,11 +1925,6 @@ bool ParseCommand(char* str) {
     if (command == "VGA") {
         stream >> command;
 
-        if (IS_PC98_ARCH) {
-            DEBUG_ShowMsg("VGA debugger commands not available in PC-98 mode");
-            return false;
-        }
-
         if (command == "CRTC") {
             DEBUG_ShowMsg("VGA CRTC info: index=%02xh readonly=%u",vga.crtc.index,vga.crtc.read_only?1:0);
             DEBUG_ShowMsg("htotal=%02xh hdend=%02xh strhb=%02xh endhb=%02xh strrt=%02xh endrt=%02xh",

@@ -346,11 +346,7 @@ void CheckMapperKeyboardLayout(void) {
         SDL1_hax_ackLayoutChanged();
         LOG_MSG("Keyboard layout changed");
         KeyboardLayoutDetect();
-
-        if (host_keyboard_layout == DKM_JPN && IS_PC98_ARCH)
-            SetMapperKeyboardLayout(DKM_JPN_PC98);
-        else
-            SetMapperKeyboardLayout(host_keyboard_layout);
+        SetMapperKeyboardLayout(host_keyboard_layout);
     }
 #endif
 }
@@ -7251,11 +7247,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
         DOSBOX_InitTickLoop();
         DOSBOX_RealInit();
 
-        /* at this point: If the machine type is PC-98, and the mapper keyboard layout was "Japanese",
-         * then change the mapper layout to "Japanese PC-98" */
-        if (host_keyboard_layout == DKM_JPN && IS_PC98_ARCH)
-            SetMapperKeyboardLayout(DKM_JPN_PC98);
-
         /* more */
         {
             DOSBoxMenu::item *item;
@@ -7621,12 +7612,6 @@ fresh_boot:
 
             /* if instructed, turn off A20 at boot */
             if (disable_a20) MEM_A20_Enable(false);
-
-            /* PC-98: hide the cursor */
-            if (IS_PC98_ARCH) {
-                void PC98_show_cursor(bool show);
-                PC98_show_cursor(false);
-            }
 
             /* new code: fire event */
             DispatchVMEvent(VM_EVENT_GUEST_OS_BOOT);
