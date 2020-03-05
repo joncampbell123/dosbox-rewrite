@@ -208,9 +208,6 @@ typedef struct {
 	Bit8u monochrome_bright;
 } VGA_Draw;
 
-/* enable switch for the "alternative video system" */
-extern bool vga_alt_new_mode;
-
 /* NTS: Usage of this general struct will vary between the various video modes.
  *
  *      MDA/Hercules/CGA/PCjr/Tandy: Video hardware is based on the 6845 which

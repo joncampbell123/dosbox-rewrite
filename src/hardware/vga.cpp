@@ -157,7 +157,6 @@ void VGA_CaptureMarkError(void);
 bool VGA_CaptureValidateCurrentFrame(void);
 
 bool                                vga_8bit_dac = false;
-bool                                vga_alt_new_mode = false;
 bool                                enable_vga_8bit_dac = true;
 
 extern int                          vga_memio_delay_ns;
