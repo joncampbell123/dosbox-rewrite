@@ -96,19 +96,7 @@ class Section;
 #endif
 
 enum MachineType {
-	MCH_DEL_HERC,
-	MCH_DEL_CGA,
-	MCH_DEL_TANDY,
-	MCH_DEL_PCJR,
-	MCH_DEL_EGA,
-	MCH_VGA,
-	MCH_DEL_AMSTRAD,
-	MCH_DEL_PC98,
-
-    MCH_DEL_FM_TOWNS,                    // STUB!!
-
-    MCH_DEL_MCGA,                        // IBM PS/2 model 30 Multi-Color Graphics Adapter
-    MCH_DEL_MDA
+	MCH_VGA
 };
 
 enum SVGACards {
