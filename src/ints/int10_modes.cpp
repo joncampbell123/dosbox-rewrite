@@ -964,12 +964,8 @@ bool INT10_SetVideoMode(Bit16u mode) {
 	
 	if (CurMode->special & _EGA_HALF_CLOCK) seq_data[1]|=0x08; //Check for half clock
 
-	if (IS_VGA_ARCH || (IS_EGA_ARCH && vga.mem.memsize >= 0x20000))
+	if (IS_VGA_ARCH)
         seq_data[4]|=0x02;	//More than 64kb
-    else if (IS_EGA_ARCH && CurMode->vdispend==350) {
-        seq_data[4] &= ~0x04; // turn on odd/even
-        seq_data[1] |= 0x04; // half clock
-    }
 
 	switch (CurMode->type) {
 	case M_TEXT:
@@ -1217,11 +1213,8 @@ bool INT10_SetVideoMode(Bit16u mode) {
 		offset = 4 * CurMode->swidth/8;
 		break;
     case M_EGA:
-        if (IS_EGA_ARCH && vga.mem.memsize < 0x20000 && CurMode->vdispend==350)
-            offset = CurMode->hdispend/4;
-        else
-            offset = CurMode->hdispend/2;
-		break;
+        offset = CurMode->hdispend/2;
+        break;
 	default:
         offset = CurMode->hdispend/2;
         break;
@@ -1257,9 +1250,6 @@ bool INT10_SetVideoMode(Bit16u mode) {
             mode_control=0xc3; // so.. 0x11 or 0x0f a one off?
         else
             mode_control=0xe3;
-
-        if (IS_EGA_ARCH && vga.mem.memsize < 0x20000 && CurMode->vdispend==350)
-            mode_control &= ~0x40; // word mode
 		break;
 	case M_TEXT:
 	case M_VGA:
@@ -1276,9 +1266,6 @@ bool INT10_SetVideoMode(Bit16u mode) {
 	default:
 		break;
 	}
-
-    if (IS_EGA_ARCH && vga.mem.memsize < 0x20000)
-        mode_control &= ~0x20; // address wrap bit 13
 
     IO_Write(crtc_base, 0x17); IO_Write(crtc_base + 1u, mode_control);
 	/* Renable write protection */
@@ -1349,11 +1336,6 @@ bool INT10_SetVideoMode(Bit16u mode) {
 		break;
 	case M_LIN4:
 	case M_EGA:
-        if (IS_EGA_ARCH && vga.mem.memsize < 0x20000 && CurMode->vdispend==350) {
-            gfx_data[0x5]|=0x10;		//Odd-Even Mode
-            gfx_data[0x6]|=0x02;		//Odd-Even Mode
-	        gfx_data[0x7]=0x5;			/* Color don't care */
-        }
 		gfx_data[0x6]|=0x05;		//graphics mode at 0xa000-affff
 		break;
 	case M_CGA4:

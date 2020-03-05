@@ -56,7 +56,7 @@ static Bit16u map_offset[8]={
 void INT10_LoadFont(PhysPt font,bool reload,Bit16u count,Bitu offset,Bitu map,Bit8u height) {
     unsigned char m64k;
 
-	if (IS_VGA_ARCH || (IS_EGA_ARCH && vga.mem.memsize >= 0x20000))
+	if (IS_VGA_ARCH)
         m64k=0x02;
     else
         m64k = 0x00;

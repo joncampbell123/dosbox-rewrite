@@ -1070,8 +1070,6 @@ void SHELL_Init() {
 
         if (IS_VGA_ARCH)
             VFILE_RegisterBuiltinFileBlob(bfb_25_COM);
-        else if (IS_EGA_ARCH)
-            VFILE_RegisterBuiltinFileBlob(bfb_25_COM_ega);
         else
             VFILE_RegisterBuiltinFileBlob(bfb_25_COM_other);
     }
@@ -1089,8 +1087,6 @@ void SHELL_Init() {
     /* don't register 28.com unless EGA/VGA */
     if (IS_VGA_ARCH)
         VFILE_RegisterBuiltinFileBlob(bfb_28_COM);
-    else if (IS_EGA_ARCH)
-        VFILE_RegisterBuiltinFileBlob(bfb_28_COM_ega);
 
 	/* don't register 50 unless VGA */
 	if (IS_VGA_ARCH) VFILE_RegisterBuiltinFileBlob(bfb_50_COM);

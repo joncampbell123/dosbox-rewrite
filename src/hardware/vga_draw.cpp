@@ -2589,9 +2589,6 @@ void VGA_CheckScanLength(void) {
     case M_EGA:
     case M_LIN4:
         vga.draw.address_add=vga.config.scan_len*(8u<<(unsigned int)vga.config.addr_shift);
-
-        if (IS_EGA_ARCH && (vga.seq.clocking_mode&4))
-            vga.draw.address_add*=2;
         break;
     case M_PACKED4:
         vga.draw.address_add=vga.config.scan_len*8;
@@ -3068,9 +3065,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
         if (vga.config.compatible_chain4 || svgaCard == SVGA_None)
             vga.draw.linear_mask &= 0x3FFFF;
     }
-    else if (IS_EGA_ARCH) {
-        vga.draw.linear_mask &= 0x3FFFF;
-    }
 
     if (IS_EGAVGA_ARCH)
         vga.draw.planar_mask = vga.draw.linear_mask >> 2;
@@ -3152,15 +3146,7 @@ void VGA_SetupDrawing(Bitu /*val*/) {
     case M_EGA:
         vga.draw.blocks = width;
 
-        if (IS_EGA_ARCH) {
-            if (vga_alt_new_mode)
-                VGA_DrawLine = Alt_EGA_Planar_Draw_Line;
-            else
-                VGA_DrawLine = EGA_Draw_VGA_Planar_Xlat8_Line;
-
-            bpp = 8;
-        }
-        else {
+        {
             if (vga_alt_new_mode)
                 VGA_DrawLine = Alt_VGA_Planar_Draw_Line;
             else
@@ -3175,16 +3161,7 @@ void VGA_SetupDrawing(Bitu /*val*/) {
         VGA_DrawLine=VGA_Draw_CGA16_Line;
         break;
     case M_CGA4:
-        if (IS_EGA_ARCH) {
-            vga.draw.blocks=width;
-            if (vga_alt_new_mode)
-                VGA_DrawLine=Alt_EGA_2BPP_Draw_Line;
-            else
-                VGA_DrawLine=EGA_Draw_2BPP_Line_as_EGA;
-
-            bpp = 8;
-        }
-        else if (IS_EGAVGA_ARCH || IS_PC98_ARCH) {
+        if (IS_EGAVGA_ARCH || IS_PC98_ARCH) {
             vga.draw.blocks=width;
             if (vga_alt_new_mode)
                 VGA_DrawLine=Alt_VGA_2BPP_Draw_Line;
@@ -3210,16 +3187,7 @@ void VGA_SetupDrawing(Bitu /*val*/) {
         // the 16-color planar renderer. The MEM13 bit is configured to replace address bit 13 with
         // character row counter bit 0 to match CGA memory layout, doublescan is set (as if 320x200),
         // max_scanline is set to 1 (2 lines).
-        if (IS_EGA_ARCH) {
-            vga.draw.blocks=width;
-            if (vga_alt_new_mode)
-                VGA_DrawLine=Alt_EGA_Planar_Draw_Line;
-            else
-                VGA_DrawLine=EGA_Draw_1BPP_Line_as_EGA;
-
-            bpp = 8;
-        }
-        else if (IS_EGAVGA_ARCH) {
+        if (IS_EGAVGA_ARCH) {
             vga.draw.blocks=width;
             if (vga_alt_new_mode)
                 VGA_DrawLine=Alt_VGA_Planar_Draw_Line;
@@ -3258,14 +3226,7 @@ void VGA_SetupDrawing(Bitu /*val*/) {
             vga.draw.char9dot = true;
         }
 
-        if (IS_EGA_ARCH) {
-            if (vga_alt_new_mode)
-                VGA_DrawLine = Alt_EGA_TEXT_Xlat8_Draw_Line;
-            else
-                VGA_DrawLine = EGA_TEXT_Xlat8_Draw_Line;
-            bpp = 8;
-        }
-        else {
+        {
             if (vga_alt_new_mode)
                 VGA_DrawLine = Alt_VGA_TEXT_Xlat32_Draw_Line;
             else
