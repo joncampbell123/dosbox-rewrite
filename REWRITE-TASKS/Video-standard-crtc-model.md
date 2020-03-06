@@ -151,3 +151,23 @@ _TODO: Write a DOSLIB utility to measure VRAM writing speed a) display enabled a
 
 _TODO: Wait states on MDA? EGA? MCGA? VGA (stock IBM PS/2 model 30)?_
 
+# Standard video display model: Dot clock to monitor output and monitor-specific emulation
+
+Instead of just rendering active display and starting the scanline on the left edge, video emulation would be treated as a continuous sequence of pixels along with hsync/vsync signals that monitor emulation would then draw scanline by scanline.
+
+"perfect" monitor mode would function just like it does now in DOSBox SVN and DOSBox-X.
+
+Otherwise, the monitor code would draw out the line based on what it thinks the htotal is, but begin to retrace if hsync active. It would "hunt" to match horizontal timing in the same way a real CRT monitor would. Same with vsync. If htotal is changed during active display, then it _should_ result in distortion at that point because that is what a monitor would do.
+
+Monitor emulation may emulate an older fixed frequency monitor that is either fixed to specific horizontal frequencies (and will distort if outside tolerance) or will detect and lock to one or more specific sync rates (and distort if outside tolerance). Same rule applies to vertical sync as well, in which case out of tolerance rates will result in a rolling picture as expected.
+
+Mode changes made without consideration for active display should also result in a momentary jump in the picture as the CRT (emulation) re-synchronizes with the signal.
+
+Monitor emulation may emulate newer CRTs that blank the display if the signal is out of range as modern CRTs will do.
+
+Monitor emulation may emulate LCD flat panel display quirks as well, if desired.
+
+# Standard video display model: EDID and sense pin emulation.
+
+Monitor emulation will be designed at some point to support reading EDID from the VGA card, or if an older monitor, by the various sense pins used in early VGA systems that if grounded signal whether the monitor is color/monochrome or can do 1024x768i high resolution.
+
