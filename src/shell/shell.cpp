@@ -358,7 +358,8 @@ void DOS_Shell::Run(void) {
 	char input_line[CMD_MAXLINE] = {0};
 	std::string line;
 	if (cmd->FindStringRemainBegin("/C",line)) {
-		strncpy(input_line,line.c_str(),CMD_MAXLINE);
+		input_line[CMD_MAXLINE-1u] = 0;
+		strncpy(input_line,line.c_str(),CMD_MAXLINE-1u);
 		char* sep = strpbrk(input_line,"\r\n"); //GTA installer
 		if (sep) *sep = 0;
 		DOS_Shell temp;
@@ -383,7 +384,8 @@ void DOS_Shell::Run(void) {
     }
 
 	if (cmd->FindString("/INIT",line,true)) {
-		strncpy(input_line,line.c_str(),CMD_MAXLINE);
+		input_line[CMD_MAXLINE-1u] = 0;
+		strncpy(input_line,line.c_str(),CMD_MAXLINE-1u);
 		line.erase();
 		ParseLine(input_line);
 	}
@@ -1073,16 +1075,16 @@ void SHELL_Init() {
             VFILE_RegisterBuiltinFileBlob(bfb_25_COM_other);
     }
 
-    /* MEM.COM is not compatible with PC-98 and/or 8086 emulation */
-    if (CPU_ArchitectureType >= CPU_ARCHTYPE_80186)
-        VFILE_RegisterBuiltinFileBlob(bfb_MEM_COM);
+	/* MEM.COM is not compatible with PC-98 and/or 8086 emulation */
+	if (CPU_ArchitectureType >= CPU_ARCHTYPE_80186)
+		VFILE_RegisterBuiltinFileBlob(bfb_MEM_COM);
 
-    /* DSXMENU.EXE */
-    VFILE_RegisterBuiltinFileBlob(bfb_DSXMENU_EXE_PC);
+	/* DSXMENU.EXE */
+	VFILE_RegisterBuiltinFileBlob(bfb_DSXMENU_EXE_PC);
 
-    /* don't register 28.com unless EGA/VGA */
-    if (IS_VGA_ARCH)
-        VFILE_RegisterBuiltinFileBlob(bfb_28_COM);
+	/* don't register 28.com unless EGA/VGA */
+	if (IS_VGA_ARCH)
+		VFILE_RegisterBuiltinFileBlob(bfb_28_COM);
 
 	/* don't register 50 unless VGA */
 	if (IS_VGA_ARCH) VFILE_RegisterBuiltinFileBlob(bfb_50_COM);
