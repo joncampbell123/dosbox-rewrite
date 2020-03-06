@@ -155,9 +155,6 @@ typedef struct {
 	bool has_split;
 	bool vret_triggered;
 	bool vga_override;
-	static constexpr bool doublescan_set = true;
-	static constexpr bool doublescan_effect = true;
-	static constexpr bool char9_set = true;
 	Bitu bpp;
 	double clock;
 	double oscclock;

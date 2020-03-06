@@ -179,9 +179,6 @@ void vga_write_p3d5(Bitu port,Bitu val,Bitu /*iolen*/) {
 
         unsigned char chk = 0x20;
 
-        if (!vga.draw.doublescan_set)
-            chk |= 0x81; /* doublescan + LSB of maximum scanline */
-
 		if ((old ^ val) & chk) VGA_StartResize();
 		vga.draw.address_line_total = (val & 0x1F) + 1;
 		if (val&0x80) vga.draw.address_line_total *= 2;

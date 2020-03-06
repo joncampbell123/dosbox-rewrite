@@ -1172,8 +1172,8 @@ void VGA_SetupDrawing(Bitu /*val*/) {
     switch (vga.mode) {
     case M_TEXT:
         vga.draw.blocks=width;
-        // if char9_set is true, allow 9-pixel wide fonts
-        if ((vga.seq.clocking_mode&0x01) || !vga.draw.char9_set) {
+        // allow 9-pixel wide fonts
+        if ((vga.seq.clocking_mode&0x01)) {
             // 8-pixel wide
             pix_per_char = 8;
             vga.draw.char9dot = false;
