@@ -123,17 +123,17 @@ AC_COMPILE_IFELSE([AC_LANG_SOURCE([
 dnl C++0x is now considered deprecated.
 dnl This warning will stay here for a long enough period of time before making C++11 mandatory.
 
-dnl AC_CHECK_CXXFLAGS will prepend gnu++11 to CXXFLAGS if supported, for us.
+dnl AC_CHECK_CXXFLAGS will prepend gnu++14 to CXXFLAGS if supported, for us.
 dnl our code adds -std=gnu++0x if not supported where the function would not do anything.
 dnl This code checks the CXX flags but does not keep the changes because AC_CHECK_CXXFLAGS
 dnl also adds it to CPPFLAGS which then also affects the C compilation (with warnings like
-dnl "-std=gnu++11 is not valid for C")
+dnl "-std=gnu++14 is not valid for C")
 OLDCFLAGS="$CFLAGS"
 OLDCPPFLAGS="$CPPFLAGS"
 OLDCXXFLAGS="$CXXFLAGS"
 
 AC_MSG_CHECKING([checking for C++11 support])
-AC_CHECK_CXXFLAGS([ -std=gnu++11 ], [  ], [
+AC_CHECK_CXXFLAGS([ -std=gnu++14 ], [  ], [
     warn_cpp0x=1
 ])
 
@@ -146,7 +146,7 @@ if test x$warn_cpp0x = x1; then
 fi
 
 CFLAGS="$CFLAGS -std=gnu11";
-CXXFLAGS="$CXXFLAGS -std=gnu++11";
+CXXFLAGS="$CXXFLAGS -std=gnu++14";
 
 dnl yksoft1 wants a MinGW build for Windows that doesn't use the Windows menu system.
 AH_TEMPLATE(C_FORCE_MENU_SDLDRAW,[Define to 1 to force SDL-drawn menus])
@@ -383,7 +383,7 @@ case "$host" in
        dnl to do more to distinguish them.
        dnl For now I am lazy and do not add proper detection code.
        macosx=1
-       OBJCXXFLAGS="$OBJCXXFLAGS -std=gnu++11";
+       OBJCXXFLAGS="$OBJCXXFLAGS -std=gnu++14";
        AC_DEFINE(MACOSX, 1, [Compiling on Mac OS X])
        LIBS="$LIBS -framework Carbon -framework CoreFoundation -framework CoreMIDI -framework AudioUnit -framework AudioToolbox -framework ApplicationServices -framework AppKit"
        dnl FEATURE: Whether to support direct serial port passthrough
