@@ -1,0 +1,21 @@
+"I don't think I see anything in there about wait states? On real hardware,
+the video output circuitry (RAMDAC, or whatever they called its predecessors
+in CGA days) VRAM access is mutually exclusive with CPU access."
+
+"So you want to emulate at which cycles the video output fetches from VRAM, and
+put a waitstate on the bus to block CPU access. This mechanism would also
+allow you to emulate CGA snow accurately."
+
+"CGA snow occurs because in 80c mode, CGA requires twice the VRAM bandwidth,
+but it does not insert extra waitstates. Instead, CPU gets precendence on the
+bus. This means that some reads can be corrupted, and the video output circuit
+receives whatever data is on the bus."
+
+"Yes, if the CPU wants to write to VRAM, it will have to wait until the video
+card releases the wait state. I believe in 80c it still has the same wait
+state pattern, so half of the VRAM reads block the CPU, the other half does
+not."
+
+"Which would explain the pattern you saw, where some columns are always
+snow-free, and others may get snow, depending on the CPU access pattern."
+

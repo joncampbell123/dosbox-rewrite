@@ -129,3 +129,11 @@ For EGA/VGA, non-blanking areas outside the active display area will be filled w
 
 VGA emulation can change htotal during active display, which is not recommended, but should be emulated to show the picture distortion that results when a DOS program fiddles with hsync/htotal during active display. Monitor emulation is expected to render a distorted display in the manner that a CRT would handle it.
 
+# Standard video memory model: Video RAM wait states
+
+CGA video memory uses wait state signals to prevent the CPU from writing while fetching from video RAM. However 80x25 mode requires twice the bandwidth, while the wait state logic is not changed to reflect that. Noted by a DOSLIB testing utility, is that the CGA snow will occupy every other column, which suggests the wait states are applied every character clock except in 80x25 where wait states only apply every other clock. [@Scalibq notes 20200306-1327-Twitter.txt]
+
+_TODO: Write a DOSLIB utility to measure VRAM writing speed a) display enabled and then b) display disabled/blanked, several times, to try to measure the exact delay caused by the wait states. This test should be done in all CGA modes. Blanking the display should mean no VRAM access by the card and therefore no wait states... I think_
+
+_TODO: Wait states on MDA? EGA? MCGA? VGA (stock IBM PS/2 model 30)?_
+
