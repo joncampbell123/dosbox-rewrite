@@ -111,6 +111,13 @@ PC-98 graphics will be stored as an array of 64-bit QWORDs, 16-bits per plane. F
     00b    10b    01b    11b        Binary value, bits swapped
     0      2      1      3          Decimal value of binary value after bits swapped
 
+## Summary of "fundamental datatypes" for video memory storage
+
+    uint16_t        uint8_t[2]      CGA/MDA/Hercules (PCJr?) (Tandy?) (Amstrad?) (Colorplus?)
+    uint32_t        uint8_t[4]      EGA/VGA/Some SVGA
+    uint64_t        uint16_t[4]     PC-9801/PC-9821
+    ?               ?               SVGA (will depend on SVGA chipset in the future and how VRAM is wired to it)
+
 # Standard video timing model: Separation of VGA registers from timing tracking
 
 To help keep the code clean, the rewrite will track timing from raster state that is updated from VGA registers, but will not directly count from VGA registers. This is to avoid the mess seen in current DOSBox SVN code and forks which uses the VGA register values directly all over the place, and to simplify video raster emulation. Note that the mess makes it more difficult to implement additional SVGA cards and requires other SVGA hardware to patch into S3 registers, or the mode setting code to implement a case for each new SVGA card.
