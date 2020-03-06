@@ -155,6 +155,10 @@ _TODO: Wait states on MDA? EGA? MCGA? VGA (stock IBM PS/2 model 30)?_
 
 Instead of just rendering active display and starting the scanline on the left edge, video emulation would be treated as a continuous sequence of pixels along with hsync/vsync signals that monitor emulation would then draw scanline by scanline.
 
+Monitor emulation does not need to be given hblank/border signals since those are part of the RGB signals sent by VGA. VGA emulation is responsible for generating pixels for blanking and border color.
+
+I intend that in the future the monitor emulation can overlay some sort of hatched bar or marching ants on the screen if hsync/vsync are active at that part of the emulator window, and that the user can ask the emulator to display the entire raster (htotal/vtotal) to see what the hardware is doing.
+
 "perfect" monitor mode would function just like it does now in DOSBox SVN and DOSBox-X.
 
 Otherwise, the monitor code would draw out the line based on what it thinks the htotal is, but begin to retrace if hsync active. It would "hunt" to match horizontal timing in the same way a real CRT monitor would. Same with vsync. If htotal is changed during active display, then it _should_ result in distortion at that point because that is what a monitor would do.
@@ -166,6 +170,8 @@ Mode changes made without consideration for active display should also result in
 Monitor emulation may emulate newer CRTs that blank the display if the signal is out of range as modern CRTs will do.
 
 Monitor emulation may emulate LCD flat panel display quirks as well, if desired.
+
+Monitor emulation, if the user wants the raster beyond active display and border, should use hsync/vsync to center the active display (bordered by blanking and border color) as a CRT monitor would do.
 
 # Standard video display model: EDID and sense pin emulation.
 
