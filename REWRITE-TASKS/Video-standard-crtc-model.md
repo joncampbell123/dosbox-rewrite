@@ -119,6 +119,12 @@ PC-98 graphics will be stored as an array of 64-bit QWORDs, 16-bits per plane. F
     uint64_t        uint16_t[4]     PC-9801/PC-9821
     ?               ?               SVGA (will depend on SVGA chipset in the future and how VRAM is wired to it)
 
+## Other notes
+
+- Intel 8xx/9xx graphics chipsets seem to maintain a "VGA engine" for legacy modes which faithfully emulate the 4 bitplane arragnement, yet peering into actual video RAM shows an apparent 64-bit memory layout in which the VGA bitplanes occupy the first 4 bytes (lowest 32 bits).
+- Later SVGA cards claim 64-bit memory, so emulation of those would use a fundamental datatype that is 64-bit. How legacy VGA maps into that is specific to the chipset.
+- Depending on SVGA chipset emulation, video memory may require typecasting to another fundamental unit depending on register settings.
+
 # Standard video timing model: Separation of VGA registers from timing tracking
 
 To help keep the code clean, the rewrite will track timing from raster state that is updated from VGA registers, but will not directly count from VGA registers. This is to avoid the mess seen in current DOSBox SVN code and forks which uses the VGA register values directly all over the place, and to simplify video raster emulation. Note that the mess makes it more difficult to implement additional SVGA cards and requires other SVGA hardware to patch into S3 registers, or the mode setting code to implement a case for each new SVGA card.
