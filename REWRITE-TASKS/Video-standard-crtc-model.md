@@ -114,6 +114,7 @@ PC-98 graphics will be stored as an array of 64-bit QWORDs, 16-bits per plane. F
 ## Summary of "fundamental datatypes" for video memory storage
 
     uint16_t        uint8_t[2]      CGA/MDA/Hercules (PCJr?) (Tandy?) (Amstrad?) (Colorplus?)
+    uint16_t        uint16_t[1]     PC-9801/PC-9821 text layer. One memory region for text, another for attributes.
     uint32_t        uint8_t[4]      EGA/VGA/Some SVGA
     uint64_t        uint16_t[4]     PC-9801/PC-9821
     ?               ?               SVGA (will depend on SVGA chipset in the future and how VRAM is wired to it)
