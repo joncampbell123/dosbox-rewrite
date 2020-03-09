@@ -382,22 +382,11 @@ void MEM_ResetPageHandler_Unmapped(Bitu phys_page, Bitu pages);
 void MEM_ResetPageHandler_RAM(Bitu phys_page, Bitu pages);
 
 void VGA_SetupHandlers(void) {
-	PageHandler *newHandler;
-	switch (machine) {
-	case EGAVGA_ARCH_CASE:
-        break;
-	default:
-		LOG_MSG("Illegal machine type %d", machine );
-		return;
-	}
-
-    /* This should be vga only */
-    newHandler = &vgaph.uvga;
     vgapages.base = VGA_PAGE_B8;
     vgapages.mask = 0x7fff & vga.mem.memmask;
-    MEM_SetPageHandler( VGA_PAGE_B8, 8, newHandler );
+    MEM_SetPageHandler( VGA_PAGE_B8, 8,  &vgaph.uvga  );
     MEM_SetPageHandler( VGA_PAGE_A0, 16, &vgaph.empty );
-    MEM_SetPageHandler( VGA_PAGE_B0, 8, &vgaph.empty );
+    MEM_SetPageHandler( VGA_PAGE_B0, 8,  &vgaph.empty );
 
     non_cga_ignore_oddeven_engage = false;
 
