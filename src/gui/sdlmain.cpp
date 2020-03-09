@@ -3524,8 +3524,6 @@ static void HandleVideoResize(void * event) {
 }
 #endif
 
-extern unsigned int mouse_notify_mode;
-
 bool user_cursor_locked = false;
 MOUSE_EMULATION user_cursor_emulation = MOUSE_EMULATION_NEVER;
 int user_cursor_x = 0,user_cursor_y = 0;
@@ -4316,13 +4314,13 @@ static void HandleMouseButton(SDL_MouseButtonEvent * button) {
     switch (button->state) {
     case SDL_PRESSED:
         if (inMenu || !inputToScreen) return;
-        if (sdl.mouse.requestlock && !sdl.mouse.locked && mouse_notify_mode == 0) {
+        if (sdl.mouse.requestlock && !sdl.mouse.locked) {
             CaptureMouseNotify();
             GFX_CaptureMouse();
             // Don't pass click to mouse handler
             break;
         }
-        if (!sdl.mouse.autoenable && sdl.mouse.autolock && mouse_notify_mode == 0 && button->button == SDL_BUTTON_MIDDLE) {
+        if (!sdl.mouse.autoenable && sdl.mouse.autolock && button->button == SDL_BUTTON_MIDDLE) {
             GFX_CaptureMouse();
             break;
         }
