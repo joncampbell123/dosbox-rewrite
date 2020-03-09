@@ -2007,13 +2007,13 @@ bool ParseCommand(char* str) {
 
             DEBUG_ShowMsg("VGA Attribute Controller info: attrindexmode=%u",vga.internal.attrindex?1:0);
             DEBUG_ShowMsg("mode_control=%02xh horz-pel-pan=%02xh overscan-color=%02xh",
-                vga.attr.mode_control,  vga.attr.horizontal_pel_panning,
-                vga.attr.overscan_color);
+                vga.attr.mode_control,  0,
+                0);
             DEBUG_ShowMsg("color-plane-en=%02xh color-select=%02xh index=%02xh",
-                vga.attr.color_plane_enable,    vga.attr.color_select,  vga.attr.index);
+                0xF,    0xF,  vga.attr.index);
             DEBUG_ShowMsg("disabled-by-index=%u disabled-by-idx1-bit5=%u index-written=%u",
-                (vga.attr.disabled & 1) ? 1 : 0,
-                (vga.attr.disabled & 2) ? 1 : 0,
+                0,
+                0,
                 vga.internal.attrindex);
 
             cpptmp = " ";
@@ -2068,7 +2068,7 @@ bool ParseCommand(char* str) {
                 (unsigned long)vga.config.line_compare,
                 vga.config.chained,
                 (unsigned int)vga.config.compatible_chain4,
-                (unsigned int)vga.config.pel_panning,
+                (unsigned int)0,
                 (unsigned int)vga.config.hlines_skip);
             DEBUG_ShowMsg("byte-skip=%u addr-shift=%u rd-mode=%u wr-mode=%u rdmap-sel=%u",
                 (unsigned int)vga.config.bytes_skip,

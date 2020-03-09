@@ -653,7 +653,6 @@ bool INT10_SetVideoMode(Bit16u mode) {
 			IO_Write(0x3c0,ct);
 			IO_Write(0x3c0,att_data[ct]);
 		}
-		vga.config.pel_panning = 0;
 		IO_Write(0x3c0,0x20); IO_Write(0x3c0,0x00); //Disable palette access
 		IO_Write(0x3c6,0xff); //Reset Pelmask
 		/* Setup the DAC */
@@ -698,7 +697,6 @@ bool INT10_SetVideoMode(Bit16u mode) {
 			IO_Write(0x3c0,ct);
 			IO_Write(0x3c0,att_data[ct]);
 		}
-		vga.config.pel_panning = 0;
 	}
 	/* Write palette register data to dynamic save area if pointer is non-zero */
 	RealPt vsavept=real_readd(BIOSMEM_SEG,BIOSMEM_VS_POINTER);

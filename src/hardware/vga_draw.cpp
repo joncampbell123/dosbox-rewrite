@@ -266,18 +266,6 @@ static void VGA_ProcessSplit() {
     vga.draw.address_line=0;
 }
 
-static Bit8u bg_color_index = 0; // screen-off black index
-static Bit8u VGA_GetBlankedIndex() {
-    if (vga.dac.xlat16[bg_color_index] != 0) {
-        for(Bitu i = 0; i < 256; i++)
-            if (vga.dac.xlat16[i] == 0) {
-                bg_color_index = i;
-                break;
-            }
-    }
-    return bg_color_index;
-}
-
 /* this is now called PER LINE because most VGA cards do not double-buffer the value.
  * a few demos rely on line compare schenanigans to play with the raster, as does my own VGA test program --J.C. */
 void VGA_Update_SplitLineCompare() {
@@ -299,55 +287,7 @@ again:
         vga.draw.render_step = 0;
 
     if (!skiprender) {
-        if (GCC_UNLIKELY(vga.attr.disabled)) {
-            switch(machine) {
-                case MCH_VGA:
-                    // DoWhackaDo, Alien Carnage, TV sports Football
-                    // when disabled by attribute index bit 5:
-                    //  ET3000, ET4000, Paradise display the border color
-                    //  S3 displays the content of the currently selected attribute register
-                    // when disabled by sequencer the screen is black "257th color"
-
-                    // the DAC table may not match the bits of the overscan register
-                    // so use black for this case too...
-                    //if (vga.attr.disabled& 2) {
-                    VGA_GetBlankedIndex();
-                    //} else 
-                    //    bg_color_index = vga.attr.overscan_color;
-                    break;
-                default:
-                    bg_color_index = 0;
-                    break;
-            }
-            if (vga.draw.bpp==8) {
-                memset(TempLine, bg_color_index, sizeof(TempLine));
-            } else if (vga.draw.bpp==16) {
-                Bit16u* wptr = (Bit16u*) TempLine;
-                Bit16u value = vga.dac.xlat16[bg_color_index];
-                for (Bitu i = 0; i < sizeof(TempLine)/2; i++) {
-                    wptr[i] = value;
-                }
-            } else if (vga.draw.bpp==32) {
-                Bit32u* wptr = (Bit32u*) TempLine;
-                Bit32u value = vga.dac.xlat32[bg_color_index];
-                for (Bitu i = 0; i < sizeof(TempLine)/4; i++) {
-                    wptr[i] = value;
-                }
-            }
-
-            if (vga_page_flip_occurred) {
-                memxor(TempLine,0xFF,vga.draw.width*(vga.draw.bpp>>3));
-                vga_page_flip_occurred = false;
-            }
-            if (vga_3da_polled) {
-                if (vga.draw.bpp==32)
-                    memxor_greendotted_32bpp((uint32_t*)TempLine,(vga.draw.width>>1)*(vga.draw.bpp>>3),vga.draw.lines_done);
-                else
-                    memxor_greendotted_16bpp((uint16_t*)TempLine,(vga.draw.width>>1)*(vga.draw.bpp>>3),vga.draw.lines_done);
-                vga_3da_polled = false;
-            }
-            RENDER_DrawLine(TempLine);
-        } else {
+        {
             Bit8u * data=VGA_DrawLine( vga.draw.address, vga.draw.address_line );
             if (vga_page_flip_occurred) {
                 memxor(data,0xFF,vga.draw.width*(vga.draw.bpp>>3));
@@ -397,20 +337,6 @@ again:
         RENDER_EndUpdate(false);
     }
 
-    /* some VGA cards (ATI chipsets especially) do not double-buffer the
-     * horizontal panning register. some DOS demos take advantage of that
-     * to make the picture "waver".
-     *
-     * We stop doing this though if the attribute controller is setup to set hpel=0 at splitscreen. */
-    if (IS_VGA_ARCH && vga_enable_hpel_effects) {
-        /* Attribute Mode Controller: If bit 5 (Pixel Panning Mode) is set, then upon line compare the bottom portion is displayed as if Pixel Shift Count and Byte Panning are set to 0.
-         * This ensures some demos like Future Crew "Yo" display correctly instead of the bottom non-scroller half jittering because the top half is scrolling. */
-        if (vga.draw.has_split && (vga.attr.mode_control&0x20))
-            vga.draw.panning = 0;
-        else
-            vga.draw.panning = vga.config.pel_panning;
-    }
-
     if (IS_EGAVGA_ARCH && !vga_double_buffered_line_compare) VGA_Update_SplitLineCompare();
 }
 
@@ -426,10 +352,7 @@ static void VGA_DrawEGASingleLine(Bitu /*blah*/) {
         vga.draw.render_step = 0;
 
     if (!skiprender) {
-        if (GCC_UNLIKELY(vga.attr.disabled)) {
-            memset(TempLine, 0, sizeof(TempLine));
-            RENDER_DrawLine(TempLine);
-        } else {
+        {
             Bitu address = vga.draw.address;
             {
                 switch (vga.mode) {
@@ -507,7 +430,6 @@ static void VGA_DisplayStartLatch(Bitu /*val*/) {
 }
  
 static void VGA_PanningLatch(Bitu /*val*/) {
-    vga.draw.panning = vga.config.pel_panning;
 }
 
 extern SDL_Rect                            vga_capture_current_rect;
@@ -858,12 +780,10 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
     // add the draw event
     switch (vga.draw.mode) {
     case DRAWLINE:
-    case EGALINE:
         if (GCC_UNLIKELY(vga.draw.lines_done < vga.draw.lines_total)) {
             LOG(LOG_VGAMISC,LOG_NORMAL)( "Lines left: %d", 
                 (int)(vga.draw.lines_total-vga.draw.lines_done));
-            if (vga.draw.mode==EGALINE) PIC_RemoveEvents(VGA_DrawEGASingleLine);
-            else PIC_RemoveEvents(VGA_DrawSingleLine);
+            PIC_RemoveEvents(VGA_DrawSingleLine);
             vga_mode_frames_since_time_base++;
 
             if (VGA_IsCaptureEnabled())
@@ -872,9 +792,7 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
             RENDER_EndUpdate(true);
         }
         vga.draw.lines_done = 0;
-        if (vga.draw.mode==EGALINE)
-            PIC_AddEvent(VGA_DrawEGASingleLine,(float)(vga.draw.delay.htotal/4.0 + draw_skip));
-        else PIC_AddEvent(VGA_DrawSingleLine,(float)(vga.draw.delay.htotal/4.0 + draw_skip));
+        PIC_AddEvent(VGA_DrawSingleLine,(float)(vga.draw.delay.htotal/4.0 + draw_skip));
         break;
     }
 }

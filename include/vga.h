@@ -78,7 +78,6 @@ typedef struct {
 	bool compatible_chain4;
 
 	/* Pixel Scrolling */
-	Bit8u pel_panning;				/* Amount of pixels to skip when starting horizontal line */
 	Bit8u hlines_skip;
 	Bit8u bytes_skip;
 
@@ -102,8 +101,7 @@ typedef struct {
 } VGA_Config;
 
 typedef enum {
-	DRAWLINE,
-	EGALINE
+	DRAWLINE
 } Drawmode;
 
 typedef struct {
@@ -156,11 +154,6 @@ typedef struct {
 	Bitu bpp;
 	double clock;
 	double oscclock;
-	Bit8u cga_snow[80];			// one bit per horizontal column where snow should occur
-
-	/*Color and brightness for monochrome display*/
-	Bit8u monochrome_pal;
-	Bit8u monochrome_bright;
 } VGA_Draw;
 
 typedef struct {
@@ -175,17 +168,7 @@ typedef struct {
 typedef struct {
 	Bit8u palette[16];
 	Bit8u mode_control;
-	Bit8u horizontal_pel_panning;
-	Bit8u overscan_color;
-	Bit8u color_plane_enable;
-	Bit8u color_select;
 	Bit8u index;
-	Bit8u disabled; // Used for disabling the screen.
-					// Bit0: screen disabled by attribute controller index
-					// Bit1: screen disabled by sequencer index 1 bit 5
-					// These are put together in one variable for performance reasons:
-					// the line drawing function is called maybe 60*480=28800 times/s,
-					// and we only need to check one variable for zero this way.
 } VGA_Attr;
 
 typedef struct {
