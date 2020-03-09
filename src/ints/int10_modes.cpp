@@ -255,34 +255,6 @@ bool INT10_SetVideoMode(Bit16u mode) {
 		// Disable MMIO here so we can read / write memory
 		IO_Write(crtc_base,0x53);IO_Write(crtc_base+1u,0x0);
 	}
-	
-	/* Program Sequencer */
-	Bit8u seq_data[SEQ_REGS];
-	memset(seq_data,0,SEQ_REGS);
-	
-	seq_data[0] = 0x3;	// not reset
-	seq_data[1] = 0x21;	// screen still disabled, will be enabled at end of setmode
-	seq_data[4] = 0x04;	// odd/even disable
-	
-	if (CurMode->special & _EGA_HALF_CLOCK) seq_data[1]|=0x08; //Check for half clock
-
-	if (IS_VGA_ARCH)
-        seq_data[4]|=0x02;	//More than 64kb
-
-	switch (CurMode->type) {
-	case M_TEXT:
-		if (CurMode->cwidth==9) seq_data[1] &= ~1;
-		seq_data[2]|=0x3;				//Enable plane 0 and 1
-		seq_data[4]|=0x01;				//Alpanumeric
-		seq_data[4]&=~0x04;				//odd/even enable
-		break;
-	default:
-		break;
-	}
-	for (Bit8u ct=0;ct<SEQ_REGS;ct++) {
-		IO_Write(0x3c4,ct);
-		IO_Write(0x3c5,seq_data[ct]);
-	}
 
 	/* NTS: S3 INT 10 modesetting code below sets this bit anyway when writing CRTC register 0x31.
 	 *      It needs to be done as I/O port write so that Windows 95 can virtualize it properly when
@@ -643,9 +615,6 @@ bool INT10_SetVideoMode(Bit16u mode) {
 	if (CurMode->type==M_TEXT) {
 		INT10_ReloadFont();
 	}
-	// Enable screen memory access
-	IO_Write(0x3c4,1); IO_Write(0x3c5,seq_data[1] & ~0x20);
-	//LOG_MSG("setmode end");
 
 	return true;
 }
