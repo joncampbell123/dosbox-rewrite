@@ -6064,7 +6064,6 @@ void DOS_Init();
 void XMS_Init();
 void EMS_Init();
 void DOS_KeyboardLayout_Init();
-void MSCDEX_Init();
 void DRIVES_Init();
 void IPX_Init();
 void AUTOEXEC_Init();
@@ -6170,13 +6169,6 @@ bool VM_Boot_DOSBox_Kernel() {
         /* it's time to init parsing AUTOEXEC.BAT */
         void AUTOEXEC_Startup(Section *sec);
         AUTOEXEC_Startup(NULL);
-
-        /* Most MS-DOS installations run MSCDEX.EXE from somewhere in AUTOEXEC.BAT. We do the same here, in a fashion. */
-        /* TODO: Can we make this an OPTION if the user doesn't want to make MSCDEX.EXE resident? */
-        /* TODO: When we emulate executing AUTOEXEC.BAT between INIT_SHELL_READY and AUTOEXEC_BAT_DONE, can we make a fake MSCDEX.EXE within drive Z:\
-         *       and auto-add a Z:\MSCDEX.EXE to the top of AUTOEXEC.BAT, command line switches and all. if the user has not already added it? */
-        void MSCDEX_Startup(Section* sec);
-        MSCDEX_Startup(NULL);
 
         DispatchVMEvent(VM_EVENT_DOS_INIT_AUTOEXEC_BAT_DONE); // <- we just finished executing AUTOEXEC.BAT
         DispatchVMEvent(VM_EVENT_DOS_INIT_AT_PROMPT); // <- now, we're at the DOS prompt
@@ -7238,7 +7230,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
 #if C_IPX
         IPX_Init();
 #endif
-        MSCDEX_Init();
 
         /* Init memhandle system. This part is used by DOSBox's XMS/EMS emulation to associate handles
          * per page. FIXME: I would like to push this down to the point that it's never called until

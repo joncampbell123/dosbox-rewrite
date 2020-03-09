@@ -104,11 +104,8 @@ am_libdos_a_OBJECTS = dos.$(OBJEXT) dos_devices.$(OBJEXT) \
 	dos_memory.$(OBJEXT) dos_misc.$(OBJEXT) dos_classes.$(OBJEXT) \
 	dos_programs.$(OBJEXT) dos_tables.$(OBJEXT) drives.$(OBJEXT) \
 	drive_virtual.$(OBJEXT) drive_local.$(OBJEXT) \
-	drive_cache.$(OBJEXT) drive_fat.$(OBJEXT) drive_iso.$(OBJEXT) \
-	dos_mscdex.$(OBJEXT) dos_keyboard_layout.$(OBJEXT) \
-	cdrom.$(OBJEXT) cdrom_ioctl_win32.$(OBJEXT) \
-	cdrom_aspi_win32.$(OBJEXT) cdrom_ioctl_linux.$(OBJEXT) \
-	cdrom_image.$(OBJEXT) cdrom_ioctl_os2.$(OBJEXT)
+	drive_cache.$(OBJEXT) drive_fat.$(OBJEXT) \
+	dos_keyboard_layout.$(OBJEXT)
 libdos_a_OBJECTS = $(am_libdos_a_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -299,9 +296,7 @@ EXTRA_DIST = scsidefs.h wnaspi32.h dos_codepages.h dos_keyboard_layout_data.h
 libdos_a_SOURCES = dos.cpp dos_devices.cpp dos_execute.cpp dos_files.cpp dos_ioctl.cpp dos_memory.cpp \
                    dos_misc.cpp dos_classes.cpp dos_programs.cpp dos_tables.cpp \
 		   drives.cpp drives.h drive_virtual.cpp drive_local.cpp drive_cache.cpp drive_fat.cpp \
-		   drive_iso.cpp dev_con.h dos_mscdex.cpp dos_keyboard_layout.cpp \
-		   cdrom.h cdrom.cpp cdrom_ioctl_win32.cpp cdrom_aspi_win32.cpp cdrom_ioctl_linux.cpp cdrom_image.cpp \
-		   cdrom_ioctl_os2.cpp
+		   dev_con.h dos_keyboard_layout.cpp
 
 all: all-am
 
@@ -352,12 +347,6 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cdrom.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cdrom_aspi_win32.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cdrom_image.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cdrom_ioctl_linux.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cdrom_ioctl_os2.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cdrom_ioctl_win32.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dos.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dos_classes.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dos_devices.Po@am__quote@
@@ -367,12 +356,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dos_keyboard_layout.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dos_memory.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dos_misc.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dos_mscdex.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dos_programs.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dos_tables.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/drive_cache.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/drive_fat.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/drive_iso.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/drive_local.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/drive_virtual.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/drives.Po@am__quote@

@@ -31,7 +31,6 @@
 #include "ide.h"
 #include "cpu.h"
 #include "callback.h"
-#include "cdrom.h"
 #include "bios_disk.h"
 #include "dos_system.h"
 #include "dos_inc.h"
@@ -421,56 +420,7 @@ public:
             if (temp_line[temp_line.size()-1]!=CROSS_FILESPLIT) temp_line+=CROSS_FILESPLIT;
             Bit8u bit8size=(Bit8u) sizes[1];
             if (type=="cdrom") {
-                int num = -1;
-                cmd->FindInt("-usecd",num,true);
-                int error = 0;
-                if (cmd->FindExist("-aspi",false)) {
-                    MSCDEX_SetCDInterface(CDROM_USE_ASPI, num);
-                } else if (cmd->FindExist("-ioctl_dio",false)) {
-                    MSCDEX_SetCDInterface(CDROM_USE_IOCTL_DIO, num);
-                } else if (cmd->FindExist("-ioctl_dx",false)) {
-                    MSCDEX_SetCDInterface(CDROM_USE_IOCTL_DX, num);
-#if defined (WIN32)
-                } else if (cmd->FindExist("-ioctl_mci",false)) {
-                    MSCDEX_SetCDInterface(CDROM_USE_IOCTL_MCI, num);
-#endif
-                } else if (cmd->FindExist("-noioctl",false)) {
-                    MSCDEX_SetCDInterface(CDROM_USE_SDL, num);
-                } else {
-#if defined (WIN32)
-                    // Check OS
-                    OSVERSIONINFO osi;
-                    osi.dwOSVersionInfoSize = sizeof(osi);
-                    GetVersionEx(&osi);
-                    if ((osi.dwPlatformId==VER_PLATFORM_WIN32_NT) && (osi.dwMajorVersion>5)) {
-                        // Vista/above
-                        MSCDEX_SetCDInterface(CDROM_USE_IOCTL_DX, num);
-                    } else {
-                        MSCDEX_SetCDInterface(CDROM_USE_IOCTL_DIO, num);
-                    }
-#else
-                    MSCDEX_SetCDInterface(CDROM_USE_IOCTL_DIO, num);
-#endif
-                }
-                if (is_physfs) {
-                    LOG_MSG("ERROR:This build does not support physfs");
-                } else {
-                    newdrive  = new cdromDrive(drive,temp_line.c_str(),sizes[0],bit8size,sizes[2],0,mediaid,error);
-                }
-                // Check Mscdex, if it worked out...
-                switch (error) {
-                    case 0  :   WriteOut(MSG_Get("MSCDEX_SUCCESS"));                break;
-                    case 1  :   WriteOut(MSG_Get("MSCDEX_ERROR_MULTIPLE_CDROMS"));  break;
-                    case 2  :   WriteOut(MSG_Get("MSCDEX_ERROR_NOT_SUPPORTED"));    break;
-                    case 3  :   WriteOut(MSG_Get("MSCDEX_ERROR_PATH"));             break;
-                    case 4  :   WriteOut(MSG_Get("MSCDEX_TOO_MANY_DRIVES"));        break;
-                    case 5  :   WriteOut(MSG_Get("MSCDEX_LIMITED_SUPPORT"));        break;
-                    default :   WriteOut(MSG_Get("MSCDEX_UNKNOWN_ERROR"));          break;
-                }
-                if (error && error!=5) {
-                    delete newdrive;
-                    return;
-                }
+                return;
             } else {
                 /* Give a warning when mount c:\ or the / */
 #if defined (WIN32) || defined(OS2)
@@ -1977,13 +1927,11 @@ basic:
 
 cdrom:
         menuname="CDROM";
-        WriteOut(MSG_Get("PROGRAM_INTRO_MENU_CDROM_HELP")); 
         CON_IN(&c);
         do switch (c) {
             case 0x48|0x80: menuname="BASIC"; goto menufirst; // Up
             case 0x50|0x80: menuname="USAGE"; goto menufirst; // Down
             case 0xD:   // Run
-                WriteOut(MSG_Get("PROGRAM_INTRO_CDROM"));
                 DOS_ReadFile (STDIN,&c,&n);
                 goto menufirst;
         } while (CON_IN(&c));
@@ -2045,110 +1993,6 @@ bool ElTorito_ChecksumRecord(unsigned char *entry/*32 bytes*/) {
 static void INTRO_ProgramStart(Program * * make) {
     *make=new INTRO;
 }
-
-bool ElTorito_ScanForBootRecord(CDROM_Interface *drv,unsigned long &boot_record,unsigned long &el_torito_base) {
-    unsigned char buffer[2048];
-    unsigned int sec;
-
-    for (sec=16;sec < 32;sec++) {
-        if (!drv->ReadSectorsHost(buffer,false,sec,1))
-            break;
-
-        /* stop at terminating volume record */
-        if (buffer[0] == 0xFF) break;
-
-        /* match boot record and whether it conforms to El Torito */
-        if (buffer[0] == 0x00 && memcmp(buffer+1,"CD001",5) == 0 && buffer[6] == 0x01 &&
-            memcmp(buffer+7,"EL TORITO SPECIFICATION\0\0\0\0\0\0\0\0\0",32) == 0) {
-            boot_record = sec;
-            el_torito_base = (unsigned long)buffer[71] +
-                    ((unsigned long)buffer[72] << 8UL) +
-                    ((unsigned long)buffer[73] << 16UL) +
-                    ((unsigned long)buffer[74] << 24UL);
-
-            return true;
-        }
-    }
-
-    return false;
-}
-
-
-/* C++ class implementing El Torito floppy emulation */
-class imageDiskElToritoFloppy : public imageDisk {
-public:
-    /* Read_Sector and Write_Sector take care of geometry translation for us,
-     * then call the absolute versions. So, we override the absolute versions only */
-    virtual Bit8u Read_AbsoluteSector(Bit32u sectnum, void * data) {
-        unsigned char buffer[2048];
-
-        bool GetMSCDEXDrive(unsigned char drive_letter,CDROM_Interface **_cdrom);
-
-        CDROM_Interface *src_drive=NULL;
-        if (!GetMSCDEXDrive(CDROM_drive-'A',&src_drive)) return 0x05;
-
-        if (!src_drive->ReadSectorsHost(buffer,false,cdrom_sector_offset+(sectnum>>2)/*512 byte/sector to 2048 byte/sector conversion*/,1))
-            return 0x05;
-
-        memcpy(data,buffer+((sectnum&3)*512),512);
-        return 0x00;
-    }
-    virtual Bit8u Write_AbsoluteSector(Bit32u sectnum,const void * data) {
-        (void)sectnum;//UNUSED
-        (void)data;//UNUSED
-        return 0x05; /* fail, read only */
-    }
-    imageDiskElToritoFloppy(unsigned char new_CDROM_drive,unsigned long new_cdrom_sector_offset,unsigned char floppy_emu_type) : imageDisk(NULL,NULL,0,false) {
-        diskimg = NULL;
-        sector_size = 512;
-        CDROM_drive = new_CDROM_drive;
-        cdrom_sector_offset = new_cdrom_sector_offset;
-        class_id = ID_EL_TORITO_FLOPPY;
-
-        if (floppy_emu_type == 1) { /* 1.2MB */
-            heads = 2;
-            cylinders = 80;
-            sectors = 15;
-        }
-        else if (floppy_emu_type == 2) { /* 1.44MB */
-            heads = 2;
-            cylinders = 80;
-            sectors = 18;
-        }
-        else if (floppy_emu_type == 3) { /* 2.88MB */
-            heads = 2;
-            cylinders = 80;
-            sectors = 36; /* FIXME: right? */
-        }
-        else {
-            heads = 2;
-            cylinders = 69;
-            sectors = 14;
-            LOG_MSG("BUG! unsupported floppy_emu_type in El Torito floppy object\n");
-        }
-
-        diskSizeK = ((Bit64u)heads * cylinders * sectors * sector_size) / 1024;
-        active = true;
-    }
-    virtual ~imageDiskElToritoFloppy() {
-    }
-
-    unsigned long cdrom_sector_offset;
-    unsigned char CDROM_drive;
-/*
-    int class_id;
-
-    bool hardDrive;
-    bool active;
-    FILE *diskimg;
-    std::string diskname;
-    Bit8u floppytype;
-
-    Bit32u sector_size;
-    Bit32u heads,cylinders,sectors;
-    Bit32u reserved_cylinders;
-    Bit64u current_fpos; */
-};
 
 Bitu DOS_SwitchKeyboardLayout(const char* new_layout, Bit32s& tried_cp);
 Bitu DOS_LoadKeyboardLayout(const char * layoutname, Bit32s codepage, const char * codepagefile);
@@ -2549,7 +2393,6 @@ void DOS_SetupPrograms(void) {
     MSG_Add("PROGRAM_INTRO_MENU_INFO","Information");
     MSG_Add("PROGRAM_INTRO_MENU_QUIT","Quit");
     MSG_Add("PROGRAM_INTRO_MENU_BASIC_HELP","\n\033[1m   \033[1m\033[KMOUNT allows you to connect real hardware to DOSBox's emulated PC.\033[0m\n");
-    MSG_Add("PROGRAM_INTRO_MENU_CDROM_HELP","\n\033[1m   \033[1m\033[KTo mount your CD-ROM in DOSBox, you have to specify some additional options\n   when mounting the CD-ROM.\033[0m\n");
     MSG_Add("PROGRAM_INTRO_MENU_USAGE_HELP","\n\033[1m   \033[1m\033[KAn overview of the command line options you can give to DOSBox.\033[0m\n");
     MSG_Add("PROGRAM_INTRO_MENU_INFO_HELP","\n\033[1m   \033[1m\033[KHow to get more information about DOSBox.\033[0m\n");
     MSG_Add("PROGRAM_INTRO_MENU_QUIT_HELP","\n\033[1m   \033[1m\033[KExit from Intro.\033[0m\n");
