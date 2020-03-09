@@ -6063,7 +6063,6 @@ void PRINTER_Init();
 void DOS_Init();
 void XMS_Init();
 void EMS_Init();
-void DOS_KeyboardLayout_Init();
 void DRIVES_Init();
 void IPX_Init();
 void AUTOEXEC_Init();
@@ -6149,10 +6148,6 @@ bool VM_Boot_DOSBox_Kernel() {
         DRIVES_Startup(NULL);
 
         DispatchVMEvent(VM_EVENT_DOS_INIT_KERNEL_READY); // <- kernel is ready
-
-        /* keyboard mapping, at this point in CONFIG.SYS parsing, right? */
-        void DOS_KeyboardLayout_Startup(Section* sec);
-        DOS_KeyboardLayout_Startup(NULL);
 
         /* Most MS-DOS installations have a DEVICE=C:\HIMEM.SYS somewhere near the top of their CONFIG.SYS */
         void XMS_Startup(Section *sec);
@@ -7223,7 +7218,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
         /* OS init now */
         DOS_Init();
         DRIVES_Init();
-        DOS_KeyboardLayout_Init();
         XMS_Init();
         EMS_Init();
         AUTOEXEC_Init();
