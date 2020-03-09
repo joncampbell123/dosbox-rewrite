@@ -33,10 +33,6 @@ void VGA_MapMMIO(void);
 void VGA_UnmapMMIO(void);
 void page_flip_debug_notify();
 
-void VGA_CheckAddrShift() {
-    vga.config.addr_shift = 1u;
-}
-
 void vga_write_p3d5(Bitu port,Bitu val,Bitu iolen);
 Bitu DEBUG_EnableDebugger(void);
 
@@ -303,7 +299,6 @@ void vga_write_p3d5(Bitu port,Bitu val,Bitu /*iolen*/) {
 	case 0x17:	/* Mode Control Register */
 		crtc(mode_control)=(Bit8u)val;
 
-        VGA_CheckAddrShift();
 		VGA_CheckScanLength();
 
 		//Should we really need to do a determinemode here?

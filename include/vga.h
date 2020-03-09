@@ -82,7 +82,6 @@ typedef struct {
 	Bit8u pel_panning;				/* Amount of pixels to skip when starting horizontal line */
 	Bit8u hlines_skip;
 	Bit8u bytes_skip;
-	Bit8u addr_shift;
 
 /* Specific stuff memory write/read handling */
 	

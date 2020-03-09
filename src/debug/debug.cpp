@@ -2072,7 +2072,7 @@ bool ParseCommand(char* str) {
                 (unsigned int)vga.config.hlines_skip);
             DEBUG_ShowMsg("byte-skip=%u addr-shift=%u rd-mode=%u wr-mode=%u rdmap-sel=%u",
                 (unsigned int)vga.config.bytes_skip,
-                (unsigned int)vga.config.addr_shift,
+                (unsigned int)1,
                 (unsigned int)vga.config.read_mode,
                 (unsigned int)vga.config.write_mode,
                 (unsigned int)vga.config.read_map_select);

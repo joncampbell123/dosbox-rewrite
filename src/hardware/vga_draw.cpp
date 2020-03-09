@@ -178,7 +178,7 @@ template <const unsigned int card,typename templine_type_t> static inline Bit8u*
         VGA_Latch pixels;
 
         pixels.d = *vidmem;
-        vidmem += (uintptr_t)1U << (uintptr_t)vga.config.addr_shift;
+        vidmem += (uintptr_t)1U << (uintptr_t)1;
 
         Bitu chr = pixels.b[0];
         Bitu attr = pixels.b[1];
@@ -219,7 +219,7 @@ template <const unsigned int card,typename templine_type_t> static inline Bit8u*
     if ((vga.draw.cursor.count&0x8) && (line >= vga.draw.cursor.sline) &&
         (line <= vga.draw.cursor.eline) && vga.draw.cursor.enabled) {
         // the adress of the attribute that makes up the cell the cursor is in
-        Bits attr_addr = ((Bits)vga.draw.cursor.address - (Bits)vidstart) >> (Bits)vga.config.addr_shift; /* <- FIXME: This right? */
+        Bits attr_addr = ((Bits)vga.draw.cursor.address - (Bits)vidstart) >> (Bits)1; /* <- FIXME: This right? */
         if (attr_addr >= 0 && attr_addr < (Bits)vga.draw.blocks) {
             Bitu index = (Bitu)attr_addr * (vga.draw.char9dot ? 9u : 8u);
             draw = (((templine_type_t*)TempLine) + index) + 16 - vga.draw.panning;
@@ -814,7 +814,7 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
         }
         else vga.draw.linear_mask = 0x3fff; // CGA, Tandy 4 pages
         if (IS_EGAVGA_ARCH)
-            vga.draw.cursor.address=vga.config.cursor_start<<vga.config.addr_shift;
+            vga.draw.cursor.address=vga.config.cursor_start<<1;
         else
             vga.draw.cursor.address=vga.config.cursor_start*2;
         vga.draw.address *= 2;
@@ -883,7 +883,7 @@ void VGA_CheckScanLength(void) {
     switch (vga.mode) {
     case M_TEXT:
         if (IS_EGAVGA_ARCH)
-            vga.draw.address_add=vga.config.scan_len*(unsigned int)(2u<<vga.config.addr_shift);
+            vga.draw.address_add=vga.config.scan_len*(unsigned int)(2u<<1u);
         else
             vga.draw.address_add=vga.draw.blocks;
         break;
