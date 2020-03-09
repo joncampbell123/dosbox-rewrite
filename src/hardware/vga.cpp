@@ -282,56 +282,6 @@ void VGA_StartResize(Bitu delay /*=50*/) {
 // Also the demos that switch display end on screen (Dowhackado)
 // would need some attention
 
-void VGA_SequReset(bool reset) {
-    (void)reset;//UNUSED
-    //if(!reset && !IS_SCREEN_ON) hadReset=true;
-}
-
-void VGA_Screenstate(bool enabled) {
-    (void)enabled;//UNUSED
-    /*if(enabled && hadReset) {
-        hadReset=false;
-        PIC_RemoveEvents(VGA_SetupDrawing);
-        VGA_SetupDrawing(0);
-    }*/
-}
-
-void VGA_SetCGA2Table(Bit8u val0,Bit8u val1) {
-    const Bit8u total[2] = {val0,val1};
-    for (Bitu i=0;i<16u;i++) {
-        CGA_2_Table[i]=
-#ifdef WORDS_BIGENDIAN
-            ((Bitu)total[(i >> 0u) & 1u] << 0u  ) | ((Bitu)total[(i >> 1u) & 1u] << 8u  ) |
-            ((Bitu)total[(i >> 2u) & 1u] << 16u ) | ((Bitu)total[(i >> 3u) & 1u] << 24u );
-#else 
-            ((Bitu)total[(i >> 3u) & 1u] << 0u  ) | ((Bitu)total[(i >> 2u) & 1u] << 8u  ) |
-            ((Bitu)total[(i >> 1u) & 1u] << 16u ) | ((Bitu)total[(i >> 0u) & 1u] << 24u );
-#endif
-    }
-}
-
-void VGA_SetCGA4Table(Bit8u val0,Bit8u val1,Bit8u val2,Bit8u val3) {
-    const Bit8u total[4] = {val0,val1,val2,val3};
-    for (Bitu i=0;i<256u;i++) {
-        CGA_4_Table[i]=
-#ifdef WORDS_BIGENDIAN
-            ((Bitu)total[(i >> 0u) & 3u] << 0u  ) | ((Bitu)total[(i >> 2u) & 3u] << 8u  ) |
-            ((Bitu)total[(i >> 4u) & 3u] << 16u ) | ((Bitu)total[(i >> 6u) & 3u] << 24u );
-#else
-            ((Bitu)total[(i >> 6u) & 3u] << 0u  ) | ((Bitu)total[(i >> 4u) & 3u] << 8u  ) |
-            ((Bitu)total[(i >> 2u) & 3u] << 16u ) | ((Bitu)total[(i >> 0u) & 3u] << 24u );
-#endif
-        CGA_4_HiRes_Table[i]=
-#ifdef WORDS_BIGENDIAN
-            ((Bitu)total[((i >> 0u) & 1u) | ((i >> 3u) & 2u)] << 0u  ) | (Bitu)(total[((i >> 1u) & 1u) | ((i >> 4u) & 2u)] << 8u  ) |
-            ((Bitu)total[((i >> 2u) & 1u) | ((i >> 5u) & 2u)] << 16u ) | (Bitu)(total[((i >> 3u) & 1u) | ((i >> 6u) & 2u)] << 24u );
-#else
-            ((Bitu)total[((i >> 3u) & 1u) | ((i >> 6u) & 2u)] << 0u  ) | (Bitu)(total[((i >> 2u) & 1u) | ((i >> 5u) & 2u)] << 8u  ) |
-            ((Bitu)total[((i >> 1u) & 1u) | ((i >> 4u) & 2u)] << 16u ) | (Bitu)(total[((i >> 0u) & 1u) | ((i >> 3u) & 2u)] << 24u );
-#endif
-    }
-}
-
 class VFRCRATE : public Program {
 public:
     void Run(void) {
@@ -582,9 +532,6 @@ void VGA_Reset(Section*) {
         VGA_SetupGFX();
         VGA_SetupSEQ();
         VGA_SetupAttr();
-        /* Generate tables */
-        VGA_SetCGA2Table(0,1);
-        VGA_SetCGA4Table(0,1,2,3);
     }
 
     Section_prop * section2=static_cast<Section_prop *>(control->GetSection("vsync"));
