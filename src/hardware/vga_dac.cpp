@@ -83,18 +83,7 @@ static void VGA_DAC_SendColor( Bitu index, Bitu src ) {
 }
 
 void VGA_DAC_UpdateColor( Bitu index ) {
-    Bitu maskIndex;
-
-    if (IS_VGA_ARCH) {
-        {
-            maskIndex = vga.dac.combine[index&0xF] & vga.dac.pel_mask;
-        }
-
-        VGA_DAC_SendColor( index, maskIndex );
-    }
-    else {
-        VGA_DAC_SendColor( index, index );
-    }
+    VGA_DAC_SendColor( index, index );
 }
 
 void VGA_DAC_UpdateColorPalette() {
@@ -105,30 +94,14 @@ void VGA_DAC_UpdateColorPalette() {
 void write_p3c6(Bitu port,Bitu val,Bitu iolen) {
     (void)iolen;//UNUSED
     (void)port;//UNUSED
-    if((IS_VGA_ARCH) && (vga.dac.hidac_counter>3)) {
-        vga.dac.reg02=(Bit8u)val;
-        vga.dac.hidac_counter=0;
-        VGA_StartResize();
-        return;
-    }
-    if ( vga.dac.pel_mask != val ) {
-        LOG(LOG_VGAMISC,LOG_NORMAL)("VGA:DCA:Pel Mask set to %X", (int)val);
-        vga.dac.pel_mask = (Bit8u)val;
-
-        // TODO: MCGA 640x480 2-color mode appears to latch the DAC at retrace
-        //       for background/foreground. Does that apply to the PEL mask too?
-
-        VGA_DAC_UpdateColorPalette();
-    }
+    (void)val;
 }
-
 
 Bitu read_p3c6(Bitu port,Bitu iolen) {
     (void)iolen;//UNUSED
     (void)port;//UNUSED
-    return vga.dac.pel_mask;
+    return 0xFF;
 }
-
 
 void write_p3c7(Bitu port,Bitu val,Bitu iolen) {
     (void)iolen;//UNUSED
@@ -243,16 +216,7 @@ Bitu read_p3c9(Bitu port,Bitu iolen) {
 
 void VGA_DAC_CombineColor(Bit8u attr,Bit8u pal) {
     vga.dac.combine[attr] = pal;
-
-    if (IS_VGA_ARCH) {
-        {
-            for (unsigned int i=(unsigned int)attr;i < 0x100;i += 0x10)
-                VGA_DAC_UpdateColor( i );
-        }
-    }
-    else {
-        VGA_DAC_SendColor( attr, pal );
-    }
+    VGA_DAC_SendColor( attr, pal );
 }
 
 void VGA_DAC_SetEntry(Bitu entry,Bit8u red,Bit8u green,Bit8u blue) {
