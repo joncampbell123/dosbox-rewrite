@@ -880,17 +880,7 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
 }
 
 void VGA_CheckScanLength(void) {
-    switch (vga.mode) {
-    case M_TEXT:
-        if (IS_EGAVGA_ARCH)
-            vga.draw.address_add=vga.config.scan_len*(unsigned int)(2u<<1u);
-        else
-            vga.draw.address_add=vga.draw.blocks;
-        break;
-    default:
-        vga.draw.address_add=vga.draw.blocks*8;
-        break;
-    }
+    vga.draw.address_add=80u*2u;
 }
 
 void VGA_ActivateHardwareCursor(void) {

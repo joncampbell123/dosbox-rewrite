@@ -1934,7 +1934,7 @@ bool ParseCommand(char* str) {
             DEBUG_ShowMsg("vtotal=%02xh overflow=%02xh prerwscn=%02xh maxscnl=%02xh offset=%02xh",
                 vga.crtc.vertical_total,                vga.crtc.overflow,
                 vga.crtc.preset_row_scan,               vga.crtc.maximum_scan_line,
-                vga.crtc.offset);
+                80);
             DEBUG_ShowMsg("curs-st=%02xh curs-en=%02xh start-addr=%02x%02xh curs-loc=%02x%02xh",
                 vga.crtc.cursor_start,                  vga.crtc.cursor_end,
                 vga.crtc.start_address_high,            vga.crtc.start_address_low,
@@ -2062,7 +2062,7 @@ bool ParseCommand(char* str) {
                 (unsigned long)vga.config.display_start,
                 (unsigned long)vga.config.real_start,
                 vga.config.retrace?1:0,
-                (unsigned long)vga.config.scan_len,
+                160ul,
                 (unsigned long)vga.config.cursor_start);
             DEBUG_ShowMsg("line-compare=%lu chained=%u compat-chain4=%u pel-pan=%u hline-skip=%u",
                 (unsigned long)vga.config.line_compare,

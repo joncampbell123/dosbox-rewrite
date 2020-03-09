@@ -70,7 +70,6 @@ typedef struct {
 	Bitu display_start;
 	Bitu real_start;
 	bool retrace;					/* A retrace is active */
-	Bitu scan_len;
 	Bitu cursor_start;
 
 /* Some other screen related variables */

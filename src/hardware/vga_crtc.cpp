@@ -265,9 +265,6 @@ void vga_write_p3d5(Bitu port,Bitu val,Bitu /*iolen*/) {
 		*/
 		break;
 	case 0x13:	/* Offset register */
-		crtc(offset)=(Bit8u)val;
-		vga.config.scan_len&=0x300;
-		vga.config.scan_len|=val;
 		VGA_CheckScanLength();
 		/*
 			0-7	Number of bytes in a scanline / K. Where K is 2 for byte mode, 4 for
@@ -371,8 +368,6 @@ Bitu vga_read_p3d5x(Bitu port,Bitu iolen) {
 		return crtc(vertical_retrace_end);
 	case 0x12:	/* Vertical Display End Register */
 		return crtc(vertical_display_end);
-	case 0x13:	/* Offset register */
-		return crtc(offset);
 	case 0x15:	/* Start Vertical Blank Register */
 		return crtc(start_vertical_blanking);
 	case 0x16:	/*  End Vertical Blank Register */
