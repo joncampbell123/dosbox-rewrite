@@ -232,7 +232,6 @@ void VGA_DAC_SetEntry(Bitu entry,Bit8u red,Bit8u green,Bit8u blue) {
 void VGA_SetupDAC(void) {
     vga.dac.first_changed=256;
     vga.dac.bits=6;
-    vga.dac.pel_mask=0xff;
     vga.dac.pel_index=0;
     vga.dac.state=DAC_READ;
     vga.dac.read_index=0;
