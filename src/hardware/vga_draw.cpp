@@ -816,7 +816,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
 
             vtotal |= (vga.crtc.overflow & 0x20u) << 4u;
             vdend |= (vga.crtc.overflow & 0x40u) << 3u; 
-            vbstart |= (vga.crtc.maximum_scan_line & 0x20u) << 4u;
             vrstart |= ((vga.crtc.overflow & 0x80u) << 2u);
             vbend_mask = 0xffu;
         } else { // EGA
@@ -993,29 +992,7 @@ void VGA_SetupDrawing(Bitu /*val*/) {
     Bitu width=hdend;
     Bitu height=vdend;
 
-    if (IS_EGAVGA_ARCH) {
-        vga.draw.address_line_total=(vga.crtc.maximum_scan_line&0x1fu)+1u;
-        switch(vga.mode) {
-        case M_TEXT:
-            {
-                // these use line_total internal
-                // doublescanning needs to be emulated by renderer doubleheight
-                // EGA has no doublescanning bit at 0x80
-                if (vga.crtc.maximum_scan_line&0x80) {
-                    // vga_draw only needs to draw every second line
-                    height /= 2;
-                }
-                break;
-            }
-        default:
-            {
-                if (vga.crtc.maximum_scan_line & 0x80)
-                    vga.draw.address_line_total *= 2;
-            }
-
-            break;
-        }
-    }
+    vga.draw.address_line_total=16;
 
     //Set the bpp
     Bitu bpp;
