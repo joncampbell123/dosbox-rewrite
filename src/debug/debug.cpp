@@ -1933,7 +1933,7 @@ bool ParseCommand(char* str) {
                 vga.crtc.start_horizontal_retrace,      vga.crtc.end_horizontal_retrace);
             DEBUG_ShowMsg("vtotal=%02xh overflow=%02xh prerwscn=%02xh maxscnl=%02xh offset=%02xh",
                 vga.crtc.vertical_total,                vga.crtc.overflow,
-                vga.crtc.preset_row_scan,               vga.crtc.maximum_scan_line,
+                vga.crtc.preset_row_scan,               15,
                 80);
             DEBUG_ShowMsg("curs-st=%02xh curs-en=%02xh start-addr=%02x%02xh curs-loc=%02x%02xh",
                 vga.crtc.cursor_start,                  vga.crtc.cursor_end,
