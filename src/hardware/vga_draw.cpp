@@ -158,6 +158,8 @@ static inline Bit32u guest_bgr_to_macosx_rgba(const Bit32u x) {
 }
 #endif
 
+extern Bit8u int10_font_16[256 * 16];
+
 extern Bit32u Expand16Table[4][16];
 
 static const Bit32u* VGA_Planar_Memwrap(Bitu vidstart) {
@@ -183,7 +185,7 @@ template <const unsigned int card,typename templine_type_t> static inline Bit8u*
         Bitu chr = pixels.b[0];
         Bitu attr = pixels.b[1];
         // the font pattern
-        Bitu font = vga.draw.font_tables[(attr >> 3)&1][(chr<<5)+line];
+        Bitu font = int10_font_16[(chr<<4)+line];
         
         Bitu background = attr >> 4u;
         // if blinking is enabled bit7 is not mapped to attributes
