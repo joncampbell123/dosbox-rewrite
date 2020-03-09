@@ -284,7 +284,6 @@ void VGA_Reset(Section*) {
     vsync.period = (1000.0F)/vsyncrate;
 }
 
-void INT10_PC98_CurMode_Relocate(void);
 void VGA_UnsetupMisc(void);
 void VGA_UnsetupAttr(void);
 void VGA_UnsetupDAC(void);
@@ -292,28 +291,7 @@ void VGA_UnsetupGFX(void);
 
 void MEM_ResetPageHandler_Unmapped(Bitu phys_page, Bitu pages);
 
-void PC98_Set24KHz(void) {
-}
-
-void PC98_Set31KHz(void) {
-}
-
-void PC98_Set31KHz_480line(void) {
-}
-
 void VGA_Destroy(Section*) {
-}
-
-bool debugpollvga_pf_menu_callback(DOSBoxMenu * const xmenu, DOSBoxMenu::item * const menuitem) {
-    (void)xmenu;//UNUSED
-    (void)menuitem;//UNUSED
-    return true;
-}
-
-bool debugpollvga_rtp_menu_callback(DOSBoxMenu * const xmenu, DOSBoxMenu::item * const menuitem) {
-    (void)xmenu;//UNUSED
-    (void)menuitem;//UNUSED
-    return true;
 }
 
 void VGA_Init() {
@@ -374,9 +352,6 @@ void VGA_Init() {
 #endif
         }
     }
-
-    mainMenu.alloc_item(DOSBoxMenu::item_type_id,"debug_pageflip").set_text("Page flip debug line").set_callback_function(debugpollvga_pf_menu_callback);
-    mainMenu.alloc_item(DOSBoxMenu::item_type_id,"debug_retracepoll").set_text("Retrace poll debug line").set_callback_function(debugpollvga_rtp_menu_callback);
 
     AddExitFunction(AddExitFunctionFuncPair(VGA_Destroy));
     AddVMEventFunction(VM_EVENT_RESET,AddVMEventFunctionFuncPair(VGA_Reset));
