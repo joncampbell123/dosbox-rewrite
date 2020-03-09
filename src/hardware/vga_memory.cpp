@@ -352,25 +352,7 @@ public:
 };
 
 static struct vg {
-//	VGA_Map_Handler				map;
-//	VGA_Slow_CGA_Handler		slow;
-//	VGA_TEXT_PageHandler		text;
-//	VGA_CGATEXT_PageHandler		cgatext;
-//	VGA_MCGATEXT_PageHandler	mcgatext;
-//	VGA_TANDY_PageHandler		tandy;
-//	VGA_ChainedEGA_Handler		cega;
-//	VGA_ChainedVGA_Handler		cvga;
-//	VGA_ChainedVGA_Slow_Handler	cvga_slow;
-//	VGA_ET4000_ChainedVGA_Handler		cvga_et4000;
-//	VGA_ET4000_ChainedVGA_Slow_Handler	cvga_et4000_slow;
-//	VGA_UnchainedEGA_Handler	uega;
 	VGA_UnchainedVGA_Handler	uvga;
-//	VGA_PCJR_Handler			pcjr;
-//	VGA_HERC_Handler			herc;
-//	VGA_LIN4_Handler			lin4;
-//	VGA_LFB_Handler				lfb;
-//	VGA_MMIO_Handler			mmio;
-//	VGA_AMS_Handler				ams;
 	VGA_Empty_Handler			empty;
 } vgaph;
 
