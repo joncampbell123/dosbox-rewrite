@@ -37,8 +37,6 @@
 #include "config.h"
 #include "control.h"
 
-bool mcga_double_scan = false;
-
 const char* const mode_texts[M_MAX] = {
     "M_TEXT",           // 0
     "M_ERROR"
@@ -236,27 +234,16 @@ static Bit8u* VGA_TEXT_Xlat32_Draw_Line(Bitu vidstart, Bitu line) {
 }
 
 static void VGA_DrawSingleLine(Bitu /*blah*/) {
-    unsigned int lines = 0;
-    bool skiprender;
-
-again:
-    if (vga.draw.render_step == 0)
-        skiprender = false;
-    else
-        skiprender = true;
-
     if ((++vga.draw.render_step) >= vga.draw.render_max)
         vga.draw.render_step = 0;
 
-    if (!skiprender) {
-        {
-            Bit8u * data=VGA_DrawLine( vga.draw.address, vga.draw.address_line );
+    {
+        Bit8u * data=VGA_DrawLine( vga.draw.address, vga.draw.address_line );
 
-            if (VGA_IsCaptureEnabled())
-                VGA_ProcessScanline(data);
+        if (VGA_IsCaptureEnabled())
+            VGA_ProcessScanline(data);
 
-            RENDER_DrawLine(data);
-        }
+        RENDER_DrawLine(data);
     }
 
     vga.draw.address_line++;
@@ -265,74 +252,10 @@ again:
         vga.draw.address+=vga.draw.address_add;
     }
 
-    if (!skiprender) {
-        vga.draw.lines_done++;
-    }
-
-    if (mcga_double_scan) {
-        if (vga.draw.lines_done < vga.draw.lines_total) {
-            if (++lines < 2)
-                goto again;
-        }
-    }
+    vga.draw.lines_done++;
 
     if (vga.draw.lines_done < vga.draw.lines_total) {
         PIC_AddEvent(VGA_DrawSingleLine,(float)vga.draw.delay.singleline_delay);
-    } else {
-        vga_mode_frames_since_time_base++;
-
-        if (VGA_IsCaptureEnabled())
-            VGA_ProcessScanline(NULL);
-
-        RENDER_EndUpdate(false);
-    }
-}
-
-static void VGA_DrawEGASingleLine(Bitu /*blah*/) {
-    bool skiprender;
-
-    if (vga.draw.render_step == 0)
-        skiprender = false;
-    else
-        skiprender = true;
-
-    if ((++vga.draw.render_step) >= vga.draw.render_max)
-        vga.draw.render_step = 0;
-
-    if (!skiprender) {
-        {
-            Bitu address = vga.draw.address;
-            {
-                switch (vga.mode) {
-                    case M_TEXT:
-                        /* ignore */
-                        break;
-                    default:
-                        vga.draw.address += vga.draw.panning;
-                        break;
-                }
-            }
-            Bit8u * data=VGA_DrawLine(address, vga.draw.address_line ); 
-
-            if (VGA_IsCaptureEnabled())
-                VGA_ProcessScanline(data);
-
-            RENDER_DrawLine(data);
-        }
-    }
-
-    vga.draw.address_line++;
-    if (vga.draw.address_line>=vga.draw.address_line_total) {
-        vga.draw.address_line=0;
-        vga.draw.address+=vga.draw.address_add;
-    }
-
-    if (!skiprender) {
-        vga.draw.lines_done++;
-    }
-
-    if (vga.draw.lines_done < vga.draw.lines_total) {
-        PIC_AddEvent(VGA_DrawEGASingleLine,(float)vga.draw.delay.singleline_delay);
     } else {
         vga_mode_frames_since_time_base++;
 
@@ -657,11 +580,9 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
 
     vga.draw.address_line = vga.config.hlines_skip;
     vga.draw.address = vga.config.real_start;
-    vga.draw.byte_panning_shift = 0;
 
     switch (vga.mode) {
     case M_TEXT:
-        vga.draw.byte_panning_shift = 2;
         vga.draw.address += vga.draw.bytes_skip;
         if (IS_EGAVGA_ARCH) {
             if (vga.config.compatible_chain4 || svgaCard == SVGA_None)
@@ -1003,10 +924,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
     }
     width *= pix_per_char;
     VGA_CheckScanLength();
-
-    {
-        mcga_double_scan = false;
-    }
     
     vga.draw.lines_total=height;
     vga.draw.line_length = width * ((bpp + 1) / 8);
@@ -1113,7 +1030,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
 
 void VGA_KillDrawing(void) {
     PIC_RemoveEvents(VGA_DrawSingleLine);
-    PIC_RemoveEvents(VGA_DrawEGASingleLine);
 }
 
 void VGA_SetOverride(bool vga_override) {

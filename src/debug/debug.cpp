@@ -2034,7 +2034,7 @@ bool ParseCommand(char* str) {
                 (unsigned long)vga.draw.lines_total,(unsigned long)vga.draw.vblank_skip,
                 (unsigned long)vga.draw.lines_done,(unsigned long)vga.draw.split_line);
             DEBUG_ShowMsg("byte-pan-shft=%lu render-stop=%lu render-max=%lu scrn-ratio=%.3f",
-                (unsigned long)vga.draw.byte_panning_shift,(unsigned long)vga.draw.render_step,
+                (unsigned long)0,(unsigned long)vga.draw.render_step,
                 (unsigned long)vga.draw.render_max,(double)vga.draw.screen_ratio);
             DEBUG_ShowMsg("blinking=%lu blink=%u char9dot=%u has-split=%u vret-trig=%u",
                 (unsigned long)vga.draw.blinking,vga.draw.blink?1:0,
