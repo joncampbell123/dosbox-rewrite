@@ -264,8 +264,6 @@ static void VGA_ProcessSplit() {
 /* this is now called PER LINE because most VGA cards do not double-buffer the value.
  * a few demos rely on line compare schenanigans to play with the raster, as does my own VGA test program --J.C. */
 void VGA_Update_SplitLineCompare() {
-    vga.draw.split_line = (vga.config.line_compare + 1) / vga.draw.render_max;
-    vga.draw.split_line -= vga.draw.vblank_skip;
 }
 
 static void VGA_DrawSingleLine(Bitu /*blah*/) {
@@ -300,7 +298,6 @@ again:
 
     if (!skiprender) {
         vga.draw.lines_done++;
-        if (vga.draw.split_line==vga.draw.lines_done) VGA_ProcessSplit();
     }
 
     if (mcga_double_scan) {
@@ -363,7 +360,6 @@ static void VGA_DrawEGASingleLine(Bitu /*blah*/) {
 
     if (!skiprender) {
         vga.draw.lines_done++;
-        if (vga.draw.split_line==vga.draw.lines_done) VGA_ProcessSplit();
     }
 
     if (vga.draw.lines_done < vga.draw.lines_total) {
@@ -743,17 +739,6 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
         draw_skip = (float)(vga.draw.delay.htotal * vga.draw.vblank_skip);
         vga.draw.address_line += (vga.draw.vblank_skip % vga.draw.address_line_total);
         vga.draw.address += vga.draw.address_add * (vga.draw.vblank_skip / vga.draw.address_line_total);
-    }
-
-    /* do VGA split now if line compare <= 0. NTS: vga.draw.split_line is defined as Bitu (unsigned integer) so we need the typecast. */
-    if (GCC_UNLIKELY((Bits)vga.draw.split_line <= 0)) {
-        VGA_ProcessSplit();
-
-        /* if vblank_skip != 0, line compare can become a negative value! Fixes "Warlock" 1992 demo by Warlock */
-        if (GCC_UNLIKELY((Bits)vga.draw.split_line < 0)) {
-            vga.draw.address_line += (Bitu)(-((Bits)vga.draw.split_line) % (Bits)vga.draw.address_line_total);
-            vga.draw.address += vga.draw.address_add * (Bitu)(-((Bits)vga.draw.split_line) / (Bits)vga.draw.address_line_total);
-        }
     }
 
     // add the draw event

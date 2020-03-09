@@ -117,7 +117,6 @@ void vga_write_p3d5(Bitu port,Bitu val,Bitu /*iolen*/) {
 		break;
 	case 0x07:	/* Overflow Register */
 		//Line compare bit ignores read only */
-		vga.config.line_compare=(vga.config.line_compare & 0x6ff) | (val & 0x10) << 4;
 		if (crtc(read_only)) break;
 		if ((vga.crtc.overflow ^ val) & 0xd6) {
 			crtc(overflow)=(Bit8u)val;
@@ -150,10 +149,6 @@ void vga_write_p3d5(Bitu port,Bitu val,Bitu /*iolen*/) {
 		break;
 	case 0x09: /* Maximum Scan Line Register */
 	{
-		if (IS_VGA_ARCH) {
-			vga.config.line_compare &= 0x5ff;
-			vga.config.line_compare |= (val&0x40)<<3;
-		}
 		Bit8u old = crtc(maximum_scan_line);
 		crtc(maximum_scan_line) = (Bit8u)val;
 
