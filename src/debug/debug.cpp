@@ -1957,11 +1957,8 @@ bool ParseCommand(char* str) {
                 vga.gfx.bit_mask);
         }
         else if (command == "DAC") {
-            // FIXME: Remove this var, use vga.dac.bits == 8 instead!
-            extern bool vga_8bit_dac;
-
             DEBUG_ShowMsg("VGA DAC info: bits=%u pel_mask=%02xh pel_index[RGB]=%02xh",
-                vga_8bit_dac ? 8 : 6,//FIXME
+                6,//FIXME
                 vga.dac.pel_mask,       vga.dac.pel_index);
             DEBUG_ShowMsg("state=%02xh write_index=%02xh read_index=%02xh first_changed=%u",
                 vga.dac.state,          vga.dac.write_index,

@@ -22,7 +22,6 @@
 #include "vga.h"
 
 extern bool vga_enable_3C6_ramdac;
-extern bool vga_8bit_dac;
 
 /*
 3C6h (R/W):  PEL Mask
@@ -54,7 +53,7 @@ Note:  Each read or write of this register will cycle through first the
 enum {DAC_READ,DAC_WRITE};
 
 static void VGA_DAC_SendColor( Bitu index, Bitu src ) {
-    const Bit8u dacshift = vga_8bit_dac ? 0u : 2u;
+    const Bit8u dacshift = 2u;
     const Bit8u red = vga.dac.rgb[src].red << dacshift;
     const Bit8u green = vga.dac.rgb[src].green << dacshift;
     const Bit8u blue = vga.dac.rgb[src].blue << dacshift;
@@ -171,7 +170,6 @@ Bitu read_p3c8(Bitu port, Bitu iolen){
     return vga.dac.write_index;
 }
 
-extern bool enable_vga_8bit_dac;
 extern bool vga_palette_update_on_full_load;
 
 static unsigned char tmp_dac[3] = {0,0,0};
@@ -183,12 +181,7 @@ void write_p3c9(Bitu port,Bitu val,Bitu iolen) {
     (void)port;//UNUSED
     vga.dac.hidac_counter=0;
 
-    // allow the full 8 bit ONLY if 8-bit DAC emulation is enabled AND 8-bit DAC mode is on.
-    // masking to 6 bits is REQUIRED for some games like "Amulets and Armor", where apparently
-    // the use of signed char with palette values can cause "overbright" effects if it can
-    // read back the full 8 bits.
-    if (!vga_8bit_dac)
-        val&=0x3f;
+    val&=0x3f;
 
     if (vga.dac.pel_index < 3) {
         tmp_dac[vga.dac.pel_index]=(unsigned char)val;

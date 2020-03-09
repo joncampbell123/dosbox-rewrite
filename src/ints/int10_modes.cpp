@@ -33,7 +33,6 @@
 #define GFX_REGS 0x09
 #define ATT_REGS 0x15
 
-extern bool enable_vga_8bit_dac;
 extern bool int10_vesa_map_as_128kb;
 extern bool allow_vesa_lowres_modes;
 extern bool allow_vesa_4bpp_packed;
@@ -46,7 +45,6 @@ extern bool allow_vesa_15bpp;
 extern bool allow_vesa_8bpp;
 extern bool allow_vesa_4bpp;
 extern bool allow_vesa_tty;
-extern bool vga_8bit_dac;
 
 /* This list includes non-explicitly 24bpp modes (in the 0x100-0x11F range) that are available
  * when the VBE1.2 setting indicates they should be 24bpp.
@@ -302,7 +300,6 @@ bool INT10_SetVideoMode(Bit16u mode) {
 		if (CurMode->type==M_TEXT) SetTextLines();
 
         // INT 10h modeset will always clear 8-bit DAC mode (by VESA BIOS standards)
-        vga_8bit_dac = false;
         VGA_DAC_UpdateColorPalette();
     } else {
 		if (!SetCurMode(ModeList_EGA,mode)){

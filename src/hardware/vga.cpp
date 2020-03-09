@@ -152,9 +152,6 @@ void VGA_CaptureStartNextFrame(void);
 void VGA_CaptureMarkError(void);
 bool VGA_CaptureValidateCurrentFrame(void);
 
-bool                                vga_8bit_dac = false;
-bool                                enable_vga_8bit_dac = true;
-
 extern int                          vga_memio_delay_ns;
 
 SDL_Rect                            vga_capture_rect = {0,0,0,0};
@@ -445,9 +442,6 @@ void VGA_Reset(Section*) {
 
     vga.draw.resizing=false;
     vga.mode=M_TEXT;
-
-    vga_8bit_dac = false;
-    enable_vga_8bit_dac = section->Get_bool("enable 8-bit dac");
 
     vga.mem.memsize = _KB_bytes(16);
 
