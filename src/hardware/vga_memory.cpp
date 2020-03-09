@@ -96,50 +96,9 @@ static INLINE Bitu  hostRead(HostPt off ) {
 
 
 void VGA_MapMMIO(void);
-//Nice one from DosEmu
-INLINE static Bit32u RasterOp(Bit32u input,Bit32u mask) {
-	switch (vga.config.raster_op) {
-	case 0x00:	/* None */
-		return (input & mask) | (vga.latch.d & ~mask);
-	case 0x01:	/* AND */
-		return (input | ~mask) & vga.latch.d;
-	case 0x02:	/* OR */
-		return (input & mask) | vga.latch.d;
-	case 0x03:	/* XOR */
-		return (input & mask) ^ vga.latch.d;
-	}
-	return 0;
-}
 
 INLINE static Bit32u ModeOperation(Bit8u val) {
-	Bit32u full;
-	switch (vga.config.write_mode) {
-	case 0x00:
-		// Write Mode 0: In this mode, the host data is first rotated as per the Rotate Count field, then the Enable Set/Reset mechanism selects data from this or the Set/Reset field. Then the selected Logical Operation is performed on the resulting data and the data in the latch register. Then the Bit Mask field is used to select which bits come from the resulting data and which come from the latch register. Finally, only the bit planes enabled by the Memory Plane Write Enable field are written to memory. 
-		val=((val >> vga.config.data_rotate) | (val << (8-vga.config.data_rotate)));
-		full=ExpandTable[val];
-		full=(full & vga.config.full_not_enable_set_reset) | vga.config.full_enable_and_set_reset; 
-		full=RasterOp(full,vga.config.full_bit_mask);
-		break;
-	case 0x01:
-		// Write Mode 1: In this mode, data is transferred directly from the 32 bit latch register to display memory, affected only by the Memory Plane Write Enable field. The host data is not used in this mode. 
-		full=vga.latch.d;
-		break;
-	case 0x02:
-		//Write Mode 2: In this mode, the bits 3-0 of the host data are replicated across all 8 bits of their respective planes. Then the selected Logical Operation is performed on the resulting data and the data in the latch register. Then the Bit Mask field is used to select which bits come from the resulting data and which come from the latch register. Finally, only the bit planes enabled by the Memory Plane Write Enable field are written to memory. 
-		full=RasterOp(FillTable[val&0xF],vga.config.full_bit_mask);
-		break;
-	case 0x03:
-		// Write Mode 3: In this mode, the data in the Set/Reset field is used as if the Enable Set/Reset field were set to 1111b. Then the host data is first rotated as per the Rotate Count field, then logical ANDed with the value of the Bit Mask field. The resulting value is used on the data obtained from the Set/Reset field in the same way that the Bit Mask field would ordinarily be used. to select which bits come from the expansion of the Set/Reset field and which come from the latch register. Finally, only the bit planes enabled by the Memory Plane Write Enable field are written to memory.
-		val=((val >> vga.config.data_rotate) | (val << (8-vga.config.data_rotate)));
-		full=RasterOp(vga.config.full_set_reset,ExpandTable[val] & vga.config.full_bit_mask);
-		break;
-	default:
-		LOG(LOG_VGAMISC,LOG_NORMAL)("VGA:Unsupported write mode %d",vga.config.write_mode);
-		full=0;
-		break;
-	}
-	return full;
+    return ExpandTable[val];
 }
 
 /* Gonna assume that whoever maps vga memory, maps it on 32/64kb boundary */
