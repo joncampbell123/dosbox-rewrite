@@ -743,16 +743,7 @@ void VGA_SetupDrawing(Bitu /*val*/) {
             }
         }
 
-        /* Check for 8 or 9 character clock mode */
-        if (vga.seq.clocking_mode & 1 ) clock = oscclock/8; else clock = oscclock/9;
-        /* Check for pixel doubling, master clock/2 */
-        /* NTS: VGA 256-color mode has a dot clock NOT divided by two, because real hardware reveals
-         *      that internally the card processes pixels 4 bits per cycle through a 8-bit shift
-         *      register and a bit is set to latch the 8-bit value out to the DAC every other cycle. */
-        if (vga.seq.clocking_mode & 0x8) {
-            clock /=2;
-            oscclock /= 2;
-        }
+        clock = oscclock/9;
     }
 #if C_DEBUG
     LOG(LOG_VGA,LOG_NORMAL)("h total %3d end %3d blank (%3d/%3d) retrace (%3d/%3d)",
@@ -892,21 +883,11 @@ void VGA_SetupDrawing(Bitu /*val*/) {
     switch (vga.mode) {
     case M_TEXT:
         vga.draw.blocks=width;
-        // allow 9-pixel wide fonts
-        if ((vga.seq.clocking_mode&0x01)) {
-            // 8-pixel wide
-            pix_per_char = 8;
-            vga.draw.char9dot = false;
-        } else {
-            // 9-pixel wide
-            pix_per_char = 9;
-            vga.draw.char9dot = true;
-        }
-
-        {
-            VGA_DrawLine = VGA_TEXT_Xlat32_Draw_Line;
-            bpp = 32;
-        }
+        // 9-pixel wide
+        pix_per_char = 9;
+        vga.draw.char9dot = true;
+        VGA_DrawLine = VGA_TEXT_Xlat32_Draw_Line;
+        bpp = 32;
         break;
     default:
         LOG(LOG_VGA,LOG_ERROR)("Unhandled VGA mode %d while checking for resolution",vga.mode);

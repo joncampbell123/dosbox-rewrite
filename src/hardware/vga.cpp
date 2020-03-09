@@ -208,10 +208,6 @@ void VGA_StartResize(Bitu delay /*=50*/) {
     }
 }
 
-#define IS_RESET ((vga.seq.reset&0x3)!=0x3)
-#define IS_SCREEN_ON ((vga.seq.clocking_mode&0x20)==0)
-//static bool hadReset = false;
-
 Bit32u MEM_get_address_bits();
 
 void VGA_Reset(Section*) {
@@ -258,7 +254,6 @@ void VGA_Reset(Section*) {
         VGA_SetupMisc();
         VGA_SetupDAC();
         VGA_SetupGFX();
-        VGA_SetupSEQ();
         VGA_SetupAttr();
     }
 
@@ -294,11 +289,6 @@ void VGA_UnsetupMisc(void);
 void VGA_UnsetupAttr(void);
 void VGA_UnsetupDAC(void);
 void VGA_UnsetupGFX(void);
-void VGA_UnsetupSEQ(void);
-
-#define gfx(blah) vga.gfx.blah
-#define seq(blah) vga.seq.blah
-#define crtc(blah) vga.crtc.blah
 
 void MEM_ResetPageHandler_Unmapped(Bitu phys_page, Bitu pages);
 
