@@ -449,69 +449,7 @@ void VGA_Reset(Section*) {
     vga_8bit_dac = false;
     enable_vga_8bit_dac = section->Get_bool("enable 8-bit dac");
 
-    vga_memio_delay_ns = section->Get_int("vmemdelay");
-    if (vga_memio_delay_ns < 0) {
-        if (IS_EGAVGA_ARCH) {
-            {
-                /* very optimistic setting, ISA bus cycles are longer than 2, but also the 386/486/Pentium pipeline
-                 * instruction decoding. so it's not a matter of sucking up enough CPU cycle counts to match the
-                 * duration of a memory I/O cycle, because real hardware probably has another instruction decode
-                 * going while it does it.
-                 *
-                 * this is long enough to fix some demo's raster effects to work properly but not enough to
-                 * significantly bring DOS games to a crawl. Apparently, this also fixes Future Crew "Panic!"
-                 * by making the shadebob take long enough to allow the 3D rotating dot object to finish it's
-                 * routine just in time to become the FC logo, instead of sitting there waiting awkwardly
-                 * for 3-5 seconds. */
-                double t = (1000000000.0 * clockdom_ISA_BCLK.freq_div * 3.75) / clockdom_ISA_BCLK.freq;
-                vga_memio_delay_ns = (int)floor(t);
-            }
-        }
-        else {
-            /* dunno. pick something */
-            double t = (1000000000.0 * clockdom_ISA_BCLK.freq_div * 6) / clockdom_ISA_BCLK.freq;
-            vga_memio_delay_ns = (int)floor(t);
-        }
-    }
-
-    LOG(LOG_VGA,LOG_DEBUG)("VGA memory I/O delay %uns",vga_memio_delay_ns);
-
-    /* mainline compatible vmemsize (in MB)
-     * plus vmemsizekb for KB-level control.
-     * then we round up a page.
-     *
-     * FIXME: If PCjr/Tandy uses system memory as video memory,
-     *        can we get away with pointing at system memory
-     *        directly and not allocate a dedicated char[]
-     *        array for VRAM? Likewise for VGA emulation of
-     *        various motherboard chipsets known to "steal"
-     *        off the top of system RAM, like Intel and
-     *        Chips & Tech VGA implementations? */
-    {
-        int sz_m = section->Get_int("vmemsize");
-        int sz_k = section->Get_int("vmemsizekb");
-
-        if (sz_m >= 0 || sz_k > 0) {
-            vga.mem.memsize  = _MB_bytes((unsigned int)sz_m);
-            vga.mem.memsize += _KB_bytes((unsigned int)sz_k);
-            vga.mem.memsize  = (vga.mem.memsize + 0xFFFu) & (~0xFFFu);
-            /* mainline compatible: vmemsize == 0 means 512KB */
-            if (vga.mem.memsize == 0) vga.mem.memsize = _KB_bytes(512);
-
-            /* round up to the nearest power of 2 (TODO: Any video hardware that uses non-power-of-2 sizes?).
-             * A lot of DOSBox's VGA emulation code assumes power-of-2 VRAM sizes especially when wrapping
-             * memory addresses with (a & (vmemsize - 1)) type code. */
-            if (!is_power_of_2(vga.mem.memsize)) {
-                vga.mem.memsize = 1u << (int_log2(vga.mem.memsize) + 1u);
-                LOG(LOG_VGA,LOG_WARN)("VGA RAM size requested is not a power of 2, rounding up to %uKB",vga.mem.memsize>>10);
-            }
-        }
-        else {
-            vga.mem.memsize = 0; /* machine-specific code will choose below */
-        }
-    }
-
-    vga.mem.memsize = _KB_bytes(256);
+    vga.mem.memsize = _KB_bytes(16);
 
     // NTS: This is WHY the memory size must be a power of 2
     vga.mem.memmask = vga.mem.memsize - 1u;
