@@ -133,24 +133,6 @@ void INT10_LoadFont(PhysPt font,bool reload,Bit16u count,Bitu offset,Bitu map,Bi
 	}
 }
 
-void INT10_ReloadFont(void) {
-	Bitu map=0;
-	switch(CurMode->cheight) {
-	case 8:
-		INT10_LoadFont(Real2Phys(int10.rom.font_8_first),false,256,0,map,8);
-		break;
-	case 14:
-		if (IS_VGA_ARCH && svgaCard==SVGA_None && CurMode->mode==7) map=0x80;
-		INT10_LoadFont(Real2Phys(int10.rom.font_14),false,256,0,map,14);
-		break;
-	case 16:
-	default:
-		if (IS_VGA_ARCH && svgaCard==SVGA_None) map=0x80;
-		INT10_LoadFont(Real2Phys(int10.rom.font_16),false,256,0,map,16);
-		break;
-	}
-}
-
 extern Bitu VGA_BIOS_Size;
 
 static Bitu VGA_ROM_BIOS_ENTRY_cb = 0;

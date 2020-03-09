@@ -927,7 +927,6 @@ Bitu keyboard_layout::read_codepage_file(const char* codepage_file_name, Bit32s 
 			number_of_fonts=host_readw(&cpi_buf[font_data_header_pt+0x02]);
 //			font_data_length=host_readw(&cpi_buf[font_data_header_pt+0x04]);
 
-			bool font_changed=false;
 			Bit32u font_data_start=font_data_header_pt+0x06;
 
 			// load all fonts if possible
@@ -943,7 +942,6 @@ Bitu keyboard_layout::read_codepage_file(const char* codepage_file_name, Bit32s 
                         }
                         // terminate alternate list to prevent loading
                         phys_writeb(Real2Phys(int10.rom.font_16_alternate),0);
-                        font_changed=true;
                     }
 				} else if (font_height==0x0e) {
 					// 14x8 font, IF supported by the video card
@@ -954,7 +952,6 @@ Bitu keyboard_layout::read_codepage_file(const char* codepage_file_name, Bit32s 
                         }
                         // terminate alternate list to prevent loading
                         phys_writeb(Real2Phys(int10.rom.font_14_alternate),0);
-                        font_changed=true;
                     }
 				} else if (font_height==0x08) {
                     // 8x8 fonts. All video cards support it
@@ -963,14 +960,12 @@ Bitu keyboard_layout::read_codepage_file(const char* codepage_file_name, Bit32s 
                         for (Bit16u i=0;i<128*8;i++) {
                             phys_writeb(font8pt+i,cpi_buf[font_data_start+i]);
                         }
-                        font_changed=true;
                     }
                     if (int10.rom.font_8_second != 0) {
                         PhysPt font8pt=Real2Phys(int10.rom.font_8_second);
                         for (Bit16u i=0;i<128*8;i++) {
                             phys_writeb(font8pt+i,cpi_buf[font_data_start+i+128*8]);
                         }
-                        font_changed=true;
                     }
                 }
 				font_data_start+=font_height*256u;
@@ -982,9 +977,6 @@ Bitu keyboard_layout::read_codepage_file(const char* codepage_file_name, Bit32s 
 			dos.loaded_codepage=(Bit16u)(codepage_id&0xffff);
 
 			// update font if necessary (EGA/VGA/SVGA only)
-			if (font_changed && (CurMode->type==M_TEXT) && (IS_EGAVGA_ARCH)) {
-				INT10_ReloadFont();
-			}
 			INT10_SetupRomMemoryChecksum();
 
 			return KEYB_NOERROR;

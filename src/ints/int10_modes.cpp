@@ -611,11 +611,6 @@ bool INT10_SetVideoMode(Bit16u mode) {
 	IO_Write(0x3c0,0x20);
 	IO_Read(mono_mode ? 0x3ba : 0x3da);
 
-	/* Load text mode font */
-	if (CurMode->type==M_TEXT) {
-		INT10_ReloadFont();
-	}
-
 	return true;
 }
 
