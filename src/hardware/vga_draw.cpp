@@ -266,20 +266,10 @@ static void VGA_DrawSingleLine(Bitu /*blah*/) {
     }
 }
 
-void VGA_SetBlinking(Bitu enabled) {
-    (void)enabled;
-    for (Bitu i=0;i<8;i++) TXT_BG_Table[i+8]=(i) | ((i) << 8)| ((i) <<16) | ((i) << 24);
-}
-
 static void VGA_VertInterrupt(Bitu /*val*/) {
     if ((!vga.draw.vret_triggered) && ((vga.crtc.vertical_retrace_end&0x30)==0x10)) {
         vga.draw.vret_triggered=true;
     }
-}
-
-static void VGA_Other_VertInterrupt(Bitu val) {
-    if (val) PIC_ActivateIRQ(5);
-    else PIC_DeActivateIRQ(5);
 }
 
 static void VGA_DisplayStartLatch(Bitu /*val*/) {
@@ -1009,7 +999,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
         if (fps_changed) {
             vga_mode_time_base = PIC_GetCurrentEventTime();
             vga_mode_frames_since_time_base = 0;
-            PIC_RemoveEvents(VGA_Other_VertInterrupt);
             PIC_RemoveEvents(VGA_VerticalTimer);
             PIC_RemoveEvents(VGA_PanningLatch);
             PIC_RemoveEvents(VGA_DisplayStartLatch);
