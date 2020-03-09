@@ -256,29 +256,6 @@ void vga_write_p3d5(Bitu port,Bitu val,Bitu /*iolen*/) {
 				IBM actually says bits 0-7.
 		*/
 		break;
-	case 0x17:	/* Mode Control Register */
-		crtc(mode_control)=(Bit8u)val;
-
-		VGA_CheckScanLength();
-
-		//Should we really need to do a determinemode here?
-//		VGA_DetermineMode();
-		/*
-			0	If clear use CGA compatible memory addressing system
-				by substituting character row scan counter bit 0 for address bit 13,
-				thus creating 2 banks for even and odd scan lines.
-			1	If clear use Hercules compatible memory addressing system by
-				substituting character row scan counter bit 1 for address bit 14,
-				thus creating 4 banks.
-			2	If set increase scan line counter only every second line.
-			3	If set increase memory address counter only every other character clock.
-			5	When in Word Mode bit 15 is rotated to bit 0 if this bit is set else
-				bit 13 is rotated into bit 0.
-			6	If clear system is in word mode. Addresses are rotated 1 position up
-				bringing either bit 13 or 15 into bit 0.
-			7	Clearing this bit will reset the display system until the bit is set again.
-		*/
-		break;
 	default:
         LOG(LOG_VGAMISC,LOG_NORMAL)("VGA:CRTC:Write to unknown index %X",crtc(index));
         break;
@@ -333,8 +310,6 @@ Bitu vga_read_p3d5x(Bitu port,Bitu iolen) {
 		return crtc(start_vertical_blanking);
 	case 0x16:	/*  End Vertical Blank Register */
 		return crtc(end_vertical_blanking);
-	case 0x17:	/* Mode Control Register */
-		return crtc(mode_control);
 	default:
         LOG(LOG_VGAMISC,LOG_NORMAL)("VGA:CRTC:Read from unknown index %X",crtc(index));
         return 0x0;

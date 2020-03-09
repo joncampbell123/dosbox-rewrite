@@ -193,7 +193,7 @@ template <const unsigned int card,typename templine_type_t> static inline Bit8u*
         if (vga.draw.char9dot) {
             font <<=1; // 9 pixels
             // extend to the 9th pixel if needed
-            if ((font&0x2) && (vga.attr.mode_control&0x04) &&
+            if ((font&0x2) &&
                 (chr>=0xc0) && (chr<=0xdf)) font |= 1;
             for (Bitu n = 0; n < 9; n++) {
                 if (card == MCH_VGA)
@@ -233,37 +233,6 @@ template <const unsigned int card,typename templine_type_t> static inline Bit8u*
 // combined 8/9-dot wide text mode 16bpp line drawing function
 static Bit8u* VGA_TEXT_Xlat32_Draw_Line(Bitu vidstart, Bitu line) {
     return EGAVGA_TEXT_Combined_Draw_Line<MCH_VGA,Bit32u>(vidstart,line);
-}
-
-static void VGA_ProcessSplit() {
-    vga.draw.has_split = true;
-    if (vga.attr.mode_control&0x20) {
-        vga.draw.address=0;
-        // reset panning to 0 here so we don't have to check for 
-        // it in the character draw functions. It will be set back
-        // to its proper value in v-retrace
-        vga.draw.panning=0; 
-    } else {
-        // In text mode only the characters are shifted by panning, not the address;
-        // this is done in the text line draw function. EGA/VGA planar is handled the same way.
-        vga.draw.address = vga.draw.byte_panning_shift*vga.draw.bytes_skip;
-        {
-            switch (vga.mode) {
-                case M_TEXT:
-                    /* ignore */
-                    break;
-                default:
-                    vga.draw.address += vga.draw.panning;
-                    break;
-            }
-        }
-    }
-    vga.draw.address_line=0;
-}
-
-/* this is now called PER LINE because most VGA cards do not double-buffer the value.
- * a few demos rely on line compare schenanigans to play with the raster, as does my own VGA test program --J.C. */
-void VGA_Update_SplitLineCompare() {
 }
 
 static void VGA_DrawSingleLine(Bitu /*blah*/) {
@@ -375,16 +344,8 @@ static void VGA_DrawEGASingleLine(Bitu /*blah*/) {
 }
 
 void VGA_SetBlinking(Bitu enabled) {
-    Bitu b;
-    LOG(LOG_VGA,LOG_NORMAL)("Blinking %d",(int)enabled);
-    if (enabled) {
-        b=0;vga.draw.blinking=1; //used to -1 but blinking is unsigned
-        vga.attr.mode_control|=0x08;
-    } else {
-        b=8;vga.draw.blinking=0;
-        vga.attr.mode_control&=~0x08;
-    }
-    for (Bitu i=0;i<8;i++) TXT_BG_Table[i+8]=(b+i) | ((b+i) << 8)| ((b+i) <<16) | ((b+i) << 24);
+    (void)enabled;
+    for (Bitu i=0;i<8;i++) TXT_BG_Table[i+8]=(i) | ((i) << 8)| ((i) <<16) | ((i) << 24);
 }
 
 static void VGA_VertInterrupt(Bitu /*val*/) {
@@ -695,7 +656,6 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
     if (vga.draw.vga_override || !RENDER_StartUpdate()) return;
 
     vga.draw.address_line = vga.config.hlines_skip;
-    if (IS_EGAVGA_ARCH) VGA_Update_SplitLineCompare();
     vga.draw.address = vga.config.real_start;
     vga.draw.byte_panning_shift = 0;
 

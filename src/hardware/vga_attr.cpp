@@ -109,40 +109,6 @@ void write_p3c0(Bitu /*port*/,Bitu val,Bitu /*iolen*/) {
 		case 0x0c:		case 0x0d:		case 0x0e:		case 0x0f:
             VGA_ATTR_SetPalette(attr(index),(Bit8u)val);
             break;
-		case 0x10: { /* Mode Control Register */
-			if (!IS_VGA_ARCH) val&=0x1f;	// not really correct, but should do it
-			Bitu difference = attr(mode_control)^val;
-			attr(mode_control)=(Bit8u)val;
-
-			if (difference & 0x80) {
-				for (Bit8u i=0;i<0x10;i++)
-					VGA_ATTR_SetPalette(i,vga.attr.palette[i]);
-			}
-			if (difference & 0x08)
-				VGA_SetBlinking(val & 0x8);
-			
-			if (difference & 0x41)
-				VGA_DetermineMode();
-            if (difference & 0x40) // 8BIT changes in 256-color mode must be handled
-                VGA_StartResize(50);
-			/*
-				0	Graphics mode if set, Alphanumeric mode else.
-				1	Monochrome mode if set, color mode else.
-				2	9-bit wide characters if set.
-					The 9th bit of characters C0h-DFh will be the same as
-					the 8th bit. Otherwise it will be the background color.
-				3	If set Attribute bit 7 is blinking, else high intensity.
-				5	If set the PEL panning register (3C0h index 13h) is temporarily set
-					to 0 from when the line compare causes a wrap around until the next
-					vertical retrace when the register is automatically reloaded with
-					the old value, else the PEL panning register ignores line compares.
-				6	If set pixels are 8 bits wide. Used in 256 color modes.
-				7	If set bit 4-5 of the index into the DAC table are taken from port
-					3C0h index 14h bit 0-1, else the bits in the palette register are
-					used.
-			*/
-			break;
-		}
 		default:
 			LOG(LOG_VGAMISC,LOG_NORMAL)("VGA:ATTR:Write to unkown Index %2X",attr(index));
 			break;
@@ -159,8 +125,6 @@ Bitu read_p3c1(Bitu /*port*/,Bitu /*iolen*/) {
 	case 0x08:		case 0x09:		case 0x0a:		case 0x0b:
 	case 0x0c:		case 0x0d:		case 0x0e:		case 0x0f:
 		return attr(palette[attr(index)]);
-	case 0x10: /* Mode Control Register */
-		return attr(mode_control);
 	default:
 		LOG(LOG_VGAMISC,LOG_NORMAL)("VGA:ATTR:Read from unkown Index %2X",attr(index));
 	}

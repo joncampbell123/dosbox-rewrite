@@ -1942,7 +1942,7 @@ bool ParseCommand(char* str) {
             DEBUG_ShowMsg("strvrt=%02xh endvrt=%02xh vdend=%02xh underline=%02xh modectrl=%02xh",
                 vga.crtc.vertical_retrace_start,        vga.crtc.vertical_retrace_end,
                 vga.crtc.vertical_display_end,          vga.crtc.underline_location,
-                vga.crtc.mode_control);
+                0);
             DEBUG_ShowMsg("strvhb=%02xh endvhb=%02xh linecomp=%02xh",
                 vga.crtc.start_vertical_blanking,       vga.crtc.end_vertical_blanking,
                 vga.crtc.line_compare);
@@ -2004,7 +2004,7 @@ bool ParseCommand(char* str) {
 
             DEBUG_ShowMsg("VGA Attribute Controller info: attrindexmode=%u",vga.internal.attrindex?1:0);
             DEBUG_ShowMsg("mode_control=%02xh horz-pel-pan=%02xh overscan-color=%02xh",
-                vga.attr.mode_control,  0,
+                0,  0,
                 0);
             DEBUG_ShowMsg("color-plane-en=%02xh color-select=%02xh index=%02xh",
                 0xF,    0xF,  vga.attr.index);

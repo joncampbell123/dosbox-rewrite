@@ -575,20 +575,6 @@ bool INT10_SetVideoMode(Bit16u mode) {
 		IO_Write(crtc_base,0x5e);IO_Write(crtc_base+1u,ver_overflow);
 	}
 
-	/* Mode Control */
-	Bit8u mode_control=0;
-
-	switch (CurMode->type) {
-	case M_TEXT:
-		mode_control=0xa3;
-		if (CurMode->special & _VGA_PIXEL_DOUBLE)
-			mode_control |= 0x08;
-		break;
-	default:
-		break;
-	}
-
-    IO_Write(crtc_base, 0x17); IO_Write(crtc_base + 1u, mode_control);
 	/* Renable write protection */
 	IO_Write(crtc_base,0x11);
 	IO_Write(crtc_base+1u,IO_Read(crtc_base+1u)|0x80);
