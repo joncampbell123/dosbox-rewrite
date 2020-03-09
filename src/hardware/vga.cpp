@@ -625,9 +625,6 @@ void VGA_Init() {
 
     VGA_TweakUserVsyncOffset(0.0f);
 
-    vga.draw.font_tables[0]=&vga.draw.font[0];
-    vga.draw.font_tables[1]=&vga.draw.font[0];
-
     for (i=0;i<256;i++) {
         ExpandTable[i]=(Bitu)(i + (i << 8u) + (i << 16u) + (i << 24u));
     }

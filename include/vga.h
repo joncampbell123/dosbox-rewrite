@@ -136,8 +136,6 @@ typedef struct {
 		float singleline_delay;
 	} delay;
 	double screen_ratio;
-	Bit8u font[516*1024]; /* enlarged to 516KB for PC-98 character font data (256*16) + (128*2*128*16) */
-	Bit8u * font_tables[2];
 	Bitu blinking;
 	bool blink;
 	bool char9dot;

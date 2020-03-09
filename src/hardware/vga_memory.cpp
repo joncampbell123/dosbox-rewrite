@@ -254,11 +254,6 @@ template <const bool chained> static inline void VGA_Generic_Write_Handler(PhysP
     pixels.d&=~mask;
     pixels.d|=(data & mask);
 
-    /* FIXME: A better method (I think) is to have the VGA text drawing code
-     *        directly reference the font data in bitplane #2 instead of
-     *        this hack */
-    vga.draw.font[planeaddr] = pixels.b[2];
-
     ((Bit32u*)vga.mem.linear)[planeaddr]=pixels.d;
 }
 
