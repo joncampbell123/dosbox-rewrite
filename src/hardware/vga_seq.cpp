@@ -98,34 +98,6 @@ void write_p3c5(Bitu /*port*/,Bitu val,Bitu /*iolen*/) {
 				interface.
 		*/
 		break;
-	case 2:		/* Map Mask */
-		seq(map_mask)=val & 15;
-		vga.config.full_map_mask=FillTable[val & 15];
-		vga.config.full_not_map_mask=~vga.config.full_map_mask;
-		/*
-			0  Enable writes to plane 0 if set
-			1  Enable writes to plane 1 if set
-			2  Enable writes to plane 2 if set
-			3  Enable writes to plane 3 if set
-		*/
-		break;
-	case 4:	/* Memory Mode */
-		/* 
-			0  Set if in an alphanumeric mode, clear in graphics modes.
-			1  Set if more than 64kbytes on the adapter.
-			2  Enables Odd/Even addressing mode if set. Odd/Even mode places all odd
-				bytes in plane 1&3, and all even bytes in plane 0&2.
-			3  If set address bit 0-1 selects video memory planes (256 color mode),
-				rather than the Map Mask and Read Map Select Registers.
-		*/
-		seq(memory_mode)=(Bit8u)val;
-		if (IS_VGA_ARCH) {
-			/* Changing this means changing the VGA Memory Read/Write Handler */
-			if (val&0x08) vga.config.chained=true;
-			else vga.config.chained=false;
-			VGA_SetupHandlers();
-		}
-		break;
 	default:
 		{
 			LOG(LOG_VGAMISC,LOG_NORMAL)("VGA:SEQ:Write to illegal index %2X",seq(index));
@@ -140,12 +112,6 @@ Bitu read_p3c5(Bitu /*port*/,Bitu /*iolen*/) {
 	switch(seq(index)) {
 	case 1:			/* Clocking Mode */
 		return seq(clocking_mode);
-		break;
-	case 2:			/* Map Mask */
-		return seq(map_mask);
-		break;
-	case 4:			/* Memory Mode */
-		return seq(memory_mode);
 		break;
 	default:
 		break;
