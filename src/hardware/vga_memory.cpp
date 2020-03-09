@@ -30,9 +30,6 @@
 #include "setup.h"
 #include "cpu.h"
 
-extern bool non_cga_ignore_oddeven;
-extern bool non_cga_ignore_oddeven_engage;
-
 #ifndef C_VGARAM_CHECKED
 #define C_VGARAM_CHECKED 1
 #endif
@@ -121,8 +118,7 @@ static inline Bitu VGA_Generic_Read_Handler(PhysPt planeaddr,PhysPt rawaddr,unsi
      * bits[1:1] = Extended memory (when EGA cards have > 64KB of RAM)
      * 
      * NTS: Real hardware experience says that despite the name, the Odd/Even bit affects reading as well */
-    if (!(vga.seq.memory_mode&4) && !non_cga_ignore_oddeven_engage)/* Odd Even Host Memory Write Addressing Disable (is not set) */
-        plane = (plane & ~1u) + (rawaddr & 1u);
+    plane = (plane & ~1u) + (rawaddr & 1u);
 
     /* Graphics Controller: Miscellaneous Graphics Register register (06h)
      * bits[3:2] = memory map select
@@ -134,7 +130,7 @@ static inline Bitu VGA_Generic_Read_Handler(PhysPt planeaddr,PhysPt rawaddr,unsi
      * When enabled, address bit A0 (bit 0) becomes bit 0 of the plane index.
      * Then when addressing VRAM A0 is replaced by a "higher order bit", which is
      * probably A14 or A16 depending on Extended Memory bit 1 in Sequencer register 04h memory mode */
-    if ((vga.gfx.miscellaneous&2) && !non_cga_ignore_oddeven_engage) {/* Odd/Even enable */
+    {/* Odd/Even enable */
         const PhysPt mask = (vga.config.compatible_chain4 ? 0u : ~0xFFFFu) + (1u << hobit_n) - 2u;
         const PhysPt hobit = (planeaddr >> hobit_n) & 1u;
         /* 1 << 14 =     0x4000
@@ -143,22 +139,9 @@ static inline Bitu VGA_Generic_Read_Handler(PhysPt planeaddr,PhysPt rawaddr,unsi
          * The point is to mask upper bit AND the LSB */
         planeaddr = (planeaddr & mask & (vga.mem.memmask >> 2u)) + hobit;
     }
-    else {
-        const PhysPt mask = (vga.config.compatible_chain4 ? 0u : ~0xFFFFu) + (1u << hobit_n) - 1u;
-        planeaddr &= mask & (vga.mem.memmask >> 2u);
-    }
 
     vga.latch.d=((Bit32u*)vga.mem.linear)[planeaddr];
-    switch (vga.config.read_mode) {
-        case 0:
-            return (vga.latch.b[plane]);
-        case 1:
-            VGA_Latch templatch;
-            templatch.d=(vga.latch.d & FillTable[vga.config.color_dont_care]) ^ FillTable[vga.config.color_compare & vga.config.color_dont_care];
-            return (Bit8u)~(templatch.b[0] | templatch.b[1] | templatch.b[2] | templatch.b[3]);
-    }
-
-    return 0;
+    return (vga.latch.b[plane]);
 }
 
 template <const bool chained> static inline void VGA_Generic_Write_Handler(PhysPt planeaddr,PhysPt rawaddr,Bit8u val) {
@@ -171,16 +154,7 @@ template <const bool chained> static inline void VGA_Generic_Write_Handler(PhysP
      * bits[1:1] = Extended memory (when EGA cards have > 64KB of RAM)
      * 
      * NTS: Real hardware experience says that despite the name, the Odd/Even bit affects reading as well */
-    if (chained) {
-        if (!(vga.seq.memory_mode&4) && !non_cga_ignore_oddeven_engage)/* Odd Even Host Memory Write Addressing Disable (is not set) */
-            mask &= 0xFF00FFu << ((rawaddr & 1u) * 8u);
-        else
-            mask &= 0xFFu << ((rawaddr & 3u) * 8u);
-    }
-    else {
-        if (!(vga.seq.memory_mode&4) && !non_cga_ignore_oddeven_engage)/* Odd Even Host Memory Write Addressing Disable (is not set) */
-            mask &= 0xFF00FFu << ((rawaddr & 1u) * 8u);
-    }
+    mask &= 0xFF00FFu << ((rawaddr & 1u) * 8u);
 
     /* Graphics Controller: Miscellaneous Graphics Register register (06h)
      * bits[3:2] = memory map select
@@ -192,7 +166,7 @@ template <const bool chained> static inline void VGA_Generic_Write_Handler(PhysP
      * When enabled, address bit A0 (bit 0) becomes bit 0 of the plane index.
      * Then when addressing VRAM A0 is replaced by a "higher order bit", which is
      * probably A14 or A16 depending on Extended Memory bit 1 in Sequencer register 04h memory mode */
-    if ((vga.gfx.miscellaneous&2) && !non_cga_ignore_oddeven_engage) {/* Odd/Even enable */
+    {/* Odd/Even enable */
         const PhysPt mask = (vga.config.compatible_chain4 ? 0u : ~0xFFFFu) + (1u << hobit_n) - 2u;
         const PhysPt hobit = (planeaddr >> hobit_n) & 1u;
         /* 1 << 14 =     0x4000
@@ -200,10 +174,6 @@ template <const bool chained> static inline void VGA_Generic_Write_Handler(PhysP
          * 1 << 14 - 2 = 0x3FFE
          * The point is to mask upper bit AND the LSB */
         planeaddr = (planeaddr & mask & (vga.mem.memmask >> 2u)) + hobit;
-    }
-    else {
-        const PhysPt mask = (vga.config.compatible_chain4 ? 0u : ~0xFFFFu) + (1u << hobit_n) - 1u;
-        planeaddr &= mask & (vga.mem.memmask >> 2u);
     }
 
     Bit32u data=ModeOperation(val);
@@ -369,8 +339,6 @@ void VGA_SetupHandlers(void) {
     MEM_SetPageHandler( VGA_PAGE_B8, 8,  &vgaph.uvga  );
     MEM_SetPageHandler( VGA_PAGE_A0, 16, &vgaph.empty );
     MEM_SetPageHandler( VGA_PAGE_B0, 8,  &vgaph.empty );
-
-    non_cga_ignore_oddeven_engage = false;
 
 	PAGING_ClearTLB();
 }

@@ -68,7 +68,6 @@ Bitu vga_read_p3da(Bitu port,Bitu iolen) {
         retval |= 8; // vertical retrace
     }
 
-	vsync_poll_debug_notify();
 	return retval;
 }
 

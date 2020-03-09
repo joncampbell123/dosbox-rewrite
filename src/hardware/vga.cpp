@@ -152,8 +152,6 @@ void VGA_CaptureStartNextFrame(void);
 void VGA_CaptureMarkError(void);
 bool VGA_CaptureValidateCurrentFrame(void);
 
-extern int                          vga_memio_delay_ns;
-
 SDL_Rect                            vga_capture_rect = {0,0,0,0};
 SDL_Rect                            vga_capture_current_rect = {0,0,0,0};
 uint32_t                            vga_capture_current_address = 0;
@@ -171,61 +169,7 @@ SDL_Rect &VGA_CaptureRectFromGuest(void) {
 }
 
 VGA_Type vga;
-int enableCGASnow;
-int vesa_modelist_cap = 0;
-int vesa_mode_width_cap = 0;
-int vesa_mode_height_cap = 0;
-bool vesa_bios_modelist_in_info = false;
-bool vga_3da_polled = false;
-bool vga_page_flip_occurred = false;
-bool enable_page_flip_debugging_marker = false;
-bool enable_vretrace_poll_debugging_marker = false;
-bool vga_enable_hretrace_effects = false;
-bool vga_enable_hpel_effects = false;
-bool vga_enable_3C6_ramdac = false;
-bool vga_sierra_lock_565 = false;
-bool enable_vga_resize_delay = false;
-bool vga_ignore_hdispend_change_if_smaller = false;
-bool ignore_vblank_wraparound = false;
-bool non_cga_ignore_oddeven = false;
-bool non_cga_ignore_oddeven_engage = false;
-bool vga_palette_update_on_full_load = true;
-bool vga_double_buffered_line_compare = false;
-bool int10_vesa_map_as_128kb = false;
 
-unsigned char VGA_AC_remap = AC_4x4;
-
-unsigned int vga_display_start_hretrace = 0;
-float hretrace_fx_avg_weight = 3;
-
-bool allow_vesa_4bpp_packed = true;
-bool allow_vesa_lowres_modes = true;
-bool allow_unusual_vesa_modes = true;
-bool allow_explicit_vesa_24bpp = true;
-bool allow_hd_vesa_modes = true;
-bool vesa12_modes_32bpp = true;
-bool allow_vesa_32bpp = true;
-bool allow_vesa_24bpp = true;
-bool allow_vesa_16bpp = true;
-bool allow_vesa_15bpp = true;
-bool allow_vesa_8bpp = true;
-bool allow_vesa_4bpp = true;
-bool allow_vesa_tty = true;
-
-void page_flip_debug_notify() {
-    if (enable_page_flip_debugging_marker)
-        vga_page_flip_occurred = true;
-}
-
-void vsync_poll_debug_notify() {
-    if (enable_vretrace_poll_debugging_marker)
-        vga_3da_polled = true;
-}
-
-Bit32u CGA_2_Table[16];
-Bit32u CGA_4_Table[256];
-Bit32u CGA_4_HiRes_Table[256];
-Bit32u CGA_16_Table[256];
 Bit32u TXT_Font_Table[16];
 Bit32u TXT_FG_Table[16];
 Bit32u TXT_BG_Table[16];
@@ -256,9 +200,7 @@ void VGA_DetermineMode(void) {
 
 void VGA_StartResize(Bitu delay /*=50*/) {
     if (!vga.draw.resizing) {
-        /* even if the user disables the delay, we can avoid a lot of window resizing by at least having 1ms of delay */
-        if (!enable_vga_resize_delay && delay > 1) delay = 1;
-
+        delay = 1;
         vga.draw.resizing=true;
         /* Start a resize after delay (default 50 ms) */
         if (delay==0) VGA_SetupDrawing(0);
@@ -361,19 +303,6 @@ void VGA_Reset(Section*) {
 
     LOG(LOG_MISC,LOG_DEBUG)("VGA_Reset() reinitializing VGA emulation");
 
-    str = section->Get_string("vga attribute controller mapping");
-    if (str == "4x4")
-        VGA_AC_remap = AC_4x4;
-    else if (str == "4low")
-        VGA_AC_remap = AC_low4;
-    else {
-        /* auto:
-         *
-         * 4x4 by default.
-         * except for ET4000 which is 4low */
-        VGA_AC_remap = AC_4x4;
-    }
-
     vga_force_refresh_rate = -1;
     str=section->Get_string("forcerate");
     if (str == "ntsc")
@@ -394,49 +323,6 @@ void VGA_Reset(Section*) {
         vga_force_refresh_rate = atof(str.c_str());
     }
 
-    enableCGASnow = section->Get_bool("cgasnow");
-    vesa_modelist_cap = section->Get_int("vesa modelist cap");
-    vesa_mode_width_cap = section->Get_int("vesa modelist width limit");
-    vesa_mode_height_cap = section->Get_int("vesa modelist height limit");
-    vga_enable_3C6_ramdac = section->Get_bool("sierra ramdac");
-    vga_enable_hpel_effects = section->Get_bool("allow hpel effects");
-    vga_sierra_lock_565 = section->Get_bool("sierra ramdac lock 565");
-    hretrace_fx_avg_weight = section->Get_double("hretrace effect weight");
-    ignore_vblank_wraparound = section->Get_bool("ignore vblank wraparound");
-    int10_vesa_map_as_128kb = section->Get_bool("vesa map non-lfb modes to 128kb region");
-    vga_enable_hretrace_effects = section->Get_bool("allow hretrace effects");
-    enable_page_flip_debugging_marker = section->Get_bool("page flip debug line");
-    vga_palette_update_on_full_load = section->Get_bool("vga palette update on full load");
-    non_cga_ignore_oddeven = section->Get_bool("ignore odd-even mode in non-cga modes");
-    enable_vretrace_poll_debugging_marker = section->Get_bool("vertical retrace poll debug line");
-    vga_double_buffered_line_compare = section->Get_bool("double-buffered line compare");
-    allow_vesa_lowres_modes = section->Get_bool("allow low resolution vesa modes");
-    vesa12_modes_32bpp = section->Get_bool("vesa vbe 1.2 modes are 32bpp");
-    allow_vesa_4bpp_packed = section->Get_bool("allow 4bpp packed vesa modes");
-    allow_explicit_vesa_24bpp = section->Get_bool("allow explicit 24bpp vesa modes");
-    allow_hd_vesa_modes = section->Get_bool("allow high definition vesa modes");
-    allow_unusual_vesa_modes = section->Get_bool("allow unusual vesa modes");
-    allow_vesa_32bpp = section->Get_bool("allow 32bpp vesa modes");
-    allow_vesa_24bpp = section->Get_bool("allow 24bpp vesa modes");
-    allow_vesa_16bpp = section->Get_bool("allow 16bpp vesa modes");
-    allow_vesa_15bpp = section->Get_bool("allow 15bpp vesa modes");
-    allow_vesa_8bpp = section->Get_bool("allow 8bpp vesa modes");
-    allow_vesa_4bpp = section->Get_bool("allow 4bpp vesa modes");
-    allow_vesa_tty = section->Get_bool("allow tty vesa modes");
-    enable_vga_resize_delay = section->Get_bool("enable vga resize delay");
-    vga_ignore_hdispend_change_if_smaller = section->Get_bool("resize only on vga active display width increase");
-    vesa_bios_modelist_in_info = section->Get_bool("vesa vbe put modelist in vesa information");
-
-    /* sanity check: "VBE 1.2 modes 32bpp" doesn't make any sense if neither 24bpp or 32bpp is enabled */
-    if (!allow_vesa_32bpp && !allow_vesa_24bpp)
-        vesa12_modes_32bpp = 0;
-    /* sanity check: "VBE 1.2 modes 32bpp=true" doesn't make sense if the user disabled 32bpp */
-    else if (vesa12_modes_32bpp && !allow_vesa_32bpp)
-        vesa12_modes_32bpp = 0;
-    /* sanity check: "VBE 1.2 modes 32bpp=false" doesn't make sense if the user disabled 24bpp */
-    else if (!vesa12_modes_32bpp && !allow_vesa_24bpp && allow_vesa_32bpp)
-        vesa12_modes_32bpp = 1;
-
     if (vga_force_refresh_rate > 0)
         LOG(LOG_VGA,LOG_NORMAL)("VGA forced refresh rate active = %.3f",vga_force_refresh_rate);
 
@@ -449,13 +335,6 @@ void VGA_Reset(Section*) {
     vga.mem.memmask = vga.mem.memsize - 1u;
 
     LOG(LOG_VGA,LOG_NORMAL)("Video RAM: %uKB",vga.mem.memsize>>10);
-
-    // TODO: If S3 emulation, and linear framebuffer bumps up against the CPU memalias limits,
-    //       trim Video RAM to fit (within reasonable limits) or else E_Exit() to let the user
-    //       know of impossible constraints.
-
-    mainMenu.get_item("debug_pageflip").check(enable_page_flip_debugging_marker).refresh_item(mainMenu);
-    mainMenu.get_item("debug_retracepoll").check(enable_vretrace_poll_debugging_marker).refresh_item(mainMenu);
 
     VGA_SetupMemory();      // memory is allocated here
     {
@@ -527,20 +406,12 @@ void VGA_Destroy(Section*) {
 bool debugpollvga_pf_menu_callback(DOSBoxMenu * const xmenu, DOSBoxMenu::item * const menuitem) {
     (void)xmenu;//UNUSED
     (void)menuitem;//UNUSED
-
-    enable_page_flip_debugging_marker = !enable_page_flip_debugging_marker;
-    mainMenu.get_item("debug_pageflip").check(enable_page_flip_debugging_marker).refresh_item(mainMenu);
-
     return true;
 }
 
 bool debugpollvga_rtp_menu_callback(DOSBoxMenu * const xmenu, DOSBoxMenu::item * const menuitem) {
     (void)xmenu;//UNUSED
     (void)menuitem;//UNUSED
-
-    enable_vretrace_poll_debugging_marker = !enable_vretrace_poll_debugging_marker;
-    mainMenu.get_item("debug_retracepoll").check(enable_vretrace_poll_debugging_marker).refresh_item(mainMenu);
-
     return true;
 }
 

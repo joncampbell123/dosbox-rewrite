@@ -57,13 +57,6 @@ double vga_fps = 70;
 double vga_mode_time_base = -1;
 int vga_mode_frames_since_time_base = 0;
 
-extern bool vga_3da_polled;
-extern bool vga_page_flip_occurred;
-extern bool vga_enable_hpel_effects;
-extern unsigned int vga_display_start_hretrace;
-extern bool ignore_vblank_wraparound;
-extern bool vga_double_buffered_line_compare;
-
 void memxor(void *_d,unsigned int byte,size_t count) {
     unsigned char *d = (unsigned char*)_d;
     while (count-- > 0) *d++ ^= byte;
@@ -291,17 +284,6 @@ again:
     if (!skiprender) {
         {
             Bit8u * data=VGA_DrawLine( vga.draw.address, vga.draw.address_line );
-            if (vga_page_flip_occurred) {
-                memxor(data,0xFF,vga.draw.width*(vga.draw.bpp>>3));
-                vga_page_flip_occurred = false;
-            }
-            if (vga_3da_polled) {
-                if (vga.draw.bpp==32)
-                    memxor_greendotted_32bpp((uint32_t*)data,(vga.draw.width>>1)*(vga.draw.bpp>>3),vga.draw.lines_done);
-                else
-                    memxor_greendotted_16bpp((uint16_t*)data,(vga.draw.width>>1)*(vga.draw.bpp>>3),vga.draw.lines_done);
-                vga_3da_polled = false;
-            }
 
             if (VGA_IsCaptureEnabled())
                 VGA_ProcessScanline(data);
@@ -338,8 +320,6 @@ again:
 
         RENDER_EndUpdate(false);
     }
-
-    if (IS_EGAVGA_ARCH && !vga_double_buffered_line_compare) VGA_Update_SplitLineCompare();
 }
 
 static void VGA_DrawEGASingleLine(Bitu /*blah*/) {
@@ -426,7 +406,6 @@ static void VGA_DisplayStartLatch(Bitu /*val*/) {
     /* hretrace fx support: store the hretrace value at start of picture so we have
      * a point of reference how far to displace the scanline when wavy effects are
      * made */
-    vga_display_start_hretrace = vga.crtc.start_horizontal_retrace;
     vga.config.real_start=vga.config.display_start & vga.mem.memmask;
     vga.draw.bytes_skip = vga.config.bytes_skip;
 }
@@ -565,9 +544,7 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
     }
 
     vga.draw.delay.framestart = current_time; /* FIXME: Anyone use this?? If not, remove it */
-    vga_page_flip_occurred = false;
     vga.draw.has_split = false;
-    vga_3da_polled = false;
 
     // FIXME: While this code is quite good at keeping time, I'm seeing drift "reset" back to
     //        14-30ms every video mode change. Is our INT 10h code that slow?
@@ -969,7 +946,7 @@ void VGA_SetupDrawing(Bitu /*val*/) {
 
     // Vertical blanking tricks
     vblank_skip = 0;
-    if ((IS_VGA_ARCH) && !ignore_vblank_wraparound) { // others need more investigation
+    if (IS_VGA_ARCH) { // others need more investigation
         if (vbstart < vtotal) { // There will be no blanking at all otherwise
             if (vbend > vtotal) {
                 // blanking wraps to the start of the screen

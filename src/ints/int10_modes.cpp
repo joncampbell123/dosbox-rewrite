@@ -809,14 +809,6 @@ Bitu VideoModeMemSize(Bitu mode) {
 	if (!vmodeBlock)
 	        return ~0ul;
 
-	switch(vmodeBlock->type) {
-	case M_TEXT:
-		if (mode >= 0x100 && !allow_vesa_tty) return ~0ul;
-		return vmodeBlock->twidth*vmodeBlock->theight*2;
-	default:
-		break;
-	}
-	// Return 0 for all other types, those always fit in memory
-	return 0;
+    return vmodeBlock->twidth*vmodeBlock->theight*2;
 }
 
