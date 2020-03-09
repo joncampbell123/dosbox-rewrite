@@ -158,10 +158,8 @@ typedef struct {
 
 typedef struct {
 	Bit8u index;
-	Bit8u reset;
 	Bit8u clocking_mode;
 	Bit8u map_mask;
-	Bit8u character_map_select;
 	Bit8u memory_mode;
 } VGA_Seq;
 
