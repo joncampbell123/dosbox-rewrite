@@ -34,13 +34,7 @@ void VGA_UnmapMMIO(void);
 void page_flip_debug_notify();
 
 void VGA_CheckAddrShift() {
-    //Byte,word,dword mode
-    if ( IS_VGA_ARCH && crtc(underline_location) & 0x40 )
-        vga.config.addr_shift = 2u;
-    else if ( IS_EGAVGA_ARCH && crtc( mode_control) & 0x40 )
-        vga.config.addr_shift = 0u;
-    else
-        vga.config.addr_shift = 1u;
+    vga.config.addr_shift = 1u;
 }
 
 void vga_write_p3d5(Bitu port,Bitu val,Bitu iolen);
@@ -214,18 +208,6 @@ void vga_write_p3d5(Bitu port,Bitu val,Bitu /*iolen*/) {
 			5-6	Delay of cursor data in character clocks.
 		*/
 		break;
-	case 0x0C:	/* Start Address High Register */
-		crtc(start_address_high)=(Bit8u)val;
-		vga.config.display_start=(vga.config.display_start & 0xFF00FF)| (val << 8);
-		/* 0-7  Upper 8 bits of the start address of the display buffer */
-		page_flip_debug_notify();
-		break;
-	case 0x0D:	/* Start Address Low Register */
-		crtc(start_address_low)=(Bit8u)val;
-		vga.config.display_start=(vga.config.display_start & 0xFFFF00)| val;
-		/*	0-7	Lower 8 bits of the start address of the display buffer */
-		page_flip_debug_notify();
-		break;
 	case 0x0E:	/*Cursor Location High Register */
 		crtc(cursor_location_high)=(Bit8u)val;
 		vga.config.cursor_start&=0xff00ff;
@@ -296,16 +278,6 @@ void vga_write_p3d5(Bitu port,Bitu val,Bitu /*iolen*/) {
 				word mode and 8 for Double Word mode.
 		*/
 		break;
-	case 0x14:	/* Underline Location Register */
-		crtc(underline_location)=(Bit8u)val;
-        VGA_CheckAddrShift();
-		VGA_CheckScanLength();
-		/*
-			0-4	Position of underline within Character cell.
-			5	If set memory address is only changed every fourth character clock.
-			6	Double Word mode addressing if set
-		*/
-		break;
 	case 0x15:	/* Start Vertical Blank Register */
 		if (val!=crtc(start_vertical_blanking)) {
 			crtc(start_vertical_blanking)=(Bit8u)val;
@@ -352,16 +324,6 @@ void vga_write_p3d5(Bitu port,Bitu val,Bitu /*iolen*/) {
 			7	Clearing this bit will reset the display system until the bit is set again.
 		*/
 		break;
-	case 0x18:	/* Line Compare Register */
-		crtc(line_compare)=(Bit8u)val;
-		vga.config.line_compare=(vga.config.line_compare & 0x700) | val;
-		/*
-			0-7	Lower 8 bits of the Line Compare. When the Line counter reaches this
-				value, the display address wraps to 0. Provides Split Screen
-				facilities. Bit 8 is found in 3d4h index 7 bit 4.
-				Bit 9 is found in 3d4h index 9 bit 6.
-		*/
-		break;
 	default:
         LOG(LOG_VGAMISC,LOG_NORMAL)("VGA:CRTC:Write to unknown index %X",crtc(index));
         break;
@@ -404,10 +366,6 @@ Bitu vga_read_p3d5x(Bitu port,Bitu iolen) {
 		return crtc(cursor_start);
 	case 0x0B:	/* Cursor End Register */
 		return crtc(cursor_end);
-	case 0x0C:	/* Start Address High Register */
-		return crtc(start_address_high);
-	case 0x0D:	/* Start Address Low Register */
-		return crtc(start_address_low);
 	case 0x0E:	/*Cursor Location High Register */
 		return crtc(cursor_location_high);
 	case 0x0F:	/* Cursor Location Low Register */
@@ -420,16 +378,12 @@ Bitu vga_read_p3d5x(Bitu port,Bitu iolen) {
 		return crtc(vertical_display_end);
 	case 0x13:	/* Offset register */
 		return crtc(offset);
-	case 0x14:	/* Underline Location Register */
-		return crtc(underline_location);
 	case 0x15:	/* Start Vertical Blank Register */
 		return crtc(start_vertical_blanking);
 	case 0x16:	/*  End Vertical Blank Register */
 		return crtc(end_vertical_blanking);
 	case 0x17:	/* Mode Control Register */
 		return crtc(mode_control);
-	case 0x18:	/* Line Compare Register */
-		return crtc(line_compare);
 	default:
         LOG(LOG_VGAMISC,LOG_NORMAL)("VGA:CRTC:Read from unknown index %X",crtc(index));
         return 0x0;
