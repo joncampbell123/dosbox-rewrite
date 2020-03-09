@@ -254,7 +254,6 @@ void VGA_Reset(Section*) {
         VGA_SetupMisc();
         VGA_SetupDAC();
         VGA_SetupGFX();
-        VGA_SetupAttr();
     }
 
     Section_prop * section2=static_cast<Section_prop *>(control->GetSection("vsync"));
@@ -342,6 +341,9 @@ void VGA_Init() {
 #endif
         }
     }
+
+    for (i=0;i < 16;i++)
+        VGA_DAC_CombineColor(i,i);
 
     AddVMEventFunction(VM_EVENT_RESET,AddVMEventFunctionFuncPair(VGA_Reset));
 }

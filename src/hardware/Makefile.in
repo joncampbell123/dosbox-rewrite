@@ -101,9 +101,9 @@ libhardware_a_AR = $(AR) $(ARFLAGS)
 libhardware_a_LIBADD =
 am_libhardware_a_OBJECTS = hardware.$(OBJEXT) iohandler.$(OBJEXT) \
 	keyboard.$(OBJEXT) memory.$(OBJEXT) mixer.$(OBJEXT) \
-	pic.$(OBJEXT) timer.$(OBJEXT) vga.$(OBJEXT) vga_attr.$(OBJEXT) \
-	vga_crtc.$(OBJEXT) vga_dac.$(OBJEXT) vga_draw.$(OBJEXT) \
-	vga_gfx.$(OBJEXT) vga_memory.$(OBJEXT) vga_misc.$(OBJEXT)
+	pic.$(OBJEXT) timer.$(OBJEXT) vga.$(OBJEXT) vga_crtc.$(OBJEXT) \
+	vga_dac.$(OBJEXT) vga_draw.$(OBJEXT) vga_gfx.$(OBJEXT) \
+	vga_memory.$(OBJEXT) vga_misc.$(OBJEXT)
 libhardware_a_OBJECTS = $(am_libhardware_a_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -324,7 +324,7 @@ EXTRA_DIST =
 noinst_LIBRARIES = libhardware.a
 libhardware_a_SOURCES = hardware.cpp iohandler.cpp keyboard.cpp \
                         memory.cpp mixer.cpp pic.cpp timer.cpp \
-			vga.cpp vga_attr.cpp vga_crtc.cpp vga_dac.cpp vga_draw.cpp vga_gfx.cpp \
+			vga.cpp vga_crtc.cpp vga_dac.cpp vga_draw.cpp vga_gfx.cpp \
 			vga_memory.cpp vga_misc.cpp
 
 all: all-recursive
@@ -384,7 +384,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pic.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/timer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vga.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vga_attr.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vga_crtc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vga_dac.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vga_draw.Po@am__quote@
