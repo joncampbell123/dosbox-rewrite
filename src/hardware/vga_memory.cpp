@@ -157,67 +157,6 @@ template <const bool chained> static inline void VGA_Generic_Write_Handler(PhysP
     ((Bit32u*)vga.mem.linear)[planeaddr]=pixels.d;
 }
 
-// Slow accurate emulation.
-// This version takes the Graphics Controller bitmask and ROPs into account.
-// This is needed for demos that use the bitmask to do color combination or bitplane "page flipping" tricks.
-// This code will kick in if running in a chained VGA mode and the graphics controller bitmask register is
-// changed to anything other than 0xFF.
-//
-// Impact Studios "Legend"
-//  - The rotating objects, rendered as dots, needs this hack because it uses a combination of masking off
-//    bitplanes using the VGA DAC pel mask and drawing on the hidden bitplane using the Graphics Controller
-//    bitmask. It also relies on loading the VGA latches with zeros as a form of "overdraw". Without this
-//    version the effect will instead become a glowing ball of flickering yellow/red.
-class VGA_ChainedVGA_Slow_Handler : public PageHandler {
-public:
-	VGA_ChainedVGA_Slow_Handler() : PageHandler(PFLAG_NOCODE) {}
-	static INLINE Bitu readHandler8(PhysPt addr ) {
-        // planar byte offset = addr & ~3u      (discard low 2 bits)
-        // planer index = addr & 3u             (use low 2 bits as plane index)
-        // FIXME: Does chained mode use the lower 2 bits of the CPU address or does it use the read mode select???
-        return VGA_Generic_Read_Handler(addr&~3u, addr, (Bit8u)(addr&3u));
-	}
-	static INLINE void writeHandler8(PhysPt addr, Bitu val) {
-        // planar byte offset = addr & ~3u      (discard low 2 bits)
-        // planer index = addr & 3u             (use low 2 bits as plane index)
-        return VGA_Generic_Write_Handler<true/*chained*/>(addr&~3u, addr, (Bit8u)val);
-	}
-	Bit8u readb(PhysPt addr ) {
-		addr = PAGING_GetPhysicalAddress(addr) & vgapages.mask;
-		return (Bit8u)readHandler8( addr );
-	}
-	Bit16u readw(PhysPt addr ) {
-		addr = PAGING_GetPhysicalAddress(addr) & vgapages.mask;
-		Bit16u ret = (Bit16u)(readHandler8( addr+0 ) << 0 );
-		ret     |= (readHandler8( addr+1 ) << 8 );
-		return ret;
-	}
-	Bit32u readd(PhysPt addr ) {
-		addr = PAGING_GetPhysicalAddress(addr) & vgapages.mask;
-		Bit32u ret = (Bit32u)(readHandler8( addr+0 ) << 0 );
-		ret     |= (readHandler8( addr+1 ) << 8 );
-		ret     |= (readHandler8( addr+2 ) << 16 );
-		ret     |= (readHandler8( addr+3 ) << 24 );
-		return ret;
-	}
-	void writeb(PhysPt addr, Bit8u val ) {
-		addr = PAGING_GetPhysicalAddress(addr) & vgapages.mask;
-		writeHandler8( addr, val );
-	}
-	void writew(PhysPt addr,Bit16u val) {
-		addr = PAGING_GetPhysicalAddress(addr) & vgapages.mask;
-		writeHandler8( addr+0, (Bit8u)(val >> 0u) );
-		writeHandler8( addr+1, (Bit8u)(val >> 8u) );
-	}
-	void writed(PhysPt addr,Bit32u val) {
-		addr = PAGING_GetPhysicalAddress(addr) & vgapages.mask;
-		writeHandler8( addr+0, (Bit8u)(val >> 0u) );
-		writeHandler8( addr+1, (Bit8u)(val >> 8u) );
-		writeHandler8( addr+2, (Bit8u)(val >> 16u) );
-		writeHandler8( addr+3, (Bit8u)(val >> 24u) );
-	}
-};
-
 class VGA_UnchainedVGA_Handler : public PageHandler {
 public:
 	Bitu readHandler(PhysPt start) {
