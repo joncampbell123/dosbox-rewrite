@@ -391,46 +391,13 @@ void VGA_SetupHandlers(void) {
 		return;
 	}
 
-	/* This should be vga only */
-	switch (vga.mode) {
-	default:
-		return;
-	case M_TEXT:
-        newHandler = &vgaph.uvga;
-        break;
-	}
-	switch ((vga.gfx.miscellaneous >> 2) & 3) {
-	case 0:
-        vgapages.base = VGA_PAGE_A0;
-        switch (svgaCard) {
-            case SVGA_S3Trio:
-            default:
-                vgapages.mask = 0xffff & vga.mem.memmask;
-                break;
-		}
-		MEM_SetPageHandler(VGA_PAGE_A0, 32, newHandler );
-		break;
-	case 1:
-		vgapages.base = VGA_PAGE_A0;
-		vgapages.mask = 0xffff & vga.mem.memmask;
-		MEM_SetPageHandler( VGA_PAGE_A0, 16, newHandler );
-		MEM_SetPageHandler( VGA_PAGE_B0, 16, &vgaph.empty );
-		break;
-	case 2:
-		vgapages.base = VGA_PAGE_B0;
-		vgapages.mask = 0x7fff & vga.mem.memmask;
-		MEM_SetPageHandler( VGA_PAGE_B0, 8, newHandler );
-		MEM_SetPageHandler( VGA_PAGE_A0, 16, &vgaph.empty );
-		MEM_SetPageHandler( VGA_PAGE_B8, 8, &vgaph.empty );
-        break;
-	case 3:
-		vgapages.base = VGA_PAGE_B8;
-		vgapages.mask = 0x7fff & vga.mem.memmask;
-		MEM_SetPageHandler( VGA_PAGE_B8, 8, newHandler );
-		MEM_SetPageHandler( VGA_PAGE_A0, 16, &vgaph.empty );
-		MEM_SetPageHandler( VGA_PAGE_B0, 8, &vgaph.empty );
-        break;
-	}
+    /* This should be vga only */
+    newHandler = &vgaph.uvga;
+    vgapages.base = VGA_PAGE_B8;
+    vgapages.mask = 0x7fff & vga.mem.memmask;
+    MEM_SetPageHandler( VGA_PAGE_B8, 8, newHandler );
+    MEM_SetPageHandler( VGA_PAGE_A0, 16, &vgaph.empty );
+    MEM_SetPageHandler( VGA_PAGE_B0, 8, &vgaph.empty );
 
     non_cga_ignore_oddeven_engage = false;
 
