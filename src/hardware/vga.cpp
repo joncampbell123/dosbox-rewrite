@@ -212,89 +212,6 @@ void VGA_StartResize(Bitu delay /*=50*/) {
 #define IS_SCREEN_ON ((vga.seq.clocking_mode&0x20)==0)
 //static bool hadReset = false;
 
-// disabled for later improvement
-// Idea behind this: If the sequencer was reset and screen off we can
-// Problem is some programs measure the refresh rate after switching mode,
-// and get it wrong because of the 50ms guard time.
-// On the other side, buggers like UniVBE switch the screen mode several
-// times so the window is flickering.
-// Also the demos that switch display end on screen (Dowhackado)
-// would need some attention
-
-class VFRCRATE : public Program {
-public:
-    void Run(void) {
-        WriteOut("Video refresh rate.\n\n");
-        if (cmd->FindExist("/?", false)) {
-			WriteOut("VFRCRATE [SET [OFF|PAL|NTSC|rate]\n");
-			WriteOut("  SET OFF   unlock\n");
-			WriteOut("  SET PAL   lock to PAL frame rate\n");
-			WriteOut("  SET NTSC  lock to NTSC frame rate\n");
-			WriteOut("  SET rate  lock to integer frame rate, e.g. 15\n");
-			WriteOut("  SET rate  lock to decimal frame rate, e.g. 29.97\n");
-			WriteOut("  SET rate  lock to fractional frame rate, e.g. 60000/1001\n");
-			return;
-		}
-        if (cmd->FindString("SET",temp_line,false)) {
-            char *x = (char*)temp_line.c_str();
-
-            if (!strncasecmp(x,"off",3))
-                vga_force_refresh_rate = -1;
-            else if (!strncasecmp(x,"ntsc",4))
-                vga_force_refresh_rate = 60000.0/1001;
-            else if (!strncasecmp(x,"pal",3))
-                vga_force_refresh_rate = 50;
-            else if (strchr(x,'.'))
-                vga_force_refresh_rate = atof(x);
-            else {
-                /* fraction */
-                int major = -1,minor = 0;
-                major = strtol(x,&x,0);
-                if (*x == '/' || *x == ':') {
-                    x++; minor = strtol(x,NULL,0);
-                }
-
-                if (major > 0) {
-                    vga_force_refresh_rate = (double)major;
-                    if (minor > 1) vga_force_refresh_rate /= minor;
-                }
-            }
-
-            VGA_SetupHandlers();
-            VGA_StartResize();
-        }
-
-        if (vga_force_refresh_rate > 0)
-            WriteOut("Locked to %.3f fps\n",vga_force_refresh_rate);
-        else
-            WriteOut("Unlocked\n");
-    }
-};
-
-static void VFRCRATE_ProgramStart(Program * * make) {
-    *make=new VFRCRATE;
-}
-
-/* TODO: move to general header */
-static inline unsigned int int_log2(unsigned int val) {
-    unsigned int log = 0;
-    while ((val >>= 1u) != 0u) log++;
-    return log;
-}
-
-void VGA_VsyncUpdateMode(VGA_Vsync vsyncmode);
-
-VGA_Vsync VGA_Vsync_Decode(const char *vsyncmodestr) {
-    if (!strcasecmp(vsyncmodestr,"off")) return VS_Off;
-    else if (!strcasecmp(vsyncmodestr,"on")) return VS_On;
-    else if (!strcasecmp(vsyncmodestr,"force")) return VS_Force;
-    else if (!strcasecmp(vsyncmodestr,"host")) return VS_Host;
-    else
-        LOG_MSG("Illegal vsync type %s, falling back to off.",vsyncmodestr);
-
-    return VS_Off;
-}
-
 Bit32u MEM_get_address_bits();
 
 void VGA_Reset(Section*) {
@@ -351,7 +268,6 @@ void VGA_Reset(Section*) {
     vsyncmodestr=section2->Get_string("vsyncmode");
     void change_output(int output);
     change_output(8);
-    VGA_VsyncUpdateMode(VGA_Vsync_Decode(vsyncmodestr));
 
     const char * vsyncratestr;
     vsyncratestr=section2->Get_string("vsyncrate");
@@ -371,13 +287,8 @@ void VGA_Reset(Section*) {
     }
 
     vsync.period = (1000.0F)/vsyncrate;
-
-    // TODO: Code to remove programs added by PROGRAMS_MakeFile
-
-    PROGRAMS_MakeFile("VFRCRATE.COM",VFRCRATE_ProgramStart);
 }
 
-extern void VGA_TweakUserVsyncOffset(float val);
 void INT10_PC98_CurMode_Relocate(void);
 void VGA_UnsetupMisc(void);
 void VGA_UnsetupAttr(void);
@@ -425,8 +336,6 @@ void VGA_Init() {
 
     LOG(LOG_MISC,LOG_DEBUG)("Initializing VGA");
     LOG(LOG_MISC,LOG_DEBUG)("Render scaler maximum resolution is %u x %u",SCALER_MAXWIDTH,SCALER_MAXHEIGHT);
-
-    VGA_TweakUserVsyncOffset(0.0f);
 
     for (i=0;i<256;i++) {
         ExpandTable[i]=(Bitu)(i + (i << 8u) + (i << 16u) + (i << 24u));
