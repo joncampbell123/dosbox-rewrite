@@ -57,43 +57,7 @@ extern bool allow_vesa_tty;
 
 VideoModeBlock ModeList_VGA[]={
 /* mode  ,type     ,sw  ,sh  ,tw ,th ,cw,ch ,pt,pstart  ,plength,htot,vtot,hde,vde special flags */
-{ 0x000  ,M_TEXT   ,360 ,400 ,40 ,25 ,9 ,16 ,8 ,0xB8000 ,0x0800 ,50  ,449 ,40 ,400 ,_EGA_HALF_CLOCK	},
-{ 0x001  ,M_TEXT   ,360 ,400 ,40 ,25 ,9 ,16 ,8 ,0xB8000 ,0x0800 ,50  ,449 ,40 ,400 ,_EGA_HALF_CLOCK	},
-{ 0x002  ,M_TEXT   ,720 ,400 ,80 ,25 ,9 ,16 ,8 ,0xB8000 ,0x1000 ,100 ,449 ,80 ,400 ,0	},
 { 0x003  ,M_TEXT   ,720 ,400 ,80 ,25 ,9 ,16 ,8 ,0xB8000 ,0x1000 ,100 ,449 ,80 ,400 ,0	},
-{ 0x007  ,M_TEXT   ,720 ,400 ,80 ,25 ,9 ,16 ,8 ,0xB0000 ,0x1000 ,100 ,449 ,80 ,400 ,0	},
-
-{0xFFFF  ,M_ERROR  ,0   ,0   ,0  ,0  ,0 ,0  ,0 ,0x00000 ,0x0000 ,0   ,0   ,0  ,0   ,0 	},
-};
-
-VideoModeBlock ModeList_VGA_Text_200lines[]={
-/* mode  ,type     ,sw  ,sh  ,tw ,th ,cw,ch ,pt,pstart  ,plength,htot,vtot,hde,vde special flags */
-{ 0x000  ,M_TEXT   ,320 ,200 ,40 ,25 ,8 , 8 ,8 ,0xB8000 ,0x0800 ,50  ,449 ,40 ,400 ,_EGA_HALF_CLOCK | _DOUBLESCAN},
-{ 0x001  ,M_TEXT   ,320 ,200 ,40 ,25 ,8 , 8 ,8 ,0xB8000 ,0x0800 ,50  ,449 ,40 ,400 ,_EGA_HALF_CLOCK | _DOUBLESCAN},
-{ 0x002  ,M_TEXT   ,640 ,200 ,80 ,25 ,8 , 8 ,8 ,0xB8000 ,0x1000 ,100 ,449 ,80 ,400 ,_DOUBLESCAN },
-{ 0x003  ,M_TEXT   ,640 ,200 ,80 ,25 ,8 , 8 ,8 ,0xB8000 ,0x1000 ,100 ,449 ,80 ,400 ,_DOUBLESCAN }
-};
-
-VideoModeBlock ModeList_VGA_Text_350lines[]={
-/* mode  ,type     ,sw  ,sh  ,tw ,th ,cw,ch ,pt,pstart  ,plength,htot,vtot,hde,vde special flags */
-{ 0x000  ,M_TEXT   ,320 ,350 ,40 ,25 ,8 ,14 ,8 ,0xB8000 ,0x0800 ,50  ,449 ,40 ,350 ,_EGA_HALF_CLOCK	},
-{ 0x001  ,M_TEXT   ,320 ,350 ,40 ,25 ,8 ,14 ,8 ,0xB8000 ,0x0800 ,50  ,449 ,40 ,350 ,_EGA_HALF_CLOCK	},
-{ 0x002  ,M_TEXT   ,640 ,350 ,80 ,25 ,8 ,14 ,8 ,0xB8000 ,0x1000 ,100 ,449 ,80 ,350 ,0	},
-{ 0x003  ,M_TEXT   ,640 ,350 ,80 ,25 ,8 ,14 ,8 ,0xB8000 ,0x1000 ,100 ,449 ,80 ,350 ,0	},
-{ 0x007  ,M_TEXT   ,720 ,350 ,80 ,25 ,9 ,14 ,8 ,0xB0000 ,0x1000 ,100 ,449 ,80 ,350 ,0   }
-};
-
-/* NTS: I will *NOT* set the double scanline flag for 200 line modes.
- *      The modes listed here are intended to reflect the actual raster sent to the EGA monitor,
- *      not what you think looks better. EGA as far as I know, is either sent a 200-line mode,
- *      or a 350-line mode. There is no VGA-line 200 to 400 line doubling. */
-VideoModeBlock ModeList_EGA[]={
-/* mode  ,type     ,sw  ,sh  ,tw ,th ,cw,ch ,pt,pstart  ,plength,htot,vtot,hde,vde special flags */
-{ 0x000  ,M_TEXT   ,320 ,350 ,40 ,25 ,8 ,14 ,8 ,0xB8000 ,0x0800 ,50  ,366 ,40 ,350 ,_EGA_HALF_CLOCK	},
-{ 0x001  ,M_TEXT   ,320 ,350 ,40 ,25 ,8 ,14 ,8 ,0xB8000 ,0x0800 ,50  ,366 ,40 ,350 ,_EGA_HALF_CLOCK	},
-{ 0x002  ,M_TEXT   ,640 ,350 ,80 ,25 ,8 ,14 ,8 ,0xB8000 ,0x1000 ,96  ,366 ,80 ,350 ,0	},
-{ 0x003  ,M_TEXT   ,640 ,350 ,80 ,25 ,8 ,14 ,8 ,0xB8000 ,0x1000 ,96  ,366 ,80 ,350 ,0	},
-{ 0x007  ,M_TEXT   ,720 ,350 ,80 ,25 ,9 ,14 ,8 ,0xB0000 ,0x1000 ,101 ,370 ,80 ,350 ,0	},
 
 {0xFFFF  ,M_ERROR  ,0   ,0   ,0  ,0  ,0 ,0  ,0 ,0x00000 ,0x0000 ,0   ,0   ,0  ,0   ,0 	},
 };
@@ -138,26 +102,6 @@ static bool SetCurMode(VideoModeBlock modeblock[],Bit16u mode) {
 	return false;
 }
 
-static void SetTextLines(void) {
-	// check for scanline backwards compatibility (VESA text modes??)
-	switch (real_readb(BIOSMEM_SEG,BIOSMEM_MODESET_CTL)&0x90) {
-	case 0x80: // 200 lines emulation
-		if (CurMode->mode <= 3) {
-			CurMode = &ModeList_VGA_Text_200lines[CurMode->mode];
-		} else if (CurMode->mode == 7) {
-			CurMode = &ModeList_VGA_Text_350lines[4];
-		}
-		break;
-	case 0x00: // 350 lines emulation
-		if (CurMode->mode <= 3) {
-			CurMode = &ModeList_VGA_Text_350lines[CurMode->mode];
-		} else if (CurMode->mode == 7) {
-			CurMode = &ModeList_VGA_Text_350lines[4];
-		}
-		break;
-	}
-}
-
 bool INT10_SetCurMode(void) {
 	bool mode_changed=false;
 	Bit16u bios_mode=(Bit16u)real_readb(BIOSMEM_SEG,BIOSMEM_CURRENT_MODE);
@@ -170,16 +114,6 @@ bool INT10_SetCurMode(void) {
 			default:
 				mode_changed=SetCurMode(ModeList_VGA,bios_mode);
 				break;
-			}
-			if (mode_changed && bios_mode<=3) {
-				switch (real_readb(BIOSMEM_SEG,BIOSMEM_MODESET_CTL)&0x90) {
-				case 0x00:
-					CurMode=&ModeList_VGA_Text_350lines[bios_mode];
-					break;
-				case 0x80:
-					CurMode=&ModeList_VGA_Text_200lines[bios_mode];
-					break;
-				}
 			}
 			break;
 		default:
@@ -271,24 +205,13 @@ bool INT10_SetVideoMode(Bit16u mode) {
 //	Bit8u vga_switches=real_readb(BIOSMEM_SEG,BIOSMEM_SWITCHES);
 	Bit8u modeset_ctl=real_readb(BIOSMEM_SEG,BIOSMEM_MODESET_CTL);
 
-	if (IS_VGA_ARCH) {
-		switch(svgaCard) {
-		default:
-			if (!SetCurMode(ModeList_VGA,mode)){
-				LOG(LOG_INT10,LOG_ERROR)("VGA:Trying to set illegal mode %X",mode);
-				return false;
-			}
-		}
-		if (CurMode->type==M_TEXT) SetTextLines();
+    if (!SetCurMode(ModeList_VGA,mode)){
+        LOG(LOG_INT10,LOG_ERROR)("VGA:Trying to set illegal mode %X",mode);
+        return false;
+    }
 
-        // INT 10h modeset will always clear 8-bit DAC mode (by VESA BIOS standards)
-        VGA_DAC_UpdateColorPalette();
-    } else {
-		if (!SetCurMode(ModeList_EGA,mode)){
-			LOG(LOG_INT10,LOG_ERROR)("EGA:Trying to set illegal mode %X",mode);
-			return false;
-		}
-	}
+    // INT 10h modeset will always clear 8-bit DAC mode (by VESA BIOS standards)
+    VGA_DAC_UpdateColorPalette();
 
 	/* Setup the VGA to the correct mode */
 	// turn off video
