@@ -182,10 +182,6 @@ static struct vg {
 	VGA_Empty_Handler			empty;
 } vgaph;
 
-void VGA_ChangedBank(void) {
-	VGA_SetupHandlers();
-}
-
 void MEM_ResetPageHandler_Unmapped(Bitu phys_page, Bitu pages);
 void MEM_ResetPageHandler_RAM(Bitu phys_page, Bitu pages);
 
