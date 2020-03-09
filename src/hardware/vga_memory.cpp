@@ -30,48 +30,6 @@
 #include "setup.h"
 #include "cpu.h"
 
-#ifndef C_VGARAM_CHECKED
-#define C_VGARAM_CHECKED 1
-#endif
-
-#if C_VGARAM_CHECKED
-// Checked linear offset
-#define CHECKED(v) ((v)&vga.mem.memmask)
-// Checked planar offset (latched access)
-#define CHECKED2(v) ((v)&(vga.mem.memmask>>2))
-#else
-#define CHECKED(v) (v)
-#define CHECKED2(v) (v)
-#endif
-
-#define CHECKED3(v) ((v)&vga.mem.memmask)
-#define CHECKED4(v) ((v)&(vga.mem.memmask>>2))
-
-#define TANDY_VIDBASE(_X_)  &MemBase[ 0x80000 + (_X_)]
-
-template <class Size>
-static INLINE void hostWrite(HostPt off, Bitu val) {
-	if ( sizeof( Size ) == 1)
-		host_writeb( off, (Bit8u)val );
-	else if ( sizeof( Size ) == 2)
-		host_writew( off, (Bit16u)val );
-	else if ( sizeof( Size ) == 4)
-		host_writed( off, (Bit32u)val );
-}
-
-template <class Size>
-static INLINE Bitu  hostRead(HostPt off ) {
-	if ( sizeof( Size ) == 1)
-		return host_readb( off );
-	else if ( sizeof( Size ) == 2)
-		return host_readw( off );
-	else if ( sizeof( Size ) == 4)
-		return host_readd( off );
-	return 0;
-}
-
-/* Gonna assume that whoever maps vga memory, maps it on 32/64kb boundary */
-
 #define VGA_PAGES		(128/4)
 #define VGA_PAGE_A0		(0xA0000/4096)
 #define VGA_PAGE_B0		(0xB0000/4096)
