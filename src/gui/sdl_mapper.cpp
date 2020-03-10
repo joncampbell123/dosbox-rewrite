@@ -2404,7 +2404,33 @@ CEvent *get_mapper_event_by_name(const std::string &x) {
     return NULL;
 }
 
+extern Bit8u                                    int10_font_16[256 * 16];
+
 static void DrawText(Bitu x,Bitu y,const char * text,Bit8u color,Bit8u bkcolor/*=CLR_BLACK*/) {
+#if defined(C_SDL2)
+    Bit8u * draw=((Bit8u *)mapper.draw_surface->pixels)+(y*mapper.draw_surface->w)+x;
+#else
+    Bit8u * draw=((Bit8u *)mapper.surface->pixels)+(y*mapper.surface->pitch)+x;
+#endif
+    while (*text) {
+        Bit8u * font=&int10_font_16[(*text)*16] + 1;
+        Bitu i,j;Bit8u * draw_line=draw;
+        for (i=0;i<14;i++) {
+            Bit8u map=*font++;
+            for (j=0;j<8;j++) {
+                if (map & 0x80) *(draw_line+j)=color;
+                else *(draw_line+j)=bkcolor;
+                map<<=1;
+            }
+#if defined(C_SDL2)
+            draw_line+=mapper.draw_surface->w;
+#else
+            draw_line+=mapper.surface->pitch;
+#endif
+        }
+        text++;draw+=8;
+    }
+
     (void)x;
     (void)y;
     (void)text;
