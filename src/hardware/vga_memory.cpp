@@ -32,10 +32,6 @@
 
 #define VGA_PAGE_B8		(0xB8000/4096)
 
-static struct {
-	Bitu base, mask;
-} vgapages;
-
 static inline Bitu VGA_Generic_Read_Handler(PhysPt planeaddr,PhysPt rawaddr,unsigned char plane) {
     const unsigned char hobit_n = (vga.seq.memory_mode&2/*Extended Memory*/) ? 16u : 14u;
 
@@ -119,17 +115,17 @@ public:
 	}
 public:
 	Bit8u readb(PhysPt addr) {
-		addr = PAGING_GetPhysicalAddress(addr) & vgapages.mask;
+		addr = PAGING_GetPhysicalAddress(addr) & vga.mem.memmask;
 		return (Bit8u)readHandler(addr);
 	}
 	Bit16u readw(PhysPt addr) {
-		addr = PAGING_GetPhysicalAddress(addr) & vgapages.mask;
+		addr = PAGING_GetPhysicalAddress(addr) & vga.mem.memmask;
 		Bit16u ret = (Bit16u)(readHandler(addr+0) << 0);
 		ret     |= (readHandler(addr+1) << 8);
 		return  ret;
 	}
 	Bit32u readd(PhysPt addr) {
-		addr = PAGING_GetPhysicalAddress(addr) & vgapages.mask;
+		addr = PAGING_GetPhysicalAddress(addr) & vga.mem.memmask;
 		Bit32u ret = (Bit32u)(readHandler(addr+0) << 0);
 		ret     |= (readHandler(addr+1) << 8);
 		ret     |= (readHandler(addr+2) << 16);
@@ -143,16 +139,16 @@ public:
 public:
 	VGA_UnchainedVGA_Handler() : PageHandler(PFLAG_NOCODE) {}
 	void writeb(PhysPt addr,Bit8u val) {
-		addr = PAGING_GetPhysicalAddress(addr) & vgapages.mask;
+		addr = PAGING_GetPhysicalAddress(addr) & vga.mem.memmask;
 		writeHandler(addr+0,(Bit8u)(val >> 0));
 	}
 	void writew(PhysPt addr,Bit16u val) {
-		addr = PAGING_GetPhysicalAddress(addr) & vgapages.mask;
+		addr = PAGING_GetPhysicalAddress(addr) & vga.mem.memmask;
 		writeHandler(addr+0,(Bit8u)(val >> 0));
 		writeHandler(addr+1,(Bit8u)(val >> 8));
 	}
 	void writed(PhysPt addr,Bit32u val) {
-		addr = PAGING_GetPhysicalAddress(addr) & vgapages.mask;
+		addr = PAGING_GetPhysicalAddress(addr) & vga.mem.memmask;
 		writeHandler(addr+0,(Bit8u)(val >> 0));
 		writeHandler(addr+1,(Bit8u)(val >> 8));
 		writeHandler(addr+2,(Bit8u)(val >> 16));
@@ -166,14 +162,8 @@ static struct vg {
 	VGA_UnchainedVGA_Handler	uvga;
 } vgaph;
 
-void MEM_ResetPageHandler_Unmapped(Bitu phys_page, Bitu pages);
-void MEM_ResetPageHandler_RAM(Bitu phys_page, Bitu pages);
-
 void VGA_SetupHandlers(void) {
-    vgapages.base = VGA_PAGE_B8;
-    vgapages.mask = 0x7fff & vga.mem.memmask;
     MEM_SetPageHandler( VGA_PAGE_B8, 8,  &vgaph.uvga  );
-
 	PAGING_ClearTLB();
 }
 
