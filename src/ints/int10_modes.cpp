@@ -171,8 +171,6 @@ static void FinishSetMode(bool clearmem) {
 	VGA_DAC_UpdateColorPalette();
 }
 
-bool unmask_irq0_on_int10_setmode = true;
-
 bool INT10_SetVideoMode(Bit16u mode) {
 	//LOG_MSG("set mode %x",mode);
 	bool clearmem=true;Bitu i;
@@ -185,11 +183,6 @@ bool INT10_SetVideoMode(Bit16u mode) {
 		clearmem=false;
 		mode-=0x80;
 	}
-
-    if (unmask_irq0_on_int10_setmode) {
-        /* setting the video mode unmasks certain IRQs as a matter of course */
-        PIC_SetIRQMask(0,false); /* Enable system timer */
-    }
 
 	int10.vesa_setmode=0xffff;
 	LOG(LOG_INT10,LOG_NORMAL)("Set Video Mode %X",mode);

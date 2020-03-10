@@ -135,38 +135,9 @@ void INT10_OnResetComplete() {
     BIOS_UnsetupKeyboard();
 }
 
-extern bool unmask_irq0_on_int10_setmode;
-extern bool int16_unmask_irq1_on_read;
-extern bool int16_ah_01_cf_undoc;
-
-bool Load_FONT_ROM(void) {
-    return false;
-}
-
-bool Load_Anex86_Font(void) {
-    return false;
-}
-
-extern Bit8u int10_font_16[256 * 16];
-
-extern VideoModeBlock PC98_Mode;
-
-bool Load_VGAFont_As_PC98(void) {
-    return true;
-}
-
-void INT10_EnterPC98(Section *sec) {
-    (void)sec;//UNUSED
-    /* deprecated */
-}
-
 void INT10_Startup(Section *sec) {
     (void)sec;//UNUSED
 	LOG(LOG_MISC,LOG_DEBUG)("INT 10h reinitializing");
-
-    unmask_irq0_on_int10_setmode = static_cast<Section_prop *>(control->GetSection("dosbox"))->Get_bool("unmask timer on int 10 setmode");
-	int16_unmask_irq1_on_read = static_cast<Section_prop *>(control->GetSection("dosbox"))->Get_bool("unmask keyboard on int 16 read");
-    int16_ah_01_cf_undoc = static_cast<Section_prop *>(control->GetSection("dosbox"))->Get_bool("int16 keyboard polling undocumented cf behavior");
 
     {
         INT10_InitVGA();
