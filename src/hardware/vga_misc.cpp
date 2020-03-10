@@ -73,18 +73,6 @@ static void write_p3c2(Bitu port,Bitu val,Bitu iolen) {
 
 	IO_RegisterReadHandler(base+0xa,vga_read_p3da,IO_MB);
 	IO_FreeReadHandler(free+0xa,IO_MB);
-	
-	/*
-		0	If set Color Emulation. Base Address=3Dxh else Mono Emulation. Base Address=3Bxh.
-		2-3	Clock Select. 0: 25MHz, 1: 28MHz
-		5	When in Odd/Even modes Select High 64k bank if set
-		6	Horizontal Sync Polarity. Negative if set
-		7	Vertical Sync Polarity. Negative if set
-			Bit 6-7 indicates the number of lines on the display:
-			1:  400, 2: 350, 3: 480
-			Note: Set to all zero on a hardware reset.
-			Note: This register can be read from port 3CCh.
-	*/
 }
 
 void VGA_SetupMisc(void) {
