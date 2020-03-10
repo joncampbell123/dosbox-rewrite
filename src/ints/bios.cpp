@@ -1881,8 +1881,6 @@ void write_ID_version_string() {
     }
 }
 
-extern Bit8u int10_font_08[256 * 8];
-
 /* NTS: Do not use callbacks! This function is called before CALLBACK_Init() */
 void ROMBIOS_Init() {
     Section_prop * section=static_cast<Section_prop *>(control->GetSection("dosbox"));
@@ -1948,22 +1946,6 @@ void ROMBIOS_Init() {
     rombios_alloc.initSetRange(rombios_minimum_location,0xFFFF0 - 1);
 
     write_ID_version_string();
- 
-    /* some structures when enabled are fixed no matter what */
-    if (rom_bios_8x8_cga_font) {
-        /* line 139, int10_memory.cpp: the 8x8 font at 0xF000:FA6E, first 128 chars.
-         * allocate this NOW before other things get in the way */
-        if (ROMBIOS_GetMemory(128*8,"BIOS 8x8 font (first 128 chars)",1,0xFFA6E) == 0) {
-            LOG_MSG("WARNING: Was not able to mark off 0xFFA6E off-limits for 8x8 font");
-        }
-    }
-
-    /* install the font */
-    if (rom_bios_8x8_cga_font) {
-        for (Bitu i=0;i<128*8;i++) {
-            phys_writeb(PhysMake(0xf000,0xfa6e)+i,int10_font_08[i]);
-        }
-    }
 
     /* we allow dosbox.conf to specify a binary blob to load into ROM BIOS and execute after reset.
      * we allow this for both hacker curiosity and automated CPU testing. */
