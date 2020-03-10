@@ -126,8 +126,6 @@ void INT10_SetCursorPos(Bit8u row,Bit8u col,Bit8u page) {
         real_writeb(BIOSMEM_SEG,BIOSMEM_CURSOR_POS,col);
         real_writeb(BIOSMEM_SEG,BIOSMEM_CURSOR_POS+1u,row);
     }
-    // Set the hardware cursor
-    Bit8u current=real_readb(BIOSMEM_SEG,BIOSMEM_CURRENT_PAGE);
     {
         // Get the dimensions
         BIOS_NCOLS;
