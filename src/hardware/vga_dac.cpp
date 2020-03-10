@@ -49,10 +49,9 @@ Note:  Each read or write of this register will cycle through first the
 */
 
 static void VGA_DAC_SendColor( Bitu index ) {
-    const Bit8u dacshift = 2u;
-    const Bit8u red = vga.dac.rgb[index].red << dacshift;
-    const Bit8u green = vga.dac.rgb[index].green << dacshift;
-    const Bit8u blue = vga.dac.rgb[index].blue << dacshift;
+    const Bit8u red = vga.dac.rgb[index].red;
+    const Bit8u green = vga.dac.rgb[index].green;
+    const Bit8u blue = vga.dac.rgb[index].blue;
 
     /* FIXME: Can someone behind the GCC project explain how (unsigned int) OR (unsigned int) somehow becomes (signed int)?? */
 
