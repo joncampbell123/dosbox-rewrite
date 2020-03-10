@@ -55,17 +55,14 @@ extern bool allow_vesa_tty;
  * Disabling the explicit 24bpp modes is intended to reflect actual SVGA hardware that tends
  * to support either 24bpp or 32bpp, but not both. */
 
-VideoModeBlock ModeList_VGA[]={
+VideoModeBlock VGAMode =
 /* mode  ,type     ,sw  ,sh  ,tw ,th ,cw,ch ,pt,pstart  ,plength,htot,vtot,hde,vde special flags */
-{ 0x003  ,M_TEXT   ,720 ,400 ,80 ,25 ,9 ,16 ,8 ,0xB8000 ,0x1000 ,100 ,449 ,80 ,400 ,0	},
-
-{0xFFFF  ,M_ERROR  ,0   ,0   ,0  ,0  ,0 ,0  ,0 ,0x00000 ,0x0000 ,0   ,0   ,0  ,0   ,0 	},
-};
+{ 0x003  ,M_TEXT   ,720 ,400 ,80 ,25 ,9 ,16 ,8 ,0xB8000 ,0x1000 ,100 ,449 ,80 ,400 ,0	};
 
 VideoModeBlock * CurMode = NULL;
 
 void InitVGAMode() {
-	CurMode=&ModeList_VGA[0];
+	CurMode=&VGAMode;
     for (Bit16u ct=0;ct<(80*25);ct++) real_writew(0xB800,ct*2,0x0720);
     real_writew(BIOSMEM_SEG,BIOSMEM_NB_COLS,(Bit16u)CurMode->twidth);
     real_writeb(BIOSMEM_SEG,BIOSMEM_NB_ROWS,(Bit8u)(CurMode->theight-1));
