@@ -58,22 +58,6 @@ void vga_write_p3d5(Bitu port,Bitu val,Bitu /*iolen*/) {
 //	if((crtc(index)!=0xe)&&(crtc(index)!=0xf)) 
 //		LOG_MSG("CRTC w #%2x val %2x",crtc(index),val);
 	switch(crtc(index)) {
-	case 0x00:	/* Horizontal Total Register */
-		break;
-	case 0x01:	/* Horizontal Display End Register */
-		break;
-	case 0x02:	/* Start Horizontal Blanking Register */
-		break;
-	case 0x03:	/* End Horizontal Blanking Register */
-		break;
-	case 0x04:	/* Start Horizontal Retrace Register */
-		break;
-	case 0x05:	/* End Horizontal Retrace Register */
-		break;
-	case 0x06: /* Vertical Total Register */
-		break;
-	case 0x07:	/* Overflow Register */
-		break;
 	case 0x0A:	/* Cursor Start Register */
 		crtc(cursor_start)=(Bit8u)val;
 		vga.draw.cursor.sline=val&0x1f;
@@ -107,16 +91,6 @@ void vga_write_p3d5(Bitu port,Bitu val,Bitu /*iolen*/) {
 		vga.config.cursor_start|=val;
 		/*	0-7  Lower 8 bits of the address of the cursor */
 		break;
-	case 0x10:	/* Vertical Retrace Start Register */
-		break;
-	case 0x11:	/* Vertical Retrace End Register */
-		break;
-	case 0x12:	/* Vertical Display End Register */
-		break;
-	case 0x15:	/* Start Vertical Blank Register */
-		break;
-	case 0x16:	/*  End Vertical Blank Register */
-		break;
 	default:
         LOG(LOG_VGAMISC,LOG_NORMAL)("VGA:CRTC:Write to unknown index %X",crtc(index));
         break;
@@ -135,22 +109,6 @@ Bitu vga_read_p3d5x(Bitu port,Bitu iolen) {
     (void)iolen;//UNUSED
     (void)port;//UNUSED
 	switch(crtc(index)) {
-	case 0x00:	/* Horizontal Total Register */
-		return crtc(horizontal_total);
-	case 0x01:	/* Horizontal Display End Register */
-		return crtc(horizontal_display_end);
-	case 0x02:	/* Start Horizontal Blanking Register */
-		return crtc(start_horizontal_blanking);
-	case 0x03:	/* End Horizontal Blanking Register */
-		return crtc(end_horizontal_blanking);
-	case 0x04:	/* Start Horizontal Retrace Register */
-		return crtc(start_horizontal_retrace);
-	case 0x05:	/* End Horizontal Retrace Register */
-		return crtc(end_horizontal_retrace);
-	case 0x06: /* Vertical Total Register */
-		return crtc(vertical_total);	
-	case 0x07:	/* Overflow Register */
-		return crtc(overflow);
 	case 0x0A:	/* Cursor Start Register */
 		return crtc(cursor_start);
 	case 0x0B:	/* Cursor End Register */
@@ -159,16 +117,6 @@ Bitu vga_read_p3d5x(Bitu port,Bitu iolen) {
 		return crtc(cursor_location_high);
 	case 0x0F:	/* Cursor Location Low Register */
 		return crtc(cursor_location_low);
-	case 0x10:	/* Vertical Retrace Start Register */
-		return crtc(vertical_retrace_start);
-	case 0x11:	/* Vertical Retrace End Register */
-		return crtc(vertical_retrace_end);
-	case 0x12:	/* Vertical Display End Register */
-		return crtc(vertical_display_end);
-	case 0x15:	/* Start Vertical Blank Register */
-		return crtc(start_vertical_blanking);
-	case 0x16:	/*  End Vertical Blank Register */
-		return crtc(end_vertical_blanking);
 	default:
         LOG(LOG_VGAMISC,LOG_NORMAL)("VGA:CRTC:Read from unknown index %X",crtc(index));
         return 0x0;
