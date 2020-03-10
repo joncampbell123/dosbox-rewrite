@@ -358,9 +358,6 @@ void VGA_Init() {
     }
 
     for (i=0;i < 16;i++)
-        VGA_DAC_CombineColor(i,i);
-
-    for (i=0;i < 16;i++)
         VGASetPalette(i,text_palette[i][0],text_palette[i][1],text_palette[i][2]);
 
     VGA_DAC_UpdateColorPalette();

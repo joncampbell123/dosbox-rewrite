@@ -48,13 +48,11 @@ Note:  Each read or write of this register will cycle through first the
        of the palette to this register.
 */
 
-enum {DAC_READ,DAC_WRITE};
-
-static void VGA_DAC_SendColor( Bitu index, Bitu src ) {
+static void VGA_DAC_SendColor( Bitu index ) {
     const Bit8u dacshift = 2u;
-    const Bit8u red = vga.dac.rgb[src].red << dacshift;
-    const Bit8u green = vga.dac.rgb[src].green << dacshift;
-    const Bit8u blue = vga.dac.rgb[src].blue << dacshift;
+    const Bit8u red = vga.dac.rgb[index].red << dacshift;
+    const Bit8u green = vga.dac.rgb[index].green << dacshift;
+    const Bit8u blue = vga.dac.rgb[index].blue << dacshift;
 
     /* FIXME: Can someone behind the GCC project explain how (unsigned int) OR (unsigned int) somehow becomes (signed int)?? */
 
@@ -82,23 +80,14 @@ static void VGA_DAC_SendColor( Bitu index, Bitu src ) {
     RENDER_SetPal( (Bit8u)index, red, green, blue );
 }
 
-void VGA_DAC_UpdateColor( Bitu index ) {
-    VGA_DAC_SendColor( index, index );
-}
-
 void VGA_DAC_UpdateColorPalette() {
     for ( Bitu i = 0;i<256;i++) 
-        VGA_DAC_UpdateColor( i );
+        VGA_DAC_SendColor( i );
 }
 
 void VGASetPalette(Bit8u index,Bit8u r,Bit8u g,Bit8u b) {
     vga.dac.rgb[index].red=r;
     vga.dac.rgb[index].green=g;
     vga.dac.rgb[index].blue=b;
-}
-
-void VGA_DAC_CombineColor(Bit8u attr,Bit8u pal) {
-    vga.dac.combine[attr] = pal;
-    VGA_DAC_SendColor( attr, pal );
 }
 
