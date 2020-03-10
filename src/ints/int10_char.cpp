@@ -126,7 +126,7 @@ void INT10_SetActivePage(Bit8u page) {
         mem_address>>=1;
     }
     /* Write the new start address in vgahardware */
-    Bit16u base=real_readw(BIOSMEM_SEG,BIOSMEM_CRTC_ADDRESS);
+    Bit16u base=0x3D4;
     IO_Write(base,0x0cu);
     IO_Write(base+1u,(Bit8u)(mem_address>>8u));
     IO_Write(base,0x0du);
@@ -185,7 +185,7 @@ void INT10_SetCursorShape(Bit8u first,Bit8u last) {
         }
     }
 dowrite:
-    Bit16u base=real_readw(BIOSMEM_SEG,BIOSMEM_CRTC_ADDRESS);
+    Bit16u base=0x3D4;
     IO_Write(base,0xa);IO_Write(base+1u,first);
     IO_Write(base,0xb);IO_Write(base+1u,last);
 }
@@ -220,7 +220,7 @@ void INT10_SetCursorPos(Bit8u row,Bit8u col,Bit8u page) {
         Bit16u address=(ncols*row)+col+(real_readw(BIOSMEM_SEG,BIOSMEM_CURRENT_START)/2);
         {
             // CRTC regs 0x0e and 0x0f
-            Bit16u base=real_readw(BIOSMEM_SEG,BIOSMEM_CRTC_ADDRESS);
+            Bit16u base=0x3D4;
             IO_Write(base,0x0eu);
             IO_Write(base+1u,(Bit8u)(address>>8u));
             IO_Write(base,0x0fu);
