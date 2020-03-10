@@ -156,8 +156,6 @@ public:
 	}
 };
 
-#include <stdio.h>
-
 static struct vg {
 	VGA_UnchainedVGA_Handler	uvga;
 } vgaph;
