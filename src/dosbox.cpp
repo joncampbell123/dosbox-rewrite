@@ -278,7 +278,6 @@ unsigned long long update_clockdom_from_now(ClockDomain &dst) {
 
 #include "paging.h"
 
-extern bool rom_bios_vptable_enable;
 extern bool allow_port_92_reset;
 extern bool allow_keyb_reset;
 
@@ -706,9 +705,6 @@ void Init_VGABIOS() {
 
     VGA_BIOS_Size_override = (Bitu)section->Get_int("vga bios size override");
     if (VGA_BIOS_Size_override > 0) VGA_BIOS_Size_override = (VGA_BIOS_Size_override+0x7FFU)&(~0xFFFU);
-
-    /* NTS: mainline compatible mapping demands the 8x8 CGA font */
-    rom_bios_vptable_enable = section->Get_bool("rom bios video parameter table");
 
     VGA_BIOS_Size = 0;
     VGA_BIOS_SEG = 0xC000;

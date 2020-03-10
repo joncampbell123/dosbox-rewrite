@@ -109,24 +109,12 @@ extern Bitu BIOS_VIDEO_TABLE_LOCATION;
 extern Bitu BIOS_VIDEO_TABLE_SIZE;
 
 bool ROMBIOS_FreeMemory(Bitu phys);
-Bitu RealToPhys(Bitu x);
 
 void BIOS_UnsetupKeyboard(void);
 bool MEM_unmap_physmem(Bitu start,Bitu end);
 void CALLBACK_DeAllocate(Bitu in);
 
 void INT10_OnResetComplete() {
-    if (VGA_BIOS_Size > 0)
-        MEM_unmap_physmem(0xC0000,0xC0000+VGA_BIOS_Size-1);
-
-    /* free the table */
-    BIOS_VIDEO_TABLE_SIZE = 0;
-    if (BIOS_VIDEO_TABLE_LOCATION != (~0U) && BIOS_VIDEO_TABLE_LOCATION != 0) {
-        LOG(LOG_MISC,LOG_DEBUG)("INT 10h freeing BIOS VIDEO TABLE LOCATION");
-        ROMBIOS_FreeMemory(RealToPhys(BIOS_VIDEO_TABLE_LOCATION));
-        BIOS_VIDEO_TABLE_LOCATION = ~0u;		// RealMake(0xf000,0xf0a4)
-    }
-
     if (call_10 != 0) {
         CALLBACK_DeAllocate(call_10);
         call_10 = 0;
@@ -147,7 +135,6 @@ void INT10_Startup(Section *sec) {
         RealSetVec(0x10,CALLBACK_RealPointer(call_10));
         //Init the 0x40 segment and init the datastructures in the the video rom area
         INT10_Seg40Init();
-        INT10_SetupBasicVideoParameterTable();
 
         LOG(LOG_MISC,LOG_DEBUG)("INT 10: VGA bios used %d / %d memory",(int)int10.rom.used,(int)VGA_BIOS_Size);
         if (int10.rom.used > VGA_BIOS_Size) /* <- this is fatal, it means the Setup() functions scrozzled over the adjacent ROM or RAM area */
