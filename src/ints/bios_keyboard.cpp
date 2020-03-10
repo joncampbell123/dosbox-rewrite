@@ -632,30 +632,11 @@ Bitu INT16_Handler(void) {
     case 0x02:  /* GET SHIFT FLAGS */
         reg_al=mem_readb(BIOS_KEYBOARD_FLAGS1);
         break;
-    case 0x03:  /* SET TYPEMATIC RATE AND DELAY */
-        if (reg_al == 0x00) { // set default delay and rate
-            IO_Write(0x60,0xf3);
-            IO_Write(0x60,0x20); // 500 msec delay, 30 cps
-        } else if (reg_al == 0x05) { // set repeat rate and delay
-            IO_Write(0x60,0xf3);
-            IO_Write(0x60,(reg_bh&3)<<5|(reg_bl&0x1f));
-        } else {
-            LOG(LOG_BIOS,LOG_ERROR)("INT16:Unhandled Typematic Rate Call %2X BX=%X",reg_al,reg_bx);
-        }
-        break;
-    case 0x05:  /* STORE KEYSTROKE IN KEYBOARD BUFFER */
-        if (BIOS_AddKeyToBuffer(reg_cx)) reg_al=0;
-        else reg_al=1;
-        break;
     case 0x12: /* GET EXTENDED SHIFT STATES */
         reg_al = mem_readb(BIOS_KEYBOARD_FLAGS1);
         reg_ah = (mem_readb(BIOS_KEYBOARD_FLAGS2)&0x73)   |
                  ((mem_readb(BIOS_KEYBOARD_FLAGS2)&4)<<5) | // SysReq pressed, bit 7
                  (mem_readb(BIOS_KEYBOARD_FLAGS3)&0x0c);    // Right Ctrl/Alt pressed, bits 2,3
-        break;
-    case 0x55:
-        /* Weird call used by some dos apps */
-        LOG(LOG_BIOS,LOG_NORMAL)("INT16:55:Word TSR compatible call");
         break;
     default:
         LOG(LOG_BIOS,LOG_ERROR)("INT16:Unhandled call %02X",reg_ah);
