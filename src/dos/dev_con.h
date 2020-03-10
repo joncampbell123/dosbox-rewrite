@@ -769,7 +769,7 @@ void device_CON::ClearAnsi(void){
 
 void device_CON::Output(Bit8u chr) {
 	if (dos.internal_output || ansi.enabled) {
-		if (CurMode->type==M_TEXT) {
+		{
 			Bit8u page=real_readb(BIOSMEM_SEG,BIOSMEM_CURRENT_PAGE);
 			Bit8u col=CURSOR_POS_COL(page);
 			Bit8u row=CURSOR_POS_ROW(page);

@@ -35,15 +35,15 @@ Bit8u DefaultANSIAttr();
 
 static void TEXT_CopyRow(Bit8u cleft,Bit8u cright,Bit8u rold,Bit8u rnew,PhysPt base) {
     PhysPt src,dest;
-    src=base+(rold*CurMode->twidth+cleft)*2u;
-    dest=base+(rnew*CurMode->twidth+cleft)*2u;
+    src=base+(rold*80+cleft)*2u;
+    dest=base+(rnew*80+cleft)*2u;
     MEM_BlockCopy(dest,src,(Bitu)(cright-cleft)*2u);
 }
 
 static void TEXT_FillRow(Bit8u cleft,Bit8u cright,Bit8u row,PhysPt base,Bit8u attr) {
     /* Do some filing */
     PhysPt dest;
-    dest=base+(row*CurMode->twidth+cleft)*2;
+    dest=base+(row*80+cleft)*2;
     Bit16u fill=(attr<<8)+' ';
     for (Bit8u x=0;x<(Bitu)(cright-cleft);x++) {
         mem_writew(dest,fill);
@@ -54,7 +54,6 @@ static void TEXT_FillRow(Bit8u cleft,Bit8u cright,Bit8u row,PhysPt base,Bit8u at
 void INT10_ScrollWindow(Bit8u rul,Bit8u cul,Bit8u rlr,Bit8u clr,Bit8s nlines,Bit8u attr,Bit8u page) {
     (void)page;
 /* Do some range checking */
-    if (CurMode->type!=M_TEXT) page=0xff;
     BIOS_NCOLS;BIOS_NROWS;
     if(rul>rlr) return;
     if(cul>clr) return;
@@ -62,9 +61,7 @@ void INT10_ScrollWindow(Bit8u rul,Bit8u cul,Bit8u rlr,Bit8u clr,Bit8s nlines,Bit
     if(clr>=ncols) clr=(Bit8u)ncols-1;
     clr++;
 
-    /* Get the correct page: current start address for current page (0xFF),
-       otherwise calculate from page number and page size */
-    PhysPt base=CurMode->pstart;
+    PhysPt base=0xB8000;
     
     /* See how much lines need to be copied */
     Bit8u start,end;Bits next;
@@ -116,22 +113,22 @@ void INT10_GetScreenColumns(Bit16u *cols)
 
 void INT10_GetCursorPos(Bit8u *row, Bit8u*col, const Bit8u page)
 {
+    (void)page;
     {
-        *col = real_readb(BIOSMEM_SEG, BIOSMEM_CURSOR_POS + page * 2u);
-        *row = real_readb(BIOSMEM_SEG, BIOSMEM_CURSOR_POS + page * 2u + 1u);
+        *col = real_readb(BIOSMEM_SEG, BIOSMEM_CURSOR_POS);
+        *row = real_readb(BIOSMEM_SEG, BIOSMEM_CURSOR_POS + 1u);
     }
 }
 
 void INT10_SetCursorPos(Bit8u row,Bit8u col,Bit8u page) {
-    if (page>7) LOG(LOG_INT10,LOG_ERROR)("INT10_SetCursorPos page %d",page);
-    // Bios cursor pos
+    (void)page;
     {
-        real_writeb(BIOSMEM_SEG,BIOSMEM_CURSOR_POS+page*2u,col);
-        real_writeb(BIOSMEM_SEG,BIOSMEM_CURSOR_POS+page*2u+1u,row);
+        real_writeb(BIOSMEM_SEG,BIOSMEM_CURSOR_POS,col);
+        real_writeb(BIOSMEM_SEG,BIOSMEM_CURSOR_POS+1u,row);
     }
     // Set the hardware cursor
     Bit8u current=real_readb(BIOSMEM_SEG,BIOSMEM_CURRENT_PAGE);
-    if(page==current) {
+    {
         // Get the dimensions
         BIOS_NCOLS;
         // Calculate the address knowing nbcols nbrows and page num
@@ -152,26 +149,20 @@ void ReadCharAttr(Bit16u col,Bit16u row,Bit8u page,Bit16u * result) {
     (void)page;
     /* Externally used by the mouse routine */
     Bit16u cols = real_readw(BIOSMEM_SEG,BIOSMEM_NB_COLS);
-    switch (CurMode->type) {
-    case M_TEXT:
-        {   
-            // Compute the address  
-            Bit16u address=(row*cols+col)*2;
-            // read the char 
-            PhysPt where = CurMode->pstart+address;
-            *result=mem_readw(where);
-        }
-        return;
-    default:
-        break;
+    {   
+        // Compute the address  
+        Bit16u address=(row*cols+col)*2;
+        // read the char 
+        PhysPt where = CurMode->pstart+address;
+        *result=mem_readw(where);
     }
     *result = 0;
 }
 void INT10_ReadCharAttr(Bit16u * result,Bit8u page) {
-    if(page==0xFF) page=real_readb(BIOSMEM_SEG,BIOSMEM_CURRENT_PAGE);
-    Bit8u cur_row=CURSOR_POS_ROW(page);
-    Bit8u cur_col=CURSOR_POS_COL(page);
-    ReadCharAttr(cur_col,cur_row,page,result);
+    (void)page;
+    Bit8u cur_row=CURSOR_POS_ROW(0);
+    Bit8u cur_col=CURSOR_POS_COL(0);
+    ReadCharAttr(cur_col,cur_row,0,result);
 }
 
 void WriteChar(Bit16u col,Bit16u row,Bit8u page,Bit16u chr,Bit8u attr,bool useattr) {
@@ -182,41 +173,23 @@ void WriteChar(Bit16u col,Bit16u row,Bit8u page,Bit16u chr,Bit8u attr,bool useat
 
     chr &= 0xFF;
 
-    switch (CurMode->type) {
-    case M_TEXT:
-        {   
-            // Compute the address  
-            Bit16u address=(row*cols+col)*2;
-            // Write the char 
-            PhysPt where = CurMode->pstart+address;
-            mem_writeb(where,chr);
-            if (useattr) mem_writeb(where+1,attr);
-        }
-        return;
-    default:
-        break;
+    {   
+        // Compute the address  
+        Bit16u address=(row*cols+col)*2;
+        // Write the char 
+        PhysPt where = 0xB8000+address;
+        mem_writeb(where,chr);
+        if (useattr) mem_writeb(where+1,attr);
     }
 }
 
 void INT10_WriteChar(Bit16u chr,Bit8u attr,Bit8u page,Bit16u count,bool showattr) {
-    Bit8u pospage=page;
-    if (CurMode->type!=M_TEXT) {
-        showattr=true; //Use attr in graphics mode always
-        switch (machine) {
-            case EGAVGA_ARCH_CASE:
-                page%=CurMode->ptotal;
-                pospage=page;
-                break;
-            default:
-                break;
-        }
-    }
-
-    Bit8u cur_row=CURSOR_POS_ROW(pospage);
-    Bit8u cur_col=CURSOR_POS_COL(pospage);
+    (void)page;
+    Bit8u cur_row=CURSOR_POS_ROW(0);
+    Bit8u cur_col=CURSOR_POS_COL(0);
     BIOS_NCOLS;
     while (count>0) {
-        WriteChar(cur_col,cur_row,page,chr,attr,showattr);
+        WriteChar(cur_col,cur_row,0,chr,attr,showattr);
         count--;
         cur_col++;
         if(cur_col==ncols) {
@@ -227,9 +200,10 @@ void INT10_WriteChar(Bit16u chr,Bit8u attr,Bit8u page,Bit16u count,bool showattr
 }
 
 static void INT10_TeletypeOutputAttr(Bit8u chr,Bit8u attr,bool useattr,Bit8u page) {
+    (void)page;
     BIOS_NCOLS;BIOS_NROWS;
-    Bit8u cur_row=CURSOR_POS_ROW(page);
-    Bit8u cur_col=CURSOR_POS_COL(page);
+    Bit8u cur_row=CURSOR_POS_ROW(0);
+    Bit8u cur_col=CURSOR_POS_COL(0);
     switch (chr) {
     case 7: /* Beep */
         // Prepare PIT counter 2 for ~900 Hz square wave
@@ -258,7 +232,7 @@ static void INT10_TeletypeOutputAttr(Bit8u chr,Bit8u attr,bool useattr,Bit8u pag
         break;
     default:
         /* Draw the actual Character */
-        WriteChar(cur_col,cur_row,page,chr,attr,useattr);
+        WriteChar(cur_col,cur_row,0,chr,attr,useattr);
         cur_col++;
     }
     if(cur_col==ncols) {
@@ -269,17 +243,16 @@ static void INT10_TeletypeOutputAttr(Bit8u chr,Bit8u attr,bool useattr,Bit8u pag
     if(cur_row==nrows) {
         //Fill with black on non-text modes
         Bit8u fill = 0;
-        if (CurMode->type==M_TEXT) {
+        {
             //Fill with attribute at cursor on textmode
             Bit16u chat;
-            INT10_ReadCharAttr(&chat,page);
+            INT10_ReadCharAttr(&chat,0);
             fill=(Bit8u)(chat>>8);
         }
-        INT10_ScrollWindow(0,0,(Bit8u)(nrows-1),(Bit8u)(ncols-1),-1,fill,page);
+        INT10_ScrollWindow(0,0,(Bit8u)(nrows-1),(Bit8u)(ncols-1),-1,fill,0);
         cur_row--;
     }
-    // Set the cursor for the page
-    INT10_SetCursorPos(cur_row,cur_col,page);
+    INT10_SetCursorPos(cur_row,cur_col,0);
 }
 
 void INT10_TeletypeOutputAttr(Bit8u chr,Bit8u attr,bool useattr) {
@@ -287,19 +260,20 @@ void INT10_TeletypeOutputAttr(Bit8u chr,Bit8u attr,bool useattr) {
 }
 
 void INT10_TeletypeOutput(Bit8u chr,Bit8u attr) {
-    INT10_TeletypeOutputAttr(chr,attr,CurMode->type!=M_TEXT);
+    INT10_TeletypeOutputAttr(chr,attr,false);
 }
 
 void INT10_WriteString(Bit8u row,Bit8u col,Bit8u flag,Bit8u attr,PhysPt string,Bit16u count,Bit8u page) {
-    Bit8u cur_row=CURSOR_POS_ROW(page);
-    Bit8u cur_col=CURSOR_POS_COL(page);
+    (void)page;
+    Bit8u cur_row=CURSOR_POS_ROW(0);
+    Bit8u cur_col=CURSOR_POS_COL(0);
     
     // if row=0xff special case : use current cursor position
     if (row==0xff) {
         row=cur_row;
         col=cur_col;
     }
-    INT10_SetCursorPos(row,col,page);
+    INT10_SetCursorPos(row,col,0);
     while (count>0) {
         Bit8u chr=mem_readb(string);
         string++;
@@ -307,11 +281,11 @@ void INT10_WriteString(Bit8u row,Bit8u col,Bit8u flag,Bit8u attr,PhysPt string,B
             attr=mem_readb(string);
             string++;
         }
-        INT10_TeletypeOutputAttr(chr,attr,true,page);
+        INT10_TeletypeOutputAttr(chr,attr,true,0);
         count--;
     }
     if (!(flag&1)) {
-        INT10_SetCursorPos(cur_row,cur_col,page);
+        INT10_SetCursorPos(cur_row,cur_col,0);
     }
 }
 
