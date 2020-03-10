@@ -229,15 +229,7 @@ static void INT10_TeletypeOutputAttr(Bit8u chr,Bit8u attr,bool useattr,Bit8u pag
     }
     // Do we need to scroll ?
     if(cur_row==nrows) {
-        //Fill with black on non-text modes
-        Bit8u fill = 0;
-        {
-            //Fill with attribute at cursor on textmode
-            Bit16u chat;
-            INT10_ReadCharAttr(&chat,0);
-            fill=(Bit8u)(chat>>8);
-        }
-        INT10_ScrollWindow(0,0,(Bit8u)(nrows-1),(Bit8u)(ncols-1),-1,fill,0);
+        INT10_ScrollWindow(0,0,(Bit8u)(nrows-1),(Bit8u)(ncols-1),-1,0x07,0);
         cur_row--;
     }
     INT10_SetCursorPos(cur_row,cur_col,0);
