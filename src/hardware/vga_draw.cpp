@@ -252,12 +252,6 @@ static void VGA_VertInterrupt(Bitu /*val*/) {
     }
 }
 
-static void VGA_DisplayStartLatch(Bitu /*val*/) {
-    /* hretrace fx support: store the hretrace value at start of picture so we have
-     * a point of reference how far to displace the scanline when wavy effects are
-     * made */
-}
-
 extern uint32_t GFX_Rmask;
 extern unsigned char GFX_Rshift;
 extern uint32_t GFX_Gmask;
@@ -401,12 +395,10 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
 
         fv = vdisplayendtimerval + vsync_adj;
         if (fv < 1) fv = 1;
-        PIC_AddEvent(VGA_DisplayStartLatch,fv);
     }
     
     switch(machine) {
     case MCH_VGA:
-        PIC_AddEvent(VGA_DisplayStartLatch, (float)vga.draw.delay.vrstart);
         // EGA: 82c435 datasheet: interrupt happens at display end
         // VGA: checked with scope; however disabled by default by jumper on VGA boards
         // add a little amount of time to make sure the last drawpart has already fired
@@ -414,7 +406,6 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
         break;
     default:
         //E_Exit("This new machine needs implementation in VGA_VerticalTimer too.");
-        PIC_AddEvent(VGA_DisplayStartLatch, (float)vga.draw.delay.vrstart);
         PIC_AddEvent(VGA_VertInterrupt,(float)(vga.draw.delay.vdend + 0.005));
         break;
     }
@@ -785,7 +776,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
             vga_mode_time_base = PIC_GetCurrentEventTime();
             vga_mode_frames_since_time_base = 0;
             PIC_RemoveEvents(VGA_VerticalTimer);
-            PIC_RemoveEvents(VGA_DisplayStartLatch);
             vga.draw.delay.vtotal = 1000.0 / fps;
             vga.draw.lines_done = vga.draw.lines_total;
             vga_fps = fps;
