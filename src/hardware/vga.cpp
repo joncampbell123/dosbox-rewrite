@@ -281,6 +281,8 @@ void VGA_Reset(Section*) {
     }
 
     vsync.period = (1000.0F)/vsyncrate;
+
+    VGA_StartResize();
 }
 
 void VGA_Init() {

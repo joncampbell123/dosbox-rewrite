@@ -59,79 +59,20 @@ void vga_write_p3d5(Bitu port,Bitu val,Bitu /*iolen*/) {
 //		LOG_MSG("CRTC w #%2x val %2x",crtc(index),val);
 	switch(crtc(index)) {
 	case 0x00:	/* Horizontal Total Register */
-		if (crtc(read_only)) break;
-		crtc(horizontal_total)=(Bit8u)val;
-		/* 	0-7  Horizontal Total Character Clocks-5 */
 		break;
 	case 0x01:	/* Horizontal Display End Register */
-		if (crtc(read_only)) break;
-		if (val != crtc(horizontal_display_end)) {
-            crtc(horizontal_display_end)=(Bit8u)val;
-            VGA_StartResize();
-        }
-		/* 	0-7  Number of Character Clocks Displayed -1 */
 		break;
 	case 0x02:	/* Start Horizontal Blanking Register */
-		if (crtc(read_only)) break;
-		crtc(start_horizontal_blanking)=(Bit8u)val;
-		/*	0-7  The count at which Horizontal Blanking starts */
 		break;
 	case 0x03:	/* End Horizontal Blanking Register */
-		if (crtc(read_only)) break;
-		crtc(end_horizontal_blanking)=(Bit8u)val;
-		/*
-			0-4	Horizontal Blanking ends when the last 6 bits of the character
-				counter equals this field. Bit 5 is at 3d4h index 5 bit 7.
-			5-6	Number of character clocks to delay start of display after Horizontal
-				Total has been reached.
-			7	Access to Vertical Retrace registers if set. If clear reads to 3d4h
-				index 10h and 11h access the Lightpen read back registers ??
-		*/
 		break;
 	case 0x04:	/* Start Horizontal Retrace Register */
-		if (crtc(read_only)) break;
-		crtc(start_horizontal_retrace)=(Bit8u)val;
-		/*	0-7  Horizontal Retrace starts when the Character Counter reaches this value. */
 		break;
 	case 0x05:	/* End Horizontal Retrace Register */
-		if (crtc(read_only)) break;
-		crtc(end_horizontal_retrace)=(Bit8u)val;
-		/*
-			0-4	Horizontal Retrace ends when the last 5 bits of the character counter
-				equals this value.
-			5-6	Number of character clocks to delay start of display after Horizontal
-				Retrace.
-			7	bit 5 of the End Horizontal Blanking count (See 3d4h index 3 bit 0-4)
-		*/	
 		break;
 	case 0x06: /* Vertical Total Register */
-		if (crtc(read_only)) break;
-		if (val != crtc(vertical_total)) {
-			crtc(vertical_total)=(Bit8u)val;	
-			VGA_StartResize();
-		}
-		/*	0-7	Lower 8 bits of the Vertical Total. Bit 8 is found in 3d4h index 7
-				bit 0. Bit 9 is found in 3d4h index 7 bit 5.
-			Note: For the VGA this value is the number of scan lines in the display -2.
-		*/
 		break;
 	case 0x07:	/* Overflow Register */
-		//Line compare bit ignores read only */
-		if (crtc(read_only)) break;
-		if ((vga.crtc.overflow ^ val) & 0xd6) {
-			crtc(overflow)=(Bit8u)val;
-			VGA_StartResize();
-		} else crtc(overflow)=(Bit8u)val;
-		/*
-			0  Bit 8 of Vertical Total (3d4h index 6)
-			1  Bit 8 of Vertical Display End (3d4h index 12h)
-			2  Bit 8 of Vertical Retrace Start (3d4h index 10h)
-			3  Bit 8 of Start Vertical Blanking (3d4h index 15h)
-			4  Bit 8 of Line Compare Register (3d4h index 18h)
-			5  Bit 9 of Vertical Total (3d4h index 6)
-			6  Bit 9 of Vertical Display End (3d4h index 12h)
-			7  Bit 9 of Vertical Retrace Start (3d4h index 10h)
-		*/
 		break;
 	case 0x0A:	/* Cursor Start Register */
 		crtc(cursor_start)=(Bit8u)val;
@@ -167,73 +108,14 @@ void vga_write_p3d5(Bitu port,Bitu val,Bitu /*iolen*/) {
 		/*	0-7  Lower 8 bits of the address of the cursor */
 		break;
 	case 0x10:	/* Vertical Retrace Start Register */
-		crtc(vertical_retrace_start)=(Bit8u)val;
-		/*	
-			0-7	Lower 8 bits of Vertical Retrace Start. Vertical Retrace starts when
-			the line counter reaches this value. Bit 8 is found in 3d4h index 7
-			bit 2. Bit 9 is found in 3d4h index 7 bit 7.
-		*/
 		break;
 	case 0x11:	/* Vertical Retrace End Register */
-		crtc(vertical_retrace_end)=(Bit8u)val;
-		
-		if (IS_EGAVGA_ARCH && !(val & 0x10)) {
-			vga.draw.vret_triggered=false;
-		}
-		if (IS_VGA_ARCH) crtc(read_only)=(val & 128)>0;
-		else crtc(read_only)=false;
-		/*
-			0-3	Vertical Retrace ends when the last 4 bits of the line counter equals
-				this value.
-			4	if clear Clears pending Vertical Interrupts.
-			5	Vertical Interrupts (IRQ 2) disabled if set. Can usually be left
-				disabled, but some systems (including PS/2) require it to be enabled.
-			6	If set selects 5 refresh cycles per scanline rather than 3.
-			7	Disables writing to registers 0-7 if set 3d4h index 7 bit 4 is not
-				affected by this bit.
-		*/
 		break;
 	case 0x12:	/* Vertical Display End Register */
-		if (val!=crtc(vertical_display_end)) {
-			if (abs(static_cast<int>((Bits)val-(Bits)crtc(vertical_display_end)))<3) {
-				// delay small vde changes a bit to avoid screen resizing
-				// if they are reverted in a short timeframe
-				PIC_RemoveEvents(VGA_SetupDrawing);
-				vga.draw.resizing=false;
-				crtc(vertical_display_end)=(Bit8u)val;
-				VGA_StartResize(150);
-			} else {
-				crtc(vertical_display_end)=(Bit8u)val;
-				VGA_StartResize();
-			}
-		}
-		/*
-			0-7	Lower 8 bits of Vertical Display End. The display ends when the line
-				counter reaches this value. Bit 8 is found in 3d4h index 7 bit 1.
-			Bit 9 is found in 3d4h index 7 bit 6.
-		*/
 		break;
 	case 0x15:	/* Start Vertical Blank Register */
-		if (val!=crtc(start_vertical_blanking)) {
-			crtc(start_vertical_blanking)=(Bit8u)val;
-			VGA_StartResize();
-		}
-		/* 
-			0-7	Lower 8 bits of Vertical Blank Start. Vertical blanking starts when
-				the line counter reaches this value. Bit 8 is found in 3d4h index 7
-				bit 3.
-		*/
 		break;
 	case 0x16:	/*  End Vertical Blank Register */
-		if (val!=crtc(end_vertical_blanking)) {
-			crtc(end_vertical_blanking)=(Bit8u)val;
-			VGA_StartResize();
-		}
-		/*
-			0-6	Vertical blanking stops when the lower 7 bits of the line counter
-				equals this field. Some SVGA chips uses all 8 bits!
-				IBM actually says bits 0-7.
-		*/
 		break;
 	default:
         LOG(LOG_VGAMISC,LOG_NORMAL)("VGA:CRTC:Write to unknown index %X",crtc(index));
