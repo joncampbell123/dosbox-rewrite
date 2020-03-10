@@ -71,7 +71,6 @@ Bitu bios_post_parport_count();
 Bitu bios_post_comport_count();
 bool MEM_map_ROM_alias_physmem(Bitu start,Bitu end);
 
-bool bochs_port_e9 = false;
 bool isa_memory_hole_512kb = false;
 bool int15_wait_force_unmask_irq = false;
 
@@ -95,8 +94,6 @@ Bitu BIOS_VIDEO_TABLE_SIZE = 0u;
 
 Bitu BIOS_DEFAULT_RESET_LOCATION = ~0u;      // RealMake(0xf000,0xe05b)
 
-bool allow_more_than_640kb = false;
-
 /* default bios type/version/date strings */
 const char* const bios_type_string = "IBM COMPATIBLE 486 BIOS COPYRIGHT The DOSBox Team.";
 const char* const bios_version_string = "DOSBox FakeBIOS v1.0";
@@ -109,27 +106,6 @@ Bitu                        rombios_minimum_size = 0x10000;
 
 bool MEM_map_ROM_physmem(Bitu start,Bitu end);
 bool MEM_unmap_physmem(Bitu start,Bitu end);
-
-static std::string bochs_port_e9_line;
-
-static void bochs_port_e9_flush() {
-    if (!bochs_port_e9_line.empty()) {
-        LOG_MSG("Bochs port E9h: %s",bochs_port_e9_line.c_str());
-        bochs_port_e9_line.clear();
-    }
-}
-
-void bochs_port_e9_write(Bitu port,Bitu val,Bitu /*iolen*/) {
-    (void)port;//UNUSED
-    if (val == '\n' || val == '\r') {
-        bochs_port_e9_flush();
-    }
-    else {
-        bochs_port_e9_line += (char)val;
-        if (bochs_port_e9_line.length() >= 256)
-            bochs_port_e9_flush();
-    }
-}
 
 void ROMBIOS_DumpMemory() {
     rombios_alloc.logDump();
@@ -1384,8 +1360,6 @@ void BIOS_ZeroExtendedSize(bool in) {
 
 void MEM_ResetPageHandler_Unmapped(Bitu phys_page, Bitu pages);
 
-unsigned int dos_conventional_limit = 0;
-
 bool AdapterROM_Read(Bitu address,unsigned long *size) {
     unsigned char c[3];
     unsigned int i;
@@ -2051,18 +2025,6 @@ public:
         { // TODO: Eventually, move this to BIOS POST or init phase
             Section_prop * section=static_cast<Section_prop *>(control->GetSection("dosbox"));
 
-            // NTS: This setting is also valid in PC-98 mode. According to Undocumented PC-98 by Webtech,
-            //      there's nothing at I/O port E9h. I will move the I/O port in PC-98 mode if there is in
-            //      fact a conflict. --J.C.
-            bochs_port_e9 = section->Get_bool("bochs debug port e9");
-
-            // TODO: motherboard init, especially when we get around to full Intel Triton/i440FX chipset emulation
-            isa_memory_hole_512kb = section->Get_bool("isa memory hole at 512kb");
-
-            // FIXME: Erm, well this couldv'e been named better. It refers to the amount of conventional memory
-            //        made available to the operating system below 1MB, which is usually DOS.
-            dos_conventional_limit = (unsigned int)section->Get_int("dos mem limit");
-
             {
                 std::string s = section->Get_string("unhandled irq handler");
 
@@ -2100,22 +2062,8 @@ public:
 
         ulimit = 640;
         t_conv = MEM_TotalPages() << 2; /* convert 4096/byte pages -> 1024/byte KB units */
-        if (allow_more_than_640kb) {
-            if (t_conv > ulimit) t_conv = ulimit;
-            if (t_conv > 640) { /* because the memory emulation has already set things up */
-                bool MEM_map_RAM_physmem(Bitu start,Bitu end);
-                MEM_map_RAM_physmem(0xA0000,(t_conv<<10)-1);
-                memset(GetMemBase()+(640<<10),0,(t_conv-640)<<10);
-            }
-        }
-        else {
-            if (t_conv > 640) t_conv = 640;
-        }
-
-        /* allow user to further limit the available memory below 1MB */
-        if (dos_conventional_limit != 0 && t_conv > dos_conventional_limit)
-            t_conv = dos_conventional_limit;
-
+        if (t_conv > 640) t_conv = 640;
+            
         // TODO: Allow dosbox.conf to specify an option to add an EBDA (Extended BIOS Data Area)
         //       at the top of the DOS conventional limit, which we then reduce further to hold
         //       it. Most BIOSes past 1992 or so allocate an EBDA.

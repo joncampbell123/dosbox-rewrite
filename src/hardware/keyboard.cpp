@@ -422,28 +422,6 @@ static void write_p60(Bitu port,Bitu val,Bitu iolen) {
     }
 }
 
-static Bit8u port_61_data = 0;
-
-static Bitu read_p61(Bitu, Bitu) {
-    unsigned char dbg;
-    dbg = ((port_61_data & 0xF) |
-        ((TIMER_GetOutput2() || (port_61_data&1) == 0)? 0x20:0) | // NTS: Timer 2 doesn't cycle if Port 61 gate turned off, and it becomes '1' when turned off
-        ((fmod(PIC_FullIndex(),0.030) > 0.015)? 0x10:0));
-    return dbg;
-}
-
-static void write_p61(Bitu, Bitu val, Bitu) {
-    Bit8u diff = port_61_data ^ (Bit8u)val;
-    if (diff & 0x1) TIMER_SetGate2(val & 0x1);
-    port_61_data = val;
-}
-
-static Bitu read_p62(Bitu /*port*/,Bitu /*iolen*/) {
-    Bit8u ret = Bit8u(~0x20u);
-    if (TIMER_GetOutput2()) ret|=0x20u;
-    return ret;
-}
-
 static void write_p64(Bitu port,Bitu val,Bitu iolen) {
     (void)port;//UNUSED
     (void)iolen;//UNUSED
@@ -1269,15 +1247,11 @@ void KEYBOARD_OnReset(Section *sec) {
     {
         IO_RegisterWriteHandler(0x60,write_p60,IO_MB);
         IO_RegisterReadHandler(0x60,read_p60,IO_MB);
-        IO_RegisterWriteHandler(0x61,write_p61,IO_MB);
-        IO_RegisterReadHandler(0x61,read_p61,IO_MB);
-        IO_RegisterReadHandler(0x62,read_p62,IO_MB);
         IO_RegisterWriteHandler(0x64,write_p64,IO_MB);
         IO_RegisterReadHandler(0x64,read_p64,IO_MB);
     }
 
     TIMER_AddTickHandler(&KEYBOARD_TickHandler);
-    write_p61(0,0,0);
     KEYBOARD_Reset();
     keyb.p60data = 0xAA;
 }
