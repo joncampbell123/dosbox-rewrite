@@ -1587,6 +1587,8 @@ static Bitu Default_IRQ_Handler_Cooperative_Slave_Pic(void) {
     return CBRET_NONE;
 }
 
+void InitVGAMode();
+
 static int bios_post_counter = 0;
 
 class BIOS:public Module_base{
@@ -1907,6 +1909,8 @@ private:
     static Bitu cb_bios_scan_video_bios__func(void) {
         unsigned long size;
 
+            InitVGAMode();
+        
         if (cpu.pmode) E_Exit("BIOS error: VIDEO BIOS SCAN function called while in protected/vm86 mode");
 
         if (!bios_has_exec_vga_bios) {

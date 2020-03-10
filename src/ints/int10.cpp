@@ -35,9 +35,6 @@ extern bool vga_8bit_dac;
 
 Bitu INT10_Handler(void) {
 	switch (reg_ah) {
-	case 0x00:								/* Set VideoMode */
-		INT10_SetVideoMode(reg_al);
-		break;
 	case 0x02:								/* Set Cursor Pos */
 		INT10_SetCursorPos(reg_dh,reg_dl,reg_bh);
 		break;
@@ -140,8 +137,6 @@ void INT10_Startup(Section *sec) {
         else {
             LOG(LOG_MISC,LOG_DEBUG)("Not mapping VGA BIOS");
         }
-
-        INT10_SetVideoMode(0x3);
     }
 }
 

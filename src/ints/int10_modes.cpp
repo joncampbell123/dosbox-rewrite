@@ -96,25 +96,11 @@ static bool SetCurMode(VideoModeBlock modeblock[],Bit16u mode) {
 	return false;
 }
 
-static void FinishSetMode(bool clearmem) {
-	/* Clear video memory if needs be */
-	if (clearmem) {
-        for (Bit16u ct=0;ct<(80*25);ct++) real_writew(0xB800,ct*2,0x0720);
-    }
-
-	/* Setup the BIOS */
-	real_writew(BIOSMEM_SEG,BIOSMEM_NB_COLS,(Bit16u)CurMode->twidth);
-	real_writeb(BIOSMEM_SEG,BIOSMEM_NB_ROWS,(Bit8u)(CurMode->theight-1));
-
-	INT10_SetCursorPos(0,0,0);
-}
-
-bool INT10_SetVideoMode(Bit16u mode) {
-    if (!SetCurMode(ModeList_VGA,mode)){
-        LOG(LOG_INT10,LOG_ERROR)("VGA:Trying to set illegal mode %X",mode);
-        return false;
-    }
-    FinishSetMode(true);
-    return true;
+void InitVGAMode() {
+    SetCurMode(ModeList_VGA,3);
+    for (Bit16u ct=0;ct<(80*25);ct++) real_writew(0xB800,ct*2,0x0720);
+    real_writew(BIOSMEM_SEG,BIOSMEM_NB_COLS,(Bit16u)CurMode->twidth);
+    real_writeb(BIOSMEM_SEG,BIOSMEM_NB_ROWS,(Bit8u)(CurMode->theight-1));
+    INT10_SetCursorPos(0,0,0);
 }
 
