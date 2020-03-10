@@ -120,37 +120,18 @@ bool INT10_SetCurMode(void) {
 static void FinishSetMode(bool clearmem) {
 	/* Clear video memory if needs be */
 	if (clearmem) {
-        switch (CurMode->type) {
-		case M_TEXT: {
-			Bit16u max = (Bit16u)(CurMode->ptotal*CurMode->plength)>>1;
-			if (CurMode->mode == 7) {
-				for (Bit16u ct=0;ct<max;ct++) real_writew(0xB000,ct*2,0x0720);
-			}
-			else {
-				for (Bit16u ct=0;ct<max;ct++) real_writew(0xB800,ct*2,0x0720);
-			}
-			break;
-		}
-		default:
-			break;
-		}
-	}
+        for (Bit16u ct=0;ct<(80*25);ct++) real_writew(0xB800,ct*2,0x0720);
+    }
+
 	/* Setup the BIOS */
-	if (CurMode->mode<128) real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_MODE,(Bit8u)CurMode->mode);
-	else real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_MODE,(Bit8u)(CurMode->mode-0x98));	//Looks like the s3 bios
+	real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_MODE,(Bit8u)CurMode->mode);
 	real_writew(BIOSMEM_SEG,BIOSMEM_NB_COLS,(Bit16u)CurMode->twidth);
 	real_writew(BIOSMEM_SEG,BIOSMEM_PAGE_SIZE,(Bit16u)CurMode->plength);
 	real_writew(BIOSMEM_SEG,BIOSMEM_CRTC_ADDRESS,((CurMode->mode==7 )|| (CurMode->mode==0x0f)) ? 0x3b4 : 0x3d4);
 	real_writeb(BIOSMEM_SEG,BIOSMEM_NB_ROWS,(Bit8u)(CurMode->theight-1));
 	real_writew(BIOSMEM_SEG,BIOSMEM_CHAR_HEIGHT,(Bit16u)CurMode->cheight);
-	real_writeb(BIOSMEM_SEG,BIOSMEM_VIDEO_CTL,(0x60|(clearmem?0:0x80)));
-	real_writeb(BIOSMEM_SEG,BIOSMEM_SWITCHES,0x09);
 
-	// this is an index into the dcc table:
-	if (IS_VGA_ARCH) real_writeb(BIOSMEM_SEG,BIOSMEM_DCC_INDEX,0x0b);
-
-	// Set cursor pos for page 0..7
-	for (Bit8u ct=0;ct<8;ct++) INT10_SetCursorPos(0,0,ct);
+	INT10_SetCursorPos(0,0,0);
 }
 
 bool INT10_SetVideoMode(Bit16u mode) {
