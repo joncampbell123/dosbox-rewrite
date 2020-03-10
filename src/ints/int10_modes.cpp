@@ -29,17 +29,10 @@
 #include "programs.h"
 #include "render.h"
 
-static VideoModeBlock VGAMode =
-/* mode  ,type     ,sw  ,sh  ,tw ,th ,cw,ch ,pt,pstart  ,plength,htot,vtot,hde,vde special flags */
-{ 0x003  ,M_TEXT   ,720 ,400 ,80 ,25 ,9 ,16 ,8 ,0xB8000 ,0x1000 ,100 ,449 ,80 ,400 ,0	};
-
-VideoModeBlock *CurMode = NULL;
-
 void InitVGAMode() {
-	CurMode=&VGAMode;
     for (Bit16u ct=0;ct<(80*25);ct++) real_writew(0xB800,ct*2,0x0720);
-    real_writew(BIOSMEM_SEG,BIOSMEM_NB_COLS,(Bit16u)CurMode->twidth);
-    real_writeb(BIOSMEM_SEG,BIOSMEM_NB_ROWS,(Bit8u)(CurMode->theight-1));
+    real_writew(BIOSMEM_SEG,BIOSMEM_NB_COLS,(Bit16u)80);
+    real_writeb(BIOSMEM_SEG,BIOSMEM_NB_ROWS,(Bit8u)(25-1));
     INT10_SetCursorPos(0,0,0);
 }
 

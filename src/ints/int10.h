@@ -114,8 +114,6 @@ struct VideoModeBlock {
 	Bitu	special;
 	
 };
-extern VideoModeBlock ModeList_VGA[];
-extern VideoModeBlock * CurMode;
 
 typedef struct {
 	struct {
@@ -177,7 +175,6 @@ bool INT10_SetVideoMode(Bit16u mode);
 void INT10_ScrollWindow(Bit8u rul,Bit8u cul,Bit8u rlr,Bit8u clr,Bit8s nlines,Bit8u attr,Bit8u page);
 
 void INT10_SetActivePage(Bit8u page);
-bool INT10_SetCurMode(void);
 void INT10_DisplayCombinationCode(Bit16u * dcc,bool set);
 void INT10_GetFuncStateInformation(PhysPt save);
 

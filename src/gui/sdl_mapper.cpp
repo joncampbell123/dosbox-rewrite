@@ -2405,6 +2405,11 @@ CEvent *get_mapper_event_by_name(const std::string &x) {
 }
 
 static void DrawText(Bitu x,Bitu y,const char * text,Bit8u color,Bit8u bkcolor/*=CLR_BLACK*/) {
+    (void)x;
+    (void)y;
+    (void)text;
+    (void)color;
+    (void)bkcolor;
 }
 
 void MAPPER_TriggerEventByName(const std::string& name) {

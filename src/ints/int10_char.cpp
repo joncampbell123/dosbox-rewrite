@@ -80,12 +80,7 @@ void INT10_ScrollWindow(Bit8u rul,Bit8u cul,Bit8u rlr,Bit8u clr,Bit8s nlines,Bit
     }
     while (start!=end) {
         start+=next;
-        switch (CurMode->type) {
-        case M_TEXT:
-            TEXT_CopyRow(cul,clr,start,start+nlines,base);break;
-        default:
-            LOG(LOG_INT10,LOG_ERROR)("Unhandled mode %d for scroll",CurMode->type);
-        }   
+        TEXT_CopyRow(cul,clr,start,start+nlines,base);
     } 
     /* Fill some lines */
 filling:
@@ -96,12 +91,7 @@ filling:
         start=rlr-nlines+1;
     }
     for (;nlines>0;nlines--) {
-        switch (CurMode->type) {
-        case M_TEXT:
-            TEXT_FillRow(cul,clr,start,base,attr);break;
-        default:
-            LOG(LOG_INT10,LOG_ERROR)("Unhandled mode %d for scroll",CurMode->type);
-        }   
+        TEXT_FillRow(cul,clr,start,base,attr);
         start++;
     } 
 }
@@ -151,7 +141,7 @@ void ReadCharAttr(Bit16u col,Bit16u row,Bit8u page,Bit16u * result) {
         // Compute the address  
         Bit16u address=(row*cols+col)*2;
         // read the char 
-        PhysPt where = CurMode->pstart+address;
+        PhysPt where = 0xB8000+address;
         *result=mem_readw(where);
     }
     *result = 0;
