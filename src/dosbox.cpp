@@ -787,10 +787,6 @@ void DOSBOX_RealInit() {
     // TODO: should be parsed by motherboard emulation
     allow_port_92_reset = section->Get_bool("allow port 92 reset");
 
-    // CGA/EGA/VGA-specific
-    extern unsigned char vga_p3da_undefined_bits;
-    vga_p3da_undefined_bits = (unsigned char)section->Get_hex("vga 3da undefined bits");
-
     // TODO: should be parsed by motherboard emulation or lower level equiv..?
     std::string cmd_machine;
     if (control->cmdline->FindString("-machine",cmd_machine,true)){

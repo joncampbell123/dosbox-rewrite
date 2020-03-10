@@ -23,29 +23,14 @@
 #include "vga.h"
 #include <math.h>
 
-void vsync_poll_debug_notify();
-
 void vga_write_p3d4(Bitu port,Bitu val,Bitu iolen);
 void vga_write_p3d5(Bitu port,Bitu val,Bitu iolen);
-
-/* allow the user to specify that undefined bits in 3DA/3BA be set to some nonzero value.
- * this is needed for "JOOP #2" by Europe demo, which has some weird retrace tracking code
- * like this:
- *
- *        in    al,dx       ; <- dx = 3DAh
- * l1:    shr   al,1        ; AL >>= 1, CF = bit shifted out
- *        jnc   l1
- *
- * of course, if AL == 0, it becomes an infinite loop. this is why this option exists. */
-unsigned char vga_p3da_undefined_bits = 0;
 
 Bitu vga_read_p3da(Bitu port,Bitu iolen) {
     (void)port;//UNUSED
     (void)iolen;//UNUSED
-	Bit8u retval = vga_p3da_undefined_bits;
+	Bit8u retval = 0;
 	double timeInFrame = PIC_FullIndex()-vga.draw.delay.framestart;
-
-	vga.internal.attrindex=false;
 
 	// 3DAh (R):  Status Register
 	// bit   0  Horizontal or Vertical blanking
@@ -102,72 +87,11 @@ static void write_p3c2(Bitu port,Bitu val,Bitu iolen) {
 	*/
 }
 
-
-static Bitu read_p3cc(Bitu port,Bitu iolen) {
-    (void)port;//UNUSED
-    (void)iolen;//UNUSED
-	return vga.misc_output;
-}
-
-// VGA feature control register
-static Bitu read_p3ca(Bitu port,Bitu iolen) {
-    (void)port;//UNUSED
-    (void)iolen;//UNUSED
-	return 0;
-}
-
-static Bitu read_p3c8(Bitu port,Bitu iolen) {
-    (void)port;//UNUSED
-    (void)iolen;//UNUSED
-	return 0x10;
-}
-
-static Bitu read_p3c2(Bitu port,Bitu iolen) {
-    (void)port;//UNUSED
-    (void)iolen;//UNUSED
-	Bit8u retval=0;
-
-	if (IS_VGA_ARCH) retval = 0x60;
-
-	if(IS_EGAVGA_ARCH) {
-		switch((vga.misc_output>>2)&3) {
-			case 0:
-			case 3:
-				retval |= 0x10; // 0110 switch positions
-				break;
-			default:
-				break;
-		}
-	}
-
-	if (vga.draw.vret_triggered) retval |= 0x80;
-	return retval;
-	/*
-		0-3 0xF on EGA, 0x0 on VGA 
-		4	Status of the switch selected by the Miscellaneous Output
-			Register 3C2h bit 2-3. Switch high if set.
-			(apparently always 1 on VGA)
-		5	(EGA) Pin 19 of the Feature Connector (FEAT0) is high if set
-		6	(EGA) Pin 17 of the Feature Connector (FEAT1) is high if set
-			(default differs by card, ET4000 sets them both)
-		7	If set IRQ 2 has happened due to Vertical Retrace.
-			Should be cleared by IRQ 2 interrupt routine by clearing port 3d4h
-			index 11h bit 4.
-	*/
-}
-
 void VGA_SetupMisc(void) {
 	if (IS_EGAVGA_ARCH) {
 		vga.draw.vret_triggered=false;
-		IO_RegisterReadHandler(0x3c2,read_p3c2,IO_MB);
 		IO_RegisterWriteHandler(0x3c2,write_p3c2,IO_MB);
-		if (IS_VGA_ARCH) {
-			IO_RegisterReadHandler(0x3ca,read_p3ca,IO_MB);
-			IO_RegisterReadHandler(0x3cc,read_p3cc,IO_MB);
-		} else {
-			IO_RegisterReadHandler(0x3c8,read_p3c8,IO_MB);
-		}
-	}
+    }
 }
 
 void VGA_UnsetupMisc(void) {
