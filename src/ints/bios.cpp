@@ -1587,7 +1587,13 @@ static Bitu Default_IRQ_Handler_Cooperative_Slave_Pic(void) {
     return CBRET_NONE;
 }
 
-void InitVGAMode();
+void InitVGAMode() {
+    for (Bit16u ct=0;ct<(80*25);ct++) real_writew(0xB800,ct*2,0x0720);
+    real_writew(BIOSMEM_SEG,BIOSMEM_NB_COLS,(Bit16u)80);
+    real_writeb(BIOSMEM_SEG,BIOSMEM_NB_ROWS,(Bit8u)(25-1));
+    INT10_SetCursorPos(0,0,0);
+}
+
 
 static int bios_post_counter = 0;
 
