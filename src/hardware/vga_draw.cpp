@@ -430,14 +430,6 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
     vga.draw.linear_base = vga.mem.linear;
     vga.draw.planar_mask = vga.mem.memmask >> 2;
 
-    // check if some lines at the top off the screen are blanked
-    float draw_skip = 0.0;
-    if (GCC_UNLIKELY(vga.draw.vblank_skip > 0)) {
-        draw_skip = (float)(vga.draw.delay.htotal * vga.draw.vblank_skip);
-        vga.draw.address_line += (vga.draw.vblank_skip % vga.draw.address_line_total);
-        vga.draw.address += vga.draw.address_add * (vga.draw.vblank_skip / vga.draw.address_line_total);
-    }
-
     // add the draw event
     switch (vga.draw.mode) {
     case DRAWLINE:
@@ -449,7 +441,7 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
             RENDER_EndUpdate(true);
         }
         vga.draw.lines_done = 0;
-        PIC_AddEvent(VGA_DrawSingleLine,(float)(vga.draw.delay.htotal/4.0 + draw_skip));
+        PIC_AddEvent(VGA_DrawSingleLine,(float)(vga.draw.delay.htotal/4.0));
         break;
     }
 }
@@ -479,85 +471,23 @@ void VGA_SetupDrawing(Bitu /*val*/) {
     Bitu oscclock = 0, clock;
     Bitu htotal, hdend, hbstart, hbend, hrstart, hrend;
     Bitu vtotal, vdend, vbstart, vbend, vrstart, vrend;
-    Bitu hbend_mask, vbend_mask;
-    Bitu vblank_skip;
 
     {
-        htotal = vga.crtc.horizontal_total;
-        hdend = vga.crtc.horizontal_display_end;
-        hbend = vga.crtc.end_horizontal_blanking&0x1F;
-        hbstart = vga.crtc.start_horizontal_blanking;
-        hrstart = vga.crtc.start_horizontal_retrace;
+        htotal = 100 + 5;
+        hdend = 80;
+        hbstart = 80 + 1;
+        hbend = 100 + 5 - 1;
+        hrstart = 110;
+        hrend = 112;
 
-        vtotal= vga.crtc.vertical_total | ((vga.crtc.overflow & 1u) << 8u);
-        vdend = vga.crtc.vertical_display_end | ((vga.crtc.overflow & 2u) << 7u);
-        vbstart = vga.crtc.start_vertical_blanking | ((vga.crtc.overflow & 0x08u) << 5u);
-        vrstart = vga.crtc.vertical_retrace_start + ((vga.crtc.overflow & 0x04u) << 6u);
+        vtotal = 449 + 2;
+        vdend = 400;
+        vbstart = 400 + 8;
+        vbend = 449 + 2 - 8;
+        vrstart = 420;
+        vrend = 422;
 
-        if (IS_VGA_ARCH) {
-            // additional bits only present on vga cards
-            htotal += 3u;
-            hbend |= (vga.crtc.end_horizontal_retrace&0x80u) >> 2u;
-            hbend_mask = 0x3fu;
-
-            vtotal |= (vga.crtc.overflow & 0x20u) << 4u;
-            vdend |= (vga.crtc.overflow & 0x40u) << 3u; 
-            vrstart |= ((vga.crtc.overflow & 0x80u) << 2u);
-            vbend_mask = 0xffu;
-        } else { // EGA
-            hbend_mask = 0x1fu;
-            vbend_mask = 0x1fu;
-        }
-        htotal += 2;
-        vtotal += 2;
-        hdend += 1;
-        vdend += 1;
-
-        // horitzontal blanking
-        if (hbend <= (hbstart & hbend_mask)) hbend += hbend_mask + 1;
-        hbend += hbstart - (hbstart & hbend_mask);
-
-        // horizontal retrace
-        hrend = vga.crtc.end_horizontal_retrace & 0x1f;
-        if (hrend <= (hrstart&0x1f)) hrend += 32;
-        hrend += hrstart - (hrstart&0x1f);
-        if (hrend > hbend) hrend = hbend; // S3 BIOS (???)
-
-        // vertical retrace
-        vrend = vga.crtc.vertical_retrace_end & 0xf;
-        if (vrend <= (vrstart&0xf)) vrend += 16;
-        vrend += vrstart - (vrstart&0xf);
-
-        // vertical blanking
-        vbend = vga.crtc.end_vertical_blanking & vbend_mask;
-        if (vbstart != 0) {
-            // Special case vbstart==0:
-            // Most graphics cards agree that lines zero to vbend are
-            // blanked. ET4000 doesn't blank at all if vbstart==vbend.
-            // ET3000 blanks lines 1 to vbend (255/6 lines).
-            vbstart += 1;
-            if (vbend <= (vbstart & vbend_mask)) vbend += vbend_mask + 1;
-            vbend += vbstart - (vbstart & vbend_mask);
-        }
-        vbend++;
-
-        // TODO: Found a monitor document that lists two different scan rates for PC-98:
-        //
-        //       640x400  25.175MHz dot clock  70.15Hz refresh  31.5KHz horizontal refresh (basically, VGA)
-        //       640x400  21.05MHz dot clock   56.42Hz refresh  24.83Hz horizontal refresh (original spec?)
-
-        {
-            switch ((vga.misc_output >> 2) & 3) {
-                case 0: 
-                    oscclock = 25175000;
-                    break;
-                case 1:
-                default:
-                    oscclock = 28322000;
-                    break;
-            }
-        }
-
+        oscclock = 28322000;
         clock = oscclock/9;
     }
 #if C_DEBUG
@@ -604,41 +534,7 @@ void VGA_SetupDrawing(Bitu /*val*/) {
     // Start and End of vertical retrace pulse
     vga.draw.delay.vrstart = vrstart * vga.draw.delay.htotal;
     vga.draw.delay.vrend = vrend * vga.draw.delay.htotal;
-
-    // Vertical blanking tricks
-    vblank_skip = 0;
-    if (IS_VGA_ARCH) { // others need more investigation
-        if (vbstart < vtotal) { // There will be no blanking at all otherwise
-            if (vbend > vtotal) {
-                // blanking wraps to the start of the screen
-                vblank_skip = vbend&0x7f;
-                
-                // on blanking wrap to 0, the first line is not blanked
-                // this is used by the S3 BIOS and other S3 drivers in some SVGA modes
-                if ((vbend&0x7f)==1) vblank_skip = 0;
-                
-                // it might also cut some lines off the bottom
-                if (vbstart < vdend) {
-                    vdend = vbstart;
-                }
-                LOG(LOG_VGA,LOG_WARN)("Blanking wrap to line %d", (int)vblank_skip);
-            } else if (vbstart<=1) {
-                // blanking is used to cut lines at the start of the screen
-                vblank_skip = vbend;
-                LOG(LOG_VGA,LOG_WARN)("Upper %d lines of the screen blanked", (int)vblank_skip);
-            } else if (vbstart < vdend) {
-                if (vbend < vdend) {
-                    // the game wants a black bar somewhere on the screen
-                    LOG(LOG_VGA,LOG_WARN)("Unsupported blanking: line %d-%d",(int)vbstart,(int)vbend);
-                } else {
-                    // blanking is used to cut off some lines from the bottom
-                    vdend = vbstart;
-                }
-            }
-            vdend -= vblank_skip;
-        }
-    }
-    vga.draw.vblank_skip = vblank_skip;
+    vga.draw.vblank_skip = 0;
 
     // Display end
     vga.draw.delay.vdend = vdend * vga.draw.delay.htotal;
