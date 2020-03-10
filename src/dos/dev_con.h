@@ -350,7 +350,6 @@ bool device_CON::Read(Bit8u * data,Bit16u * size) {
 	Bit16u oldax=reg_ax;
 	Bit16u count=0;
 	auto defattr=DefaultANSIAttr();
-	INT10_SetCurMode();
 	if ((readcache) && (*size)) {
 		data[count++]=readcache;
 		if(dos.echo) Real_INT10_TeletypeOutput(readcache,defattr);
@@ -434,8 +433,6 @@ bool device_CON::Write(const Bit8u * data,Bit16u * size) {
     Bit16u count=0;
     Bitu i;
     Bit8u col,row,page;
-
-    INT10_SetCurMode();
 
     while (*size>count) {
         if (log_dev_con) {

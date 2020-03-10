@@ -34,13 +34,6 @@ extern bool enable_vga_8bit_dac;
 extern bool vga_8bit_dac;
 
 Bitu INT10_Handler(void) {
-	// NTS: We do have to check the "current video mode" from the BIOS data area every call.
-	//      Some OSes like Windows 95 rely on overwriting the "current video mode" byte in
-	//      the BIOS data area to play tricks with the BIOS. If we don't call this, tricks
-	//      like the Windows 95 boot logo or INT 10h virtualization in Windows 3.1/9x/ME
-	//      within the DOS "box" will not work properly.
-	INT10_SetCurMode();
-
 	switch (reg_ah) {
 	case 0x00:								/* Set VideoMode */
 		INT10_SetVideoMode(reg_al);

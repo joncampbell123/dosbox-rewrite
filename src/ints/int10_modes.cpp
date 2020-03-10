@@ -96,27 +96,6 @@ static bool SetCurMode(VideoModeBlock modeblock[],Bit16u mode) {
 	return false;
 }
 
-bool INT10_SetCurMode(void) {
-	bool mode_changed=false;
-	Bit16u bios_mode=(Bit16u)real_readb(BIOSMEM_SEG,BIOSMEM_CURRENT_MODE);
-	if (CurMode == NULL || CurMode->mode != bios_mode) {
-		switch (machine) {
-		case VGA_ARCH_CASE:
-			switch (svgaCard) {
-			case SVGA_S3Trio:
-				if (bios_mode>=0x68 && CurMode->mode==(bios_mode+0x98)) break;
-			default:
-				mode_changed=SetCurMode(ModeList_VGA,bios_mode);
-				break;
-			}
-			break;
-		default:
-			break;
-		}
-	}
-	return mode_changed;
-}
-
 static void FinishSetMode(bool clearmem) {
 	/* Clear video memory if needs be */
 	if (clearmem) {
