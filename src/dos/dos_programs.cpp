@@ -477,16 +477,6 @@ static void MOUNT_ProgramStart(Program * * make) {
     *make=new MOUNT;
 }
 
-class SHOWGUI : public Program {
-public:
-    void Run(void) {
-    }
-};
-
-static void SHOWGUI_ProgramStart(Program * * make) {
-    *make=new SHOWGUI;
-}
-
 extern bool custom_bios;
 extern Bit32u floppytype;
 extern bool dos_kernel_disabled;
@@ -1348,7 +1338,6 @@ void DOS_SetupPrograms(void) {
         PROGRAMS_MakeFile("MODE.COM", MODE_ProgramStart);
 
     PROGRAMS_MakeFile("A20GATE.COM",A20GATE_ProgramStart);
-    PROGRAMS_MakeFile("SHOWGUI.COM",SHOWGUI_ProgramStart);
     PROGRAMS_MakeFile("NMITEST.COM",NMITEST_ProgramStart);
     PROGRAMS_MakeFile("RE-DOS.COM",REDOS_ProgramStart);
 
