@@ -7,8 +7,6 @@ libbuiltin_a_SOURCES = \
 	cwsdpmi_exe.cpp	\
 	dos32a_exe.cpp \
 	dos4gw_exe.cpp \
-	hexmem16_exe.cpp \
-	hexmem32_exe.cpp \
 	debug_exe.cpp \
 	tree_exe.cpp \
 	move_exe.cpp \

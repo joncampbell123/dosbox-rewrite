@@ -1061,8 +1061,6 @@ void SHELL_Init() {
 
     /* These are IBM PC/XT/AT ONLY. They will not work in PC-98 mode. */
     {
-        VFILE_RegisterBuiltinFileBlob(bfb_HEXMEM16_EXE);
-        VFILE_RegisterBuiltinFileBlob(bfb_HEXMEM32_EXE);
         VFILE_RegisterBuiltinFileBlob(bfb_DOSIDLE_EXE);
         VFILE_RegisterBuiltinFileBlob(bfb_CWSDPMI_EXE);
         VFILE_RegisterBuiltinFileBlob(bfb_DOS32A_EXE);
