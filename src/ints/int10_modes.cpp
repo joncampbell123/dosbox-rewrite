@@ -64,40 +64,8 @@ VideoModeBlock ModeList_VGA[]={
 
 VideoModeBlock * CurMode = NULL;
 
-static bool SetCurMode(VideoModeBlock modeblock[],Bit16u mode) {
-	Bitu i=0;
-	while (modeblock[i].mode!=0xffff) {
-		if (modeblock[i].mode!=mode)
-			i++;
-        /* ignore deleted modes */
-        else if (modeblock[i].type == M_ERROR) {
-            /* ignore */
-            i++;
-        }
-	    /* ignore disabled modes */
-        else if (modeblock[i].special & _USER_DISABLED) {
-            /* ignore */
-            i++;
-        }
-        /* ignore modes beyond the render scaler architecture's limits... unless the user created it. We did warn the user! */
-        else if (!(modeblock[i].special & _USER_MODIFIED) &&
-                (modeblock[i].swidth > SCALER_MAXWIDTH || modeblock[i].sheight > SCALER_MAXHEIGHT)) {
-            /* ignore */
-            i++;
-        }
-		else {
-			if ((!int10.vesa_oldvbe) || (ModeList_VGA[i].mode<0x120)) {
-				CurMode=&modeblock[i];
-				return true;
-			}
-			return false;
-		}
-	}
-	return false;
-}
-
 void InitVGAMode() {
-    SetCurMode(ModeList_VGA,3);
+	CurMode=&ModeList_VGA[0];
     for (Bit16u ct=0;ct<(80*25);ct++) real_writew(0xB800,ct*2,0x0720);
     real_writew(BIOSMEM_SEG,BIOSMEM_NB_COLS,(Bit16u)CurMode->twidth);
     real_writeb(BIOSMEM_SEG,BIOSMEM_NB_ROWS,(Bit8u)(CurMode->theight-1));
