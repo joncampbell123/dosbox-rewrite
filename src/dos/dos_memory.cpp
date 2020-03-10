@@ -25,14 +25,6 @@
 // uncomment for alloc/free debug messages
 #define DEBUG_ALLOC
 
-Bitu UMB_START_SEG = 0x9FFF;
-/* FIXME: This should be a variable that reflects the last RAM segment.
- *        That means 0x9FFF if 640KB or more, or a lesser value if less than 640KB */
-//#define UMB_START_SEG 0x9fff
-
-Bit16u first_umb_seg = 0xd000;
-Bit16u first_umb_size = 0x2000;
-
 static Bit16u memAllocStrategy = 0x00;
 
 static void DOS_Mem_E_Exit(const char *msg) {
@@ -108,17 +100,7 @@ void DOS_FreeProcessMemory(Bit16u pspseg) {
 	}
 
 	Bit16u umb_start=dos_infoblock.GetStartOfUMBChain();
-	if (umb_start==UMB_START_SEG) {
-		DOS_MCB umb_mcb(umb_start);
-		for (;;) {
-			if (umb_mcb.GetPSPSeg()==pspseg) {
-				umb_mcb.SetPSPSeg(MCB_FREE);
-			}
-			if (umb_mcb.GetType()!=0x4d) break;
-			umb_start+=umb_mcb.GetSize()+1;
-			umb_mcb.SetPt(umb_start);
-		}
-	} else if (umb_start!=0xffff) LOG(LOG_DOSMISC,LOG_ERROR)("Corrupt UMB chain: %x",umb_start);
+	if (umb_start!=0xffff) LOG(LOG_DOSMISC,LOG_ERROR)("Corrupt UMB chain: %x",umb_start);
 
 	DOS_CompressMemory();
 }
@@ -159,10 +141,7 @@ bool DOS_AllocateMemory(Bit16u * segment,Bit16u * blocks) {
 	Bit16u mcb_segment=dos.firstMCB;
 
 	Bit16u umb_start=dos_infoblock.GetStartOfUMBChain();
-	if (umb_start==UMB_START_SEG) {
-		/* start with UMBs if requested (bits 7 or 6 set) */
-		if (mem_strat&0xc0) mcb_segment=umb_start;
-	} else if (umb_start!=0xffff) LOG(LOG_DOSMISC,LOG_ERROR)("Corrupt UMB chain: %x",umb_start);
+	if (umb_start!=0xffff) LOG(LOG_DOSMISC,LOG_ERROR)("Corrupt UMB chain: %x",umb_start);
 
 	DOS_MCB mcb(0);
 	DOS_MCB mcb_next(0);
@@ -227,11 +206,7 @@ bool DOS_AllocateMemory(Bit16u * segment,Bit16u * blocks) {
 		}
 		/* Onward to the next MCB if there is one */
 		if (mcb.GetType()==0x5a) {
-			if ((mem_strat&0x80) && (umb_start==UMB_START_SEG)) {
-				/* bit 7 set: try high memory first, then low */
-				mcb_segment=dos.firstMCB;
-				mem_strat&=(~0xc0);
-			} else {
+			{
 				/* finished searching all requested MCB chains */
 				if (found_seg) {
 					/* a matching MCB was found (cannot occur for firstfit) */
@@ -405,93 +380,14 @@ bool DOS_FreeMemory(Bit16u segment) {
 
 Bitu GetEMSPageFrameSegment(void);
 
-void DOS_BuildUMBChain(bool umb_active,bool /*ems_active*/) {
-	unsigned int seg_limit = (unsigned int)(MEM_TotalPages()*256);
-
-	/* UMBs are only possible if the machine has 1MB+64KB of RAM */
-	if (umb_active && seg_limit >= (0x10000+0x1000-1) && first_umb_seg < GetEMSPageFrameSegment()) {
-        /* XMS emulation sets UMB size now.
-         * PCjr mode disables UMB emulation */
-
-		dos_infoblock.SetStartOfUMBChain((Bit16u)UMB_START_SEG);
-		dos_infoblock.SetUMBChainState(0);		// UMBs not linked yet
-
-		DOS_MCB umb_mcb(first_umb_seg);
-		umb_mcb.SetPSPSeg(0);		// currently free
-		umb_mcb.SetSize(first_umb_size-1);
-		umb_mcb.SetType(0x5a);
-
-		/* Scan MCB-chain for last block */
-		Bit16u mcb_segment=dos.firstMCB;
-		DOS_MCB mcb(mcb_segment);
-		while (mcb.GetType()!=0x5a) {
-			mcb_segment+=mcb.GetSize()+1;
-			mcb.SetPt(mcb_segment);
-		}
-
-		/* A system MCB has to cover the space between the
-		   regular MCB-chain and the UMBs */
-		Bit16u cover_mcb=(Bit16u)(mcb_segment+mcb.GetSize()+1);
-		mcb.SetPt(cover_mcb);
-		mcb.SetType(0x4d);
-		mcb.SetPSPSeg(0x0008);
-		mcb.SetSize(first_umb_seg-cover_mcb-1);
-		mcb.SetFileName("SC      ");
-
-	} else {
-		dos_infoblock.SetStartOfUMBChain(0xffff);
-		dos_infoblock.SetUMBChainState(0);
-	}
+void DOS_BuildUMBChain(bool /*umb_active*/,bool /*ems_active*/) {
+    dos_infoblock.SetStartOfUMBChain(0xffff);
+    dos_infoblock.SetUMBChainState(0);
 }
 
-bool DOS_LinkUMBsToMemChain(Bit16u linkstate) {
-	/* Get start of UMB-chain */
-	Bit16u umb_start=dos_infoblock.GetStartOfUMBChain();
-	if (umb_start!=UMB_START_SEG) {
-		if (umb_start!=0xffff) LOG(LOG_DOSMISC,LOG_ERROR)("Corrupt UMB chain: %x",umb_start);
-		return false;
-	}
-
-	if ((linkstate&1)==(dos_infoblock.GetUMBChainState()&1)) return true;
-	
-	/* Scan MCB-chain for last block before UMB-chain */
-	Bit16u mcb_segment=dos.firstMCB;
-	Bit16u prev_mcb_segment=dos.firstMCB;
-	DOS_MCB mcb(mcb_segment);
-	while ((mcb_segment!=umb_start) && (mcb.GetType()!=0x5a)) {
-		prev_mcb_segment=mcb_segment;
-		mcb_segment+=mcb.GetSize()+1;
-		mcb.SetPt(mcb_segment);
-	}
-	DOS_MCB prev_mcb(prev_mcb_segment);
-
-	switch (linkstate) {
-		case 0x0000:	// unlink
-			if ((prev_mcb.GetType()==0x4d) && (mcb_segment==umb_start)) {
-				prev_mcb.SetType(0x5a);
-			}
-			dos_infoblock.SetUMBChainState(0);
-			break;
-		case 0x0001:	// link
-			if (mcb.GetType()==0x5a) {
-				if ((mcb_segment+mcb.GetSize()+1) != umb_start) {
-					LOG_MSG("MCB chain no longer goes to end of memory (corruption?), not linking in UMB!");
-					return false;
-				}
-				mcb.SetType(0x4d);
-				dos_infoblock.SetUMBChainState(1);
-			}
-			break;
-		default:
-			/* NTS: Some programs apparently call this function incorrectly.
-			 *      The CauseWay extender in Open Watcom 1.9's installer for example
-			 *      calls this function with AX=0x5803 BX=0x58 */
-			return false;
-	}
-
-	return true;
+bool DOS_LinkUMBsToMemChain(Bit16u /*linkstate*/) {
+    return false;
 }
-
 
 #include <assert.h>
 
@@ -506,7 +402,6 @@ void DOS_SetupMemory(void) {
 	max_conv = (unsigned int)mem_readw(BIOS_MEMORY_SIZE) << (10u - 4u);
 	seg_limit = (unsigned int)(MEM_TotalPages()*256);
 	if (seg_limit > max_conv) seg_limit = max_conv;
-	UMB_START_SEG = max_conv - 1;
 
 	/* Let dos claim a few bios interrupts. Makes DOSBox more compatible with 
 	 * buggy games, which compare against the interrupt table. (probably a 

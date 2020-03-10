@@ -7460,9 +7460,6 @@ fresh_boot:
             /* older shutdown code */
             RemoveEMSPageFrame();
 
-            /* remove UMB block */
-            if (!keep_umb_on_boot) RemoveUMBBlock();
-
             /* unmap the DOSBox kernel private segment. if the user told us not to,
              * but the segment exists below 640KB, then we must, because the guest OS
              * will trample it and assume control of that region of RAM. */

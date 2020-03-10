@@ -143,8 +143,6 @@ Bitu XMS_GetEnabledA20(void) {
 }
 
 static RealPt xms_callback;
-static bool umb_available = false;
-static bool umb_init = false;
 
 static XMS_Block xms_handles[XMS_HANDLES_MAX];
 
@@ -529,58 +527,6 @@ Bitu XMS_Handler(void) {
 	case XMS_RESIZE_EXTENDED_MEMORY_BLOCK:						/* 0f */
 		SET_RESULT(XMS_ResizeMemory(reg_dx, reg_bx));
 		break;
-	case XMS_ALLOCATE_UMB: {									/* 10 */
-		if (!umb_available) {
-			reg_ax=0;
-			reg_bl=XMS_FUNCTION_NOT_IMPLEMENTED;
-			break;
-		}
-		Bit16u umb_start=dos_infoblock.GetStartOfUMBChain();
-		if (umb_start==0xffff) {
-			reg_ax=0;
-			reg_bl=UMB_NO_BLOCKS_AVAILABLE;
-			reg_dx=0;	// no upper memory available
-			break;
-		}
-		/* Save status and linkage of upper UMB chain and link upper
-		   memory to the regular MCB chain */
-		Bit8u umb_flag=dos_infoblock.GetUMBChainState();
-		if ((umb_flag&1)==0) DOS_LinkUMBsToMemChain(1);
-		Bit8u old_memstrat=DOS_GetMemAllocStrategy()&0xff;
-		DOS_SetMemAllocStrategy(0x40);	// search in UMBs only
-
-		Bit16u size=reg_dx;Bit16u seg;
-		if (DOS_AllocateMemory(&seg,&size)) {
-			reg_ax=1;
-			reg_bx=seg;
-		} else {
-			reg_ax=0;
-			if (size==0) reg_bl=UMB_NO_BLOCKS_AVAILABLE;
-			else reg_bl=UMB_ONLY_SMALLER_BLOCK;
-			reg_dx=size;	// size of largest available UMB
-		}
-
-		/* Restore status and linkage of upper UMB chain */
-		Bit8u current_umb_flag=dos_infoblock.GetUMBChainState();
-		if ((current_umb_flag&1)!=(umb_flag&1)) DOS_LinkUMBsToMemChain(umb_flag);
-		DOS_SetMemAllocStrategy(old_memstrat);
-		}
-		break;
-	case XMS_DEALLOCATE_UMB:									/* 11 */
-		if (!umb_available) {
-			reg_ax=0;
-			reg_bl=XMS_FUNCTION_NOT_IMPLEMENTED;
-			break;
-		}
-		if (dos_infoblock.GetStartOfUMBChain()!=0xffff) {
-			if (DOS_FreeMemory(reg_dx)) {
-				reg_ax=0x0001;
-				break;
-			}
-		}
-		reg_ax=0x0000;
-		reg_bl=UMB_NO_BLOCKS_AVAILABLE;
-		break;
 	case XMS_QUERY_ANY_FREE_MEMORY:								/* 88 */
 		reg_bl = (Bit8u)XMS_QueryFreeMemory(reg_eax,reg_edx);
 		reg_ecx = (Bit32u)((MEM_TotalPages()*MEM_PAGESIZE)-1);			// highest known physical memory address
@@ -603,8 +549,6 @@ Bitu XMS_Handler(void) {
 
 bool xms_init = false;
 
-bool keep_umb_on_boot;
-
 bool XMS_IS_ACTIVE() {
 	return (xms_callback != 0);
 }
@@ -621,12 +565,6 @@ bool MEM_unmap_physmem(Bitu start,Bitu end);
 Bitu ROMBIOS_MinAllocatedLoc();
 
 void RemoveUMBBlock() {
-	/* FIXME: Um... why is umb_available == false even when set to true below? */
-	if (umb_init) {
-		LOG_MSG("Removing UMB block 0x%04x-0x%04x\n",first_umb_seg,first_umb_seg+first_umb_size-1);
-		MEM_unmap_physmem((unsigned long)first_umb_seg<<4ul,(((unsigned long)first_umb_seg+(unsigned long)first_umb_size)<<4ul)-1ul);
-		umb_init = false;
-	}
 }
 
 class XMS: public Module_base {
@@ -635,7 +573,6 @@ private:
 public:
 	XMS(Section* configuration):Module_base(configuration){
 		Section_prop * section=static_cast<Section_prop *>(configuration);
-		umb_available=false;
 
         xms_global_enable = false;
         xms_local_enable_count = 0;
@@ -707,88 +644,15 @@ public:
 		/* Disable the 0 handle */
 		xms_handles[0].free	= false;
 
-		/* Set up UMB chain */
-		keep_umb_on_boot=section->Get_bool("keep umb on boot");
-		umb_available=section->Get_bool("umb");
-		first_umb_seg=section->Get_hex("umb start");
-		first_umb_size=section->Get_hex("umb end");
-
 		DOS_GetMemory_Choose();
 
 		// Sanity check
 		if (rombios_minimum_location == 0) E_Exit("Uninitialized ROM BIOS base");
-
-		if (first_umb_seg == 0) {
-			first_umb_seg = DOS_PRIVATE_SEGMENT_END;
-		}
-		if (first_umb_size == 0) first_umb_size = (Bit16u)(ROMBIOS_MinAllocatedLoc()>>4);
-
-		if (first_umb_seg < 0xC000 || first_umb_seg < DOS_PRIVATE_SEGMENT_END) {
-			LOG(LOG_MISC,LOG_WARN)("UMB blocks before 0xD000 conflict with VGA (0xA000-0xBFFF), VGA BIOS (0xC000-0xC7FF) and DOSBox private area (0x%04x-0x%04x)",
-				DOS_PRIVATE_SEGMENT,DOS_PRIVATE_SEGMENT_END-1);
-			first_umb_seg = 0xC000;
-			if (first_umb_seg < (Bitu)DOS_PRIVATE_SEGMENT_END) first_umb_seg = (Bitu)DOS_PRIVATE_SEGMENT_END;
-		}
-		if (first_umb_seg >= (rombios_minimum_location>>4)) {
-			LOG(LOG_MISC,LOG_NORMAL)("UMB starting segment 0x%04x conflict with BIOS at 0x%04x. Disabling UMBs",(int)first_umb_seg,(int)(rombios_minimum_location>>4));
-			umb_available = false;
-		}
-
-		if (first_umb_size >= (rombios_minimum_location>>4)) {
-			/* we can ask the BIOS code to trim back the region, assuming it hasn't allocated anything there yet */
-			LOG(LOG_MISC,LOG_DEBUG)("UMB ending segment 0x%04x conflicts with BIOS at 0x%04x, asking BIOS to move aside",(int)first_umb_size,(int)(rombios_minimum_location>>4));
-			ROMBIOS_FreeUnusedMinToLoc((unsigned int)first_umb_size<<4U);
-		}
-		if (first_umb_size >= ((unsigned int)rombios_minimum_location>>4U)) {
-			LOG(LOG_MISC,LOG_DEBUG)("UMB ending segment 0x%04x conflicts with BIOS at 0x%04x, truncating region",(int)first_umb_size,(int)(rombios_minimum_location>>4));
-			first_umb_size = ((unsigned int)rombios_minimum_location>>4u)-1u;
-		}
-
-        Bitu GetEMSPageFrameSegment(void);
-
-        bool ems_available = GetEMSType(section)>0;
-
-        /* 2017/12/24 I just noticed that the EMS page frame will conflict with UMB on standard configuration.
-         * In IBM PC mode the EMS page frame is at E000:0000.
-         * In PC-98 mode the EMS page frame is at D000:0000. */
-        if (ems_available && first_umb_size >= GetEMSPageFrameSegment()) {
-            assert(GetEMSPageFrameSegment() >= 0xA000);
-            LOG(LOG_MISC,LOG_DEBUG)("UMB overlaps EMS page frame at 0x%04x, truncating region",(unsigned int)GetEMSPageFrameSegment());
-            first_umb_size = (Bit16u)(GetEMSPageFrameSegment() - 1);
-        }
-        /* UMB cannot interfere with EGC 4th graphics bitplane on PC-98 */
-        /* TODO: Allow UMB into E000:xxxx if emulating a PC-98 that lacks 16-color mode. */
-		if (first_umb_size < first_umb_seg) {
-			LOG(LOG_MISC,LOG_NORMAL)("UMB end segment below UMB start. I'll just assume you mean to disable UMBs then.");
-			first_umb_size = first_umb_seg - 1;
-			umb_available = false;
-		}
-		first_umb_size = (first_umb_size + 1 - first_umb_seg);
-		if (umb_available) {
-			LOG(LOG_MISC,LOG_NORMAL)("UMB assigned region is 0x%04x-0x%04x",(int)first_umb_seg,(int)(first_umb_seg+first_umb_size-1));
-			if (MEM_map_RAM_physmem((unsigned int)first_umb_seg<<4u,(((unsigned int)first_umb_seg+(unsigned int)first_umb_size)<<4u)-1u)) {
-				memset(GetMemBase()+((unsigned int)first_umb_seg<<4u),0x00u,(unsigned int)first_umb_size<<4u);
-			}
-			else {
-				LOG(LOG_MISC,LOG_WARN)("Unable to claim UMB region (perhaps adapter ROM is in the way). Disabling UMB");
-				umb_available = false;
-			}
-		}
-
-		DOS_BuildUMBChain(umb_available,ems_available);
-		umb_init = true;
-
-        /* CP/M compat will break unless a copy of the JMP instruction is mirrored in HMA */
-        DOS_Write_HMA_CPM_jmp();
 	}
 
 	~XMS(){
 		/* Remove upper memory information */
 		dos_infoblock.SetStartOfUMBChain(0xffff);
-		if (umb_available) {
-			dos_infoblock.SetUMBChainState(0);
-			umb_available=false;
-		}
 
 		if (!xms_init) return;
 
