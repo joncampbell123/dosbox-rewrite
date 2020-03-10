@@ -245,20 +245,11 @@ void VGA_Reset(Section*) {
     vga.mode=M_TEXT;
 
     vga.mem.memsize = _KB_bytes(16);
-
-    // NTS: This is WHY the memory size must be a power of 2
     vga.mem.memmask = vga.mem.memsize - 1u;
 
     LOG(LOG_VGA,LOG_NORMAL)("Video RAM: %uKB",vga.mem.memsize>>10);
 
     VGA_SetupMemory();      // memory is allocated here
-
-    void change_output(int output);
-    change_output(8);
-
-    vga.draw.cursor.sline = 13;
-    vga.draw.cursor.eline = 14;
-    vga.draw.cursor.enabled = true;
 
     IO_RegisterWriteHandler(0x3D4,vga_write_p3d4,IO_MB);
     IO_RegisterWriteHandler(0x3D5,vga_write_p3d5,IO_MB);
@@ -278,6 +269,10 @@ void VGA_Init() {
     Bitu i,j;
 
 	vga.config.chained = false;
+
+    vga.draw.cursor.sline = 13;
+    vga.draw.cursor.eline = 14;
+    vga.draw.cursor.enabled = true;
 
     vga.draw.address_add = 80u*2u;
 
