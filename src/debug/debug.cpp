@@ -86,7 +86,6 @@ static void LogGDT(void);
 static void LogLDT(void);
 static void LogIDT(void);
 static void LogXMS(void);
-static void LogEMS(void);
 static void LogPages(char* selname);
 static void LogCPUInfo(void);
 static void OutputVecTable(char* filename);
@@ -1907,7 +1906,6 @@ bool ParseCommand(char* str) {
 		if (command == "MCBS") LogMCBS();
         else if (command == "KERN") LogDOSKernMem();
         else if (command == "XMS") LogXMS();
-        else if (command == "EMS") LogEMS();
         else return false;
 
 		return true;
@@ -3176,82 +3174,6 @@ static void LogBIOSMem(void) {
 
 Bitu XMS_GetTotalHandles(void);
 bool XMS_GetHandleInfo(Bitu &phys_location,Bitu &size,Bitu &lockcount,bool &free,Bitu handle);
-
-bool EMS_GetHandle(Bitu &size,PhysPt &addr,std::string &name,Bitu handle);
-const char *EMS_Type_String(void);
-Bitu EMS_Max_Handles(void);
-bool EMS_Active(void);
-
-static void LogEMS(void) {
-    Bitu h_size;
-    PhysPt xh_addr;
-    std::string h_name;
-
-    if (dos_kernel_disabled) {
-        DEBUG_ShowMsg("Cannot enumerate EMS memory while DOS kernel is inactive.");
-        return;
-    }
-
-    if (!EMS_Active()) {
-        DEBUG_ShowMsg("Cannot enumerate EMS memory while EMS is inactive.");
-        return;
-    }
-
-    DEBUG_BeginPagedContent();
-
-    DEBUG_ShowMsg("EMS memory (type %s) handles:",EMS_Type_String());
-    DEBUG_ShowMsg("Handle Address  Size (bytes)    Name");
-    for (Bitu h=0;h < EMS_Max_Handles();h++) {
-        if (EMS_GetHandle(/*&*/h_size,/*&*/xh_addr,/*&*/h_name,h)) {
-            DEBUG_ShowMsg("%6lu %08lx %08lx %s",
-                (unsigned long)h,
-                (unsigned long)xh_addr,
-                (unsigned long)h_size,
-                h_name.c_str());
-        }
-    }
-
-    bool EMS_GetMapping(Bitu &handle,Bit16u &log_page,Bitu ems_page);
-    Bitu GetEMSPageFrameSegment(void);
-    Bitu GetEMSPageFrameSize(void);
-
-    DEBUG_ShowMsg("EMS page frame 0x%08lx-0x%08lx",
-        GetEMSPageFrameSegment()*16UL,
-        (GetEMSPageFrameSegment()*16UL)+GetEMSPageFrameSize()-1UL);
-    DEBUG_ShowMsg("Handle Page(p/l) Address");
-
-    for (Bitu p=0;p < (GetEMSPageFrameSize() >> 14UL);p++) {
-        Bit16u log_page;
-        Bitu handle;
-
-        if (EMS_GetMapping(handle,log_page,p)) {
-            char tmp[192] = {0};
-
-            xh_addr = 0;
-            h_size = 0;
-            h_name.clear();
-            EMS_GetHandle(/*&*/h_size,/*&*/xh_addr,/*&*/h_name,handle);
-
-            if (xh_addr != 0)
-                sprintf(tmp," virt -> %08lx-%08lx phys",
-                    (unsigned long)(xh_addr + ((PhysPt)log_page << 14u)),
-                    (unsigned long)(xh_addr + ((PhysPt)log_page << 14u) + (1u << 14u) - 1u));
-
-            DEBUG_ShowMsg("%6lu %4lu/%4lu %08lx-%08lx%s",(unsigned long)handle,
-                (unsigned long)p,(unsigned long)log_page,
-                (GetEMSPageFrameSegment()*16UL)+(p << 14UL),
-                (GetEMSPageFrameSegment()*16UL)+((p+1UL) << 14UL)-1,
-                tmp);
-        }
-        else {
-            DEBUG_ShowMsg("--     %4lu/     %08lx-%08lx",(unsigned long)p,
-                (GetEMSPageFrameSegment()*16UL)+(p << 14UL),
-                (GetEMSPageFrameSegment()*16UL)+((p+1UL) << 14UL)-1);
-        }
-    }
-
-    DEBUG_EndPagedContent();
-}
 
 static void LogXMS(void) {
     Bitu phys_location;

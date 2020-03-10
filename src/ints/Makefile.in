@@ -99,7 +99,7 @@ am__v_AR_0 = @echo "  AR      " $@;
 am__v_AR_1 = 
 libints_a_AR = $(AR) $(ARFLAGS)
 libints_a_LIBADD =
-am_libints_a_OBJECTS = xms.$(OBJEXT) ems.$(OBJEXT) int10.$(OBJEXT) \
+am_libints_a_OBJECTS = xms.$(OBJEXT) int10.$(OBJEXT) \
 	int10_char.$(OBJEXT) bios.$(OBJEXT) bios_keyboard.$(OBJEXT)
 libints_a_OBJECTS = $(am_libints_a_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
@@ -287,7 +287,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CPPFLAGS = -I$(top_srcdir)/include
 noinst_LIBRARIES = libints.a
-libints_a_SOURCES = xms.cpp xms.h ems.cpp \
+libints_a_SOURCES = xms.cpp xms.h \
                     int10.cpp int10.h int10_char.cpp \
                     bios.cpp bios_keyboard.cpp
 
@@ -342,7 +342,6 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bios.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bios_keyboard.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ems.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/int10.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/int10_char.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xms.Po@am__quote@

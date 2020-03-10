@@ -382,7 +382,6 @@ bool guest_machine_power_on = false;
 std::string custom_savedir;
 
 void SHELL_Run();
-void EMS_DoShutDown();
 void XMS_DoShutDown();
 void DOS_DoShutDown();
 void DOS_ShutdownDevices(void);
@@ -6061,7 +6060,6 @@ void PRINTER_Init();
 #endif
 void DOS_Init();
 void XMS_Init();
-void EMS_Init();
 void DRIVES_Init();
 void IPX_Init();
 void AUTOEXEC_Init();
@@ -6113,7 +6111,6 @@ bool VM_Boot_DOSBox_Kernel() {
         VFILE_Shutdown();
         PROGRAMS_Shutdown();
         DOS_UninstallMisc();
-        EMS_DoShutDown();
         XMS_DoShutDown();
         DOS_DoShutDown();
 
@@ -6151,10 +6148,6 @@ bool VM_Boot_DOSBox_Kernel() {
         /* Most MS-DOS installations have a DEVICE=C:\HIMEM.SYS somewhere near the top of their CONFIG.SYS */
         void XMS_Startup(Section *sec);
         XMS_Startup(NULL);
-
-        /* And then after that, usually a DEVICE=C:\EMM386.EXE just after HIMEM.SYS */
-        void EMS_Startup(Section* sec);
-        EMS_Startup(NULL);
 
         DispatchVMEvent(VM_EVENT_DOS_INIT_CONFIG_SYS_DONE); // <- we just finished executing CONFIG.SYS
         SHELL_Init(); // <- NTS: this will change CPU instruction pointer!
@@ -7218,7 +7211,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
         DOS_Init();
         DRIVES_Init();
         XMS_Init();
-        EMS_Init();
         AUTOEXEC_Init();
 #if C_IPX
         IPX_Init();
@@ -7482,8 +7474,6 @@ fresh_boot:
 
             /* remove environment variables for some components */
             DOS_UninstallMisc();
-            /* disable Expanded Memory. EMM is a DOS API, not a BIOS API */
-            EMS_DoShutDown();
             /* and XMS, also a DOS API */
             XMS_DoShutDown();
             /* and the DOS API in general */
