@@ -52,6 +52,7 @@ static void TEXT_FillRow(Bit8u cleft,Bit8u cright,Bit8u row,PhysPt base,Bit8u at
 }
 
 void INT10_ScrollWindow(Bit8u rul,Bit8u cul,Bit8u rlr,Bit8u clr,Bit8s nlines,Bit8u attr,Bit8u page) {
+    (void)page;
 /* Do some range checking */
     if (CurMode->type!=M_TEXT) page=0xff;
     BIOS_NCOLS;BIOS_NROWS;
@@ -64,8 +65,6 @@ void INT10_ScrollWindow(Bit8u rul,Bit8u cul,Bit8u rlr,Bit8u clr,Bit8s nlines,Bit
     /* Get the correct page: current start address for current page (0xFF),
        otherwise calculate from page number and page size */
     PhysPt base=CurMode->pstart;
-    if (page==0xff) base+=real_readw(BIOSMEM_SEG,BIOSMEM_CURRENT_START);
-    else base+=(unsigned int)page*real_readw(BIOSMEM_SEG,BIOSMEM_PAGE_SIZE);
     
     /* See how much lines need to be copied */
     Bit8u start,end;Bits next;
@@ -110,36 +109,6 @@ filling:
     } 
 }
 
-void INT10_SetActivePage(Bit8u page) {
-    Bit16u mem_address;
-    if (page>7) LOG(LOG_INT10,LOG_ERROR)("INT10_SetActivePage page %d",page);
-
-    if (IS_EGAVGA_ARCH && (svgaCard==SVGA_S3Trio)) page &= 7;
-
-    mem_address=page*real_readw(BIOSMEM_SEG,BIOSMEM_PAGE_SIZE);
-    /* Write the new page start */
-    real_writew(BIOSMEM_SEG,BIOSMEM_CURRENT_START,mem_address);
-    if (IS_EGAVGA_ARCH) {
-        if (CurMode->mode<8) mem_address>>=1;
-        // rare alternative: if (CurMode->type==M_TEXT)  mem_address>>=1;
-    } else {
-        mem_address>>=1;
-    }
-    /* Write the new start address in vgahardware */
-    Bit16u base=0x3D4;
-    IO_Write(base,0x0cu);
-    IO_Write(base+1u,(Bit8u)(mem_address>>8u));
-    IO_Write(base,0x0du);
-    IO_Write(base+1u,(Bit8u)mem_address);
-
-    // And change the BIOS page
-    real_writeb(BIOSMEM_SEG,BIOSMEM_CURRENT_PAGE,page);
-    Bit8u cur_row=CURSOR_POS_ROW(page);
-    Bit8u cur_col=CURSOR_POS_COL(page);
-    // Display the cursor, now the page is active
-    INT10_SetCursorPos(cur_row,cur_col,page);
-}
-
 void INT10_GetScreenColumns(Bit16u *cols)
 {
     *cols = real_readw(BIOSMEM_SEG, BIOSMEM_NB_COLS);
@@ -180,14 +149,14 @@ void INT10_SetCursorPos(Bit8u row,Bit8u col,Bit8u page) {
 }
 
 void ReadCharAttr(Bit16u col,Bit16u row,Bit8u page,Bit16u * result) {
+    (void)page;
     /* Externally used by the mouse routine */
     Bit16u cols = real_readw(BIOSMEM_SEG,BIOSMEM_NB_COLS);
     switch (CurMode->type) {
     case M_TEXT:
         {   
             // Compute the address  
-            Bit16u address=page*real_readw(BIOSMEM_SEG,BIOSMEM_PAGE_SIZE);
-            address+=(row*cols+col)*2;
+            Bit16u address=(row*cols+col)*2;
             // read the char 
             PhysPt where = CurMode->pstart+address;
             *result=mem_readw(where);
@@ -206,6 +175,8 @@ void INT10_ReadCharAttr(Bit16u * result,Bit8u page) {
 }
 
 void WriteChar(Bit16u col,Bit16u row,Bit8u page,Bit16u chr,Bit8u attr,bool useattr) {
+    (void)page;
+
     /* Externally used by the mouse routine */
     Bit16u cols = real_readw(BIOSMEM_SEG,BIOSMEM_NB_COLS);
 
@@ -215,8 +186,7 @@ void WriteChar(Bit16u col,Bit16u row,Bit8u page,Bit16u chr,Bit8u attr,bool useat
     case M_TEXT:
         {   
             // Compute the address  
-            Bit16u address=page*real_readw(BIOSMEM_SEG,BIOSMEM_PAGE_SIZE);
-            address+=(row*cols+col)*2;
+            Bit16u address=(row*cols+col)*2;
             // Write the char 
             PhysPt where = CurMode->pstart+address;
             mem_writeb(where,chr);
