@@ -256,8 +256,6 @@ static void VGA_DisplayStartLatch(Bitu /*val*/) {
     /* hretrace fx support: store the hretrace value at start of picture so we have
      * a point of reference how far to displace the scanline when wavy effects are
      * made */
-    vga.config.real_start=vga.config.display_start & vga.mem.memmask;
-    vga.draw.bytes_skip = vga.config.bytes_skip;
 }
 
 extern uint32_t GFX_Rmask;
@@ -426,41 +424,20 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
     //Check if we can actually render, else skip the rest
     if (vga.draw.vga_override || !RENDER_StartUpdate()) return;
 
-    vga.draw.address_line = vga.config.hlines_skip;
-    vga.draw.address = vga.config.real_start;
+    vga.draw.cursor.address = vga.config.cursor_start * 2;
+    vga.draw.address_line = 0;
+    vga.draw.address = 0;
 
-    switch (vga.mode) {
-    case M_TEXT:
-        vga.draw.address += vga.draw.bytes_skip;
-        if (IS_EGAVGA_ARCH) {
-            if (vga.config.compatible_chain4 || svgaCard == SVGA_None)
-                vga.draw.linear_mask = vga.mem.memmask & 0x3ffff;
-            else
-                vga.draw.linear_mask = vga.mem.memmask; // SVGA text mode
-        }
-        else vga.draw.linear_mask = 0x3fff; // CGA, Tandy 4 pages
-        if (IS_EGAVGA_ARCH)
-            vga.draw.cursor.address=vga.config.cursor_start<<1;
-        else
-            vga.draw.cursor.address=vga.config.cursor_start*2;
-        vga.draw.address *= 2;
-
-        /* check for blinking and blinking change delay */
-        FontMask[1]=(vga.draw.blinking & (unsigned int)(vga.draw.cursor.count >> 4u)) ?
-            0 : 0xffffffff;
-        /* if blinking is enabled, 'blink' will toggle between true
-         * and false. Otherwise it's true */
-        vga.draw.blink = ((vga.draw.blinking & (unsigned int)(vga.draw.cursor.count >> 4u))
+    /* check for blinking and blinking change delay */
+    FontMask[1]=(vga.draw.blinking & (unsigned int)(vga.draw.cursor.count >> 4u)) ?
+        0 : 0xffffffff;
+    /* if blinking is enabled, 'blink' will toggle between true
+     * and false. Otherwise it's true */
+    vga.draw.blink = ((vga.draw.blinking & (unsigned int)(vga.draw.cursor.count >> 4u))
             || !vga.draw.blinking) ? true:false;
-        break;
-    default:
-        break;
-    }
 
-    if (IS_EGAVGA_ARCH)
-        vga.draw.planar_mask = vga.draw.linear_mask >> 2;
-    else
-        vga.draw.planar_mask = vga.draw.linear_mask >> 1;
+    vga.draw.linear_base = vga.mem.linear;
+    vga.draw.planar_mask = vga.mem.memmask >> 2;
 
     // check if some lines at the top off the screen are blanked
     float draw_skip = 0.0;
@@ -713,25 +690,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
     //Set the bpp
     Bitu bpp;
     bpp = 8;
-    vga.draw.linear_base = vga.mem.linear;
-    vga.draw.linear_mask = vga.mem.memmask;
-
-    /* Some games and plenty of demoscene productions like to rely on
-     * the fact that the standard VGA modes wrap around at 256KB even
-     * on SVGA hardware. Without this check, those demos will show
-     * credits that scroll upward to blackness before "popping" back
-     * onto the screen. */
-    if (IS_VGA_ARCH) {
-        /* NTS: S3 emulation ties "compatible chain4" to CRTC register 31 bit 3 which controls
-         *      whether access to > 256KB of video RAM is enabled, which is why it's used here */
-        if (vga.config.compatible_chain4 || svgaCard == SVGA_None)
-            vga.draw.linear_mask &= 0x3FFFF;
-    }
-
-    if (IS_EGAVGA_ARCH)
-        vga.draw.planar_mask = vga.draw.linear_mask >> 2;
-    else
-        vga.draw.planar_mask = vga.draw.linear_mask >> 1;
 
     Bitu pix_per_char = 8;
     switch (vga.mode) {

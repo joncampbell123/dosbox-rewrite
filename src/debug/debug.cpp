@@ -2025,8 +2025,8 @@ bool ParseCommand(char* str) {
             DEBUG_ShowMsg("VGA draw info: resizing=%u width=%lu height=%lu blocks=%lu",
                 vga.draw.resizing?1:0,(unsigned long)vga.draw.width,(unsigned long)vga.draw.height,(unsigned long)vga.draw.blocks);
             DEBUG_ShowMsg("address=%lxh panning=%lu bytes-skip=%lu lin-mask=%lx pln-mask=%lx",
-                (unsigned long)vga.draw.address,(unsigned long)vga.draw.panning,(unsigned long)vga.draw.bytes_skip,
-                (unsigned long)vga.draw.linear_mask,(unsigned long)vga.draw.planar_mask);
+                (unsigned long)vga.draw.address,(unsigned long)0,(unsigned long)0,
+                (unsigned long)0,(unsigned long)0);
             DEBUG_ShowMsg("addr-add=%lxh line-length=%lu addrline-total=%lu addrline=%lu",
                 (unsigned long)vga.draw.address_add,(unsigned long)vga.draw.line_length,
                 (unsigned long)vga.draw.address_line_total,(unsigned long)vga.draw.address_line);
@@ -2062,30 +2062,30 @@ bool ParseCommand(char* str) {
                 160ul,
                 (unsigned long)vga.config.cursor_start);
             DEBUG_ShowMsg("line-compare=%lu chained=%u compat-chain4=%u pel-pan=%u hline-skip=%u",
-                (unsigned long)vga.config.line_compare,
-                vga.config.chained,
-                (unsigned int)vga.config.compatible_chain4,
+                (unsigned long)0,
                 (unsigned int)0,
-                (unsigned int)vga.config.hlines_skip);
+                (unsigned int)0,
+                (unsigned int)0,
+                (unsigned int)0);
             DEBUG_ShowMsg("byte-skip=%u addr-shift=%u rd-mode=%u wr-mode=%u rdmap-sel=%u",
-                (unsigned int)vga.config.bytes_skip,
+                (unsigned int)0,
                 (unsigned int)1,
-                (unsigned int)vga.config.read_mode,
-                (unsigned int)vga.config.write_mode,
-                (unsigned int)vga.config.read_map_select);
+                (unsigned int)0,
+                (unsigned int)0,
+                (unsigned int)0);
             DEBUG_ShowMsg("col-dont-care=%u color-compare=%u data-rotate=%u raster-op=%02xh",
-                (unsigned int)vga.config.color_dont_care,
-                (unsigned int)vga.config.color_compare,
-                (unsigned int)vga.config.data_rotate,
-                (unsigned int)vga.config.raster_op);
+                (unsigned int)0,
+                (unsigned int)0,
+                (unsigned int)0,
+                (unsigned int)0);
             DEBUG_ShowMsg("fbmsk=%x fmmsk=%x fnmmsk=%x fsr=%x fnesr=%x fesr=%x feasr=%x",
-                (unsigned int)vga.config.full_bit_mask,
-                (unsigned int)vga.config.full_map_mask,
-                (unsigned int)vga.config.full_not_map_mask,
-                (unsigned int)vga.config.full_set_reset,
-                (unsigned int)vga.config.full_not_enable_set_reset,
-                (unsigned int)vga.config.full_enable_set_reset,
-                (unsigned int)vga.config.full_enable_and_set_reset);
+                (unsigned int)0,
+                (unsigned int)0,
+                (unsigned int)0,
+                (unsigned int)0,
+                (unsigned int)0,
+                (unsigned int)0,
+                (unsigned int)0);
         }
         else {
             return false;

@@ -133,20 +133,6 @@ void vga_write_p3d5(Bitu port,Bitu val,Bitu /*iolen*/) {
 			7  Bit 9 of Vertical Retrace Start (3d4h index 10h)
 		*/
 		break;
-	case 0x08:	/* Preset Row Scan Register */
-		crtc(preset_row_scan)=(Bit8u)val;
-		vga.config.hlines_skip=val&31;
-		if (IS_VGA_ARCH) vga.config.bytes_skip=(val>>5)&3;
-		else vga.config.bytes_skip=0;
-//		LOG_DEBUG("Skip lines %d bytes %d",vga.config.hlines_skip,vga.config.bytes_skip);
-		/*
-			0-4	Number of lines we have scrolled down in the first character row.
-				Provides Smooth Vertical Scrolling.b
-			5-6	Number of bytes to skip at the start of scanline. Provides Smooth
-				Horizontal Scrolling together with the Horizontal Panning Register
-				(3C0h index 13h).
-		*/
-		break;
 	case 0x0A:	/* Cursor Start Register */
 		crtc(cursor_start)=(Bit8u)val;
 		vga.draw.cursor.sline=val&0x1f;
@@ -290,8 +276,6 @@ Bitu vga_read_p3d5x(Bitu port,Bitu iolen) {
 		return crtc(vertical_total);	
 	case 0x07:	/* Overflow Register */
 		return crtc(overflow);
-	case 0x08:	/* Preset Row Scan Register */
-		return crtc(preset_row_scan);
 	case 0x0A:	/* Cursor Start Register */
 		return crtc(cursor_start);
 	case 0x0B:	/* Cursor End Register */
