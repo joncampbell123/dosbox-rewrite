@@ -253,7 +253,6 @@ void VGA_Reset(Section*) {
 
     VGA_SetupMemory();      // memory is allocated here
     {
-        VGA_SetupMisc();
         VGA_SetupDAC();
         VGA_SetupGFX();
     }
