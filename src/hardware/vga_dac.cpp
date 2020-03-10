@@ -68,12 +68,6 @@ static void VGA_DAC_SendColor( Bitu index ) {
             (uint16_t)(((green&0xffu)>>2u)<<GFX_Gshift) |
             (uint16_t)(((red&0xffu)>>3u)<<GFX_Rshift) |
             (uint16_t)GFX_Amask;
-
-        /* PC-98 mode always renders 32bpp, therefore needs this fix */
-        if (GFX_Bshift == 0)
-            vga.dac.xlat32[index] = (uint32_t)(blue << 0U) | (uint32_t)(green << 8U) | (uint32_t)(red << 16U);
-        else
-            vga.dac.xlat32[index] = (uint32_t)(blue << 16U) | (uint32_t)(green << 8U) | (uint32_t)(red << 0U);
     }
 
     RENDER_SetPal( (Bit8u)index, red, green, blue );
