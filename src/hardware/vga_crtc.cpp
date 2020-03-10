@@ -58,26 +58,6 @@ void vga_write_p3d5(Bitu port,Bitu val,Bitu /*iolen*/) {
 //	if((crtc(index)!=0xe)&&(crtc(index)!=0xf)) 
 //		LOG_MSG("CRTC w #%2x val %2x",crtc(index),val);
 	switch(crtc(index)) {
-	case 0x0A:	/* Cursor Start Register */
-		crtc(cursor_start)=(Bit8u)val;
-		vga.draw.cursor.sline=val&0x1f;
-		if (IS_VGA_ARCH) vga.draw.cursor.enabled=!(val&0x20);
-		else vga.draw.cursor.enabled=true;
-		/*
-			0-4	First scanline of cursor within character.
-			5	Turns Cursor off if set
-		*/
-		break;
-	case 0x0B:	/* Cursor End Register */
-		crtc(cursor_end)=(Bit8u)val;
-		vga.draw.cursor.eline=val&0x1f;
-		vga.draw.cursor.delay=(val>>5)&0x3;
-
-		/* 
-			0-4	Last scanline of cursor within character
-			5-6	Delay of cursor data in character clocks.
-		*/
-		break;
 	case 0x0E:	/*Cursor Location High Register */
 		crtc(cursor_location_high)=(Bit8u)val;
 		vga.config.cursor_start&=0xff00ff;
@@ -109,10 +89,6 @@ Bitu vga_read_p3d5x(Bitu port,Bitu iolen) {
     (void)iolen;//UNUSED
     (void)port;//UNUSED
 	switch(crtc(index)) {
-	case 0x0A:	/* Cursor Start Register */
-		return crtc(cursor_start);
-	case 0x0B:	/* Cursor End Register */
-		return crtc(cursor_end);
 	case 0x0E:	/*Cursor Location High Register */
 		return crtc(cursor_location_high);
 	case 0x0F:	/* Cursor Location Low Register */

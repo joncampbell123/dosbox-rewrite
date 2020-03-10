@@ -280,6 +280,9 @@ void VGA_Reset(Section*) {
         sscanf(vsyncratestr,"%lf",&vsyncrate);
     }
 
+    vga.draw.cursor.sline = 13;
+    vga.draw.cursor.eline = 14;
+    vga.draw.cursor.enabled = true;
     vsync.period = (1000.0F)/vsyncrate;
 
     VGA_StartResize();
