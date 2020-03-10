@@ -136,76 +136,17 @@ Bitu read_p3c8(Bitu port, Bitu iolen){
 
 static unsigned char tmp_dac[3] = {0,0,0};
 
+void VGASetPalette(Bit8u index,Bit8u r,Bit8u g,Bit8u b) {
+    vga.dac.rgb[index].red=r;
+    vga.dac.rgb[index].green=g;
+    vga.dac.rgb[index].blue=b;
+}
+
 void write_p3c9(Bitu port,Bitu val,Bitu iolen) {
-    bool update = false;
-
-    (void)iolen;//UNUSED
-    (void)port;//UNUSED
-
-    val&=0x3f;
-
-    if (vga.dac.pel_index < 3) {
-        tmp_dac[vga.dac.pel_index]=(unsigned char)val;
-
-        /* update palette right away, partial change */
-        switch (vga.dac.pel_index) {
-            case 0:
-                vga.dac.rgb[vga.dac.write_index].red=tmp_dac[0];
-                break;
-            case 1:
-                vga.dac.rgb[vga.dac.write_index].green=tmp_dac[1];
-                break;
-            case 2:
-                vga.dac.rgb[vga.dac.write_index].blue=tmp_dac[2];
-                break;
-        }
-        update = true;
-
-        if ((++vga.dac.pel_index) >= 3)
-            vga.dac.pel_index = 0;
-    }
-
-    if (update) {
-        // As seen on real hardware: 640x480 2-color is the ONLY video mode
-        // where the MCGA hardware appears to latch foreground and background
-        // colors from the DAC at retrace, instead of always reading through
-        // the DAC.
-        //
-        // Perhaps IBM couldn't get the DAC to run fast enough for 640x480 2-color mode.
-        {
-            VGA_DAC_UpdateColorPalette(); // FIXME: Yes, this is very inefficient. Will improve later.
-        }
-
-        /* only if we just completed a color should we advance */
-        if (vga.dac.pel_index == 0)
-            vga.dac.read_index = vga.dac.write_index++;                           // NTS: Paradise SVGA behavior
-    }
 }
 
 Bitu read_p3c9(Bitu port,Bitu iolen) {
-    (void)iolen;//UNUSED
-    (void)port;//UNUSED
-    Bit8u ret;
-    switch (vga.dac.pel_index) {
-    case 0:
-        ret=vga.dac.rgb[vga.dac.read_index].red;
-        vga.dac.pel_index=1;
-        break;
-    case 1:
-        ret=vga.dac.rgb[vga.dac.read_index].green;
-        vga.dac.pel_index=2;
-        break;
-    case 2:
-        ret=vga.dac.rgb[vga.dac.read_index].blue;
-        vga.dac.pel_index=0;
-        vga.dac.read_index=vga.dac.write_index++;                           // NTS: Paradise SVGA behavior
-        break;
-    default:
-        LOG(LOG_VGAMISC,LOG_NORMAL)("VGA:DAC:Illegal Pel Index");           //If this can actually happen that will be the day
-        ret=0;
-        break;
-    }
-    return ret;
+    return 0;
 }
 
 void VGA_DAC_CombineColor(Bit8u attr,Bit8u pal) {
