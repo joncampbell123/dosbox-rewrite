@@ -473,17 +473,17 @@ void VGA_SetupDrawing(Bitu /*val*/) {
     Bitu vtotal, vdend, vbstart, vbend, vrstart, vrend;
 
     {
-        htotal = 100 + 5;
+        htotal = 100;
         hdend = 80;
         hbstart = 80 + 1;
-        hbend = 100 + 5 - 1;
+        hbend = 100 - 1;
         hrstart = 110;
         hrend = 112;
 
-        vtotal = 449 + 2;
+        vtotal = 449;
         vdend = 400;
         vbstart = 400 + 8;
-        vbend = 449 + 2 - 8;
+        vbend = 449 - 8;
         vrstart = 420;
         vrend = 422;
 
