@@ -30,7 +30,6 @@
 #include "setup.h"
 #include "cpu.h"
 
-#define VGA_PAGES		(128/4)
 #define VGA_PAGE_B8		(0xB8000/4096)
 
 static struct {
