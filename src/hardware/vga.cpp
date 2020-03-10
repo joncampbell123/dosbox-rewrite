@@ -254,7 +254,6 @@ void VGA_Reset(Section*) {
     VGA_SetupMemory();      // memory is allocated here
     {
         VGA_SetupDAC();
-        VGA_SetupGFX();
     }
 
     Section_prop * section2=static_cast<Section_prop *>(control->GetSection("vsync"));
