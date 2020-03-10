@@ -31,8 +31,6 @@
 #include "cpu.h"
 
 #define VGA_PAGES		(128/4)
-#define VGA_PAGE_A0		(0xA0000/4096)
-#define VGA_PAGE_B0		(0xB0000/4096)
 #define VGA_PAGE_B8		(0xB8000/4096)
 
 static struct {
@@ -189,8 +187,6 @@ void VGA_SetupHandlers(void) {
     vgapages.base = VGA_PAGE_B8;
     vgapages.mask = 0x7fff & vga.mem.memmask;
     MEM_SetPageHandler( VGA_PAGE_B8, 8,  &vgaph.uvga  );
-    MEM_SetPageHandler( VGA_PAGE_A0, 16, &vgaph.empty );
-    MEM_SetPageHandler( VGA_PAGE_B0, 8,  &vgaph.empty );
 
 	PAGING_ClearTLB();
 }
@@ -198,7 +194,6 @@ void VGA_SetupHandlers(void) {
 static bool VGA_Memory_ShutDown_init = false;
 
 static void VGA_Memory_ShutDown(Section * /*sec*/) {
-	MEM_SetPageHandler(VGA_PAGE_A0,32,&vgaph.empty);
 	PAGING_ClearTLB();
 
 	if (vga.mem.linear_orgptr != NULL) {
