@@ -463,13 +463,6 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
     }
 }
 
-void VGA_CheckScanLength(void) {
-    vga.draw.address_add=80u*2u;
-}
-
-void VGA_ActivateHardwareCursor(void) {
-}
-
 void VGA_SetupDrawing(Bitu /*val*/) {
     // user choosable special trick support
     // multiscan -- zooming effects - only makes sense if linewise is enabled
@@ -706,8 +699,7 @@ void VGA_SetupDrawing(Bitu /*val*/) {
         break;
     }
     width *= pix_per_char;
-    VGA_CheckScanLength();
-    
+
     vga.draw.lines_total=height;
     vga.draw.line_length = width * ((bpp + 1) / 8);
     vga.draw.oscclock = oscclock;

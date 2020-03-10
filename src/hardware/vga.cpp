@@ -288,6 +288,8 @@ void VGA_Init() {
 
 	vga.config.chained = false;
 
+    vga.draw.address_add = 80u*2u;
+
     vga.draw.render_step = 0;
     vga.draw.render_max = 1;
 

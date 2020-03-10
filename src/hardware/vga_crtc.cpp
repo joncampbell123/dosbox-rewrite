@@ -213,13 +213,6 @@ void vga_write_p3d5(Bitu port,Bitu val,Bitu /*iolen*/) {
 			Bit 9 is found in 3d4h index 7 bit 6.
 		*/
 		break;
-	case 0x13:	/* Offset register */
-		VGA_CheckScanLength();
-		/*
-			0-7	Number of bytes in a scanline / K. Where K is 2 for byte mode, 4 for
-				word mode and 8 for Double Word mode.
-		*/
-		break;
 	case 0x15:	/* Start Vertical Blank Register */
 		if (val!=crtc(start_vertical_blanking)) {
 			crtc(start_vertical_blanking)=(Bit8u)val;
