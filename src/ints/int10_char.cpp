@@ -243,37 +243,3 @@ void INT10_TeletypeOutput(Bit8u chr,Bit8u attr) {
     INT10_TeletypeOutputAttr(chr,attr,false);
 }
 
-void INT10_WriteString(Bit8u row,Bit8u col,Bit8u flag,Bit8u attr,PhysPt string,Bit16u count,Bit8u page) {
-    (void)page;
-    Bit8u cur_row=CURSOR_POS_ROW(0);
-    Bit8u cur_col=CURSOR_POS_COL(0);
-    
-    // if row=0xff special case : use current cursor position
-    if (row==0xff) {
-        row=cur_row;
-        col=cur_col;
-    }
-    INT10_SetCursorPos(row,col,0);
-    while (count>0) {
-        Bit8u chr=mem_readb(string);
-        string++;
-        if (flag&2) {
-            attr=mem_readb(string);
-            string++;
-        }
-        INT10_TeletypeOutputAttr(chr,attr,true,0);
-        count--;
-    }
-    if (!(flag&1)) {
-        INT10_SetCursorPos(cur_row,cur_col,0);
-    }
-}
-
-bool INT10_GetInsertState()
-{
-    {
-        const auto flags = mem_readb(BIOS_KEYBOARD_FLAGS1);
-        const auto state =static_cast<bool>(flags & BIOS_KEYBOARD_FLAGS1_INSERT_ACTIVE);
-        return state;
-    }
-}

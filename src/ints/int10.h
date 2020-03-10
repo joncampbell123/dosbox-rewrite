@@ -167,9 +167,6 @@ static inline Bit8u CURSOR_POS_ROW(Bit8u page) {
     return real_readb(BIOSMEM_SEG,BIOSMEM_CURSOR_POS+page*2u+1u);
 }
 
-//! \brief Gets the state of INS/OVR mode.
-bool INT10_GetInsertState();
-
 bool INT10_SetVideoMode(Bit16u mode);
 
 void INT10_ScrollWindow(Bit8u rul,Bit8u cul,Bit8u rlr,Bit8u clr,Bit8s nlines,Bit8u attr,Bit8u page);
@@ -186,7 +183,6 @@ void INT10_TeletypeOutput(Bit8u chr,Bit8u attr);
 void INT10_TeletypeOutputAttr(Bit8u chr,Bit8u attr,bool useattr);
 void INT10_ReadCharAttr(Bit16u * result,Bit8u page);
 void INT10_WriteChar(Bit16u chr,Bit8u attr,Bit8u page,Bit16u count,bool showattr);
-void INT10_WriteString(Bit8u row,Bit8u col,Bit8u flag,Bit8u attr,PhysPt string,Bit16u count,Bit8u page);
 
 /* Graphics Stuff */
 void INT10_PutPixel(Bit16u x,Bit16u y,Bit8u page,Bit8u color);
