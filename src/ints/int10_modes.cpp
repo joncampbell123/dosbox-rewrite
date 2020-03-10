@@ -29,37 +29,11 @@
 #include "programs.h"
 #include "render.h"
 
-#define SEQ_REGS 0x05
-#define GFX_REGS 0x09
-#define ATT_REGS 0x15
-
-extern bool int10_vesa_map_as_128kb;
-extern bool allow_vesa_lowres_modes;
-extern bool allow_vesa_4bpp_packed;
-extern bool allow_explicit_vesa_24bpp;
-extern bool vesa12_modes_32bpp;
-extern bool allow_vesa_32bpp;
-extern bool allow_vesa_24bpp;
-extern bool allow_vesa_16bpp;
-extern bool allow_vesa_15bpp;
-extern bool allow_vesa_8bpp;
-extern bool allow_vesa_4bpp;
-extern bool allow_vesa_tty;
-
-/* This list includes non-explicitly 24bpp modes (in the 0x100-0x11F range) that are available
- * when the VBE1.2 setting indicates they should be 24bpp.
- *
- * Explicitly 24bpp modes (numbered 0x120 or higher) are available regardless of the VBE1.2
- * setting but only if enabled in dosbox.conf.
- *
- * Disabling the explicit 24bpp modes is intended to reflect actual SVGA hardware that tends
- * to support either 24bpp or 32bpp, but not both. */
-
-VideoModeBlock VGAMode =
+static VideoModeBlock VGAMode =
 /* mode  ,type     ,sw  ,sh  ,tw ,th ,cw,ch ,pt,pstart  ,plength,htot,vtot,hde,vde special flags */
 { 0x003  ,M_TEXT   ,720 ,400 ,80 ,25 ,9 ,16 ,8 ,0xB8000 ,0x1000 ,100 ,449 ,80 ,400 ,0	};
 
-VideoModeBlock * CurMode = NULL;
+VideoModeBlock *CurMode = NULL;
 
 void InitVGAMode() {
 	CurMode=&VGAMode;
