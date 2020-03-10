@@ -1052,12 +1052,8 @@ void SHELL_Init() {
 	VFILE_RegisterBuiltinFileBlob(bfb_DEBUG_EXE);
 	VFILE_RegisterBuiltinFileBlob(bfb_MOVE_EXE);
 	VFILE_RegisterBuiltinFileBlob(bfb_FIND_EXE);
-	VFILE_RegisterBuiltinFileBlob(bfb_LASTDRIV_COM);
-	VFILE_RegisterBuiltinFileBlob(bfb_FCBS_COM);
 	VFILE_RegisterBuiltinFileBlob(bfb_XCOPY_EXE);
 	VFILE_RegisterBuiltinFileBlob(bfb_APPEND_EXE);
-	VFILE_RegisterBuiltinFileBlob(bfb_DEVICE_COM);
-	VFILE_RegisterBuiltinFileBlob(bfb_BUFFERS_COM);
 
     /* These are IBM PC/XT/AT ONLY. They will not work in PC-98 mode. */
     {
@@ -1066,26 +1062,11 @@ void SHELL_Init() {
         VFILE_RegisterBuiltinFileBlob(bfb_DOS32A_EXE);
         VFILE_RegisterBuiltinFileBlob(bfb_DOS4GW_EXE);
         VFILE_RegisterBuiltinFileBlob(bfb_TREE_EXE);
-
-        if (IS_VGA_ARCH)
-            VFILE_RegisterBuiltinFileBlob(bfb_25_COM);
-        else
-            VFILE_RegisterBuiltinFileBlob(bfb_25_COM_other);
     }
 
 	/* MEM.COM is not compatible with PC-98 and/or 8086 emulation */
 	if (CPU_ArchitectureType >= CPU_ARCHTYPE_80186)
 		VFILE_RegisterBuiltinFileBlob(bfb_MEM_COM);
-
-	/* DSXMENU.EXE */
-	VFILE_RegisterBuiltinFileBlob(bfb_DSXMENU_EXE_PC);
-
-	/* don't register 28.com unless EGA/VGA */
-	if (IS_VGA_ARCH)
-		VFILE_RegisterBuiltinFileBlob(bfb_28_COM);
-
-	/* don't register 50 unless VGA */
-	if (IS_VGA_ARCH) VFILE_RegisterBuiltinFileBlob(bfb_50_COM);
 
 	DOS_PSP psp(psp_seg);
 	psp.MakeNew(0);

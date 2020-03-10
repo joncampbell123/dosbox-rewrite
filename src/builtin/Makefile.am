@@ -2,8 +2,6 @@ AM_CPPFLAGS = -I$(top_srcdir)/include
 
 noinst_LIBRARIES = libbuiltin.a
 libbuiltin_a_SOURCES = \
-	dsxmenu_exe_pc98.cpp \
-	dsxmenu_exe_pc.cpp \
 	cwsdpmi_exe.cpp	\
 	dos32a_exe.cpp \
 	dos4gw_exe.cpp \
@@ -13,14 +11,7 @@ libbuiltin_a_SOURCES = \
 	mem_com.cpp \
 	find_exe.cpp \
 	dosidle_exe.cpp \
-	lastdriv_com.cpp \
-	fcbs_com.cpp \
 	xcopy_exe.cpp \
 	append_exe.cpp \
-	device_com.cpp \
-	buffers_com.cpp \
-	copy_exe.cpp \
-	28_com.cpp \
-	50_com.cpp \
-	25_com.cpp
+	copy_exe.cpp
 
