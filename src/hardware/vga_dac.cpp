@@ -106,7 +106,6 @@ Bitu read_p3c6(Bitu port,Bitu iolen) {
 void write_p3c7(Bitu port,Bitu val,Bitu iolen) {
     (void)iolen;//UNUSED
     (void)port;//UNUSED
-    vga.dac.hidac_counter=0;
     vga.dac.pel_index=0;
     vga.dac.state=DAC_READ;
     vga.dac.read_index=(Bit8u)val;         /* NTS: Paradise SVGA behavior, read index = x, write index = x + 1 */
@@ -116,7 +115,6 @@ void write_p3c7(Bitu port,Bitu val,Bitu iolen) {
 Bitu read_p3c7(Bitu port,Bitu iolen) {
     (void)iolen;//UNUSED
     (void)port;//UNUSED
-    vga.dac.hidac_counter=0;
     if (vga.dac.state==DAC_READ) return 0x3;
     else return 0x0;
 }
@@ -124,7 +122,6 @@ Bitu read_p3c7(Bitu port,Bitu iolen) {
 void write_p3c8(Bitu port,Bitu val,Bitu iolen) {
     (void)iolen;//UNUSED
     (void)port;//UNUSED
-    vga.dac.hidac_counter=0;
     vga.dac.pel_index=0;
     vga.dac.state=DAC_WRITE;
     vga.dac.write_index=(Bit8u)val;        /* NTS: Paradise SVGA behavior, this affects write index, but not read index */
@@ -134,7 +131,6 @@ void write_p3c8(Bitu port,Bitu val,Bitu iolen) {
 Bitu read_p3c8(Bitu port, Bitu iolen){
     (void)iolen;//UNUSED
     (void)port;//UNUSED
-    vga.dac.hidac_counter=0;
     return vga.dac.write_index;
 }
 
@@ -145,7 +141,6 @@ void write_p3c9(Bitu port,Bitu val,Bitu iolen) {
 
     (void)iolen;//UNUSED
     (void)port;//UNUSED
-    vga.dac.hidac_counter=0;
 
     val&=0x3f;
 
@@ -190,7 +185,6 @@ void write_p3c9(Bitu port,Bitu val,Bitu iolen) {
 Bitu read_p3c9(Bitu port,Bitu iolen) {
     (void)iolen;//UNUSED
     (void)port;//UNUSED
-    vga.dac.hidac_counter=0;
     Bit8u ret;
     switch (vga.dac.pel_index) {
     case 0:
@@ -236,7 +230,6 @@ void VGA_SetupDAC(void) {
     vga.dac.state=DAC_READ;
     vga.dac.read_index=0;
     vga.dac.write_index=0;
-    vga.dac.hidac_counter=0;
     vga.dac.reg02=0;
     if (IS_VGA_ARCH) {
         /* Setup the DAC IO port Handlers */
