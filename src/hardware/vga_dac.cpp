@@ -91,51 +91,6 @@ void VGA_DAC_UpdateColorPalette() {
         VGA_DAC_UpdateColor( i );
 }
 
-void write_p3c6(Bitu port,Bitu val,Bitu iolen) {
-    (void)iolen;//UNUSED
-    (void)port;//UNUSED
-    (void)val;
-}
-
-Bitu read_p3c6(Bitu port,Bitu iolen) {
-    (void)iolen;//UNUSED
-    (void)port;//UNUSED
-    return 0xFF;
-}
-
-void write_p3c7(Bitu port,Bitu val,Bitu iolen) {
-    (void)iolen;//UNUSED
-    (void)port;//UNUSED
-    vga.dac.pel_index=0;
-    vga.dac.state=DAC_READ;
-    vga.dac.read_index=(Bit8u)val;         /* NTS: Paradise SVGA behavior, read index = x, write index = x + 1 */
-    vga.dac.write_index=(Bit8u)(val + 1);
-}
-
-Bitu read_p3c7(Bitu port,Bitu iolen) {
-    (void)iolen;//UNUSED
-    (void)port;//UNUSED
-    if (vga.dac.state==DAC_READ) return 0x3;
-    else return 0x0;
-}
-
-void write_p3c8(Bitu port,Bitu val,Bitu iolen) {
-    (void)iolen;//UNUSED
-    (void)port;//UNUSED
-    vga.dac.pel_index=0;
-    vga.dac.state=DAC_WRITE;
-    vga.dac.write_index=(Bit8u)val;        /* NTS: Paradise SVGA behavior, this affects write index, but not read index */
-    vga.dac.read_index = (Bit8u)(val - 1);
-}
-
-Bitu read_p3c8(Bitu port, Bitu iolen){
-    (void)iolen;//UNUSED
-    (void)port;//UNUSED
-    return vga.dac.write_index;
-}
-
-static unsigned char tmp_dac[3] = {0,0,0};
-
 void VGASetPalette(Bit8u index,Bit8u r,Bit8u g,Bit8u b) {
     vga.dac.rgb[index].red=r;
     vga.dac.rgb[index].green=g;
@@ -155,46 +110,11 @@ void VGA_DAC_CombineColor(Bit8u attr,Bit8u pal) {
 }
 
 void VGA_DAC_SetEntry(Bitu entry,Bit8u red,Bit8u green,Bit8u blue) {
-    //Should only be called in machine != vga
-    vga.dac.rgb[entry].red=red;
-    vga.dac.rgb[entry].green=green;
-    vga.dac.rgb[entry].blue=blue;
-    for (Bitu i=0;i<16;i++) 
-        if (vga.dac.combine[i]==entry)
-            VGA_DAC_SendColor( i, i );
 }
 
 void VGA_SetupDAC(void) {
-    vga.dac.first_changed=256;
-    vga.dac.bits=6;
-    vga.dac.pel_index=0;
-    vga.dac.state=DAC_READ;
-    vga.dac.read_index=0;
-    vga.dac.write_index=0;
-    vga.dac.reg02=0;
-    if (IS_VGA_ARCH) {
-        /* Setup the DAC IO port Handlers */
-        {
-            IO_RegisterWriteHandler(0x3c6,write_p3c6,IO_MB);
-            IO_RegisterReadHandler(0x3c6,read_p3c6,IO_MB);
-            IO_RegisterWriteHandler(0x3c7,write_p3c7,IO_MB);
-            IO_RegisterReadHandler(0x3c7,read_p3c7,IO_MB);
-            IO_RegisterWriteHandler(0x3c8,write_p3c8,IO_MB);
-            IO_RegisterReadHandler(0x3c8,read_p3c8,IO_MB);
-            IO_RegisterWriteHandler(0x3c9,write_p3c9,IO_MB);
-            IO_RegisterReadHandler(0x3c9,read_p3c9,IO_MB);
-        }
-    }
 }
 
 void VGA_UnsetupDAC(void) {
-    IO_FreeWriteHandler(0x3c6,IO_MB);
-    IO_FreeReadHandler(0x3c6,IO_MB);
-    IO_FreeWriteHandler(0x3c7,IO_MB);
-    IO_FreeReadHandler(0x3c7,IO_MB);
-    IO_FreeWriteHandler(0x3c8,IO_MB);
-    IO_FreeReadHandler(0x3c8,IO_MB);
-    IO_FreeWriteHandler(0x3c9,IO_MB);
-    IO_FreeReadHandler(0x3c9,IO_MB);
 }
 
