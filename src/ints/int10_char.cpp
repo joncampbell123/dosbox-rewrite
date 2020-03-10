@@ -140,56 +140,6 @@ void INT10_SetActivePage(Bit8u page) {
     INT10_SetCursorPos(cur_row,cur_col,page);
 }
 
-void INT10_SetCursorShape(Bit8u first,Bit8u last) {
-    real_writew(BIOSMEM_SEG,BIOSMEM_CURSOR_TYPE,last|(first<<8u));
-    /* Skip CGA cursor emulation if EGA/VGA system is active */
-    if (!(real_readb(BIOSMEM_SEG,BIOSMEM_VIDEO_CTL) & 0x8)) {
-        /* Check for CGA type 01, invisible */
-        if ((first & 0x60) == 0x20) {
-            first=0x1e;
-            last=0x00;
-            goto dowrite;
-        }
-        /* Check if we need to convert CGA Bios cursor values */
-        if (!(real_readb(BIOSMEM_SEG,BIOSMEM_VIDEO_CTL) & 0x1)) { // set by int10 fun12 sub34
-//          if (CurMode->mode>0x3) goto dowrite;    //Only mode 0-3 are text modes on cga
-            if ((first & 0xe0) || (last & 0xe0)) goto dowrite;
-            Bit8u cheight=real_readb(BIOSMEM_SEG,BIOSMEM_CHAR_HEIGHT)-1;
-            /* Creative routine i based of the original ibmvga bios */
-
-            if (last<first) {
-                if (!last) goto dowrite;
-                first=last;
-                last=cheight;
-            /* Test if this might be a cga style cursor set, if not don't do anything */
-            } else if (((first | last)>=cheight) || !(last==(cheight-1)) || !(first==cheight) ) {
-                if (last<=3) goto dowrite;
-                if (first+2<last) {
-                    if (first>2) {
-                        first=(cheight+1)/2;
-                        last=cheight;
-                    } else {
-                        last=cheight;
-                    }
-                } else {
-                    first=(first-last)+cheight;
-                    last=cheight;
-
-                    if (cheight>0xc) { // vgatest sets 15 15 2x where only one should be decremented to 14 14
-                        first--;     // implementing int10 fun12 sub34 fixed this.
-                        last--;
-                    }
-                }
-            }
-
-        }
-    }
-dowrite:
-    Bit16u base=0x3D4;
-    IO_Write(base,0xa);IO_Write(base+1u,first);
-    IO_Write(base,0xb);IO_Write(base+1u,last);
-}
-
 void INT10_GetScreenColumns(Bit16u *cols)
 {
     *cols = real_readw(BIOSMEM_SEG, BIOSMEM_NB_COLS);

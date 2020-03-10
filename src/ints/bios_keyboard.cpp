@@ -265,20 +265,16 @@ static void empty_keyboard_buffer() {
     */
 
 
-void KEYBOARD_SetLEDs(Bit8u bits);
-
 /* the scancode is in reg_al */
 static Bitu IRQ1_Handler(void) {
 /* handling of the locks key is difficult as sdl only gives
  * states for numlock capslock. 
  */
     Bitu scancode=reg_al;
-    Bit8u flags1,flags2,flags3,leds,leds_orig;
+    Bit8u flags1,flags2,flags3,leds;
     flags1=mem_readb(BIOS_KEYBOARD_FLAGS1);
     flags2=mem_readb(BIOS_KEYBOARD_FLAGS2);
     flags3=mem_readb(BIOS_KEYBOARD_FLAGS3);
-    leds  =mem_readb(BIOS_KEYBOARD_LEDS); 
-    leds_orig = leds;
 #ifdef CAN_USE_LOCK
     /* No hack anymore! */
 #else
@@ -508,22 +504,7 @@ irq1_end:
     if ((scancode&0x80)==0) flags2&=0xf7;
     mem_writeb(BIOS_KEYBOARD_FLAGS2,flags2);
     mem_writeb(BIOS_KEYBOARD_FLAGS3,flags3);
-    mem_writeb(BIOS_KEYBOARD_LEDS,leds);
 
-    /* update LEDs on keyboard */
-    if (leds_orig != leds) KEYBOARD_SetLEDs(leds);
-
-    /* update insert cursor */
-    extern bool dos_program_running;
-    if (!dos_program_running)
-    {
-        const auto flg = mem_readb(BIOS_KEYBOARD_FLAGS1);
-        const auto ins = static_cast<bool>(flg & BIOS_KEYBOARD_FLAGS1_INSERT_ACTIVE);
-        const auto ssl = static_cast<Bit8u>(ins ? CURSOR_SCAN_LINE_INSERT : CURSOR_SCAN_LINE_NORMAL);
-        if (CurMode->type == M_TEXT)
-            INT10_SetCursorShape(ssl, CURSOR_SCAN_LINE_END);
-    }
-					
 /*  IO_Write(0x20,0x20); moved out of handler to be virtualizable */
 #if 0
 /* Signal the keyboard for next code */
@@ -670,7 +651,6 @@ static void InitBiosSegment(void) {
         mem_writeb(BIOS_KEYBOARD_FLAGS2,0);
         mem_writeb(BIOS_KEYBOARD_FLAGS3,16); /* Enhanced keyboard installed */  
         mem_writeb(BIOS_KEYBOARD_TOKEN,0);
-        mem_writeb(BIOS_KEYBOARD_LEDS,16);
     }
 }
 

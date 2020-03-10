@@ -128,7 +128,6 @@ static void FinishSetMode(bool clearmem) {
 	real_writew(BIOSMEM_SEG,BIOSMEM_NB_COLS,(Bit16u)CurMode->twidth);
 	real_writew(BIOSMEM_SEG,BIOSMEM_PAGE_SIZE,(Bit16u)CurMode->plength);
 	real_writeb(BIOSMEM_SEG,BIOSMEM_NB_ROWS,(Bit8u)(CurMode->theight-1));
-	real_writew(BIOSMEM_SEG,BIOSMEM_CHAR_HEIGHT,(Bit16u)CurMode->cheight);
 
 	INT10_SetCursorPos(0,0,0);
 }
