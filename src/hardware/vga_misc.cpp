@@ -54,47 +54,10 @@ Bitu vga_read_p3da(Bitu port,Bitu iolen) {
 	return retval;
 }
 
-static void write_p3c2(Bitu port,Bitu val,Bitu iolen) {
-    (void)port;//UNUSED
-    (void)iolen;//UNUSED
-	vga.misc_output=(Bit8u)val;
-	Bitu base=(val & 0x1) ? 0x3d0 : 0x3b0;
-	Bitu free=(val & 0x1) ? 0x3b0 : 0x3d0;
-	Bitu first=2, last=2;
-
-	for (Bitu i=first; i<=last; i++) {
-		IO_RegisterWriteHandler(base+i*2,vga_write_p3d4,IO_MB);
-		IO_RegisterWriteHandler(base+i*2+1,vga_write_p3d5,IO_MB);
-		IO_FreeWriteHandler(free+i*2,IO_MB);
-		IO_FreeReadHandler(free+i*2,IO_MB);
-		IO_FreeWriteHandler(free+i*2+1,IO_MB);
-		IO_FreeReadHandler(free+i*2+1,IO_MB);
-	}
-
-	IO_RegisterReadHandler(base+0xa,vga_read_p3da,IO_MB);
-	IO_FreeReadHandler(free+0xa,IO_MB);
-}
-
 void VGA_SetupMisc(void) {
-	if (IS_EGAVGA_ARCH) {
-		vga.draw.vret_triggered=false;
-		IO_RegisterWriteHandler(0x3c2,write_p3c2,IO_MB);
-    }
 }
 
 void VGA_UnsetupMisc(void) {
-    IO_FreeWriteHandler(0x3b4,IO_MB);
-    IO_FreeReadHandler(0x3b4,IO_MB);
-    IO_FreeWriteHandler(0x3b5,IO_MB);
-    IO_FreeReadHandler(0x3b5,IO_MB);
-    IO_FreeWriteHandler(0x3c2,IO_MB);
-    IO_FreeReadHandler(0x3c2,IO_MB);
-    IO_FreeWriteHandler(0x3c8,IO_MB);
-    IO_FreeReadHandler(0x3c8,IO_MB);
-    IO_FreeWriteHandler(0x3ca,IO_MB);
-    IO_FreeReadHandler(0x3ca,IO_MB);
-    IO_FreeWriteHandler(0x3cc,IO_MB);
-    IO_FreeReadHandler(0x3cc,IO_MB);
     IO_FreeWriteHandler(0x3d4,IO_MB);
     IO_FreeReadHandler(0x3d4,IO_MB);
     IO_FreeWriteHandler(0x3d5,IO_MB);

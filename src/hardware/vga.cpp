@@ -209,6 +209,9 @@ void VGA_StartResize(Bitu delay /*=50*/) {
 }
 
 Bit32u MEM_get_address_bits();
+Bitu vga_read_p3da(Bitu port,Bitu iolen);
+void vga_write_p3d4(Bitu port,Bitu val,Bitu iolen);
+void vga_write_p3d5(Bitu port,Bitu val,Bitu iolen);
 
 void VGA_Reset(Section*) {
     Section_prop * section=static_cast<Section_prop *>(control->GetSection("dosbox"));
@@ -284,6 +287,10 @@ void VGA_Reset(Section*) {
     vga.draw.cursor.eline = 14;
     vga.draw.cursor.enabled = true;
     vsync.period = (1000.0F)/vsyncrate;
+
+    IO_RegisterWriteHandler(0x3D4,vga_write_p3d4,IO_MB);
+    IO_RegisterWriteHandler(0x3D5,vga_write_p3d5,IO_MB);
+	IO_RegisterReadHandler(0x3DA,vga_read_p3da,IO_MB);
 
     VGA_StartResize();
 }
