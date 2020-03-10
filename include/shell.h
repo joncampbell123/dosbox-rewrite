@@ -219,10 +219,6 @@ public:
      */
 	void CMD_SUBST(char* args);
 
-    /*! \brief      Load a program into high memory if possible
-     */
-	void CMD_LOADHIGH(char* args);
-
     /*! \brief      Prompt for a choice (CHOICE)
      */
 	void CMD_CHOICE(char * args);

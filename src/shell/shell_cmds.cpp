@@ -61,8 +61,6 @@ static SHELL_Cmd cmd_list[]={
 {	"GOTO",		1,			&DOS_Shell::CMD_GOTO,		"SHELL_CMD_GOTO_HELP"},
 {	"HELP",		1,			&DOS_Shell::CMD_HELP,		"SHELL_CMD_HELP_HELP"},
 {	"IF",		1,			&DOS_Shell::CMD_IF,			"SHELL_CMD_IF_HELP"},
-{	"LOADHIGH",	1,			&DOS_Shell::CMD_LOADHIGH, 	"SHELL_CMD_LOADHIGH_HELP"},
-{	"LH",		1,			&DOS_Shell::CMD_LOADHIGH,	"SHELL_CMD_LOADHIGH_HELP"},
 {	"MKDIR",	1,			&DOS_Shell::CMD_MKDIR,		"SHELL_CMD_MKDIR_HELP"},
 {	"MD",		0,			&DOS_Shell::CMD_MKDIR,		"SHELL_CMD_MKDIR_HELP"},
 {	"PATH",		1,			&DOS_Shell::CMD_PATH,		"SHELL_CMD_PATH_HELP"},
@@ -1571,21 +1569,6 @@ void DOS_Shell::CMD_SUBST (char * args) {
 	}
    
 	return;
-}
-
-void DOS_Shell::CMD_LOADHIGH(char *args){
-	HELP("LOADHIGH");
-	Bit16u umb_start=dos_infoblock.GetStartOfUMBChain();
-	Bit8u umb_flag=dos_infoblock.GetUMBChainState();
-	Bit8u old_memstrat=(Bit8u)(DOS_GetMemAllocStrategy()&0xff);
-	if (umb_start==0x9fff) {
-		if ((umb_flag&1)==0) DOS_LinkUMBsToMemChain(1);
-		DOS_SetMemAllocStrategy(0x80);	// search in UMBs first
-		this->ParseLine(args);
-		Bit8u current_umb_flag=dos_infoblock.GetUMBChainState();
-		if ((current_umb_flag&1)!=(umb_flag&1)) DOS_LinkUMBsToMemChain(umb_flag);
-		DOS_SetMemAllocStrategy(old_memstrat);	// restore strategy
-	} else this->ParseLine(args);
 }
 
 void DOS_Shell::CMD_CHOICE(char * args){
