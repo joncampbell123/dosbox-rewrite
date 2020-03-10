@@ -327,9 +327,6 @@ static void BIOS_HostTimeSync() {
     mem_writed(BIOS_TIMER,ticks);
 }
 
-// TODO: make option
-bool enable_bios_timer_synchronize_keyboard_leds = true;
-
 void KEYBOARD_SetLEDs(Bit8u bits);
 
 void BIOS_KEYBOARD_SetLEDs(Bitu state) {
@@ -348,22 +345,6 @@ static Bitu INT8_Handler(void) {
         // time wrap at midnight
         mem_writeb(BIOS_24_HOURS_FLAG,mem_readb(BIOS_24_HOURS_FLAG)+1);
         value=0;
-    }
-
-    /* Legacy BIOS behavior: This isn't documented at all but most BIOSes
-       check the BIOS data area for LED keyboard status. If it sees that
-       value change, then it sends it to the keyboard. This is why on
-       older DOS machines you could change LEDs by writing to 40:17.
-       We have to emulate this also because Windows 3.1/9x seems to rely on
-       it when handling the keyboard from it's own driver. Their driver does
-       hook the keyboard and handles keyboard I/O by itself, but it still
-       allows the BIOS to do the keyboard magic from IRQ 0 (INT 8h). Yech. */
-    if (enable_bios_timer_synchronize_keyboard_leds) {
-        Bitu should_be = (mem_readb(BIOS_KEYBOARD_STATE) >> 4) & 7;
-        Bitu led_state = (mem_readb(BIOS_KEYBOARD_LEDS) & 7);
-
-        if (should_be != led_state)
-            BIOS_KEYBOARD_SetLEDs(should_be);
     }
 
 #if DOSBOX_CLOCKSYNC
