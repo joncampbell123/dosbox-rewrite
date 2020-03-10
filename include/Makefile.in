@@ -247,7 +247,6 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 noinst_HEADERS = \
 bios.h \
-bios_disk.h \
 util_pointer.h \
 callback.h \
 cpu.h \

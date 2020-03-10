@@ -1,6 +1,5 @@
 noinst_HEADERS =  \
 bios.h \
-bios_disk.h \
 util_pointer.h \
 callback.h \
 cpu.h \

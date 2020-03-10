@@ -1327,7 +1327,28 @@ bool DOS_FCBDeleteFile(Bit16u seg,Bit16u offset){
 	return return_value;
 }
 
-char* trimString(char* str);
+char* removeTrailingSpaces(char* str) {
+    char* end = str + strlen(str) - 1;
+    while (end >= str && *end == ' ') end--;
+    /* NTS: The loop will exit with 'end' one char behind the last ' ' space character.
+     *      So to ASCIIZ snip off the space, step forward one and overwrite with NUL.
+     *      The loop may end with 'end' one char behind 'ptr' if the string was empty ""
+     *      or nothing but spaces. This is OK because after the step forward, end >= str
+     *      in all cases. */
+    *(++end) = '\0';
+    return str;
+}
+
+char* removeLeadingSpaces(char* str) {
+    size_t len = strlen(str);
+    size_t pos = strspn(str," ");
+    memmove(str,str + pos,len - pos + 1);
+    return str;
+}
+
+char* trimString(char* str) {
+    return removeTrailingSpaces(removeLeadingSpaces(str));
+}
 
 bool DOS_FCBRenameFile(Bit16u seg, Bit16u offset){
 	DOS_FCB fcbold(seg,offset);

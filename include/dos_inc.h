@@ -88,23 +88,6 @@ typedef unsigned int        UINT32, *PUINT32;
 
 #define SECTOR_SIZE_MAX     2048
 
-#ifdef _MSC_VER
-#pragma pack (1)
-#endif
-union bootSector {
-	struct entries {
-		Bit8u jump[3];
-		Bit8u oem_name[8];
-		Bit16u bytesect;
-		Bit8u sectclust;
-		Bit16u reserve_sect;
-	} bootdata;
-	Bit8u rawdata[SECTOR_SIZE_MAX];
-} GCC_ATTRIBUTE(packed);
-#ifdef _MSC_VER
-#pragma pack ()
-#endif
-
 
 enum { MCB_FREE=0x0000,MCB_DOS=0x0008 };
 enum { RETURN_EXIT=0,RETURN_CTRLC=1,RETURN_ABORT=2,RETURN_TSR=3};

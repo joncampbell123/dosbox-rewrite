@@ -396,7 +396,6 @@ void CALLBACK_Shutdown(void);
 void DOS_ShutdownDrives();
 void VFILE_Shutdown(void);
 void DOS_ShutdownFiles();
-void FreeBIOSDiskList();
 void GFX_ShutDown(void);
 void MAPPER_Shutdown();
 void SHELL_Init(void);
@@ -7656,7 +7655,6 @@ fresh_boot:
 #if C_DYNAMIC_X86
     CPU_Core_Dyn_X86_Shutdown();
 #endif
-    FreeBIOSDiskList();
     MAPPER_Shutdown();
     VFILE_Shutdown();
     PROGRAMS_Shutdown();

@@ -103,9 +103,7 @@ am_libints_a_OBJECTS = xms.$(OBJEXT) ems.$(OBJEXT) int10.$(OBJEXT) \
 	int10_char.$(OBJEXT) int10_memory.$(OBJEXT) \
 	int10_misc.$(OBJEXT) int10_modes.$(OBJEXT) int10_pal.$(OBJEXT) \
 	int10_video_state.$(OBJEXT) int10_vptable.$(OBJEXT) \
-	bios.$(OBJEXT) bios_disk.$(OBJEXT) bios_vhd.$(OBJEXT) \
-	bios_keyboard.$(OBJEXT) qcow2_disk.$(OBJEXT) \
-	bios_memdisk.$(OBJEXT)
+	bios.$(OBJEXT) bios_keyboard.$(OBJEXT)
 libints_a_OBJECTS = $(am_libints_a_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -295,7 +293,7 @@ noinst_LIBRARIES = libints.a
 libints_a_SOURCES = xms.cpp xms.h ems.cpp \
                     int10.cpp int10.h int10_char.cpp int10_memory.cpp int10_misc.cpp int10_modes.cpp \
                     int10_pal.cpp int10_video_state.cpp int10_vptable.cpp \
-                    bios.cpp bios_disk.cpp bios_vhd.cpp bios_keyboard.cpp qcow2_disk.cpp bios_memdisk.cpp
+                    bios.cpp bios_keyboard.cpp
 
 all: all-am
 
@@ -347,10 +345,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bios.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bios_disk.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bios_keyboard.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bios_memdisk.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bios_vhd.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ems.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/int10.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/int10_char.Po@am__quote@
@@ -360,7 +355,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/int10_pal.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/int10_video_state.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/int10_vptable.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/qcow2_disk.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xms.Po@am__quote@
 
 .cpp.o:

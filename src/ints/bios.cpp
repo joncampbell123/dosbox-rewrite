@@ -32,7 +32,6 @@
 #include "mouse.h"
 #include "callback.h"
 #include "setup.h"
-#include "bios_disk.h"
 #include "serialport.h"
 #include "mapper.h"
 #include "vga.h"
@@ -1225,8 +1224,6 @@ static Bitu INT15_Handler(void) {
 
 void BIOS_UnsetupKeyboard(void);
 void BIOS_SetupKeyboard(void);
-void BIOS_UnsetupDisks(void);
-void BIOS_SetupDisks(void);
 void CPU_Snap_Back_To_Real_Mode();
 void CPU_Snap_Back_Restore();
 
@@ -1669,9 +1666,6 @@ private:
 
         void INT10_Startup(Section *sec);
         INT10_Startup(NULL);
-
-        /* INT 13 Bios Disk Support */
-        BIOS_SetupDisks();
 
         /* INT 16 Keyboard handled in another file */
         BIOS_SetupKeyboard();

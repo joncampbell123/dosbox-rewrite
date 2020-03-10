@@ -23,7 +23,6 @@
 #include "menu.h"
 #include "SDL.h"
 #include "SDL_syswm.h"
-#include "bios_disk.h"
 #include "ide.h" // for ide support
 #include "mapper.h"
 #include "keyboard.h"
