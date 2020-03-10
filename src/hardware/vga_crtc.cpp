@@ -28,29 +28,10 @@
 
 #define crtc(blah) vga.crtc.blah
 
-
-void VGA_MapMMIO(void);
-void VGA_UnmapMMIO(void);
-void page_flip_debug_notify();
-
-void vga_write_p3d5(Bitu port,Bitu val,Bitu iolen);
-Bitu DEBUG_EnableDebugger(void);
-
-extern bool vga_ignore_hdispend_change_if_smaller;
-
 void vga_write_p3d4(Bitu port,Bitu val,Bitu iolen) {
     (void)iolen;//UNUSED
     (void)port;//UNUSED
 	crtc(index)=(Bit8u)val;
-}
-
-Bitu vga_read_p3d4(Bitu port,Bitu iolen) {
-    (void)port;//UNUSED
-    (void)iolen;//UNUSED
-
-    /* NOTES: Paradise/Westdern Digital SVGA decodes only bits [5:0] inclusive and repeat every 0x40 */
-
-	return crtc(index);
 }
 
 void vga_write_p3d5(Bitu port,Bitu val,Bitu /*iolen*/) {
@@ -75,27 +56,5 @@ void vga_write_p3d5(Bitu port,Bitu val,Bitu /*iolen*/) {
         LOG(LOG_VGAMISC,LOG_NORMAL)("VGA:CRTC:Write to unknown index %X",crtc(index));
         break;
 	}
-}
-
-
-Bitu vga_read_p3d5x(Bitu port,Bitu iolen);
-Bitu vga_read_p3d5(Bitu port,Bitu iolen) {
-	Bitu retval = vga_read_p3d5x(port,iolen);
-//	LOG_MSG("CRTC r #%2x val %2x",crtc(index),retval);
-	return retval;
-}
-
-Bitu vga_read_p3d5x(Bitu port,Bitu iolen) {
-    (void)iolen;//UNUSED
-    (void)port;//UNUSED
-	switch(crtc(index)) {
-	case 0x0E:	/*Cursor Location High Register */
-		return crtc(cursor_location_high);
-	case 0x0F:	/* Cursor Location Low Register */
-		return crtc(cursor_location_low);
-	default:
-        LOG(LOG_VGAMISC,LOG_NORMAL)("VGA:CRTC:Read from unknown index %X",crtc(index));
-        return 0x0;
-    }
 }
 

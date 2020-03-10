@@ -26,9 +26,7 @@
 void vsync_poll_debug_notify();
 
 void vga_write_p3d4(Bitu port,Bitu val,Bitu iolen);
-Bitu vga_read_p3d4(Bitu port,Bitu iolen);
 void vga_write_p3d5(Bitu port,Bitu val,Bitu iolen);
-Bitu vga_read_p3d5(Bitu port,Bitu iolen);
 
 /* allow the user to specify that undefined bits in 3DA/3BA be set to some nonzero value.
  * this is needed for "JOOP #2" by Europe demo, which has some weird retrace tracking code
@@ -81,9 +79,7 @@ static void write_p3c2(Bitu port,Bitu val,Bitu iolen) {
 
 	for (Bitu i=first; i<=last; i++) {
 		IO_RegisterWriteHandler(base+i*2,vga_write_p3d4,IO_MB);
-		IO_RegisterReadHandler(base+i*2,vga_read_p3d4,IO_MB);
 		IO_RegisterWriteHandler(base+i*2+1,vga_write_p3d5,IO_MB);
-		IO_RegisterReadHandler(base+i*2+1,vga_read_p3d5,IO_MB);
 		IO_FreeWriteHandler(free+i*2,IO_MB);
 		IO_FreeReadHandler(free+i*2,IO_MB);
 		IO_FreeWriteHandler(free+i*2+1,IO_MB);
