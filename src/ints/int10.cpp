@@ -45,17 +45,8 @@ Bitu INT10_Handler(void) {
 	case 0x00:								/* Set VideoMode */
 		INT10_SetVideoMode(reg_al);
 		break;
-	case 0x01:								/* Set TextMode Cursor Shape */
-		INT10_SetCursorShape(reg_ch,reg_cl);
-		break;
 	case 0x02:								/* Set Cursor Pos */
 		INT10_SetCursorPos(reg_dh,reg_dl,reg_bh);
-		break;
-	case 0x06:								/* Scroll Up */
-		INT10_ScrollWindow(reg_ch,reg_cl,reg_dh,reg_dl,-(Bit8s)reg_al,reg_bh,0xFF);
-		break;
-	case 0x07:								/* Scroll Down */
-		INT10_ScrollWindow(reg_ch,reg_cl,reg_dh,reg_dl,(Bit8s)reg_al,reg_bh,0xFF);
 		break;
 	case 0x09:								/* Write Character & Attribute at cursor CX times */
 		if (real_readb(BIOSMEM_SEG,BIOSMEM_CURRENT_MODE)==0x11)
@@ -67,9 +58,6 @@ Bitu INT10_Handler(void) {
 		break;
 	case 0x0E:								/* Teletype OutPut */
 		INT10_TeletypeOutput(reg_al,reg_bl);
-		break;
-	case 0x13:								/* Write String */
-		INT10_WriteString(reg_dh,reg_dl,reg_al,reg_bl,SegPhys(es)+reg_bp,reg_cx,reg_bh);
 		break;
 	default:
 		LOG(LOG_INT10,LOG_ERROR)("Function %4X not supported",reg_ax);
