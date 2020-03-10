@@ -85,58 +85,6 @@ typedef Bit8u * (* VGA_Line_Handler)(Bitu vidstart, Bitu line);
 static VGA_Line_Handler VGA_DrawLine;
 static Bit8u TempLine[SCALER_MAXWIDTH * 4 + 256];
 
-struct vsync_state vsync;
-
-float uservsyncjolt=0.0f;
-
-VGA_Vsync vsyncmode_current = VS_Off;
-
-void VGA_VsyncUpdateMode(VGA_Vsync vsyncmode) {
-    vsyncmode_current = vsyncmode;
-
-    mainMenu.get_item("vsync_off").check(vsyncmode_current == VS_Off).refresh_item(mainMenu);
-    mainMenu.get_item("vsync_on").check(vsyncmode_current == VS_On).refresh_item(mainMenu);
-    mainMenu.get_item("vsync_force").check(vsyncmode_current == VS_Force).refresh_item(mainMenu);
-    mainMenu.get_item("vsync_host").check(vsyncmode_current == VS_Host).refresh_item(mainMenu);
-
-    switch(vsyncmode) {
-    case VS_Off:
-        vsync.manual    = false;
-        vsync.persistent= false;
-        vsync.faithful  = false;
-        break;
-    case VS_On:
-        vsync.manual    = true;
-        vsync.persistent= true;
-        vsync.faithful  = true;
-        break;
-    case VS_Force:
-    case VS_Host:
-        vsync.manual    = true;
-        vsync.persistent= true;
-        vsync.faithful  = false;
-        break;
-    default:
-        LOG_MSG("VGA_VsyncUpdateMode: Invalid mode, using defaults.");
-        vsync.manual    = false;
-        vsync.persistent= false;
-        vsync.faithful  = false;
-        break;
-    }
-}
-
-void VGA_TweakUserVsyncOffset(float val) { uservsyncjolt = val; }
-
-#if SDL_BYTEORDER == SDL_LIL_ENDIAN && defined(MACOSX) /* Mac OS X Intel builds use a weird RGBA order (alpha in the low 8 bits) */
-static inline Bit32u guest_bgr_to_macosx_rgba(const Bit32u x) {
-    /* guest: XRGB      X   R   G   B
-     * host:  RGBX      B   G   R   X */
-    return      ((x & 0x000000FFU) << 24U) +      /* BBxxxxxx */
-                ((x & 0x0000FF00U) <<  8U) +      /* xxGGxxxx */
-                ((x & 0x00FF0000U) >>  8U);       /* xxxxRRxx */
-}
-#endif
-
 extern Bit8u int10_font_16[256 * 16];
 
 extern Bit32u Expand16Table[4][16];
@@ -246,12 +194,6 @@ static void VGA_DrawSingleLine(Bitu /*blah*/) {
     }
 }
 
-static void VGA_VertInterrupt(Bitu /*val*/) {
-    if ((!vga.draw.vret_triggered) && ((vga.crtc.vertical_retrace_end&0x30)==0x10)) {
-        vga.draw.vret_triggered=true;
-    }
-}
-
 extern uint32_t GFX_Rmask;
 extern unsigned char GFX_Rshift;
 extern uint32_t GFX_Gmask;
@@ -263,152 +205,8 @@ extern unsigned char GFX_Ashift;
 extern unsigned char GFX_bpp;
 
 static void VGA_VerticalTimer(Bitu /*val*/) {
-    double current_time = PIC_GetCurrentEventTime();
+    PIC_AddEvent(VGA_VerticalTimer,(float)vga.draw.delay.vtotal);
 
-    vga.draw.delay.framestart = current_time; /* FIXME: Anyone use this?? If not, remove it */
-    vga.draw.has_split = false;
-
-    // FIXME: While this code is quite good at keeping time, I'm seeing drift "reset" back to
-    //        14-30ms every video mode change. Is our INT 10h code that slow?
-    /* compensate for floating point drift, make sure we're keeping the frame rate.
-     * be very gentle about it. generally the drift is very small, and large adjustments can cause
-     * DOS games dependent on vsync to fail/hang. */
-    double shouldbe = (((double)vga_mode_frames_since_time_base * 1000.0) / vga_fps) + vga_mode_time_base;
-    double vsync_err = shouldbe - current_time; /* < 0 too slow     > 0 too fast */
-    double vsync_adj = vsync_err * 0.25;
-    if (vsync_adj < -0.1) vsync_adj = -0.1;
-    else if (vsync_adj > 0.1) vsync_adj = 0.1;
-
-//  LOG_MSG("Vsync err %.6fms adj=%.6fms",vsync_err,vsync_adj);
-
-    float vsynctimerval;
-    float vdisplayendtimerval;
-    if( vsync.manual ) {
-        static float hack_memory = 0.0f;
-        if( hack_memory > 0.0f ) {
-            uservsyncjolt+=hack_memory;
-            hack_memory = 0.0f;
-        }
-
-        float faithful_framerate_adjustment_delay = 0.0f;
-        if( vsync.faithful ) {
-            const float gfxmode_vsyncrate   = 1000.0f/vga.draw.delay.vtotal;
-            const float user_vsyncrate      = 1000.0f/vsync.period;
-            const float framerate_diff      = user_vsyncrate - gfxmode_vsyncrate;
-            if( framerate_diff >= 0 ) {
-                static float counter = 0.0f;
-                // User vsync rate is greater than the target vsync rate
-                const float adjustment_deadline = gfxmode_vsyncrate / framerate_diff;
-                counter += 1.0f;
-                if(counter >= adjustment_deadline) {
-                    // double vsync duration this frame to resynchronize with the target vsync timing
-                    faithful_framerate_adjustment_delay = vsync.period;
-                    counter -= adjustment_deadline;
-                }
-            } else {
-                // User vsync rate is less than the target vsync rate
-
-                // I don't have a good solution for this right now.
-                // I also don't have access to a 60Hz display for proper testing.
-                // Making an instant vsync is more difficult than making a long vsync.. because
-                // the emulated app's retrace loop must be able to detect that the retrace has both
-                // begun and ended.  So it's not as easy as adjusting timer durations.
-                // I think adding a hack to cause port 3da's code to temporarily force the
-                // vertical retrace bit to cycle could work.. Even then, it's possible that
-                // some shearing could be seen when the app draws two new frames during a single
-                // host refresh.
-                // Anyway, this could be worth dealing with for console ports since they'll be
-                // running at either 60 or 50Hz (below 70Hz).
-                /*
-                const float adjustment_deadline = -(gfxmode_vsyncrate / framerate_diff);
-                counter += 1.0f;
-                if(counter >= adjustment_deadline) {
-                    // nullify vsync duration this frame to resynchronize with the target vsync timing
-                    // TODO(AUG): proper low user vsync rate synchronization
-                    faithful_framerate_adjustment_delay = -uservsyncperiod + 1.2f;
-                    vsync_hackval = 10;
-                    hack_memory = -1.2f;
-                    counter -= adjustment_deadline;
-                }
-                */
-            }
-        }
-
-        const Bitu persistent_sync_update_interval = 100;
-        static Bitu persistent_sync_counter = persistent_sync_update_interval;
-        Bitu current_tick = GetTicks();
-        static Bitu jolt_tick = 0;
-        if( uservsyncjolt > 0.0f ) {
-            jolt_tick = (Bitu)current_tick;
-
-            // set the update counter to a low value so that the user will almost
-            // immediately see the effects of an auto-correction.  This gives the
-            // user a chance to compensate for it.
-            persistent_sync_counter = 50;
-        }
-
-        float real_diff = 0.0f;
-        if( vsync.persistent ) {
-            if( persistent_sync_counter == 0 ) {
-                float ticks_since_jolt = (signed long)current_tick - (signed long)jolt_tick;
-                double num_host_syncs_in_those_ticks = floor(ticks_since_jolt / vsync.period);
-                float diff_thing = ticks_since_jolt - (num_host_syncs_in_those_ticks * (double)vsync.period);
-
-                if( diff_thing > (vsync.period / 2.0f) ) real_diff = diff_thing - vsync.period;
-                else real_diff = diff_thing;
-
-//              LOG_MSG("diff is %f",real_diff);
-
-                if( ((real_diff > 0.0f) && (real_diff < 1.5f)) || ((real_diff < 0.0f) && (real_diff > -1.5f)) )
-                    real_diff = 0.0f;
-
-                persistent_sync_counter = persistent_sync_update_interval;
-            } else --persistent_sync_counter;
-        }
-
-//      vsynctimerval       = uservsyncperiod + faithful_framerate_adjustment_delay + uservsyncjolt;
-        vsynctimerval       = vsync.period - (real_diff/1.0f);  // formerly /2.0f
-        vsynctimerval       += faithful_framerate_adjustment_delay + uservsyncjolt;
-
-        // be sure to provide delay between end of one refresh, and start of the next
-//      vdisplayendtimerval = vsynctimerval - 1.18f;
-
-        // be sure to provide delay between end of one refresh, and start of the next
-        vdisplayendtimerval = vsynctimerval - (vga.draw.delay.vtotal - vga.draw.delay.vrstart);
-
-        // in case some calculations above cause this.  this really shouldn't happen though.
-        if( vdisplayendtimerval < 0.0f ) vdisplayendtimerval = 0.0f;
-
-        uservsyncjolt = 0.0f;
-    } else {
-        // Standard vsync behaviour
-        vsynctimerval       = (float)vga.draw.delay.vtotal;
-        vdisplayendtimerval = (float)vga.draw.delay.vrstart;
-    }
-
-    {
-        double fv;
-
-        fv = vsynctimerval + vsync_adj;
-        if (fv < 1) fv = 1;
-        PIC_AddEvent(VGA_VerticalTimer,fv);
-
-        fv = vdisplayendtimerval + vsync_adj;
-        if (fv < 1) fv = 1;
-    }
-    
-    switch(machine) {
-    case MCH_VGA:
-        // EGA: 82c435 datasheet: interrupt happens at display end
-        // VGA: checked with scope; however disabled by default by jumper on VGA boards
-        // add a little amount of time to make sure the last drawpart has already fired
-        PIC_AddEvent(VGA_VertInterrupt,(float)(vga.draw.delay.vdend + 0.005));
-        break;
-    default:
-        //E_Exit("This new machine needs implementation in VGA_VerticalTimer too.");
-        PIC_AddEvent(VGA_VertInterrupt,(float)(vga.draw.delay.vdend + 0.005));
-        break;
-    }
     // for same blinking frequency with higher frameskip
     vga.draw.cursor.count++;
 
@@ -555,8 +353,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
     //VGA monitor just seems to thighten or widen the whole vertical range
 
     vga.draw.resizing=false;
-    vga.draw.has_split=false;
-    vga.draw.vret_triggered=false;
 
     //Check to prevent useless black areas
     if (hbstart<hdend) hdend=hbstart;
