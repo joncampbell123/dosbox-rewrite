@@ -89,9 +89,6 @@ static void INT10_InitVGA(void) {
 
 bool MEM_map_ROM_physmem(Bitu start,Bitu end);
 
-extern Bitu VGA_BIOS_Size;
-extern Bitu VGA_BIOS_SEG;
-extern Bitu VGA_BIOS_SEG_END;
 extern bool VIDEO_BIOS_disable;
 extern Bitu BIOS_VIDEO_TABLE_LOCATION;
 extern Bitu BIOS_VIDEO_TABLE_SIZE;
@@ -123,20 +120,6 @@ void INT10_Startup(Section *sec) {
         RealSetVec(0x10,CALLBACK_RealPointer(call_10));
         //Init the 0x40 segment and init the datastructures in the the video rom area
         INT10_Seg40Init();
-
-        LOG(LOG_MISC,LOG_DEBUG)("INT 10: VGA bios used %d / %d memory",(int)int10.rom.used,(int)VGA_BIOS_Size);
-        if (int10.rom.used > VGA_BIOS_Size) /* <- this is fatal, it means the Setup() functions scrozzled over the adjacent ROM or RAM area */
-            E_Exit("VGA BIOS size too small %u > %u",(unsigned int)int10.rom.used,(unsigned int)VGA_BIOS_Size);
-
-        /* NTS: Uh, this does seem bass-ackwards... INT 10h making the VGA BIOS appear. Can we refactor this a bit? */
-        if (VGA_BIOS_Size > 0) {
-            LOG(LOG_MISC,LOG_DEBUG)("VGA BIOS occupies segment 0x%04x-0x%04x",(int)VGA_BIOS_SEG,(int)VGA_BIOS_SEG_END-1);
-            if (!MEM_map_ROM_physmem(0xC0000,0xC0000+VGA_BIOS_Size-1))
-                LOG(LOG_MISC,LOG_WARN)("INT 10 video: unable to map BIOS");
-        }
-        else {
-            LOG(LOG_MISC,LOG_DEBUG)("Not mapping VGA BIOS");
-        }
     }
 }
 

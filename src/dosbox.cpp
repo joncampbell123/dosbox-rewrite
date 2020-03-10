@@ -169,10 +169,6 @@ bool                ticksLocked;
 bool                mono_cga=false;
 bool                ignore_opcode_63 = true;
 int             dynamic_core_cache_block_size = 32;
-Bitu                VGA_BIOS_Size_override = 0;
-Bitu                VGA_BIOS_SEG = 0xC000;
-Bitu                VGA_BIOS_SEG_END = 0xC800;
-Bitu                VGA_BIOS_Size = 0x8000;
 
 static Bit32u           ticksRemain;
 static Bit32u           ticksLast;
@@ -702,17 +698,6 @@ void Init_VGABIOS() {
     assert(MemBase != NULL);
 
     force_nocachedir = section->Get_bool("nocachedir");
-
-    VGA_BIOS_Size_override = (Bitu)section->Get_int("vga bios size override");
-    if (VGA_BIOS_Size_override > 0) VGA_BIOS_Size_override = (VGA_BIOS_Size_override+0x7FFU)&(~0xFFFU);
-
-    VGA_BIOS_Size = 0;
-    VGA_BIOS_SEG = 0xC000;
-    VGA_BIOS_SEG_END = (VGA_BIOS_SEG + (VGA_BIOS_Size >> 4));
-
-    /* clear for VGA BIOS (FIXME: Why does Project Angel like our BIOS when we memset() here, but don't like it if we memset() in the INT 10 ROM setup routine?) */
-    if (VGA_BIOS_Size != 0)
-        memset((char*)MemBase+0xC0000,0x00,VGA_BIOS_Size);
 }
 
 void DOSBOX_RealInit() {

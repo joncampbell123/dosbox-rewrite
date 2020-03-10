@@ -57,7 +57,6 @@ void DOS_Casemap_Free(void) {
 
 static Bit16u dos_memseg=0;//DOS_PRIVATE_SEGMENT;
 
-extern Bitu VGA_BIOS_SEG_END;
 bool DOS_GetMemory_unmapped = false;
 
 void DOS_GetMemory_reset() {
@@ -89,7 +88,7 @@ void DOS_GetMemory_Choose() {
 	if (DOS_PRIVATE_SEGMENT == 0) {
         /* DOSBox-X non-compatible: Position ourself just past the VGA BIOS */
         /* NTS: Code has been arranged so that DOS kernel init follows BIOS INT10h init */
-        DOS_PRIVATE_SEGMENT=(Bit16u)VGA_BIOS_SEG_END;
+        DOS_PRIVATE_SEGMENT=(Bit16u)0xD000;
         DOS_PRIVATE_SEGMENT_END= (Bit16u)(DOS_PRIVATE_SEGMENT + DOS_PRIVATE_SEGMENT_Size);
 
 		if (DOS_PRIVATE_SEGMENT >= 0xA000) {

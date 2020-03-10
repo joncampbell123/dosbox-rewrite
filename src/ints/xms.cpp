@@ -605,10 +605,6 @@ bool xms_init = false;
 
 bool keep_umb_on_boot;
 
-extern Bitu VGA_BIOS_SEG;
-extern Bitu VGA_BIOS_SEG_END;
-extern Bitu VGA_BIOS_Size;
-
 bool XMS_IS_ACTIVE() {
 	return (xms_callback != 0);
 }
@@ -724,8 +720,6 @@ public:
 
 		if (first_umb_seg == 0) {
 			first_umb_seg = DOS_PRIVATE_SEGMENT_END;
-			if (first_umb_seg < (Bit16u)VGA_BIOS_SEG_END)
-				first_umb_seg = (Bit16u)VGA_BIOS_SEG_END;
 		}
 		if (first_umb_size == 0) first_umb_size = (Bit16u)(ROMBIOS_MinAllocatedLoc()>>4);
 
