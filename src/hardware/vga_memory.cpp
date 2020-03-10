@@ -162,21 +162,8 @@ public:
 
 #include <stdio.h>
 
-class VGA_Empty_Handler : public PageHandler {
-public:
-	VGA_Empty_Handler() : PageHandler(PFLAG_NOCODE) {}
-	Bit8u readb(PhysPt /*addr*/) {
-//		LOG(LOG_VGA, LOG_NORMAL ) ( "Read from empty memory space at %x", addr );
-		return 0xff;
-	} 
-	void writeb(PhysPt /*addr*/,Bit8u /*val*/) {
-//		LOG(LOG_VGA, LOG_NORMAL ) ( "Write %x to empty memory space at %x", val, addr );
-	}
-};
-
 static struct vg {
 	VGA_UnchainedVGA_Handler	uvga;
-	VGA_Empty_Handler			empty;
 } vgaph;
 
 void MEM_ResetPageHandler_Unmapped(Bitu phys_page, Bitu pages);
