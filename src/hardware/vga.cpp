@@ -252,9 +252,6 @@ void VGA_Reset(Section*) {
     LOG(LOG_VGA,LOG_NORMAL)("Video RAM: %uKB",vga.mem.memsize>>10);
 
     VGA_SetupMemory();      // memory is allocated here
-    {
-        VGA_SetupDAC();
-    }
 
     Section_prop * section2=static_cast<Section_prop *>(control->GetSection("vsync"));
 

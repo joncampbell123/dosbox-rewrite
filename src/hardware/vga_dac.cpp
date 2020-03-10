@@ -97,24 +97,8 @@ void VGASetPalette(Bit8u index,Bit8u r,Bit8u g,Bit8u b) {
     vga.dac.rgb[index].blue=b;
 }
 
-void write_p3c9(Bitu port,Bitu val,Bitu iolen) {
-}
-
-Bitu read_p3c9(Bitu port,Bitu iolen) {
-    return 0;
-}
-
 void VGA_DAC_CombineColor(Bit8u attr,Bit8u pal) {
     vga.dac.combine[attr] = pal;
     VGA_DAC_SendColor( attr, pal );
-}
-
-void VGA_DAC_SetEntry(Bitu entry,Bit8u red,Bit8u green,Bit8u blue) {
-}
-
-void VGA_SetupDAC(void) {
-}
-
-void VGA_UnsetupDAC(void) {
 }
 
