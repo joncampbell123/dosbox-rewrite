@@ -26,34 +26,6 @@
 void vga_write_p3d4(Bitu port,Bitu val,Bitu iolen);
 void vga_write_p3d5(Bitu port,Bitu val,Bitu iolen);
 
-Bitu vga_read_p3da(Bitu port,Bitu iolen) {
-    (void)port;//UNUSED
-    (void)iolen;//UNUSED
-	Bit8u retval = 0;
-	double timeInFrame = PIC_FullIndex()-vga.draw.delay.framestart;
-
-	// 3DAh (R):  Status Register
-	// bit   0  Horizontal or Vertical blanking
-	//       3  Vertical sync
-
-	if (timeInFrame >= vga.draw.delay.vdend) {
-		retval |= 1; // vertical blanking
-	} else {
-		double timeInLine=fmod(timeInFrame,vga.draw.delay.htotal);
-		if (timeInLine >= vga.draw.delay.hblkstart && 
-			timeInLine <= vga.draw.delay.hblkend) {
-			retval |= 1; // horizontal blanking
-		}
-	}
-
-    if (timeInFrame >= vga.draw.delay.vrstart &&
-        timeInFrame <= vga.draw.delay.vrend) {
-        retval |= 8; // vertical retrace
-    }
-
-	return retval;
-}
-
 void VGA_SetupMisc(void) {
 }
 
@@ -62,7 +34,5 @@ void VGA_UnsetupMisc(void) {
     IO_FreeReadHandler(0x3d4,IO_MB);
     IO_FreeWriteHandler(0x3d5,IO_MB);
     IO_FreeReadHandler(0x3d5,IO_MB);
-    IO_FreeWriteHandler(0x3da,IO_MB);
-    IO_FreeReadHandler(0x3da,IO_MB);
 }
 
