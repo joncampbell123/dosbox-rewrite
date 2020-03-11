@@ -29,10 +29,6 @@ if !EMSCRIPTEN
 dosbox_x_LDADD += aviwriter/libaviwriter.a
 endif
 
-if C_DIRECT3D
-dosbox_x_LDADD += output/direct3d/liboutputdirect3d.a
-endif
-
 if EMSCRIPTEN
 dosbox_x_js:
 	emcc -s TOTAL_MEMORY=134217728 -s DISABLE_EXCEPTION_CATCHING=0 -s EMTERPRETIFY=1 -s EMTERPRETIFY_ASYNC=1 -s EMTERPRETIFY_FILE=dosbox-x.data $(dosbox_x_OBJECTS) $(dosbox_x_LDADD) $(LIBS) $(dosbox_x_OBJECTS) $(dosbox_x_DEPENDENCIES) $(EXTRA_dosbox_x_DEPENDENCIES) -o dosbox-x.html
