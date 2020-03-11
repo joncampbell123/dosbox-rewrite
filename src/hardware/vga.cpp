@@ -508,8 +508,6 @@ template <const unsigned int card,typename templine_type_t> static inline Bit8u*
         Bitu font = int10_font_16[(chr<<4)+line];
         
         Bitu background = attr >> 4u;
-        // if blinking is enabled bit7 is not mapped to attributes
-        if (vga.draw.blinking) background &= ~0x8u;
         // choose foreground color if blinking not set for this cell or blink on
         Bitu foreground = (vga.draw.blink || (!(attr&0x80)))?
             (attr&0xf):background;
@@ -517,7 +515,7 @@ template <const unsigned int card,typename templine_type_t> static inline Bit8u*
         if (GCC_UNLIKELY(((attr&0x77) == 0x01) &&
             (vga.crtc.underline_location&0x1f)==line))
                 background = foreground;
-        if (vga.draw.char9dot) {
+        {
             font <<=1; // 9 pixels
             // extend to the 9th pixel if needed
             if ((font&0x2) &&
@@ -525,13 +523,6 @@ template <const unsigned int card,typename templine_type_t> static inline Bit8u*
             for (Bitu n = 0; n < 9; n++) {
                 if (card == MCH_VGA)
                     *draw++ = vga.dac.xlat32[(font&0x100)? foreground:background];
-
-                font <<= 1;
-            }
-        } else {
-            for (Bitu n = 0; n < 8; n++) {
-                if (card == MCH_VGA)
-                    *draw++ = vga.dac.xlat32[(font&0x80)? foreground:background];
 
                 font <<= 1;
             }
@@ -543,7 +534,7 @@ template <const unsigned int card,typename templine_type_t> static inline Bit8u*
         // the adress of the attribute that makes up the cell the cursor is in
         Bits attr_addr = ((Bits)vga.draw.cursor.address - (Bits)vidstart) >> (Bits)1; /* <- FIXME: This right? */
         if (attr_addr >= 0 && attr_addr < (Bits)vga.draw.blocks) {
-            Bitu index = (Bitu)attr_addr * (vga.draw.char9dot ? 9u : 8u);
+            Bitu index = (Bitu)attr_addr * 9u;
             draw = (((templine_type_t*)TempLine) + index) + 16 - vga.draw.panning;
 
             Bitu foreground = vga.draw.linear_base[(vga.draw.cursor.address<<2ul)+1] & 0xf;
@@ -601,12 +592,11 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
     vga.draw.address = 0;
 
     /* check for blinking and blinking change delay */
-    FontMask[1]=(vga.draw.blinking & (unsigned int)(vga.draw.cursor.count >> 4u)) ?
+    FontMask[1]=((unsigned int)(vga.draw.cursor.count >> 4u) & 1u) ?
         0 : 0xffffffff;
     /* if blinking is enabled, 'blink' will toggle between true
      * and false. Otherwise it's true */
-    vga.draw.blink = ((vga.draw.blinking & (unsigned int)(vga.draw.cursor.count >> 4u))
-            || !vga.draw.blinking) ? true:false;
+    vga.draw.blink = (unsigned int)(vga.draw.cursor.count >> 4u);
 
     vga.draw.linear_base = vga.mem.linear;
     vga.draw.planar_mask = vga.mem.memmask >> 2;
@@ -755,7 +745,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
         vga.draw.blocks=width;
         // 9-pixel wide
         pix_per_char = 9;
-        vga.draw.char9dot = true;
         VGA_DrawLine = VGA_TEXT_Xlat32_Draw_Line;
         bpp = 32;
     }
@@ -763,7 +752,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
 
     vga.draw.lines_total=height;
     vga.draw.line_length = width * ((bpp + 1) / 8);
-    vga.draw.oscclock = oscclock;
     vga.draw.clock = clock;
 
     double vratio = ((double)width)/(double)height; // ratio if pixels were square
@@ -800,9 +788,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
         vga.draw.delay.vtotal,(1000.0/vga.draw.delay.vtotal),
         vga.draw.delay.vblkstart,vga.draw.delay.vblkend,
         vga.draw.delay.vrstart,vga.draw.delay.vrend);
-
-    LOG(LOG_VGA,LOG_NORMAL)("video clock: %3.2fMHz",
-        oscclock/1000000.0);
 #endif
 
     // need to change the vertical timing?

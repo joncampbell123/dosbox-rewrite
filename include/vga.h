@@ -127,9 +127,7 @@ typedef struct {
 		float singleline_delay;
 	} delay;
 	double screen_ratio;
-	Bitu blinking;
 	bool blink;
-	bool char9dot;
 	struct {
 		Bitu address;
 		Bit8u sline,eline;
@@ -137,12 +135,9 @@ typedef struct {
 		Bit8u enabled;
 	} cursor;
 	Drawmode mode;
-	bool has_split;
-	bool vret_triggered;
 	bool vga_override;
 	Bitu bpp;
 	double clock;
-	double oscclock;
 } VGA_Draw;
 
 typedef struct {
