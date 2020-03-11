@@ -255,13 +255,6 @@ typedef struct {
     VGA_Memory mem;
 } VGA_Type;
 
-
-/* Hercules Palette function */
-void Herc_Palette(void);
-
-/* CGA Mono Palette function */
-void Mono_CGA_Palette(void);
-
 /* Functions for different resolutions */
 void VGA_SetMode();
 void VGA_DetermineMode(void);
@@ -276,14 +269,6 @@ void VGA_DAC_CombineColor(Bit8u attr,Bit8u pal);
 void VGA_DAC_SetEntry(Bitu entry,Bit8u red,Bit8u green,Bit8u blue);
 void VGA_ATTR_SetPalette(Bit8u index,Bit8u val);
 
-typedef enum {CGA, EGA, MONO} EGAMonitorMode;
-
-typedef enum {AC_4x4, AC_low4/*4low*/} ACPalRemapMode;
-
-extern unsigned char VGA_AC_remap;
-
-void VGA_ATTR_SetEGAMonitorPalette(EGAMonitorMode m);
-
 /* The VGA Subfunction startups */
 void VGA_SetupAttr(void);
 void VGA_SetupMemory(void);
@@ -295,7 +280,6 @@ void VGA_SetupOther(void);
 
 /* Some Support Functions */
 void VGA_SetClock(Bitu which,Bitu target);
-void VGA_ActivateHardwareCursor(void);
 void VGA_KillDrawing(void);
 
 void VGA_SetOverride(bool vga_override);
