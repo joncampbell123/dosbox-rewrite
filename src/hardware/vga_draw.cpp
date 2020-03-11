@@ -194,16 +194,6 @@ static void VGA_DrawSingleLine(Bitu /*blah*/) {
     }
 }
 
-extern uint32_t GFX_Rmask;
-extern unsigned char GFX_Rshift;
-extern uint32_t GFX_Gmask;
-extern unsigned char GFX_Gshift;
-extern uint32_t GFX_Bmask;
-extern unsigned char GFX_Bshift;
-extern uint32_t GFX_Amask;
-extern unsigned char GFX_Ashift;
-extern unsigned char GFX_bpp;
-
 static void VGA_VerticalTimer(Bitu /*val*/) {
     PIC_AddEvent(VGA_VerticalTimer,(float)vga.draw.delay.vtotal);
 
