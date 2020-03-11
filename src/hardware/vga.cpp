@@ -156,7 +156,6 @@ using namespace std;
 VGA_Type vga;
 
 Bit32u ExpandTable[256];
-Bit32u ColorTable[16];
 double vga_force_refresh_rate = -1;
 
 void VGA_SetModeNow(VGAModes mode) {
