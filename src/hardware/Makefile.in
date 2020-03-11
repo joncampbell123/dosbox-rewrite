@@ -99,9 +99,8 @@ am__v_AR_0 = @echo "  AR      " $@;
 am__v_AR_1 = 
 libhardware_a_AR = $(AR) $(ARFLAGS)
 libhardware_a_LIBADD =
-am_libhardware_a_OBJECTS = hardware.$(OBJEXT) iohandler.$(OBJEXT) \
-	keyboard.$(OBJEXT) memory.$(OBJEXT) mixer.$(OBJEXT) \
-	pic.$(OBJEXT) vga.$(OBJEXT)
+am_libhardware_a_OBJECTS = iohandler.$(OBJEXT) keyboard.$(OBJEXT) \
+	memory.$(OBJEXT) mixer.$(OBJEXT) pic.$(OBJEXT) vga.$(OBJEXT)
 libhardware_a_OBJECTS = $(am_libhardware_a_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -320,7 +319,7 @@ AM_CPPFLAGS = -I$(top_srcdir)/include -I$(top_srcdir)/src/aviwriter -I$(top_srcd
 SUBDIRS = 
 EXTRA_DIST = 
 noinst_LIBRARIES = libhardware.a
-libhardware_a_SOURCES = hardware.cpp iohandler.cpp keyboard.cpp \
+libhardware_a_SOURCES = iohandler.cpp keyboard.cpp \
                         memory.cpp mixer.cpp pic.cpp vga.cpp
 
 all: all-recursive
@@ -372,7 +371,6 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hardware.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/iohandler.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/keyboard.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/memory.Po@am__quote@

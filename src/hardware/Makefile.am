@@ -6,6 +6,6 @@ EXTRA_DIST =
 
 noinst_LIBRARIES = libhardware.a
 
-libhardware_a_SOURCES = hardware.cpp iohandler.cpp keyboard.cpp \
+libhardware_a_SOURCES = iohandler.cpp keyboard.cpp \
                         memory.cpp mixer.cpp pic.cpp vga.cpp
 
