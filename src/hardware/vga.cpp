@@ -212,6 +212,42 @@ Bit32u MEM_get_address_bits();
 void vga_write_p3d4(Bitu port,Bitu val,Bitu iolen);
 void vga_write_p3d5(Bitu port,Bitu val,Bitu iolen);
 
+static void VGA_DAC_SendColor( Bitu index ) {
+    const Bit8u red = vga.dac.rgb[index].red;
+    const Bit8u green = vga.dac.rgb[index].green;
+    const Bit8u blue = vga.dac.rgb[index].blue;
+
+    /* FIXME: Can someone behind the GCC project explain how (unsigned int) OR (unsigned int) somehow becomes (signed int)?? */
+
+    if (GFX_bpp >= 24) /* FIXME: Assumes 8:8:8. What happens when desktops start using the 10:10:10 format? */
+        vga.dac.xlat32[index] =
+            (uint32_t)((blue&0xffu) << (GFX_Bshift)) |
+            (uint32_t)((green&0xffu) << (GFX_Gshift)) |
+            (uint32_t)((red&0xffu) << (GFX_Rshift)) |
+            (uint32_t)GFX_Amask;
+    else {
+        /* FIXME: Assumes 5:6:5. I need to test against 5:5:5 format sometime. Perhaps I could dig out some older VGA cards and XFree86 drivers that support that format? */
+        vga.dac.xlat16[index] =
+            (uint16_t)(((blue&0xffu)>>3u)<<GFX_Bshift) |
+            (uint16_t)(((green&0xffu)>>2u)<<GFX_Gshift) |
+            (uint16_t)(((red&0xffu)>>3u)<<GFX_Rshift) |
+            (uint16_t)GFX_Amask;
+    }
+
+    RENDER_SetPal( (Bit8u)index, red, green, blue );
+}
+
+void VGA_DAC_UpdateColorPalette() {
+    for ( Bitu i = 0;i<256;i++) 
+        VGA_DAC_SendColor( i );
+}
+
+void VGASetPalette(Bit8u index,Bit8u r,Bit8u g,Bit8u b) {
+    vga.dac.rgb[index].red=r;
+    vga.dac.rgb[index].green=g;
+    vga.dac.rgb[index].blue=b;
+}
+
 void VGA_Reset(Section*) {
     Section_prop * section=static_cast<Section_prop *>(control->GetSection("dosbox"));
     string str;
