@@ -95,9 +95,6 @@ static const char *def_menu__toplevel[] =
     "MainMenu",
     "CpuMenu",
     "VideoMenu",
-#if !defined(C_EMSCRIPTEN)
-    "CaptureMenu",
-#endif
     NULL
 };
 
@@ -254,36 +251,6 @@ static const char *def_menu_video[] =
 #endif
     NULL
 };
-
-/* capture menu ("CaptureMenu") */
-static const char *def_menu_capture[] =
-{
-#if defined(C_SSHOT)
-    "mapper_scrshot",
-    "--",
-#endif
-#if !defined(C_EMSCRIPTEN)
-# if (C_SSHOT)
-    "CaptureFormatMenu",
-    "--",
-# endif
-    "mapper_video",
-    "mapper_recwave",
-    "mapper_recmtwave",
-#endif
-    NULL
-};
-
-#if !defined(C_EMSCRIPTEN)
-# if (C_SSHOT)
-/* capture format menu ("CaptureFormatMenu") */
-static const char *def_menu_capture_format[] =
-{
-    "capture_fmt_avi_zmbv",
-    NULL
-};
-# endif
-#endif
 
 bool DOSBox_isMenuVisible(void) {
     return menu.toggle;
@@ -958,18 +925,6 @@ void ConstructMenu(void) {
 
     /* video vsync menu */
     ConstructSubMenu(mainMenu.get_item("VideoVsyncMenu").get_master_id(), def_menu_video_vsync);
-
-#if !defined(C_EMSCRIPTEN)
-    /* capture menu */
-    ConstructSubMenu(mainMenu.get_item("CaptureMenu").get_master_id(), def_menu_capture);
-#endif
-
-#if !defined(C_EMSCRIPTEN)
-# if (C_SSHOT)
-    /* capture format menu */
-    ConstructSubMenu(mainMenu.get_item("CaptureFormatMenu").get_master_id(), def_menu_capture_format);
-# endif
-#endif
 }
 
 bool MENU_SetBool(std::string secname, std::string value) {

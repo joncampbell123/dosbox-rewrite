@@ -6171,10 +6171,6 @@ bool VM_PowerOn() {
     return true;
 }
 
-#if !defined(C_EMSCRIPTEN)
-void update_capture_fmt_menu(void);
-#endif
-
 bool capture_fmt_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const menuitem);
 
 void SetScaleForced(bool forced);
@@ -7243,9 +7239,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
 #endif
 
         OutputSettingMenuUpdate();
-#if !defined(C_EMSCRIPTEN)
-        update_capture_fmt_menu();
-#endif
 
         /* The machine just "powered on", and then reset finished */
         if (!VM_PowerOn()) E_Exit("VM failed to power on");
