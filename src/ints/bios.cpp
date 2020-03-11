@@ -42,6 +42,12 @@ extern bool PS1AudioCard;
 #include "parport.h"
 #include <time.h>
 
+#include "dosbox.h"
+#include "inout.h"
+#include "control.h"
+#include "dos_inc.h"
+#include "timer.h"
+
 #if defined(DB_HAVE_CLOCK_GETTIME) && ! defined(WIN32)
 //time.h is already included
 #else
