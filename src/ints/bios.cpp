@@ -1574,7 +1574,6 @@ static int bios_post_counter = 0;
 class BIOS:public Module_base{
 private:
     static Bitu cb_bios_post__func(void) {
-        void TIMER_BIOS_INIT_Configure();
 #if C_DEBUG
         void DEBUG_CheckCSIP();
 
@@ -1735,8 +1734,6 @@ private:
         bios_first_init = false;
 
         DispatchVMEvent(VM_EVENT_BIOS_INIT);
-
-        TIMER_BIOS_INIT_Configure();
 
         void INT10_Startup(Section *sec);
         INT10_Startup(NULL);

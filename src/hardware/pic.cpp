@@ -325,18 +325,10 @@ static void write_data(Bitu port,Bitu val,Bitu iolen) {
 static Bitu read_command(Bitu port,Bitu iolen) {
     (void)iolen;//UNUSED
     PIC_Controller * pic=&pics[(port==0x20/*IBM*/ || port==0x00/*PC-98*/) ? 0 : 1];
-    if (pic->request_issr){
+    if (pic->request_issr)
         return pic->isr;
-    } else {
-        /* HACK: I found a PC-98 game "Steel Gun Nyan" that relies on setting the timer to Mode 3 (Square Wave)
-         *       then polling the output through the master PIC's IRR to do delays. */
-        if (pic == &master) {
-            void TIMER_IRQ0Poll(void);
-            TIMER_IRQ0Poll();
-        }
-
+    else
         return pic->irr;
-    }
 }
 
 

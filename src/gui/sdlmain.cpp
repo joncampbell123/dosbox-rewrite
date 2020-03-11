@@ -6040,7 +6040,6 @@ void CALLBACK_Init();
 void Init_PIC();
 void PROGRAMS_Init();
 void RENDER_Init();
-void TIMER_Init();
 void VGA_Init();
 void CPU_Init();
 #if C_FPU
@@ -7178,7 +7177,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
         Init_PS2_Port_92h(); // FIXME: Should be handled by motherboard!
         Init_RAM();
         Init_PIC();
-        TIMER_Init();
         PAGING_Init(); /* <- NTS: At this time, must come before memory init because paging is so well integrated into emulation code */
         ROMBIOS_Init();
         CALLBACK_Init(); /* <- NTS: This relies on ROM BIOS allocation and it must happen AFTER ROMBIOS init */
