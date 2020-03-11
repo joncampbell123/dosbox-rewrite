@@ -153,29 +153,6 @@
 
 using namespace std;
 
-bool VGA_IsCaptureEnabled(void);
-void VGA_UpdateCapturePending(void);
-bool VGA_CaptureHasNextFrame(void);
-void VGA_CaptureStartNextFrame(void);
-void VGA_CaptureMarkError(void);
-bool VGA_CaptureValidateCurrentFrame(void);
-
-SDL_Rect                            vga_capture_rect = {0,0,0,0};
-SDL_Rect                            vga_capture_current_rect = {0,0,0,0};
-uint32_t                            vga_capture_current_address = 0;
-uint32_t                            vga_capture_write_address = 0; // literally the address written
-uint32_t                            vga_capture_address = 0;
-uint32_t                            vga_capture_stride = 0;
-uint32_t                            vga_capture_state = 0;
-
-SDL_Rect &VGA_CaptureRectCurrent(void) {
-    return vga_capture_current_rect;
-}
-
-SDL_Rect &VGA_CaptureRectFromGuest(void) {
-    return vga_capture_rect;
-}
-
 VGA_Type vga;
 
 Bit32u TXT_Font_Table[16];
