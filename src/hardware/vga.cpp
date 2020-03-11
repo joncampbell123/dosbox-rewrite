@@ -475,31 +475,6 @@ double vga_fps = 70;
 double vga_mode_time_base = -1;
 int vga_mode_frames_since_time_base = 0;
 
-void memxor(void *_d,unsigned int byte,size_t count) {
-    unsigned char *d = (unsigned char*)_d;
-    while (count-- > 0) *d++ ^= byte;
-}
-
-void memxor_greendotted_16bpp(uint16_t *d,unsigned int count,unsigned int line) {
-    static const uint16_t greenptrn[2] = { (0x3F << 5), 0 };
-    line &= 1;
-    count >>= 1;
-    while (count-- > 0) {
-        *d++ ^= greenptrn[line];
-        *d++ ^= greenptrn[line^1];
-    }
-}
-
-void memxor_greendotted_32bpp(uint32_t *d,unsigned int count,unsigned int line) {
-    static const uint32_t greenptrn[2] = { (0xFF << 8), 0 };
-    line &= 1;
-    count >>= 2;
-    while (count-- > 0) {
-        *d++ ^= greenptrn[line];
-        *d++ ^= greenptrn[line^1];
-    }
-}
-
 typedef Bit8u * (* VGA_Line_Handler)(Bitu vidstart, Bitu line);
 
 static VGA_Line_Handler VGA_DrawLine;
