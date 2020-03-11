@@ -158,23 +158,18 @@ VGA_Type vga;
 Bit32u ExpandTable[256];
 double vga_force_refresh_rate = -1;
 
-void VGA_SetModeNow(VGAModes mode) {
-    if (vga.mode == mode) return;
-    vga.mode=mode;
+void VGA_SetModeNow() {
     VGA_SetupHandlers();
     VGA_StartResize(0);
 }
 
-
-void VGA_SetMode(VGAModes mode) {
-    if (vga.mode == mode) return;
-    vga.mode=mode;
+void VGA_SetMode() {
     VGA_SetupHandlers();
     VGA_StartResize();
 }
 
 void VGA_DetermineMode(void) {
-    VGA_SetMode(M_TEXT);
+    VGA_SetMode();
 }
 
 void VGA_StartResize(Bitu delay /*=50*/) {
@@ -257,7 +252,6 @@ void VGA_Reset(Section*) {
         LOG(LOG_VGA,LOG_NORMAL)("VGA forced refresh rate active = %.3f",vga_force_refresh_rate);
 
     vga.draw.resizing=false;
-    vga.mode=M_TEXT;
 
     vga.mem.memsize = _KB_bytes(16);
     vga.mem.memmask = vga.mem.memsize - 1u;
@@ -472,19 +466,10 @@ void VGA_SetupMemory() {
 	}
 }
 
-const char* const mode_texts[M_MAX] = {
-    "M_TEXT",           // 0
-    "M_ERROR"
-};
-
 #if defined(_MSC_VER)
 # pragma warning(disable:4244) /* const fmath::local::uint64_t to double possible loss of data */
 # pragma warning(disable:4305) /* truncation from double to float */
 #endif
-
-//#undef C_DEBUG
-//#define C_DEBUG 1
-//#define LOG(X,Y) LOG_MSG
 
 double vga_fps = 70;
 double vga_mode_time_base = -1;
@@ -791,18 +776,13 @@ void VGA_SetupDrawing(Bitu /*val*/) {
     bpp = 8;
 
     Bitu pix_per_char = 8;
-    switch (vga.mode) {
-    case M_TEXT:
+    {
         vga.draw.blocks=width;
         // 9-pixel wide
         pix_per_char = 9;
         vga.draw.char9dot = true;
         VGA_DrawLine = VGA_TEXT_Xlat32_Draw_Line;
         bpp = 32;
-        break;
-    default:
-        LOG(LOG_VGA,LOG_ERROR)("Unhandled VGA mode %d while checking for resolution",vga.mode);
-        break;
     }
     width *= pix_per_char;
 
@@ -816,22 +796,7 @@ void VGA_SetupDrawing(Bitu /*val*/) {
     // the picture ratio factor
     double scanratio =  ((double)hdend/(double)(htotal-(hrend-hrstart)))/
                         ((double)vdend/(double)(vtotal-(vrend-vrstart)));
-    double scanfield_ratio = 4.0/3.0;
-    
-    switch (vga.misc_output >> 6) {
-        case 0: // VESA: "OTHER" scanline amount
-            scanfield_ratio = (4.0/3.0) / scanratio;
-            break;
-        case 1: // 400 lines
-            scanfield_ratio = 1.312;
-            break;
-        case 2: // 350 lines
-            scanfield_ratio = 1.249;
-            break;
-        case 3: // 480 lines
-            scanfield_ratio = 1.345;
-            break;
-    }
+    double scanfield_ratio = (4.0/3.0) / scanratio;
 
     // calculate screen ratio
     double screenratio = scanratio * scanfield_ratio;
@@ -861,8 +826,8 @@ void VGA_SetupDrawing(Bitu /*val*/) {
         vga.draw.delay.vblkstart,vga.draw.delay.vblkend,
         vga.draw.delay.vrstart,vga.draw.delay.vrend);
 
-    LOG(LOG_VGA,LOG_NORMAL)("video clock: %3.2fMHz mode %s",
-        oscclock/1000000.0, mode_texts[vga.mode]);
+    LOG(LOG_VGA,LOG_NORMAL)("video clock: %3.2fMHz",
+        oscclock/1000000.0);
 #endif
 
     // need to change the vertical timing?

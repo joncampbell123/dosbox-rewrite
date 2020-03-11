@@ -2029,7 +2029,7 @@ bool ParseCommand(char* str) {
         else if (command == "MODE") {
             DEBUG_ShowMsg("VGA mode info:");
             DEBUG_ShowMsg("mode=%s vref=%.3fHz href=%.3fHz chrclk=%.3fHz dotclk=%.3fHz",
-                mode_texts[vga.mode],1000.0/vga.draw.delay.vtotal,1000.0/vga.draw.delay.htotal,
+                "",1000.0/vga.draw.delay.vtotal,1000.0/vga.draw.delay.htotal,
                 vga.draw.clock,vga.draw.oscclock);
             DEBUG_ShowMsg("disp-start=%lxh real-start=%lxh retrace=%u scanlen=%lu cursor-start=%lxh",
                 (unsigned long)vga.config.display_start,

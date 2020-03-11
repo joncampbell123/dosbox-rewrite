@@ -29,15 +29,6 @@
 
 class PageHandler;
 
-enum VGAModes {
-    M_TEXT,         // 0
-    M_ERROR,
-
-    M_MAX
-};
-
-extern const char* const mode_texts[M_MAX];
-
 enum VGA_Vsync {
 	VS_Off,
 	VS_On,
@@ -251,9 +242,6 @@ typedef struct {
 } VGA_Memory;
 
 typedef struct {
-    VGAModes mode = {};                              /* The mode the vga system is in */
-    VGAModes lastmode = {};
-    Bit8u misc_output = 0;
     VGA_Draw draw = {};
     VGA_Config config = {};
     VGA_Internal internal = {};
@@ -275,7 +263,7 @@ void Herc_Palette(void);
 void Mono_CGA_Palette(void);
 
 /* Functions for different resolutions */
-void VGA_SetMode(VGAModes mode);
+void VGA_SetMode();
 void VGA_DetermineMode(void);
 void VGA_SetupHandlers(void);
 void VGA_StartResize(Bitu delay=50);

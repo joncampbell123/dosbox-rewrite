@@ -101,20 +101,6 @@ extern Bit8u int10_font_16[256 * 16];
 extern Bit8u int10_font_14_alternate[20 * 15 + 1];
 extern Bit8u int10_font_16_alternate[19 * 17 + 1];
 
-struct VideoModeBlock {
-	Bit16u	mode;
-	VGAModes	type;
-	Bitu	swidth, sheight;
-	Bitu	twidth, theight;
-	Bitu	cwidth, cheight;
-	Bitu	ptotal,pstart,plength;
-
-	Bitu	htotal,vtotal;
-	Bitu	hdispend,vdispend;
-	Bitu	special;
-	
-};
-
 typedef struct {
 	struct {
 		RealPt font_8_first;
