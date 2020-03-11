@@ -8,5 +8,5 @@ noinst_LIBRARIES = libhardware.a
 
 libhardware_a_SOURCES = hardware.cpp iohandler.cpp keyboard.cpp \
                         memory.cpp mixer.cpp pic.cpp timer.cpp \
-			vga.cpp vga_draw.cpp
+						vga.cpp
 
