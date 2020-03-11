@@ -696,33 +696,6 @@ if test x$have_zlib_lib = xyes -a x$have_zlib_h = xyes ; then
   AC_DEFINE(C_LIBZ,1)
 fi
 
-dnl FEATURE: Whether to support libpng, and enable snapshots
-AH_TEMPLATE(C_LIBPNG,[Define to 1 if you have libpng])
-AH_TEMPLATE(C_SSHOT,[Define to 1 to enable screenshots, requires libpng])
-AC_ARG_ENABLE(screenshots,AC_HELP_STRING([--disable-screenshots],[Disable screenshots and movie recording]),,enable_screenshots=yes)
-AC_MSG_CHECKING([whether screenshots will be enabled])
-if test x$enable_screenshots = xyes; then 
-    if test x$have_png_lib = xyes -a x$have_png_h = xyes ; then
-    LIBS="$LIBS -lpng -lz"
-    AC_DEFINE(C_LIBPNG,1)
-    AC_DEFINE(C_SSHOT,1)
-    AC_MSG_RESULT([yes])
-  else
-    AC_MSG_RESULT([no, can't find libpng.])
-  fi
-else
-  AC_MSG_RESULT([no])
-fi
-
-dnl FEATURE: Whether to use libpcap, and enable NE2000 emulation
-AH_TEMPLATE(C_NE2000,[Define to 1 to enable NE2000 ethernet passthrough, requires libpcap])
-if test x$have_pcap_lib = xyes -a x$have_pcap_h = xyes ; then
-  LIBS="$LIBS -lpcap";
-  AC_DEFINE(C_NE2000,1)
-else
-  AC_MSG_WARN([Can't find libpcap, NE2000 ethernet passthrough disabled])
-fi
-
 if test x$enable_x11 != xno; then
   dnl FEATURE: Whether to use X11 XKBlib
   AH_TEMPLATE(C_X11_XKB,[define to 1 if you have XKBlib.h and X11 lib])
