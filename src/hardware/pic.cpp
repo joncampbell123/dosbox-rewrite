@@ -33,6 +33,8 @@
 
 unsigned long PIC_irq_delay_ns = 0;
 
+unsigned long PIT_TICK_RATE = PIT_TICK_RATE_IBM;
+
 bool never_mark_cascade_in_service = false;
 bool ignore_cascade_in_service = false;
 
