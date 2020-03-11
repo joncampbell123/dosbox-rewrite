@@ -146,19 +146,6 @@ typedef struct {
 } VGA_Draw;
 
 typedef struct {
-	Bit8u index;
-	Bit8u clocking_mode;
-	Bit8u map_mask;
-	Bit8u memory_mode;
-} VGA_Seq;
-
-typedef struct {
-	Bit8u palette[16];
-	Bit8u mode_control;
-	Bit8u index;
-} VGA_Attr;
-
-typedef struct {
 	Bit8u horizontal_total;
 	Bit8u horizontal_display_end;
 	Bit8u start_horizontal_blanking;
@@ -188,19 +175,6 @@ typedef struct {
 	Bit8u index;
 	bool read_only;
 } VGA_Crtc;
-
-typedef struct {
-	Bit8u index;
-	Bit8u set_reset;
-	Bit8u enable_set_reset;
-	Bit8u color_compare;
-	Bit8u data_rotate;
-	Bit8u read_map_select;
-	Bit8u mode;
-	Bit8u miscellaneous;
-	Bit8u color_dont_care;
-	Bit8u bit_mask;
-} VGA_Gfx;
 
 typedef struct  {
 	Bit8u red;
@@ -246,10 +220,7 @@ typedef struct {
     VGA_Config config = {};
     VGA_Internal internal = {};
     /* Internal module groups */
-    VGA_Seq seq = {};
-    VGA_Attr attr = {};
     VGA_Crtc crtc = {};
-    VGA_Gfx gfx = {};
     VGA_Dac dac = {};
     VGA_Latch latch;
     VGA_Memory mem;

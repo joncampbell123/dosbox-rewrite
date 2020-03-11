@@ -301,7 +301,7 @@ void VGA_Init() {
 }
 
 static inline Bitu VGA_Generic_Read_Handler(PhysPt planeaddr,PhysPt rawaddr,unsigned char plane) {
-    const unsigned char hobit_n = (vga.seq.memory_mode&2/*Extended Memory*/) ? 16u : 14u;
+    const unsigned char hobit_n = 14u;
 
     /* Sequencer Memory Mode Register (04h)
      * bits[3:3] = Chain 4 enable
@@ -336,7 +336,7 @@ static inline Bitu VGA_Generic_Read_Handler(PhysPt planeaddr,PhysPt rawaddr,unsi
 }
 
 template <const bool chained> static inline void VGA_Generic_Write_Handler(PhysPt planeaddr,PhysPt rawaddr,Bit8u val) {
-    const unsigned char hobit_n = (vga.seq.memory_mode&2/*Extended Memory*/) ? 16u : 14u;
+    const unsigned char hobit_n = 14u;
     Bit32u mask = 0xFFFF;
 
     /* Sequencer Memory Mode Register (04h)
