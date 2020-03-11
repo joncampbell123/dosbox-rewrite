@@ -274,7 +274,6 @@ unsigned long long update_clockdom_from_now(ClockDomain &dst) {
 
 #include "paging.h"
 
-extern bool allow_port_92_reset;
 extern bool allow_keyb_reset;
 
 extern bool DOSBox_Paused();
@@ -731,9 +730,6 @@ void DOSBOX_RealInit() {
     //       so it can be enumerated properly by DOS programs scanning the ROM area.
     /* private area size param in bytes. round up to nearest paragraph */
     DOS_PRIVATE_SEGMENT_Size = (Bitu)((section->Get_int("private area size") + 8) / 16);
-
-    // TODO: should be parsed by motherboard emulation
-    allow_port_92_reset = section->Get_bool("allow port 92 reset");
 
     // TODO: should be parsed by motherboard emulation or lower level equiv..?
     std::string cmd_machine;

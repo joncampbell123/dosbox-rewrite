@@ -564,9 +564,6 @@ void ROMBIOS_FreeUnusedMinToLoc(Bitu phys);
 bool MEM_unmap_physmem(Bitu start,Bitu end);
 Bitu ROMBIOS_MinAllocatedLoc();
 
-void RemoveUMBBlock() {
-}
-
 class XMS: public Module_base {
 private:
 	CALLBACK_HandlerObject callbackhandler;

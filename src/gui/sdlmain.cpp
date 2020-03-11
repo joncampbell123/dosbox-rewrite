@@ -385,8 +385,6 @@ void SHELL_Run();
 void XMS_DoShutDown();
 void DOS_DoShutDown();
 void DOS_ShutdownDevices(void);
-void RemoveEMSPageFrame(void);
-void RemoveUMBBlock();
 void DOS_GetMemory_unmap();
 void VFILE_Shutdown(void);
 void PROGRAMS_Shutdown(void);
@@ -6031,7 +6029,6 @@ void Init_RAM();
 void Init_MemHandles();
 void Init_MemoryAccessArray();
 void Init_PCJR_CartridgeROM();
-void Init_PS2_Port_92h();
 void Init_A20_Gate();
 void HARDWARE_Init();
 void CAPTURE_Init();
@@ -6104,8 +6101,6 @@ void Windows_DPI_Awareness_Init() {
 
 bool VM_Boot_DOSBox_Kernel() {
     if (!dos_kernel_disabled) {
-        RemoveEMSPageFrame();
-        RemoveUMBBlock();
         DOS_GetMemory_unmap();
         VFILE_Shutdown();
         PROGRAMS_Shutdown();
@@ -7174,7 +7169,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
         Init_AddressLimitAndGateMask(); /* <- need to init address mask so Init_RAM knows the maximum amount of RAM possible */
         Init_MemoryAccessArray(); /* <- NTS: In DOSBox-X this is the "cache" of devices that responded to memory access */
         Init_A20_Gate(); // FIXME: Should be handled by motherboard!
-        Init_PS2_Port_92h(); // FIXME: Should be handled by motherboard!
         Init_RAM();
         Init_PIC();
         PAGING_Init(); /* <- NTS: At this time, must come before memory init because paging is so well integrated into emulation code */
@@ -7446,9 +7440,6 @@ fresh_boot:
                 DispatchVMEvent(VM_EVENT_DOS_EXIT_REBOOT_BEGIN);
             else
                 DispatchVMEvent(VM_EVENT_DOS_EXIT_BEGIN);
-
-            /* older shutdown code */
-            RemoveEMSPageFrame();
 
             /* unmap the DOSBox kernel private segment. if the user told us not to,
              * but the segment exists below 640KB, then we must, because the guest OS

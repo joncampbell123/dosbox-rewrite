@@ -1173,50 +1173,6 @@ void On_Software_CPU_Reset() {
     /* does not return */
 }
 
-bool allow_port_92_reset = true;
-
-static void write_p92(Bitu port,Bitu val,Bitu iolen) {
-    (void)iolen;//UNUSED
-    (void)port;//UNUSED
-    memory.a20.controlport = (Bit8u)(val & ~2u);
-    MEM_A20_Enable((val & 2u)>0);
-
-    // Bit 0 = system reset (switch back to real mode)
-    if (val & 1) {
-        if (allow_port_92_reset) {
-            LOG_MSG("Restart by port 92h requested\n");
-            On_Software_CPU_Reset();
-        }
-        else {
-            LOG_MSG("WARNING: port 92h written with bit 0 set. Is the guest OS or application attempting to reset the system?\n");
-        }
-    }
-}
-
-static Bitu read_p92(Bitu port,Bitu iolen) {
-    (void)iolen;//UNUSED
-    (void)port;//UNUSED
-    return (Bitu)memory.a20.controlport | (memory.a20.enabled ? 0x02u : 0);
-}
-
-void RemoveEMSPageFrame(void) {
-    LOG(LOG_MISC,LOG_DEBUG)("Removing EMS page frame");
-
-    /* Setup rom at 0xe0000-0xf0000 */
-    for (Bitu ct=0xe0;ct<0xf0;ct++) {
-        memory.phandlers[ct] = &rom_page_handler;
-    }
-}
-
-void PreparePCJRCartRom(void) {
-    LOG(LOG_MISC,LOG_DEBUG)("Preparing mapping for PCjr cartridge ROM");
-
-    /* Setup rom at 0xd0000-0xe0000 */
-    for (Bitu ct=0xd0;ct<0xe0;ct++) {
-        memory.phandlers[ct] = &rom_page_handler;
-    }
-}
-
 /* how to use: unmap_physmem(0xA0000,0xBFFFF) to unmap 0xA0000 to 0xBFFFF */
 bool MEM_unmap_physmem(Bitu start,Bitu end) {
     Bitu p;
@@ -1595,10 +1551,6 @@ void MEM_cut_RAM_up_to(Bitu addr) {
     }
 }
 
-static IO_ReadHandleObject PS2_Port_92h_ReadHandler;
-static IO_WriteHandleObject PS2_Port_92h_WriteHandler;
-static IO_WriteHandleObject PS2_Port_92h_WriteHandler2;
-
 void ShutDownMemoryAccessArray(Section * sec) {
     (void)sec;//UNUSED
     if (memory.phandlers != NULL) {
@@ -1692,34 +1644,6 @@ void Init_A20_Gate() {
     LOG(LOG_MISC,LOG_DEBUG)("Initializing A20 gate emulation");
 
     AddVMEventFunction(VM_EVENT_RESET,AddVMEventFunctionFuncPair(A20Gate_OnReset));
-}
-
-void PS2Port92_OnReset(Section *sec) {
-    (void)sec;//UNUSED
-    Section_prop * section=static_cast<Section_prop *>(control->GetSection("dosbox"));
-
-    PS2_Port_92h_WriteHandler2.Uninstall();
-    PS2_Port_92h_WriteHandler.Uninstall();
-    PS2_Port_92h_ReadHandler.Uninstall();
-
-    {
-        // TODO: this should be handled in a motherboard init routine
-        enable_port92 = section->Get_bool("enable port 92");
-        if (enable_port92) {
-            // A20 Line - PS/2 system control port A
-            // TODO: This should exist in the motherboard emulation code yet to come! The motherboard
-            //       determines A20 gating, not the RAM!
-            LOG(LOG_MISC,LOG_DEBUG)("Port 92h installed, emulating PS/2 system control port A");
-            PS2_Port_92h_WriteHandler.Install(0x92,write_p92,IO_MB);
-            PS2_Port_92h_ReadHandler.Install(0x92,read_p92,IO_MB);
-        }
-    }
-}
-
-void Init_PS2_Port_92h() {
-    LOG(LOG_MISC,LOG_DEBUG)("Initializing PS/2 port 92h emulation");
-
-    AddVMEventFunction(VM_EVENT_RESET,AddVMEventFunctionFuncPair(PS2Port92_OnReset));
 }
 
 void Init_MemHandles() {
