@@ -216,38 +216,8 @@ void VGA_StartResize(Bitu delay /*=50*/) {
     }
 }
 
-Bit32u MEM_get_address_bits();
-void vga_write_p3d4(Bitu port,Bitu val,Bitu iolen);
-void vga_write_p3d5(Bitu port,Bitu val,Bitu iolen);
-
-void vga_write_p3d4(Bitu port,Bitu val,Bitu iolen) {
-    (void)iolen;//UNUSED
-    (void)port;//UNUSED
-	crtc(index)=(Bit8u)val;
-}
-
-void vga_write_p3d5(Bitu port,Bitu val,Bitu /*iolen*/) {
-    (void)port;//UNUSED
-//	if((crtc(index)!=0xe)&&(crtc(index)!=0xf)) 
-//		LOG_MSG("CRTC w #%2x val %2x",crtc(index),val);
-	switch(crtc(index)) {
-	case 0x0E:	/*Cursor Location High Register */
-		crtc(cursor_location_high)=(Bit8u)val;
-		vga.config.cursor_start&=0xff00ff;
-		vga.config.cursor_start|=val << 8;
-		/*	0-7  Upper 8 bits of the address of the cursor */
-		break;
-	case 0x0F:	/* Cursor Location Low Register */
-//TODO update cursor on screen
-		crtc(cursor_location_low)=(Bit8u)val;
-		vga.config.cursor_start&=0xffff00;
-		vga.config.cursor_start|=val;
-		/*	0-7  Lower 8 bits of the address of the cursor */
-		break;
-	default:
-        LOG(LOG_VGAMISC,LOG_NORMAL)("VGA:CRTC:Write to unknown index %X",crtc(index));
-        break;
-	}
+void VGA_SetCursorAddr(Bitu addr) {
+    vga.config.cursor_start = (Bit16u)addr;
 }
 
 static void VGA_DAC_SendColor( Bitu index ) {
@@ -324,9 +294,6 @@ void VGA_Reset(Section*) {
     LOG(LOG_VGA,LOG_NORMAL)("Video RAM: %uKB",vga.mem.memsize>>10);
 
     VGA_SetupMemory();      // memory is allocated here
-
-    IO_RegisterWriteHandler(0x3D4,vga_write_p3d4,IO_MB);
-    IO_RegisterWriteHandler(0x3D5,vga_write_p3d5,IO_MB);
 
     VGA_StartResize();
 }

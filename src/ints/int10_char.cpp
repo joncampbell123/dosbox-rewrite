@@ -110,6 +110,8 @@ void INT10_GetCursorPos(Bit8u *row, Bit8u*col, const Bit8u page)
     }
 }
 
+void VGA_SetCursorAddr(Bitu addr);
+
 void INT10_SetCursorPos(Bit8u row,Bit8u col,Bit8u page) {
     (void)page;
     {
@@ -117,19 +119,8 @@ void INT10_SetCursorPos(Bit8u row,Bit8u col,Bit8u page) {
         real_writeb(BIOSMEM_SEG,BIOSMEM_CURSOR_POS+1u,row);
     }
     {
-        // Get the dimensions
         BIOS_NCOLS;
-        // Calculate the address knowing nbcols nbrows and page num
-        // NOTE: BIOSMEM_CURRENT_START counts in colour/flag pairs
-        Bit16u address=(ncols*row)+col+(real_readw(BIOSMEM_SEG,BIOSMEM_CURRENT_START)/2);
-        {
-            // CRTC regs 0x0e and 0x0f
-            Bit16u base=0x3D4;
-            IO_Write(base,0x0eu);
-            IO_Write(base+1u,(Bit8u)(address>>8u));
-            IO_Write(base,0x0fu);
-            IO_Write(base+1u,(Bit8u)address);
-        }
+        VGA_SetCursorAddr((ncols*row)+col+(real_readw(BIOSMEM_SEG,BIOSMEM_CURRENT_START)/2));
     }
 }
 
