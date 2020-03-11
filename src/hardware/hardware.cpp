@@ -51,7 +51,6 @@ bool            skip_encoding_unchanged_frames = false;
 
 /* FIXME: This needs to be an enum */
 bool native_zmbv = false;
-bool export_ffmpeg = false;
 
 std::string capturedir;
 extern const char* RunningProgram;
@@ -1019,17 +1018,14 @@ void CAPTURE_Init() {
 	if (capfmt == "mpegts-h264") {
 		LOG_MSG("MPEGTS H.264+AAC not compiled in to this DOSBox-X binary. Using AVI+ZMBV");
 		native_zmbv = true;
-		export_ffmpeg = false;
 	}
 	else if (capfmt == "avi-zmbv" || capfmt == "default") {
 		LOG_MSG("USING AVI+ZMBV");
 		native_zmbv = true;
-		export_ffmpeg = false;
 	}
 	else {
 		LOG_MSG("Unknown capture format, using AVI+ZMBV");
 		native_zmbv = true;
-		export_ffmpeg = false;
 	}
 
 	CaptureState = 0; // make sure capture is off
@@ -1076,22 +1072,19 @@ bool capture_fmt_menu_callback(DOSBoxMenu * const menu,DOSBoxMenu::item * const 
     const char *ts = menuitem->get_name().c_str();
     Bitu old_CaptureState = CaptureState;
     bool new_native_zmbv = native_zmbv;
-    bool new_export_ffmpeg = export_ffmpeg;
 
     if (!strncmp(ts,"capture_fmt_",12))
         ts += 12;
 
     {
         new_native_zmbv = true;
-        new_export_ffmpeg = false;
     }
 
-    if (native_zmbv != new_native_zmbv || export_ffmpeg != new_export_ffmpeg) {
+    if (native_zmbv != new_native_zmbv) {
         void CAPTURE_StopCapture(void);
         CAPTURE_StopCapture();
 
         native_zmbv = new_native_zmbv;
-        export_ffmpeg = new_export_ffmpeg;
     }
 
     if (old_CaptureState & CAPTURE_VIDEO) {
