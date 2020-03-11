@@ -35,7 +35,6 @@
 #include "support.h"
 #include "parport.h"
 #include "serialport.h"
-#include "dos_network.h"
 
 Bitu INT29_HANDLER(void);
 
