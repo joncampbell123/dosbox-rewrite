@@ -6030,8 +6030,6 @@ void Init_MemHandles();
 void Init_MemoryAccessArray();
 void Init_PCJR_CartridgeROM();
 void Init_A20_Gate();
-void HARDWARE_Init();
-void CAPTURE_Init();
 void ROMBIOS_Init();
 void CALLBACK_Init();
 void Init_PIC();
@@ -7159,9 +7157,7 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
         }
 
         RENDER_Init();
-        CAPTURE_Init();
         IO_Init();
-        HARDWARE_Init();
         Init_AddressLimitAndGateMask(); /* <- need to init address mask so Init_RAM knows the maximum amount of RAM possible */
         Init_MemoryAccessArray(); /* <- NTS: In DOSBox-X this is the "cache" of devices that responded to memory access */
         Init_A20_Gate(); // FIXME: Should be handled by motherboard!
