@@ -78,7 +78,6 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-@C_DIRECT3D_TRUE@am__append_1 = direct3d
 subdir = src/output
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/depcomp
@@ -100,10 +99,9 @@ am__v_AR_0 = @echo "  AR      " $@;
 am__v_AR_1 = 
 liboutput_a_AR = $(AR) $(ARFLAGS)
 liboutput_a_LIBADD =
-am_liboutput_a_OBJECTS = output_direct3d.$(OBJEXT) \
-	output_opengl.$(OBJEXT) output_surface.$(OBJEXT) \
-	output_surface_sdl2.$(OBJEXT) output_surface_sdl.$(OBJEXT) \
-	output_tools.$(OBJEXT)
+am_liboutput_a_OBJECTS = output_opengl.$(OBJEXT) \
+	output_surface.$(OBJEXT) output_surface_sdl2.$(OBJEXT) \
+	output_surface_sdl.$(OBJEXT) output_tools.$(OBJEXT)
 liboutput_a_OBJECTS = $(am_liboutput_a_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -176,7 +174,7 @@ am__define_uniq_tagged_files = \
   done | $(am__uniquify_input)`
 ETAGS = etags
 CTAGS = ctags
-DIST_SUBDIRS = direct3d
+DIST_SUBDIRS = $(SUBDIRS)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 am__relativize = \
   dir0=`pwd`; \
@@ -319,9 +317,9 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CPPFLAGS = -I$(top_srcdir)/include -I$(top_srcdir)/src
-SUBDIRS = $(am__append_1)
+SUBDIRS = 
 noinst_LIBRARIES = liboutput.a
-liboutput_a_SOURCES = output_direct3d.cpp output_opengl.cpp output_surface.cpp output_surface_sdl2.cpp output_surface_sdl.cpp output_tools.cpp
+liboutput_a_SOURCES = output_opengl.cpp output_surface.cpp output_surface_sdl2.cpp output_surface_sdl.cpp output_tools.cpp
 all: all-recursive
 
 .SUFFIXES:
@@ -371,7 +369,6 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/output_direct3d.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/output_opengl.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/output_surface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/output_surface_sdl.Po@am__quote@

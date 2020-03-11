@@ -194,7 +194,6 @@ extern Bitu frames;
 extern SDL_Block sdl;
 
 #include <output/output_surface.h>
-#include <output/output_direct3d.h>
 #include <output/output_opengl.h>
 #include <output/output_tools.h>
 
