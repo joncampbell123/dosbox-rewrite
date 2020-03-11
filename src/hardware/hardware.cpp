@@ -31,6 +31,7 @@
 #include "mixer.h"
 #include "render.h"
 #include "cross.h"
+#include "timer.h"
 
 #if (C_SSHOT)
 #include <zlib.h>
@@ -43,6 +44,8 @@
 #include "rawint.h"
 
 #include <map>
+
+unsigned long PIT_TICK_RATE = PIT_TICK_RATE_IBM;
 
 bool            skip_encoding_unchanged_frames = false;
 

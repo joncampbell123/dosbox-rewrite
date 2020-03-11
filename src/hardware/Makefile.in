@@ -101,7 +101,7 @@ libhardware_a_AR = $(AR) $(ARFLAGS)
 libhardware_a_LIBADD =
 am_libhardware_a_OBJECTS = hardware.$(OBJEXT) iohandler.$(OBJEXT) \
 	keyboard.$(OBJEXT) memory.$(OBJEXT) mixer.$(OBJEXT) \
-	pic.$(OBJEXT) timer.$(OBJEXT) vga.$(OBJEXT)
+	pic.$(OBJEXT) vga.$(OBJEXT)
 libhardware_a_OBJECTS = $(am_libhardware_a_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -321,8 +321,7 @@ SUBDIRS =
 EXTRA_DIST = 
 noinst_LIBRARIES = libhardware.a
 libhardware_a_SOURCES = hardware.cpp iohandler.cpp keyboard.cpp \
-                        memory.cpp mixer.cpp pic.cpp timer.cpp \
-						vga.cpp
+                        memory.cpp mixer.cpp pic.cpp vga.cpp
 
 all: all-recursive
 
@@ -379,7 +378,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/memory.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mixer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pic.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/timer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vga.Po@am__quote@
 
 .cpp.o:
