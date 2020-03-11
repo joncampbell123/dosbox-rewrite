@@ -155,12 +155,7 @@ using namespace std;
 
 VGA_Type vga;
 
-Bit32u TXT_Font_Table[16];
-Bit32u TXT_FG_Table[16];
-Bit32u TXT_BG_Table[16];
 Bit32u ExpandTable[256];
-Bit32u Expand16Table[4][16];
-Bit32u FillTable[16];
 Bit32u ColorTable[16];
 double vga_force_refresh_rate = -1;
 
@@ -284,7 +279,7 @@ static Bit8u text_palette[16][3]=
 };
 
 void VGA_Init() {
-    Bitu i,j;
+    Bitu i;
 
 	vga.config.chained = false;
 
@@ -302,50 +297,6 @@ void VGA_Init() {
 
     for (i=0;i<256;i++) {
         ExpandTable[i]=(Bitu)(i + (i << 8u) + (i << 16u) + (i << 24u));
-    }
-    for (i=0;i<16;i++) {
-        TXT_FG_Table[i]=(Bitu)(i + (i << 8u) + (i << 16u) + (i << 24u));
-        TXT_BG_Table[i]=(Bitu)(i + (i << 8u) + (i << 16u) + (i << 24u));
-#ifdef WORDS_BIGENDIAN
-        FillTable[i]=
-            ((i & 1u) ? 0xff000000u : 0u) |
-            ((i & 2u) ? 0x00ff0000u : 0u) |
-            ((i & 4u) ? 0x0000ff00u : 0u) |
-            ((i & 8u) ? 0x000000ffu : 0u) ;
-        TXT_Font_Table[i]=
-            ((i & 1u) ? 0x000000ffu : 0u) |
-            ((i & 2u) ? 0x0000ff00u : 0u) |
-            ((i & 4u) ? 0x00ff0000u : 0u) |
-            ((i & 8u) ? 0xff000000u : 0u) ;
-#else 
-        FillTable[i]=
-            ((i & 1u) ? 0x000000ffu : 0u) |
-            ((i & 2u) ? 0x0000ff00u : 0u) |
-            ((i & 4u) ? 0x00ff0000u : 0u) |
-            ((i & 8u) ? 0xff000000u : 0u) ;
-        TXT_Font_Table[i]=  
-            ((i & 1u) ? 0xff000000u : 0u) |
-            ((i & 2u) ? 0x00ff0000u : 0u) |
-            ((i & 4u) ? 0x0000ff00u : 0u) |
-            ((i & 8u) ? 0x000000ffu : 0u) ;
-#endif
-    }
-    for (j=0;j<4;j++) {
-        for (i=0;i<16;i++) {
-#ifdef WORDS_BIGENDIAN
-            Expand16Table[j][i] =
-                ((i & 1u) ? 1u <<        j  : 0u) |
-                ((i & 2u) ? 1u << (8u +  j) : 0u) |
-                ((i & 4u) ? 1u << (16u + j) : 0u) |
-                ((i & 8u) ? 1u << (24u + j) : 0u);
-#else
-            Expand16Table[j][i] =
-                ((i & 1u) ? 1u << (24u + j) : 0u) |
-                ((i & 2u) ? 1u << (16u + j) : 0u) |
-                ((i & 4u) ? 1u << (8u  + j) : 0u) |
-                ((i & 8u) ? 1u <<        j  : 0u);
-#endif
-        }
     }
 
     for (i=0;i < 16;i++)
@@ -571,8 +522,6 @@ static VGA_Line_Handler VGA_DrawLine;
 static Bit8u TempLine[SCALER_MAXWIDTH * 4 + 256];
 
 extern Bit8u int10_font_16[256 * 16];
-
-extern Bit32u Expand16Table[4][16];
 
 static const Bit32u* VGA_Planar_Memwrap(Bitu vidstart) {
     return (const Bit32u*)vga.mem.linear + (vidstart & vga.draw.planar_mask);
