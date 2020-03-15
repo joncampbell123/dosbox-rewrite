@@ -24,7 +24,7 @@ Tandy is unknown at this time.
 
 EGA/VGA standard alphanumeric modes will use pixelsperclock == 8 or pixelsperclock == 9 according to register settings.
 
-EGA/VGA standard graphics modes will use pixelsperclock == 8. If a VGA register bit, normally reserved for 256-color mode, is set, then only every other pixel will sent and doubled to the shift register, as observed on real hardware.
+EGA/VGA standard graphics modes will use pixelsperclock == 8. If a VGA register bit, normally reserved for 256-color mode, is set, then only every other pixel will sent and doubled to the shift register, as observed on real hardware. Note it is generally understood that setting 9 pixels/char in graphics modes does nothing but allow more pixels per scanline, graphics pixels are still counted as if 8 even if the CRTC still counts as 9, else the old 360 pixel wide hacks would not be possible.
 
 EGA/VGA standard modes will use a 25MHz/28MHz dot clock, unless a bit is set to divide the dot clock by two which will not change the content sent to the shift register but will halve the rate the shift register is emptied to the DAC.
 
