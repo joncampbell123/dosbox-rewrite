@@ -16,106 +16,6 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
  */
 
-/* NTS: Hardware notes
- *
- * S3 Virge DX (PCI):
- *
- *   VGA 256-color chained mode appears to work differently than
- *   expected. Groups of 4 pixels are spread across the VGA planes
- *   as expected, but actual memory storage of those 32-bit quantities
- *   are 4 "bytes" apart (probably the inspiration for DOSBox's
- *   chain emulation using addr = ((addr & ~3) << 2) + (addr & 3) when
- *   emulating chained mode).
- *
- *   The attribute controller has a bug where if you attempt to read
- *   the palette indexes 0x00-0x0F with PAS=1 (see FreeVGA for more
- *   info) the returned value will be correct except for bit 5 which
- *   will be 1 i.e. if palette index 0x2 is read in this way and
- *   contains 0x02 you will get 0x22 instead. The trick is to write
- *   the index with PAS=0 and read the data, then issue the index with
- *   PAS=1. Related: the S3 acts as if there are different flip-flops
- *   associated with reading vs writing i.e. writing to 0x3C0, then
- *   reading port 0x3C1, then writing port 0x3C0, will treat the second
- *   write to 0x3C0 as data still, not as an index. Both flip flops are
- *   reset by reading 3xAh though.
- *
- *   VGA BIOS does not support INT 10h TTY functions in VESA BIOS modes.
- *
- *   Raw planar dumps of the VGA memory in alphanumeric modes suggest
- *   that, not only do the cards direct even writes to 0/2 and odd to 1/3,
- *   it does so without shifting down the address. So in a raw planar
- *   dump, you will see on plane 0 something like "C : \ > " where the
- *   spaces are hex 0x00, and in plane 1, something like 0x07 0x00 0x07 0x00 ...
- *   the card however (in even/odd mode) does mask out bit A0 which
- *   explains why the Plane 1 capture is 0x07 0x00 ... not 0x00 0x07.
- *
- * ATI Rage 128 (AGP):
- *
- *   VGA 256-color chained mode appears to work in the same weird way
- *   that S3 Virge DX does (see above).
- *
- *   VGA BIOS supports TTY INT 10h functions in 16 & 256-color modes
- *   only. There are apparently INT 10h functions for 15/16bpp modes
- *   as well, but they don't appear to render anything except shades
- *   of green.
- *
- *   The VESA BIOS interface seems to have INT 10h aliases for many
- *   VBE 1.2 modes i.e. mode 0x110 is also mode 0x42.
- *
- *   The Attribute Controller palette indexes work as expected in all
- *   VGA modes, however in SVGA VESA BIOS modes, the Attribute Controller
- *   palette has no effect on output EXCEPT in 16-color (4bpp) VESA BIOS
- *   modes.
- *
- *   Raw planar layout of alphanumeric text modes apply the same rules
- *   as mentioned above in the S3 Virge DX description.
- *
- * Compaq Elite LTE 4/50CX laptop:
- *
- *   No SVGA modes. All modes work as expected.
- *
- *   VGA 256-color chained mode acts the same weird way as described
- *   above, seems to act like addr = ((addr & ~3) << 2) + (addr & 3)
- *
- *   There seems to be undocumented INT 10h modes:
- *
- *        0x22:  640x480x?? INT 10h text is all green and garbled
- *        0x28:  320x200x?? INT 10h text is all green and garbled
- *        0x32:  640x480x?? INT 10h text is all yellow and garbled
- *        0x5E:  640x400x256-color with bank switching
- *        0x5F:  640x480x256-color with bank switching
- *        0x62:  640x480x?? INT 10h text is all dark gray
- *        0x68:  320x200x?? INT 10h text is all dark gray
- *        0x72:  640x480x?? INT 10h text is all dark gray
- *        0x78:  320x200x?? INT 10h text is all dark gray
- *
- *   And yet, the BIOS does not implement VESA BIOS extensions. Hm..
- *
- * Sharp PC-9030 with Cirrus SVGA (1996):
- *
- *   VGA 256-color chained mode acts the same weird way, as if:
- *   addr = ((addr & ~3) << 2) + (addr & 3)
- * 
- *   All VESA BIOS modes support INT 10h TTY output.
- *
- * Tseng ET4000AX:
- *
- *   The ET4000 cards appear to be the ONLY SVGA chipset out there
- *   that does NOT do the odd VGA 256-color chained mode that
- *   other cards do.
- *
- *   Chained 256-color on ET4000:
- *       addr = addr                             (addr >> 2) byte in planar space, plane select by (addr & 3)
- *
- *   Other VGA cards:
- *       addr = ((addr & ~3) << 2) + (addr & 3)  (addr & ~3) byte in planar space, plane select by (addr & 3)
- *
- *   I suspect that this difference may be the reason several 1992-1993-ish DOS demos have problems clearing
- *   VRAM. It's possible they noticed that zeroing RAM was faster in planar mode, and coded their routines
- *   around ET4000 cards, not knowing that Trident, Cirrus, and every VGA clone thereafter implemented the
- *   chained 256-color modes differently.
- */
-
 #include "dosbox.h"
 #include "setup.h"
 #include "video.h"
@@ -274,8 +174,6 @@ static Bit8u text_palette[16][3]=
 void VGA_Init() {
     Bitu i;
 
-	vga.config.chained = false;
-
     vga.draw.cursor.sline = 13;
     vga.draw.cursor.eline = 14;
     vga.draw.cursor.enabled = true;
@@ -335,7 +233,7 @@ static inline Bitu VGA_Generic_Read_Handler(PhysPt planeaddr,PhysPt rawaddr,unsi
     return (vga.latch.b[plane]);
 }
 
-template <const bool chained> static inline void VGA_Generic_Write_Handler(PhysPt planeaddr,PhysPt rawaddr,Bit8u val) {
+static inline void VGA_Generic_Write_Handler(PhysPt planeaddr,PhysPt rawaddr,Bit8u val) {
     const unsigned char hobit_n = 14u;
     Bit32u mask = 0xFFFF;
 
@@ -402,7 +300,7 @@ public:
 	}
 public:
 	void writeHandler(PhysPt start, Bit8u val) {
-        VGA_Generic_Write_Handler<false/*chained*/>(start, start, val);
+        VGA_Generic_Write_Handler(start, start, val);
 	}
 public:
 	VGA_UnchainedVGA_Handler() : PageHandler(PFLAG_NOCODE) {}
