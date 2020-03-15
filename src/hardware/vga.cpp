@@ -47,8 +47,6 @@
 # pragma warning(disable:4244) /* const fmath::local::uint64_t to double possible loss of data */
 #endif
 
-#define crtc(blah) vga.crtc.blah
-
 #define VGA_PAGE_B8		(0xB8000/4096)
 
 using namespace std;
