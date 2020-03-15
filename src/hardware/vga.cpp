@@ -153,7 +153,7 @@ void VGA_Reset(Section*) {
 
     vga.draw.resizing=false;
 
-    vga.mem.memsize = _KB_bytes(16);
+    vga.mem.memsize = _KB_bytes(16); // NTS: 4KB planar bytes x 4 planes
     vga.mem.memmask = vga.mem.memsize - 1u;
 
     LOG(LOG_VGA,LOG_NORMAL)("Video RAM: %uKB",vga.mem.memsize>>10);
