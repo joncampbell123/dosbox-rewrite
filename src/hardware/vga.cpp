@@ -126,7 +126,7 @@ struct VGACRTCDAC_Dim_H : VGACRTCDAC_Dim {
 };
 
 struct VGACRTCDACStatus_Dim {
-    union {
+    union vsig_t {
         struct {
             unsigned int                active:1;
             unsigned int                border:1;
