@@ -145,6 +145,7 @@ public:
     VGACRTCDACStatus_Dim            vs;
 
     double                          dot_clock_hz = 0;       // dot clock frequency
+    double                          frame_duration = 0;     // duration of a frame
     double                          frame_start = 0;        // PIC time of start of (h=scanline v=frame)
     unsigned int                    frame_raw_pixels = 0;   // raw dot clock pixels since frame start
     unsigned int                    frame_raw_pixels_render = 0;// raw dot clock pixels since frame start, render position
