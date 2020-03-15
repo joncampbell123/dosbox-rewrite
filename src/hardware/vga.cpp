@@ -98,6 +98,9 @@ struct VGACRTCDAC_Dim {
     unsigned int                    sync_pix_wrap = 0;      // h/v-sync in active display if wraparound. extra sync is 0 <= x < sync
     StartEndRangeI<unsigned int>    blank_pix;              // h/v-blanking
     StartEndRangeI<unsigned int>    sync_pix;               // h/v-sync
+
+    double                          duration = 0;           // duration in ms to count from 0 to total (h=duration of scanline v=duration of frame)
+    double                          start = 0;              // PIC time of start of (h=scanline v=frame)
 };
 
 struct VGACRTCDAC_Dim_H : VGACRTCDAC_Dim {
@@ -141,6 +144,9 @@ public:
     VGACRTCDAC_Dim                  vd;
     VGACRTCDACStatus_Dim            hs;
     VGACRTCDACStatus_Dim            vs;
+
+    double                          dot_clock_hz = 0;       // dot clock frequency
+    signed char                     frame_field = -1;       // frame field (-1 if not interlaced)
 };
 
 Bit32u ExpandTable[256];
