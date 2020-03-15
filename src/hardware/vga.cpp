@@ -101,6 +101,7 @@ struct VGACRTCDAC_Dim {
 
     double                          duration = 0;           // duration in ms to count from 0 to total (h=duration of scanline v=duration of frame)
     double                          start = 0;              // PIC time of start of (h=scanline v=frame)
+    unsigned int                    current_pix = 0;        // current pixel in (h=scanline v=frameline)
 };
 
 struct VGACRTCDAC_Dim_H : VGACRTCDAC_Dim {
