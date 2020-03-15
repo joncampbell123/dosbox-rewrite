@@ -104,23 +104,6 @@ struct VGACRTCDAC_Dim {
 
 struct VGACRTCDAC_Dim_H : VGACRTCDAC_Dim {
     unsigned int                dot_clock_per_char_clock;   // width of a character clock in dot clock pixels. not necessarily pixels per cell (EGA/VGA)
-    unsigned int                shift_register_pixels;      // number of pixels to emit per shift register load
-    enum VGAPixelEmit           output_pixel_emit;          // pixel duplication to output
-
-    // Ref: CGA 80x25
-    //      dot_clock_per_char_clock = 8
-    //      shift_register_pixels = 8
-    //      output_pixel_emit = VGAPixelEmit::x1
-    //
-    // Ref: CGA 40x25 text / 320x200x4 graphics
-    //      dot_clock_per_char_clock = 16
-    //      shift_register_pixels = 8
-    //      output_pixel_emit = VGAPixelEmit::x2
-    //
-    // Ref: CGA 640x200x2 graphics
-    //      dot_clock_per_char_clock = 16
-    //      shift_register_pixels = 16
-    //      output_pixel_emit = VGAPixelEmit::x1
 };
 
 struct VGACRTCDACStatus_Dim {
@@ -136,6 +119,36 @@ struct VGACRTCDACStatus_Dim {
     unsigned int                        scan_count = 0;     // h/v-pixel count
     unsigned int                        char_count = 0;     // h/v-char count
 };
+
+// maximum width of DAC shift output (more than enough for anything)
+#define MAX_CRTC_SHIFT_REGISTER     128
+
+struct VGACRTCDAC_ShiftReg {
+    union src_t { /* I hope your compiler aligns this for best performance, or at least to a multiple of 4 bytes (32 bits) */
+        uint8_t                     r8[MAX_CRTC_SHIFT_REGISTER];        // when bpp = 8
+        uint16_t                    r16[MAX_CRTC_SHIFT_REGISTER];       // when bpp = 16
+        uint32_t                    r32[MAX_CRTC_SHIFT_REGISTER];       // whne bpp = 32
+    } src;
+    unsigned char                   bpp = 0;                // bits per pixel of shift register
+    unsigned int                    shiftpos = 0;           // shift register position. count from 0 <= x < shift_register_pixels, then resets to 0
+    unsigned int                    shift_register_pixels;  // number of pixels to emit per shift register load
+    enum VGAPixelEmit               output_pixel_emit;      // pixel duplication to output
+};
+
+// Ref: CGA 80x25
+//      dot_clock_per_char_clock = 8
+//      shift_register_pixels = 8
+//      output_pixel_emit = VGAPixelEmit::x1
+//
+// Ref: CGA 40x25 text / 320x200x4 graphics
+//      dot_clock_per_char_clock = 16
+//      shift_register_pixels = 8
+//      output_pixel_emit = VGAPixelEmit::x2
+//
+// Ref: CGA 640x200x2 graphics
+//      dot_clock_per_char_clock = 16
+//      shift_register_pixels = 16
+//      output_pixel_emit = VGAPixelEmit::x1
 
 class VGACRTCDAC {
 public:
