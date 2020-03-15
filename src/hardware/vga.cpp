@@ -500,19 +500,15 @@ static void VGA_VerticalTimer(Bitu /*val*/) {
     vga.draw.planar_mask = vga.mem.memmask >> 2;
 
     // add the draw event
-    switch (vga.draw.mode) {
-    case DRAWLINE:
-        if (GCC_UNLIKELY(vga.draw.lines_done < vga.draw.lines_total)) {
-            LOG(LOG_VGAMISC,LOG_NORMAL)( "Lines left: %d", 
+    if (GCC_UNLIKELY(vga.draw.lines_done < vga.draw.lines_total)) {
+        LOG(LOG_VGAMISC,LOG_NORMAL)( "Lines left: %d", 
                 (int)(vga.draw.lines_total-vga.draw.lines_done));
-            PIC_RemoveEvents(VGA_DrawSingleLine);
-            vga_mode_frames_since_time_base++;
-            RENDER_EndUpdate(true);
-        }
-        vga.draw.lines_done = 0;
-        PIC_AddEvent(VGA_DrawSingleLine,(float)(vga.draw.delay.htotal/4.0));
-        break;
+        PIC_RemoveEvents(VGA_DrawSingleLine);
+        vga_mode_frames_since_time_base++;
+        RENDER_EndUpdate(true);
     }
+    vga.draw.lines_done = 0;
+    PIC_AddEvent(VGA_DrawSingleLine,(float)(vga.draw.delay.htotal/4.0));
 }
 
 void VGA_SetupDrawing(Bitu /*val*/) {
@@ -522,19 +518,6 @@ void VGA_SetupDrawing(Bitu /*val*/) {
     // keep compatibility with other builds of DOSBox for vgaonly.
     vga.draw.render_step = 0;
     vga.draw.render_max = 1;
-
-    // set the drawing mode
-    switch (machine) {
-        case MCH_VGA:
-            if (svgaCard==SVGA_None) {
-                vga.draw.mode = DRAWLINE;
-                break;
-            }
-            // fall-through
-        default:
-            vga.draw.mode = DRAWLINE;
-            break;
-    }
 
     /* Calculate the FPS for this screen */
     Bitu oscclock = 0, clock;
