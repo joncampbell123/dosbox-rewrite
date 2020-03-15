@@ -99,8 +99,6 @@ struct VGACRTCDAC_Dim {
     StartEndRangeI<unsigned int>    blank_pix;              // h/v-blanking
     StartEndRangeI<unsigned int>    sync_pix;               // h/v-sync
 
-    double                          duration = 0;           // duration in ms to count from 0 to total (h=duration of scanline v=duration of frame)
-    double                          start = 0;              // PIC time of start of (h=scanline v=frame)
     unsigned int                    current_pix = 0;        // current pixel in (h=scanline v=frameline)
 };
 
@@ -147,6 +145,9 @@ public:
     VGACRTCDACStatus_Dim            vs;
 
     double                          dot_clock_hz = 0;       // dot clock frequency
+    double                          frame_start = 0;        // PIC time of start of (h=scanline v=frame)
+    unsigned int                    frame_raw_pixels = 0;   // raw dot clock pixels since frame start
+    unsigned int                    frame_raw_pixels_render = 0;// raw dot clock pixels since frame start, render position
     signed char                     frame_field = -1;       // frame field (-1 if not interlaced)
 };
 
