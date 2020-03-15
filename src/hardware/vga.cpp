@@ -123,6 +123,12 @@ struct VGACRTCDACStatus_Dim {
 // maximum width of DAC shift output (more than enough for anything)
 #define MAX_CRTC_SHIFT_REGISTER     128
 
+// NTS: video hardware emulation should always set bpp to the highest depth of it's outputs if possible.
+//      CGA should use bpp = 8 to cover the 16 colors supported.
+//      EGA should use bpp = 8 to cover all 64 colors supported.
+//      VGA should use bpp = 32 to cover the 2^18 colors possible (6-bit R/G/B)
+//      SVGA should use bpp = 32 to cover the 2^24 colors possible
+//      PC-98 should use bpp = 32 to cover the 8 colors (8-color digital), 4096 colors (16-color analog), or 2^24 (256-color analog)
 struct VGACRTCDAC_ShiftReg {
     union src_t { /* I hope your compiler aligns this for best performance, or at least to a multiple of 4 bytes (32 bits) */
         uint8_t                     r8[MAX_CRTC_SHIFT_REGISTER];        // when bpp = 8
