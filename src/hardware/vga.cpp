@@ -65,6 +65,8 @@ template <typename T> struct VGACRTCCount {
 
     VGACRTCCount() : pixels(0), chars(0) {
     }
+    VGACRTCCount(const T z) : pixels(z), chars(z) {
+    }
     VGACRTCCount(const T p,const T c) : pixels(p), chars(c) {
     }
 };
@@ -72,9 +74,22 @@ template <typename T> struct VGACRTCCount {
 template <typename T> struct VGACRTCStartStop {
     T       start,stop;
 
-    VGACRTCStartStop() {
+    VGACRTCStartStop() : start(0), stop(0) {
+    }
+    VGACRTCStartStop(const T z) : start(z), stop(z) {
     }
     VGACRTCStartStop(const T a,const T b) : start(a), stop(b) {
+    }
+};
+
+template <typename T> struct VGACRTCCountMax {
+    T       count,max;
+
+    VGACRTCCountMax() : count(0), max(1) {
+    }
+    VGACRTCCountMax(const T z) : count(0), max(z) {
+    }
+    VGACRTCCountMax(const T a,const T b) : count(a), max(b) {
     }
 };
 
@@ -115,11 +130,8 @@ struct VGACRTCDACStatus_Dim {
 };
 
 struct VGACRTCDACStatus_Dim_V : VGACRTCDACStatus_Dim {
-    unsigned int                    row_height_mask = 0x1Fu;        // row height mask (register width)
-    unsigned int                    row_pixel_count = 0;            // row counter within row
-    unsigned int                    row_height = 1;                 // row height (next line when char_count == row_height)
-    unsigned int                    scanline_double_count = 0;      // scanline doubling in hardware, counter
-    unsigned int                    scanline_double_max = 1;        // max
+    VGACRTCCountMax<unsigned int>   row_count;                      // row count/max, scanline
+    VGACRTCCountMax<unsigned int>   scandouble;                     // scanline doubling in hardware (MCGA, VGA 200-line CRTC values doubled to 400-line)
 };
 
 // maximum width of DAC shift output (more than enough for anything)
