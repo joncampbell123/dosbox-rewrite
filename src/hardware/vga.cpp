@@ -118,7 +118,7 @@ struct VGACRTCDACStatus_Dim_V : VGACRTCDACStatus_Dim {
     unsigned int                    row_height_mask = 0x1Fu;        // row height mask (register width)
     unsigned int                    row_height = 0;                 // row height (next line when char_count == row_height)
     unsigned int                    scanline_double_count = 0;      // scanline doubling in hardware, counter
-    unsigned int                    scanline_double_max = 0;        // max
+    unsigned int                    scanline_double_max = 1;        // max
 };
 
 // maximum width of DAC shift output (more than enough for anything)
