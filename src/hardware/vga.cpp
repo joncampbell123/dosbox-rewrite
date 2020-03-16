@@ -93,31 +93,43 @@ struct VGACRTCDAC_Dim {
     /* |                                                 | blank ------------ |  | */
     /* |                                                             | sync |    | */
     unsigned int                    total_pix = 0;          // h/v-total in pixels. pixels counted 0 <= x < total
+    unsigned int                    total_char = 0;
     unsigned int                    active_pix = 0;         // h/v-active display in pixels. active pixels are 0 <= x < active
+    unsigned int                    active_char = 0;
     unsigned int                    blank_pix_wrap = 0;     // h/v-blanking in active display if wraparound. extra blank is 0 <= x < blank
+    unsigned int                    blank_char_wrap = 0;
     unsigned int                    sync_pix_wrap = 0;      // h/v-sync in active display if wraparound. extra sync is 0 <= x < sync
+    unsigned int                    sync_char_wrap = 0;
     StartEndRangeI<unsigned int>    blank_pix;              // h/v-blanking
+    StartEndRangeI<unsigned int>    blank_char;
     StartEndRangeI<unsigned int>    sync_pix;               // h/v-sync
-
-    unsigned int                    current_pix = 0;        // current pixel in (h=scanline v=frameline)
+    StartEndRangeI<unsigned int>    sync_char;
 };
 
 struct VGACRTCDAC_Dim_H : VGACRTCDAC_Dim {
-    unsigned int                dot_clock_per_char_clock;   // width of a character clock in dot clock pixels. not necessarily pixels per cell (EGA/VGA)
+    unsigned int                    dot_clock_per_char_clock;   // width of a character clock in dot clock pixels. not necessarily pixels per cell (EGA/VGA)
 };
 
 struct VGACRTCDACStatus_Dim {
     union vsig_t {
         struct {
-            unsigned int                active:1;
-            unsigned int                border:1;
-            unsigned int                blank:1;
-            unsigned int                sync:1;
+            unsigned int            active:1;
+            unsigned int            border:1;
+            unsigned int            blank:1;
+            unsigned int            sync:1;
+            unsigned int            display_disable:1;
+            unsigned int            sync_disable:1;
         } f;
-        unsigned int                    raw = 0;
+        unsigned int                raw = 0;
     } vsig;
-    unsigned int                        scan_count = 0;     // h/v-pixel count
-    unsigned int                        char_count = 0;     // h/v-char count
+    unsigned int                    scan_count = 0;     // h/v-pixel count
+    unsigned int                    char_count = 0;     // h/v-char count
+};
+
+struct VGACRTCDACStatus_Dim_V : VGACRTCDACStatus_Dim {
+    unsigned int                    row_height = 0;                 // row height (next line when char_count == row_height)
+    unsigned int                    scanline_double_count = 0;      // scanline doubling in hardware, counter
+    unsigned int                    scanline_double_max = 0;        // max
 };
 
 // maximum width of DAC shift output (more than enough for anything)
@@ -135,10 +147,10 @@ struct VGACRTCDAC_ShiftReg {
         uint16_t                    r16[MAX_CRTC_SHIFT_REGISTER];       // when bpp = 16
         uint32_t                    r32[MAX_CRTC_SHIFT_REGISTER];       // whne bpp = 32
     } src;
-    unsigned char                   bpp = 0;                // bits per pixel of shift register
-    unsigned int                    shiftpos = 0;           // shift register position. count from 0 <= x < shift_register_pixels, then resets to 0
-    unsigned int                    shift_register_pixels;  // number of pixels to emit per shift register load
-    enum VGAPixelEmit               output_pixel_emit;      // pixel duplication to output
+    unsigned char                   bpp = 0;                            // bits per pixel of shift register
+    unsigned int                    shiftpos = 0;                       // shift register position. count from 0 <= x < shift_register_pixels, then resets to 0
+    unsigned int                    shift_register_pixels = 0;          // number of pixels to emit per shift register load
+    enum VGAPixelEmit               output_pixel_emit = VGAPixelEmit::x1;// pixel duplication to output
 };
 
 // Ref: CGA 80x25
@@ -161,11 +173,14 @@ public:
     VGACRTCDAC_Dim_H                hd;
     VGACRTCDAC_Dim                  vd;
     VGACRTCDACStatus_Dim            hs;
-    VGACRTCDACStatus_Dim            vs;
+    VGACRTCDACStatus_Dim_V          vs;
+
+    VGACRTCDAC_ShiftReg             shiftreg;
 
     double                          dot_clock_hz = 0;       // dot clock frequency
     double                          frame_duration = 0;     // duration of a frame
     double                          frame_start = 0;        // PIC time of start of (h=scanline v=frame)
+    unsigned int                    dot_clock_divide = 1;   // dot clock divider
     unsigned int                    frame_raw_pixels = 0;   // raw dot clock pixels since frame start
     unsigned int                    frame_raw_pixels_render = 0;// raw dot clock pixels since frame start, render position
     signed char                     frame_field = -1;       // frame field (-1 if not interlaced)
