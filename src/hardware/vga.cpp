@@ -127,6 +127,7 @@ struct VGACRTCDACStatus_Dim {
 };
 
 struct VGACRTCDACStatus_Dim_V : VGACRTCDACStatus_Dim {
+    unsigned int                    row_height_mask = 0x1Fu;        // row height mask (register width)
     unsigned int                    row_height = 0;                 // row height (next line when char_count == row_height)
     unsigned int                    scanline_double_count = 0;      // scanline doubling in hardware, counter
     unsigned int                    scanline_double_max = 0;        // max
@@ -177,7 +178,8 @@ public:
 
     VGACRTCDAC_ShiftReg             shiftreg;
 
-    double                          dot_clock_hz = 0;       // dot clock frequency
+    double                          dot_clock_src_hz = 0;   // dot clock frequency crystal frequency
+    double                          dot_clock_hz = 0;       // dot clock frequency in effect (dot_clock_src_hz / dot_clock_divide)
     double                          frame_duration = 0;     // duration of a frame
     double                          frame_start = 0;        // PIC time of start of (h=scanline v=frame)
     unsigned int                    dot_clock_divide = 1;   // dot clock divider
