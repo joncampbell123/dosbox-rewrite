@@ -185,13 +185,14 @@ public:
     unsigned int                    frame_count = 0;        // frame count
     unsigned int                    frame_raw_pixels = 0;   // raw dot clock pixels since frame_raw_start
     unsigned int                    frame_raw_pixels_render = 0;// raw dot clock pixels since frame_raw_start, render position
+    unsigned int                    frame_raw_pixels_total = 0;// raw dot clock pixels per frame
     signed char                     frame_field = -1;       // frame field (-1 if not interlaced)
 
     inline double dot_clock_hz(void) const {
         return dot_clock_src_hz / dot_clock_divide;
     }
     inline double frame_duration_base(const unsigned int m) const {
-        return (double(hd.total.pixels) * double(vd.total.pixels) * double(m * dot_clock_divide)) / dot_clock_src_hz;
+        return (double(frame_raw_pixels_total) * double(m * dot_clock_divide)) / dot_clock_src_hz;
     }
     inline double frame_duration_ms(void) const {
         return frame_duration_base(1000);
@@ -200,7 +201,7 @@ public:
         return frame_duration_base(1);
     }
     inline double frame_rate(void) const {
-        return dot_clock_hz() / hd.total.pixels / vd.total.pixels;
+        return dot_clock_hz() / double(frame_raw_pixels_total);
     }
 };
 
