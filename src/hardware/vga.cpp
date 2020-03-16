@@ -188,6 +188,11 @@ public:
     unsigned int                    frame_raw_pixels_total = 0;// raw dot clock pixels per frame
     signed char                     frame_field = -1;       // frame field (-1 if not interlaced)
 
+    inline unsigned int compute_frame_raw_pixel_total(void) const {
+        /* TODO: Half a frame if interlaced */
+        return hd.total.pixels * vd.total.pixels;
+    }
+
     inline double dot_clock_hz(void) const {
         return dot_clock_src_hz / dot_clock_divide;
     }
