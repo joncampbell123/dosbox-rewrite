@@ -181,6 +181,9 @@ public:
 
     double                          dot_clock_src_hz = 0;   // dot clock frequency crystal frequency
     double                          dot_clock_hz = 0;       // dot clock frequency in effect (dot_clock_src_hz / dot_clock_divide)
+    double                          frame_rate = 0;         // frame rate in Hz
+    double                          frame_hsync = 0;        // frame hsync rate in Hz
+    double                          frame_line_duration = 0;// duration of a line
     double                          frame_duration = 0;     // duration of a frame
     double                          frame_start = 0;        // PIC time of start of (h=scanline v=frame)
     unsigned int                    frame_count = 0;        // frame count
