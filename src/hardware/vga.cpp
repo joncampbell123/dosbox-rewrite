@@ -179,18 +179,29 @@ public:
 
     VGACRTCDAC_ShiftReg             shiftreg;
 
+    double                          frame_raw_start = 0;
     double                          dot_clock_src_hz = 0;   // dot clock frequency crystal frequency
-    double                          dot_clock_hz = 0;       // dot clock frequency in effect (dot_clock_src_hz / dot_clock_divide)
-    double                          frame_rate = 0;         // frame rate in Hz
-    double                          frame_hsync = 0;        // frame hsync rate in Hz
-    double                          frame_line_duration = 0;// duration of a line
-    double                          frame_duration = 0;     // duration of a frame
-    double                          frame_start = 0;        // PIC time of start of (h=scanline v=frame)
-    unsigned int                    frame_count = 0;        // frame count
     unsigned int                    dot_clock_divide = 1;   // dot clock divider
-    unsigned int                    frame_raw_pixels = 0;   // raw dot clock pixels since frame start
-    unsigned int                    frame_raw_pixels_render = 0;// raw dot clock pixels since frame start, render position
+    unsigned int                    frame_count = 0;        // frame count
+    unsigned int                    frame_raw_pixels = 0;   // raw dot clock pixels since frame_raw_start
+    unsigned int                    frame_raw_pixels_render = 0;// raw dot clock pixels since frame_raw_start, render position
     signed char                     frame_field = -1;       // frame field (-1 if not interlaced)
+
+    inline double dot_clock_hz(void) const {
+        return dot_clock_src_hz / dot_clock_divide;
+    }
+    inline double frame_duration_base(const unsigned int m) const {
+        return (double(hd.total.pixels) * double(vd.total.pixels) * double(m * dot_clock_divide)) / dot_clock_src_hz;
+    }
+    inline double frame_duration_ms(void) const {
+        return frame_duration_base(1000);
+    }
+    inline double frame_duration_s(void) const {
+        return frame_duration_base(1);
+    }
+    inline double frame_rate(void) const {
+        return dot_clock_hz() / hd.total.pixels / vd.total.pixels;
+    }
 };
 
 VGACRTCDAC                          vga_crtc;
