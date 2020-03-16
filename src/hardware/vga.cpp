@@ -53,32 +53,29 @@ using namespace std;
 
 VGA_Type vga;
 
-template <typename T> struct StartEndRangeI {
-    T               start,end;                          // range is inclusive: start <= x <= end. does not exist if start > end.
-
-    StartEndRangeI() : start(1), end(0) { // empty state
-    }
-    StartEndRangeI(const T _start,const T _end) : start(_start), end(_end) { // initial state
-    }
-
-    inline T empty(void) const {
-        return start > end;
-    }
-    inline T length(void) const {
-        /* WARNING: assumes you first checked that empty() == false */
-        return end + T(1u) - start;
-    }
-    inline void clear(void) {
-        start = T(1u);
-        end = T(0u);
-    }
-};
-
 enum class VGAPixelEmit : unsigned char {
     x1=0,   // once (single)
     x2=1,   // twice (double)
     x4=2,   // 4 times
     x8=3    // 8 times
+};
+
+template <typename T> struct VGACRTCCount {
+    T       pixels,chars;
+
+    VGACRTCCount() : pixels(0), chars(0) {
+    }
+    VGACRTCCount(const T p,const T c) : pixels(p), chars(c) {
+    }
+};
+
+template <typename T> struct VGACRTCStartStop {
+    T       start,stop;
+
+    VGACRTCStartStop() {
+    }
+    VGACRTCStartStop(const T a,const T b) : start(a), stop(b) {
+    }
 };
 
 // common values for one dimension
@@ -92,18 +89,10 @@ struct VGACRTCDAC_Dim {
     /* |                                              | border ----------------- | */
     /* |                                                 | blank ------------ |  | */
     /* |                                                             | sync |    | */
-    unsigned int                    total_pix = 0;          // h/v-total in pixels. pixels counted 0 <= x < total
-    unsigned int                    total_char = 0;
-    unsigned int                    active_pix = 0;         // h/v-active display in pixels. active pixels are 0 <= x < active
-    unsigned int                    active_char = 0;
-    unsigned int                    blank_pix_wrap = 0;     // h/v-blanking in active display if wraparound. extra blank is 0 <= x < blank
-    unsigned int                    blank_char_wrap = 0;
-    unsigned int                    sync_pix_wrap = 0;      // h/v-sync in active display if wraparound. extra sync is 0 <= x < sync
-    unsigned int                    sync_char_wrap = 0;
-    StartEndRangeI<unsigned int>    blank_pix;              // h/v-blanking
-    StartEndRangeI<unsigned int>    blank_char;
-    StartEndRangeI<unsigned int>    sync_pix;               // h/v-sync
-    StartEndRangeI<unsigned int>    sync_char;
+    VGACRTCCount<unsigned int>                          total;                  // h/v-total. counted 0 <= x < total
+    VGACRTCCount<unsigned int>                          active;                 // h/v-active. counted 0 <= x < active
+    VGACRTCStartStop< VGACRTCCount<unsigned int> >      blank;                  // h/v-blanking. starts at first dot clock of start, stops at first dot clock of stop
+    VGACRTCStartStop< VGACRTCCount<unsigned int> >      sync;                   // h/v-sync. starts at first dot clock of start, stops at first dot clock of stop
 };
 
 struct VGACRTCDAC_Dim_H : VGACRTCDAC_Dim {
@@ -122,8 +111,7 @@ struct VGACRTCDACStatus_Dim {
         } f;
         unsigned int                raw = 0;
     } vsig;
-    unsigned int                    scan_count = 0;     // h/v-pixel count
-    unsigned int                    char_count = 0;     // h/v-char count
+    VGACRTCCount<unsigned int>      count;              // h/v count
 };
 
 struct VGACRTCDACStatus_Dim_V : VGACRTCDACStatus_Dim {
