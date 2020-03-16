@@ -96,7 +96,7 @@ struct VGACRTCDAC_Dim {
 };
 
 struct VGACRTCDAC_Dim_H : VGACRTCDAC_Dim {
-    unsigned int                    dot_clock_per_char_clock;   // width of a character clock in dot clock pixels. not necessarily pixels per cell (EGA/VGA)
+    unsigned int                    dot_clock_per_char_clock;       // width of a character clock in dot clock pixels. not necessarily pixels per cell (EGA/VGA)
 };
 
 struct VGACRTCDACStatus_Dim {
@@ -111,7 +111,7 @@ struct VGACRTCDACStatus_Dim {
         } f;
         unsigned int                raw = 0;
     } vsig;
-    VGACRTCCount<unsigned int>      count;              // h/v count
+    VGACRTCCount<unsigned int>      count;                          // h/v count
 };
 
 struct VGACRTCDACStatus_Dim_V : VGACRTCDACStatus_Dim {
