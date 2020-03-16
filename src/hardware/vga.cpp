@@ -191,6 +191,8 @@ public:
     signed char                     frame_field = -1;       // frame field (-1 if not interlaced)
 };
 
+VGACRTCDAC                          vga_crtc;
+
 Bit32u ExpandTable[256];
 double vga_force_refresh_rate = -1;
 
