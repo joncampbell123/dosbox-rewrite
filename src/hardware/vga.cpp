@@ -183,7 +183,6 @@ public:
     double                          dot_clock_hz = 0;       // dot clock frequency in effect (dot_clock_src_hz / dot_clock_divide)
     double                          frame_duration = 0;     // duration of a frame
     double                          frame_start = 0;        // PIC time of start of (h=scanline v=frame)
-    double                          frame_count_start = 0;  // PIC time of start of frame when frame_count == 0
     unsigned int                    frame_count = 0;        // frame count
     unsigned int                    dot_clock_divide = 1;   // dot clock divider
     unsigned int                    frame_raw_pixels = 0;   // raw dot clock pixels since frame start
