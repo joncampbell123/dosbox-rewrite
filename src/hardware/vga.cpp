@@ -96,7 +96,7 @@ struct VGACRTCDAC_Dim {
 };
 
 struct VGACRTCDAC_Dim_H : VGACRTCDAC_Dim {
-    unsigned int                    dot_clock_per_char_clock;       // width of a character clock in dot clock pixels. not necessarily pixels per cell (EGA/VGA)
+    unsigned int                    dot_clock_per_char_clock = 0;   // width of a character clock in dot clock pixels. not necessarily pixels per cell (EGA/VGA)
 };
 
 struct VGACRTCDACStatus_Dim {
