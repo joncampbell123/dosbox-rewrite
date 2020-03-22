@@ -155,6 +155,39 @@ struct VGACRTCDAC_ShiftReg {
     enum VGAPixelEmit               output_pixel_emit = VGAPixelEmit::x1;// pixel duplication to output
 };
 
+struct ClockTracking {
+    double                          pic_start = 0;                      // dot clock counts from this PIC_FullIndex()
+    double                          clock_rate = 1;                     // clock rate in Hz
+    double                          clock_to_tick = 0.001;              // PIC_FullIndex() * clock_to_tick = ticks
+    int64_t                         count_from = 0;                     // first tick count
+    int64_t                         count = 0;                          // last computed count
+
+    ClockTracking() { }
+    ClockTracking(const double rate) : clock_rate(rate), clock_to_tick(rate / 1000.0) { }
+
+    inline int64_t count_from_pic(const double t/*PIC_FullIndex()*/) const {
+        return ((t - pic_start) * clock_to_tick) + count_from;
+    }
+    inline double count_to_pic(const int64_t t) const {
+        return ((t - count_from) / clock_to_tick) + pic_start;
+    }
+    inline void update_count_from_pic(const double t/*PIC_FullIndex()*/) {
+        count = count_from_pic(t);
+    }
+    void reset(const double rate/*Hz*/,const double t/*PIC_FullIndex()*/,const int64_t clock_base) {
+        clock_to_tick = rate / 1000.0;
+        clock_rate = rate;
+
+        count_from = clock_base;
+        pic_start = t;
+        count = 0;
+    }
+    void change_rate(const double rate/*Hz*/,const double t/*PIC_FullIndex()*/) {
+        update_count_from_pic(t); /* recompute clock */
+        reset(rate,count_to_pic(count),count);
+    }
+};
+
 // Ref: CGA 80x25
 //      dot_clock_per_char_clock = 8
 //      shift_register_pixels = 8
