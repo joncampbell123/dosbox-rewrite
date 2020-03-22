@@ -155,43 +155,87 @@ struct VGACRTCDAC_ShiftReg {
     enum VGAPixelEmit               output_pixel_emit = VGAPixelEmit::x1;// pixel duplication to output
 };
 
+// value is num/den
+template <typename T> struct DRational {
+    T                               num,den;
+
+    DRational() : num(1), den(1) { }
+    DRational(const T r) : num(r), den(1) { }
+    DRational(const T n,const T d) : num(n), den(d) { }
+};
+
 struct ClockTracking {
-    double                          pic_start = 0;                      // dot clock counts from this PIC_FullIndex()
-    double                          clock_rate = 1;                     // clock rate in Hz
-    double                          clock_to_tick = 0.001;              // PIC_FullIndex() * clock_to_tick = ticks
+    // in case we need to use a different type later
+    using clock_rational = DRational<uint64_t>;
+
+    clock_rational                  clock_rate;                         // clock rate in Hz
+    Bitu                            pic_tick_counter;                   // tick counter, reset pic_start and pic_tick_counter when it meets clock_rate.den
+    Bitu                            pic_tick_start;
+    double                          pic_start;                          // dot clock counts from this pic_index()
+    double                          clock_to_tick;                      // pic_index() * clock_to_tick = ticks
     int64_t                         count_from = 0;                     // first tick count
     int64_t                         count = 0;                          // last computed count
 
-    ClockTracking() { }
-    ClockTracking(const double rate) : clock_rate(rate), clock_to_tick(rate / 1000.0) { }
+    ClockTracking() : clock_rate(1) { _clock_to_tick_update(); _pic_start_init(); }
+    ClockTracking(const uint64_t rate) : clock_rate(rate) { _clock_to_tick_update(); _pic_start_init(); }
+    ClockTracking(const clock_rational rate) : clock_rate(rate) { _clock_to_tick_update(); _pic_start_init(); }
 
-    void reset(const double rate/*Hz*/,const double t/*PIC_FullIndex()*/,const int64_t clock_base);
-    void change_rate(const double rate/*Hz*/,const double t/*PIC_FullIndex()*/);
+    void _clock_to_tick_update(void) {
+        clock_to_tick = double(clock_rate.num) / (double(clock_rate.den) * 1000.0);
+    }
 
-    inline int64_t count_from_pic(const double t/*PIC_FullIndex()*/) const {
-        return ((t - pic_start) * clock_to_tick) + count_from;
+    void _pic_start_init(void) {
+        pic_tick_counter = 0;
+        pic_tick_start = PIC_Ticks;
+        pic_start = PIC_TickIndex();
     }
-    inline double count_to_pic(const int64_t t) const {
-        return ((t - count_from) / clock_to_tick) + pic_start;
+
+    void pic_tick_complete(void) {
+        /* call upon completion of a 1ms tick */
+        if ((++pic_tick_counter) >= (clock_rate.den * Bitu(1000))) {
+            pic_tick_counter -= clock_rate.den * Bitu(1000);
+            pic_tick_start += clock_rate.den * Bitu(1000);
+            count_from += clock_rate.num;
+        }
     }
-    inline void update_count_from_pic(const double t/*PIC_FullIndex()*/) {
-        count = count_from_pic(t);
+
+    void reset_counter(void) {
+        _pic_start_init();
+        count_from = count = 0;
+    }
+
+    void reset_tick_base(void) {
+        update_count();
+        _pic_start_init();
+        count_from = count;
+    }
+
+    void set_rate(const uint64_t rate) {
+        reset_tick_base();
+        clock_rate = rate;
+        _clock_to_tick_update();
+    }
+
+    void set_rate(const clock_rational rate) {
+        reset_tick_base();
+        clock_rate = rate;
+        _clock_to_tick_update();
+    }
+
+    inline double pic_index(void) const {
+        /* NTS: PIC_FullIndex() is PIC_Ticks + PIC_TickIndex().
+         * Keep the whole part small so floating point precision does not gradually decay with larger and larger numbers. */
+        return double(PIC_Ticks - pic_tick_start) + PIC_TickIndex() - pic_start;
+    }
+
+    inline int64_t get_count(void) const {
+        return int64_t(pic_index() * clock_to_tick) + count_from;
+    }
+
+    void update_count(void) {
+        count = get_count();
     }
 };
-
-void ClockTracking::reset(const double rate/*Hz*/,const double t/*PIC_FullIndex()*/,const int64_t clock_base) {
-    clock_to_tick = rate / 1000.0;
-    clock_rate = rate;
-
-    count_from = clock_base;
-    pic_start = t;
-    count = 0;
-}
-
-void ClockTracking::change_rate(const double rate/*Hz*/,const double t/*PIC_FullIndex()*/) {
-    update_count_from_pic(t); /* recompute clock */
-    reset(rate,count_to_pic(count),count);
-}
 
 // Ref: CGA 80x25
 //      dot_clock_per_char_clock = 8
