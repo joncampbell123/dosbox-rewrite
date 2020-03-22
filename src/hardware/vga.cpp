@@ -171,6 +171,7 @@ template <typename T> struct DRational {
     static inline constexpr T _nd_gcd(const T a,const T b) {
         return (b != 0L) ? _nd_gcd(b,a%b) : (a);
     }
+
     template <const bool check=false> void _nd_reduce(void) {
         const T gcd = _nd_gcd(num,den);
         if (gcd > 0L) {
