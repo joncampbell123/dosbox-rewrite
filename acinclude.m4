@@ -8,7 +8,7 @@ AC_ARG_WITH(sdl2-exec-prefix,[  --with-sdl2-exec-prefix=PFX Exec prefix where SD
 AC_ARG_ENABLE(sdl2test, [  --disable-sdl2test      Do not try to compile and run a test SDL program],
 		    enable_sdl2test=no, enable_sdl2test=yes)
 AC_ARG_ENABLE(sdl2,     [  --enable-sdl2           Enable SDL 2.x],
-		    enable_sdl2enable=$enableval, enable_sdl2enable=no)
+		    enable_sdl2enable=$enableval, enable_sdl2enable=yes)
 
   AH_TEMPLATE(C_SDL2,[Set to 1 to enable SDL 2.x support])
 
@@ -47,61 +47,6 @@ AC_ARG_ENABLE(sdl2,     [  --enable-sdl2           Enable SDL 2.x],
 
   AC_SUBST(SDL2_CFLAGS)
   AC_SUBST(SDL2_LIBS)
-])
-
-dnl AM_PATH_SDL([MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]]])
-dnl Test for SDL, and define SDL_CFLAGS and SDL_LIBS
-dnl
-AC_DEFUN([AM_PATH_SDL],
-[dnl 
-dnl Get the cflags and libraries from the sdl-config script
-dnl
-AC_ARG_WITH(sdl-prefix,[  --with-sdl-prefix=PFX   Prefix where SDL is installed (optional)],
-            sdl_prefix="$withval", sdl_prefix="")
-AC_ARG_WITH(sdl-exec-prefix,[  --with-sdl-exec-prefix=PFX Exec prefix where SDL is installed (optional)],
-            sdl_exec_prefix="$withval", sdl_exec_prefix="")
-AC_ARG_ENABLE(sdltest,      [  --disable-sdltest       Do not try to compile and run a test SDL program],
-		    enable_sdltest=no, enable_sdltest=yes)
-AC_ARG_ENABLE(sdl, [  --enable-sdl            Enable SDL 1.x],
-		    enable_sdlenable=$enableval, enable_sdlenable=yes)
-
-  AH_TEMPLATE(C_SDL1,[Set to 1 to enable SDL 1.x support])
-
-  SDL_CONFIG=no
-  if test x$enable_sdlenable = xyes ; then
-    if test x$sdl_exec_prefix != x ; then
-      sdl_args="$sdl_args --exec-prefix=$sdl_exec_prefix"
-      if test x${SDL_CONFIG+set} != xset ; then
-        SDL_CONFIG=$sdl_exec_prefix/bin/sdl-config
-      fi
-    fi
-    if test x$sdl_prefix != x ; then
-      sdl_args="$sdl_args --prefix=$sdl_prefix"
-      if test x${SDL_CONFIG+set} != xset ; then
-        SDL_CONFIG=$sdl_prefix/bin/sdl-config
-      fi
-    fi
-
-    if test -x vs2015/sdl/linux-host/bin/sdl-config ; then
-      SDL_CONFIG=vs2015/sdl/linux-host/bin/sdl-config
-      PATH=vs2015/sdl/linux-host/bin:$PATH
-    fi
-
-    AC_PATH_PROG(SDL_CONFIG, sdl-config, no)
-    min_sdl_version=ifelse([$1], ,0.11.0,$1)
-    AC_MSG_CHECKING(for SDL - version >= $min_sdl_version)
-    no_sdl=""
-    if test "$SDL_CONFIG" = "no" ; then
-      no_sdl=yes
-    else
-      SDL_CFLAGS=`$SDL_CONFIG $sdlconf_args --cflags`
-      SDL_LIBS=`$SDL_CONFIG $sdlconf_args --libs`
-      AC_DEFINE(C_SDL1,1)
-    fi
-  fi
-
-  AC_SUBST(SDL_CFLAGS)
-  AC_SUBST(SDL_LIBS)
 ])
 
 dnl Configure Paths for Alsa
