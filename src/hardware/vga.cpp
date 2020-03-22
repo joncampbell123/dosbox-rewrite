@@ -162,6 +162,31 @@ template <typename T> struct DRational {
     DRational() : num(1), den(1) { }
     DRational(const T r) : num(r), den(1) { }
     DRational(const T n,const T d) : num(n), den(d) { }
+
+    /* NTS: Unlike Boost rational we do NOT auto-reduce on assign! */
+    void reduce(void) {
+        _nd_reduce</*check*/true>();
+    }
+
+    static inline constexpr T _nd_gcd(const T a,const T b) {
+        return (b != 0L) ? _nd_gcd(b,a%b) : (a);
+    }
+    template <const bool check=false> void _nd_reduce(void) {
+        const T gcd = _nd_gcd(num,den);
+        if (gcd > 0L) {
+            if (check && (num % gcd) != 0L && (den % gcd) != 0L)
+                throw std::runtime_error("reduce gcd failed");
+
+            num /= gcd;
+            den /= gcd;
+
+            if (check) {
+                const T chk_gcd = _nd_gcd(num,den);
+                if (chk_gcd < -1L || chk_gcd > 1L)
+                    throw std::runtime_error("reduce gcd ineffective");
+            }
+        }
+    }
 };
 
 struct ClockTracking {
