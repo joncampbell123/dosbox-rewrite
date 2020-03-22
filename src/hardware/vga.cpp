@@ -238,11 +238,17 @@ struct ClockTracking {
     }
 
     void reset_counter_hard(void) {
+        /* do a hard reset, resetting the counter and setting the time base to now.
+         * this will lose some tick precision because the next tick will happen now no matter the amount of time
+         * from what would have been the next tick. use reset_counter() if clock tick accuracy is required across counter resets. */
         _pic_start_init();
         count_from = count = 0;
     }
 
     void reset_tick_base(void) {
+        /* maintain tick count, reset time base to now.
+         * this will lose some tick precision because the next tick will happen now no matter the amount of time
+         * from what would have been the next tick. */
         update_count();
         _pic_start_init();
         count_from = count;
