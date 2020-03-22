@@ -168,7 +168,7 @@ struct ClockTracking {
     // in case we need to use a different type later
     using clock_rational = DRational<uint64_t>;
 
-    clock_rational                  clock_rate;                         // clock rate in Hz
+    clock_rational                  clock_rate_ms;                      // clock rate in 1ms ticks
     Bitu                            pic_tick_counter;                   // tick counter, reset pic_start and pic_tick_counter when it meets clock_rate.den
     Bitu                            pic_tick_start;
     double                          pic_start;                          // dot clock counts from this pic_index()
@@ -176,12 +176,12 @@ struct ClockTracking {
     int64_t                         count_from = 0;                     // first tick count
     int64_t                         count = 0;                          // last computed count
 
-    ClockTracking() : clock_rate(1) { _clock_to_tick_update(); _pic_start_init(); }
-    ClockTracking(const uint64_t rate) : clock_rate(rate) { _clock_to_tick_update(); _pic_start_init(); }
-    ClockTracking(const clock_rational rate) : clock_rate(rate) { _clock_to_tick_update(); _pic_start_init(); }
+    ClockTracking() : clock_rate_ms(1) { _clock_to_tick_update(); _pic_start_init(); }
+    ClockTracking(const uint64_t rate) : clock_rate_ms(rate) { _clock_to_tick_update(); _pic_start_init(); }
+    ClockTracking(const clock_rational rate) : clock_rate_ms(rate) { _clock_to_tick_update(); _pic_start_init(); }
 
     void _clock_to_tick_update(void) {
-        clock_to_tick = double(clock_rate.num) / (double(clock_rate.den) * 1000.0);
+        clock_to_tick = double(clock_rate_ms.num) / double(clock_rate_ms.den);
     }
 
     void _pic_start_init(void) {
@@ -192,10 +192,10 @@ struct ClockTracking {
 
     void pic_tick_complete(void) {
         /* call upon completion of a 1ms tick */
-        if ((++pic_tick_counter) >= (clock_rate.den * Bitu(1000))) {
-            pic_tick_counter -= clock_rate.den * Bitu(1000);
-            pic_tick_start += clock_rate.den * Bitu(1000);
-            count_from += clock_rate.num;
+        if ((++pic_tick_counter) >= clock_rate_ms.den) {
+            pic_tick_counter -= clock_rate_ms.den;
+            pic_tick_start += clock_rate_ms.den;
+            count_from += clock_rate_ms.num;
         }
     }
 
@@ -212,13 +212,13 @@ struct ClockTracking {
 
     void set_rate(const uint64_t rate) {
         reset_tick_base();
-        clock_rate = rate;
+        clock_rate_ms = rate;
         _clock_to_tick_update();
     }
 
     void set_rate(const clock_rational rate) {
         reset_tick_base();
-        clock_rate = rate;
+        clock_rate_ms = rate;
         _clock_to_tick_update();
     }
 
