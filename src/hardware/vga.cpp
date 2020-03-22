@@ -201,7 +201,6 @@ struct ClockTracking {
     using clock_rational = DRational<uint64_t>;
 
     clock_rational                  clock_rate_ms;                      // clock rate in 1ms ticks
-    Bitu                            pic_tick_counter;                   // tick counter, reset pic_start and pic_tick_counter when it meets clock_rate.den
     Bitu                            pic_tick_start;
     double                          pic_start;                          // dot clock counts from this pic_index()
     double                          clock_to_tick;                      // pic_index() * clock_to_tick = ticks
@@ -217,15 +216,13 @@ struct ClockTracking {
     }
 
     void _pic_start_init(void) {
-        pic_tick_counter = 0;
         pic_tick_start = PIC_Ticks;
         pic_start = PIC_TickIndex();
     }
 
     void pic_tick_complete(void) {
         /* call upon completion of a 1ms tick */
-        if ((++pic_tick_counter) >= clock_rate_ms.den) {
-            pic_tick_counter -= clock_rate_ms.den;
+        if ((PIC_Ticks - pic_tick_start) >= clock_rate_ms.den) {
             pic_tick_start += clock_rate_ms.den;
             count_from += clock_rate_ms.num;
         }
