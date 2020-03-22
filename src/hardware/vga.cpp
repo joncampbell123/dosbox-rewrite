@@ -164,8 +164,13 @@ template <typename T> struct DRational {
     DRational(const T n,const T d) : num(n), den(d) { }
 
     /* NTS: Unlike Boost rational we do NOT auto-reduce on assign! */
-    void reduce(void) {
+    void do_reduce(void) {
         _nd_reduce</*check*/true>();
+    }
+
+    DRational &reduce(void) {
+        do_reduce();
+        return *this;
     }
 
     static inline constexpr T _nd_gcd(const T a,const T b) {
@@ -183,7 +188,8 @@ template <typename T> struct DRational {
 
             if (check) {
                 const T chk_gcd = _nd_gcd(num,den);
-                if (chk_gcd < -1L || chk_gcd > 1L)
+                if (chk_gcd != T(1)) // unsigned
+//              if (chk_gcd < -1L || chk_gcd > 1L) // signed
                     throw std::runtime_error("reduce gcd ineffective");
             }
         }
