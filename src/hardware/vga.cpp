@@ -232,8 +232,8 @@ struct ClockTracking {
         for (unsigned int i=0;i < 4;i++)
             pic_tick_complete();
 
-        update_count();
-        count_from = -count;
+        /* reset counter to zero without missing a tick by setting count_from so that the next update_count() would return zero */
+        count_from = -get_count_rel();
         count = 0;
     }
 
@@ -266,8 +266,12 @@ struct ClockTracking {
         return double(PIC_Ticks - pic_tick_start) + PIC_TickIndex() - pic_start;
     }
 
+    inline int64_t get_count_rel(void) const {
+        return int64_t(pic_index() * clock_to_tick);
+    }
+
     inline int64_t get_count(void) const {
-        return int64_t(pic_index() * clock_to_tick) + count_from;
+        return get_count_rel() + count_from;
     }
 
     void update_count(void) {
