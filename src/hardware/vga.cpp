@@ -229,6 +229,15 @@ struct ClockTracking {
     }
 
     void reset_counter(void) {
+        for (unsigned int i=0;i < 4;i++)
+            pic_tick_complete();
+
+        update_count();
+        count_from = -count;
+        count = 0;
+    }
+
+    void reset_counter_hard(void) {
         _pic_start_init();
         count_from = count = 0;
     }
