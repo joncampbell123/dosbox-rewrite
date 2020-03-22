@@ -168,7 +168,7 @@ template <typename T> struct DRational {
         _nd_reduce</*check*/true>();
     }
 
-    DRational &reduce(void) {
+    DRational &ip_reduce(void) {
         do_reduce();
         return *this;
     }
