@@ -165,6 +165,9 @@ struct ClockTracking {
     ClockTracking() { }
     ClockTracking(const double rate) : clock_rate(rate), clock_to_tick(rate / 1000.0) { }
 
+    void reset(const double rate/*Hz*/,const double t/*PIC_FullIndex()*/,const int64_t clock_base);
+    void change_rate(const double rate/*Hz*/,const double t/*PIC_FullIndex()*/);
+
     inline int64_t count_from_pic(const double t/*PIC_FullIndex()*/) const {
         return ((t - pic_start) * clock_to_tick) + count_from;
     }
@@ -174,19 +177,21 @@ struct ClockTracking {
     inline void update_count_from_pic(const double t/*PIC_FullIndex()*/) {
         count = count_from_pic(t);
     }
-    void reset(const double rate/*Hz*/,const double t/*PIC_FullIndex()*/,const int64_t clock_base) {
-        clock_to_tick = rate / 1000.0;
-        clock_rate = rate;
-
-        count_from = clock_base;
-        pic_start = t;
-        count = 0;
-    }
-    void change_rate(const double rate/*Hz*/,const double t/*PIC_FullIndex()*/) {
-        update_count_from_pic(t); /* recompute clock */
-        reset(rate,count_to_pic(count),count);
-    }
 };
+
+void ClockTracking::reset(const double rate/*Hz*/,const double t/*PIC_FullIndex()*/,const int64_t clock_base) {
+    clock_to_tick = rate / 1000.0;
+    clock_rate = rate;
+
+    count_from = clock_base;
+    pic_start = t;
+    count = 0;
+}
+
+void ClockTracking::change_rate(const double rate/*Hz*/,const double t/*PIC_FullIndex()*/) {
+    update_count_from_pic(t); /* recompute clock */
+    reset(rate,count_to_pic(count),count);
+}
 
 // Ref: CGA 80x25
 //      dot_clock_per_char_clock = 8
