@@ -1453,7 +1453,6 @@ void MenuDrawRect(int x,int y,int w,int h,Bitu color) {
     }
 }
 
-extern Bit8u int10_font_14[256 * 14];
 extern Bit8u int10_font_16[256 * 16];
 
 void MenuDrawTextChar(int x,int y,unsigned char c,Bitu color) {
@@ -2932,11 +2931,10 @@ static void SetPriority(PRIORITY_LEVELS level) {
     }
 }
 
-extern Bit8u int10_font_14[256 * 14];
 static void OutputString(Bitu x,Bitu y,const char * text,Bit32u color,Bit32u color2,SDL_Surface * output_surface) {
     Bit32u * draw=(Bit32u*)(((Bit8u *)output_surface->pixels)+((y)*output_surface->pitch))+x;
     while (*text) {
-        Bit8u * font=&int10_font_14[(*text)*14];
+        Bit8u * font=&int10_font_16[(*text)*16 + 1];
         Bitu i,j;
         Bit32u * draw_line=draw;
         for (i=0;i<14;i++) {

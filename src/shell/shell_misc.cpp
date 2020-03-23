@@ -29,9 +29,6 @@
 #include "callback.h"
 #include "support.h"
 #include "../ints/int10.h"
-#ifdef WIN32
-#include "../dos/cdrom.h"
-#endif 
 
 #ifdef _MSC_VER
 # define MIN(a,b) ((a) < (b) ? (a) : (b))

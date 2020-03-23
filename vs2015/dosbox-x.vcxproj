@@ -338,7 +338,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;opengl32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\zlib\$(Platform)\$(Configuration)\zlib.lib;$(SolutionDir)..\obj\libpng\$(Platform)\$(Configuration)\libpng.lib;$(SolutionDir)..\obj\freetype\$(Platform)\$(Configuration)\freetype.lib;$(SolutionDir)..\obj\SDL\$(Platform)\$(Configuration)\SDL.lib;$(SolutionDir)..\obj\SDLmain\$(Platform)\$(Configuration)\SDLmain.lib;$(SolutionDir)..\obj\SDL_net\$(Platform)\$(Configuration)\SDL_net.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;opengl32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\SDL\$(Platform)\$(Configuration)\SDL.lib;$(SolutionDir)..\obj\SDLmain\$(Platform)\$(Configuration)\SDLmain.lib;$(SolutionDir)..\obj\SDL_net\$(Platform)\$(Configuration)\SDL_net.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
     <CustomBuildStep />
@@ -372,7 +372,7 @@ copy "$(SolutionDir)\..\shaders\*.*" "$(OutputPath)\shaders\"</Command>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;opengl32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\zlib\$(Platform)\$(Configuration)\zlib.lib;$(SolutionDir)..\obj\libpng\$(Platform)\$(Configuration)\libpng.lib;$(SolutionDir)..\obj\freetype\$(Platform)\$(Configuration)\freetype.lib;$(SolutionDir)..\obj\SDL2\$(Platform)\$(Configuration)\sdl2.lib;$(SolutionDir)..\obj\SDL2main\$(Platform)\$(Configuration)\sdl2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;opengl32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\SDL2\$(Platform)\$(Configuration)\sdl2.lib;$(SolutionDir)..\obj\SDL2main\$(Platform)\$(Configuration)\sdl2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
     <CustomBuildStep />
@@ -407,7 +407,7 @@ copy "$(SolutionDir)\..\shaders\*.*" "$(OutputPath)\shaders\"</Command>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;opengl32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\zlib\$(Platform)\$(Configuration)\zlib.lib;$(SolutionDir)..\obj\libpng\$(Platform)\$(Configuration)\libpng.lib;$(SolutionDir)..\obj\freetype\$(Platform)\$(Configuration)\freetype.lib;$(SolutionDir)..\obj\SDL\$(Platform)\$(Configuration)\SDL.lib;$(SolutionDir)..\obj\SDLmain\$(Platform)\$(Configuration)\SDLmain.lib;$(SolutionDir)..\obj\SDL_net\$(Platform)\$(Configuration)\SDL_net.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;opengl32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\SDL\$(Platform)\$(Configuration)\SDL.lib;$(SolutionDir)..\obj\SDLmain\$(Platform)\$(Configuration)\SDLmain.lib;$(SolutionDir)..\obj\SDL_net\$(Platform)\$(Configuration)\SDL_net.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
@@ -438,7 +438,7 @@ copy "$(SolutionDir)\..\shaders\*.*" "$(OutputPath)\shaders\"</Command>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;comdlg32.lib;shell32.lib;gdi32.lib;ole32.lib;oleaut32.lib;Advapi32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\zlib\$(Platform)\$(Configuration)\zlib.lib;$(SolutionDir)..\obj\libpng\$(Platform)\$(Configuration)\libpng.lib;$(SolutionDir)..\obj\freetype\$(Platform)\$(Configuration)\freetype.lib;$(SolutionDir)..\obj\SDL\$(Platform)\$(Configuration)\SDL.lib;$(SolutionDir)..\obj\SDLmain\$(Platform)\$(Configuration)\SDLmain.lib;$(SolutionDir)..\obj\SDL_net\$(Platform)\$(Configuration)\SDL_net.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;comdlg32.lib;shell32.lib;gdi32.lib;ole32.lib;oleaut32.lib;Advapi32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\SDL\$(Platform)\$(Configuration)\SDL.lib;$(SolutionDir)..\obj\SDLmain\$(Platform)\$(Configuration)\SDLmain.lib;$(SolutionDir)..\obj\SDL_net\$(Platform)\$(Configuration)\SDL_net.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
@@ -469,7 +469,7 @@ copy "$(SolutionDir)\..\shaders\*.*" "$(OutputPath)\shaders\"</Command>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;comdlg32.lib;shell32.lib;gdi32.lib;ole32.lib;oleaut32.lib;Advapi32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\zlib\$(Platform)\$(Configuration)\zlib.lib;$(SolutionDir)..\obj\libpng\$(Platform)\$(Configuration)\libpng.lib;$(SolutionDir)..\obj\freetype\$(Platform)\$(Configuration)\freetype.lib;$(SolutionDir)..\obj\SDL\$(Platform)\$(Configuration)\SDL.lib;$(SolutionDir)..\obj\SDLmain\$(Platform)\$(Configuration)\SDLmain.lib;$(SolutionDir)..\obj\SDL_net\$(Platform)\$(Configuration)\SDL_net.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;comdlg32.lib;shell32.lib;gdi32.lib;ole32.lib;oleaut32.lib;Advapi32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\SDL\$(Platform)\$(Configuration)\SDL.lib;$(SolutionDir)..\obj\SDLmain\$(Platform)\$(Configuration)\SDLmain.lib;$(SolutionDir)..\obj\SDL_net\$(Platform)\$(Configuration)\SDL_net.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
@@ -502,7 +502,7 @@ copy "$(SolutionDir)\..\shaders\*.*" "$(OutputPath)\shaders\"</Command>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;opengl32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\zlib\$(Platform)\$(Configuration)\zlib.lib;$(SolutionDir)..\obj\libpng\$(Platform)\$(Configuration)\libpng.lib;$(SolutionDir)..\obj\freetype\$(Platform)\$(Configuration)\freetype.lib;$(SolutionDir)..\obj\SDL2\$(Platform)\$(Configuration)\sdl2.lib;$(SolutionDir)..\obj\SDL2main\$(Platform)\$(Configuration)\sdl2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;opengl32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\SDL2\$(Platform)\$(Configuration)\sdl2.lib;$(SolutionDir)..\obj\SDL2main\$(Platform)\$(Configuration)\sdl2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
@@ -533,7 +533,7 @@ copy "$(SolutionDir)\..\shaders\*.*" "$(OutputPath)\shaders\"</Command>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;comdlg32.lib;shell32.lib;gdi32.lib;ole32.lib;oleaut32.lib;Advapi32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\zlib\$(Platform)\$(Configuration)\zlib.lib;$(SolutionDir)..\obj\libpng\$(Platform)\$(Configuration)\libpng.lib;$(SolutionDir)..\obj\freetype\$(Platform)\$(Configuration)\freetype.lib;$(SolutionDir)..\obj\SDL2\$(Platform)\$(Configuration)\sdl2.lib;$(SolutionDir)..\obj\SDL2main\$(Platform)\$(Configuration)\sdl2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;comdlg32.lib;shell32.lib;gdi32.lib;ole32.lib;oleaut32.lib;Advapi32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\SDL2\$(Platform)\$(Configuration)\sdl2.lib;$(SolutionDir)..\obj\SDL2main\$(Platform)\$(Configuration)\sdl2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
@@ -564,7 +564,7 @@ copy "$(SolutionDir)\..\shaders\*.*" "$(OutputPath)\shaders\"</Command>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;comdlg32.lib;shell32.lib;gdi32.lib;ole32.lib;oleaut32.lib;Advapi32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\zlib\$(Platform)\$(Configuration)\zlib.lib;$(SolutionDir)..\obj\libpng\$(Platform)\$(Configuration)\libpng.lib;$(SolutionDir)..\obj\freetype\$(Platform)\$(Configuration)\freetype.lib;$(SolutionDir)..\obj\SDL2\$(Platform)\$(Configuration)\sdl2.lib;$(SolutionDir)..\obj\SDL2main\$(Platform)\$(Configuration)\sdl2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;comdlg32.lib;shell32.lib;gdi32.lib;ole32.lib;oleaut32.lib;Advapi32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\SDL2\$(Platform)\$(Configuration)\sdl2.lib;$(SolutionDir)..\obj\SDL2main\$(Platform)\$(Configuration)\sdl2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
@@ -596,7 +596,7 @@ copy "$(SolutionDir)\..\shaders\*.*" "$(OutputPath)\shaders\"</Command>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;opengl32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\zlib\$(Platform)\$(Configuration)\zlib.lib;$(SolutionDir)..\obj\libpng\$(Platform)\$(Configuration)\libpng.lib;$(SolutionDir)..\obj\freetype\$(Platform)\$(Configuration)\freetype.lib;$(SolutionDir)..\obj\SDL\$(Platform)\$(Configuration)\SDL.lib;$(SolutionDir)..\obj\SDLmain\$(Platform)\$(Configuration)\SDLmain.lib;$(SolutionDir)..\obj\SDL_net\$(Platform)\$(Configuration)\SDL_net.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;opengl32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\SDL\$(Platform)\$(Configuration)\SDL.lib;$(SolutionDir)..\obj\SDLmain\$(Platform)\$(Configuration)\SDLmain.lib;$(SolutionDir)..\obj\SDL_net\$(Platform)\$(Configuration)\SDL_net.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
     <CustomBuildStep />
@@ -631,7 +631,7 @@ copy "$(SolutionDir)\..\shaders\*.*" "$(OutputPath)\shaders\"</Command>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;opengl32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\zlib\$(Platform)\$(Configuration)\zlib.lib;$(SolutionDir)..\obj\libpng\$(Platform)\$(Configuration)\libpng.lib;$(SolutionDir)..\obj\freetype\$(Platform)\$(Configuration)\freetype.lib;$(SolutionDir)..\obj\SDL2\$(Platform)\$(Configuration)\sdl2.lib;$(SolutionDir)..\obj\SDL2main\$(Platform)\$(Configuration)\sdl2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;opengl32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\SDL2\$(Platform)\$(Configuration)\sdl2.lib;$(SolutionDir)..\obj\SDL2main\$(Platform)\$(Configuration)\sdl2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
     <CustomBuildStep />
@@ -667,7 +667,7 @@ copy "$(SolutionDir)\..\shaders\*.*" "$(OutputPath)\shaders\"</Command>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;opengl32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\zlib\$(Platform)\$(Configuration)\zlib.lib;$(SolutionDir)..\obj\libpng\$(Platform)\$(Configuration)\libpng.lib;$(SolutionDir)..\obj\freetype\$(Platform)\$(Configuration)\freetype.lib;$(SolutionDir)..\obj\SDL\$(Platform)\$(Configuration)\SDL.lib;$(SolutionDir)..\obj\SDLmain\$(Platform)\$(Configuration)\SDLmain.lib;$(SolutionDir)..\obj\SDL_net\$(Platform)\$(Configuration)\SDL_net.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;opengl32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\SDL\$(Platform)\$(Configuration)\SDL.lib;$(SolutionDir)..\obj\SDLmain\$(Platform)\$(Configuration)\SDLmain.lib;$(SolutionDir)..\obj\SDL_net\$(Platform)\$(Configuration)\SDL_net.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
@@ -699,7 +699,7 @@ copy "$(SolutionDir)\..\shaders\*.*" "$(OutputPath)\shaders\"</Command>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;comdlg32.lib;shell32.lib;gdi32.lib;ole32.lib;oleaut32.lib;Advapi32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\zlib\$(Platform)\$(Configuration)\zlib.lib;$(SolutionDir)..\obj\libpng\$(Platform)\$(Configuration)\libpng.lib;$(SolutionDir)..\obj\freetype\$(Platform)\$(Configuration)\freetype.lib;$(SolutionDir)..\obj\SDL\$(Platform)\$(Configuration)\SDL.lib;$(SolutionDir)..\obj\SDLmain\$(Platform)\$(Configuration)\SDLmain.lib;$(SolutionDir)..\obj\SDL_net\$(Platform)\$(Configuration)\SDL_net.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;comdlg32.lib;shell32.lib;gdi32.lib;ole32.lib;oleaut32.lib;Advapi32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\SDL\$(Platform)\$(Configuration)\SDL.lib;$(SolutionDir)..\obj\SDLmain\$(Platform)\$(Configuration)\SDLmain.lib;$(SolutionDir)..\obj\SDL_net\$(Platform)\$(Configuration)\SDL_net.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
@@ -731,7 +731,7 @@ copy "$(SolutionDir)\..\shaders\*.*" "$(OutputPath)\shaders\"</Command>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;comdlg32.lib;shell32.lib;gdi32.lib;ole32.lib;oleaut32.lib;Advapi32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\zlib\$(Platform)\$(Configuration)\zlib.lib;$(SolutionDir)..\obj\libpng\$(Platform)\$(Configuration)\libpng.lib;$(SolutionDir)..\obj\freetype\$(Platform)\$(Configuration)\freetype.lib;$(SolutionDir)..\obj\SDL\$(Platform)\$(Configuration)\SDL.lib;$(SolutionDir)..\obj\SDLmain\$(Platform)\$(Configuration)\SDLmain.lib;$(SolutionDir)..\obj\SDL_net\$(Platform)\$(Configuration)\SDL_net.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;comdlg32.lib;shell32.lib;gdi32.lib;ole32.lib;oleaut32.lib;Advapi32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\SDL\$(Platform)\$(Configuration)\SDL.lib;$(SolutionDir)..\obj\SDLmain\$(Platform)\$(Configuration)\SDLmain.lib;$(SolutionDir)..\obj\SDL_net\$(Platform)\$(Configuration)\SDL_net.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
@@ -765,7 +765,7 @@ copy "$(SolutionDir)\..\shaders\*.*" "$(OutputPath)\shaders\"</Command>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;opengl32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\zlib\$(Platform)\$(Configuration)\zlib.lib;$(SolutionDir)..\obj\libpng\$(Platform)\$(Configuration)\libpng.lib;$(SolutionDir)..\obj\freetype\$(Platform)\$(Configuration)\freetype.lib;$(SolutionDir)..\obj\SDL2\$(Platform)\$(Configuration)\sdl2.lib;$(SolutionDir)..\obj\SDL2main\$(Platform)\$(Configuration)\sdl2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;opengl32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\SDL2\$(Platform)\$(Configuration)\sdl2.lib;$(SolutionDir)..\obj\SDL2main\$(Platform)\$(Configuration)\sdl2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
@@ -797,7 +797,7 @@ copy "$(SolutionDir)\..\shaders\*.*" "$(OutputPath)\shaders\"</Command>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;comdlg32.lib;shell32.lib;gdi32.lib;ole32.lib;oleaut32.lib;Advapi32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\zlib\$(Platform)\$(Configuration)\zlib.lib;$(SolutionDir)..\obj\libpng\$(Platform)\$(Configuration)\libpng.lib;$(SolutionDir)..\obj\freetype\$(Platform)\$(Configuration)\freetype.lib;$(SolutionDir)..\obj\SDL2\$(Platform)\$(Configuration)\sdl2.lib;$(SolutionDir)..\obj\SDL2main\$(Platform)\$(Configuration)\sdl2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;comdlg32.lib;shell32.lib;gdi32.lib;ole32.lib;oleaut32.lib;Advapi32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\SDL2\$(Platform)\$(Configuration)\sdl2.lib;$(SolutionDir)..\obj\SDL2main\$(Platform)\$(Configuration)\sdl2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
@@ -829,7 +829,7 @@ copy "$(SolutionDir)\..\shaders\*.*" "$(OutputPath)\shaders\"</Command>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;comdlg32.lib;shell32.lib;gdi32.lib;ole32.lib;oleaut32.lib;Advapi32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\zlib\$(Platform)\$(Configuration)\zlib.lib;$(SolutionDir)..\obj\libpng\$(Platform)\$(Configuration)\libpng.lib;$(SolutionDir)..\obj\freetype\$(Platform)\$(Configuration)\freetype.lib;$(SolutionDir)..\obj\SDL2\$(Platform)\$(Configuration)\sdl2.lib;$(SolutionDir)..\obj\SDL2main\$(Platform)\$(Configuration)\sdl2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;imm32.lib;dxguid.lib;SetupAPI.lib;version.lib;Iphlpapi.lib;Ws2_32.lib;comdlg32.lib;shell32.lib;gdi32.lib;ole32.lib;oleaut32.lib;Advapi32.lib;$(SolutionDir)..\obj\libpdcurses\$(Platform)\$(Configuration)\libpdcurses.lib;$(SolutionDir)..\obj\SDL2\$(Platform)\$(Configuration)\sdl2.lib;$(SolutionDir)..\obj\SDL2main\$(Platform)\$(Configuration)\sdl2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
@@ -848,40 +848,25 @@ copy "$(SolutionDir)\..\shaders\*.*" "$(OutputPath)\shaders\"</Command>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\builtin\25_com.cpp" />
-    <ClCompile Include="..\src\builtin\28_com.cpp" />
-    <ClCompile Include="..\src\builtin\50_com.cpp" />
     <ClCompile Include="..\src\builtin\append_exe.cpp" />
-    <ClCompile Include="..\src\builtin\buffers_com.cpp" />
     <ClCompile Include="..\src\builtin\copy_exe.cpp" />
     <ClCompile Include="..\src\builtin\cwsdpmi_exe.cpp" />
     <ClCompile Include="..\src\builtin\debug_exe.cpp" />
-    <ClCompile Include="..\src\builtin\device_com.cpp" />
     <ClCompile Include="..\src\builtin\dos32a_exe.cpp" />
     <ClCompile Include="..\src\builtin\dos4gw_exe.cpp" />
     <ClCompile Include="..\src\builtin\dosidle_exe.cpp" />
-    <ClCompile Include="..\src\builtin\dsxmenu_exe_pc.cpp" />
-    <ClCompile Include="..\src\builtin\dsxmenu_exe_pc98.cpp" />
-    <ClCompile Include="..\src\builtin\edit_com.cpp" />
-    <ClCompile Include="..\src\builtin\fcbs_com.cpp" />
     <ClCompile Include="..\src\builtin\find_exe.cpp" />
-    <ClCompile Include="..\src\builtin\hexmem16_exe.cpp" />
-    <ClCompile Include="..\src\builtin\hexmem32_exe.cpp" />
-    <ClCompile Include="..\src\builtin\lastdriv_com.cpp" />
     <ClCompile Include="..\src\builtin\mem_com.cpp" />
     <ClCompile Include="..\src\builtin\move_exe.cpp" />
     <ClCompile Include="..\src\builtin\tree_exe.cpp" />
     <ClCompile Include="..\src\builtin\xcopy_exe.cpp" />
     <ClCompile Include="..\src\cpu\callback.cpp" />
-    <ClCompile Include="..\src\cpu\core_dynrec.cpp" />
-    <ClCompile Include="..\src\cpu\core_full.cpp" />
     <ClCompile Include="..\src\cpu\core_normal.cpp" />
     <ClCompile Include="..\src\cpu\core_normal_286.cpp" />
     <ClCompile Include="..\src\cpu\core_normal_8086.cpp" />
     <ClCompile Include="..\src\cpu\core_prefetch.cpp" />
     <ClCompile Include="..\src\cpu\core_prefetch_286.cpp" />
     <ClCompile Include="..\src\cpu\core_prefetch_8086.cpp" />
-    <ClCompile Include="..\src\cpu\core_simple.cpp" />
     <ClCompile Include="..\src\cpu\cpu.cpp" />
     <ClCompile Include="..\src\cpu\flags.cpp" />
     <ClCompile Include="..\src\cpu\mmx.cpp" />
@@ -892,232 +877,62 @@ copy "$(SolutionDir)\..\shaders\*.*" "$(OutputPath)\shaders\"</Command>
     <ClCompile Include="..\src\debug\debug_gui.cpp" />
     <ClCompile Include="..\src\debug\debug_win32.cpp" />
     <ClCompile Include="..\src\dosbox.cpp" />
-    <ClCompile Include="..\src\dos\cdrom.cpp" />
-    <ClCompile Include="..\src\dos\cdrom_aspi_win32.cpp" />
-    <ClCompile Include="..\src\dos\cdrom_image.cpp" />
-    <ClCompile Include="..\src\dos\cdrom_ioctl_win32.cpp" />
     <ClCompile Include="..\src\dos\dos.cpp" />
     <ClCompile Include="..\src\dos\dos_classes.cpp" />
     <ClCompile Include="..\src\dos\dos_devices.cpp" />
     <ClCompile Include="..\src\dos\dos_execute.cpp" />
     <ClCompile Include="..\src\dos\dos_files.cpp" />
     <ClCompile Include="..\src\dos\dos_ioctl.cpp" />
-    <ClCompile Include="..\src\dos\dos_keyboard_layout.cpp" />
     <ClCompile Include="..\src\dos\dos_memory.cpp" />
     <ClCompile Include="..\src\dos\dos_misc.cpp" />
-    <ClCompile Include="..\src\dos\dos_mscdex.cpp" />
     <ClCompile Include="..\src\dos\dos_programs.cpp" />
     <ClCompile Include="..\src\dos\dos_tables.cpp" />
     <ClCompile Include="..\src\dos\drives.cpp" />
     <ClCompile Include="..\src\dos\drive_cache.cpp" />
-    <ClCompile Include="..\src\dos\drive_fat.cpp" />
-    <ClCompile Include="..\src\dos\drive_iso.cpp" />
     <ClCompile Include="..\src\dos\drive_local.cpp" />
     <ClCompile Include="..\src\dos\drive_virtual.cpp" />
     <ClCompile Include="..\src\fpu\fpu.cpp" />
     <ClCompile Include="..\src\gui\bitop.cpp" />
     <ClCompile Include="..\src\gui\ptrop.cpp" />
-    <ClCompile Include="..\src\gui\zipcrc.c" />
-    <ClCompile Include="..\src\gui\zipfile.cpp" />
-    <ClCompile Include="..\src\hardware\8255.cpp" />
-    <ClCompile Include="..\src\hardware\mame\fmopl.cpp" />
-    <ClCompile Include="..\src\hardware\mame\saa1099.cpp" />
-    <ClCompile Include="..\src\hardware\mame\sn76496.cpp" />
-    <ClCompile Include="..\src\hardware\mame\ymdeltat.cpp" />
-    <ClCompile Include="..\src\hardware\mame\ymf262.cpp" />
-    <ClCompile Include="..\src\hardware\parport\printer_redir.cpp" />
-    <ClCompile Include="..\src\hardware\pc98.cpp" />
-    <ClCompile Include="..\src\hardware\pc98_fm.cpp" />
-    <ClCompile Include="..\src\hardware\serialport\serialfile.cpp" />
-    <ClCompile Include="..\src\hardware\snd_pc98\cbus\board26k.c" />
-    <ClCompile Include="..\src\hardware\snd_pc98\cbus\board86.c" />
-    <ClCompile Include="..\src\hardware\snd_pc98\common\parts.c" />
-    <ClCompile Include="..\src\hardware\snd_pc98\generic\keydisp.c" />
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\adpcmc.c" />
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\adpcmg.c" />
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\fmboard.c" />
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\fmtimer.c" />
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\getsnd\getsmix.c" />
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\getsnd\getsnd.c" />
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\getsnd\getwave.c" />
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\opngenc.c" />
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\opngeng.c" />
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\pcm86c.c" />
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\pcm86g.c" />
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\psggenc.c" />
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\psggeng.c" />
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\rhythmc.c" />
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\sound.c" />
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\soundrom.c" />
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\tms3631c.c" />
-    <ClCompile Include="..\src\hardware\snd_pc98\sound\tms3631g.c" />
-    <ClCompile Include="..\src\hardware\snd_pc98\x11\dosio.c" />
-    <ClCompile Include="..\src\hardware\vga_pc98_cg.cpp" />
-    <ClCompile Include="..\src\hardware\vga_pc98_crtc.cpp" />
-    <ClCompile Include="..\src\hardware\vga_pc98_dac.cpp" />
-    <ClCompile Include="..\src\hardware\vga_pc98_egc.cpp" />
-    <ClCompile Include="..\src\hardware\vga_pc98_gdc.cpp" />
-    <ClCompile Include="..\src\ints\bios_memdisk.cpp" />
-    <ClCompile Include="..\src\ints\bios_vhd.cpp" />
-    <ClCompile Include="..\src\libs\zmbv\zmbv.cpp" />
     <ClCompile Include="..\src\misc\iconvpp.cpp" />
     <ClCompile Include="..\src\misc\shiftjis.cpp" />
-    <ClCompile Include="..\src\mt32\AReverbModel.cpp" />
     <ClCompile Include="..\src\aviwriter\avi_rw_iobuf.cpp" />
     <ClCompile Include="..\src\aviwriter\avi_writer.cpp" />
-    <ClCompile Include="..\src\mt32\BReverbModel.cpp" />
-    <ClCompile Include="..\src\mt32\DelayReverb.cpp" />
-    <ClCompile Include="..\src\mt32\File.cpp" />
-    <ClCompile Include="..\src\mt32\FileStream.cpp" />
-    <ClCompile Include="..\src\mt32\FreeverbModel.cpp" />
-    <ClCompile Include="..\src\mt32\freeverb\allpass.cpp" />
-    <ClCompile Include="..\src\mt32\freeverb\comb.cpp" />
-    <ClCompile Include="..\src\mt32\freeverb\revmodel.cpp" />
     <ClCompile Include="..\src\aviwriter\guid.cpp" />
     <ClCompile Include="..\src\aviwriter\ksdataformat.cpp" />
-    <ClCompile Include="..\src\mt32\LA32Ramp.cpp" />
-    <ClCompile Include="..\src\mt32\LA32WaveGenerator.cpp" />
-    <ClCompile Include="..\src\mt32\LegacyWaveGenerator.cpp" />
     <ClCompile Include="..\src\gui\menu.cpp" />
-    <ClCompile Include="..\src\gui\midi.cpp" />
-    <ClCompile Include="..\src\mt32\Part.cpp" />
-    <ClCompile Include="..\src\mt32\Partial.cpp" />
-    <ClCompile Include="..\src\mt32\PartialManager.cpp" />
-    <ClCompile Include="..\src\mt32\Poly.cpp" />
     <ClCompile Include="..\src\gui\render.cpp" />
     <ClCompile Include="..\src\gui\render_scalers.cpp" />
     <ClCompile Include="..\src\aviwriter\riff.cpp" />
     <ClCompile Include="..\src\aviwriter\riff_wav_writer.cpp" />
-    <ClCompile Include="..\src\mt32\ROMInfo.cpp" />
     <ClCompile Include="..\src\gui\sdlmain.cpp" />
-    <ClCompile Include="..\src\gui\sdl_gui.cpp" />
     <ClCompile Include="..\src\gui\sdl_mapper.cpp" />
-    <ClCompile Include="..\src\mt32\sha1\sha1.cpp" />
-    <ClCompile Include="..\src\mt32\Synth.cpp" />
-    <ClCompile Include="..\src\mt32\Tables.cpp" />
-    <ClCompile Include="..\src\mt32\TVA.cpp" />
-    <ClCompile Include="..\src\mt32\TVF.cpp" />
-    <ClCompile Include="..\src\mt32\TVP.cpp" />
-    <ClCompile Include="..\src\hardware\adlib.cpp" />
-    <ClCompile Include="..\src\hardware\cmos.cpp" />
-    <ClCompile Include="..\src\hardware\dbopl.cpp" />
-    <ClCompile Include="..\src\hardware\disney.cpp" />
-    <ClCompile Include="..\src\hardware\dma.cpp" />
-    <ClCompile Include="..\src\hardware\dongle.cpp" />
-    <ClCompile Include="..\src\hardware\floppy.cpp" />
-    <ClCompile Include="..\src\hardware\gameblaster.cpp" />
-    <ClCompile Include="..\src\hardware\gus.cpp" />
-    <ClCompile Include="..\src\hardware\hardopl.cpp" />
-    <ClCompile Include="..\src\hardware\hardware.cpp" />
-    <ClCompile Include="..\src\hardware\ide.cpp" />
-    <ClCompile Include="..\src\hardware\innova.cpp" />
     <ClCompile Include="..\src\hardware\iohandler.cpp" />
-    <ClCompile Include="..\src\hardware\ipx.cpp" />
-    <ClCompile Include="..\src\hardware\ipxserver.cpp" />
-    <ClCompile Include="..\src\hardware\joystick.cpp" />
     <ClCompile Include="..\src\hardware\keyboard.cpp" />
     <ClCompile Include="..\src\hardware\memory.cpp" />
     <ClCompile Include="..\src\hardware\mixer.cpp" />
-    <ClCompile Include="..\src\hardware\mpu401.cpp" />
-    <ClCompile Include="..\src\hardware\ne2000.cpp" />
-    <ClCompile Include="..\src\hardware\nukedopl.cpp" />
-    <ClCompile Include="..\src\hardware\opl.cpp" />
-    <ClCompile Include="..\src\hardware\parport\directlpt_win32.cpp" />
-    <ClCompile Include="..\src\hardware\parport\filelpt.cpp" />
-    <ClCompile Include="..\src\hardware\parport\parport.cpp" />
-    <ClCompile Include="..\src\hardware\parport\printer.cpp" />
-    <ClCompile Include="..\src\hardware\parport\printer_charmaps.cpp" />
-    <ClCompile Include="..\src\hardware\pci_bus.cpp" />
-    <ClCompile Include="..\src\hardware\pcspeaker.cpp" />
     <ClCompile Include="..\src\hardware\pic.cpp" />
-    <ClCompile Include="..\src\hardware\ps1_sound.cpp" />
-    <ClCompile Include="..\src\hardware\reSID\envelope.cpp" />
-    <ClCompile Include="..\src\hardware\reSID\extfilt.cpp" />
-    <ClCompile Include="..\src\hardware\reSID\filter.cpp" />
-    <ClCompile Include="..\src\hardware\reSID\pot.cpp" />
-    <ClCompile Include="..\src\hardware\reSID\sid.cpp" />
-    <ClCompile Include="..\src\hardware\reSID\version.cpp" />
-    <ClCompile Include="..\src\hardware\reSID\voice.cpp" />
-    <ClCompile Include="..\src\hardware\reSID\wave.cpp" />
-    <ClCompile Include="..\src\hardware\reSID\wave6581_PST.cpp" />
-    <ClCompile Include="..\src\hardware\reSID\wave6581_PS_.cpp" />
-    <ClCompile Include="..\src\hardware\reSID\wave6581_P_T.cpp" />
-    <ClCompile Include="..\src\hardware\reSID\wave6581__ST.cpp" />
-    <ClCompile Include="..\src\hardware\reSID\wave8580_PST.cpp" />
-    <ClCompile Include="..\src\hardware\reSID\wave8580_PS_.cpp" />
-    <ClCompile Include="..\src\hardware\reSID\wave8580_P_T.cpp" />
-    <ClCompile Include="..\src\hardware\reSID\wave8580__ST.cpp" />
-    <ClCompile Include="..\src\hardware\sblaster.cpp" />
-    <ClCompile Include="..\src\hardware\serialport\directserial.cpp" />
-    <ClCompile Include="..\src\hardware\serialport\libserial.cpp" />
-    <ClCompile Include="..\src\hardware\serialport\misc_util.cpp" />
-    <ClCompile Include="..\src\hardware\serialport\nullmodem.cpp" />
-    <ClCompile Include="..\src\hardware\serialport\serialdummy.cpp" />
-    <ClCompile Include="..\src\hardware\serialport\seriallog.cpp" />
-    <ClCompile Include="..\src\hardware\serialport\serialmouse.cpp" />
-    <ClCompile Include="..\src\hardware\serialport\serialport.cpp" />
-    <ClCompile Include="..\src\hardware\serialport\softmodem.cpp" />
-    <ClCompile Include="..\src\hardware\tandy_sound.cpp" />
-    <ClCompile Include="..\src\hardware\timer.cpp" />
     <ClCompile Include="..\src\hardware\vga.cpp" />
-    <ClCompile Include="..\src\hardware\vga_attr.cpp" />
-    <ClCompile Include="..\src\hardware\vga_crtc.cpp" />
-    <ClCompile Include="..\src\hardware\vga_dac.cpp" />
-    <ClCompile Include="..\src\hardware\vga_draw.cpp" />
-    <ClCompile Include="..\src\hardware\vga_gfx.cpp" />
-    <ClCompile Include="..\src\hardware\vga_memory.cpp" />
-    <ClCompile Include="..\src\hardware\vga_misc.cpp" />
-    <ClCompile Include="..\src\hardware\vga_other.cpp" />
-    <ClCompile Include="..\src\hardware\vga_paradise.cpp" />
-    <ClCompile Include="..\src\hardware\vga_s3.cpp" />
-    <ClCompile Include="..\src\hardware\vga_seq.cpp" />
-    <ClCompile Include="..\src\hardware\vga_tseng.cpp" />
-    <ClCompile Include="..\src\hardware\vga_xga.cpp" />
-    <ClCompile Include="..\src\hardware\voodoo.cpp" />
-    <ClCompile Include="..\src\hardware\voodoo_emu.cpp" />
-    <ClCompile Include="..\src\hardware\voodoo_interface.cpp" />
-    <ClCompile Include="..\src\hardware\voodoo_opengl.cpp" />
-    <ClCompile Include="..\src\hardware\voodoo_vogl.cpp" />
     <ClCompile Include="..\src\ints\bios.cpp" />
-    <ClCompile Include="..\src\ints\bios_disk.cpp" />
     <ClCompile Include="..\src\ints\bios_keyboard.cpp" />
-    <ClCompile Include="..\src\ints\ems.cpp" />
     <ClCompile Include="..\src\ints\int10.cpp" />
     <ClCompile Include="..\src\ints\int10_char.cpp" />
-    <ClCompile Include="..\src\ints\int10_memory.cpp" />
-    <ClCompile Include="..\src\ints\int10_misc.cpp" />
-    <ClCompile Include="..\src\ints\int10_modes.cpp" />
-    <ClCompile Include="..\src\ints\int10_pal.cpp" />
-    <ClCompile Include="..\src\ints\int10_put_pixel.cpp" />
-    <ClCompile Include="..\src\ints\int10_vesa.cpp" />
-    <ClCompile Include="..\src\ints\int10_video_state.cpp" />
-    <ClCompile Include="..\src\ints\int10_vptable.cpp" />
-    <ClCompile Include="..\src\ints\mouse.cpp" />
     <ClCompile Include="..\src\ints\xms.cpp" />
-    <ClCompile Include="..\src\libs\gui_tk\gui_tk.cpp" />
-    <ClCompile Include="..\src\libs\porttalk\porttalk.cpp" />
     <ClCompile Include="..\src\misc\cross.cpp" />
     <ClCompile Include="..\src\misc\messages.cpp" />
     <ClCompile Include="..\src\misc\programs.cpp" />
-    <ClCompile Include="..\src\ints\qcow2_disk.cpp" />
     <ClCompile Include="..\src\misc\regionalloctracking.cpp" />
     <ClCompile Include="..\src\misc\setup.cpp" />
     <ClCompile Include="..\src\misc\support.cpp" />
-    <ClCompile Include="..\src\output\direct3d\direct3d.cpp" />
-    <ClCompile Include="..\src\output\direct3d\hq2x_d3d.cpp" />
-    <ClCompile Include="..\src\output\direct3d\ScalingEffect.cpp" />
-    <ClCompile Include="..\src\output\output_direct3d.cpp" />
     <ClCompile Include="..\src\output\output_opengl.cpp" />
     <ClCompile Include="..\src\output\output_surface.cpp" />
     <ClCompile Include="..\src\output\output_surface_sdl.cpp" />
     <ClCompile Include="..\src\output\output_surface_sdl2.cpp" />
     <ClCompile Include="..\src\output\output_tools.cpp" />
-    <ClCompile Include="..\src\output\output_tools_xbrz.cpp" />
     <ClCompile Include="..\src\shell\shell.cpp" />
     <ClCompile Include="..\src\shell\shell_batch.cpp" />
     <ClCompile Include="..\src\shell\shell_cmds.cpp" />
     <ClCompile Include="..\src\shell\shell_misc.cpp" />
-    <ClCompile Include="..\src\xBRZ\xbrz.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\src\winres.rc" />
@@ -1213,30 +1028,6 @@ copy "$(SolutionDir)\..\shaders\*.*" "$(OutputPath)\shaders\"</Command>
     <ClInclude Include="..\src\aviwriter\ksdataformat.h" />
     <ClInclude Include="..\src\aviwriter\riff.h" />
     <ClInclude Include="..\src\aviwriter\riff_wav_writer.h" />
-    <ClInclude Include="..\src\cpu\core_dynrec\cache.h" />
-    <ClInclude Include="..\src\cpu\core_dynrec\decoder.h" />
-    <ClInclude Include="..\src\cpu\core_dynrec\decoder_basic.h" />
-    <ClInclude Include="..\src\cpu\core_dynrec\decoder_opcodes.h" />
-    <ClInclude Include="..\src\cpu\core_dynrec\dyn_fpu.h" />
-    <ClInclude Include="..\src\cpu\core_dynrec\operators.h" />
-    <ClInclude Include="..\src\cpu\core_dynrec\risc_armv4le-common.h" />
-    <ClInclude Include="..\src\cpu\core_dynrec\risc_armv4le-o3.h" />
-    <ClInclude Include="..\src\cpu\core_dynrec\risc_armv4le-thumb-iw.h" />
-    <ClInclude Include="..\src\cpu\core_dynrec\risc_armv4le-thumb-niw.h" />
-    <ClInclude Include="..\src\cpu\core_dynrec\risc_armv4le-thumb.h" />
-    <ClInclude Include="..\src\cpu\core_dynrec\risc_armv4le.h" />
-    <ClInclude Include="..\src\cpu\core_dynrec\risc_armv8le.h" />
-    <ClInclude Include="..\src\cpu\core_dynrec\risc_mipsel32.h" />
-    <ClInclude Include="..\src\cpu\core_dynrec\risc_x64.h" />
-    <ClInclude Include="..\src\cpu\core_dynrec\risc_x86.h" />
-    <ClInclude Include="..\src\cpu\core_full\ea_lookup.h" />
-    <ClInclude Include="..\src\cpu\core_full\load.h" />
-    <ClInclude Include="..\src\cpu\core_full\loadwrite.h" />
-    <ClInclude Include="..\src\cpu\core_full\op.h" />
-    <ClInclude Include="..\src\cpu\core_full\optable.h" />
-    <ClInclude Include="..\src\cpu\core_full\save.h" />
-    <ClInclude Include="..\src\cpu\core_full\string.h" />
-    <ClInclude Include="..\src\cpu\core_full\support.h" />
     <ClInclude Include="..\src\cpu\core_normal\helpers.h" />
     <ClInclude Include="..\src\cpu\core_normal\prefix_0f.h" />
     <ClInclude Include="..\src\cpu\core_normal\prefix_0f_mmx.h" />
@@ -1253,29 +1044,15 @@ copy "$(SolutionDir)\..\shaders\*.*" "$(OutputPath)\shaders\"</Command>
     <ClInclude Include="..\src\cpu\modrm.h" />
     <ClInclude Include="..\src\debug\debug_inc.h" />
     <ClInclude Include="..\src\debug\disasm_tables.h" />
-    <ClInclude Include="..\src\dos\cdrom.h" />
     <ClInclude Include="..\src\dos\dev_con.h" />
     <ClInclude Include="..\src\dos\dos_codepages.h" />
-    <ClInclude Include="..\src\dos\dos_keyboard_layout_data.h" />
-    <ClInclude Include="..\src\dos\dos_network.h" />
-    <ClInclude Include="..\src\dos\dos_network2.h" />
     <ClInclude Include="..\src\dos\drives.h" />
-    <ClInclude Include="..\src\dos\scsidefs.h" />
-    <ClInclude Include="..\src\dos\wnaspi32.h" />
     <ClInclude Include="..\src\fpu\fpu_instructions.h" />
     <ClInclude Include="..\src\fpu\fpu_instructions_longdouble.h" />
     <ClInclude Include="..\src\fpu\fpu_instructions_x86.h" />
     <ClInclude Include="..\src\gui\dosbox.cga640.bmp.h" />
     <ClInclude Include="..\src\gui\dosbox.vga16.bmp.h" />
     <ClInclude Include="..\src\gui\dosbox_logo.h" />
-    <ClInclude Include="..\src\gui\midi_alsa.h" />
-    <ClInclude Include="..\src\gui\midi_coreaudio.h" />
-    <ClInclude Include="..\src\gui\midi_coremidi.h" />
-    <ClInclude Include="..\src\gui\midi_mt32.h" />
-    <ClInclude Include="..\src\gui\midi_oss.h" />
-    <ClInclude Include="..\src\gui\midi_synth.h" />
-    <ClInclude Include="..\src\gui\midi_timidity.h" />
-    <ClInclude Include="..\src\gui\midi_win32.h" />
     <ClInclude Include="..\src\gui\render_loops.h" />
     <ClInclude Include="..\src\gui\render_scalers.h" />
     <ClInclude Include="..\src\gui\render_simple.h" />
@@ -1284,110 +1061,12 @@ copy "$(SolutionDir)\..\shaders\*.*" "$(OutputPath)\shaders\"</Command>
     <ClInclude Include="..\src\gui\render_templates_hq2x.h" />
     <ClInclude Include="..\src\gui\render_templates_hq3x.h" />
     <ClInclude Include="..\src\gui\render_templates_sai.h" />
-    <ClInclude Include="..\src\hardware\adlib.h" />
-    <ClInclude Include="..\src\hardware\dbopl.h" />
-    <ClInclude Include="..\src\hardware\mame\emu.h" />
-    <ClInclude Include="..\src\hardware\mame\fmopl.h" />
-    <ClInclude Include="..\src\hardware\mame\saa1099.h" />
-    <ClInclude Include="..\src\hardware\mame\sn76496.h" />
-    <ClInclude Include="..\src\hardware\mame\ymdeltat.h" />
-    <ClInclude Include="..\src\hardware\mame\ymf262.h" />
-    <ClInclude Include="..\src\hardware\nukedopl.h" />
-    <ClInclude Include="..\src\hardware\opl.h" />
-    <ClInclude Include="..\src\hardware\parport\directlpt_win32.h" />
-    <ClInclude Include="..\src\hardware\parport\filelpt.h" />
-    <ClInclude Include="..\src\hardware\parport\printer.h" />
-    <ClInclude Include="..\src\hardware\parport\printer_charmaps.h" />
-    <ClInclude Include="..\src\hardware\parport\printer_if.h" />
-    <ClInclude Include="..\src\hardware\parport\printer_redir.h" />
-    <ClInclude Include="..\src\hardware\pci_devices.h" />
-    <ClInclude Include="..\src\hardware\reSID\envelope.h" />
-    <ClInclude Include="..\src\hardware\reSID\extfilt.h" />
-    <ClInclude Include="..\src\hardware\reSID\filter.h" />
-    <ClInclude Include="..\src\hardware\reSID\pot.h" />
-    <ClInclude Include="..\src\hardware\reSID\sid.h" />
-    <ClInclude Include="..\src\hardware\reSID\siddefs.h" />
-    <ClInclude Include="..\src\hardware\reSID\spline.h" />
-    <ClInclude Include="..\src\hardware\reSID\voice.h" />
-    <ClInclude Include="..\src\hardware\reSID\wave.h" />
-    <ClInclude Include="..\src\hardware\serialport\directserial.h" />
-    <ClInclude Include="..\src\hardware\serialport\libserial.h" />
-    <ClInclude Include="..\src\hardware\serialport\misc_util.h" />
-    <ClInclude Include="..\src\hardware\serialport\nullmodem.h" />
-    <ClInclude Include="..\src\hardware\serialport\serialdummy.h" />
-    <ClInclude Include="..\src\hardware\serialport\serialfile.h" />
-    <ClInclude Include="..\src\hardware\serialport\seriallog.h" />
-    <ClInclude Include="..\src\hardware\serialport\serialmouse.h" />
-    <ClInclude Include="..\src\hardware\serialport\softmodem.h" />
-    <ClInclude Include="..\src\hardware\sn76496.h" />
-    <ClInclude Include="..\src\hardware\snd_pc98\cbus\board26k.h" />
-    <ClInclude Include="..\src\hardware\snd_pc98\cbus\board86.h" />
-    <ClInclude Include="..\src\hardware\snd_pc98\common\parts.h" />
-    <ClInclude Include="..\src\hardware\snd_pc98\common\profile.h" />
-    <ClInclude Include="..\src\hardware\snd_pc98\common\wavefile.h" />
-    <ClInclude Include="..\src\hardware\snd_pc98\generic\keydisp.h" />
-    <ClInclude Include="..\src\hardware\snd_pc98\sound\adpcm.h" />
-    <ClInclude Include="..\src\hardware\snd_pc98\sound\fmboard.h" />
-    <ClInclude Include="..\src\hardware\snd_pc98\sound\fmtimer.h" />
-    <ClInclude Include="..\src\hardware\snd_pc98\sound\getsnd\getsnd.h" />
-    <ClInclude Include="..\src\hardware\snd_pc98\sound\opngen.h" />
-    <ClInclude Include="..\src\hardware\snd_pc98\sound\pcm86.h" />
-    <ClInclude Include="..\src\hardware\snd_pc98\sound\psggen.h" />
-    <ClInclude Include="..\src\hardware\snd_pc98\sound\rhythm.h" />
-    <ClInclude Include="..\src\hardware\snd_pc98\sound\sound.h" />
-    <ClInclude Include="..\src\hardware\snd_pc98\sound\soundrom.h" />
-    <ClInclude Include="..\src\hardware\snd_pc98\sound\tms3631.h" />
-    <ClInclude Include="..\src\hardware\snd_pc98\x11\dosio.h" />
-    <ClInclude Include="..\src\hardware\voodoo_data.h" />
-    <ClInclude Include="..\src\hardware\voodoo_def.h" />
-    <ClInclude Include="..\src\hardware\voodoo_emu.h" />
-    <ClInclude Include="..\src\hardware\voodoo_interface.h" />
-    <ClInclude Include="..\src\hardware\voodoo_opengl.h" />
-    <ClInclude Include="..\src\hardware\voodoo_types.h" />
-    <ClInclude Include="..\src\hardware\voodoo_vogl.h" />
     <ClInclude Include="..\src\ints\int10.h" />
     <ClInclude Include="..\src\ints\xms.h" />
-    <ClInclude Include="..\src\mt32\AReverbModel.h" />
-    <ClInclude Include="..\src\mt32\BReverbModel.h" />
-    <ClInclude Include="..\src\mt32\DelayReverb.h" />
-    <ClInclude Include="..\src\mt32\File.h" />
-    <ClInclude Include="..\src\mt32\FileStream.h" />
-    <ClInclude Include="..\src\mt32\FreeverbModel.h" />
-    <ClInclude Include="..\src\mt32\freeverb\allpass.h" />
-    <ClInclude Include="..\src\mt32\freeverb\comb.h" />
-    <ClInclude Include="..\src\mt32\freeverb\denormals.h" />
-    <ClInclude Include="..\src\mt32\freeverb\revmodel.h" />
-    <ClInclude Include="..\src\mt32\freeverb\tuning.h" />
-    <ClInclude Include="..\src\mt32\LA32Ramp.h" />
-    <ClInclude Include="..\src\mt32\LA32WaveGenerator.h" />
-    <ClInclude Include="..\src\mt32\LegacyWaveGenerator.h" />
-    <ClInclude Include="..\src\mt32\mmath.h" />
-    <ClInclude Include="..\src\mt32\mt32emu.h" />
-    <ClInclude Include="..\src\mt32\Part.h" />
-    <ClInclude Include="..\src\mt32\Partial.h" />
-    <ClInclude Include="..\src\mt32\PartialManager.h" />
-    <ClInclude Include="..\src\mt32\Poly.h" />
-    <ClInclude Include="..\src\mt32\ROMInfo.h" />
-    <ClInclude Include="..\src\mt32\sha1\sha1.h" />
-    <ClInclude Include="..\src\mt32\Structures.h" />
-    <ClInclude Include="..\src\mt32\Synth.h" />
-    <ClInclude Include="..\src\mt32\Tables.h" />
-    <ClInclude Include="..\src\mt32\TVA.h" />
-    <ClInclude Include="..\src\mt32\TVF.h" />
-    <ClInclude Include="..\src\mt32\TVP.h" />
-    <ClInclude Include="..\src\output\direct3d\d3d_components.h" />
-    <ClInclude Include="..\src\output\direct3d\direct3d.h" />
-    <ClInclude Include="..\src\output\direct3d\hq2x_d3d.h" />
-    <ClInclude Include="..\src\output\direct3d\ScalingEffect.h" />
-    <ClInclude Include="..\src\output\output_direct3d.h" />
     <ClInclude Include="..\src\output\output_opengl.h" />
     <ClInclude Include="..\src\output\output_surface.h" />
     <ClInclude Include="..\src\output\output_tools.h" />
-    <ClInclude Include="..\src\output\output_tools_xbrz.h" />
     <ClInclude Include="..\src\resource.h" />
-    <ClInclude Include="..\src\xBRZ\xbrz.h" />
-    <ClInclude Include="..\src\xBRZ\xbrz_config.h" />
-    <ClInclude Include="..\src\xBRZ\xbrz_tools.h" />
     <ClInclude Include="config.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -58,13 +58,13 @@
 #endif
 
 /* MT32 (munt) emulation */
-#define C_MT32 1
+#undef C_MT32
 
 /* Define to 1 to enable internal debugger, requires libcurses */
 #define C_DEBUG 1
 
 /* Define to 1 if you want parallel passthrough support (Win32, Linux). */
-#define C_DIRECTLPT 1
+#undef C_DIRECTLPT
 
 /* Define to 1 if you want serial passthrough support (Win32, Posix and OS/2).
    */
@@ -73,13 +73,13 @@
 #if defined (_M_AMD64) || defined (_M_ARM64) || defined (_M_ARM) /* Microsoft C++ amd64, arm32 and arm64 */
 # undef C_DYNAMIC_X86
 # undef C_TARGETCPU
-# define C_DYNREC 1
+# undef C_DYNREC
 #else
 /* The type of cpu this target has */
 # define C_TARGETCPU X86
 /* Define to 1 to use x86 dynamic cpu core */
 # undef C_DYNAMIC_X86
-# define C_DYNREC 1
+# undef C_DYNREC
 #endif
 
 /* Define to 1 to enable fluidsynth MIDI synthesis */
@@ -117,7 +117,7 @@
 #endif
 
 /* Define to 1 if you have libpng */
-#define C_LIBPNG 1
+#undef C_LIBPNG
 
 /* Define to 1 to enable internal modem support, requires SDL_net */
 #if !defined(C_SDL2)
@@ -125,13 +125,13 @@
 #endif
 
 /* Define to 1 to enable internal printer redirection support*/
-#define C_PRINTER 1
+#undef C_PRINTER
 
 /* Define to 1 to enable NE2000 ethernet passthrough, requires libpcap */
-#define C_NE2000 1
+#undef C_NE2000
 
 /* Set to 1 to enable SDL 1.x support */
-#define C_SDL1 1
+#undef C_SDL1
 
 /* Set to 1 to enable SDL 2.x support */
 /* #undef C_SDL2 */
@@ -155,7 +155,7 @@
 #undef C_SET_PRIORITY
 
 /* Define to 1 to enable screenshots, requires libpng */
-#define C_SSHOT 1
+#undef C_SSHOT
 
 /* Define to 1 to use a unaligned memory access */
 #define C_UNALIGNED_MEMORY		1

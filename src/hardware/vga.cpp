@@ -83,13 +83,13 @@ template <typename T> struct VGACRTCStartStop {
 };
 
 template <typename T> struct VGACRTCCountMax {
-    T       count,max;
+    T       count,maximum;
 
-    VGACRTCCountMax() : count(0), max(1) {
+    VGACRTCCountMax() : count(0), maximum(1) {
     }
-    VGACRTCCountMax(const T z) : count(0), max(z) {
+    VGACRTCCountMax(const T z) : count(0), maximum(z) {
     }
-    VGACRTCCountMax(const T a,const T b) : count(a), max(b) {
+    VGACRTCCountMax(const T a,const T b) : count(a), maximum(b) {
     }
 };
 

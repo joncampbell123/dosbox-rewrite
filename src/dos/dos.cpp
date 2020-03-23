@@ -1335,52 +1335,8 @@ static Bitu DOS_21Handler(void) {
             LOG(LOG_DOSMISC, LOG_ERROR)("DOS:5E Network and printer functions not implemented");
             goto default_fallthrough;
         case 0x5f:                  /* Network redirection */
-#if defined(WIN32) && !defined(HX_DOS)
-            switch(reg_al)
-            {
-                case    0x34:   //Set pipe state
-                    if(Network_SetNamedPipeState(reg_bx,reg_cx,reg_ax))
-                        CALLBACK_SCF(false);
-                    else    CALLBACK_SCF(true);
-                    break;
-                case    0x35:   //Peek pipe
-                    {
-                        Bit16u  uTmpSI=reg_si;
-                        if(Network_PeekNamedPipe(reg_bx,
-                                    dos_copybuf,reg_cx,
-                                    reg_cx,reg_si,reg_dx,
-                                    reg_di,reg_ax))
-                        {
-                            MEM_BlockWrite(SegPhys(ds)+uTmpSI,dos_copybuf,reg_cx);
-                            CALLBACK_SCF(false);
-                        }
-                        else    CALLBACK_SCF(true);
-                    }
-                    break;
-                case    0x36:   //Transcate pipe
-                    //Inbuffer:the buffer to be written to pipe
-                    MEM_BlockRead(SegPhys(ds)+reg_si,dos_copybuf_second,reg_cx);
-
-                    if(Network_TranscateNamedPipe(reg_bx,
-                                dos_copybuf_second,reg_cx,
-                                dos_copybuf,reg_dx,
-                                reg_cx,reg_ax))
-                    {
-                        //Outbuffer:the buffer to receive data from pipe
-                        MEM_BlockWrite(SegPhys(es)+reg_di,dos_copybuf,reg_cx);
-                        CALLBACK_SCF(false);
-                    }
-                    else    CALLBACK_SCF(true);
-                    break;
-                default:
-                    reg_ax=0x0001;          //Failing it
-                    CALLBACK_SCF(true);
-                    break;
-            }
-#else
             reg_ax=0x0001;          //Failing it
             CALLBACK_SCF(true);
-#endif
             break; 
         case 0x60:                  /* Canonicalize filename or path */
             MEM_StrCopy(SegPhys(ds)+reg_si,name1,DOSNAMEBUF);
