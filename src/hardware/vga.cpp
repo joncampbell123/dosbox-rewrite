@@ -198,7 +198,8 @@ template <typename T> struct DRational {
 
 struct ClockTracking {
     // in case we need to use a different type later
-    using clock_rational = DRational<uint64_t>;
+    typedef uint64_t clock_rational_num_t;
+    using clock_rational = DRational<clock_rational_num_t>;
 
     clock_rational                  clock_rate_ms;                      // clock rate in 1ms ticks
     Bitu                            pic_tick_start;
@@ -208,7 +209,7 @@ struct ClockTracking {
     int64_t                         count = 0;                          // last computed count
 
     ClockTracking() : clock_rate_ms(1) { _clock_to_tick_update(); _pic_start_init(); }
-    ClockTracking(const uint64_t rate) : clock_rate_ms(rate) { _clock_to_tick_update(); _pic_start_init(); }
+    ClockTracking(const clock_rational_num_t rate) : clock_rate_ms(rate) { _clock_to_tick_update(); _pic_start_init(); }
     ClockTracking(const clock_rational rate) : clock_rate_ms(rate) { _clock_to_tick_update(); _pic_start_init(); }
 
     void _clock_to_tick_update(void) {
