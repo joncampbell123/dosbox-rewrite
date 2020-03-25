@@ -198,12 +198,12 @@ template <typename T> struct DRational {
 
 struct ClockTracking {
     // in case we need to use a different type later
-    typedef uint64_t clock_rational_num_t;
-    using clock_rational = DRational<clock_rational_num_t>;
+    typedef uint64_t clock_rational_num_t;                              // data type of rational
+    using clock_rational = DRational<clock_rational_num_t>;             // rational that describes clock rate
 
     clock_rational                  clock_rate_ms;                      // clock rate in 1ms ticks
-    Bitu                            pic_tick_start;
-    double                          pic_start;                          // dot clock counts from this pic_index()
+    Bitu                            pic_tick_start;                     // starting tick count (PIT_Ticks) to count from
+    double                          pic_start;                          // starting PIC index (PIC_TickIndex()) to count from
     double                          clock_to_tick;                      // pic_index() * clock_to_tick = ticks
     int64_t                         count_from = 0;                     // first tick count
     int64_t                         count = 0;                          // last computed count
