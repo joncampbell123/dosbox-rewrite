@@ -196,6 +196,7 @@ template <typename T> struct DRational {
     }
 };
 
+// General clock tick tracking over time
 struct ClockTracking {
     // in case we need to use a different type later
     typedef uint64_t clock_rational_num_t;                              // data type of rational
@@ -208,20 +209,31 @@ struct ClockTracking {
     int64_t                         count_from = 0;                     // first tick count
     int64_t                         count = 0;                          // last computed count
 
+    // constructor:
+    //   ClockTracking()                        default constructor, clock_rate_ms = 1                  example: ClockTracking clk();
+    //   ClockTracking(rate)                    constructor, clock_rate_ms = rate/1                     example: ClockTracking clk = 300;
+    //   ClockTracking(num,den)                 constructor, clock_rate_ms = num/den                    example: ClockTracking clk = {500, 3};
+    //   ClockTracking(rate_rational)           constructor, clock_rate_ms = rate_rational              example: ClockTracking::clock_rational rate = {4,3}; ClockTracking clk = rate;
+    //                                                                                                  example: ClockTracking clk = { {500, 3} };
     ClockTracking() : clock_rate_ms(1) { _clock_to_tick_update(); _pic_start_init(); }
     ClockTracking(const clock_rational_num_t rate) : clock_rate_ms(rate) { _clock_to_tick_update(); _pic_start_init(); }
     ClockTracking(const clock_rational_num_t rate_n,const clock_rational_num_t rate_d) : clock_rate_ms(rate_n,rate_d) { _clock_to_tick_update(); _pic_start_init(); }
     ClockTracking(const clock_rational rate) : clock_rate_ms(rate) { _clock_to_tick_update(); _pic_start_init(); }
 
+    // Given clock_rate_ms, update clock_to_tick and other variables used for conversion and performance
     void _clock_to_tick_update(void) {
         clock_to_tick = double(clock_rate_ms.num) / double(clock_rate_ms.den);
     }
 
+    // reset time tracking to NOW according to ticks and tick index
     void _pic_start_init(void) {
         pic_tick_start = PIC_Ticks;
         pic_start = PIC_TickIndex();
     }
 
+    // call this function on completion of a tick or any time after completion of a tick, though you can call this at any time.
+    // this function does some maintenance to adjust tick base and count_from to keep the floating point math
+    // to small numbers and avoid precision loss over time.
     void pic_tick_complete(void) {
         /* call upon completion of a 1ms tick */
         if ((PIC_Ticks - pic_tick_start) >= clock_rate_ms.den) {
@@ -230,6 +242,7 @@ struct ClockTracking {
         }
     }
 
+    // reset counter, so that count == 0 starts NOW. this preserves counter tick timing accuracy.
     void reset_counter(void) {
         for (unsigned int i=0;i < 4;i++)
             pic_tick_complete();
@@ -239,6 +252,8 @@ struct ClockTracking {
         count = 0;
     }
 
+    // reset counter, so that count == 0 starts NOW. this also resets the time base regardless of the time of the last counter time.
+    // repeated use can lose counter tick timing accuracy.
     void reset_counter_hard(void) {
         /* do a hard reset, resetting the counter and setting the time base to now.
          * this will lose some tick precision because the next tick will happen now no matter the amount of time
@@ -247,6 +262,8 @@ struct ClockTracking {
         count_from = count = 0;
     }
 
+    // reset counter time base. the current count NOW is evaluated, and used as the base tick count that starts NOW.
+    // repeated use can lose counter tick timing accuracy.
     void reset_tick_base(void) {
         /* maintain tick count, reset time base to now.
          * this will lose some tick precision because the next tick will happen now no matter the amount of time
@@ -256,36 +273,54 @@ struct ClockTracking {
         count_from = count;
     }
 
-    void set_rate(const uint64_t rate) {
+    // change counter rate. recalculates start time and count at start time, so that counted ticks from NOW count at the new rate.
+    // Repeated use may lose counter tick timing accuracy, though on real hardware changing clock frequency probably involves some
+    // lost time re-synchronizing to the new rate anyway. This function does not check if clock rate is already set to rate.
+    // Rate parameter is a single value that becomes rate / 1
+    void set_rate(const clock_rational_num_t rate) {
         reset_tick_base();
         clock_rate_ms = rate;
         _clock_to_tick_update();
     }
 
+    // change counter rate. recalculates start time and count at start time, so that counted ticks from NOW count at the new rate.
+    // Repeated use may lose counter tick timing accuracy, though on real hardware changing clock frequency probably involves some
+    // lost time re-synchronizing to the new rate anyway. This function does not check if clock rate is already set to rate.
+    // Rate parameter is a single value that becomes rate rational value.
     void set_rate(const clock_rational rate) {
         reset_tick_base();
         clock_rate_ms = rate;
         _clock_to_tick_update();
     }
 
+    // Return current time relative to time base. This uses PIC_Ticks and PIC_TickIndex(). The calculation is very similar to
+    // PIC_FullIndex() but relative in a manner that keeps the numbers small as long as pic_tick_complete() is called once per
+    // 1ms timer tick, which avoids slow loss of floating point precision.
     inline double pic_index(void) const {
         /* NTS: PIC_FullIndex() is PIC_Ticks + PIC_TickIndex().
          * Keep the whole part small so floating point precision does not gradually decay with larger and larger numbers. */
         return double(PIC_Ticks - pic_tick_start) + PIC_TickIndex() - pic_start;
     }
 
+    // return relative counter value according to pic_index().
     inline int64_t get_count_rel(void) const {
         return int64_t(pic_index() * clock_to_tick);
     }
 
+    // return counter value according to pic_index(). Relative time from time base and count_from is combined to produce
+    // a counter value that monotonically increases. Counter accuracy is maintained because pic_index() uses relative timer
+    // ticks and PIC_TickIndex() time to keep numbers small and floating point accuracy high, and pic_tick_complete()
+    // periodically adjusts count_from and the timer tick base to keep them small.
     inline int64_t get_count(void) const {
         return get_count_rel() + count_from;
     }
 
+    // Update "count" member from get_count()
     void update_count(void) {
         count = get_count();
     }
 
+    // Return time in ms it takes to count "t" clock ticks. For use in scheduling PIC events.
     inline double count_duration(int64_t t) const {
         return double(t) / clock_to_tick;
     }
