@@ -283,6 +283,10 @@ struct ClockTracking {
     void update_count(void) {
         count = get_count();
     }
+
+    inline double count_duration(int64_t t) const {
+        return double(t) / clock_to_tick;
+    }
 };
 
 // Ref: CGA 80x25
