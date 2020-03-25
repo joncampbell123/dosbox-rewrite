@@ -210,6 +210,7 @@ struct ClockTracking {
 
     ClockTracking() : clock_rate_ms(1) { _clock_to_tick_update(); _pic_start_init(); }
     ClockTracking(const clock_rational_num_t rate) : clock_rate_ms(rate) { _clock_to_tick_update(); _pic_start_init(); }
+    ClockTracking(const clock_rational_num_t rate_n,const clock_rational_num_t rate_d) : clock_rate_ms(rate_n,rate_d) { _clock_to_tick_update(); _pic_start_init(); }
     ClockTracking(const clock_rational rate) : clock_rate_ms(rate) { _clock_to_tick_update(); _pic_start_init(); }
 
     void _clock_to_tick_update(void) {
