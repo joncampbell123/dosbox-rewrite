@@ -1048,8 +1048,6 @@ void SHELL_Init() {
 	extern bool Mouse_Drv;
 	Mouse_Drv = true;
 
-	VFILE_RegisterBuiltinFileBlob(bfb_DEBUG_EXE);
-
 	DOS_PSP psp(psp_seg);
 	psp.MakeNew(0);
 	dos.psp(psp_seg);

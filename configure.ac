@@ -789,7 +789,6 @@ src/ints/Makefile
 src/libs/Makefile
 src/libs/zmbv/Makefile
 src/output/Makefile
-src/builtin/Makefile
 src/misc/Makefile
 src/shell/Makefile
 src/platform/Makefile

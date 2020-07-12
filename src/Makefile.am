@@ -1,6 +1,6 @@
 AM_CPPFLAGS = -I$(top_srcdir)/include "-DRESDIR=\"$(resdir)\""
 
-SUBDIRS = cpu debug dos fpu gui hardware libs ints misc shell builtin platform aviwriter output
+SUBDIRS = cpu debug dos fpu gui hardware libs ints misc shell platform aviwriter output
 
 bin_PROGRAMS = dosbox-x
 
@@ -19,7 +19,7 @@ endif
 	$(WINDRES) -o $@ $<
 
 dosbox_x_SOURCES = dosbox.cpp $(ico_stuff)
-dosbox_x_LDADD = debug/libdebug.a dos/libdos.a shell/libshell.a builtin/libbuiltin.a \
+dosbox_x_LDADD = debug/libdebug.a dos/libdos.a shell/libshell.a \
                ints/libints.a misc/libmisc.a \
                gui/libgui.a hardware/libhardware.a \
 	       cpu/libcpu.a fpu/libfpu.a gui/libgui.a \

@@ -109,10 +109,9 @@ am__dosbox_x_SOURCES_DIST = dosbox.cpp winres.rc
 am_dosbox_x_OBJECTS = dosbox.$(OBJEXT) $(am__objects_1)
 dosbox_x_OBJECTS = $(am_dosbox_x_OBJECTS)
 dosbox_x_DEPENDENCIES = debug/libdebug.a dos/libdos.a shell/libshell.a \
-	builtin/libbuiltin.a ints/libints.a misc/libmisc.a \
-	gui/libgui.a hardware/libhardware.a cpu/libcpu.a fpu/libfpu.a \
-	gui/libgui.a output/liboutput.a libs/zmbv/libzmbv.a \
-	$(am__append_1)
+	ints/libints.a misc/libmisc.a gui/libgui.a \
+	hardware/libhardware.a cpu/libcpu.a fpu/libfpu.a gui/libgui.a \
+	output/liboutput.a libs/zmbv/libzmbv.a $(am__append_1)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -355,7 +354,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CPPFLAGS = -I$(top_srcdir)/include "-DRESDIR=\"$(resdir)\""
-SUBDIRS = cpu debug dos fpu gui hardware libs ints misc shell builtin platform aviwriter output
+SUBDIRS = cpu debug dos fpu gui hardware libs ints misc shell platform aviwriter output
 resdir = $(datarootdir)/dosbox-x
 res_DATA = \
 	../dosbox.reference.conf \
@@ -365,10 +364,9 @@ res_DATA = \
 @HAVE_WINDRES_TRUE@ico_stuff = winres.rc
 dosbox_x_SOURCES = dosbox.cpp $(ico_stuff)
 dosbox_x_LDADD = debug/libdebug.a dos/libdos.a shell/libshell.a \
-	builtin/libbuiltin.a ints/libints.a misc/libmisc.a \
-	gui/libgui.a hardware/libhardware.a cpu/libcpu.a fpu/libfpu.a \
-	gui/libgui.a output/liboutput.a libs/zmbv/libzmbv.a \
-	$(am__append_1)
+	ints/libints.a misc/libmisc.a gui/libgui.a \
+	hardware/libhardware.a cpu/libcpu.a fpu/libfpu.a gui/libgui.a \
+	output/liboutput.a libs/zmbv/libzmbv.a $(am__append_1)
 EXTRA_DIST = winres.rc dosbox.ico
 all: all-recursive
 
