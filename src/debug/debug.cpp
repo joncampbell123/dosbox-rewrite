@@ -85,7 +85,6 @@ static void LogMCBS(void);
 static void LogGDT(void);
 static void LogLDT(void);
 static void LogIDT(void);
-static void LogXMS(void);
 static void LogPages(char* selname);
 static void LogCPUInfo(void);
 static void OutputVecTable(char* filename);
@@ -144,35 +143,11 @@ static void LogEMUMem(void) {
     DEBUG_EndPagedContent();
 }
 
-bool XMS_Active(void);
-
-Bitu XMS_GetTotalHandles(void);
-bool XMS_GetHandleInfo(Bitu &phys_location,Bitu &size,Bitu &lockcount,bool &free,Bitu handle);
-
 LoopHandler *old_loop = NULL;
 
 char* AnalyzeInstruction(char* inst, bool saveSelector);
 Bit32u GetHexValue(char* const str, char* &hex,bool *parsed=NULL);
 void SkipSpace(char*& hex);
-
-#if 0
-class DebugPageHandler : public PageHandler {
-public:
-	Bit8u readb(PhysPt /*addr*/) {
-	}
-	Bit16u readw(PhysPt /*addr*/) {
-	}
-	Bit32u readd(PhysPt /*addr*/) {
-	}
-	void writeb(PhysPt /*addr*/,Bit8u /*val*/) {
-	}
-	void writew(PhysPt /*addr*/,Bit16u /*val*/) {
-	}
-	void writed(PhysPt /*addr*/,Bit32u /*val*/) {
-	}
-};
-#endif
-
 
 class DEBUG;
 
@@ -1905,7 +1880,6 @@ bool ParseCommand(char* str) {
 		stream >> command;
 		if (command == "MCBS") LogMCBS();
         else if (command == "KERN") LogDOSKernMem();
-        else if (command == "XMS") LogXMS();
         else return false;
 
 		return true;
@@ -3017,42 +2991,6 @@ static void LogBIOSMem(void) {
             (unsigned long)(i->end),
             i->free ? "FREE  " : "ALLOC ");
         DEBUG_ShowMsg("%s %s",tmp,i->who.c_str());
-    }
-
-    DEBUG_EndPagedContent();
-}
-
-Bitu XMS_GetTotalHandles(void);
-bool XMS_GetHandleInfo(Bitu &phys_location,Bitu &size,Bitu &lockcount,bool &free,Bitu handle);
-
-static void LogXMS(void) {
-    Bitu phys_location;
-    Bitu lockcount;
-    bool free;
-    Bitu size;
-
-    if (dos_kernel_disabled) {
-        DEBUG_ShowMsg("Cannot enumerate XMS memory while DOS kernel is inactive.");
-        return;
-    }
-
-    if (!XMS_Active()) {
-        DEBUG_ShowMsg("Cannot enumerate XMS memory while XMS is inactive.");
-        return;
-    }
-
-    DEBUG_BeginPagedContent();
-
-    DEBUG_ShowMsg("XMS memory handles:");
-    DEBUG_ShowMsg("Handle Status Location Size (bytes)");
-    for (Bitu h = 1; h < XMS_GetTotalHandles(); h++) {
-        if (XMS_GetHandleInfo(/*&*/phys_location,/*&*/size,/*&*/lockcount,/*&*/free, h)) {
-            DEBUG_ShowMsg("%6lu %s 0x%08lx %lu",
-                (unsigned long)h,
-                free ? "FREE " : "ALLOC ",
-                (unsigned long)phys_location,
-                (unsigned long)size << 10UL); /* KB -> bytes */
-        }
     }
 
     DEBUG_EndPagedContent();

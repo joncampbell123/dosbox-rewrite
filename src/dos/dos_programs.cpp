@@ -484,7 +484,6 @@ extern bool boot_debug_break;
 extern Bitu BIOS_bootfail_code_offset;
 
 void EMS_DoShutDown();
-void XMS_DoShutDown();
 void DOS_DoShutDown();
 void GUS_DOS_Shutdown();
 void SBLASTER_DOS_Shutdown();
@@ -533,9 +532,6 @@ public:
     void Run(void);
 };
 
-bool XMS_Active(void);
-Bitu XMS_AllocateMemory(Bitu size, Bit16u& handle);
-
 void LOADFIX::Run(void) 
 {
     Bit16u commandNr    = 1;
@@ -575,24 +571,7 @@ void LOADFIX::Run(void)
     }
 
     // Allocate Memory
-    if (xms) {
-        if (XMS_Active()) {
-            Bit16u handle;
-            Bitu err;
-
-            err = XMS_AllocateMemory(kb,/*&*/handle);
-            if (err == 0) {
-                WriteOut("XMS block allocated (%uKB)\n",kb);
-            }
-            else {
-                WriteOut("Unable to allocate XMS block\n");
-            }
-        }
-        else {
-            WriteOut("XMS not active\n");
-        }
-    }
-    else {
+    {
         Bit16u segment;
         Bit16u blocks = (Bit16u)(kb*1024/16);
         if (DOS_AllocateMemory(&segment,&blocks)) {

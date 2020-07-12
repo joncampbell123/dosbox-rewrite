@@ -71,8 +71,6 @@ char * shiftjis_upcase(char * str) {
     return str;
 }
 
-unsigned char cpm_compat_mode = CPM_COMPAT_MSDOS5;
-
 bool dos_in_hma = true;
 bool DOS_BreakFlag = false;
 bool enable_dbcs_tables = true;
@@ -84,56 +82,6 @@ int dos_sda_size = 0x560;
 extern bool int15_wait_force_unmask_irq;
 
 Bit32u dos_hma_allocator = 0; /* physical memory addr */
-
-Bitu XMS_EnableA20(bool enable);
-Bitu XMS_GetEnabledA20(void);
-bool XMS_IS_ACTIVE();
-bool XMS_HMA_EXISTS();
-
-bool DOS_IS_IN_HMA() {
-	if (dos_in_hma && XMS_IS_ACTIVE() && XMS_HMA_EXISTS())
-		return true;
-
-	return false;
-}
-
-Bit32u DOS_HMA_LIMIT() {
-	if (dos.version.major < 5) return 0; /* MS-DOS 5.0+ only */
-	if (!DOS_IS_IN_HMA()) return 0;
-	return (0x110000 - 16); /* 1MB + 64KB - 16 bytes == (FFFF:FFFF + 1) == (0xFFFF0 + 0xFFFF + 1) == 0x10FFF0 */
-}
-
-Bit32u DOS_HMA_FREE_START() {
-	if (dos.version.major < 5) return 0; /* MS-DOS 5.0+ only */
-	if (!DOS_IS_IN_HMA()) return 0;
-
-	if (dos_hma_allocator == 0) {
-		dos_hma_allocator = 0x110000u - 16u - (unsigned int)dos_initial_hma_free;
-		LOG(LOG_MISC,LOG_DEBUG)("Starting HMA allocation from physical address 0x%06x (FFFF:%04x)",
-			dos_hma_allocator,(dos_hma_allocator+0x10u)&0xFFFFu);
-	}
-
-	return dos_hma_allocator;
-}
-
-Bit32u DOS_HMA_GET_FREE_SPACE() {
-	Bit32u start;
-
-	if (dos.version.major < 5) return 0; /* MS-DOS 5.0+ only */
-	if (!DOS_IS_IN_HMA()) return 0;
-	start = DOS_HMA_FREE_START();
-	if (start == 0) return 0;
-	return (DOS_HMA_LIMIT() - start);
-}
-
-void DOS_HMA_CLAIMED(Bit16u bytes) {
-	Bit32u limit = DOS_HMA_LIMIT();
-
-	if (limit == 0) E_Exit("HMA allocatiom bug: Claim function called when HMA allocation is not enabled");
-	if (dos_hma_allocator == 0) E_Exit("HMA allocatiom bug: Claim function called without having determined start");
-	dos_hma_allocator += bytes;
-	if (dos_hma_allocator > limit) E_Exit("HMA allocation bug: Exceeded limit");
-}
 
 Bit16u DOS_INFOBLOCK_SEG=0x80;	// sysvars (list of lists)
 Bit16u DOS_CONDRV_SEG=0xa0;
@@ -383,18 +331,9 @@ bool disk_io_unmask_irq0 = true;
 //! \brief Is a DOS program running ? (set by INT21 4B/4C)
 bool dos_program_running = false;
 
-void XMS_DOS_LocalA20EnableIfNotEnabled(void);
-
 #define DOSNAMEBUF 256
 static Bitu DOS_21Handler(void) {
     bool unmask_irq0 = false;
-
-    /* Real MS-DOS behavior:
-     *   If HIMEM.SYS is loaded and CONFIG.SYS says DOS=HIGH, DOS will load itself into the HMA area.
-     *   To prevent crashes, the INT 21h handler down below will enable the A20 gate before executing
-     *   the DOS kernel. */
-    if (DOS_IS_IN_HMA())
-        XMS_DOS_LocalA20EnableIfNotEnabled();
 
     if (((reg_ah != 0x50) && (reg_ah != 0x51) && (reg_ah != 0x62) && (reg_ah != 0x64)) && (reg_ah<0x6c)) {
         DOS_PSP psp(dos.psp());
@@ -725,7 +664,6 @@ static Bitu DOS_21Handler(void) {
             break;
         case 0x30:      /* Get DOS Version */
             if (reg_al==0) reg_bh=0xFF;     /* Fake Microsoft DOS */
-            if (reg_al==1 && DOS_IS_IN_HMA()) reg_bh=0x10;      /* DOS is in HMA? */
             reg_al=dos.version.major;
             reg_ah=dos.version.minor;
             /* Serialnumber */
@@ -1174,23 +1112,6 @@ static Bitu DOS_20Handler(void) {
 	return CBRET_NONE;
 }
 
-static Bitu DOS_CPMHandler(void) {
-	// Convert a CPM-style call to a normal DOS call
-	Bit16u flags=CPU_Pop16();
-	CPU_Pop16();
-	Bit16u caller_seg=CPU_Pop16();
-	Bit16u caller_off=CPU_Pop16();
-	CPU_Push16(flags);
-	CPU_Push16(caller_seg);
-	CPU_Push16(caller_off);
-	if (reg_cl>0x24) {
-		reg_al=0;
-		return CBRET_NONE;
-	}
-	reg_ah=reg_cl;
-	return DOS_21Handler();
-}
-
 static Bitu DOS_27Handler(void) {
 	// Terminate & stay resident
 	Bit16u para = (reg_dx/16)+((reg_dx % 16)>0);
@@ -1287,29 +1208,6 @@ private:
 	RealPt int30,int31;
 
 public:
-    void DOS_Write_HMA_CPM_jmp(void) {
-        // HMA mirror of CP/M entry point.
-        // this is needed for "F01D:FEF0" to be a valid jmp whether or not A20 is enabled
-        if (dos_in_hma &&
-            cpm_compat_mode != CPM_COMPAT_OFF &&
-            cpm_compat_mode != CPM_COMPAT_DIRECT) {
-            LOG(LOG_MISC,LOG_DEBUG)("Writing HMA mirror of CP/M entry point");
-
-            Bitu was_a20 = XMS_GetEnabledA20();
-
-            XMS_EnableA20(true);
-
-            mem_writeb(0x1000C0,(Bit8u)0xea);		// jmpf
-            mem_unalignedwrited(0x1000C0+1,callback[8].Get_RealPointer());
-
-            if (!was_a20) XMS_EnableA20(false);
-        }
-    }
-
-    Bit32u DOS_Get_CPM_entry_direct(void) {
-        return callback[8].Get_RealPointer();
-    }
-
 	DOS(Section* configuration):Module_base(configuration){
 		Section_prop * section=static_cast<Section_prop *>(configuration);
 
@@ -1347,17 +1245,6 @@ public:
         if (cpmcompat == "")
             cpmcompat = "auto";
 
-        if (cpmcompat == "msdos2")
-            cpm_compat_mode = CPM_COMPAT_MSDOS2;
-        else if (cpmcompat == "msdos5")
-            cpm_compat_mode = CPM_COMPAT_MSDOS5;
-        else if (cpmcompat == "direct")
-            cpm_compat_mode = CPM_COMPAT_DIRECT;
-        else if (cpmcompat == "auto")
-            cpm_compat_mode = CPM_COMPAT_MSDOS5; /* MS-DOS 5.x is default */
-        else
-            cpm_compat_mode = CPM_COMPAT_OFF;
-
         /* FIXME: Boot up an MS-DOS system and look at what INT 21h on Microsoft's MS-DOS returns
          *        for SDA size and location, then use that here.
          *
@@ -1370,19 +1257,6 @@ public:
             DOS_SDA_SEG_SIZE = 32768;
         else
             DOS_SDA_SEG_SIZE = (dos_sda_size + 0xF) & (~0xF); /* round up to paragraph */
-
-        /* msdos 2.x and msdos 5.x modes, if HMA is involved, require us to take the first 256 bytes of HMA
-         * in order for "F01D:FEF0" to work properly whether or not A20 is enabled. Our direct mode doesn't
-         * jump through that address, and therefore doesn't need it. */
-        if (dos_in_hma &&
-            cpm_compat_mode != CPM_COMPAT_OFF &&
-            cpm_compat_mode != CPM_COMPAT_DIRECT) {
-            LOG(LOG_MISC,LOG_DEBUG)("DOS: CP/M compatibility method with DOS in HMA requires mirror of entry point in HMA.");
-            if (dos_initial_hma_free > 0xFF00) {
-                dos_initial_hma_free = 0xFF00;
-                LOG(LOG_MISC,LOG_DEBUG)("DOS: CP/M compatibility method requires reduction of HMA free space to accomodate.");
-            }
-        }
 
 		if ((int)MAXENV < 0) MAXENV = 65535;
 		if ((int)ENV_KEEPFREE < 0) ENV_KEEPFREE = 1024;
@@ -1495,7 +1369,6 @@ public:
         callback[7].Install(BIOS_1BHandler,CB_IRET,"BIOS 1Bh");
         callback[7].Set_RealVec(0x1B);
 
-		callback[8].Install(DOS_CPMHandler,CB_CPM,"DOS/CPM Int 30-31");
 		int30=RealGetVec(0x30);
 		int31=RealGetVec(0x31);
 		mem_writeb(0x30*4,(Bit8u)0xea);		// jmpf
@@ -1503,15 +1376,6 @@ public:
 		// pseudocode for CB_CPM:
 		//	pushf
 		//	... the rest is like int 21
-
-        /* NTS: HMA support requires XMS. EMS support may switch on A20 if VCPI emulation requires the odd megabyte */
-        if ((!dos_in_hma || !section->Get_bool("xms")) && (MEM_A20_Enabled() || strcmp(section->Get_string("ems"),"false") != 0) &&
-            cpm_compat_mode != CPM_COMPAT_OFF && cpm_compat_mode != CPM_COMPAT_DIRECT) {
-            /* hold on, only if more than 1MB of RAM and memory access permits it */
-            if (MEM_TotalPages() > 0x100 && MEM_PageMask() > 0xff/*more than 20-bit decoding*/) {
-                LOG(LOG_MISC,LOG_WARN)("DOS not in HMA or XMS is disabled. This may break programs using the CP/M compatibility call method if the A20 gate is switched on.");
-            }
-        }
 
 		DOS_FILES = (unsigned int)section->Get_int("files");
 		DOS_SetupFiles();								/* Setup system File tables */
@@ -1667,16 +1531,6 @@ public:
 };
 
 static DOS* test = NULL;
-
-void DOS_Write_HMA_CPM_jmp(void) {
-    assert(test != NULL);
-    test->DOS_Write_HMA_CPM_jmp();
-}
-
-Bit32u DOS_Get_CPM_entry_direct(void) {
-    assert(test != NULL);
-    return test->DOS_Get_CPM_entry_direct();
-}
 
 void DOS_ShutdownFiles() {
 	if (Files != NULL) {

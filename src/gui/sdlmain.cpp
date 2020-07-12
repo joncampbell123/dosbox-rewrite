@@ -382,7 +382,6 @@ bool guest_machine_power_on = false;
 std::string custom_savedir;
 
 void SHELL_Run();
-void XMS_DoShutDown();
 void DOS_DoShutDown();
 void DOS_ShutdownDevices(void);
 void DOS_GetMemory_unmap();
@@ -6051,7 +6050,6 @@ void INT10_Init();
 void PRINTER_Init();
 #endif
 void DOS_Init();
-void XMS_Init();
 void DRIVES_Init();
 void IPX_Init();
 void AUTOEXEC_Init();
@@ -6101,7 +6099,6 @@ bool VM_Boot_DOSBox_Kernel() {
         VFILE_Shutdown();
         PROGRAMS_Shutdown();
         DOS_UninstallMisc();
-        XMS_DoShutDown();
         DOS_DoShutDown();
 
         DispatchVMEvent(VM_EVENT_DOS_SURPRISE_REBOOT); // <- apparently we rebooted without any notification (such as jmp'ing to FFFF:0000)
@@ -6134,10 +6131,6 @@ bool VM_Boot_DOSBox_Kernel() {
         DRIVES_Startup(NULL);
 
         DispatchVMEvent(VM_EVENT_DOS_INIT_KERNEL_READY); // <- kernel is ready
-
-        /* Most MS-DOS installations have a DEVICE=C:\HIMEM.SYS somewhere near the top of their CONFIG.SYS */
-        void XMS_Startup(Section *sec);
-        XMS_Startup(NULL);
 
         DispatchVMEvent(VM_EVENT_DOS_INIT_CONFIG_SYS_DONE); // <- we just finished executing CONFIG.SYS
         SHELL_Init(); // <- NTS: this will change CPU instruction pointer!
@@ -7192,7 +7185,6 @@ int main(int argc, char* argv[]) SDL_MAIN_NOEXCEPT {
         /* OS init now */
         DOS_Init();
         DRIVES_Init();
-        XMS_Init();
         AUTOEXEC_Init();
 #if C_IPX
         IPX_Init();
@@ -7450,8 +7442,6 @@ fresh_boot:
 
             /* remove environment variables for some components */
             DOS_UninstallMisc();
-            /* and XMS, also a DOS API */
-            XMS_DoShutDown();
             /* and the DOS API in general */
             DOS_DoShutDown();
 
