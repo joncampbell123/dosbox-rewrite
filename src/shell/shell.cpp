@@ -1057,10 +1057,6 @@ void SHELL_Init() {
     /* These are IBM PC/XT/AT ONLY. They will not work in PC-98 mode. */
     {
         VFILE_RegisterBuiltinFileBlob(bfb_DOSIDLE_EXE);
-        VFILE_RegisterBuiltinFileBlob(bfb_CWSDPMI_EXE);
-        VFILE_RegisterBuiltinFileBlob(bfb_DOS32A_EXE);
-        VFILE_RegisterBuiltinFileBlob(bfb_DOS4GW_EXE);
-        VFILE_RegisterBuiltinFileBlob(bfb_TREE_EXE);
     }
 
 	/* MEM.COM is not compatible with PC-98 and/or 8086 emulation */
