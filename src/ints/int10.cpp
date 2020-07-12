@@ -73,17 +73,6 @@ static void INT10_Seg40Init(void) {
 static void INT10_InitVGA(void) {
 	if (IS_EGAVGA_ARCH) {
 		LOG(LOG_MISC,LOG_DEBUG)("INT 10: initializing EGA/VGA state");
-
-		/* switch to color mode and enable CPU access 480 lines */
-		IO_Write(0x3c2,0xc3);
-		/* More than 64k */
-		IO_Write(0x3c4,0x04);
-		IO_Write(0x3c5,0x02);
-		if (IS_VGA_ARCH) {
-			/* Initialize DAC */
-			IO_Write(0x3c8,0);
-			for (Bitu i=0;i<3*256;i++) IO_Write(0x3c9,0);
-		}
 	}
 }
 

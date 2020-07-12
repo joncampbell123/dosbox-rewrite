@@ -703,24 +703,6 @@ static Bits other_memsystems=0;
 static Bitu INT15_Handler(void);
 
 static Bitu INT70_Handler(void) {
-    /* Acknowledge irq with cmos */
-    IO_Write(0x70,0xc);
-    IO_Read(0x71);
-    if (mem_readb(BIOS_WAIT_FLAG_ACTIVE)) {
-        Bit32u count=mem_readd(BIOS_WAIT_FLAG_COUNT);
-        if (count>997) {
-            mem_writed(BIOS_WAIT_FLAG_COUNT,count-997);
-        } else {
-            mem_writed(BIOS_WAIT_FLAG_COUNT,0);
-            PhysPt where=Real2Phys(mem_readd(BIOS_WAIT_FLAG_POINTER));
-            mem_writeb(where,mem_readb(where)|0x80);
-            mem_writeb(BIOS_WAIT_FLAG_ACTIVE,0);
-            mem_writed(BIOS_WAIT_FLAG_POINTER,RealMake(0,BIOS_WAIT_FLAG_TEMP));
-            IO_Write(0x70,0xb);
-            IO_Write(0x71,IO_Read(0x71)&~0x40);
-        }
-    } 
-    /* Signal EOI to both pics */
     IO_Write(0xa0,0x20);
     IO_Write(0x20,0x20);
     return 0;
@@ -1056,97 +1038,10 @@ void KEYBOARD_ClrBuffer(void);
 
 static Bitu INT15_Handler(void) {
     switch (reg_ah) {
-    case 0x06:
-        LOG(LOG_BIOS,LOG_NORMAL)("INT15 Unkown Function 6 (Amstrad?)");
-        break;
-    case 0xC0:  /* Get Configuration*/
-        CPU_SetSegGeneral(es,biosConfigSeg);
-        reg_bx = 0;
-        reg_ah = 0;
-        CALLBACK_SCF(false);
-        break;
     case 0x4f:  /* BIOS - Keyboard intercept */
         /* Carry should be set but let's just set it just in case */
         CALLBACK_SCF(true);
         break;
-    case 0x83:  /* BIOS - SET EVENT WAIT INTERVAL */
-        {
-            if(reg_al == 0x01) { /* Cancel it */
-                mem_writeb(BIOS_WAIT_FLAG_ACTIVE,0);
-                IO_Write(0x70,0xb);
-                IO_Write(0x71,IO_Read(0x71)&~0x40);
-                CALLBACK_SCF(false);
-                break;
-            }
-            if (mem_readb(BIOS_WAIT_FLAG_ACTIVE)) {
-                reg_ah=0x80;
-                CALLBACK_SCF(true);
-                break;
-            }
-            Bit32u count=((Bit32u)reg_cx<<16u)|reg_dx;
-            mem_writed(BIOS_WAIT_FLAG_POINTER,RealMake(SegValue(es),reg_bx));
-            mem_writed(BIOS_WAIT_FLAG_COUNT,count);
-            mem_writeb(BIOS_WAIT_FLAG_ACTIVE,1);
-            /* Reprogram RTC to start */
-            IO_Write(0x70,0xb);
-            IO_Write(0x71,IO_Read(0x71)|0x40);
-            CALLBACK_SCF(false);
-        }
-        break;
-    case 0x86:  /* BIOS - WAIT (AT,PS) */
-        {
-            if (mem_readb(BIOS_WAIT_FLAG_ACTIVE)) {
-                reg_ah=0x83;
-                CALLBACK_SCF(true);
-                break;
-            }
-            Bit8u t;
-            Bit32u count=((Bit32u)reg_cx<<16u)|reg_dx;
-            mem_writed(BIOS_WAIT_FLAG_POINTER,RealMake(0,BIOS_WAIT_FLAG_TEMP));
-            mem_writed(BIOS_WAIT_FLAG_COUNT,count);
-            mem_writeb(BIOS_WAIT_FLAG_ACTIVE,1);
-
-            /* if the user has not set the option, warn if IRQs are masked */
-            if (!int15_wait_force_unmask_irq) {
-                /* make sure our wait function works by unmasking IRQ 2, and IRQ 8.
-                 * (bugfix for 1993 demo Yodel "Mayday" demo. this demo keeps masking IRQ 2 for some stupid reason.) */
-                if ((t=IO_Read(0x21)) & (1 << 2)) {
-                    LOG(LOG_BIOS,LOG_ERROR)("INT15:86:Wait: IRQ 2 masked during wait. "
-                        "Consider adding 'int15 wait force unmask irq=true' to your dosbox.conf");
-                }
-                if ((t=IO_Read(0xA1)) & (1 << 0)) {
-                    LOG(LOG_BIOS,LOG_ERROR)("INT15:86:Wait: IRQ 8 masked during wait. "
-                        "Consider adding 'int15 wait force unmask irq=true' to your dosbox.conf");
-                }
-            }
-
-            /* Reprogram RTC to start */
-            IO_Write(0x70,0xb);
-            IO_Write(0x71,IO_Read(0x71)|0x40);
-            while (mem_readd(BIOS_WAIT_FLAG_COUNT)) {
-                if (int15_wait_force_unmask_irq) {
-                    /* make sure our wait function works by unmasking IRQ 2, and IRQ 8.
-                     * (bugfix for 1993 demo Yodel "Mayday" demo. this demo keeps masking IRQ 2 for some stupid reason.) */
-                    if ((t=IO_Read(0x21)) & (1 << 2)) {
-                        LOG(LOG_BIOS,LOG_WARN)("INT15:86:Wait: IRQ 2 masked during wait. "
-                            "This condition might result in an infinite wait on "
-                            "some BIOSes. Unmasking IRQ to keep things moving along.");
-                        IO_Write(0x21,t & ~(1 << 2));
-
-                    }
-                    if ((t=IO_Read(0xA1)) & (1 << 0)) {
-                        LOG(LOG_BIOS,LOG_WARN)("INT15:86:Wait: IRQ 8 masked during wait. "
-                            "This condition might result in an infinite wait on some "
-                            "BIOSes. Unmasking IRQ to keep things moving along.");
-                        IO_Write(0xA1,t & ~(1 << 0));
-                    }
-                }
-
-                CALLBACK_Idle();
-            }
-            CALLBACK_SCF(false);
-            break;
-        }
     case 0x87:  /* Copy extended memory */
         {
             bool enabled = MEM_A20_Enabled();
@@ -1171,25 +1066,6 @@ static Bitu INT15_Handler(void) {
         LOG(LOG_BIOS,LOG_NORMAL)("INT15:Function 0x88 Remaining %04X kb",reg_ax);
         CALLBACK_SCF(false);
         break;
-    case 0x89:  /* SYSTEM - SWITCH TO PROTECTED MODE */
-        {
-            IO_Write(0x20,0x10);IO_Write(0x21,reg_bh);IO_Write(0x21,0);IO_Write(0x21,0xFF);
-            IO_Write(0xA0,0x10);IO_Write(0xA1,reg_bl);IO_Write(0xA1,0);IO_Write(0xA1,0xFF);
-            MEM_A20_Enable(true);
-            PhysPt table=SegPhys(es)+reg_si;
-            CPU_LGDT(mem_readw(table+0x8),mem_readd(table+0x8+0x2) & 0xFFFFFF);
-            CPU_LIDT(mem_readw(table+0x10),mem_readd(table+0x10+0x2) & 0xFFFFFF);
-            CPU_SET_CRX(0,CPU_GET_CRX(0)|1);
-            CPU_SetSegGeneral(ds,0x18);
-            CPU_SetSegGeneral(es,0x20);
-            CPU_SetSegGeneral(ss,0x28);
-            Bitu ret = mem_readw(SegPhys(ss)+reg_sp);
-            reg_sp+=6;          //Clear stack of interrupt frame
-            CPU_SetFlags(0,FMASK_ALL);
-            reg_ax=0;
-            CPU_JMP(false,0x30,ret,0);
-        }
-        break;
     case 0x8A:  /* EXTENDED MEMORY SIZE */
         {
             Bitu sz = MEM_TotalPages()*4;
@@ -1207,14 +1083,6 @@ static Bitu INT15_Handler(void) {
     case 0x91:  /* OS HOOK - DEVICE POST */
         CALLBACK_SCF(false);
         reg_ah=0;
-        break;
-    case 0xc3:      /* set carry flag so BorlandRTM doesn't assume a VECTRA/PS2 */
-        reg_ah=0x86;
-        CALLBACK_SCF(true);
-        break;
-    case 0xc4:  /* BIOS POS Programm option Select */
-        LOG(LOG_BIOS,LOG_NORMAL)("INT15:Function %X called, bios mouse not supported",reg_ah);
-        CALLBACK_SCF(true);
         break;
     case 0xe8:
         switch (reg_al) {
