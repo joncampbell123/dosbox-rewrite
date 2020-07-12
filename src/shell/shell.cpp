@@ -1049,19 +1049,6 @@ void SHELL_Init() {
 	Mouse_Drv = true;
 
 	VFILE_RegisterBuiltinFileBlob(bfb_DEBUG_EXE);
-	VFILE_RegisterBuiltinFileBlob(bfb_MOVE_EXE);
-	VFILE_RegisterBuiltinFileBlob(bfb_FIND_EXE);
-	VFILE_RegisterBuiltinFileBlob(bfb_XCOPY_EXE);
-	VFILE_RegisterBuiltinFileBlob(bfb_APPEND_EXE);
-
-    /* These are IBM PC/XT/AT ONLY. They will not work in PC-98 mode. */
-    {
-        VFILE_RegisterBuiltinFileBlob(bfb_DOSIDLE_EXE);
-    }
-
-	/* MEM.COM is not compatible with PC-98 and/or 8086 emulation */
-	if (CPU_ArchitectureType >= CPU_ARCHTYPE_80186)
-		VFILE_RegisterBuiltinFileBlob(bfb_MEM_COM);
 
 	DOS_PSP psp(psp_seg);
 	psp.MakeNew(0);

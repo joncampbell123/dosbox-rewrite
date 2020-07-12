@@ -670,46 +670,6 @@ static void RESCAN_ProgramStart(Program * * make) {
     *make=new RESCAN;
 }
 
-// MODE
-
-class MODE : public Program {
-public:
-    void Run(void);
-};
-
-void MODE::Run(void) {
-    Bit16u rate=0,delay=0,mode;
-    if (!cmd->FindCommand(1,temp_line) || temp_line=="/?") {
-        WriteOut(MSG_Get("PROGRAM_MODE_USAGE"));
-        return;
-    }
-    else if (strcasecmp(temp_line.c_str(),"con")==0 || strcasecmp(temp_line.c_str(),"con:")==0) {
-        if (cmd->GetCount()!=3) goto modeparam;
-        if (cmd->FindStringBegin("rate=", temp_line,false)) rate= atoi(temp_line.c_str());
-        if (cmd->FindStringBegin("delay=",temp_line,false)) delay=atoi(temp_line.c_str());
-        if (rate<1 || rate>32 || delay<1 || delay>4) goto modeparam;
-        IO_Write(0x60,0xf3); IO_Write(0x60,(Bit8u)(((delay-1)<<5)|(32-rate)));
-        return;
-    }
-    else if (cmd->GetCount()>1) goto modeparam;
-    else if (strcasecmp(temp_line.c_str(),"mono")==0) mode=7;
-    else if (strcasecmp(temp_line.c_str(),"co80")==0) mode=3;
-    else if (strcasecmp(temp_line.c_str(),"bw80")==0) mode=2;
-    else if (strcasecmp(temp_line.c_str(),"co40")==0) mode=1;
-    else if (strcasecmp(temp_line.c_str(),"bw40")==0) mode=0;
-    else goto modeparam;
-    mem_writeb(BIOS_CONFIGURATION,(mem_readb(BIOS_CONFIGURATION)&0xcf)|((mode==7)?0x30:0x20));
-    reg_ax=mode;
-    CALLBACK_RunRealInt(0x10);
-    return;
-modeparam:
-    WriteOut(MSG_Get("PROGRAM_MODE_INVALID_PARAMETERS"));
-    return;
-}
-
-static void MODE_ProgramStart(Program * * make) {
-    *make=new MODE;
-}
 /*
 // MORE
 class MORE : public Program {
@@ -754,62 +714,6 @@ static void MORE_ProgramStart(Program * * make) {
     *make=new MORE;
 }
 */
-
-void A20GATE_ProgramStart(Program * * make);
-
-class NMITEST : public Program {
-public:
-    void Run(void) {
-        CPU_Raise_NMI();
-    }
-};
-
-static void NMITEST_ProgramStart(Program * * make) {
-    *make=new NMITEST;
-}
-
-class CAPMOUSE : public Program
-{
-public:
-	void Run() override
-    {
-        auto val = 0;
-        auto tmp = std::string("");
-
-        if(cmd->GetCount() == 0 || cmd->FindExist("/?", true))
-            val = 0;
-        else if(cmd->FindExist("/C", false))
-            val = 1;
-        else if(cmd->FindExist("/R", false))
-            val = 2;
-
-        auto cap = false;
-        switch(val)
-        {
-        case 2:
-            break;
-        case 1:
-            cap = true;
-            break;
-        case 0:
-        default:
-            WriteOut("Mouse capture/release.\n\n");
-            WriteOut("CAPMOUSE /[?|C|R]\n");
-            WriteOut("  /? help\n");
-            WriteOut("  /C capture mouse\n");
-            WriteOut("  /R release mouse\n");
-            return;
-        }
-
-        CaptureMouseNotify(!cap);
-        GFX_CaptureMouse(cap);
-        std::string msg;
-        msg.append("Mouse ");
-        msg.append(Mouse_IsLocked() ? "captured" : "released");
-        msg.append("\n");
-        WriteOut(msg.c_str());
-    }
-};
 
 void DOS_SetupPrograms(void) {
     /*Add Messages */
@@ -913,9 +817,4 @@ void DOS_SetupPrograms(void) {
     PROGRAMS_MakeFile("MOUNT.COM",MOUNT_ProgramStart);
     PROGRAMS_MakeFile("LOADFIX.COM",LOADFIX_ProgramStart);
     PROGRAMS_MakeFile("RESCAN.COM",RESCAN_ProgramStart);
-
-        PROGRAMS_MakeFile("MODE.COM", MODE_ProgramStart);
-
-    PROGRAMS_MakeFile("A20GATE.COM",A20GATE_ProgramStart);
-    PROGRAMS_MakeFile("NMITEST.COM",NMITEST_ProgramStart);
 }

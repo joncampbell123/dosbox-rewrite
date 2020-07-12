@@ -884,75 +884,6 @@ static void MIXER_Stop(Section* sec) {
     (void)sec;//UNUSED
 }
 
-class MIXER : public Program {
-public:
-    void MakeVolume(char * scan,float & vol0,float & vol1) {
-        Bitu w=0;
-        bool db=(toupper(*scan)=='D');
-        if (db) scan++;
-        while (*scan) {
-            if (*scan==':') {
-                ++scan;w=1;
-            }
-            char * before=scan;
-            float val=(float)strtod(scan,&scan);
-            if (before==scan) {
-                ++scan;continue;
-            }
-            if (!db) val/=100;
-            else val=powf(10.0f,(float)val/20.0f);
-            if (val<0) val=1.0f;
-            if (!w) {
-                vol0=val;
-            } else {
-                vol1=val;
-            }
-        }
-        if (!w) vol1=vol0;
-    }
-
-    void Run(void) {
-        if(cmd->FindExist("/LISTMIDI")) {
-            ListMidi();
-            return;
-        }
-        if (cmd->FindString("MASTER",temp_line,false)) {
-            MakeVolume((char *)temp_line.c_str(),mixer.mastervol[0],mixer.mastervol[1]);
-        }
-        if (cmd->FindString("RECORD",temp_line,false)) {
-            MakeVolume((char *)temp_line.c_str(),mixer.recordvol[0],mixer.recordvol[1]);
-        }
-        MixerChannel * chan=mixer.channels;
-        while (chan) {
-            if (cmd->FindString(chan->name,temp_line,false)) {
-                MakeVolume((char *)temp_line.c_str(),chan->volmain[0],chan->volmain[1]);
-            }
-            chan->UpdateVolume();
-            chan=chan->next;
-        }
-        if (cmd->FindExist("/NOSHOW")) return;
-        WriteOut("Channel  Main    Main(dB)\n");
-        ShowVolume("MASTER",mixer.mastervol[0],mixer.mastervol[1]);
-        ShowVolume("RECORD",mixer.recordvol[0],mixer.recordvol[1]);
-        for (chan=mixer.channels;chan;chan=chan->next) 
-            ShowVolume(chan->name,chan->volmain[0],chan->volmain[1]);
-    }
-private:
-    void ShowVolume(const char * name,float vol0,float vol1) {
-        WriteOut("%-8s %3.0f:%-3.0f  %+3.2f:%-+3.2f \n",name,
-            (double)vol0*100,(double)vol1*100,
-            20*log(vol0)/log(10.0f),20*log(vol1)/log(10.0f)
-        );
-    }
-
-    void ListMidi(){
-    };
-};
-
-static void MIXER_ProgramStart(Program * * make) {
-    *make=new MIXER;
-}
-
 MixerChannel* MixerObject::Install(MIXER_Handler handler,Bitu freq,const char * name){
     if(!installed) {
         if(strlen(name) > 31) E_Exit("Too long mixer channel name");
@@ -1055,7 +986,6 @@ void MIXER_Controls_Init() {
 }
 
 void MIXER_DOS_Boot(Section *) {
-    PROGRAMS_MakeFile("MIXER.COM",MIXER_ProgramStart);
 }
 
 void MIXER_Init() {
