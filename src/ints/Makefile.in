@@ -108,8 +108,8 @@ am__v_AR_0 = @echo "  AR      " $@;
 am__v_AR_1 = 
 libints_a_AR = $(AR) $(ARFLAGS)
 libints_a_LIBADD =
-am_libints_a_OBJECTS = xms.$(OBJEXT) int10.$(OBJEXT) \
-	int10_char.$(OBJEXT) bios.$(OBJEXT) bios_keyboard.$(OBJEXT)
+am_libints_a_OBJECTS = int10.$(OBJEXT) int10_char.$(OBJEXT) \
+	bios.$(OBJEXT) bios_keyboard.$(OBJEXT)
 libints_a_OBJECTS = $(am_libints_a_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -127,8 +127,7 @@ DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/bios.Po ./$(DEPDIR)/bios_keyboard.Po \
-	./$(DEPDIR)/int10.Po ./$(DEPDIR)/int10_char.Po \
-	./$(DEPDIR)/xms.Po
+	./$(DEPDIR)/int10.Po ./$(DEPDIR)/int10_char.Po
 am__mv = mv -f
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -297,8 +296,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CPPFLAGS = -I$(top_srcdir)/include
 noinst_LIBRARIES = libints.a
-libints_a_SOURCES = xms.cpp xms.h \
-                    int10.cpp int10.h int10_char.cpp \
+libints_a_SOURCES = int10.cpp int10.h int10_char.cpp \
                     bios.cpp bios_keyboard.cpp
 
 all: all-am
@@ -353,7 +351,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bios_keyboard.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/int10.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/int10_char.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xms.Po@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -505,7 +502,6 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/bios_keyboard.Po
 	-rm -f ./$(DEPDIR)/int10.Po
 	-rm -f ./$(DEPDIR)/int10_char.Po
-	-rm -f ./$(DEPDIR)/xms.Po
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -555,7 +551,6 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/bios_keyboard.Po
 	-rm -f ./$(DEPDIR)/int10.Po
 	-rm -f ./$(DEPDIR)/int10_char.Po
-	-rm -f ./$(DEPDIR)/xms.Po
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
