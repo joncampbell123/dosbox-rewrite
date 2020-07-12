@@ -2,9 +2,5 @@ AM_CPPFLAGS = -I$(top_srcdir)/include
 
 noinst_LIBRARIES = libbuiltin.a
 libbuiltin_a_SOURCES = \
-	debug_exe.cpp \
-	move_exe.cpp \
-	mem_com.cpp \
-	find_exe.cpp \
-	copy_exe.cpp
+	debug_exe.cpp
 
